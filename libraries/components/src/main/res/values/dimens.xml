@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+     Copyright (C) 2024, Scrolless
+     All rights reserved.
+-->
+<resources>
+    <dimen name="swipe_dimen">6dp</dimen>
+    <dimen name="sheetsTextSizeSubheading">16sp</dimen>
+    <dimen name="sheetsTextSizeTitle">20sp</dimen>
+</resources>

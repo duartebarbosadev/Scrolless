@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+     Copyright (C) 2024, Scrolless
+     All rights reserved.
+-->
+<resources>
+    <string name="app_name">Scrolless</string>
+
+    <string name="app_exit_label">Press BACK again to exit</string>
+
+    <string name="duration">Duration</string>
+
+    <string name="accessibility_service_description">This service detects when reels/shorts are opened so that \"Scrolless\", can be block if configured.</string>
+    <string name="block_all">Block all</string>
+    <string name="day_limit">Day Limit</string>
+    <string name="temporary_block">Temporary Block</string>
+    <string name="interval_timer">Interval Timer</string>
+</resources>

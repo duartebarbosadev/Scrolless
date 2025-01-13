@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+     Copyright (C) 2024, Scrolless
+     All rights reserved.
+-->
+<resources>
+
+    <declare-styleable name="SwipeMenuLayout">
+        <attr name="contentView" format="reference" />
+        <attr name="rightMenuEnable" format="boolean" />
+        <attr name="leftMenuEnable" format="boolean" />
+        <attr name="menuOpenThreshold" format="float" />
+    </declare-styleable>
+</resources>

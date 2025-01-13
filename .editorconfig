@@ -1,0 +1,12 @@
+# https://editorconfig.org/
+# This configuration is used by ktlint when spotless invokes it
+
+[*.{kt,kts}]
+ij_kotlin_allow_trailing_comma = false
+ij_kotlin_allow_trailing_comma_on_call_site = true
+ktlint_standard_discouraged-comment-location = disabled
+ktlint_standard_backing-property-naming = disabled
+ktlint_standard_value-parameter-comment = disabled
+ktlint_standard_class-signature = disabled
+ktlint_standard_function-signature = disabled
+ktlint_standard_multiline-expression-wrapping = disabled

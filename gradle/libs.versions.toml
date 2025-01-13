@@ -1,0 +1,237 @@
+[versions]
+# @keep
+minSdk = "26"
+compileSdk = "35"
+targetSdk = "35"
+
+# Android Gradle Plugin and Kotlin
+androidGradlePlugin = "8.7.3"
+androidTools = "31.7.3"
+kotlin = "2.1.0"
+ksp = "2.1.0-1.0.29"
+
+androidxMacroBenchmark = "1.3.3"
+
+googleOss = "17.1.0"
+googleOssPlugin = "0.10.6"
+shimmer = "0.5.0"
+
+androidxTracing = "1.3.0-alpha02"
+
+androidDesugarJdkLibs = "2.1.3"
+
+# Android Stuff
+coreKtx = "1.15.0"
+appcompat = "1.7.0"
+constraintlayout = "2.2.0"
+activityKtx = "1.9.3"
+fragmentKtx = "1.8.5"
+swiperefreshlayout = "1.2.0-alpha01"
+securityCrypto = "1.1.0-alpha06"
+lifecycle = "2.8.7"
+navigation = "2.8.5"
+junit = "4.13.2"
+androidxJUnit = "1.2.1"
+espressoCore = "3.6.1"
+material = "1.12.0"
+paging = "3.3.5"
+workmanager = "2.10.0"
+
+
+kotlinStdlib = "2.1.0"
+coroutines = "1.9.0"
+hilt = "2.53.1"
+
+room = "2.6.1"
+debugDb = "1.0.7"
+
+timber = "5.0.1"
+coil = "2.7.0"
+
+
+tink = "1.15.0"
+
+firebaseBom = "33.7.0"
+
+sheets = "2.3.1"
+
+contacts = "0.3.2"
+calendar = "6302f15274"
+
+robolectric = "4.13"
+mockk = "1.13.12"
+assertj = "3.26.3"
+test = "1.6.2"
+test-rules = "1.6.1"
+hamcrest = "3.0"
+turbine = "1.1.0"
+fragmentTest = "1.8.5"
+truth = "1.4.4"
+jupiter = "5.11.0"
+arch = "2.2.0"
+moshi = "1.15.1"
+moshi_lazy = "2.2"
+gradlePlugins-versions = "0.51.0"
+recyclerview = "1.3.2"
+retrofit = "2.11.0"
+okhttp = "4.12.0"
+
+# Plugins
+googleServices = "4.4.2"
+firebaseCrashlyticsPlugin = "3.0.2"
+firebasePerfPlugin = "1.4.2"
+moduleGraph = "2.5.0"
+firebaseCrashlyticsKtx = "19.3.0"
+viewbinding = "8.7.3"
+preferenceKtx = "1.2.1"
+preference = "1.2.1"
+
+[libraries]
+
+# Used in KotlinAndroid build logic - don't remove
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
+firebase-crashlytics-ktx = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebaseCrashlyticsKtx" }
+firebase-performance = { group = "com.google.firebase", name = "firebase-perf" }
+
+# Used in KotlinAndroid build logic - don't remove
+android-desugarJdkLibs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "androidDesugarJdkLibs" }
+
+# AndroidX Core
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+
+# AppCompat and Material Design
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+
+# Kotlin Libraries
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+
+# Logging and Image Loading
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+
+# Paging
+androidx-paging-runtime-ktx = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging" }
+workmanager = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workmanager" }
+
+# SwipeRefreshLayout
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
+
+# Activity and Fragment KTX
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx" }
+
+# Security Crypto
+androidx-security-crypto = { group = "androidx.security", name = "security-crypto-ktx", version.ref = "securityCrypto" }
+
+# Tink for Encryption
+tink-android = { group = "com.google.crypto.tink", name = "tink-android", version.ref = "tink" }
+
+# Dependencies of the included build-logic
+android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
+firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
+firebase-performance-gradlePlugin = { group = "com.google.firebase", name = "perf-plugin", version.ref = "firebasePerfPlugin" }
+kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
+room-gradlePlugin = { group = "androidx.room", name = "room-gradle-plugin", version.ref = "room" }
+
+# Hilt for Dependency Injection # Used in KotlinAndroid build logic - don't remove
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-core = { group = "com.google.dagger", name = "hilt-core", version.ref = "hilt" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+
+# Room Database # Used in KotlinAndroid build logic - don't remove
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
+# Sheets Libraries
+sheets-core = { group = "com.maxkeppeler.sheets", name = "core", version.ref = "sheets" }
+sheets-duration = { group = "com.maxkeppeler.sheets", name = "duration", version.ref = "sheets" }
+sheets-clock = { group = "com.maxkeppeler.sheets", name = "clock", version.ref = "sheets" }
+sheets-option = { group = "com.maxkeppeler.sheets", name = "option", version.ref = "sheets" }
+sheets-lottie = { group = "com.maxkeppeler.sheets", name = "lottie", version.ref = "sheets" }
+sheets-info = { group = "com.maxkeppeler.sheets", name = "info", version.ref = "sheets" }
+sheets-input = { group = "com.maxkeppeler.sheets", name = "input", version.ref = "sheets" }
+
+# Other Libraries
+contacts = { group = "com.github.vestrel00", name = "contacts-android", version.ref = "contacts" }
+calendar-core = { group = "com.github.thellmund.Android-Week-View", name = "core", version.ref = "calendar" }
+calendar-jsr310 = { group = "com.github.thellmund.Android-Week-View", name = "jsr310", version.ref = "calendar" }
+calendar-emoji = { group = "com.github.thellmund.Android-Week-View", name = "emoji", version.ref = "calendar" }
+
+google-oss-licenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version.ref = "googleOss" }
+google-oss-licenses-plugin = { group = "com.google.android.gms", name = "oss-licenses-plugin", version.ref = "googleOssPlugin" }
+
+facebook-shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shimmer" }
+
+# Testing Libraries
+test-junit = { group = "junit", name = "junit", version.ref = "junit" }
+test-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJUnit" }
+test-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+test-runner = { group = "androidx.test", name = "runner", version.ref = "test" }
+test-rules = { group = "androidx.test", name = "rules", version.ref = "test-rules" }
+test-kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+test-robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+test-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+test-assertj = { group = "org.assertj", name = "assertj-core", version.ref = "assertj" }
+test-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+test-hamcrest = { group = "org.hamcrest", name = "hamcrest-library", version.ref = "hamcrest" }
+test-okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okhttp" }
+test-turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+test-fragment-test = { group = "androidx.fragment", name = "fragment-testing", version.ref = "fragmentTest" }
+test-truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
+test-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "jupiter" }
+test-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "arch" }
+
+debug-db = { group = "com.github.amitshekhariitbhu.Android-Debug-Database", name = "debug-db", version.ref = "debugDb" }
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+moshi-lazy-adapters = { group = "com.serjltt.moshi", name = "moshi-lazy-adapters", version.ref = "moshi_lazy" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+androidx-viewbinding = { group = "androidx.databinding", name = "viewbinding", version.ref = "viewbinding" }
+androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
+androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }
+firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerfPlugin" }
+module-graph = { id = "com.jraska.module.graph.assertion", version.ref = "moduleGraph" }
+baselineprofile = { id = "androidx.baselineprofile", version.ref = "androidxMacroBenchmark" }
+versions = { id = "com.github.ben-manes.versions", version.ref = "gradlePlugins-versions" }
+room = { id = "androidx.room", version.ref = "room" }
+
+
+# Plugins defined by this project
+scrolless-android-application = { id = "scrolless.android.application" }
+scrolless-android-application-firebase = { id = "scrolless.android.application.firebase" }
+scrolless-android-application-flavors = { id = "scrolless.android.application.flavors" }
+scrolless-android-feature = { id = "scrolless.android.feature" }
+scrolless-android-library = { id = "scrolless.android.library" }
+scrolless-android-lint = { id = "scrolless.android.lint" }
+scrolless-android-room = { id = "scrolless.android.room" }
+scrolless-android-test = { id = "scrolless.android.test" }
+scrolless-hilt = { id = "scrolless.hilt" }
+scrolless-jvm-library = { id = "scrolless.jvm.library" }
