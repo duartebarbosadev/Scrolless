@@ -20,7 +20,6 @@ Since the app requires accessibility permissions, which are significant for user
 
 # Note
 
----
 This project is a **work in progress** 🚧. Your feedback is very important for us - we're actively working to improve the app.
 
 *The UI is not final*
@@ -28,8 +27,6 @@ This project is a **work in progress** 🚧. Your feedback is very important for
 *In future this will app be added to play store*
 
 ## Features
-
----
 
 Scrollless helps you take control of your social media usage with these features:
 
@@ -54,8 +51,6 @@ Scrollless helps you take control of your social media usage with these features
 
 ## Screenshots
 
----
-
 | Main Screen | Blocking in Action |
 |-------------|---------------------|
 | <img src="art/scrollessapp.png" alt="Scrolless app" width="250"> <br> **Main screen:** UI in progress | <img src="art/block_in_action.gif" alt="Scrolless app" width="250"> <br> **Blocking in action:**<br/> As soon as the user enters the reel view, the app automatically blocks it by pressing back |
@@ -63,15 +58,9 @@ Scrollless helps you take control of your social media usage with these features
 
 # Architecture
 
----
-
 Scrolless app architecture is inspired by the open source project [Rorty-Android](https://github.com/developersancho/Rorty.Android/), published under the [Apache License](https://github.com/developersancho/Rorty.Android/blob/main/LICENSE).
 
-
-
 ## Acknowledgements
-
----
 
 Scrolless code was inspired by the following open-source projects:
 
@@ -81,7 +70,5 @@ Scrolless code was inspired by the following open-source projects:
 
 
 ## Star History
-
----
 
 [![Star History Chart](https://api.star-history.com/svg?repos=DuarteBarbosaPT/Scrolless&type=Date)](https://star-history.com/#DuarteBarbosaPT/Scrolless&Date)
