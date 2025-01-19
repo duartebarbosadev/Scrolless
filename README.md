@@ -20,15 +20,14 @@ Since the app requires accessibility permissions, which are significant for user
 
 # Note
 
-This project is a **work in progress** 🚧. Your feedback is very important for us - we're actively working to improve the app.
+This project is a **work in progress** 🚧. 
+Your feedback is very important for us - we're actively working to improve the app.
 
 *The UI is not final*
 
-*In future this will app be added to play store*
+*In future this app will be added to the Play Store*
 
 ## Features
-
-Scrollless helps you take control of your social media usage with these features:
 
 ### Implemented Features
 - **Block All**  
@@ -51,9 +50,9 @@ Scrollless helps you take control of your social media usage with these features
 
 ## Screenshots
 
-| Main Screen | Blocking in Action |
-|-------------|---------------------|
-| <img src="art/scrollessapp.png" alt="Scrolless app" width="250"> <br> **Main screen:** UI in progress | <img src="art/block_in_action.gif" alt="Scrolless app" width="250"> <br> **Blocking in action:**<br/> As soon as the user enters the reel view, the app automatically blocks it by pressing back |
+| Main Screen | Blocking in Action                                                                                                                                                  |
+|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <img src="art/scrollessapp.png" alt="Scrolless app" width="250"> <br> UI in progress | <img src="art/block_in_action.gif" alt="Scrolless app" width="250"> <br> As soon as the user enters the reel view, the app automatically blocks it by pressing back |
 
 
 # Architecture
