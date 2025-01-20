@@ -26,7 +26,6 @@ dependencies {
     compileOnly(libs.firebase.performance.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
-    compileOnly(libs.room.gradlePlugin)
     implementation(libs.test.truth)
 }
 
@@ -54,10 +53,6 @@ gradlePlugin {
         register("hilt") {
             id = "scrolless.hilt"
             implementationClass = "HiltConventionPlugin"
-        }
-        register("androidRoom") {
-            id = "scrolless.android.room"
-            implementationClass = "AndroidRoomConventionPlugin"
         }
         register("androidFirebase") {
             id = "scrolless.android.application.firebase"

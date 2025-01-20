@@ -24,7 +24,6 @@ dependencies {
     api(libs.test.robolectric)
     api(libs.test.mockk)
     api(libs.test.assertj)
-    api(libs.test.room.testing)
     api(libs.test.core.testing)
     api(libs.test.runner)
     api(libs.test.rules)

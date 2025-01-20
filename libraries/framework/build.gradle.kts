@@ -6,7 +6,6 @@ plugins {
     alias(libs.plugins.scrolless.android.library)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.scrolless.android.room)
 }
 
 android {

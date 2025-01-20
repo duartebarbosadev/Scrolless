@@ -10,9 +10,7 @@ plugins {
     alias(libs.plugins.scrolless.android.application)
     alias(libs.plugins.scrolless.android.application.flavors)
     alias(libs.plugins.scrolless.android.application.firebase)
-    alias(libs.plugins.scrolless.android.room)
     alias(libs.plugins.scrolless.hilt)
-    alias(libs.plugins.baselineprofile)
     id("com.google.android.gms.oss-licenses-plugin")
     alias(libs.plugins.kotlin.android)
 }
@@ -44,7 +42,7 @@ android {
     }
 
     packaging {
-        resources {
+        resources { // Make sure to exclude the license files as for some reason they are probing project from compilation
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
             excludes += "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
             merges += "META-INF/LICENSE.md"
@@ -63,8 +61,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-            // Ensure Baseline Profile is fresh for release builds.
-            baselineProfile.automaticGenerationDuringBuild = true
         }
         debug {
 
@@ -77,13 +73,6 @@ android {
         viewBinding = true
         buildConfig = true
     }
-}
-
-private fun BuildType.buildConfigStringField(
-    name: String,
-    value: String
-) {
-    this.buildConfigField("String", name, "\"$value\"")
 }
 
 dependencies {
@@ -151,13 +140,4 @@ dependencies {
     implementation(libs.google.oss.licenses)
 
     implementation(libs.facebook.shimmer)
-}
-
-baselineProfile {
-    // Don't build on every iteration of a full assemble.
-    // Instead enable generation directly for the release build variant.
-    automaticGenerationDuringBuild = false
-
-    // Make use of Dex Layout Optimizations via Startup Profiles
-    dexLayoutOptimization = true
 }
