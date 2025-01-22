@@ -14,11 +14,9 @@
  *   limitations under the License.
  */
 
-import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.LibraryExtension
 import com.scrolless.app.configureFlavors
 import com.scrolless.app.configureKotlinAndroid
-import com.scrolless.app.disableUnnecessaryAndroidTests
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -49,9 +47,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                         .distinct()
                         .joinToString(separator = "_")
                         .lowercase() + "_"
-            }
-            extensions.configure<LibraryAndroidComponentsExtension> {
-                disableUnnecessaryAndroidTests(target)
             }
             dependencies {
                 add("androidTestImplementation", kotlin("test"))

@@ -21,6 +21,6 @@ fun <T : Serializable?> getSerializable(
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         activity.intent.getSerializableExtra(name, clazz)!!
     } else {
-        @Suppress("DEPRECATION")
+        @Suppress("DEPRECATION", "UNCHECKED_CAST")
         activity.intent.getSerializableExtra(name) as T
     }
