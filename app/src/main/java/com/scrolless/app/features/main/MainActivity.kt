@@ -24,7 +24,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private var backPressedOnce = false
 
     override fun onViewReady(bundle: Bundle?) {
-
         navigateFragment(
             HomeFragment.newInstance(),
             clearBackStack = true,
@@ -40,7 +39,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun onBackPressed() {
-
         if (supportFragmentManager.backStackEntryCount > 1) {
             super.onBackPressed()
         } else {

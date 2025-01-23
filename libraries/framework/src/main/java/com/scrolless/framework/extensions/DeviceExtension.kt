@@ -37,9 +37,9 @@ fun Context.isInternetAvailable(): Boolean {
 fun Context.isEmulator(): Boolean {
     val androidId = Settings.Secure.getString(this.contentResolver, "android_id")
     return Build.PRODUCT.contains("sdk") ||
-            Build.HARDWARE.contains("goldfish") ||
-            Build.HARDWARE.contains("ranchu") ||
-            androidId == null
+        Build.HARDWARE.contains("goldfish") ||
+        Build.HARDWARE.contains("ranchu") ||
+        androidId == null
 }
 
 fun Context.isRooted(): Boolean {

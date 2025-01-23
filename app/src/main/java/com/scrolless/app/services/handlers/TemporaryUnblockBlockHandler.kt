@@ -1,8 +1,11 @@
+/*
+ * Copyright (C) 2025, Scrolless
+ * All rights reserved.
+ */
 package com.scrolless.app.services.handlers
 
 import com.scrolless.app.provider.UsageTracker
 import com.scrolless.app.services.BlockOptionHandler
-
 
 /**
  * Allows a single temporary "unblock" session up to `timeLimit`.
@@ -24,13 +27,12 @@ class TemporaryUnblockBlockHandler(
 
     override fun onPeriodicCheck(usageTracker: UsageTracker, elapsedTime: Long): Boolean {
         // If the temporary unblock is not used yet but elapsed time exceeds limit, block now
-        //return (!usageTracker.isTemporaryUnblockUsed() && elapsedTime >= timeLimit)
+        // return (!usageTracker.isTemporaryUnblockUsed() && elapsedTime >= timeLimit)
         return false
     }
 
     override fun onExitContent(usageTracker: UsageTracker, sessionTime: Long) {
         // After exiting, temporary unblock is considered used
-        //usageTracker.markTemporaryUnblockUsed()
-
+        // usageTracker.markTemporaryUnblockUsed()
     }
 }

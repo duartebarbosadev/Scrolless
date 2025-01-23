@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2025, Scrolless
+ * All rights reserved.
+ */
 package com.scrolless.app.services
 
 import com.scrolless.app.features.home.BlockConfig
@@ -17,30 +21,25 @@ class BlockController(
 
     private var handler: BlockOptionHandler = createHandlerForConfig(appProvider.blockConfig)
 
-
     /**
      * Updates the block option, creating a new handler and performing any necessary resets.
      */
     fun setBlockConfigOption(newOption: BlockConfig) {
-
         handler = createHandlerForConfig(newOption)
-        initializeForOption()  // Re-run initialization logic if needed
+        initializeForOption() // Re-run initialization logic if needed
     }
 
-    private fun createHandlerForConfig(config: BlockConfig): BlockOptionHandler {
-        return when (config.blockOption) {
-            BlockOption.BlockAll -> BlockAllBlockHandler()
-            BlockOption.DayLimit -> DayLimitBlockHandler(config.timeLimit)
-            BlockOption.IntervalTimer -> IntervalTimerBlockHandler(
-                config.timeLimit,
-                config.intervalLength,
-            )
+    private fun createHandlerForConfig(config: BlockConfig): BlockOptionHandler = when (config.blockOption) {
+        BlockOption.BlockAll -> BlockAllBlockHandler()
+        BlockOption.DayLimit -> DayLimitBlockHandler(config.timeLimit)
+        BlockOption.IntervalTimer -> IntervalTimerBlockHandler(
+            config.timeLimit,
+            config.intervalLength,
+        )
 
-            BlockOption.TemporaryUnblock -> TemporaryUnblockBlockHandler(config.timeLimit)
-            BlockOption.NothingSelected -> NothingSelectedBlockHandler()
-        }
+        BlockOption.TemporaryUnblock -> TemporaryUnblockBlockHandler(config.timeLimit)
+        BlockOption.NothingSelected -> NothingSelectedBlockHandler()
     }
-
 
     fun onEnterBlockedContent(): Boolean {
         usageTracker.checkDailyReset()
@@ -49,19 +48,17 @@ class BlockController(
         return handler.onEnterContent(usageTracker)
     }
 
-    fun onPeriodicCheck(elapsedTime: Long): Boolean {
-        return handler.onPeriodicCheck(usageTracker, elapsedTime)
-    }
+    fun onPeriodicCheck(elapsedTime: Long): Boolean = handler.onPeriodicCheck(usageTracker, elapsedTime)
 
     fun onExitBlockedContent(sessionTime: Long) {
         handler.onExitContent(usageTracker, sessionTime)
     }
 
     fun initializeForOption() {
-        usageTracker.load()           // Make sure we have the latest data
+        usageTracker.load() // Make sure we have the latest data
         usageTracker.checkDailyReset() // In case day changed
         if (appProvider.blockConfig.blockOption == BlockOption.IntervalTimer) {
-            usageTracker.checkDailyReset()  // or do any additional interval logic here
+            usageTracker.checkDailyReset() // or do any additional interval logic here
         }
     }
 }
