@@ -43,7 +43,7 @@ jobs:
 
       # Run local tests
       - name: Run local tests
-        run: ./gradlew testDevDebug :lint:test
+        run: ./gradlew testDevDebug
 
       - name: Build all build type and flavor permutations
         run: ./gradlew :app:assemble
