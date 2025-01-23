@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2025, Scrolless
+ * All rights reserved.
+ */
 package com.scrolless.app.services
 
 import android.accessibilityservice.AccessibilityService
@@ -11,7 +15,11 @@ import com.scrolless.app.features.home.BlockOption
 import com.scrolless.app.provider.AppProvider
 import com.scrolless.app.provider.UsageTracker
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -96,7 +104,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     override fun onDestroy() {
-
         super.onDestroy()
         stopPeriodicCheck()
 
@@ -116,16 +123,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         serviceInfo = info
     }
 
-    private fun detectBlockedContent(rootNode: AccessibilityNodeInfo): Boolean {
-        return blockedViews.any { id ->
-            rootNode.findAccessibilityNodeInfosByViewId(id).isNotEmpty()
-        }
+    private fun detectBlockedContent(rootNode: AccessibilityNodeInfo): Boolean = blockedViews.any { id ->
+        rootNode.findAccessibilityNodeInfosByViewId(id).isNotEmpty()
     }
 
     private fun onBlockedContentEntered() {
-
         if (!currentOnVideos) {
-
             currentOnVideos = true
             timeStartOnBrainRot = System.currentTimeMillis()
             startPeriodicCheck()
@@ -140,9 +143,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     private fun onBlockedContentExited() {
-
         if (currentOnVideos) {
-
             val sessionTime = System.currentTimeMillis() - timeStartOnBrainRot
 
             // Add to usage in memory
@@ -157,18 +158,15 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     private fun startPeriodicCheck() {
-
         videoCheckHandler.removeCallbacks(videoCheckRunnable)
         videoCheckHandler.postDelayed(videoCheckRunnable, 1000)
     }
 
     private fun stopPeriodicCheck() {
-
         videoCheckHandler.removeCallbacks(videoCheckRunnable)
     }
 
     private fun performBackNavigation() {
-
         mainHandler.post {
             performGlobalAction(GLOBAL_ACTION_BACK)
         }

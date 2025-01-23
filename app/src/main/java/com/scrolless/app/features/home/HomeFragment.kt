@@ -21,9 +21,10 @@ import com.scrolless.app.provider.AppProvider
 import com.scrolless.app.provider.UsageTracker
 import com.scrolless.app.services.ScrollessBlockAccessibilityService
 import com.scrolless.framework.extensions.*
+import com.scrolless.framework.extensions.formatTime
+import com.scrolless.framework.extensions.observeFlow
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -39,7 +40,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     lateinit var usageTracker: UsageTracker
 
     override fun onViewReady(bundle: Bundle?) {
-
         observeFlow(appProvider.blockConfigFlow) { config ->
             updateUIForBlockOption(config.blockOption)
             updateInfoText(usageTracker.dailyUsageInMemory, config.timeLimit)
@@ -54,7 +54,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.blockAllButton.setOnClickListener {
-
             val currentConfig = appProvider.blockConfig
 
             // Toggle selection
@@ -70,7 +69,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.dayLimitButton.setOnClickListener {
-
             val currentConfig = appProvider.blockConfig
 
             // Toggle selection
@@ -97,7 +95,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.temporaryUnblockButton.setOnClickListener {
-
             val currentConfig = appProvider.blockConfig
 
             // Toggle selection
@@ -113,7 +110,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.intervalTimerButton.setOnClickListener {
-
             val currentConfig = appProvider.blockConfig
 
             // Toggle selection
@@ -149,9 +145,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         button: MaterialButton,
         activated: Boolean
     ) {
-
         button.apply {
-
             if (activated) {
                 strokeWidth = resources.getDimensionPixelSize(R.dimen.card_stroke)
                 strokeColor =
@@ -200,7 +194,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun updateUIForBlockOption(blockOption: BlockOption) {
-
         resetButtons()
         when (blockOption) {
             BlockOption.BlockAll -> applyButtonEffect(binding.blockAllButton, true)

@@ -9,10 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class SplashViewModel @Inject constructor(
-) : MviViewModel<SplashContract.State, SplashContract.Event>() {
+class SplashViewModel @Inject constructor() : MviViewModel<SplashContract.State, SplashContract.Event>() {
     override fun onTriggerEvent(eventType: SplashContract.Event) {
     }
-
-
 }

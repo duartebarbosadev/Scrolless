@@ -104,9 +104,9 @@ open class SwipeMenuLayout @JvmOverloads constructor(
         // frameLayout
         val measureMatchParentChildren =
             MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.EXACTLY ||
-                    MeasureSpec.getMode(
-                        heightMeasureSpec,
-                    ) != MeasureSpec.EXACTLY
+                MeasureSpec.getMode(
+                    heightMeasureSpec,
+                ) != MeasureSpec.EXACTLY
         matchParentChildren.clear()
         var maxHeight = 0
         var maxWidth = 0
@@ -150,7 +150,7 @@ open class SwipeMenuLayout @JvmOverloads constructor(
                     val width = max(
                         0,
                         measuredWidth -
-                                lp.leftMargin - lp.rightMargin,
+                            lp.leftMargin - lp.rightMargin,
                     )
                     MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY)
                 } else {
@@ -165,7 +165,7 @@ open class SwipeMenuLayout @JvmOverloads constructor(
                         val height = max(
                             0,
                             measuredHeight -
-                                    lp.topMargin - lp.bottomMargin,
+                                lp.topMargin - lp.bottomMargin,
                         )
                         MeasureSpec.makeMeasureSpec(
                             height,
