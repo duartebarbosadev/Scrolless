@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2025, Scrolless
+ * All rights reserved.
+ */
 package com.scrolless.app.provider
 
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,9 +35,7 @@ class UsageTrackerImpl @Inject constructor(
         dailyUsageInMemory = appProvider.totalDailyUsage
     }
 
-    override fun getDailyUsage(): Long {
-        return dailyUsageInMemory
-    }
+    override fun getDailyUsage(): Long = dailyUsageInMemory
 
     override fun addToDailyUsage(sessionTime: Long) {
         dailyUsageInMemory += sessionTime

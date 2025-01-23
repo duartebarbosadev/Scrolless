@@ -81,7 +81,7 @@ abstract class BaseServiceTest<S : Any>(service: KClass<S>) {
         )
         println(
             "🍏 enqueueResponse() ${Thread.currentThread().name}," +
-                    " ${bufferSource.readString(Charsets.UTF_8).length} $mockResponse",
+                " ${bufferSource.readString(Charsets.UTF_8).length} $mockResponse",
         )
     }
 

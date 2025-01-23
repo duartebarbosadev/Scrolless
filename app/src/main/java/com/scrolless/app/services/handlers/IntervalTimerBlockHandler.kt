@@ -1,8 +1,11 @@
+/*
+ * Copyright (C) 2025, Scrolless
+ * All rights reserved.
+ */
 package com.scrolless.app.services.handlers
 
 import com.scrolless.app.provider.UsageTracker
 import com.scrolless.app.services.BlockOptionHandler
-
 
 /**
  * Blocks if the interval usage time plus the current session's elapsed time
@@ -12,7 +15,7 @@ import com.scrolless.app.services.BlockOptionHandler
  */
 class IntervalTimerBlockHandler(
     private val timeLimit: Long,
-    private val intervalLength: Long, // TODO Implement interval length
+    private val intervalLength: Long // TODO Implement interval length
 ) : BlockOptionHandler {
 
     var usageTimeThroughInterval: Long = 0L
@@ -29,7 +32,6 @@ class IntervalTimerBlockHandler(
     }
 
     override fun onExitContent(usageTracker: UsageTracker, sessionTime: Long) {
-
         // Accumulate this session's time into the interval usage
         usageTimeThroughInterval += sessionTime
     }

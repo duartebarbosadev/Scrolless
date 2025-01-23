@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2025, Scrolless
+ * All rights reserved.
+ */
 package com.scrolless.app.provider
 
 import kotlinx.coroutines.flow.StateFlow
@@ -6,7 +10,6 @@ interface UsageTracker {
 
     var dailyUsageInMemory: Long
     val dailyUsageInMemoryFlow: StateFlow<Long>
-
 
     /**
      * Load the current daily usage into memory.
