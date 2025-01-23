@@ -19,7 +19,6 @@ class ScrollessAppConfig : CoreConfig() {
             CoreEnvironment.PROD
         }
 
-
     override fun timeOut(): Long = 30L
 
     override fun isDev(): Boolean = BuildConfig.DEBUG

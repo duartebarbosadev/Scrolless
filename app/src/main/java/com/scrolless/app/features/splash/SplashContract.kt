@@ -6,9 +6,7 @@ package com.scrolless.app.features.splash
 
 class SplashContract {
 
-    sealed class Event {
-    }
+    sealed class Event
 
-    sealed class State {
-    }
+    sealed class State
 }
