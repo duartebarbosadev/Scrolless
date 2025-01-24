@@ -57,6 +57,7 @@ internal fun Any.findClass(): Class<*> {
                     false
                 }
             } as? Class<*>
+        @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
         javaClass = javaClass.superclass
     }
     return result
