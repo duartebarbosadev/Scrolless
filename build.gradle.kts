@@ -4,12 +4,6 @@ buildscript {
         mavenCentral()
         gradlePluginPortal()
     }
-
-    dependencies {
-        classpath(libs.google.oss.licenses.plugin) {
-            exclude(group = "com.google.protobuf")
-        }
-    }
 }
 
 plugins {
@@ -22,5 +16,4 @@ plugins {
     alias(libs.plugins.firebase.perf) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.hilt) apply false
-    alias(libs.plugins.module.graph) apply true // Plugin applied to allow module graph generation
 }
