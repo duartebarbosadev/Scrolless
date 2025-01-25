@@ -8,13 +8,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.Window
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.scrolless.libraries.components.databinding.DialogInternetCheckBinding
+import com.scrolless.libraries.components.databinding.LibrariesComponentsDialogInternetCheckBinding
 
 object DialogHelper {
     fun showInternetCheckDialog(context: Context, handler: () -> Unit) {
         val dialogBuilder = MaterialAlertDialogBuilder(context)
         val layoutInflater = LayoutInflater.from(context)
-        val binding = DialogInternetCheckBinding.inflate(layoutInflater)
+        val binding = LibrariesComponentsDialogInternetCheckBinding.inflate(layoutInflater)
         dialogBuilder.setView(binding.root)
 
         val alertDialog = dialogBuilder.create().apply {
