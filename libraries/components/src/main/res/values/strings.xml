@@ -4,8 +4,8 @@
      All rights reserved.
 -->
 <resources>
-    <string name="retry">Retry</string>
-    <string name="internet_connection_error">Check your connection!</string>
-    <string name="text_check_internet_dialog_message">Check your internet connection!</string>
-    <string name="btn_check_internet_close">Close</string>
+    <string name="libraries_components_retry">Retry</string>
+    <string name="libraries_components_internet_connection_error">Check your connection!</string>
+    <string name="libraries_components_text_check_internet_dialog_message">Check your internet connection!</string>
+    <string name="libraries_components_btn_check_internet_close">Close</string>
 </resources>

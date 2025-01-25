@@ -3,9 +3,9 @@
      Copyright (C) 2024, Scrolless
      All rights reserved.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <declare-styleable name="SwipeMenuLayout">
+    <declare-styleable name="SwipeMenuLayout" tools:ignore="ResourceName">
         <attr name="contentView" format="reference" />
         <attr name="rightMenuEnable" format="boolean" />
         <attr name="leftMenuEnable" format="boolean" />

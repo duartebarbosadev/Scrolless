@@ -54,7 +54,7 @@ open class SwipeMenuView @JvmOverloads constructor(
             parent.gravity = Gravity.CENTER
             parent.orientation = item.orientation
             parent.layoutParams = params
-            val padding = resources.getDimensionPixelSize(R.dimen.swipe_dimen)
+            val padding = resources.getDimensionPixelSize(R.dimen.libraries_components_swipe_dimen)
             parent.setPadding(padding, 0, padding, 0)
             parent.setOnClickListener {
                 mItemClickListener?.invoke(item, position)
