@@ -11,7 +11,6 @@ plugins {
     alias(libs.plugins.scrolless.android.application.flavors)
     alias(libs.plugins.scrolless.android.application.firebase)
     alias(libs.plugins.scrolless.hilt)
-    id("com.google.android.gms.oss-licenses-plugin")
     alias(libs.plugins.kotlin.android)
 }
 
@@ -136,8 +135,6 @@ dependencies {
     implementation(platform(libs.firebase.bom))
 
     implementation(libs.firebase.crashlytics)
-
-    implementation(libs.google.oss.licenses)
 
     implementation(libs.facebook.shimmer)
 }
