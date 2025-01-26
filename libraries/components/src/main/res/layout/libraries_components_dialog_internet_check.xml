@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_dialog_radius"
+        android:background="@drawable/libraries_components_bg_dialog_radius"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,7 @@
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
-            app:srcCompat="@drawable/ic_baseline_wifi_off_24" />
+            app:srcCompat="@drawable/libraries_components_ic_baseline_wifi_off_24" />
 
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:gravity="center"
-            android:text="@string/text_check_internet_dialog_message"
+            android:text="@string/libraries_components_text_check_internet_dialog_message"
             android:textAlignment="center"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
-            android:text="@string/btn_check_internet_close"
+            android:text="@string/libraries_components_btn_check_internet_close"
             android:textAllCaps="false"
             android:textSize="16sp" />
 

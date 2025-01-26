@@ -16,7 +16,7 @@ class ThemeSwitch @JvmOverloads constructor(
 ) : SwitchMaterial(context, attrs) {
 
     init {
-        thumbDrawable = AppCompatResources.getDrawable(context, R.drawable.selector_dark_light)
-        trackDrawable = AppCompatResources.getDrawable(context, R.drawable.selector_bg_dark_light)
+        thumbDrawable = AppCompatResources.getDrawable(context, R.drawable.libraries_components_selector_dark_light)
+        trackDrawable = AppCompatResources.getDrawable(context, R.drawable.libraries_components_selector_bg_dark_light)
     }
 }

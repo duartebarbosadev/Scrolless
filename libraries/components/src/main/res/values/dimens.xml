@@ -4,7 +4,7 @@
      All rights reserved.
 -->
 <resources>
-    <dimen name="swipe_dimen">6dp</dimen>
-    <dimen name="sheetsTextSizeSubheading">16sp</dimen>
-    <dimen name="sheetsTextSizeTitle">20sp</dimen>
+    <dimen name="libraries_components_swipe_dimen">6dp</dimen>
+    <dimen name="libraries_components_sheetsTextSizeSubheading">16sp</dimen>
+    <dimen name="libraries_components_sheetsTextSizeTitle">20sp</dimen>
 </resources>

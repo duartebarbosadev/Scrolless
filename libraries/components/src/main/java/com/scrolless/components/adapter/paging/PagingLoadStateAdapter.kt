@@ -11,14 +11,14 @@ import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.scrolless.libraries.components.databinding.RowPagingLoadStateBinding
+import com.scrolless.libraries.components.databinding.LibrariesComponentsRowPagingLoadStateBinding
 
 class PagingLoadStateAdapter<T : Any, VH : RecyclerView.ViewHolder>(
     private val adapter: PagingDataAdapter<T, VH>
 ) : LoadStateAdapter<PagingLoadStateAdapter.PagingLoadStateViewHolder>() {
 
     class PagingLoadStateViewHolder(
-        private val binding: RowPagingLoadStateBinding,
+        private val binding: LibrariesComponentsRowPagingLoadStateBinding,
         private val retryCallback: () -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
@@ -43,7 +43,7 @@ class PagingLoadStateAdapter<T : Any, VH : RecyclerView.ViewHolder>(
         loadState: LoadState
     ): PagingLoadStateViewHolder =
         PagingLoadStateViewHolder(
-            RowPagingLoadStateBinding.inflate(
+            LibrariesComponentsRowPagingLoadStateBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false,

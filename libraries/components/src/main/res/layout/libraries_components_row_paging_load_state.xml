@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/internet_connection_error" />
+        tools:text="@string/libraries_components_internet_connection_error" />
 
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/pbLoading"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:backgroundTint="@android:color/holo_red_dark"
-        android:text="@string/retry"
+        android:text="@string/libraries_components_retry"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"

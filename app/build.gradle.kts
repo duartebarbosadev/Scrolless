@@ -3,7 +3,6 @@
  * All rights reserved.
  */
 
-import com.android.build.api.dsl.BuildType
 import com.scrolless.app.ScrollessBuildType
 
 plugins {

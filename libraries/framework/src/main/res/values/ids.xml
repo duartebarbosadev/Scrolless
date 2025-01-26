@@ -3,12 +3,12 @@
      Copyright (C) 2024, Scrolless
      All rights reserved.
 -->
-<resources>
-    <item type="id" name="nav_container" />
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <item type="id" name="nav_container" tools:ignore="ResourceName" />
 
-    <item name="view_add_insets_padding_top_tag" type="id" />
-    <item name="view_add_insets_padding_bottom_tag" type="id" />
-    <item name="view_add_insets_padding_left_tag" type="id" />
-    <item name="view_add_insets_padding_right_tag" type="id" />
+    <item name="view_add_insets_padding_top_tag" type="id" tools:ignore="ResourceName" />
+    <item name="view_add_insets_padding_bottom_tag" type="id" tools:ignore="ResourceName" />
+    <item name="view_add_insets_padding_left_tag" type="id" tools:ignore="ResourceName" />
+    <item name="view_add_insets_padding_right_tag" type="id" tools:ignore="ResourceName" />
 
 </resources>

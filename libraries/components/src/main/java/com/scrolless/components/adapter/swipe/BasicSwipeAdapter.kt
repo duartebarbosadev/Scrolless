@@ -49,7 +49,7 @@ abstract class BasicSwipeAdapter<T : Any, Binding : ViewBinding> :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BasicViewHolder<Binding> {
         val vh = super.onCreateViewHolder(parent, viewType)
         val mainView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.row_swipe_recycler, parent, false)
+            .inflate(R.layout.libraries_components_row_swipe_recycler, parent, false)
 
         val swipeContent = mainView.findViewById<FrameLayout>(R.id.swipeContent)
         swipeContent.addView(vh.itemView)
