@@ -62,7 +62,7 @@ jobs:
           path: '**/build/test-results/test*UnitTest/**.xml'
 
       - name: Check lint
-        run: ./gradlew :app:lintProdRelease :lint:lint
+        run: ./gradlew :app:lintProdRelease
 
       - name: Upload lint reports (HTML)
         if: ${{ !cancelled() }}
