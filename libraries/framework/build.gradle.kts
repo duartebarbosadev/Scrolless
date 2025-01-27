@@ -16,8 +16,6 @@ dependencies {
     implementation(libs.androidx.preference)
     testImplementation(projects.libraries.testutils)
 
-    implementation(libs.firebase.crashlytics.ktx)
-
     // AndroidX Libraries
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)

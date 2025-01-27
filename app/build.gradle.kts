@@ -8,7 +8,6 @@ import com.scrolless.app.ScrollessBuildType
 plugins {
     alias(libs.plugins.scrolless.android.application)
     alias(libs.plugins.scrolless.android.application.flavors)
-    alias(libs.plugins.scrolless.android.application.firebase)
     alias(libs.plugins.scrolless.hilt)
     alias(libs.plugins.kotlin.android)
 }
@@ -130,10 +129,6 @@ dependencies {
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.androidx.junit)
     androidTestImplementation(libs.test.androidx.espresso.core)
-
-    implementation(platform(libs.firebase.bom))
-
-    implementation(libs.firebase.crashlytics)
 
     implementation(libs.facebook.shimmer)
 }
