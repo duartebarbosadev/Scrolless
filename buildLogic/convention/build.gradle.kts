@@ -22,8 +22,6 @@ kotlin {
 dependencies {
     compileOnly(libs.android.gradlePlugin)
     compileOnly(libs.android.tools.common)
-    compileOnly(libs.firebase.crashlytics.gradlePlugin)
-    compileOnly(libs.firebase.performance.gradlePlugin)
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
     implementation(libs.test.truth)
@@ -53,10 +51,6 @@ gradlePlugin {
         register("hilt") {
             id = "scrolless.hilt"
             implementationClass = "HiltConventionPlugin"
-        }
-        register("androidFirebase") {
-            id = "scrolless.android.application.firebase"
-            implementationClass = "AndroidApplicationFirebaseConventionPlugin"
         }
         register("androidFlavors") {
             id = "scrolless.android.application.flavors"
