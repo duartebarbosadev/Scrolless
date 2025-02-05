@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2025, Scrolless
+ * All rights reserved.
+ */
 package com.scrolless.framework.extensions
 
 import java.util.Locale
@@ -12,11 +16,11 @@ private const val MINUTES_PER_HOUR = 60
 private const val HOURS_PER_DAY = 24
 
 private const val SECONDS_PER_HOUR = SECONDS_PER_MINUTE * MINUTES_PER_HOUR // 3600
-private const val SECONDS_PER_DAY = SECONDS_PER_HOUR * HOURS_PER_DAY        // 86400
+private const val SECONDS_PER_DAY = SECONDS_PER_HOUR * HOURS_PER_DAY // 86400
 
 private const val MILLISECONDS_PER_SECOND = 1000
 private const val MILLISECONDS_PER_MINUTE = MILLISECONDS_PER_SECOND * SECONDS_PER_MINUTE // 60000
-private const val MILLISECONDS_PER_HOUR = MILLISECONDS_PER_MINUTE * MINUTES_PER_HOUR     // 3600000
+private const val MILLISECONDS_PER_HOUR = MILLISECONDS_PER_MINUTE * MINUTES_PER_HOUR // 3600000
 
 /**
  * Formats a duration, given in seconds, into a human-readable string.
