@@ -22,6 +22,11 @@ class AppProviderImpl(context: Context) : AppProvider {
         private const val PREF_INTERVAL_LENGTH = "interval_length"
         private const val PREF_LAST_RESET_DAY = "last_reset_day"
         private const val PREF_TOTAL_DAILY_USAGE = "total_daily_usage"
+
+        // Timer overlay
+        private const val PREF_TIMER_OVERLAY_ENABLED = "timer_overlay_enabled"
+        private const val PREF_TIMER_POSITION_X = "timer_overlay_position_x"
+        private const val PREF_TIMER_POSITION_Y = "timer_overlay_position_y"
     }
 
     override val cacheManager = CacheManager(context, PREF_PACKAGE_NAME)
@@ -60,6 +65,18 @@ class AppProviderImpl(context: Context) : AppProvider {
     override var totalDailyUsage: Long
         get() = cacheManager.read(PREF_TOTAL_DAILY_USAGE, 0)
         set(value) = cacheManager.write(PREF_TOTAL_DAILY_USAGE, value)
+
+    override var timerOverlayEnabled: Boolean
+        get() = cacheManager.read(PREF_TIMER_OVERLAY_ENABLED, false)
+        set(value) = cacheManager.write(PREF_TIMER_OVERLAY_ENABLED, value)
+
+    override var timerOverlayPositionX: Int
+        get() = cacheManager.read(PREF_TIMER_POSITION_X, 16)
+        set(value) = cacheManager.write(PREF_TIMER_POSITION_X, value)
+
+    override var timerOverlayPositionY: Int
+        get() = cacheManager.read(PREF_TIMER_POSITION_Y, 16)
+        set(value) = cacheManager.write(PREF_TIMER_POSITION_Y, value)
 
     private fun readBlockConfigFromCache(): BlockConfig {
         val blockOption = cacheManager.read(PREF_BLOCK_OPTION, BlockOption.NothingSelected)

@@ -4,6 +4,13 @@
  */
 package com.scrolless.framework.extensions
 
+import java.time.Duration
+import java.util.Locale
+import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Duration.Companion.seconds
+
 fun Long.formatDurationFromSeconds(): String {
     val seconds = this % 60
     val minutes = (this / 60) % 60
@@ -42,6 +49,21 @@ fun Long.formatTime(): String {
         if (seconds > 0 || isEmpty()) append("${seconds}s")
     }
 }
+
+
+fun Long.getReadableTime(): String {
+    val duration = this.milliseconds
+    val hours = duration.inWholeHours
+    val minutes = (duration - hours.hours).inWholeMinutes
+    val seconds = (duration - hours.hours - minutes.minutes).inWholeSeconds
+
+    return if (hours > 0) {
+        String.format("%02d:%02d:%02d", hours, minutes, seconds)
+    } else {
+        String.format("%02d:%02d", minutes, seconds)
+    }
+}
+
 
 fun Int.formatDurationFromSeconds(): String {
     val seconds = this % 60

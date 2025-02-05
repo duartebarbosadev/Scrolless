@@ -4,6 +4,10 @@
  */
 package com.scrolless.framework.extensions
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.SystemClock
 import android.view.HapticFeedbackConstants
@@ -74,6 +78,69 @@ fun View.fadeOut() {
         .setDuration(150L)
         .withEndAction { beGone() }
         .start()
+}
+
+
+/**
+ * Extension function for View that runs a hide animation sequence:
+ * 1. Scale down from 1.0 to 0.9 over 100 ms.
+ * 2. Pause for 100 ms.
+ * 3. Scale up from 0.9 to 1.1 over 200 ms.
+ * 4. Pause for 400 ms.
+ * 5. Fade out and shrink (scale to 0 and alpha to 0) over 200 ms.
+ *
+ * @param onAnimationEnd Called when the entire animation sequence finishes.
+ */
+fun View.fadeOutWithBounceAnimation(onAnimationEnd: () -> Unit) {
+
+    val view = this;
+
+    // Inline helper: create a dummy animator that effectively pauses.
+    fun pause(duration: Long) = ObjectAnimator.ofFloat(this, "alpha", this.alpha, this.alpha).apply {
+        this.duration = duration
+    }
+
+    // 1. Scale down from 1.0 to 0.9 in 100 ms.
+    val scaleDown = AnimatorSet().apply {
+        playTogether(
+            ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.9f).apply { duration = 100 },
+            ObjectAnimator.ofFloat(view, "scaleY", 1f, 0.9f).apply { duration = 100 }
+        )
+    }
+
+    // 2. Pause for 100 ms.
+    val pause1 = pause(100)
+
+    // 3. Scale up from 0.9 to 1.1 in 200 ms.
+    val scaleUp = AnimatorSet().apply {
+        playTogether(
+            ObjectAnimator.ofFloat(view, "scaleX", 0.9f, 1.1f).apply { duration = 200 },
+            ObjectAnimator.ofFloat(view, "scaleY", 0.9f, 1.1f).apply { duration = 200 }
+        )
+    }
+
+    // 4. Pause for 400 ms.
+    val pause2 = pause(400)
+
+    // 5. Fade out and shrink (scale to 0 and alpha to 0) in 200 ms.
+    val fadeOut = AnimatorSet().apply {
+        playTogether(
+            ObjectAnimator.ofFloat(view, "scaleX", 1.1f, 0f).apply { duration = 200 },
+            ObjectAnimator.ofFloat(view, "scaleY", 1.1f, 0f).apply { duration = 200 },
+            ObjectAnimator.ofFloat(view, "alpha", 1f, 0f).apply { duration = 200 }
+        )
+    }
+
+    // Chain the animations sequentially.
+    AnimatorSet().apply {
+        playSequentially(scaleDown, pause1, scaleUp, pause2, fadeOut)
+        addListener(object : AnimatorListenerAdapter() {
+            override fun onAnimationEnd(animation: Animator) {
+                onAnimationEnd()
+            }
+        })
+        start()
+    }
 }
 
 val Context.inflater: LayoutInflater get() = LayoutInflater.from(this)

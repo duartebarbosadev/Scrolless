@@ -12,6 +12,8 @@ import android.os.Looper
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.scrolless.app.features.home.BlockOption
+import com.scrolless.app.overlay.TimerOverlayManager
+import com.scrolless.app.overlay.TimerOverlayManagerImpl
 import com.scrolless.app.provider.AppProvider
 import com.scrolless.app.provider.UsageTracker
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,16 +44,20 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     @Inject
     lateinit var usageTracker: UsageTracker
 
-    private val blockController by lazy { BlockController(appProvider, usageTracker) }
+    @Inject
+    lateinit var blockController: BlockController
 
-    private var currentOnVideos = false
-    private var timeStartOnBrainRot: Long = 0L
+    @Inject
+    lateinit var timerOverlayManager: TimerOverlayManager
 
     private var active = true
+    private var currentOnVideos = false
+    private var timeStartOnBrainRot: Long = 0L
 
     private val blockedViews = setOf(
         "com.google.android.youtube:id/reel_player_page_container",
         "com.instagram.android:id/clips_viewer_view_pager",
+        // TODO Tiktok is not supported yet
     )
 
     private val videoCheckRunnable = object : Runnable {
@@ -68,16 +74,17 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     override fun onServiceConnected() {
+
         super.onServiceConnected()
         configureServiceInfo()
 
-        // Initialize block logic
-        blockController.initializeForOption()
+        // Make sure the timer overlay manager has the service's context
+        timerOverlayManager.attachServiceContext(this)
 
         // Observe changes to the block config
         serviceScope.launch {
             appProvider.blockConfigFlow.collect { newConfig ->
-                blockController.setBlockConfigOption(newConfig)
+                blockController.init(newConfig)
                 active = (newConfig.blockOption != BlockOption.NothingSelected)
             }
         }
@@ -100,8 +107,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    override fun onInterrupt() {
-    }
+    override fun onInterrupt() = Unit
 
     override fun onDestroy() {
         super.onDestroy()
@@ -113,22 +119,33 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     private fun configureServiceInfo() {
+
         val info = AccessibilityServiceInfo().apply {
+
             eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
             feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC
             notificationTimeout = 100
+
             flags =
-                AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS or AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
+                AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS or
+                AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
         }
         serviceInfo = info
     }
 
-    private fun detectBlockedContent(rootNode: AccessibilityNodeInfo): Boolean = blockedViews.any { id ->
-        rootNode.findAccessibilityNodeInfosByViewId(id).isNotEmpty()
-    }
+    private fun detectBlockedContent(rootNode: AccessibilityNodeInfo): Boolean =
+        blockedViews.any { id ->
+            rootNode.findAccessibilityNodeInfosByViewId(id).isNotEmpty()
+        }
 
     private fun onBlockedContentEntered() {
         if (!currentOnVideos) {
+
+            // If timer overlay is enabled, show it
+            if (appProvider.timerOverlayEnabled) {
+                timerOverlayManager.show()
+            }
+
             currentOnVideos = true
             timeStartOnBrainRot = System.currentTimeMillis()
             startPeriodicCheck()
@@ -143,7 +160,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     private fun onBlockedContentExited() {
+
         if (currentOnVideos) {
+            
             val sessionTime = System.currentTimeMillis() - timeStartOnBrainRot
 
             // Add to usage in memory
@@ -154,6 +173,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
             currentOnVideos = false
             stopPeriodicCheck()
+
+            if (appProvider.timerOverlayEnabled) {
+                timerOverlayManager.hide()
+            }
+
+            usageTracker.save()
         }
     }
 
