@@ -7,6 +7,9 @@ package com.scrolless.framework.core.pref
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.scrolless.framework.extensions.fromJson
+import com.scrolless.framework.extensions.fromJsonList
+import com.scrolless.framework.extensions.toJson
 import java.lang.RuntimeException
 
 /**
@@ -89,4 +92,45 @@ class CacheManager(
             callBack.invoke()
         }
     }
+
+    /**
+     * Reads json from SharedPreferences and casts it to requested type using Moshi
+     * @param T Type parameter to cast Moshi to
+     * @param key Key to read from
+     * @return An object of requested type
+     */
+    inline fun <reified T> readObject(key: String): T? {
+        val readValue = read(key, "")
+        return if (readValue.isEmpty()) {
+            null
+        } else {
+            readValue.fromJson()
+        }
+    }
+
+    /**
+     * Stores an object under given key or class name.
+     * @param key Key to write object to. If not given, class name will be used
+     * @param value Object to store.
+     */
+    fun writeObject(key: String, value: Any) {
+        write(key, value.toJson())
+    }
+
+    /**
+     * Read a list object from json string and casts it to requested type using Moshi
+     * @param key Key to read from
+     * @return List Object
+     */
+    inline fun <reified T> readListObject(key: String): List<T>? =
+        try {
+            val value = read(key, "")
+            if (value.isEmpty()) {
+                null
+            } else {
+                value.fromJsonList<T>()
+            }
+        } catch (ex: Exception) {
+            null
+        }
 }

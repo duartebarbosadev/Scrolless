@@ -34,6 +34,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
+    // Moshi for JSON Parsing
+    implementation(libs.moshi.kotlin)
+
     // Logging
     implementation(libs.timber)
 

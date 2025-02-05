@@ -49,6 +49,7 @@ fragmentTest = "1.8.5"
 truth = "1.4.4"
 jupiter = "5.11.0"
 arch = "2.2.0"
+moshi = "1.15.1"
 recyclerview = "1.4.0"
 okhttp = "4.12.0"
 
@@ -131,6 +132,8 @@ test-fragment-test = { group = "androidx.fragment", name = "fragment-testing", v
 test-truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 test-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "jupiter" }
 test-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "arch" }
+
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
 
 androidx-viewbinding = { group = "androidx.databinding", name = "viewbinding", version.ref = "viewbinding" }
 androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
