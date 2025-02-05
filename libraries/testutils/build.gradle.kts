@@ -13,10 +13,6 @@ android {
 dependencies {
     // Main Dependencies
     implementation(libs.androidx.appcompat)
-    implementation(libs.moshi.kotlin)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.moshi)
-    implementation(libs.okhttp.logging.interceptor)
     implementation(libs.test.okhttp.mockwebserver)
 
     // Testing Dependencies
@@ -28,7 +24,6 @@ dependencies {
     api(libs.test.runner)
     api(libs.test.rules)
     api(libs.test.hamcrest)
-    api(libs.okhttp)
     api(libs.test.turbine)
     api(libs.test.fragment.test)
     api(libs.test.truth)
