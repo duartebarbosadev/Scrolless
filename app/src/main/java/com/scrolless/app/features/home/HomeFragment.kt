@@ -37,7 +37,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     lateinit var usageTracker: UsageTracker
 
     override fun onViewReady(bundle: Bundle?) {
-
         observeFlow(appProvider.blockConfigFlow) { config ->
             updateUIForBlockOption(config.blockOption)
             updateInfoText(usageTracker.dailyUsageInMemory, config.timeLimit)
@@ -137,7 +136,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      *  and updates it when the checkbox is toggled.
      */
     private fun setTimerOverlayCheckBoxListener() {
-
         binding.checkBoxTimerOverlay.isChecked = appProvider.timerOverlayEnabled
 
         binding.checkBoxTimerOverlay.setOnCheckedChangeListener { _, isChecked ->

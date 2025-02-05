@@ -13,7 +13,6 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.scrolless.app.features.home.BlockOption
 import com.scrolless.app.overlay.TimerOverlayManager
-import com.scrolless.app.overlay.TimerOverlayManagerImpl
 import com.scrolless.app.provider.AppProvider
 import com.scrolless.app.provider.UsageTracker
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,7 +73,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     override fun onServiceConnected() {
-
         super.onServiceConnected()
         configureServiceInfo()
 
@@ -119,9 +117,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     private fun configureServiceInfo() {
-
         val info = AccessibilityServiceInfo().apply {
-
             eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
             feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC
             notificationTimeout = 100
@@ -140,7 +136,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     private fun onBlockedContentEntered() {
         if (!currentOnVideos) {
-
             // If timer overlay is enabled, show it
             if (appProvider.timerOverlayEnabled) {
                 timerOverlayManager.show()
@@ -160,9 +155,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     private fun onBlockedContentExited() {
-
         if (currentOnVideos) {
-            
             val sessionTime = System.currentTimeMillis() - timeStartOnBrainRot
 
             // Add to usage in memory

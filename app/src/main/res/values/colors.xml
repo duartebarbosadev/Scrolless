@@ -151,4 +151,5 @@
     <color name="dark_background">#121212</color>
     <color name="dark_grey">#41424C</color>
     <color name="accent_color">#655967</color>
+    <color name="semi_transparent_black">#66000000</color>
 </resources>

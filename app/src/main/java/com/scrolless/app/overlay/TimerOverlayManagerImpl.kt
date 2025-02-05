@@ -1,3 +1,7 @@
+/*
+ * Copyright (C) 2025, Scrolless
+ * All rights reserved.
+ */
 package com.scrolless.app.overlay
 
 import android.content.Context
@@ -20,8 +24,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 /**
  * Implementation of TimerOverlayManager that displays a timer overlay on top of the brain rot content.
@@ -60,7 +64,6 @@ class TimerOverlayManagerImpl @Inject constructor(
      * Displays the timer overlay on screen, if it's not already visible.
      */
     override fun show() {
-
         // If already showing, do nothing
         if (overlayView != null) return
 
@@ -125,7 +128,6 @@ class TimerOverlayManagerImpl @Inject constructor(
      * @param startTimeMillis The starting point for the timer
      */
     private fun startTimer(startTimeMillis: Long) {
-
         // Cancel any existing timer before starting a new one
         stopTimer()
 
@@ -145,7 +147,6 @@ class TimerOverlayManagerImpl @Inject constructor(
         timerUpdateJob?.cancel()
         timerUpdateJob = null
     }
-
 
     /**
      * Enables dragging of the overlay view, updating and persisting position to [appProvider].

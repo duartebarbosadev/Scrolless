@@ -31,7 +31,6 @@ class BlockControllerImpl(
      * @param blockConfig Configuration for blocking options.
      */
     override fun init(blockConfig: BlockConfig) {
-
         handler = createHandlerForConfig(blockConfig)
         usageTracker.load() // Make sure we have the latest data
         usageTracker.checkDailyReset() // In case day changed
