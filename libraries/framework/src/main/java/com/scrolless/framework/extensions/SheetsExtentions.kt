@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024, Scrolless
+ * Copyright (C) 2025, Scrolless
  * All rights reserved.
  */
 package com.scrolless.framework.extensions
