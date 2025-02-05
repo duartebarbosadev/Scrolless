@@ -147,16 +147,26 @@
         app:layout_constraintStart_toEndOf="@id/temporary_unblock_button"
         app:layout_constraintTop_toTopOf="@id/temporary_unblock_button" />
 
+    <CheckBox
+        android:id="@+id/checkBoxTimerOverlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Timer Overlay"
+        android:textColor="@color/accent_color"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/interval_timer_button" />
+
     <Button
         android:id="@+id/btn_rate_us"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="Rate Us on Play Store"
         android:textColor="@android:color/white"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/temporary_unblock_button" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxTimerOverlay" />
 
     <TextView
         android:id="@+id/tv_usage_title"

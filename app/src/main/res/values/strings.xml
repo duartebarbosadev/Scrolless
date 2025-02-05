@@ -15,4 +15,5 @@
     <string name="day_limit">Day Limit</string>
     <string name="temporary_block">Temporary Block</string>
     <string name="interval_timer">Interval Timer</string>
+    <string name="timer_content_description">Elapsed Time</string>
 </resources>

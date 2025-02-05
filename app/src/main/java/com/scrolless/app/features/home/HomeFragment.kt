@@ -21,11 +21,8 @@ import com.scrolless.app.provider.AppProvider
 import com.scrolless.app.provider.UsageTracker
 import com.scrolless.app.services.ScrollessBlockAccessibilityService
 import com.scrolless.framework.extensions.*
-import com.scrolless.framework.extensions.formatTime
-import com.scrolless.framework.extensions.observeFlow
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     companion object {
@@ -127,6 +124,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         // OR if this is disabled, ask it to enable on a popup
         if (!isAccessibilityServiceEnabled(requireContext())) {
             openAccessibilitySettings(requireContext())
+        }
+
+        setTimerOverlayCheckBoxListener()
+    }
+
+    /**
+     * Sets up the listener for the timer overlay checkbox.
+     *
+     * Initializes the checkbox state from appProvider.timerOverlayEnabled
+     *  and updates it when the checkbox is toggled.
+     */
+    private fun setTimerOverlayCheckBoxListener() {
+        binding.checkBoxTimerOverlay.isChecked = appProvider.timerOverlayEnabled
+
+        binding.checkBoxTimerOverlay.setOnCheckedChangeListener { _, isChecked ->
+            appProvider.timerOverlayEnabled = isChecked
         }
     }
 

@@ -5,60 +5,36 @@
 package com.scrolless.app.services
 
 import com.scrolless.app.features.home.BlockConfig
-import com.scrolless.app.features.home.BlockOption
-import com.scrolless.app.provider.AppProvider
-import com.scrolless.app.provider.UsageTracker
-import com.scrolless.app.services.handlers.BlockAllBlockHandler
-import com.scrolless.app.services.handlers.DayLimitBlockHandler
-import com.scrolless.app.services.handlers.IntervalTimerBlockHandler
-import com.scrolless.app.services.handlers.NothingSelectedBlockHandler
-import com.scrolless.app.services.handlers.TemporaryUnblockBlockHandler
 
-class BlockController(
-    private val appProvider: AppProvider,
-    private val usageTracker: UsageTracker
-) {
-
-    private var handler: BlockOptionHandler = createHandlerForConfig(appProvider.blockConfig)
+interface BlockController {
 
     /**
-     * Updates the block option, creating a new handler and performing any necessary resets.
+     * Initializes the controller with a configuration.
+     *
+     * @param blockConfig Configuration for blocking options.
      */
-    fun setBlockConfigOption(newOption: BlockConfig) {
-        handler = createHandlerForConfig(newOption)
-        initializeForOption() // Re-run initialization logic if needed
-    }
+    fun init(blockConfig: BlockConfig)
 
-    private fun createHandlerForConfig(config: BlockConfig): BlockOptionHandler = when (config.blockOption) {
-        BlockOption.BlockAll -> BlockAllBlockHandler()
-        BlockOption.DayLimit -> DayLimitBlockHandler(config.timeLimit)
-        BlockOption.IntervalTimer -> IntervalTimerBlockHandler(
-            config.timeLimit,
-            config.intervalLength,
-        )
+    /**
+     * Called when entering brain rot content.
+     *
+     * @return `true` if blocking is required.
+     */
+    fun onEnterBlockedContent(): Boolean
 
-        BlockOption.TemporaryUnblock -> TemporaryUnblockBlockHandler(config.timeLimit)
-        BlockOption.NothingSelected -> NothingSelectedBlockHandler()
-    }
+    /**
+     * Called periodically to perform any checks on the handler
+     *  for example to check if any time limit has been reached.
+     *
+     * @param elapsedTime Time elapsed since the last check.
+     * @return `true` if the content should remain blocked.
+     */
+    fun onPeriodicCheck(elapsedTime: Long): Boolean
 
-    fun onEnterBlockedContent(): Boolean {
-        usageTracker.checkDailyReset()
-
-        // If handler says block now, return true
-        return handler.onEnterContent(usageTracker)
-    }
-
-    fun onPeriodicCheck(elapsedTime: Long): Boolean = handler.onPeriodicCheck(usageTracker, elapsedTime)
-
-    fun onExitBlockedContent(sessionTime: Long) {
-        handler.onExitContent(usageTracker, sessionTime)
-    }
-
-    fun initializeForOption() {
-        usageTracker.load() // Make sure we have the latest data
-        usageTracker.checkDailyReset() // In case day changed
-        if (appProvider.blockConfig.blockOption == BlockOption.IntervalTimer) {
-            usageTracker.checkDailyReset() // or do any additional interval logic here
-        }
-    }
+    /**
+     * Called when exiting brain rot content.
+     *
+     * @param sessionTime Duration of the session.
+     */
+    fun onExitBlockedContent(sessionTime: Long)
 }
