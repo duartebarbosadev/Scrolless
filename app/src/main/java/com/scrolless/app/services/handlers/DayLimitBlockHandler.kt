@@ -18,7 +18,5 @@ class DayLimitBlockHandler(private val timeLimit: Long) : BlockOptionHandler {
         return (usageTracker.getDailyUsage() + elapsedTime) >= timeLimit
     }
 
-    override fun onExitContent(usageTracker: UsageTracker, sessionTime: Long) {
-        usageTracker.addToDailyUsage(sessionTime)
-    }
+    override fun onExitContent(usageTracker: UsageTracker, sessionTime: Long) {}
 }

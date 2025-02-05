@@ -20,4 +20,8 @@ interface AppProvider {
      */
     var blockConfig: BlockConfig
     val blockConfigFlow: StateFlow<BlockConfig>
+
+    var timerOverlayEnabled: Boolean
+    var timerOverlayPositionX: Int
+    var timerOverlayPositionY: Int
 }

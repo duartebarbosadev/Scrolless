@@ -47,6 +47,7 @@ class UsageTrackerImpl @Inject constructor(
         if (currentDay != lastDay) {
             dailyUsageInMemory = 0L
             appProvider.lastResetDay = currentDay
+            save()
         }
     }
 
