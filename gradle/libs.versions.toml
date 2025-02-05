@@ -10,8 +10,6 @@ androidTools = "31.8.0"
 kotlin = "2.1.0"
 ksp = "2.1.0-1.0.29"
 
-shimmer = "0.5.0"
-
 androidDesugarJdkLibs = "2.1.4"
 
 # Android Stuff
@@ -23,7 +21,7 @@ fragmentKtx = "1.8.5"
 swiperefreshlayout = "1.2.0-alpha01"
 securityCrypto = "1.1.0-alpha06"
 lifecycle = "2.8.7"
-navigation = "2.8.5"
+navigation = "2.8.6"
 junit = "4.13.2"
 androidxJUnit = "1.2.1"
 espressoCore = "3.6.1"
@@ -36,18 +34,9 @@ kotlinStdlib = "2.1.0"
 coroutines = "1.10.1"
 hilt = "2.54"
 
-debugDb = "1.0.7"
-
 timber = "5.0.1"
-coil = "2.7.0"
-
-
-tink = "1.15.0"
 
 sheets = "2.3.1"
-
-contacts = "0.3.2"
-calendar = "6302f15274"
 
 robolectric = "4.14.1"
 mockk = "1.13.12"
@@ -60,9 +49,7 @@ fragmentTest = "1.8.5"
 truth = "1.4.4"
 jupiter = "5.11.0"
 arch = "2.2.0"
-moshi = "1.15.1"
 recyclerview = "1.4.0"
-retrofit = "2.11.0"
 okhttp = "4.12.0"
 
 # Plugins
@@ -94,9 +81,8 @@ kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", versio
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 
-# Logging and Image Loading
+# Logging
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
-coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 
 # Paging
 androidx-paging-runtime-ktx = { group = "androidx.paging", name = "paging-runtime-ktx", version.ref = "paging" }
@@ -111,9 +97,6 @@ androidx-fragment-ktx = { group = "androidx.fragment", name = "fragment-ktx", ve
 
 # Security Crypto
 androidx-security-crypto = { group = "androidx.security", name = "security-crypto-ktx", version.ref = "securityCrypto" }
-
-# Tink for Encryption
-tink-android = { group = "com.google.crypto.tink", name = "tink-android", version.ref = "tink" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
@@ -130,19 +113,6 @@ hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testi
 # Sheets Libraries
 sheets-core = { group = "com.maxkeppeler.sheets", name = "core", version.ref = "sheets" }
 sheets-duration = { group = "com.maxkeppeler.sheets", name = "duration", version.ref = "sheets" }
-sheets-clock = { group = "com.maxkeppeler.sheets", name = "clock", version.ref = "sheets" }
-sheets-option = { group = "com.maxkeppeler.sheets", name = "option", version.ref = "sheets" }
-sheets-lottie = { group = "com.maxkeppeler.sheets", name = "lottie", version.ref = "sheets" }
-sheets-info = { group = "com.maxkeppeler.sheets", name = "info", version.ref = "sheets" }
-sheets-input = { group = "com.maxkeppeler.sheets", name = "input", version.ref = "sheets" }
-
-# Other Libraries
-contacts = { group = "com.github.vestrel00", name = "contacts-android", version.ref = "contacts" }
-calendar-core = { group = "com.github.thellmund.Android-Week-View", name = "core", version.ref = "calendar" }
-calendar-jsr310 = { group = "com.github.thellmund.Android-Week-View", name = "jsr310", version.ref = "calendar" }
-calendar-emoji = { group = "com.github.thellmund.Android-Week-View", name = "emoji", version.ref = "calendar" }
-
-facebook-shimmer = { group = "com.facebook.shimmer", name = "shimmer", version.ref = "shimmer" }
 
 # Testing Libraries
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -162,12 +132,6 @@ test-truth = { group = "com.google.truth", name = "truth", version.ref = "truth"
 test-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "jupiter" }
 test-core-testing = { group = "androidx.arch.core", name = "core-testing", version.ref = "arch" }
 
-debug-db = { group = "com.github.amitshekhariitbhu.Android-Debug-Database", name = "debug-db", version.ref = "debugDb" }
-moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-retrofit-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 androidx-viewbinding = { group = "androidx.databinding", name = "viewbinding", version.ref = "viewbinding" }
 androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preferenceKtx" }
 androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "preference" }

@@ -100,35 +100,15 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.security.crypto)
 
-    implementation(libs.workmanager)
-
     // Other libraries
     implementation(libs.timber)
-    implementation(libs.coil)
-    implementation(libs.tink.android)
-    implementation(libs.contacts)
-
-    // Calendar libraries
-    implementation(libs.calendar.core)
-    implementation(libs.calendar.jsr310)
-    implementation(libs.calendar.emoji)
 
     // Sheets libraries
     implementation(libs.sheets.core)
-    implementation(libs.sheets.lottie)
     implementation(libs.sheets.duration)
-    implementation(libs.sheets.clock)
-    implementation(libs.sheets.option)
-    implementation(libs.sheets.info)
-    implementation(libs.sheets.input)
-
-    // Debug dependencies
-    debugImplementation(libs.debug.db)
 
     // Test dependencies
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.androidx.junit)
     androidTestImplementation(libs.test.androidx.espresso.core)
-
-    implementation(libs.facebook.shimmer)
 }
