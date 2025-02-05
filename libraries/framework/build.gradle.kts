@@ -40,12 +40,6 @@ dependencies {
     // Logging
     implementation(libs.timber)
 
-    // Networking
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.moshi)
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging.interceptor)
-
     // Security
     implementation(libs.androidx.security.crypto)
 
@@ -56,10 +50,6 @@ dependencies {
     // Sheets Libraries
     implementation(libs.sheets.core)
     implementation(libs.sheets.duration)
-    implementation(libs.sheets.clock)
-    implementation(libs.sheets.option)
-    implementation(libs.sheets.info)
-    implementation(libs.sheets.input)
 
     // Testing Libraries
     testImplementation(libs.test.junit)
