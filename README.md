@@ -36,17 +36,17 @@ Your feedback is very important for us - we're actively working to improve the a
 - **Day Limit**  
   Set a daily limit for how long you can spend on supported platforms. Once the limit is reached, access is blocked for the rest of the day.
 
-### Upcoming Features
-- **Temporary Unblock**  
+- **Live Brain Rot Timer**
+  A real-time overlay timer tracks your session while watching Shorts or Reels, keeping you aware of your screen time.
+
+- **Temporary Unblock**  (Upcoming Feature)
   Unblock access to all supported platforms for a specified amount of time.
 
-- **Interval Timer**  
+- **Interval Timer**  (Upcoming Feature)
   Set intervals for usage and breaks, allowing controlled social media access throughout the day.
 
-### Insights
-- **Usage Tracking**  
+- **Usage Tracking**  (Upcoming Feature)
   Keep track of how much time you’ve spent on Instagram Reels, TikTok, YouTube Shorts, and Facebook Reels.
-
 
 ## Screenshots
 
