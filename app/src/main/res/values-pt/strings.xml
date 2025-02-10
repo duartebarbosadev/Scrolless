@@ -1,3 +1,27 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="accessibility_service_description">Este serviço deteta quando os reels/shorts são abertos para que o Scrolless possa bloqueá-los se estiver configurado.</string>
+    <string name="app_exit_label">Pressione VOLTAR novamente para sair</string>
+    <string name="block_all">Bloquear tudo</string>
+    <string name="day_limit">Limite diário</string>
+    <string name="duration">Duração</string>
+    <string name="empty_string" />
+    <string name="html_string">&lt;b&gt;Negrito&lt;/b&gt; e &lt;i&gt;Itálico&lt;/i&gt;</string>
+    <string name="interval_timer">Temporizador de Intervalo</string>
+    <string name="libraries_components_btn_check_internet_close">Fechar</string>
+    <string name="libraries_components_internet_connection_error">Verifique a sua ligação!</string>
+    <string name="libraries_components_retry">Tentar novamente</string>
+    <string name="libraries_components_text_check_internet_dialog_message">Verifique a sua ligação à internet!</string>
+    <string name="temporary_block">Bloqueio Temporário</string>
+    <string name="timer_content_description">Tempo Decorrido</string>
+    <string name="welcome_message">Bem-vindo, %1$s! Tem %2$d novas mensagens.</string>
+    <string name="whitespace_string">Cortar-me</string>
+    <plurals name="numberOfNotifications">
+        <item quantity="one">%d notificação</item>
+        <item quantity="many">%d notificações</item>
+    </plurals>
+    <plurals name="days_left">
+        <item quantity="one">%d dia restante</item>
+        <item quantity="other">%d dias restantes</item>
+    </plurals>
 </resources>
