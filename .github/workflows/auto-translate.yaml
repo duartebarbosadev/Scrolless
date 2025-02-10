@@ -25,19 +25,18 @@ jobs:
       - name: Translate strings.xml to supported languages
         id: translate
         uses: duartebarbosadev/Android-String-Translator@main
-          #with:
+        #with:
           # Adjust the project_path if your Android resource files are elsewhere.
           #project_path: "./app/src/main/res"
           #auto_translate: "true"
           #validate_translations: "false"
-        #log_trace: "false"
+          #log_trace: "false"
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          #token: ${{ secrets.PAT }}
           commit-message: "[Translate Bot] Auto-generated translations for non-English languages"
           committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
           author: "${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>"
