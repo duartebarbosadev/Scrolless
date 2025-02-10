@@ -21,14 +21,14 @@ jobs:
 
       - name: Translate strings.xml to supported languages
         uses: duartebarbosadev/Android-String-Translator@main
-        with:
+        #with:
           # Adjust the project_path if your Android resource files are elsewhere.
           #project_path: "./app/src/main/res"
           #auto_translate: "true"
           #validate_translations: "false"
           #log_trace: "false"
-          env:
-            OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
