@@ -4,16 +4,36 @@
      All rights reserved.
 -->
 <resources>
-    <string name="app_name">Scrolless</string>
+    <string name="app_name" translatable="false">Scrolless</string>
 
     <string name="app_exit_label">Press BACK again to exit</string>
 
     <string name="duration">Duration</string>
 
-    <string name="accessibility_service_description">This service detects when reels/shorts are opened so that \"Scrolless\", can be block if configured.</string>
+    <string name="accessibility_service_description">This service detects when reels/shorts are opened so that Scrolless, can block them if configured.</string>
     <string name="block_all">Block all</string>
     <string name="day_limit">Day Limit</string>
     <string name="temporary_block">Temporary Block</string>
     <string name="interval_timer">Interval Timer</string>
     <string name="timer_content_description">Elapsed Time</string>
+
+
+    <string name="welcome_message">Welcome, %1$s! You have %2$d new messages.</string>
+    <string name="empty_string" />
+    <string name="whitespace_string">   Trim me   </string>
+    <string name="html_string"><![CDATA[<b>Bold</b> and <i>Italic</i>]]></string>
+
+    <!-- This string is marked as non-translatable -->
+    <string name="non_translatable" translatable="false">Should not be translated</string>
+
+    <!-- Plurals with multiple quantities -->
+    <plurals name="numberOfNotifications">
+        <item quantity="one">%d notification</item>
+        <item quantity="many">%d notifications</item>
+    </plurals>
+
+    <!-- Plurals with a single quantity (to force auto-translation to add plural forms) -->
+    <plurals name="days_left">
+        <item quantity="other">%d day left</item>
+    </plurals>
 </resources>
