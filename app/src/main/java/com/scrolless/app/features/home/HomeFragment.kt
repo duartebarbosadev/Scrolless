@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.google.android.material.button.MaterialButton
@@ -194,8 +195,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun openAccessibilitySettings(context: Context) {
+
         val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
         context.startActivity(intent)
+        Toast.makeText(context, getString(R.string.accessibility_settings_toast), Toast.LENGTH_LONG).show()
     }
 
     override fun onDestroyView() {
