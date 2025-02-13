@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (C) 2025, Scrolless
-     All rights reserved.
--->
 <resources>
     <string name="accessibility_service_description">Este servicio detecta cuándo se abren reels/shorts para que Scrolless los pueda bloquear si están configurados.</string>
     <string name="app_exit_label">Presiona ATRÁS de nuevo para salir</string>
