@@ -5,7 +5,7 @@ compileSdk = "35"
 targetSdk = "35"
 
 # Android Gradle Plugin and Kotlin
-androidGradlePlugin = "8.7.3"
+androidGradlePlugin = "8.8.1"
 androidTools = "31.8.0"
 kotlin = "2.1.0"
 ksp = "2.1.0-1.0.29"

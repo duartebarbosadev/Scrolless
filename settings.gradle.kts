@@ -22,6 +22,8 @@ dependencyResolutionManagement {
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
+gradle.startParameter.excludedTaskNames.addAll(listOf(":buildLogic:convention:testClasses"))
+
 rootProject.name = "Scrolless"
 
 include(
