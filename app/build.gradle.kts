@@ -38,6 +38,10 @@ android {
         }
     }
 
+    lint {
+        lintConfig = file("lint.xml")
+    }
+
     packaging {
         resources { // Make sure to exclude the license files as for some reason they are probing project from compilation
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
