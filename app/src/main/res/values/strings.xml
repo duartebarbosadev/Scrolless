@@ -16,5 +16,4 @@
     <string name="temporary_block">Temporary Block</string>
     <string name="interval_timer">Interval Timer</string>
     <string name="timer_content_description">Elapsed Time</string>
-    <string name="accessibility_settings_toast">Please enable Scrolless in the Accessibility settings.</string>
 </resources>
