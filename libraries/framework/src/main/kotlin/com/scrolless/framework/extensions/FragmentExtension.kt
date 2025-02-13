@@ -69,7 +69,7 @@ inline fun <reified T : Any> Fragment.handleParcelable(
 /**
  * Launches a new coroutine and repeats `block` every time the Fragment's viewLifecycleOwner
  * is in and out of `minActiveState` lifecycle state.
- * @see https://github.com/google/iosched/blob/main/mobile/src/main/java/com/google/samples/apps/iosched/util/UiUtils.kt#L60
+ * @see https://github.com/google/iosched/blob/main/mobile/src/main/kotlin/com/google/samples/apps/iosched/util/UiUtils.kt#L60
  */
 @Suppress("unused")
 inline fun Fragment.launchAndRepeatWithViewLifecycle(
