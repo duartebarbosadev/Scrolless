@@ -4,5 +4,5 @@
      All rights reserved.
 -->
 <lint>
-    <issue id="ExtraTranslation" severity="ignore" />
+    <issue id="MissingTranslation" severity="ignore" />
 </lint>
