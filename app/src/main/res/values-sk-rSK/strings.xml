@@ -1,7 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Táto služba zistí, keď sú otvorené zábery/krátke videá, aby ich Scrolless mohol zablokovať, ak je to nakonfigurované.</string>
+    <string name="accessibility_settings_toast">Prosím, povolte Scrolless v nastaveniach prístupnosti.</string>
+    <string name="app_exit_label">Stlačte tlačidlo SPÄŤ znova pre ukončenie</string>
+    <string name="block_all">Blokovať všetko</string>
+    <string name="day_limit">Denný limit</string>
+    <string name="duration">Trvanie</string>
+    <string name="interval_timer">Intervalný časovač</string>
+    <string name="temporary_block">Dočasný blok</string>
+    <string name="timer_content_description">Uplynulý čas</string>
 </resources>

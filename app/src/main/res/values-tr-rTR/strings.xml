@@ -1,7 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Bu hizmet, Scrolless'in yapılandırıldığı takdirde, makaraların/kısa videoların açıldığını tespit eder ve engeller.</string>
+    <string name="accessibility_settings_toast">Lütfen Erişilebilirlik ayarlarında Scrolless'i etkinleştirin.</string>
+    <string name="app_exit_label">Çıkmak için tekrar GERİ tuşuna basın</string>
+    <string name="block_all">Tümünü engelle</string>
+    <string name="day_limit">Gün Sınırı</string>
+    <string name="duration">Süre</string>
+    <string name="interval_timer">Zamanlayıcı Aralığı</string>
+    <string name="temporary_block">Geçici Engelleme</string>
+    <string name="timer_content_description">Geçen Süre</string>
 </resources>

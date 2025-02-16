@@ -1,7 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">ഈ സേവനം റീൽ/ഷോർട്സ് തുറക്കപ്പെടുമ്പോൾ അവ കണ്ടെത്തുന്നുവെന്ന് അറിയുന്നു, അതിനാൽ Scrolless, ക്രമീകരിച്ചാൽ അവ അവരെ ബ്ലോക്ക് ചെയ്യാം.</string>
+    <string name="accessibility_settings_toast">ദയവായി എയര്‍ടെക്സ്‌സിബിലിറ്റി ക്രമീകരണങ്ങളില്‍ സ്ക്രോള്‍ലെസ് സജ്ജീകരിക്കുക.</string>
+    <string name="app_exit_label">പുറത്തേക്കു വീണ്ടും അമർത്തിയാൽ പുറത്തേക്കു പോകുക.</string>
+    <string name="block_all">എല്ലാം നിഷേധിക്കുക</string>
+    <string name="day_limit">ദിവസ പരിധി</string>
+    <string name="duration">അവധി</string>
+    <string name="interval_timer">അന്തരാല ടൈമർ</string>
+    <string name="temporary_block">താത്പര്യം നിര്‍ത്തിയിരിക്കുന്നു</string>
+    <string name="timer_content_description">കഴിഞ്ഞ സമയം</string>
 </resources>

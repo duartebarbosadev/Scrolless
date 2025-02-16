@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
+    <string name="libraries_components_btn_check_internet_close">അടിമം</string>
+    <string name="libraries_components_internet_connection_error">നിങ്ങളുടെ കണക്ഷൻ പരിശോധിക്കുക!</string>
+    <string name="libraries_components_retry">വീണ്ടുമുയർത്തുക</string>
+    <string name="libraries_components_text_check_internet_dialog_message">നിങ്ങളുടെ ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക!</string>
 </resources>

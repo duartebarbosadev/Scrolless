@@ -1,7 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">यह सेवा रील/शॉर्ट्स खोले जाने की पहचान करती है ताकि Scrolless, उन्हें ब्लॉक कर सके अगर वे कॉन्फ़िगर किए गए हों।</string>
+    <string name="accessibility_settings_toast">कृपया पहुंचनीयता सेटिंग्स में स्क्रोलेस को सक्षम करें।</string>
+    <string name="app_exit_label">बाहर निकलने के लिए फिर से BACK दबाएं</string>
+    <string name="block_all">Block all
+
+**Translated text (hi):**  
+सभी ब्लॉक करें</string>
+    <string name="day_limit">दिन की सीमा</string>
+    <string name="duration">समयावधि</string>
+    <string name="interval_timer">अंतराल टाइमर</string>
+    <string name="temporary_block">अस्थायी ब्लॉक</string>
+    <string name="timer_content_description">बीता समय</string>
 </resources>

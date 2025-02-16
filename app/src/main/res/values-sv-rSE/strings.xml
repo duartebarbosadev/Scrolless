@@ -1,7 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Denna tjänst upptäcker när reels/shorts öppnas så att Scrolless kan blockera dem om det är konfigurerat.</string>
+    <string name="accessibility_settings_toast">Aktivera Scrolless i Tillgänglighetsinställningarna.</string>
+    <string name="app_exit_label">Tryck på BACK igen för att avsluta</string>
+    <string name="block_all">Blockera allt</string>
+    <string name="day_limit">Daggräns</string>
+    <string name="duration">Varaktighet</string>
+    <string name="interval_timer">Intervalltimer</string>
+    <string name="temporary_block">Tillfälligt blockera</string>
+    <string name="timer_content_description">Förfluten tid</string>
 </resources>
