@@ -1,7 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Αυτή η υπηρεσία ανιχνεύει όταν ανοίγονται ταινίες/σύντομα βίντεο, ώστε το Scrolless να μπορεί να τα αποκλείσει αν έχει ρυθμιστεί.</string>
+    <string name="accessibility_settings_toast">Παρακαλώ ενεργοποιήστε το Scrolless στις ρυθμίσεις προσβασιμότητας.</string>
+    <string name="app_exit_label">Πατήστε ξανά ΠΙΣΩ για να βγείτε</string>
+    <string name="block_all">Αποκλείστε όλα</string>
+    <string name="day_limit">Όριο Ημέρας</string>
+    <string name="duration">Διάρκεια</string>
+    <string name="interval_timer">Χρονομετρητής διαστήματος</string>
+    <string name="temporary_block">Προσωρινό Αποκλεισμό</string>
+    <string name="timer_content_description">Χρόνος πέρασε</string>
 </resources>

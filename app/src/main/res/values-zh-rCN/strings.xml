@@ -1,7 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">此服务会检测当 Reels/Shorts 被打开时，以便 Scrolless 在配置的情况下可以将其阻止。</string>
+    <string name="accessibility_settings_toast">请在辅助功能设置中启用“Scrolless”。</string>
+    <string name="app_exit_label">再次按下返回键退出</string>
+    <string name="block_all">阻止所有</string>
+    <string name="day_limit">每日限额</string>
+    <string name="duration">持续时间</string>
+    <string name="interval_timer">间隔计时器</string>
+    <string name="temporary_block">临时阻止</string>
+    <string name="timer_content_description">已过时间</string>
 </resources>

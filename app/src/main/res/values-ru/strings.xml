@@ -1,7 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Этот сервис определяет, когда открываются катушки/короткие видео, чтобы Scrolless мог блокировать их, если настроен.</string>
+    <string name="accessibility_settings_toast">Пожалуйста, включите Scrolless в настройках доступности.</string>
+    <string name="app_exit_label">Нажмите BACK еще раз, чтобы выйти</string>
+    <string name="block_all">Заблокировать все</string>
+    <string name="day_limit">Лимит на день</string>
+    <string name="duration">Продолжительность</string>
+    <string name="interval_timer">Таймер интервалов</string>
+    <string name="temporary_block">Временная блокировка</string>
+    <string name="timer_content_description">Время прошло</string>
 </resources>

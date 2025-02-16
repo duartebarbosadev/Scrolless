@@ -1,7 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">या सेवा तपासते की जेथे रील/शॉर्ट्स उघडले जातात तेथे Scrolless, त्यांनी त्यांच्या व्यवस्थित केल्यास त्यांना ब्लॉक करू शकते.</string>
+    <string name="accessibility_settings_toast">कृपया पहुचविण्याच्या सेटिंग्जमध्ये स्क्रोलेस सक्षम करा।</string>
+    <string name="app_exit_label">बाहेर पळवून निघा.</string>
+    <string name="block_all">सर्व्हर बंद करा</string>
+    <string name="day_limit">दिवस सीमा</string>
+    <string name="duration">कालावधी</string>
+    <string name="interval_timer">अंतराल टायमर</string>
+    <string name="temporary_block">अस्थायी ब्लॉक</string>
+    <string name="timer_content_description">काळाची वेळ</string>
 </resources>

@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
+    <string name="libraries_components_btn_check_internet_close">Kapat</string>
+    <string name="libraries_components_internet_connection_error">Bağlantınızı kontrol edin!</string>
+    <string name="libraries_components_retry">Tekrar dene</string>
+    <string name="libraries_components_text_check_internet_dialog_message">İnternet bağlantınızı kontrol edin!</string>
 </resources>
