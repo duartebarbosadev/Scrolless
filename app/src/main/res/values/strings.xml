@@ -12,7 +12,7 @@
 
     <string name="accessibility_service_description">This service detects when reels/shorts are opened so that Scrolless, can block them if configured.</string>
     <string name="block_all">Block all</string>
-    <string name="day_limit">Day Limit</string>
+    <string name="day_limit">Daily Limit</string>
     <string name="temporary_block">Temporary Block</string>
     <string name="interval_timer">Interval Timer</string>
     <string name="timer_content_description">Elapsed Time</string>

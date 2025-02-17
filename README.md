@@ -33,7 +33,7 @@ Your feedback is very important for us - we're actively working to improve the a
 - **Block All**  
   Instantly block access to all supported platforms, including Instagram Reels, TikTok, YouTube Shorts, and Facebook Reels.
 
-- **Day Limit**  
+- **Daily Limit**  
   Set a daily limit for how long you can spend on supported platforms. Once the limit is reached, access is blocked for the rest of the day.
 
 - **Live Brain Rot Timer**  
