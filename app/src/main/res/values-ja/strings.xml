@@ -4,4 +4,13 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">このサービスは、リール/ショートが開かれたときに検出し、設定されている場合はそれらをブロックします。</string>
+    <string name="accessibility_settings_toast">アクセシビリティ設定でスクロール不可を有効にしてください。</string>
+    <string name="app_exit_label">再度バックボタンを押して終了します</string>
+    <string name="block_all">すべてブロック</string>
+    <string name="day_limit">デイリーリミット</string>
+    <string name="duration">期間</string>
+    <string name="interval_timer">インターバルタイマー</string>
+    <string name="temporary_block">一時的なブロック</string>
+    <string name="timer_content_description">経過時間</string>
 </resources>

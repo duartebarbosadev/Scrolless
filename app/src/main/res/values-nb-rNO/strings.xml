@@ -4,4 +4,13 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Denne tjenesten oppdager når reels/shorts åpnes slik at Scrolless kan blokkere dem hvis konfigurert.</string>
+    <string name="accessibility_settings_toast">Vennligst aktiver Scrolless i Tilgjengelighetsinnstillingene.</string>
+    <string name="app_exit_label">Trykk på TILBAKE igjen for å avslutte</string>
+    <string name="block_all">Blokker alle</string>
+    <string name="day_limit">Daglig grense</string>
+    <string name="duration">Varighet</string>
+    <string name="interval_timer">Intervalltidsur</string>
+    <string name="temporary_block">Midlertidig blokk</string>
+    <string name="timer_content_description">Tid brukt</string>
 </resources>

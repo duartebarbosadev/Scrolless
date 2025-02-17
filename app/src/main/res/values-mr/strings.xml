@@ -4,4 +4,13 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">या सेवा तपासते की जेथे रील/शॉर्ट्स उघडले जातात तेथे Scrolless, त्यांनी त्यांच्या व्यवस्थित केल्यास त्यांना ब्लॉक करू शकते.</string>
+    <string name="accessibility_settings_toast">कृपया पहुचविकता सेटिंगमध्ये स्क्रोलेस सक्षम करा।</string>
+    <string name="app_exit_label">बाहेर पळवून पुन्हा प्रेस करा आणि बाहेर निघा</string>
+    <string name="block_all">सर्व्हर बंद करा</string>
+    <string name="day_limit">दैनिक मर्यादा</string>
+    <string name="duration">कालावधी</string>
+    <string name="interval_timer">अंतराल टायमर</string>
+    <string name="temporary_block">अस्थायी ब्लॉक</string>
+    <string name="timer_content_description">काळाची वेळ</string>
 </resources>

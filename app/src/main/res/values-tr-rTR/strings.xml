@@ -4,4 +4,13 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Bu hizmet, Scrolless'in yapılandırıldığı takdirde, makaralar/kısa videoların açıldığını tespit eder ve engeller.</string>
+    <string name="accessibility_settings_toast">Lütfen Erişilebilirlik ayarlarında Scrolless'i etkinleştirin.</string>
+    <string name="app_exit_label">Çıkmak için tekrar GERİ tuşuna basın</string>
+    <string name="block_all">Tümünü engelle</string>
+    <string name="day_limit">Günlük Limit</string>
+    <string name="duration">Süre</string>
+    <string name="interval_timer">Zamanlayıcı Aralığı</string>
+    <string name="temporary_block">Geçici Engelleme</string>
+    <string name="timer_content_description">Geçen Süre</string>
 </resources>

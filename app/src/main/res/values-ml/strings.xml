@@ -4,4 +4,13 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">ഈ സേവനം റീൽ/ഷോർട്സ് തുറക്കപ്പെടുമ്പോൾ അവ സ്ക്രോൾലസ് കോൺഫിഗർ ചെയ്താൽ അവയെ ബ്ലോക്ക് ചെയ്യാനും സാധിക്കുന്നത് കണ്ടെത്തുന്നു.</string>
+    <string name="accessibility_settings_toast">ദയവായം എയര്‍ബോക്സ് ക്രിയാശൈലികളില്‍ സ്ക്രോള്‍ലെസ് സജ്ജീകരണങ്ങളില്‍ പ്രവർത്തിപ്പിക്കുക.</string>
+    <string name="app_exit_label">പുറത്തേക്കു വീണ്ടും അമർത്താൻ BACK അമർത്തുക</string>
+    <string name="block_all">എല്ലാം നിഷേധിക്കുക</string>
+    <string name="day_limit">ദൈനിക പരിധി</string>
+    <string name="duration">അവധി</string>
+    <string name="interval_timer">ഇന്റര്‍വല്‍ ടൈമര്‍</string>
+    <string name="temporary_block">താത്പര്യം നിലവിലുള്ളു</string>
+    <string name="timer_content_description">കഴിഞ്ഞ സമയം</string>
 </resources>
