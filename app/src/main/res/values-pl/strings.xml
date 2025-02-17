@@ -4,4 +4,13 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Ta usługa wykrywa otwarcie filmów krótkich, aby Scrolless mógł je zablokować, jeśli skonfigurowano.</string>
+    <string name="accessibility_settings_toast">Proszę włączyć funkcję Scrolless w ustawieniach dostępności.</string>
+    <string name="app_exit_label">Naciśnij ponownie przycisk POWRÓT, aby wyjść</string>
+    <string name="block_all">Zablokuj wszystko</string>
+    <string name="day_limit">Limit dzienny</string>
+    <string name="duration">Czas trwania</string>
+    <string name="interval_timer">Minutnik interwałowy</string>
+    <string name="temporary_block">Blokada tymczasowa</string>
+    <string name="timer_content_description">Czas upłynął</string>
 </resources>

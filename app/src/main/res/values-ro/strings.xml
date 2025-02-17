@@ -4,4 +4,13 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Această aplicație detectează când sunt deschise rolele/clipurile scurte pentru a bloca Scrolless, dacă este configurat.</string>
+    <string name="accessibility_settings_toast">Vă rugăm să activați Scrolless în setările de accesibilitate.</string>
+    <string name="app_exit_label">Apasă din nou butonul BACK pentru a ieși</string>
+    <string name="block_all">Blocare toată</string>
+    <string name="day_limit">Limită zilnică</string>
+    <string name="duration">Durată</string>
+    <string name="interval_timer">Cronometru interval</string>
+    <string name="temporary_block">Blocare temporară</string>
+    <string name="timer_content_description">Timp trecut</string>
 </resources>

@@ -4,4 +4,13 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Táto služba zistí, kedy sú otvorené zábery/krátke videá, aby ich Scrolless mohol zablokovať, ak je to nakonfigurované.</string>
+    <string name="accessibility_settings_toast">Prosím, povolte Scrolless v nastaveniach prístupnosti.</string>
+    <string name="app_exit_label">Stlačte tlačidlo SPÄŤ znova pre ukončenie</string>
+    <string name="block_all">Blokovanie všetkých</string>
+    <string name="day_limit">Denný limit</string>
+    <string name="duration">Trvanie</string>
+    <string name="interval_timer">Intervalový časovač</string>
+    <string name="temporary_block">Dočasný blok</string>
+    <string name="timer_content_description">Uplynulý čas</string>
 </resources>

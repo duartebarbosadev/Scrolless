@@ -4,4 +4,13 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Tato služba detekuje otevření koláží/krátkých videí, aby je Scrolless mohl zablokovat, pokud je nakonfigurován.</string>
+    <string name="accessibility_settings_toast">Prosím, povolte Scrolless v nastaveních Přístupnosti.</string>
+    <string name="app_exit_label">Stiskněte tlačítko ZPĚT znovu pro ukončení.</string>
+    <string name="block_all">Blokovat vše</string>
+    <string name="day_limit">Denní limit</string>
+    <string name="duration">Doba</string>
+    <string name="interval_timer">Časovač intervalů</string>
+    <string name="temporary_block">Dočasně blokováno</string>
+    <string name="timer_content_description">Čas uplynul</string>
 </resources>

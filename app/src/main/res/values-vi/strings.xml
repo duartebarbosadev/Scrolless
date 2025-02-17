@@ -4,4 +4,13 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Dịch vụ này phát hiện khi reels/shorts được mở để Scrolless có thể chặn chúng nếu được cấu hình.</string>
+    <string name="accessibility_settings_toast">Vui lòng kích hoạt Scrolless trong cài đặt Tiện ích truy cập.</string>
+    <string name="app_exit_label">Nhấn BACK một lần nữa để thoát</string>
+    <string name="block_all">Chặn tất cả</string>
+    <string name="day_limit">Giới hạn hàng ngày</string>
+    <string name="duration">Thời lượng</string>
+    <string name="interval_timer">Đếm ngược Khoảng thời gian</string>
+    <string name="temporary_block">Chặn Tạm</string>
+    <string name="timer_content_description">Thời gian đã trôi đi</string>
 </resources>

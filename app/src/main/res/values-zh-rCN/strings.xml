@@ -4,4 +4,13 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">此服务会检测到 Reels/Shorts 被打开，以便 Scrolless 在配置的情况下可以阻止它们。</string>
+    <string name="accessibility_settings_toast">请在辅助功能设置中启用无滚动。</string>
+    <string name="app_exit_label">再次按BACK键退出</string>
+    <string name="block_all">阻止所有</string>
+    <string name="day_limit">每日限额</string>
+    <string name="duration">持续时间</string>
+    <string name="interval_timer">间隔计时器</string>
+    <string name="temporary_block">临时封锁</string>
+    <string name="timer_content_description">已过时间</string>
 </resources>
