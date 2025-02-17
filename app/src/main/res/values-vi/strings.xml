@@ -1,18 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">Dịch văn bản chuẩn này sang ngôn ngữ việt nam theo hướng dẫn:
-
-Dịch chuẩn: Dịch văn bản này sang ngôn ngữ việt nam theo hướng dẫn.</string>
-    <string name="accessibility_settings_toast">Vui lòng kích hoạt Scrolless trong cài đặt Tiện ích truy cập.</string>
-    <string name="app_exit_label">Nhấn BACK một lần nữa để thoát</string>
-    <string name="block_all">Chặn tất cả</string>
-    <string name="day_limit">Giới hạn ngày</string>
-    <string name="duration">Thời lượng</string>
-    <string name="interval_timer">Hẹn giờ Khoảng cách</string>
-    <string name="temporary_block">Khóa Tạm Thời</string>
-    <string name="timer_content_description">Thời gian đã trôi đi</string>
 </resources>

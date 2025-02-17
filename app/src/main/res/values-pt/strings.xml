@@ -1,16 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">Este serviço deteta quando os reels/shorts são abertos para que o Scrolless possa bloqueá-los se estiver configurado.</string>
-    <string name="accessibility_settings_toast">Por favor, ative o Scrolless nas definições de Acessibilidade.</string>
-    <string name="app_exit_label">Pressione VOLTAR novamente para sair</string>
-    <string name="block_all">Bloquear tudo</string>
-    <string name="day_limit">Limite diário</string>
-    <string name="duration">Duração</string>
-    <string name="interval_timer">Cronômetro de Intervalo</string>
-    <string name="temporary_block">Bloqueio Temporário</string>
-    <string name="timer_content_description">Tempo Decorrido</string>
 </resources>

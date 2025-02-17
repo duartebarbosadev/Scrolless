@@ -1,16 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">Ez a szolgáltatás érzékeli, amikor a felvétel/shortok megnyílnak, hogy a Scrolless blokkolhassa azokat, ha konfigurálva van.</string>
-    <string name="accessibility_settings_toast">Kérjük, engedélyezze a Scrolless funkciót az Elérhetőség beállításokban.</string>
-    <string name="app_exit_label">Nyomja meg újra a VISSZA gombot a kilépéshez</string>
-    <string name="block_all">Korlátozás minden</string>
-    <string name="day_limit">Napi korlát</string>
-    <string name="duration">Időtartam</string>
-    <string name="interval_timer">Időzítő intervallum</string>
-    <string name="temporary_block">Blokkolás ideiglenesen</string>
-    <string name="timer_content_description">Időtartam</string>
 </resources>

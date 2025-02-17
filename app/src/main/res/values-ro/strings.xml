@@ -1,16 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">Această aplicație detectează când sunt deschise reelurile/clipurile scurte pentru a le bloca, dacă sunt configurate, de către Scrolless.</string>
-    <string name="accessibility_settings_toast">Vă rugăm să activați Scrolless în setările de accesibilitate.</string>
-    <string name="app_exit_label">Apasă din nou butonul BACK pentru a ieși</string>
-    <string name="block_all">Blocare totală</string>
-    <string name="day_limit">Limită zilnică</string>
-    <string name="duration">Durată</string>
-    <string name="interval_timer">Cronometru interval</string>
-    <string name="temporary_block">Blocare temporară</string>
-    <string name="timer_content_description">Timp trecut</string>
 </resources>

@@ -1,16 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">Ця служба виявляє відкриття бобін/коротких відео, щоб Scrolless міг їх заблокувати, якщо налаштовано.</string>
-    <string name="accessibility_settings_toast">Будь ласка, увімкніть Scrolless у налаштуваннях доступності.</string>
-    <string name="app_exit_label">Натисніть BACK ще раз, щоб вийти</string>
-    <string name="block_all">Заблокувати всі</string>
-    <string name="day_limit">Ліміт на день</string>
-    <string name="duration">Тривалість</string>
-    <string name="interval_timer">Таймер інтервалів</string>
-    <string name="temporary_block">Блокування на час</string>
-    <string name="timer_content_description">Час, що минув</string>
 </resources>

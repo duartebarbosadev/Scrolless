@@ -1,16 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">Ova usluga otkriva kada su otvoreni reels/shorts kako bi Scrolless mogao blokirati ako je konfiguriran.</string>
-    <string name="accessibility_settings_toast">Molimo omogućite Scrolless u postavkama pristupačnosti.</string>
-    <string name="app_exit_label">Pritisnite PONOVNO NAZAD za izlaz</string>
-    <string name="block_all">Blokiraj sve</string>
-    <string name="day_limit">Ograničenje dnevnog limita</string>
-    <string name="duration">Trajanje</string>
-    <string name="interval_timer">Tajmer intervala</string>
-    <string name="temporary_block">Privremeno blokiranje</string>
-    <string name="timer_content_description">Proteklo vrijeme</string>
 </resources>

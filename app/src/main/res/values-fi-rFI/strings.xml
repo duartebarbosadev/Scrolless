@@ -1,16 +1,7 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
      Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">Tämä palvelu havaitsee, kun rullat/lyhytelokuvat avataan, jotta Scrolless voi estää ne, jos ne on määritetty.</string>
-    <string name="accessibility_settings_toast">Ole hyvä ja ota Scrolless käyttöön Saavutettavuusasetuksissa.</string>
-    <string name="app_exit_label">Paina TAKAISIN poistuaksesi uudelleen</string>
-    <string name="block_all">Estä kaikki</string>
-    <string name="day_limit">Päiväraja</string>
-    <string name="duration">Kesto</string>
-    <string name="interval_timer">Ajastinväli</string>
-    <string name="temporary_block">Tilapäinen esto</string>
-    <string name="timer_content_description">Kulunut aika</string>
 </resources>
