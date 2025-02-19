@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2025, Scrolless
+     All rights reserved.
+-->
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@drawable/gradient_one"
+        android:duration="6000" />  <!-- Increased duration -->
+
+    <item
+        android:drawable="@drawable/gradient_two"
+        android:duration="6000" />  <!-- Increased duration -->
+
+    <item
+        android:drawable="@drawable/gradient_three"
+        android:duration="6000" />  <!-- Increased duration -->
+
+</animation-list>

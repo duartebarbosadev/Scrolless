@@ -7,11 +7,13 @@ package com.scrolless.app.features.home
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import com.google.android.material.button.MaterialButton
 import com.maxkeppeler.sheets.duration.DurationSheet
 import com.maxkeppeler.sheets.duration.DurationTimeFormat
@@ -41,15 +43,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         observeFlow(appProvider.blockConfigFlow) { config ->
             updateUIForBlockOption(config.blockOption)
             updateInfoText(usageTracker.dailyUsageInMemory, config.timeLimit)
+
+            binding.switchTimerOverlay.isVisible = config.blockOption == BlockOption.DayLimit
         }
+
+        startGradientAnimation()
 
         observeFlow(usageTracker.dailyUsageInMemoryFlow) { config ->
             updateInfoText(config, appProvider.blockConfig.timeLimit)
         }
 
-        binding.btnSettings.setOnClickListener {
-            appProvider.totalDailyUsage = 0L
-        }
+//        binding.btnSettings.setOnClickListener {
+//            appProvider.totalDailyUsage = 0L
+//        }
 
         binding.blockAllButton.setOnClickListener {
             val currentConfig = appProvider.blockConfig
@@ -130,6 +136,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         setTimerOverlayCheckBoxListener()
     }
 
+    private fun startGradientAnimation() {
+        val layout = binding.layout
+        val animationDrawable = layout.background as AnimationDrawable
+        animationDrawable.start()
+    }
+
     /**
      * Sets up the listener for the timer overlay checkbox.
      *
@@ -137,9 +149,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      *  and updates it when the checkbox is toggled.
      */
     private fun setTimerOverlayCheckBoxListener() {
-        binding.checkBoxTimerOverlay.isChecked = appProvider.timerOverlayEnabled
+        binding.switchTimerOverlay.isChecked = appProvider.timerOverlayEnabled
 
-        binding.checkBoxTimerOverlay.setOnCheckedChangeListener { _, isChecked ->
+        binding.switchTimerOverlay.setOnCheckedChangeListener { _, isChecked ->
             appProvider.timerOverlayEnabled = isChecked
         }
     }
@@ -164,10 +176,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 strokeWidth = resources.getDimensionPixelSize(R.dimen.card_stroke)
                 strokeColor =
                     ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.green,
-                        ),
+                        context.getColorFromAttr(androidx.appcompat.R.attr.colorPrimary),
                     )
                 icon = ResourcesCompat.getDrawable(resources, R.drawable.book_cancel_outline, null)
             } else {
@@ -197,7 +206,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun openAccessibilitySettings(context: Context) {
         val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
         context.startActivity(intent)
-        Toast.makeText(context, getString(R.string.accessibility_settings_toast), Toast.LENGTH_LONG).show()
+        context.showToast(getString(R.string.accessibility_settings_toast))
     }
 
     override fun onDestroyView() {

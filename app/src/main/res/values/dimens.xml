@@ -26,6 +26,8 @@
     <dimen name="card_image_height_small">56dp</dimen>
     <dimen name="card_image_padding_small">4dp</dimen>
 
+    <dimen name="card_image_height_big">72dp</dimen>
+
     <dimen name="in_row_padding">3dp</dimen>
     <dimen name="in_row_image">48dp</dimen>
     <dimen name="in_row_button_padding">6dp</dimen>

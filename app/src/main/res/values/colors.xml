@@ -67,7 +67,7 @@
     <!-- Light theme colors -->
     <color name="colorBackground">#ffffff</color>
     <color name="colorPrimary">#ffffff</color>
-    <color name="colorSurface">#f5f5f5</color>
+    <color name="colorSurface">#212121</color>
     <color name="textColorPrimary">#1f1f1f</color>
     <color name="textColorSecondary">#252525</color>
 
@@ -150,6 +150,6 @@
     <color name="slideThree">@color/greenDark</color>
     <color name="dark_background">#121212</color>
     <color name="dark_grey">#41424C</color>
-    <color name="accent_color">#655967</color>
+    <color name="accent_color">#03DAC5</color>
     <color name="semi_transparent_black">#66000000</color>
 </resources>

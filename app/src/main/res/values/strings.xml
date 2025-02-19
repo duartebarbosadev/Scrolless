@@ -17,4 +17,15 @@
     <string name="interval_timer">Interval Timer</string>
     <string name="timer_content_description">Elapsed Time</string>
     <string name="accessibility_settings_toast">Please enable Scrolless in the Accessibility settings.</string>
+    <string name="help">Help</string>
+    <string name="help_button">Help Button</string>
+
+    <string name="total_time_wasted">Total time wasted in brain rot</string>
+    <string name="show_timer_overlay">Show Timer Overlay</string>
+    <string name="rate_scrolless">Rate Scrolless on Play Store</string>
+    <string name="usage_title">Usage - quinta, nov. 28</string> <!-- TODO -->
+    <string name="tiktok" translatable="false" >TikTok</string>
+    <string name="youtube_shorts" translatable="false">YouTube Shorts</string>
+    <string name="instagram_reels" translatable="false">Instagram Reels</string>
+    <string name="show_full_analytics">Show Full Analytics</string>
 </resources>

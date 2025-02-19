@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2025, Scrolless
+     All rights reserved.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <gradient
+        android:angle="90"
+        android:endColor="#BDBDBD"
+    android:startColor="#EEEEEE" /> <!-- Light Gray -->
+</shape>
