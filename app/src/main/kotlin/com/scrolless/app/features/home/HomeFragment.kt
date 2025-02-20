@@ -137,8 +137,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun startGradientAnimation() {
+
         val layout = binding.layout
         val animationDrawable = layout.background as AnimationDrawable
+        animationDrawable.setEnterFadeDuration(6000)
+        animationDrawable.setExitFadeDuration(2000)
         animationDrawable.start()
     }
 
