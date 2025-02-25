@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">ഈ സേവനം റീൽ/ഷോർട്സ് തുറക്കപ്പെടുമ്പോൾ അവയുടെ കോൺഫിഗർ ചെയ്തിട്ടുള്ളവന്നും സ്ക്രോൾലസ് അവയുകൾ ബ്ലോക്ക് ചെയ്യാനും കഴിയുന്നത് തിരിച്ചറിയുന്നു.</string>
+    <string name="accessibility_settings_toast">ദയവായം എയര്‍ടെക്സ് ക്രമീകരണങ്ങളില്‍ സ്ക്രോള്‍ലെസ് സജ്ജമാക്കുക.</string>
+    <string name="app_exit_label">പുറത്തേക്കു വീണ്ടും അമർത്താൻ അമർത്തുക</string>
+    <string name="block_all">എല്ലാം നിഷേധിച്ചു</string>
+    <string name="config_daily_limit_time">ദൈനിക പരിധി സമയം ക്രമീകരിക്കുക</string>
+    <string name="daily_limit">ദിവസ പരിമിതി</string>
+    <string name="duration">അവധി</string>
+    <string name="feature_coming_soon">ലഭ്യമാകുന്നതാണ് ലഭ്യമാകുന്നത്</string>
+    <string name="help">സഹായം</string>
+    <string name="help_button">സഹായ ബട്ടൺ</string>
+    <string name="interval_timer">ഇന്റര്‍വല്‍ ടൈമര്‍</string>
+    <string name="pause">നിർത്തുക</string>
+    <string name="rate_scrolless">Play Storeലേക്ക് Scrolless റേറ്റ് ചെയ്യുക</string>
+    <string name="show_timer_overlay">ടൈമർ ഓവർലേ കാണിക്കുക</string>
+    <string name="temporary_unblock">താത്പര്യം നീക്കൽ</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">കഴിഞ്ഞ സമയം</string>
+    <string name="total_time_wasted">മികച്ച സമയം മനസ്സിൽ പോയത്</string>
 </resources>

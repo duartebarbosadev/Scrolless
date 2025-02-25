@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Dịch vụ này phát hiện khi reels/shorts được mở để Scrolless có thể chặn chúng nếu được cấu hình.</string>
+    <string name="accessibility_settings_toast">Vui lòng kích hoạt Scrolless trong cài đặt Tiện ích truy cập.</string>
+    <string name="app_exit_label">Nhấn BACK một lần nữa để thoát</string>
+    <string name="block_all">Chặn tất cả</string>
+    <string name="config_daily_limit_time">Cấu hình Thời gian Giới hạn Hằng Ngày</string>
+    <string name="daily_limit">Giới hạn hàng ngày</string>
+    <string name="duration">Thời lượng</string>
+    <string name="feature_coming_soon">Tính năng sắp ra mắt</string>
+    <string name="help">Trợ giúp</string>
+    <string name="help_button">Nút Trợ giúp</string>
+    <string name="interval_timer">Đếm ngược Thời gian</string>
+    <string name="pause">Tạm dừng</string>
+    <string name="rate_scrolless">Đánh giá ứng dụng Scrolless trên Play Store</string>
+    <string name="show_timer_overlay">Hiển thị Lớp Phủ Đồng Hồ</string>
+    <string name="temporary_unblock">Mở khóa tạm thời</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Thời gian đã trôi đi</string>
+    <string name="total_time_wasted">Tổng thời gian lãng phí trong vi khuẩn não</string>
 </resources>

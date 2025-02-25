@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">या सेवा ते ओपणार्या/शॉर्ट्स उघडल्यात ओळखते, जेणेकरून स्क्रोलेस, त्यांना ब्लॉक करू शकतो जर संरचित केले असेल.</string>
+    <string name="accessibility_settings_toast">कृपया पहुचविण्याच्या सेटिंग्जमध्ये Scrolless सक्षम करा.</string>
+    <string name="app_exit_label">बाहेर पळवून पुन्हा प्रेस करा आणि बाहेर निघा</string>
+    <string name="block_all">सर्व्हर ब्लॉक करा</string>
+    <string name="config_daily_limit_time">दैनिक मर्यादा समय संरचित करा</string>
+    <string name="daily_limit">दैनिक मर्यादा</string>
+    <string name="duration">कालावधी</string>
+    <string name="feature_coming_soon">वैशिष्ट्य लवकर येत आहे</string>
+    <string name="help">सहाय्य</string>
+    <string name="help_button">उपकारात्मक बटण</string>
+    <string name="interval_timer">अंतराल टायमर</string>
+    <string name="pause">विराम</string>
+    <string name="rate_scrolless">Rate Scrolless on Play Store</string>
+    <string name="show_timer_overlay">टाइमर ओवरले दाखवा</string>
+    <string name="temporary_unblock">अस्थायी अनब्लॉक</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%2$s/%1$s</string>
+    <string name="timer_content_description">कालावधी</string>
+    <string name="total_time_wasted">मानसिक रोटमध्ये गळलेला कुल काल</string>
 </resources>
