@@ -12,18 +12,18 @@ import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.maxkeppeler.sheets.duration.DurationSheet
-import android.view.animation.AccelerateDecelerateInterpolator
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import com.maxkeppeler.sheets.duration.DurationTimeFormat
 import com.scrolless.app.R
 import com.scrolless.app.base.BaseFragment
@@ -54,16 +54,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     @Inject
     lateinit var usageTracker: UsageTracker
 
-
     override fun onViewReady(bundle: Bundle?) {
-
         val rootView = binding.root
         ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
             val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.updatePadding(top = systemBarsInsets.top, bottom = systemBarsInsets.bottom)
-            insets  // Return the insets instead of consuming them
+            insets
         }
-
 
         observeFlow(appProvider.blockConfigFlow) { config ->
             updateUIForBlockOption(config.blockOption)
@@ -148,7 +145,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.configDailyLimitButton.setOnClickListener {
-
             showDurationPicker(onSuccess = {}, onCancel = {})
         }
 
@@ -191,7 +187,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      */
 
     private fun setupProgressIndicator() {
-
         observeFlow(appProvider.blockConfigFlow) { config ->
             updateProgress()
         }
@@ -203,7 +198,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
         }
     }
-
 
     /**
      * show the duration picker.
@@ -256,17 +250,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      *  it means the limit has been reached or exceeded, so the progress is set to maxProgress.
      * If the time limit is 0 or less, it means there's no limit, so the progress is set to 0.
      */
-    private fun calculateTargetProgress(currentUsage: Long, timeLimit: Long): Int {
-        return if (timeLimit > 0) {
-            val remainingTime = timeLimit - currentUsage
-            if (remainingTime > 0) {
-                ((currentUsage.toDouble() / timeLimit.toDouble()) * maxProgress).toInt()
-            } else { // The limit is reached or exceeded
-                maxProgress
-            }
-        } else {
-            0
+    private fun calculateTargetProgress(currentUsage: Long, timeLimit: Long): Int = if (timeLimit > 0) {
+        val remainingTime = timeLimit - currentUsage
+        if (remainingTime > 0) {
+            ((currentUsage.toDouble() / timeLimit.toDouble()) * maxProgress).toInt()
+        } else { // The limit is reached or exceeded
+            maxProgress
         }
+    } else {
+        0
     }
 
     /**
@@ -342,18 +334,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun blendColors(color1: Int, color2: Int, ratio: Float): Int =
         android.graphics.Color.rgb(
             (android.graphics.Color.red(color1) * (1 - ratio) + android.graphics.Color.red(color2) * ratio).toInt(),
-            (android.graphics.Color.green(color1) * (1 - ratio) + android.graphics.Color.green(
-                color2,
-            ) * ratio).toInt(),
+            (
+                android.graphics.Color.green(color1) * (1 - ratio) + android.graphics.Color.green(
+                    color2,
+                ) * ratio
+                ).toInt(),
             (android.graphics.Color.blue(color1) * (1 - ratio) + android.graphics.Color.blue(color2) * ratio).toInt(),
         )
-
 
     /**
      * Start the gradient animation.
      */
     private fun startGradientAnimation() {
-
         val layout = binding.layout
         val animationDrawable = layout.background as AnimationDrawable
         animationDrawable.setEnterFadeDuration(6000)
@@ -383,7 +375,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      * Reset the buttons.
      */
     private fun resetButtons() {
-
         binding.configDailyLimitButton.beGone()
         applyButtonEffect(binding.blockAllButton, false)
         applyButtonEffect(binding.dailyLimitButton, false)
@@ -398,7 +389,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      */
 
     private fun applyButtonEffect(
-        button: MaterialButton, activated: Boolean
+        button: MaterialButton,
+        activated: Boolean
     ) {
         button.apply {
             if (activated) {
@@ -468,7 +460,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      * @param timeLimit The time limit in milliseconds.
      */
     private fun updateInfoText(totalDailyUsage: Long, showTimeLimit: Boolean, timeLimit: Long) {
-
         if (showTimeLimit) {
             binding.trackTime.text = getString(
                 R.string.time_track_limit,
@@ -477,7 +468,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             )
         } else {
             binding.trackTime.text = getString(
-                R.string.time_track, totalDailyUsage.formatTime(),
+                R.string.time_track,
+                totalDailyUsage.formatTime(),
             )
         }
     }

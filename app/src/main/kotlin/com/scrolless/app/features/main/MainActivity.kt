@@ -5,17 +5,12 @@
 package com.scrolless.app.features.main
 
 import android.os.Bundle
-import android.view.View
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import com.scrolless.app.R
 import com.scrolless.app.base.BaseActivity
 import com.scrolless.app.databinding.ActivityMainBinding
 import com.scrolless.app.features.home.HomeFragment
-import com.scrolless.framework.extensions.isDarkMode
 import com.scrolless.framework.extensions.showSnackBar
 import com.scrolless.framework.navigation.navigateFragment
 import dagger.hilt.android.AndroidEntryPoint

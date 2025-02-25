@@ -11,7 +11,6 @@ import com.scrolless.app.services.handlers.BlockAllBlockHandler
 import com.scrolless.app.services.handlers.DayLimitBlockHandler
 import com.scrolless.app.services.handlers.IntervalTimerBlockHandler
 import com.scrolless.app.services.handlers.NothingSelectedBlockHandler
-import com.scrolless.app.services.handlers.TemporaryUnblockBlockHandler
 
 /**
  * Implementation of [BlockController] that uses a [BlockOptionHandler] to handle blocking logic.
