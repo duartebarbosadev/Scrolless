@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Ta usługa wykrywa otwarcie filmów krótkich, dzięki czemu Scrolless może je zablokować, jeśli skonfigurowano.</string>
+    <string name="accessibility_settings_toast">Proszę włączyć funkcję Scrolless w ustawieniach dostępności.</string>
+    <string name="app_exit_label">Naciśnij ponownie przycisk POWRÓT, aby wyjść</string>
+    <string name="block_all">Zablokuj wszystko</string>
+    <string name="config_daily_limit_time">Skonfiguruj dzienny limit czasu</string>
+    <string name="daily_limit">Limit dzienny</string>
+    <string name="duration">Czas trwania</string>
+    <string name="feature_coming_soon">Funkcja wkrótce dostępna</string>
+    <string name="help">Pomoc</string>
+    <string name="help_button">Przycisk Pomocy</string>
+    <string name="interval_timer">Minutnik interwałowy</string>
+    <string name="pause">Pauza</string>
+    <string name="rate_scrolless">Oceń aplikację Scrolless w Sklepie Play</string>
+    <string name="show_timer_overlay">Pokaż nakładkę zegara</string>
+    <string name="temporary_unblock">Odblokuj tymczasowo</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Czas upłynął</string>
+    <string name="total_time_wasted">Całkowity czas stracony na zgniliznę mózgu</string>
 </resources>

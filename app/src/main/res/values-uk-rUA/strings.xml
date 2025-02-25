@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Ця служба виявляє відкриття котушок/коротких відео, щоб Scrolless міг їх заблокувати, якщо налаштовано.</string>
+    <string name="accessibility_settings_toast">Будь ласка, увімкніть Scrolless у налаштуваннях доступності.</string>
+    <string name="app_exit_label">Натисніть BACK ще раз, щоб вийти</string>
+    <string name="block_all">Заблокувати всі</string>
+    <string name="config_daily_limit_time">Налаштувати щоденний обмежений час</string>
+    <string name="daily_limit">Ліміт на день</string>
+    <string name="duration">Тривалість</string>
+    <string name="feature_coming_soon">Функція незабаром буде доступна</string>
+    <string name="help">Довідка</string>
+    <string name="help_button">Кнопка Довідки</string>
+    <string name="interval_timer">Таймер інтервалів</string>
+    <string name="pause">Пауза</string>
+    <string name="rate_scrolless">Оцініть Scrolless в Google Play Store</string>
+    <string name="show_timer_overlay">Показати накладення таймера</string>
+    <string name="temporary_unblock">Тимчасово розблокувати</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Час, що минув</string>
+    <string name="total_time_wasted">Загальний час, витрачений на розмірковування</string>
 </resources>

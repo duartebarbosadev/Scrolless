@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Этот сервис определяет, когда открываются катушки/короткие видео, чтобы Scrolless мог блокировать их, если настроен.</string>
+    <string name="accessibility_settings_toast">Пожалуйста, включите Scrolless в настройках доступности.</string>
+    <string name="app_exit_label">Нажмите BACK еще раз, чтобы выйти</string>
+    <string name="block_all">Заблокировать все</string>
+    <string name="config_daily_limit_time">Настройка ежедневного лимита времени</string>
+    <string name="daily_limit">Лимит на день</string>
+    <string name="duration">Продолжительность</string>
+    <string name="feature_coming_soon">Функция скоро будет доступна</string>
+    <string name="help">Справка</string>
+    <string name="help_button">Кнопка Справки</string>
+    <string name="interval_timer">Таймер интервалов</string>
+    <string name="pause">Пауза</string>
+    <string name="rate_scrolless">Оцените Scrolless в Play Маркете</string>
+    <string name="show_timer_overlay">Показать наложение таймера</string>
+    <string name="temporary_unblock">Временное разблокирование</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Время прошло</string>
+    <string name="total_time_wasted">Общее время, потраченное на бесполезные размышления</string>
 </resources>

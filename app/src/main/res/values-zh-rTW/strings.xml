@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">此服務會偵測當 Reels/Shorts 被開啟時，以便 Scrolless 可以在設定時封鎖它們。</string>
+    <string name="accessibility_settings_toast">請在無障礙設定中啟用 Scrolless。</string>
+    <string name="app_exit_label">再按一次返回鍵以退出</string>
+    <string name="block_all">封鎖所有</string>
+    <string name="config_daily_limit_time">設定每日限制時間</string>
+    <string name="daily_limit">每日限制</string>
+    <string name="duration">持續時間</string>
+    <string name="feature_coming_soon">功能即將推出</string>
+    <string name="help">幫助</string>
+    <string name="help_button">按鈕說明</string>
+    <string name="interval_timer">間隔計時器</string>
+    <string name="pause">暫停</string>
+    <string name="rate_scrolless">在 Play 商店上評分 Scrolless</string>
+    <string name="show_timer_overlay">顯示計時器覆蓋</string>
+    <string name="temporary_unblock">暫時解除封鎖</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">已過時間</string>
+    <string name="total_time_wasted">大腦腐爛浪費的總時間</string>
 </resources>
