@@ -12,9 +12,21 @@
 
     <string name="accessibility_service_description">This service detects when reels/shorts are opened so that Scrolless, can block them if configured.</string>
     <string name="block_all">Block all</string>
-    <string name="day_limit">Daily Limit</string>
-    <string name="temporary_block">Temporary Block</string>
+    <string name="daily_limit">Daily Limit</string>
+    <string name="temporary_unblock">Temporary Unblock</string>
     <string name="interval_timer">Interval Timer</string>
     <string name="timer_content_description">Elapsed Time</string>
     <string name="accessibility_settings_toast">Please enable Scrolless in the Accessibility settings.</string>
+    <string name="help">Help</string>
+    <string name="help_button">Help Button</string>
+
+    <string name="total_time_wasted">Total time wasted in brain rot</string>
+    <string name="show_timer_overlay">Show Timer Overlay</string>
+    <string name="rate_scrolless">Rate Scrolless on Play Store</string>
+    <string name="pause">Pause</string>
+
+    <string name="feature_coming_soon">Feature coming soon</string>
+    <string name="config_daily_limit_time">Configure Daily Limit Time</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="time_track">%1$s</string>
 </resources>

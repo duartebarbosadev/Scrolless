@@ -11,7 +11,6 @@ import com.scrolless.app.R
 import com.scrolless.app.base.BaseActivity
 import com.scrolless.app.databinding.ActivityMainBinding
 import com.scrolless.app.features.home.HomeFragment
-import com.scrolless.framework.extensions.isDarkMode
 import com.scrolless.framework.extensions.showSnackBar
 import com.scrolless.framework.navigation.navigateFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,13 +28,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             clearBackStack = true,
         )
 
-        isDarkMode.let {
-            if (it == false) {
-                val windowInsetsController =
-                    WindowCompat.getInsetsController(window, window.decorView)
-                windowInsetsController.isAppearanceLightNavigationBars = true
-            }
-        }
+        // Disable system insets from resizing your layout
+        WindowCompat.setDecorFitsSystemWindows(window, false)
     }
 
     override fun onBackPressed() {

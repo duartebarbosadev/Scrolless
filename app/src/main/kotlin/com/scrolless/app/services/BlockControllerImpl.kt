@@ -11,7 +11,6 @@ import com.scrolless.app.services.handlers.BlockAllBlockHandler
 import com.scrolless.app.services.handlers.DayLimitBlockHandler
 import com.scrolless.app.services.handlers.IntervalTimerBlockHandler
 import com.scrolless.app.services.handlers.NothingSelectedBlockHandler
-import com.scrolless.app.services.handlers.TemporaryUnblockBlockHandler
 
 /**
  * Implementation of [BlockController] that uses a [BlockOptionHandler] to handle blocking logic.
@@ -48,13 +47,12 @@ class BlockControllerImpl(
     private fun createHandlerForConfig(config: BlockConfig): BlockOptionHandler =
         when (config.blockOption) {
             BlockOption.BlockAll -> BlockAllBlockHandler()
-            BlockOption.DayLimit -> DayLimitBlockHandler(config.timeLimit)
+            BlockOption.DailyLimit -> DayLimitBlockHandler(config.timeLimit)
             BlockOption.IntervalTimer -> IntervalTimerBlockHandler(
                 config.timeLimit,
                 config.intervalLength,
             )
 
-            BlockOption.TemporaryUnblock -> TemporaryUnblockBlockHandler(config.timeLimit)
             BlockOption.NothingSelected -> NothingSelectedBlockHandler()
         }
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2024, Scrolless
+     Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
 <resources>
@@ -25,6 +25,8 @@
 
     <dimen name="card_image_height_small">56dp</dimen>
     <dimen name="card_image_padding_small">4dp</dimen>
+
+    <dimen name="card_image_height_big">72dp</dimen>
 
     <dimen name="in_row_padding">3dp</dimen>
     <dimen name="in_row_image">48dp</dimen>

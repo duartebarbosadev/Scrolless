@@ -1,83 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2024, Scrolless
+     Copyright (C) 2025, Scrolless
      All rights reserved.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <!-- Style for the light theme -->
     <style name="AppTheme" parent="AppTheme.Base" />
 
-    <style name="AppTheme.Base" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:colorBackground">@color/colorBackground</item>
-        <item name="colorOnPrimary">@color/deepGray</item>
-        <item name="colorPrimary">@color/colorAccent</item>
-        <item name="colorPrimaryContainer">@color/colorAccentTranslucent</item>
-        <item name="colorSecondary">@color/colorAccent</item>
-        <item name="colorSecondaryContainer">@color/colorAccentTranslucent
-        </item> <!-- Navbar halo -->
-        <item name="colorTertiary">@color/colorAccentDark</item>
-        <item name="colorTertiaryContainer">@color/colorAccentTranslucent</item>
-        <item name="android:statusBarColor">@color/colorBackground</item>
-        <item name="android:textColorPrimary">@color/textColorPrimary</item>
-        <item name="android:textColorSecondary">@color/textColorSecondary</item>
-        <item name="android:textColorTertiary">@color/textColorSecondary</item>
-        <item name="materialCalendarTheme">@style/ThemeOverlay.App.DatePicker</item>
-        <item name="materialTimePickerTheme">@style/ThemeOverlay.App.TimePicker</item>
+    <style name="AppTheme.Base" parent="Theme.Material3.DynamicColors.DayNight">
         <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
         <item name="snackbarTextViewStyle">@style/MaterialSnackbarTextViewTheme</item>
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
-        <item name="alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
-        <item name="colorSurface">@color/colorSurface</item>
-        <item name="switchStyle">@style/CustomMaterialSwitch</item>
-        <item name="bottomAppBarStyle">@style/CustomBottomAppBar</item>
-        <item name="colorOutline">@color/goodGray</item>
-        <item name="colorSurfaceVariant">@color/goodGrayTranslucent</item>
-        <item name="android:navigationBarColor">@color/deepGray</item>
-
-    </style>
-
-    <!-- Monet theme -->
-    <style name="AppTheme.Monet" parent="AppTheme.Monet.Base" />
-
-
-    <style name="AppTheme.Monet.Base" parent="Theme.Material3.DynamicColors.DayNight">
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="materialCalendarTheme">@style/ThemeOverlay.App.DatePicker</item>
-        <item name="materialTimePickerTheme">@style/ThemeOverlay.App.TimePicker</item>
-        <item name="snackbarStyle">@style/Widget.App.Snackbar</item>
-        <item name="snackbarTextViewStyle">@style/MaterialSnackbarTextViewTheme</item>
-        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog.Monet
-        </item>
-        <item name="alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog.Monet</item>
         <item name="windowNoTitle">true</item>
-        <item name="switchStyle">@style/Widget.Material3.CompoundButton.MaterialSwitch</item>
-        <item name="android:navigationBarColor">?attr/colorSurface</item>
-    </style>
 
-    <!-- Preference dialog theme -->
-    <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
-        <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
-        <item name="dialogCornerRadius">@dimen/rounded_corners</item>
-        <item name="android:background">@drawable/dialog_bg_monet</item>
-        <!-- Remove the accent-ish tint TODO Useless since every dialog has this tint now
-        <item name="backgroundTint">?colorBackgroundFloating</item>
-        <item name="android:background">?colorBackgroundFloating</item> -->
-    </style>
-
-    <!-- Preference dialog Monet theme -->
-    <style name="ThemeOverlay.App.MaterialAlertDialog.Monet" parent="ThemeOverlay.Material3.MaterialAlertDialog">
-        <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
-        <item name="dialogCornerRadius">@dimen/rounded_corners</item>
-        <item name="android:background">@drawable/dialog_bg_monet</item>
-    </style>
-
-    <!-- Note: shape appearance doesn't work with the preference dialogs (they're not material) -->
-    <style name="MaterialAlertDialog.App" parent="MaterialAlertDialog.Material3">
-        <item name="shapeAppearance">@style/ShapeAppearance.App.MediumComponent</item>
-        <item name="shapeAppearanceOverlay">@null</item>
+        <!-- Make the system bars transparent -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
     <!-- Snackbar style -->
@@ -88,197 +25,6 @@
     <style name="MaterialSnackbarTextViewTheme" parent="@style/Widget.MaterialComponents.Snackbar.TextView">
         <item name="android:textColor">?attr/colorOnBackground</item>
         <item name="android:maxLines">20</item>
-    </style>
-
-    <!-- Date picker theme -->
-    <style name="ThemeOverlay.App.DatePicker" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
-        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
-        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent
-        </item>
-        <item name="errorIconDrawable">@drawable/ic_alert_24dp</item>
-        <item name="errorIconTint">?attr/colorPrimary</item>
-        <item name="boxStrokeErrorColor">@color/redError</item>
-        <item name="errorTextColor">?attr/colorPrimary</item>
-        <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
-        <item name="boxCornerRadiusBottomEnd">@dimen/text_field_corner</item>
-        <item name="boxCornerRadiusTopEnd">@dimen/text_field_corner</item>
-        <item name="boxCornerRadiusBottomStart">@dimen/text_field_corner</item>
-        <item name="boxCornerRadiusTopStart">@dimen/text_field_corner</item>
-        <item name="android:textCursorDrawable">@drawable/custom_cursor</item>
-        <item name="startIconDrawable">@drawable/ic_date_black_24dp</item>
-        <item name="errorEnabled">true</item>
-        <item name="startIconTint">?attr/colorOutline</item>
-    </style>
-
-    <!-- Monet time picker theme -->
-    <style name="ThemeOverlay.App.TimePicker" parent="@style/ThemeOverlay.Material3.MaterialTimePicker">
-        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent
-        </item>
-        <item name="boxCornerRadiusBottomEnd">@dimen/text_field_corner</item>
-        <item name="boxCornerRadiusTopEnd">@dimen/text_field_corner</item>
-        <item name="boxCornerRadiusBottomStart">@dimen/text_field_corner</item>
-        <item name="boxCornerRadiusTopStart">@dimen/text_field_corner</item>
-        <item name="android:textCursorDrawable">@drawable/custom_cursor</item>
-    </style>
-
-    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-        <item name="cornerSize">@dimen/rounded_corners</item>
-    </style>
-
-    <style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
-        <item name="cornerSize">@dimen/rounded_corners</item>
-    </style>
-
-    <style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
-        <item name="cornerSize">@dimen/rounded_corners</item>
-    </style>
-
-    <!-- Bottom navigation for non-monet accents -->
-
-    <style name="CustomBottomAppBar" parent="Widget.Material3.BottomAppBar">
-        <item name="android:backgroundTint">@color/deepGray</item>
-    </style>
-
-    <!-- Switch for non-monet accents -->
-    <style name="CustomMaterialSwitch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
-        <item name="thumbIconTint">?attr/colorPrimary</item>
-        <item name="trackDecorationTint">?attr/colorPrimary</item>
-    </style>
-
-    <!-- Custom button group -->
-    <style name="Widget.App.Button.OutlinedButton.IconOnly" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="iconPadding">0dp</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:minWidth">20dp</item>
-        <item name="android:minHeight">20dp</item>
-        <item name="iconGravity">textStart</item>
-        <item name="strokeWidth">@dimen/card_stroke</item>
-        <item name="cornerRadius">@dimen/rounded_corners</item>
-    </style>
-
-    <!-- Custom color styles -->
-    <style name="AppTheme.System" parent="AppTheme">
-        <item name="colorPrimary">@color/aqua</item>
-        <item name="colorSecondary">@color/aqua</item>
-        <item name="colorTertiary">@color/aquaDark</item>
-        <item name="colorPrimaryContainer">@color/aquaTranslucent</item>
-        <item name="colorSecondaryContainer">@color/aquaTranslucent</item>
-        <item name="colorTertiaryContainer">@color/aquaTranslucent</item>
-    </style>
-
-    <style name="AppTheme.Brown" parent="AppTheme">
-        <item name="colorPrimary">@color/brown</item>
-        <item name="colorSecondary">@color/brown</item>
-        <item name="colorTertiary">@color/brownDark</item>
-        <item name="colorPrimaryContainer">@color/brownTranslucent</item>
-        <item name="colorSecondaryContainer">@color/brownTranslucent</item>
-        <item name="colorTertiaryContainer">@color/brownTranslucent</item>
-    </style>
-
-    <style name="AppTheme.Blue" parent="AppTheme">
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorSecondary">@color/blue</item>
-        <item name="colorTertiary">@color/blueDark</item>
-        <item name="colorPrimaryContainer">@color/blueTranslucent</item>
-        <item name="colorSecondaryContainer">@color/blueTranslucent</item>
-        <item name="colorTertiaryContainer">@color/blueTranslucent</item>
-    </style>
-
-    <style name="AppTheme.Green" parent="AppTheme">
-        <item name="colorPrimary">@color/green</item>
-        <item name="colorSecondary">@color/green</item>
-        <item name="colorTertiary">@color/greenDark</item>
-        <item name="colorPrimaryContainer">@color/greenTranslucent</item>
-        <item name="colorSecondaryContainer">@color/greenTranslucent</item>
-        <item name="colorTertiaryContainer">@color/greenTranslucent</item>
-    </style>
-
-    <style name="AppTheme.Orange" parent="AppTheme">
-        <item name="colorPrimary">@color/orange</item>
-        <item name="colorSecondary">@color/orange</item>
-        <item name="colorTertiary">@color/orangeDark</item>
-        <item name="colorPrimaryContainer">@color/orangeTranslucent</item>
-        <item name="colorSecondaryContainer">@color/orangeTranslucent</item>
-        <item name="colorTertiaryContainer">@color/orangeTranslucent</item>
-    </style>
-
-    <style name="AppTheme.Yellow" parent="AppTheme">
-        <item name="colorPrimary">@color/yellow</item>
-        <item name="colorSecondary">@color/yellow</item>
-        <item name="colorTertiary">@color/yellowDark</item>
-        <item name="colorPrimaryContainer">@color/yellowTranslucent</item>
-        <item name="colorSecondaryContainer">@color/yellowTranslucent</item>
-        <item name="colorTertiaryContainer">@color/yellowTranslucent</item>
-    </style>
-
-    <style name="AppTheme.Teal" parent="AppTheme">
-        <item name="colorPrimary">@color/teal</item>
-        <item name="colorSecondary">@color/teal</item>
-        <item name="colorTertiary">@color/tealDark</item>
-        <item name="colorPrimaryContainer">@color/tealTranslucent</item>
-        <item name="colorSecondaryContainer">@color/tealTranslucent</item>
-        <item name="colorTertiaryContainer">@color/tealTranslucent</item>
-    </style>
-
-    <style name="AppTheme.Violet" parent="AppTheme">
-        <item name="colorPrimary">@color/violet</item>
-        <item name="colorSecondary">@color/violet</item>
-        <item name="colorTertiary">@color/violetDark</item>
-        <item name="colorPrimaryContainer">@color/violetTranslucent</item>
-        <item name="colorSecondaryContainer">@color/violetTranslucent</item>
-        <item name="colorTertiaryContainer">@color/violetTranslucent</item>
-    </style>
-
-    <style name="AppTheme.Pink" parent="AppTheme">
-        <item name="colorPrimary">@color/pink</item>
-        <item name="colorSecondary">@color/pink</item>
-        <item name="colorTertiary">@color/pinkDark</item>
-        <item name="colorPrimaryContainer">@color/pinkTranslucent</item>
-        <item name="colorSecondaryContainer">@color/pinkTranslucent</item>
-        <item name="colorTertiaryContainer">@color/pinkTranslucent</item>
-    </style>
-
-    <style name="AppTheme.LightBlue" parent="AppTheme">
-        <item name="colorPrimary">@color/lightBlue</item>
-        <item name="colorSecondary">@color/lightBlue</item>
-        <item name="colorTertiary">@color/lightBlueDark</item>
-        <item name="colorPrimaryContainer">@color/lightBlueTranslucent</item>
-        <item name="colorSecondaryContainer">@color/lightBlueTranslucent</item>
-        <item name="colorTertiaryContainer">@color/lightBlueTranslucent</item>
-    </style>
-
-    <style name="AppTheme.Red" parent="AppTheme">
-        <item name="colorPrimary">@color/red</item>
-        <item name="colorSecondary">@color/red</item>
-        <item name="colorTertiary">@color/redDark</item>
-        <item name="colorPrimaryContainer">@color/redTranslucent</item>
-        <item name="colorSecondaryContainer">@color/redTranslucent</item>
-        <item name="colorTertiaryContainer">@color/redTranslucent</item>
-    </style>
-
-    <style name="AppTheme.Lime" parent="AppTheme">
-        <item name="colorPrimary">@color/lime</item>
-        <item name="colorSecondary">@color/lime</item>
-        <item name="colorTertiary">@color/limeDark</item>
-        <item name="colorPrimaryContainer">@color/limeTranslucent</item>
-        <item name="colorSecondaryContainer">@color/limeTranslucent</item>
-        <item name="colorTertiaryContainer">@color/limeTranslucent</item>
-    </style>
-
-    <style name="AppTheme.Crimson" parent="AppTheme">
-        <item name="colorPrimary">@color/crimson</item>
-        <item name="colorSecondary">@color/crimson</item>
-        <item name="colorTertiary">@color/crimsonDark</item>
-        <item name="colorPrimaryContainer">@color/crimsonTranslucent</item>
-        <item name="colorSecondaryContainer">@color/crimsonTranslucent</item>
-        <item name="colorTertiaryContainer">@color/crimsonTranslucent</item>
-    </style>
-
-    <!-- Circular images -->
-    <style name="roundedImageView">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
     </style>
 
     <style name="SplashTheme" parent="SplashTheme.Base" />
@@ -292,25 +38,16 @@
         <item name="android:navigationBarColor" >@color/blue_primary</item>
     </style>
 
-    <style name="MaterialButtonStyle" parent="Widget.MaterialComponents.Button">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="cornerRadius">0dp</item>
-        <item name="android:insetLeft">0dp</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetRight">0dp</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:stateListAnimator">@null</item>
-    </style>
-
-    <style name="MaterialButtonStyle.Red">
-        <item name="android:backgroundTint">@color/red_primary</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="MaterialButtonStyle.Red.Radius">
-        <item name="android:backgroundTint">@color/red_primary</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="cornerRadius">16dp</item>
+    <!-- Define a custom shape for buttons with rounded bottom corners and cut top corners -->
+    <style name="ShapeAppearance.App.Button.CustomCorners"
+        parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamilyBottomLeft">rounded</item>
+        <item name="cornerFamilyBottomRight">rounded</item>
+        <item name="cornerSizeBottomLeft">16dp</item>
+        <item name="cornerSizeBottomRight">16dp</item>
+        <item name="cornerFamilyTopLeft">cut</item>
+        <item name="cornerFamilyTopRight">cut</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
     </style>
 </resources>

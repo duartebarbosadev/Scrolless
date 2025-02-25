@@ -35,6 +35,10 @@ class TimerOverlayManagerImpl @Inject constructor(
     private val appProvider: AppProvider
 ) : TimerOverlayManager {
 
+    companion object {
+        private const val START_TIMER_OFFSET = 1000L
+    }
+
     private var overlayView: View? = null
     private var timerTextView: TextView? = null
 
@@ -68,10 +72,10 @@ class TimerOverlayManagerImpl @Inject constructor(
         if (overlayView != null) return
 
         // Offset the start time by 1 second to account for delays.
-        val startTimeMillis = System.currentTimeMillis() - 1000
+        val startTimeMillis = System.currentTimeMillis() - START_TIMER_OFFSET
 
         // Inflate the overlay view using the app's theme
-        val themedContext = ContextThemeWrapper(serviceContext, R.style.AppTheme)
+        val themedContext = ContextThemeWrapper(serviceContext, R.style.AppTheme_Base)
         val inflater = LayoutInflater.from(themedContext)
         overlayView = inflater.inflate(R.layout.overlay_timer, null)
         timerTextView = overlayView?.findViewById(R.id.timerTextView)

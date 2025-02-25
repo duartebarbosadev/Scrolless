@@ -5,347 +5,234 @@
 -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_background"
-    android:padding="16dp">
+    android:animateLayoutChanges="true"
+    android:background="@drawable/gradient_list"
+    android:padding="@dimen/margin_medium">
 
-    <ImageButton
-        android:id="@+id/btn_settings"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_settings"
-        app:layout_constraintStart_toStartOf="parent"
+    <!-- Top Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/detailsDeleteButton"
+        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_small"
+        android:contentDescription="@string/help_button"
+        android:paddingVertical="@dimen/in_row_button_padding"
+        android:text="@string/help"
+        android:textColor="?attr/colorPrimary"
+        app:backgroundTint="@color/color_background_darker"
+        app:icon="@drawable/baseline_help_outline_24"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@android:color/white" />
+        app:layout_constraintWidth_max="@dimen/details_button_max_width"
+        app:rippleColor="?attr/colorPrimary" />
 
-    <Button
-        android:id="@+id/btn_help"
+    <!-- Card containing the progress indicator -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_alert_24dp"
-        android:text="Help"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/circle_progress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="32dp"
-        android:indeterminate="false"
-        android:max="100"
-        android:progress="25"
-        android:progressDrawable="@drawable/circle_progress_drawable"
+        android:layout_marginTop="@dimen/margin_large"
+        app:cardBackgroundColor="@color/color_background_dark"
+        app:cardCornerRadius="@dimen/rounded_corners"
+        app:cardElevation="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_settings" />
+        app:layout_constraintTop_toBottomOf="@id/detailsDeleteButton">
 
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="30m / 2h 4m"
-        android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/circle_progress"
-        app:layout_constraintEnd_toEndOf="@id/circle_progress"
-        app:layout_constraintStart_toStartOf="@id/circle_progress"
-        app:layout_constraintTop_toTopOf="@id/circle_progress" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_small">
 
-    <TextView
-        android:id="@+id/tv_subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="Total time wasted in social media"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@id/circle_progress"
-        app:layout_constraintStart_toStartOf="@id/circle_progress"
-        app:layout_constraintTop_toBottomOf="@id/circle_progress" />
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/circleProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="false"
+                android:max="100"
+                android:progress="25"
+                app:indicatorDirectionCircular="clockwise"
+                app:indicatorInset="0dp"
+                app:indicatorSize="180dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:trackThickness="8dp" />
+
+            <TextView
+                android:id="@+id/track_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/circleProgress"
+                app:layout_constraintEnd_toEndOf="@id/circleProgress"
+                app:layout_constraintStart_toStartOf="@id/circleProgress"
+                app:layout_constraintTop_toTopOf="@id/circleProgress"
+                tools:text="0m / 2h 4m" />
+
+            <TextView
+                android:id="@+id/tv_subtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:gravity="center"
+                android:text="@string/total_time_wasted"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@id/circleProgress"
+                app:layout_constraintStart_toStartOf="@id/circleProgress"
+                app:layout_constraintTop_toBottomOf="@id/circleProgress" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- First Row: BLOCK ALL + DAY LIMIT + INTERVAL TIMER -->
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/block_all_button"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        android:layout_width="150dp"
-        android:layout_height="86dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="142dp"
+        android:layout_marginStart="@dimen/margin_xs"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_xs"
+        android:layout_marginBottom="@dimen/margin_xs"
+        android:backgroundTint="@color/color_background_darker"
         android:contentDescription="@string/block_all"
-        android:gravity="center"
+        android:elevation="8dp"
+
         android:text="@string/block_all"
-        android:layout_marginTop="@dimen/margin_large"
         android:textColor="?attr/colorPrimary"
         app:cornerRadius="16dp"
-        app:icon="@drawable/ic_edit_24dp"
-        app:iconGravity="top"
-        app:iconSize="24dp"
-        app:layout_constraintEnd_toStartOf="@id/day_limit_button"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        app:icon="@drawable/icons8_block_120"
+        app:iconGravity="textTop"
+        app:iconSize="44dp"
+        app:iconTint="@null"
+        app:layout_constraintEnd_toStartOf="@id/daily_limit_button"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
+        app:layout_constraintTop_toBottomOf="@id/card_progress" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/day_limit_button"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        android:layout_width="150dp"
-        android:layout_height="86dp"
-        android:layout_marginStart="16dp"
-        android:contentDescription="@string/day_limit"
-        android:gravity="center"
-        android:text="@string/day_limit"
-        android:textColor="?attr/colorPrimary"
-        app:cornerRadius="16dp"
-        android:layout_marginTop="@dimen/margin_large"
-        app:icon="@drawable/ic_edit_24dp"
-        app:iconGravity="top"
-        app:iconSize="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/block_all_button"
-        app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
+        android:id="@+id/daily_limit_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="142dp"
+        android:layout_marginStart="@dimen/margin_xs"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_xs"
+        android:layout_marginBottom="@dimen/margin_xs"
+        android:backgroundTint="@color/color_background_darker"
+        android:contentDescription="@string/daily_limit"
+        android:elevation="8dp"
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/temporary_unblock_button"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        android:layout_width="150dp"
-        android:layout_height="86dp"
-        android:layout_marginTop="16dp"
-        android:contentDescription="@string/temporary_block"
-        android:text="@string/temporary_block"
+        android:text="@string/daily_limit"
         android:textColor="?attr/colorPrimary"
         app:cornerRadius="16dp"
-        app:icon="@drawable/ic_edit_24dp"
-        app:iconGravity="top"
-        app:iconSize="24dp"
+        app:icon="@drawable/icons8_timer_64"
+        app:iconGravity="textTop"
+        app:iconSize="44dp"
+        app:iconTint="@null"
         app:layout_constraintEnd_toStartOf="@id/interval_timer_button"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/block_all_button" />
+        app:layout_constraintStart_toEndOf="@id/block_all_button"
+        app:layout_constraintTop_toBottomOf="@id/card_progress" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/interval_timer_button"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-        android:layout_width="150dp"
-        android:layout_height="86dp"
-        android:layout_marginStart="16dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="142dp"
+        android:layout_marginStart="@dimen/margin_xs"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_xs"
+        android:layout_marginBottom="@dimen/margin_xs"
+        android:backgroundTint="@color/color_background_darker"
         android:contentDescription="@string/interval_timer"
-        android:gravity="center"
+        android:elevation="8dp"
         android:text="@string/interval_timer"
         android:textColor="?attr/colorPrimary"
         app:cornerRadius="16dp"
-        app:icon="@drawable/ic_edit_24dp"
-        app:iconGravity="top"
-        app:iconSize="24dp"
+        app:icon="@drawable/icons8_stopwatch_64"
+        app:iconGravity="textTop"
+        app:iconSize="44dp"
+        app:iconTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/temporary_unblock_button"
-        app:layout_constraintTop_toTopOf="@id/temporary_unblock_button" />
+        app:layout_constraintStart_toEndOf="@id/daily_limit_button"
+        app:layout_constraintTop_toBottomOf="@id/card_progress" />
 
-    <CheckBox
-        android:id="@+id/checkBoxTimerOverlay"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/config_daily_limit_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show Timer Overlay"
-        android:textColor="@color/accent_color"
-        android:textSize="14sp"
+        android:layout_height="60dp"
+        android:layout_marginTop="-15dp"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:backgroundTint="@color/color_background_darker"
+        android:contentDescription="@string/config_daily_limit_time"
+        android:elevation="2dp"
+        android:textColor="?attr/colorPrimary"
+        app:icon="@drawable/icons8_control_48"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="25dp"
+        app:iconTint="@null"
+        app:layout_constraintEnd_toEndOf="@+id/daily_limit_button"
+        app:layout_constraintStart_toStartOf="@+id/daily_limit_button"
+        app:layout_constraintTop_toBottomOf="@+id/daily_limit_button"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.App.Button.CustomCorners" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pause_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_margin="@dimen/margin_small"
+        android:backgroundTint="@color/color_background_darker"
+        android:contentDescription="@string/temporary_unblock"
+        android:elevation="8dp"
+        android:text="@string/pause"
+        android:textColor="?attr/colorPrimary"
+        app:cornerRadius="16dp"
+        app:icon="@drawable/icons8_pause_100"
+        app:iconTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/interval_timer_button" />
-
-    <Button
-        android:id="@+id/btn_rate_us"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rate Us on Play Store"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxTimerOverlay" />
-
-    <TextView
-        android:id="@+id/tv_usage_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Usage - quinta, nov. 28"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_rate_us" />
-
-    <ImageView
-        android:id="@+id/iv_tiktok"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/auto_fix"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_usage_title"
-        app:tint="@android:color/white" />
-
-    <TextView
-        android:id="@+id/tv_tiktok_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="TikTok"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/iv_tiktok"
-        app:layout_constraintEnd_toStartOf="@id/tv_tiktok_time"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@id/iv_tiktok" />
-
-    <TextView
-        android:id="@+id/tv_tiktok_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0s"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_tiktok_label"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_youtube_shorts"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/auto_fix"
-        app:tint="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_tiktok" />
+        app:layout_constraintTop_toBottomOf="@+id/config_daily_limit_button" />
 
-    <TextView
-        android:id="@+id/tv_youtube_shorts_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Youtube shorts"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/iv_youtube_shorts"
-        app:layout_constraintEnd_toStartOf="@id/tv_youtube_shorts_time"
-        app:layout_constraintStart_toEndOf="@id/iv_youtube_shorts" />
-
-    <TextView
-        android:id="@+id/tv_youtube_shorts_time"
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switch_timer_overlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0s"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_youtube_shorts_label"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_instagram_reels"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/ic_status_circle_yellow"
-        app:tint="@android:color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_youtube_shorts" />
-
-    <TextView
-        android:id="@+id/tv_instagram_reels_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Instagram reels"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/iv_instagram_reels"
-        app:layout_constraintEnd_toStartOf="@id/tv_instagram_reels_time"
-        app:layout_constraintStart_toEndOf="@id/iv_instagram_reels" />
-
-    <TextView
-        android:id="@+id/tv_instagram_reels_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="30m 41s"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_instagram_reels_label"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_facebook_reels"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/divider_vertical_with_margin"
-        app:tint="@android:color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_instagram_reels" />
-
-    <TextView
-        android:id="@+id/tv_facebook_reels_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Facebook reels"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/iv_facebook_reels"
-        app:layout_constraintEnd_toStartOf="@id/tv_facebook_reels_time"
-        app:layout_constraintStart_toEndOf="@id/iv_facebook_reels" />
-
-    <TextView
-        android:id="@+id/tv_facebook_reels_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0s"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_facebook_reels_label"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <ImageView
-        android:id="@+id/iv_snapchat_spotlight"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/baseline_feed_24"
-        app:tint="@android:color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_facebook_reels" />
-
-    <TextView
-        android:id="@+id/tv_snapchat_spotlight_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Snapchat spotlight"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/iv_snapchat_spotlight"
-        app:layout_constraintEnd_toStartOf="@id/tv_snapchat_spotlight_time"
-        app:layout_constraintStart_toEndOf="@id/iv_snapchat_spotlight" />
-
-    <TextView
-        android:id="@+id/tv_snapchat_spotlight_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0s"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_snapchat_spotlight_label"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_show_full_analytics"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:text="Show Full Analytics"
-        android:textColor="@color/accent_color"
-        android:textSize="14sp"
+        android:text="@string/show_timer_overlay"
+        android:textColor="?attr/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_snapchat_spotlight" />
+        app:layout_constraintTop_toBottomOf="@+id/pause_button" />
+
+    <!-- Bottom Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_rate_scrolless"
+        style="@style/Widget.Material3.Button.ElevatedButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/help_button"
+        android:text="@string/rate_scrolless"
+        android:textColor="?attr/colorPrimary"
+        app:backgroundTint="@color/color_background_darker"
+        app:icon="@drawable/baseline_rate_review_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:rippleColor="?attr/colorPrimary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

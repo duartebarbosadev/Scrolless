@@ -6,8 +6,7 @@ package com.scrolless.app.features.home
 
 enum class BlockOption {
     BlockAll,
-    DayLimit,
-    TemporaryUnblock,
+    DailyLimit,
     IntervalTimer,
     NothingSelected
 }
