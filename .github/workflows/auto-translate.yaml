@@ -26,6 +26,7 @@ jobs:
         id: translate
         uses: duartebarbosadev/Android-Resource-Translator@main
         env:
+          INPUT_LOG_TRACE: "true"
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       - name: Create Pull Request
