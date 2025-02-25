@@ -80,7 +80,7 @@ class AppProviderImpl(context: Context) : AppProvider {
 
     private fun readBlockConfigFromCache(): BlockConfig {
         val blockOption = cacheManager.read(PREF_BLOCK_OPTION, BlockOption.NothingSelected)
-        val timeLimit = cacheManager.read(PREF_TIME_LIMIT, 20000L)
+        val timeLimit = cacheManager.read(PREF_TIME_LIMIT, 0L)
         val intervalLength = cacheManager.read(PREF_INTERVAL_LENGTH, 1000L)
         return BlockConfig(blockOption, timeLimit, intervalLength)
     }

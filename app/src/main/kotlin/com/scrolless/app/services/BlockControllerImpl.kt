@@ -48,13 +48,12 @@ class BlockControllerImpl(
     private fun createHandlerForConfig(config: BlockConfig): BlockOptionHandler =
         when (config.blockOption) {
             BlockOption.BlockAll -> BlockAllBlockHandler()
-            BlockOption.DayLimit -> DayLimitBlockHandler(config.timeLimit)
+            BlockOption.DailyLimit -> DayLimitBlockHandler(config.timeLimit)
             BlockOption.IntervalTimer -> IntervalTimerBlockHandler(
                 config.timeLimit,
                 config.intervalLength,
             )
 
-            BlockOption.TemporaryUnblock -> TemporaryUnblockBlockHandler(config.timeLimit)
             BlockOption.NothingSelected -> NothingSelectedBlockHandler()
         }
 

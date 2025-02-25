@@ -17,6 +17,8 @@
 
     <color name="color_background">#F5F2F5</color>
     <color name="color_background_dark">#24292E</color>
+    <color name="color_background_darker">#1C1F24</color>
+
 
     <color name="color_card_view_light">#FFFFFF</color>
     <color name="color_card_view_dark">#3B3E43</color>

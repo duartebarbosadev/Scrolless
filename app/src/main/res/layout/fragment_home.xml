@@ -4,6 +4,7 @@
 -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,7 +23,7 @@
         android:paddingVertical="@dimen/in_row_button_padding"
         android:text="@string/help"
         android:textColor="?attr/colorPrimary"
-        android:tint="?attr/colorPrimary"
+        app:backgroundTint="@color/color_background_darker"
         app:icon="@drawable/baseline_help_outline_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -37,7 +38,7 @@
         android:layout_marginTop="@dimen/margin_large"
         app:cardBackgroundColor="@color/color_background_dark"
         app:cardCornerRadius="@dimen/rounded_corners"
-        app:cardElevation="8dp"
+        app:cardElevation="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/detailsDeleteButton">
@@ -63,18 +64,18 @@
                 app:trackThickness="8dp" />
 
             <TextView
-                android:id="@+id/tv_time"
+                android:id="@+id/track_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="30m / 2h 4m"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@id/circleProgress"
                 app:layout_constraintEnd_toEndOf="@id/circleProgress"
                 app:layout_constraintStart_toStartOf="@id/circleProgress"
-                app:layout_constraintTop_toTopOf="@id/circleProgress" />
+                app:layout_constraintTop_toTopOf="@id/circleProgress"
+                tools:text="0m / 2h 4m" />
 
             <TextView
                 android:id="@+id/tv_subtitle"
@@ -93,101 +94,129 @@
 
     </androidx.cardview.widget.CardView>
 
-    <!-- First Row: BLOCK ALL + DAY LIMIT -->
+    <!-- First Row: BLOCK ALL + DAY LIMIT + INTERVAL TIMER -->
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/block_all_button"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_margin="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_large"
-        android:backgroundTint="@color/color_background_dark"
+        android:layout_height="142dp"
+        android:layout_marginStart="@dimen/margin_xs"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_xs"
+        android:layout_marginBottom="@dimen/margin_xs"
+        android:backgroundTint="@color/color_background_darker"
         android:contentDescription="@string/block_all"
-        android:gravity="center"
+        android:elevation="8dp"
+
         android:text="@string/block_all"
         android:textColor="?attr/colorPrimary"
         app:cornerRadius="16dp"
-        app:icon="@drawable/ic_edit_24dp"
+        app:icon="@drawable/icons8_block_120"
         app:iconGravity="textTop"
         app:iconSize="44dp"
-        app:layout_constraintEnd_toStartOf="@+id/day_limit_button"
-        app:layout_constraintHorizontal_chainStyle="packed"
+        app:iconTint="@null"
+        app:layout_constraintEnd_toStartOf="@id/daily_limit_button"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/card_progress" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/day_limit_button"
+        android:id="@+id/daily_limit_button"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_margin="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_large"
-        android:backgroundTint="@color/color_background_dark"
-        android:contentDescription="@string/block_all"
-        android:gravity="center"
+        android:layout_height="142dp"
+        android:layout_marginStart="@dimen/margin_xs"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_xs"
+        android:layout_marginBottom="@dimen/margin_xs"
+        android:backgroundTint="@color/color_background_darker"
+        android:contentDescription="@string/daily_limit"
+        android:elevation="8dp"
+
         android:text="@string/daily_limit"
         android:textColor="?attr/colorPrimary"
         app:cornerRadius="16dp"
-        app:icon="@drawable/ic_edit_24dp"
+        app:icon="@drawable/icons8_timer_64"
         app:iconGravity="textTop"
         app:iconSize="44dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:iconTint="@null"
+        app:layout_constraintEnd_toStartOf="@id/interval_timer_button"
         app:layout_constraintStart_toEndOf="@id/block_all_button"
         app:layout_constraintTop_toBottomOf="@id/card_progress" />
-
-    <!-- Second Row: TEMPORARY UNBLOCK + INTERVAL TIMER -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/temporary_unblock_button"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_margin="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_large"
-        android:backgroundTint="@color/color_background_dark"
-        android:contentDescription="@string/temporary_unblock"
-        android:gravity="center"
-        android:text="@string/temporary_unblock"
-        android:textColor="?attr/colorPrimary"
-        app:icon="@drawable/ic_edit_24dp"
-        app:cornerRadius="16dp"
-        app:iconGravity="textTop"
-        app:iconSize="44dp"
-        app:layout_constraintEnd_toStartOf="@+id/interval_timer_button"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/day_limit_button" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/interval_timer_button"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_margin="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_large"
-        android:backgroundTint="@color/color_background_dark"
+        android:layout_height="142dp"
+        android:layout_marginStart="@dimen/margin_xs"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_xs"
+        android:layout_marginBottom="@dimen/margin_xs"
+        android:backgroundTint="@color/color_background_darker"
         android:contentDescription="@string/interval_timer"
-        android:gravity="center"
+        android:elevation="8dp"
         android:text="@string/interval_timer"
         android:textColor="?attr/colorPrimary"
         app:cornerRadius="16dp"
-        app:icon="@drawable/ic_edit_24dp"
+        app:icon="@drawable/icons8_stopwatch_64"
         app:iconGravity="textTop"
         app:iconSize="44dp"
+        app:iconTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/temporary_unblock_button"
-        app:layout_constraintTop_toBottomOf="@id/day_limit_button" />
+        app:layout_constraintStart_toEndOf="@id/daily_limit_button"
+        app:layout_constraintTop_toBottomOf="@id/card_progress" />
 
-    <!-- Switch below the second row -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/config_daily_limit_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginTop="-15dp"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:backgroundTint="@color/color_background_darker"
+        android:contentDescription="@string/config_daily_limit_time"
+        android:elevation="2dp"
+        android:textColor="?attr/colorPrimary"
+        app:icon="@drawable/icons8_control_48"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconSize="25dp"
+        app:iconTint="@null"
+        app:layout_constraintEnd_toEndOf="@+id/daily_limit_button"
+        app:layout_constraintStart_toStartOf="@+id/daily_limit_button"
+        app:layout_constraintTop_toBottomOf="@+id/daily_limit_button"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.App.Button.CustomCorners" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pause_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_margin="@dimen/margin_small"
+        android:backgroundTint="@color/color_background_darker"
+        android:contentDescription="@string/temporary_unblock"
+        android:elevation="8dp"
+        android:text="@string/pause"
+        android:textColor="?attr/colorPrimary"
+        app:cornerRadius="16dp"
+        app:icon="@drawable/icons8_pause_100"
+        app:iconTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/config_daily_limit_button" />
+
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switch_timer_overlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_large"
         android:text="@string/show_timer_overlay"
         android:textColor="?attr/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/interval_timer_button" />
+        app:layout_constraintTop_toBottomOf="@+id/pause_button" />
 
     <!-- Bottom Button -->
     <com.google.android.material.button.MaterialButton
@@ -198,7 +227,7 @@
         android:contentDescription="@string/help_button"
         android:text="@string/rate_scrolless"
         android:textColor="?attr/colorPrimary"
-        android:tint="?attr/colorPrimary"
+        app:backgroundTint="@color/color_background_darker"
         app:icon="@drawable/baseline_rate_review_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.Monet"> <!-- TODO What about other colors test -->
+        android:theme="@style/AppTheme">
         <service
             android:name=".services.ScrollessBlockAccessibilityService"
             android:enabled="true"

@@ -1,21 +1,29 @@
 /*
- * Copyright (C) 2024, Scrolless
+ * Copyright (C) 2025, Scrolless
  * All rights reserved.
  */
 package com.scrolless.app.features.home
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.provider.Settings
-import android.widget.Toast
+import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import com.maxkeppeler.sheets.duration.DurationSheet
+import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.maxkeppeler.sheets.duration.DurationTimeFormat
 import com.scrolless.app.R
 import com.scrolless.app.base.BaseFragment
@@ -25,32 +33,57 @@ import com.scrolless.app.provider.UsageTracker
 import com.scrolless.app.services.ScrollessBlockAccessibilityService
 import com.scrolless.framework.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     companion object {
         @JvmStatic
         fun newInstance() = HomeFragment()
+
+        private const val FEATURE_NOT_IMPLEMENTED_ALPHA = 0.5f
     }
 
     @Inject
     lateinit var appProvider: AppProvider
 
+    private var lastProgress = 0
+    private val maxProgress = 100
+
     @Inject
     lateinit var usageTracker: UsageTracker
 
+
     override fun onViewReady(bundle: Bundle?) {
+
+        val rootView = binding.root
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
+            val systemBarsInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(top = systemBarsInsets.top, bottom = systemBarsInsets.bottom)
+            insets  // Return the insets instead of consuming them
+        }
+
+
         observeFlow(appProvider.blockConfigFlow) { config ->
             updateUIForBlockOption(config.blockOption)
-            updateInfoText(usageTracker.dailyUsageInMemory, config.timeLimit)
+            updateInfoText(
+                usageTracker.dailyUsageInMemory,
+                config.blockOption == BlockOption.DailyLimit,
+                config.timeLimit,
+            )
 
-            binding.switchTimerOverlay.isVisible = config.blockOption == BlockOption.DayLimit
+            binding.switchTimerOverlay.isVisible = config.blockOption == BlockOption.DailyLimit
         }
 
         startGradientAnimation()
 
         observeFlow(usageTracker.dailyUsageInMemoryFlow) { config ->
-            updateInfoText(config, appProvider.blockConfig.timeLimit)
+            updateInfoText(
+                config,
+                appProvider.blockConfig.blockOption == BlockOption.DailyLimit,
+                appProvider.blockConfig.timeLimit,
+            )
         }
 
 //        binding.btnSettings.setOnClickListener {
@@ -72,60 +105,66 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             updateUIForBlockOption(newBlockOption)
         }
 
-        binding.dayLimitButton.setOnClickListener {
+        binding.dailyLimitButton.setOnClickListener {
             val currentConfig = appProvider.blockConfig
 
             // Toggle selection
-            val newBlockOption = if (currentConfig.blockOption == BlockOption.DayLimit) {
+            val newBlockOption = if (currentConfig.blockOption == BlockOption.DailyLimit) {
                 BlockOption.NothingSelected
             } else {
-                BlockOption.DayLimit
+                BlockOption.DailyLimit
             }
 
-            appProvider.blockConfig = currentConfig.copy(blockOption = newBlockOption)
-            updateUIForBlockOption(newBlockOption)
-
-            if (newBlockOption == BlockOption.DayLimit) {
-                DurationSheet().show(requireContext(), childFragmentManager) {
-                    title(R.string.duration)
-                    format(DurationTimeFormat.HH_MM)
-                    onPositive { durationTimeInSeconds: Long ->
-                        val newTimeLimit = durationTimeInSeconds * 1000
-                        val updatedConfig = appProvider.blockConfig.copy(timeLimit = newTimeLimit)
+            if (appProvider.blockConfig.timeLimit == 0L) {
+                showDurationPicker(
+                    onSuccess = {
+                        val updatedConfig =
+                            appProvider.blockConfig.copy(blockOption = newBlockOption)
                         appProvider.blockConfig = updatedConfig
-                    }
-                }
-            }
-        }
-
-        binding.temporaryUnblockButton.setOnClickListener {
-            val currentConfig = appProvider.blockConfig
-
-            // Toggle selection
-            val newBlockOption = if (currentConfig.blockOption == BlockOption.TemporaryUnblock) {
-                BlockOption.NothingSelected
+                        updateUIForBlockOption(newBlockOption)
+                    },
+                    onCancel = {
+                        // Nothing to do
+                    },
+                )
             } else {
-                BlockOption.TemporaryUnblock
+                appProvider.blockConfig = currentConfig.copy(blockOption = newBlockOption)
+                updateUIForBlockOption(newBlockOption)
             }
-
-            appProvider.blockConfig = currentConfig.copy(blockOption = newBlockOption)
-
-            updateUIForBlockOption(newBlockOption)
         }
 
-        binding.intervalTimerButton.setOnClickListener {
-            val currentConfig = appProvider.blockConfig
-
-            // Toggle selection
-            val newBlockOption = if (currentConfig.blockOption == BlockOption.IntervalTimer) {
-                BlockOption.NothingSelected
-            } else {
-                BlockOption.IntervalTimer
+        binding.pauseButton.apply {
+            alpha = FEATURE_NOT_IMPLEMENTED_ALPHA
+            setOnClickListener {
+                showFeatureComingSoonSnackBar()
             }
-
-            appProvider.blockConfig = currentConfig.copy(blockOption = newBlockOption)
-            updateUIForBlockOption(newBlockOption)
         }
+
+        binding.intervalTimerButton.apply {
+            alpha = FEATURE_NOT_IMPLEMENTED_ALPHA
+            setOnClickListener {
+                showFeatureComingSoonSnackBar()
+            }
+        }
+
+        binding.configDailyLimitButton.setOnClickListener {
+
+            showDurationPicker(onSuccess = {}, onCancel = {})
+        }
+
+//        binding.intervalTimerButton.setOnClickListener {
+//            val currentConfig = appProvider.blockConfig
+//
+//            // Toggle selection
+//            val newBlockOption = if (currentConfig.blockOption == BlockOption.IntervalTimer) {
+//                BlockOption.NothingSelected
+//            } else {
+//                BlockOption.IntervalTimer
+//            }
+//
+//            appProvider.blockConfig = currentConfig.copy(blockOption = newBlockOption)
+//            updateUIForBlockOption(newBlockOption)
+//        }
 
         // TODO ON First run APP TUTORIAL WITH THE EXPLANATION OF WHY THE ACCESSIBILITY SERVICE IS NEEDED
         // OR if this is disabled, ask it to enable on a popup
@@ -134,8 +173,185 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         setTimerOverlayCheckBoxListener()
+
+        setupProgressIndicator()
+        // TODO add <a target="_blank" href="https://icons8.com/icon/XyExeYckBY4H/unavailable">Block</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
     }
 
+    private fun showFeatureComingSoonSnackBar() {
+        Snackbar.make(
+            requireView(),
+            getString(R.string.feature_coming_soon),
+            Snackbar.LENGTH_SHORT,
+        ).show()
+    }
+
+    /**
+     * Setup the progress indicator
+     */
+
+    private fun setupProgressIndicator() {
+
+        observeFlow(appProvider.blockConfigFlow) { config ->
+            updateProgress()
+        }
+
+        // Update progress when resuming
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                updateProgress()
+            }
+        }
+    }
+
+
+    /**
+     * show the duration picker.
+     */
+    private fun showDurationPicker(onSuccess: () -> Unit, onCancel: () -> Unit) {
+        DurationSheet().show(requireContext(), childFragmentManager) {
+            title(R.string.duration)
+            format(DurationTimeFormat.HH_MM)
+            onPositive { durationTimeInSeconds: Long ->
+                val newTimeLimit = durationTimeInSeconds * 1000
+                val updatedConfig = appProvider.blockConfig.copy(
+                    timeLimit = newTimeLimit,
+                    blockOption = BlockOption.DailyLimit,
+                )
+                appProvider.blockConfig = updatedConfig
+                onSuccess()
+            }
+            onNegative { onCancel() }
+        }
+    }
+
+    /**
+     * Updates the progress indicator
+     */
+    private fun updateProgress() {
+        val config = appProvider.blockConfig
+        val timeLimit = config.timeLimit
+
+        // If the block option is daily limit, use the daily usage,
+        //  otherwise use 0 as there's no time limit associated with the block option
+        val currentUsage =
+            if (appProvider.blockConfig.blockOption == BlockOption.DailyLimit) usageTracker.dailyUsageInMemory else 0L
+
+        val targetProgress = calculateTargetProgress(currentUsage, timeLimit)
+        animateProgressTo(targetProgress)
+    }
+
+    /**
+     * Calculates the target progress for the progress indicator.
+     *
+     * @param currentUsage The current usage time in milliseconds.
+     * @param timeLimit The time limit in milliseconds.
+     * @return The target progress (0-100).
+     *
+     * If the time limit is greater than 0,
+     *  the progress is calculated based on the ratio of current usage to the time limit.
+     * If the remaining time (timeLimit - currentUsage) is greater than 0,
+     *  the progress is a percentage of the current usage relative to the time limit.
+     * If the remaining time is not greater than 0,
+     *  it means the limit has been reached or exceeded, so the progress is set to maxProgress.
+     * If the time limit is 0 or less, it means there's no limit, so the progress is set to 0.
+     */
+    private fun calculateTargetProgress(currentUsage: Long, timeLimit: Long): Int {
+        return if (timeLimit > 0) {
+            val remainingTime = timeLimit - currentUsage
+            if (remainingTime > 0) {
+                ((currentUsage.toDouble() / timeLimit.toDouble()) * maxProgress).toInt()
+            } else { // The limit is reached or exceeded
+                maxProgress
+            }
+        } else {
+            0
+        }
+    }
+
+    /**
+     * Animate the progress indicator
+     * @param targetProgress The target progress to animate to.
+     * @param duration The duration of the animation.
+     */
+
+    private fun animateProgressTo(targetProgress: Int, duration: Long = 1000) {
+        val startProgress = lastProgress
+        val valueAnimator = ValueAnimator.ofInt(startProgress, targetProgress)
+        valueAnimator.apply {
+            this.duration = duration
+            interpolator = AccelerateDecelerateInterpolator()
+
+            addUpdateListener { animator ->
+                val progress = animator.animatedValue as Int
+                binding.circleProgress.progress = progress
+                updateProgressIndicatorColor(progress)
+                lastProgress = progress
+            }
+
+            start()
+        }
+    }
+
+    /**
+     * Updates the color of the progress indicator based on the current progress.
+     *
+     * @param progress The current progress value (0-100).
+     */
+    private fun updateProgressIndicatorColor(progress: Int) {
+        binding.circleProgress.setIndicatorColor(calculateColorForProgress(progress))
+    }
+
+    /**
+     *
+     * Calculates the color for the progress indicator based on the current progress.
+     *
+     * @param progress The current progress value (0-100).
+     * @return The color to be used for the progress indicator.
+     */
+    private fun calculateColorForProgress(progress: Int): Int {
+        val startColor = ContextCompat.getColor(requireContext(), R.color.green)
+        val middleColor = ContextCompat.getColor(requireContext(), R.color.orangeDark)
+        val endColor = ContextCompat.getColor(requireContext(), R.color.red)
+
+        val middleProgress = 75
+
+        return when {
+            progress < middleProgress -> blendColors(
+                startColor,
+                middleColor,
+                progress / middleProgress.toFloat(),
+            )
+
+            else -> blendColors(
+                middleColor,
+                endColor,
+                (progress - middleProgress) / (100f - middleProgress),
+            )
+        }
+    }
+
+    /**
+     * Blends two colors together based on a given ratio.
+     *
+     * @param color1 The first color.
+     * @param color2 The second color.
+     * @param ratio The ratio of the second color to blend (0.0-1.0).
+     * @return The blended color.
+     */
+    private fun blendColors(color1: Int, color2: Int, ratio: Float): Int =
+        android.graphics.Color.rgb(
+            (android.graphics.Color.red(color1) * (1 - ratio) + android.graphics.Color.red(color2) * ratio).toInt(),
+            (android.graphics.Color.green(color1) * (1 - ratio) + android.graphics.Color.green(
+                color2,
+            ) * ratio).toInt(),
+            (android.graphics.Color.blue(color1) * (1 - ratio) + android.graphics.Color.blue(color2) * ratio).toInt(),
+        )
+
+
+    /**
+     * Start the gradient animation.
+     */
     private fun startGradientAnimation() {
 
         val layout = binding.layout
@@ -163,39 +379,64 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onResume()
     }
 
+    /**
+     * Reset the buttons.
+     */
     private fun resetButtons() {
+
+        binding.configDailyLimitButton.beGone()
         applyButtonEffect(binding.blockAllButton, false)
-        applyButtonEffect(binding.dayLimitButton, false)
-        applyButtonEffect(binding.temporaryUnblockButton, false)
+        applyButtonEffect(binding.dailyLimitButton, false)
+        applyButtonEffect(binding.pauseButton, false)
         applyButtonEffect(binding.intervalTimerButton, false)
     }
 
+    /**
+     * Apply the button effect.
+     * @param button The button to apply the effect to.
+     * @param activated True if the button is activated, false otherwise.
+     */
+
     private fun applyButtonEffect(
-        button: MaterialButton,
-        activated: Boolean
+        button: MaterialButton, activated: Boolean
     ) {
         button.apply {
             if (activated) {
                 strokeWidth = resources.getDimensionPixelSize(R.dimen.card_stroke)
-                strokeColor =
-                    ColorStateList.valueOf(
-                        context.getColorFromAttr(androidx.appcompat.R.attr.colorPrimary),
-                    )
-                icon = ResourcesCompat.getDrawable(resources, R.drawable.book_cancel_outline, null)
+                strokeColor = ColorStateList.valueOf(
+                    context.getColorFromAttr(androidx.appcompat.R.attr.colorPrimary),
+                )
+                backgroundTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.color_background_dark,
+                    ),
+                )
             } else {
                 strokeWidth = resources.getDimensionPixelSize(R.dimen.card_stroke)
-                strokeColor =
-                    ColorStateList.valueOf(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.gray_600,
-                        ),
-                    )
-                icon = ResourcesCompat.getDrawable(resources, R.drawable.book_cancel_outline, null)
+                strokeColor = ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.gray_600,
+                    ),
+                )
+                backgroundTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.color_background_darker,
+                    ),
+                )
             }
         }
     }
 
+    /**
+     * Checks if the accessibility service is enabled for the current application.
+     *
+     * @param context The application context.
+     * @return `true` if the accessibility service is enabled, `false` otherwise.
+     *
+     */
     private fun isAccessibilityServiceEnabled(context: Context): Boolean {
         val enabledServices = Settings.Secure.getString(
             context.contentResolver,
@@ -206,6 +447,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         return enabledServices?.contains(serviceName) == true
     }
 
+    /**
+     * Open the accessibility settings.
+     * @param context The application context.
+     */
     private fun openAccessibilitySettings(context: Context) {
         val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
         context.startActivity(intent)
@@ -216,16 +461,40 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         super.onDestroyView()
     }
 
-    private fun updateInfoText(totalDailyUsage: Long, timeLimit: Long) {
-        binding.tvTime.text = totalDailyUsage.formatTime() + "/" + timeLimit.formatTime()
+    /**
+     * Updates the info text.
+     * @param totalDailyUsage The total daily usage in milliseconds.
+     * @param showTimeLimit True if the time limit should be shown, false otherwise.
+     * @param timeLimit The time limit in milliseconds.
+     */
+    private fun updateInfoText(totalDailyUsage: Long, showTimeLimit: Boolean, timeLimit: Long) {
+
+        if (showTimeLimit) {
+            binding.trackTime.text = getString(
+                R.string.time_track_limit,
+                totalDailyUsage.formatTime(),
+                timeLimit.formatTime(),
+            )
+        } else {
+            binding.trackTime.text = getString(
+                R.string.time_track, totalDailyUsage.formatTime(),
+            )
+        }
     }
 
+    /**
+     * Update the UI for the block option.
+     * @param blockOption The block option.
+     */
     private fun updateUIForBlockOption(blockOption: BlockOption) {
         resetButtons()
         when (blockOption) {
             BlockOption.BlockAll -> applyButtonEffect(binding.blockAllButton, true)
-            BlockOption.DayLimit -> applyButtonEffect(binding.dayLimitButton, true)
-            BlockOption.TemporaryUnblock -> applyButtonEffect(binding.temporaryUnblockButton, true)
+            BlockOption.DailyLimit -> {
+                binding.configDailyLimitButton.visibility = View.VISIBLE
+                applyButtonEffect(binding.dailyLimitButton, true)
+            }
+
             BlockOption.IntervalTimer -> applyButtonEffect(binding.intervalTimerButton, true)
             BlockOption.NothingSelected -> Unit // No action needed
         }

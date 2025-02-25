@@ -5,7 +5,11 @@
 package com.scrolless.app.features.main
 
 import android.os.Bundle
+import android.view.View
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.lifecycleScope
 import com.scrolless.app.R
 import com.scrolless.app.base.BaseActivity
@@ -29,13 +33,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             clearBackStack = true,
         )
 
-        isDarkMode.let {
-            if (it == false) {
-                val windowInsetsController =
-                    WindowCompat.getInsetsController(window, window.decorView)
-                windowInsetsController.isAppearanceLightNavigationBars = true
-            }
-        }
+        // Disable system insets from resizing your layout
+        WindowCompat.setDecorFitsSystemWindows(window, false)
     }
 
     override fun onBackPressed() {

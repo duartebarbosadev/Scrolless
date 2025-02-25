@@ -23,9 +23,10 @@
     <string name="total_time_wasted">Total time wasted in brain rot</string>
     <string name="show_timer_overlay">Show Timer Overlay</string>
     <string name="rate_scrolless">Rate Scrolless on Play Store</string>
-    <string name="usage_title">Usage - quinta, nov. 28</string> <!-- TODO -->
-    <string name="tiktok" translatable="false" >TikTok</string>
-    <string name="youtube_shorts" translatable="false">YouTube Shorts</string>
-    <string name="instagram_reels" translatable="false">Instagram Reels</string>
-    <string name="show_full_analytics">Show Full Analytics</string>
+    <string name="pause">Pause</string>
+
+    <string name="feature_coming_soon">Feature coming soon</string>
+    <string name="config_daily_limit_time">Configure Daily Limit Time</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="time_track">%1$s</string>
 </resources>
