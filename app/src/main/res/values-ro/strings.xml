@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Această funcție detectează când sunt deschise rolele/clipurile scurte pentru a permite Scrolless să le blocheze dacă sunt configurate.</string>
+    <string name="accessibility_settings_toast">Vă rugăm să activați Scrolless în setările de accesibilitate.</string>
+    <string name="app_exit_label">Apasă din nou butonul BACK pentru a ieși.</string>
+    <string name="block_all">Blocare completă</string>
+    <string name="config_daily_limit_time">Configurează Limita Zilnică de Timp</string>
+    <string name="daily_limit">Limită zilnică</string>
+    <string name="duration">Durată</string>
+    <string name="feature_coming_soon">Funcționalitate disponibilă în curând.</string>
+    <string name="help">Ajutor</string>
+    <string name="help_button">Buton de ajutor</string>
+    <string name="interval_timer">Cronometru Interval</string>
+    <string name="pause">Pauză</string>
+    <string name="rate_scrolless">Evaluează aplicația Scrolless pe Google Play Store</string>
+    <string name="show_timer_overlay">Afișare suprapunere cronometru</string>
+    <string name="temporary_unblock">Deblocare temporară</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Timp trecut</string>
+    <string name="total_time_wasted">Timp total pierdut în inactivitate mentală</string>
 </resources>
