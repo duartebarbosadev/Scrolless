@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">ഈ സേവനം റീൽസ്/ഷോർട്സ് തുറക്കപ്പെടുമ്പോൾ അവയുടെ കണ്ടെത്തൽ നടപടിയും സ്ക്രോൾലസ്, ക്രമീകരിച്ചാല്‍ അവയെ തടയാം.</string>
+    <string name="accessibility_settings_toast">ദയവായി സെറ്റിംഗുകളിലെ സെറ്റിംഗുകളിലേക്ക് സ്ക്രോള്ലെസ് സജീവമാക്കുക.</string>
+    <string name="app_exit_label">പുറത്തേക്കു വീണ്ടും അമർത്തിയാൽ പുറത്തേക്കു പോകുക</string>
+    <string name="block_all">പ്രതിരോധിക്കുക</string>
+    <string name="config_daily_limit_time">ദിവസപ്രതിഷ്ഠാതി സമയം ക്രമീകരിക്കുക</string>
+    <string name="daily_limit">ദിവസ പരിമിതി</string>
+    <string name="duration">അവധി</string>
+    <string name="feature_coming_soon">വിശേഷം വരികൾ വരിക്കുന്നു</string>
+    <string name="help">സഹായം</string>
+    <string name="help_button">സഹായ ബട്ടൺ</string>
+    <string name="interval_timer">ഇന്റർവൽ ടൈമർ</string>
+    <string name="pause">നിർത്തുക</string>
+    <string name="rate_scrolless">Play Storeലേക്ക് Scrolless റേറ്റ് ചെയ്യുക.</string>
+    <string name="show_timer_overlay">ടൈമർ ഓവർലേ കാണിക്കുക</string>
+    <string name="temporary_unblock">താത്പര്യം നീക്കം ചെയ്യുക</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">കഴിഞ്ഞ സമയം</string>
+    <string name="total_time_wasted">മൊത്തം സമയം ബ്രെയിൻ റോട്ടിൽ നഷ്ടപ്പെട്ടു.</string>
 </resources>

@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">இந்த சேவை ரீல்கள்/சிறுகாட்சிகள் திறக்கப்படும் போது அதை கணக்கிட்டால் Scrolless, அவைகளை தடுமாறலாக உள்ளது.</string>
+    <string name="accessibility_settings_toast">தயவுசெய்து பார்வையாளர் அமைப்புகளில் Scrolless ஐ இயக்கவும்.</string>
+    <string name="app_exit_label">விடுவும் மீது மீண்டும் அழுத்தவும்</string>
+    <string name="block_all">எல்லையை தடுக்கவும்</string>
+    <string name="config_daily_limit_time">தினசரி வரம்பு நேரத்தை அமைக்கவும்</string>
+    <string name="daily_limit">தினசரி வரம்பு</string>
+    <string name="duration">காலம்</string>
+    <string name="feature_coming_soon">அம்பரம் வருகின்றது</string>
+    <string name="help">உதவி</string>
+    <string name="help_button">உதவி பொத்தான்</string>
+    <string name="interval_timer">இடைநேர கடிகாரம்</string>
+    <string name="pause">இடைநிறுத்தம்</string>
+    <string name="rate_scrolless">Play Store-ல் Scrolless ஐ மதிப்பிடுங்கள்</string>
+    <string name="show_timer_overlay">கடிகாரம் ஓவர்லே காட்டு</string>
+    <string name="temporary_unblock">தாமதமாக தடை நீக்குக.</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">கழிந்த நேரம்</string>
+    <string name="total_time_wasted">மொத்த நேரம் மனதில் சோரவாதம் செய்யப்பட்டது</string>
 </resources>

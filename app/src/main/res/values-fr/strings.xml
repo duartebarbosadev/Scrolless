@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Ce service détecte l'ouverture des reels/shorts afin que Scrolless puisse les bloquer s'ils sont configurés.</string>
+    <string name="accessibility_settings_toast">Veuillez activer Scrolless dans les paramètres d'accessibilité.</string>
+    <string name="app_exit_label">Appuyez de nouveau sur RETOUR pour quitter</string>
+    <string name="block_all">Bloquer tout</string>
+    <string name="config_daily_limit_time">Configurer la limite quotidienne de temps</string>
+    <string name="daily_limit">Limite quotidien</string>
+    <string name="duration">Durée</string>
+    <string name="feature_coming_soon">Fonctionnalité à venir</string>
+    <string name="help">Aide</string>
+    <string name="help_button">Bouton d'aide</string>
+    <string name="interval_timer">Minuteur d'intervalle</string>
+    <string name="pause">Pause</string>
+    <string name="rate_scrolless">Noter Scrolless sur le Play Store</string>
+    <string name="show_timer_overlay">Afficher le superposition de minuterie</string>
+    <string name="temporary_unblock">Débloquer temporairement</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Temps écoulé</string>
+    <string name="total_time_wasted">Temps total perdu dans la rumination mentale</string>
 </resources>
