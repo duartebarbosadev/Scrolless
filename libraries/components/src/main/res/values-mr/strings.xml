@@ -4,4 +4,27 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">या सेवा तपासते की जेथे रील्स/शॉर्ट्स उघडले जातात तेथे Scrolless, त्यांनी त्यांच्या व्यवस्थित केल्यास त्यांना ब्लॉक करू शकतो.</string>
+    <string name="accessibility_settings_toast">कृपया पहुचतीच्या सेटिंग्जमध्ये स्क्रोलेस सक्षम करा।</string>
+    <string name="app_exit_label">पुन्हा BACK दाबा किंवा बाहेर पडण्यासाठी दाबा।</string>
+    <string name="block_all">सर्व्हर बंद करा</string>
+    <string name="config_daily_limit_time">दैनिक मर्यादा समय संरचित करा</string>
+    <string name="daily_limit">दैनिक मर्यादा</string>
+    <string name="duration">कालावधी</string>
+    <string name="feature_coming_soon">वैशिष्ट्य लवकरच येत आहे</string>
+    <string name="help">सहाय्य</string>
+    <string name="help_button">उपाय सुचवा</string>
+    <string name="interval_timer">अंतराल टायमर</string>
+    <string name="libraries_components_btn_check_internet_close">बंद करा</string>
+    <string name="libraries_components_internet_connection_error">तुमची कनेक्शन तपासा!</string>
+    <string name="libraries_components_retry">पुन: प्रयत्न करा</string>
+    <string name="libraries_components_text_check_internet_dialog_message">तुमचा इंटरनेट कनेक्शन तपासा!</string>
+    <string name="pause">विराम</string>
+    <string name="rate_scrolless">Play Store वर Scrolless ला रेट करा.</string>
+    <string name="show_timer_overlay">टाइमर ओव्हरले दाखवा</string>
+    <string name="temporary_unblock">अस्थायी अनब्लॉक</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">वेळ चालू झाली</string>
+    <string name="total_time_wasted">मानसिक विघ्नांतीत कालातील कुल समय</string>
 </resources>

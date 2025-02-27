@@ -4,4 +4,27 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Este serviço deteta quando os reels/shorts são abertos para que o Scrolless possa bloqueá-los se estiver configurado.</string>
+    <string name="accessibility_settings_toast">Ative o Scrolless nas configurações de Acessibilidade.</string>
+    <string name="app_exit_label">Pressione VOLTAR novamente para sair</string>
+    <string name="block_all">Bloquear tudo</string>
+    <string name="config_daily_limit_time">Configurar Limite Diário de Tempo</string>
+    <string name="daily_limit">Limite diário</string>
+    <string name="duration">Duração</string>
+    <string name="feature_coming_soon">Funcionalidade em breve</string>
+    <string name="help">Ajuda</string>
+    <string name="help_button">Botão de Ajuda</string>
+    <string name="interval_timer">Cronômetro de Intervalo</string>
+    <string name="libraries_components_btn_check_internet_close">Fechar</string>
+    <string name="libraries_components_internet_connection_error">Verifique a sua ligação!</string>
+    <string name="libraries_components_retry">Tentar novamente</string>
+    <string name="libraries_components_text_check_internet_dialog_message">Verifique a sua ligação à internet!</string>
+    <string name="pause">Pausa</string>
+    <string name="rate_scrolless">Classificar o Scrolless na Play Store</string>
+    <string name="show_timer_overlay">Mostrar sobreposição do temporizador</string>
+    <string name="temporary_unblock">Desbloqueio temporário</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Tempo Decorrido</string>
+    <string name="total_time_wasted">Tempo total desperdiçado em devaneio mental</string>
 </resources>

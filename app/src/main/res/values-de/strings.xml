@@ -4,4 +4,27 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Dieser Dienst erkennt, wenn Reels/Shorts geöffnet werden, damit Scrolless sie blockieren kann, wenn konfiguriert.</string>
+    <string name="accessibility_settings_toast">Bitte aktivieren Sie Scrolless in den Einstellungen für Barrierefreiheit.</string>
+    <string name="app_exit_label">Drücken Sie erneut auf ZURÜCK, um zu beenden.</string>
+    <string name="block_all">Blockieren Sie alle</string>
+    <string name="config_daily_limit_time">Tägliche Limitzeit konfigurieren</string>
+    <string name="daily_limit">Tägliches Limit</string>
+    <string name="duration">Dauer</string>
+    <string name="feature_coming_soon">Funktion demnächst verfügbar</string>
+    <string name="help">Hilfe</string>
+    <string name="help_button">Schaltfläche Hilfe</string>
+    <string name="interval_timer">Intervall-Timer</string>
+    <string name="libraries_components_btn_check_internet_close">Schließen</string>
+    <string name="libraries_components_internet_connection_error">Überprüfen Sie Ihre Verbindung!</string>
+    <string name="libraries_components_retry">Erneut versuchen</string>
+    <string name="libraries_components_text_check_internet_dialog_message">Überprüfen Sie Ihre Internetverbindung!</string>
+    <string name="pause">Pause</string>
+    <string name="rate_scrolless">Bewerten Sie Scrolless im Play Store.</string>
+    <string name="show_timer_overlay">Timer-Overlay anzeigen</string>
+    <string name="temporary_unblock">Vorübergehend entsperren</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Vergangene Zeit</string>
+    <string name="total_time_wasted">Gesamte Zeit verschwendet in Gehirnverfall</string>
 </resources>

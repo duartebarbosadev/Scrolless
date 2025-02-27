@@ -4,4 +4,27 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Αυτή η υπηρεσία ανιχνεύει όταν ανοίγονται ταινίες/σύντομα βίντεο, ώστε το Scrolless να μπορεί να τα αποκλείσει αν έχει ρυθμιστεί.</string>
+    <string name="accessibility_settings_toast">Παρακαλώ ενεργοποιήστε το Scrolless στις ρυθμίσεις προσβασιμότητας.</string>
+    <string name="app_exit_label">Πατήστε ΠΙΣΩ ξανά για να βγείτε</string>
+    <string name="block_all">Αποκλείστε όλα</string>
+    <string name="config_daily_limit_time">Ρύθμιση Ημερήσιου Όριου Χρόνου</string>
+    <string name="daily_limit">Ημερήσιο Όριο</string>
+    <string name="duration">Διάρκεια</string>
+    <string name="feature_coming_soon">Η λειτουργία θα είναι διαθέσιμη σύντομα.</string>
+    <string name="help">Βοήθεια</string>
+    <string name="help_button">Κουμπί Βοήθειας</string>
+    <string name="interval_timer">Χρονομετρητής Διαστήματος</string>
+    <string name="libraries_components_btn_check_internet_close">Κλείσιμο</string>
+    <string name="libraries_components_internet_connection_error">Ελέγξτε τη σύνδεσή σας!</string>
+    <string name="libraries_components_retry">Δοκιμάστε ξανά</string>
+    <string name="libraries_components_text_check_internet_dialog_message">Ελέγξτε τη σύνδεσή σας στο internet!</string>
+    <string name="pause">Παύση</string>
+    <string name="rate_scrolless">Βαθμολογήστε το Scrolless στο Play Store.</string>
+    <string name="show_timer_overlay">Εμφάνιση επικάλυψης χρονομέτρου</string>
+    <string name="temporary_unblock">Προσωρινή Αποκλεισμός</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Χρόνος Πέρασματος</string>
+    <string name="total_time_wasted">Συνολικός χρόνος σπατάλης σε αδράνεια του εγκεφάλου</string>
 </resources>

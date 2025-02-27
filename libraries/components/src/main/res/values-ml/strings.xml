@@ -4,4 +4,27 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">ഈ സേവനം റീൽ/ഷോർട്സ് തുറക്കപ്പെടുമ്പോൾ അതുപയോഗിക്കുന്നവരുടെ ക്രമീകരിച്ചിട്ടുള്ളതിനുനിന്ന് Scrolless, അവരെ നിയന്ത്രിക്കാൻ കഴിയും.</string>
+    <string name="accessibility_settings_toast">ദയവായി സ്ക്രോളെസ് സജീവമാക്കുക എന്ന് ആക്‌സസബിലിറ്റി ക്രമീകരണങ്ങളില്‍.</string>
+    <string name="app_exit_label">പുറത്തേക്കു തിരികെ അമർത്തിയാൽ മാത്രം പുറത്തേക്കു പോകാനാകും.</string>
+    <string name="block_all">എല്ലാം നിഷേധിക്കുക</string>
+    <string name="config_daily_limit_time">ദിനപ്പട്ടി സമയം ക്രമീകരിക്കുക</string>
+    <string name="daily_limit">ദിവസ പരിമിതി</string>
+    <string name="duration">അവധി</string>
+    <string name="feature_coming_soon">വിശേഷം വരികൾ വരിക്കുന്നു</string>
+    <string name="help">സഹായം</string>
+    <string name="help_button">സഹായ ബട്ടൺ</string>
+    <string name="interval_timer">ഇന്റർവൽ ടൈമർ</string>
+    <string name="libraries_components_btn_check_internet_close">അടിമ</string>
+    <string name="libraries_components_internet_connection_error">നിങ്ങളുടെ കണക്ഷൻ പരിശോധിക്കുക!</string>
+    <string name="libraries_components_retry">വീണ്ടുമൊരുമിച്ച്</string>
+    <string name="libraries_components_text_check_internet_dialog_message">നിങ്ങളുടെ ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക!</string>
+    <string name="pause">നിർത്തുക</string>
+    <string name="rate_scrolless">പ്ലേ സ്റ്റോർയിൽ സ്ക്രോൾലസ് റേറ്റ് ചെയ്യുക.</string>
+    <string name="show_timer_overlay">ടൈമർ ഓവർലേ കാണിക്കുക</string>
+    <string name="temporary_unblock">താത്പര്യം നീക്കം ചെയ്യുക</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">കഴിഞ്ഞ സമയം</string>
+    <string name="total_time_wasted">മറ്റുള്ള സമയം മനസ്സിൽ പോയത് ആകുന്ന സമയം</string>
 </resources>

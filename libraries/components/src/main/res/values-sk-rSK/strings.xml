@@ -4,4 +4,27 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Táto služba zistí, kedy sú otvorené zábery/krátke videá, aby ich Scrolless mohol zablokovať, ak je to nakonfigurované.</string>
+    <string name="accessibility_settings_toast">Prosím, povolte Scrolless v nastaveniach prístupnosti.</string>
+    <string name="app_exit_label">Stlačte tlačidlo SPÄŤ znova pre ukončenie.</string>
+    <string name="block_all">Blokovať všetko</string>
+    <string name="config_daily_limit_time">Nastaviť denný limit času</string>
+    <string name="daily_limit">Denný limit</string>
+    <string name="duration">Trvanie</string>
+    <string name="feature_coming_soon">Funkcia príde čoskoro</string>
+    <string name="help">Pomoc</string>
+    <string name="help_button">Tlačidlo Pomocníka</string>
+    <string name="interval_timer">Časovač intervalov</string>
+    <string name="libraries_components_btn_check_internet_close">Zavrieť</string>
+    <string name="libraries_components_internet_connection_error">Skontrolujte svoje pripojenie!</string>
+    <string name="libraries_components_retry">Opakovať</string>
+    <string name="libraries_components_text_check_internet_dialog_message">Skontrolujte svoje pripojenie k internetu!</string>
+    <string name="pause">Pozastaviť</string>
+    <string name="rate_scrolless">Hodnoťte Scrolless na obchode Play.</string>
+    <string name="show_timer_overlay">Zobraziť časovačový prekryv</string>
+    <string name="temporary_unblock">Dočasné odblokovanie</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Uplynulý čas</string>
+    <string name="total_time_wasted">Celkový čas strávený v mozgovej hnilobe</string>
 </resources>

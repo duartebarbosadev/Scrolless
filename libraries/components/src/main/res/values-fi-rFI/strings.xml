@@ -4,4 +4,27 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Tämä palvelu havaitsee, kun rullat/lyhytelokuvat avataan, jotta Scrolless voi estää ne, jos ne on määritetty.</string>
+    <string name="accessibility_settings_toast">Ole hyvä ja ota Scrolless käyttöön Saavutettavuusasetuksissa.</string>
+    <string name="app_exit_label">Paina TAKAISIN poistuaksesi uudelleen</string>
+    <string name="block_all">Estä kaikki</string>
+    <string name="config_daily_limit_time">Määritä päivittäinen rajoitusaika</string>
+    <string name="daily_limit">Päivittäinen raja</string>
+    <string name="duration">Kesto</string>
+    <string name="feature_coming_soon">Ominaisuus tulossa pian</string>
+    <string name="help">Apua</string>
+    <string name="help_button">Pika-apu</string>
+    <string name="interval_timer">Aikaväliajastin</string>
+    <string name="libraries_components_btn_check_internet_close">Sulje</string>
+    <string name="libraries_components_internet_connection_error">Tarkista yhteys!</string>
+    <string name="libraries_components_retry">Yritä uudelleen</string>
+    <string name="libraries_components_text_check_internet_dialog_message">Tarkista internet-yhteytesi!</string>
+    <string name="pause">Tauko</string>
+    <string name="rate_scrolless">Arvioi Scrolless Play Kaupassa</string>
+    <string name="show_timer_overlay">Näytä ajastimen päällekkäisyys</string>
+    <string name="temporary_unblock">Tilapäinen eston poisto</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Kulunut aika</string>
+    <string name="total_time_wasted">Kokonaisaika hukattu aivosumuun</string>
 </resources>
