@@ -4,4 +4,27 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">This service detektuje kada se otvore rolni/kratki videozapisi kako bi Scrolless mogao da ih blokira ako je konfigurisan.</string>
+    <string name="accessibility_settings_toast">Omogućite Scrolless u postavkama pristupačnosti.</string>
+    <string name="app_exit_label">Pritisnite PONOVO NAZAD da biste izašli</string>
+    <string name="block_all">Blokiraj sve</string>
+    <string name="config_daily_limit_time">Podesavaj dnevno vreme ograničenja</string>
+    <string name="daily_limit">Dnevni limit</string>
+    <string name="duration">Trajanje</string>
+    <string name="feature_coming_soon">Funkcija uskoro dolazi</string>
+    <string name="help">Pomoć</string>
+    <string name="help_button">Dugme za pomoć</string>
+    <string name="interval_timer">Tajmer intervala</string>
+    <string name="libraries_components_btn_check_internet_close">Zatvori</string>
+    <string name="libraries_components_internet_connection_error">Proverite svoju vezu!</string>
+    <string name="libraries_components_retry">Ponovi</string>
+    <string name="libraries_components_text_check_internet_dialog_message">Proverite svoju internet konekciju!</string>
+    <string name="pause">Pauza</string>
+    <string name="rate_scrolless">Oceni Scrolless na Play prodavnici</string>
+    <string name="show_timer_overlay">Prikaži preklapanje tajmera</string>
+    <string name="temporary_unblock">Odblokiraj privremeno</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Proteklo vreme</string>
+    <string name="total_time_wasted">Ukupno vreme potrošeno u mozgalici</string>
 </resources>
