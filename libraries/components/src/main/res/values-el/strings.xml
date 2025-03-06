@@ -4,4 +4,8 @@
      All rights reserved.
 -->
 <resources>
+    <string name="libraries_components_btn_check_internet_close">Κλείσιμο</string>
+    <string name="libraries_components_internet_connection_error">Έλεγξε τη σύνδεσή σου!</string>
+    <string name="libraries_components_retry">Δοκιμάστε ξανά</string>
+    <string name="libraries_components_text_check_internet_dialog_message">Ελέγξτε τη σύνδεση στο διαδίκτυο!</string>
 </resources>

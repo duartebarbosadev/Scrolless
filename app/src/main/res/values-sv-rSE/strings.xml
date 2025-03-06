@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Denna tjänst upptäcker när reels/shorts öppnas så att Scrolless kan blockera dem om det är konfigurerat.</string>
+    <string name="accessibility_settings_toast">Vänligen aktivera Scrolless i inställningarna för tillgänglighet.</string>
+    <string name="app_exit_label">Tryck BACK igen för att avsluta</string>
+    <string name="block_all">Blockera alla</string>
+    <string name="config_daily_limit_time">Konfigurera daglig tidsgräns</string>
+    <string name="daily_limit">Dagligt gräns</string>
+    <string name="duration">Varaktighet</string>
+    <string name="feature_coming_soon">Funktion kommer snart</string>
+    <string name="help">Hjälp</string>
+    <string name="help_button">Hjälpknapp</string>
+    <string name="interval_timer">Intervalltimer</string>
+    <string name="pause">Pausa</string>
+    <string name="rate_scrolless">Betygsätt Scrolless på Play Store</string>
+    <string name="show_timer_overlay">Visa timeröverläggning</string>
+    <string name="temporary_unblock">Tillfällig avblockering</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Förfluten tid</string>
+    <string name="total_time_wasted">Total tid bortkastad i meningslös aktivitet</string>
 </resources>

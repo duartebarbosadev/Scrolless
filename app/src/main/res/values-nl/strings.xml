@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Deze service detecteert wanneer reels/shorts worden geopend, zodat Scrolless ze kan blokkeren als dit is geconfigureerd.</string>
+    <string name="accessibility_settings_toast">Schakel Scrolless in de toegankelijkheidsinstellingen in.</string>
+    <string name="app_exit_label">Druk opnieuw op TERUG om te verlaten</string>
+    <string name="block_all">Blokkeer alles</string>
+    <string name="config_daily_limit_time">Stel dagelijkse limiettijd in</string>
+    <string name="daily_limit">Daglimiet</string>
+    <string name="duration">Duur</string>
+    <string name="feature_coming_soon">Functie binnenkort beschikbaar</string>
+    <string name="help">Help</string>
+    <string name="help_button">Help-knop</string>
+    <string name="interval_timer">Interval Timer</string>
+    <string name="pause">Pauze</string>
+    <string name="rate_scrolless">Beoordeel Scrolless in de Play Store</string>
+    <string name="show_timer_overlay">Toon timer-overlay</string>
+    <string name="temporary_unblock">Tijdelijke deblokkering</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Verstreken tijd</string>
+    <string name="total_time_wasted">Totaal tijd verspild aan nutteloze activiteiten</string>
 </resources>

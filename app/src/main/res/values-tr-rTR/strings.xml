@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Bu hizmet, reels/shorts açıldığında tespit eder, böylece Scrolless, yapılandırılmışsa bunları engelleyebilir.</string>
+    <string name="accessibility_settings_toast">Lütfen Erişilebilirlik ayarlarında Scrolless\'i etkinleştirin.</string>
+    <string name="app_exit_label">Çıkmak için tekrar GERI tuşuna basın</string>
+    <string name="block_all">Tümünü engelle</string>
+    <string name="config_daily_limit_time">Günlük Limit Süresini Ayarla</string>
+    <string name="daily_limit">Günlük Limit</string>
+    <string name="duration">Süre</string>
+    <string name="feature_coming_soon">Özellik yakında geliyor</string>
+    <string name="help">Yardım</string>
+    <string name="help_button">Yardım Butonu</string>
+    <string name="interval_timer">Aralık Zamanlayıcı</string>
+    <string name="pause">Duraklat</string>
+    <string name="rate_scrolless">Scrolless\'i Play Store\'da değerlendirin</string>
+    <string name="show_timer_overlay">Zamanlayıcı Katmanı Göster</string>
+    <string name="temporary_unblock">Geçici Engeli Kaldır</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Geçen Süre</string>
+    <string name="total_time_wasted">Toplam kaybedilen zaman</string>
 </resources>

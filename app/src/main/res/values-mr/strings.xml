@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">हा सेवा रील्स/शॉर्ट्स उघडल्यावर ओळखते जेणेकरून Scrolless, त्यांना अवरोधित करू शकेल जर ते कॉन्फिगर केले असेल.</string>
+    <string name="accessibility_settings_toast">कृपया ऍक्सेसिबिलिटी सेटिंग्जमध्ये Scrolless सक्षम करा.</string>
+    <string name="app_exit_label">पुन्हा बाहेर पडण्यासाठी BACK पुन्हा दाबा</string>
+    <string name="block_all">सर्व अवरोधित करा</string>
+    <string name="config_daily_limit_time">दैनिक मर्यादा वेळ सेट करा</string>
+    <string name="daily_limit">दैनिक मर्यादा</string>
+    <string name="duration">कालावधी</string>
+    <string name="feature_coming_soon">लवकरच येणारी वैशिष्ट्य</string>
+    <string name="help">सहाय्य</string>
+    <string name="help_button">सहाय्य बटण</string>
+    <string name="interval_timer">अवधि टाइमर</string>
+    <string name="pause">थांबा</string>
+    <string name="rate_scrolless">Scrolless ला Play Store वर रेट करा</string>
+    <string name="show_timer_overlay">टायमर ओव्हरले दाखवा</string>
+    <string name="temporary_unblock">अस्थायी अनब्लॉक</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">गेल्या वेळा</string>
+    <string name="total_time_wasted">एकूण वेळ वाया गेला</string>
 </resources>
