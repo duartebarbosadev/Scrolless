@@ -6,7 +6,7 @@
 <resources>
     <string name="accessibility_service_description">Αυτή η υπηρεσία ανιχνεύει πότε ανοίγουν οι ροές/σύντομα βίντεο, ώστε το Scrolless να μπορεί να τα αποκλείσει αν έχει ρυθμιστεί.</string>
     <string name="accessibility_settings_toast">Παρακαλώ ενεργοποιήστε το Scrolless στις ρυθμίσεις προσβασιμότητας.</string>
-    <string name="app_exit_label">Πατήστε ΠΙΣΩ ξανά για να εξ退出</string>
+    <string name="app_exit_label">Πατήστε ΠΙΣΩ ξανά για έξοδο</string>
     <string name="block_all">Αποκλεισμός όλων</string>
     <string name="config_daily_limit_time">Ρυθμίστε το ημερήσιο όριο χρόνου</string>
     <string name="daily_limit">Ημερήσιο Όριο</string>
