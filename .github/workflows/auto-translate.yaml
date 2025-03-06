@@ -24,7 +24,7 @@ jobs:
 
       - name: Translate strings.xml to supported languages
         id: translate
-        uses: duartebarbosadev/AndroidResourceTranslator@main
+        uses: duartebarbosadev/AndroidResourceTranslator@v0.2.1-alpha
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
