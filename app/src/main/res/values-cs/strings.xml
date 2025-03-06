@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Tato služba detekuje, kdy jsou otevřeny reels/shorts, aby je Scrolless mohl zablokovat, pokud je to nakonfigurováno.</string>
+    <string name="accessibility_settings_toast">Prosím, povolte Scrolless v nastavení přístupnosti.</string>
+    <string name="app_exit_label">Stiskněte ZPĚT znovu pro ukončení</string>
+    <string name="block_all">Zablokovat vše</string>
+    <string name="config_daily_limit_time">Nastavit denní limit času</string>
+    <string name="daily_limit">Denní limit</string>
+    <string name="duration">Doba</string>
+    <string name="feature_coming_soon">Funkce brzy přijde</string>
+    <string name="help">Pomoc</string>
+    <string name="help_button">Tlačítko nápovědy</string>
+    <string name="interval_timer">Interval Timer</string>
+    <string name="pause">Pozastavit</string>
+    <string name="rate_scrolless">Ohodnoťte Scrolless na Obchodě Play</string>
+    <string name="show_timer_overlay">Zobrazit překryvný časovač</string>
+    <string name="temporary_unblock">Dočasné odblokování</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Uplynulý čas</string>
+    <string name="total_time_wasted">Celkový čas ztracený na bezmyšlenkovité činnosti</string>
 </resources>
