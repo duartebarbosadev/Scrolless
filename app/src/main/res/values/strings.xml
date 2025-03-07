@@ -29,4 +29,22 @@
     <string name="config_daily_limit_time">Configure Daily Limit Time</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="time_track">%1$s</string>
+    
+    <!-- Step numbers - non-translatable -->
+    <string name="step_one" translatable="false">1</string>
+    <string name="step_two" translatable="false">2</string>
+    <string name="step_three" translatable="false">3</string>
+
+
+    <!-- Accessibility Explainer Dialog -->
+    <string name="accessibility_explainer_icon_description">Accessibility Permission Icon</string>
+    <string name="accessibility_explainer_title">We Need Accessibility Access</string>
+    <string name="accessibility_explainer_subtitle">Scrolless needs accessibility access to detect and block YouTube Shorts, Instagram Reels, and other addictive short-form content.</string>
+    <string name="accessibility_explainer_step1">Tap "Go to Settings" below to open Android\'s Accessibility settings</string>
+    <string name="accessibility_explainer_step2">Find and tap on "Scrolless" in the list of services</string>
+    <string name="accessibility_explainer_step3">Toggle the switch to ON to enable Scrolless to help you break free from endless scrolling</string>
+    <string name="accessibility_explainer_privacy_note">We value your privacy. Scrolless only uses this permission to detect and block addictive content. We don\'t collect any personal information.</string>
+    <string name="accessibility_explainer_open_source">Our code is 100% open source on GitHub.</string>
+    <string name="accessibility_explainer_proceed_button">Go to Settings</string>
+    <string name="accessibility_explainer_not_now_button">Not Now</string>
 </resources>

@@ -5,12 +5,9 @@
 package com.scrolless.app.features.home
 
 import android.animation.ValueAnimator
-import android.content.Context
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
-import android.provider.Settings
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.core.content.ContextCompat
@@ -28,10 +25,12 @@ import com.maxkeppeler.sheets.duration.DurationTimeFormat
 import com.scrolless.app.R
 import com.scrolless.app.base.BaseFragment
 import com.scrolless.app.databinding.FragmentHomeBinding
+import com.scrolless.app.features.dialogs.AccessibilityExplainerDialog
 import com.scrolless.app.provider.AppProvider
 import com.scrolless.app.provider.UsageTracker
 import com.scrolless.app.services.ScrollessBlockAccessibilityService
 import com.scrolless.framework.extensions.*
+import com.scrolless.framework.extensions.isAccessibilityServiceEnabled
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -88,64 +87,79 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 //        }
 
         binding.blockAllButton.setOnClickListener {
-            val currentConfig = appProvider.blockConfig
+            safeguardedAction {
+                val currentConfig = appProvider.blockConfig
 
-            // Toggle selection
-            val newBlockOption = if (currentConfig.blockOption == BlockOption.BlockAll) {
-                BlockOption.NothingSelected
-            } else {
-                BlockOption.BlockAll
+                // Toggle selection
+                val newBlockOption = if (currentConfig.blockOption == BlockOption.BlockAll) {
+                    BlockOption.NothingSelected
+                } else {
+                    BlockOption.BlockAll
+                }
+
+                appProvider.blockConfig = currentConfig.copy(blockOption = newBlockOption)
+                updateUIForBlockOption(newBlockOption)
             }
-
-            appProvider.blockConfig = currentConfig.copy(blockOption = newBlockOption)
-
-            updateUIForBlockOption(newBlockOption)
         }
 
         binding.dailyLimitButton.setOnClickListener {
-            val currentConfig = appProvider.blockConfig
+            safeguardedAction {
+                val currentConfig = appProvider.blockConfig
 
-            // Toggle selection
-            val newBlockOption = if (currentConfig.blockOption == BlockOption.DailyLimit) {
-                BlockOption.NothingSelected
-            } else {
-                BlockOption.DailyLimit
-            }
+                // Toggle selection
+                val newBlockOption = if (currentConfig.blockOption == BlockOption.DailyLimit) {
+                    BlockOption.NothingSelected
+                } else {
+                    BlockOption.DailyLimit
+                }
 
-            if (appProvider.blockConfig.timeLimit == 0L) {
-                showDurationPicker(
-                    onSuccess = {
-                        val updatedConfig =
-                            appProvider.blockConfig.copy(blockOption = newBlockOption)
-                        appProvider.blockConfig = updatedConfig
-                        updateUIForBlockOption(newBlockOption)
-                    },
-                    onCancel = {
-                        // Nothing to do
-                    },
-                )
-            } else {
-                appProvider.blockConfig = currentConfig.copy(blockOption = newBlockOption)
-                updateUIForBlockOption(newBlockOption)
+                if (appProvider.blockConfig.timeLimit == 0L) {
+                    showDurationPicker(
+                        onSuccess = {
+                            val updatedConfig =
+                                appProvider.blockConfig.copy(blockOption = newBlockOption)
+                            appProvider.blockConfig = updatedConfig
+                            updateUIForBlockOption(newBlockOption)
+                        },
+                        onCancel = {
+                            // Nothing to do
+                        },
+                    )
+                } else {
+                    appProvider.blockConfig = currentConfig.copy(blockOption = newBlockOption)
+                    updateUIForBlockOption(newBlockOption)
+                }
             }
         }
 
         binding.pauseButton.apply {
             alpha = FEATURE_NOT_IMPLEMENTED_ALPHA
             setOnClickListener {
-                showFeatureComingSoonSnackBar()
+                safeguardedAction {
+                    showFeatureComingSoonSnackBar()
+                }
             }
         }
 
         binding.intervalTimerButton.apply {
             alpha = FEATURE_NOT_IMPLEMENTED_ALPHA
             setOnClickListener {
-                showFeatureComingSoonSnackBar()
+                safeguardedAction {
+                    showFeatureComingSoonSnackBar()
+                }
             }
         }
 
         binding.configDailyLimitButton.setOnClickListener {
-            showDurationPicker(onSuccess = {}, onCancel = {})
+            safeguardedAction {
+                showDurationPicker(onSuccess = {}, onCancel = {})
+            }
+        }
+
+        binding.detailsHelpButton.setOnClickListener {
+            if (!requireContext().isAccessibilityServiceEnabled(HomeFragment::class.java)) {
+                showAccessibilityExplainerDialog()
+            }
         }
 
 //        binding.intervalTimerButton.setOnClickListener {
@@ -162,16 +176,33 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 //            updateUIForBlockOption(newBlockOption)
 //        }
 
-        // TODO ON First run APP TUTORIAL WITH THE EXPLANATION OF WHY THE ACCESSIBILITY SERVICE IS NEEDED
-        // OR if this is disabled, ask it to enable on a popup
-        if (!isAccessibilityServiceEnabled(requireContext())) {
-            openAccessibilitySettings(requireContext())
-        }
-
         setTimerOverlayCheckBoxListener()
 
         setupProgressIndicator()
         // TODO add <a target="_blank" href="https://icons8.com/icon/XyExeYckBY4H/unavailable">Block</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+    }
+
+    /**
+     * Runs an action only if the accessibility service is enabled,
+     * otherwise shows the accessibility explainer dialog.
+     *
+     * @param action The action to run if the accessibility service is enabled.
+     */
+    private inline fun safeguardedAction(crossinline action: () -> Unit) {
+        if (requireContext().isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+            action()
+        } else {
+            showAccessibilityExplainerDialog()
+        }
+    }
+
+    /**
+     * Shows the accessibility explainer dialog to guide the user through enabling
+     * the accessibility service required for the app to function properly.
+     */
+    private fun showAccessibilityExplainerDialog() {
+        val dialog = AccessibilityExplainerDialog.newInstance()
+        dialog.show(childFragmentManager, AccessibilityExplainerDialog.TAG)
     }
 
     private fun showFeatureComingSoonSnackBar() {
@@ -420,33 +451,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 )
             }
         }
-    }
-
-    /**
-     * Checks if the accessibility service is enabled for the current application.
-     *
-     * @param context The application context.
-     * @return `true` if the accessibility service is enabled, `false` otherwise.
-     *
-     */
-    private fun isAccessibilityServiceEnabled(context: Context): Boolean {
-        val enabledServices = Settings.Secure.getString(
-            context.contentResolver,
-            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
-        )
-        val serviceName =
-            "${context.packageName}/${ScrollessBlockAccessibilityService::class.java.name}"
-        return enabledServices?.contains(serviceName) == true
-    }
-
-    /**
-     * Open the accessibility settings.
-     * @param context The application context.
-     */
-    private fun openAccessibilitySettings(context: Context) {
-        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-        context.startActivity(intent)
-        context.showToast(getString(R.string.accessibility_settings_toast))
     }
 
     override fun onDestroyView() {

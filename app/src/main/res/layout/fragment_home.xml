@@ -15,7 +15,7 @@
 
     <!-- Top Button -->
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/detailsDeleteButton"
+        android:id="@+id/detailsHelpButton"
         style="@style/Widget.Material3.Button.ElevatedButton.Icon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         app:cardElevation="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailsDeleteButton">
+        app:layout_constraintTop_toBottomOf="@id/detailsHelpButton">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
