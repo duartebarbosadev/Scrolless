@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Acest serviciu detectează când sunt deschise reel-uri/shorts pentru ca Scrolless să le poată bloca, dacă este configurat.</string>
+    <string name="accessibility_settings_toast">Vă rugăm să activați Scrolless în setările de accesibilitate.</string>
+    <string name="app_exit_label">Apasă din nou ÎNAPOI pentru a ieși</string>
+    <string name="block_all">Blochează tot</string>
+    <string name="config_daily_limit_time">Configurează limita zilnică de timp</string>
+    <string name="daily_limit">Limit zilnic</string>
+    <string name="duration">Durată</string>
+    <string name="feature_coming_soon">Funcția va fi disponibilă în curând</string>
+    <string name="help">Ajutor</string>
+    <string name="help_button">Buton Ajutor</string>
+    <string name="interval_timer">Cronometru de intervale</string>
+    <string name="pause">Pauză</string>
+    <string name="rate_scrolless">Evaluează Scrolless pe Play Store</string>
+    <string name="show_timer_overlay">Afișează suprapunerea temporizatorului</string>
+    <string name="temporary_unblock">Deblocare temporară</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Timp scurs</string>
+    <string name="total_time_wasted">Timp total pierdut în activități inutile</string>
 </resources>

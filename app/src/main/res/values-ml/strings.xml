@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">ഈ സേവനം റീൽസ്/ഷോർട്ടുകൾ തുറക്കുമ്പോൾ കണ്ടെത്തുന്നു, അതിനാൽ Scrolless, അത് തടയാൻ ക്രമീകരിച്ചാൽ തടയാൻ കഴിയും.</string>
+    <string name="accessibility_settings_toast">ദയവായി ആക്സസിബിലിറ്റി ക്രമീകരണങ്ങളിൽ Scrolless സജീവമാക്കുക.</string>
+    <string name="app_exit_label">മടങ്ങ് ബട്ടൺ വീണ്ടും അമർത്തുക, പുറത്തുപോകാൻ</string>
+    <string name="block_all">എല്ലാം തടയുക</string>
+    <string name="config_daily_limit_time">ദിവസം പരിധി സമയം ക്രമീകരിക്കുക</string>
+    <string name="daily_limit">ദിവസം പരിധി</string>
+    <string name="duration">കാലാവധി</string>
+    <string name="feature_coming_soon">ശ്രേഷ്ഠത ഉടൻ വരുന്നു</string>
+    <string name="help">സഹായം</string>
+    <string name="help_button">സഹായ ബട്ടൺ</string>
+    <string name="interval_timer">ഇന്റർവൽ ടൈമർ</string>
+    <string name="pause">തടസ്സം</string>
+    <string name="rate_scrolless">Play Store-ൽ Scrolless-നെ റേറ്റുചെയ്യുക</string>
+    <string name="show_timer_overlay">ടൈമർ ഓവർലേ കാണിക്കുക</string>
+    <string name="temporary_unblock">താൽക്കാലികമായി അൺബ്ലോക്ക് ചെയ്യുക</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">ചെയ്ത സമയം</string>
+    <string name="total_time_wasted">മനസ്സിന്റെ ക്ഷീണത്തിൽ ചെലവായ മൊത്തം സമയം</string>
 </resources>

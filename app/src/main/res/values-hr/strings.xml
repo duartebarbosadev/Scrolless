@@ -4,4 +4,23 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_service_description">Ova usluga otkriva kada su otvoreni reelovi/shorts kako bi Scrolless mogao blokirati njihovo prikazivanje ako je tako postavljeno.</string>
+    <string name="accessibility_settings_toast">Molimo omogućite Scrolless u postavkama pristupačnosti.</string>
+    <string name="app_exit_label">Pritisnite NATRAG ponovno za izlaz</string>
+    <string name="block_all">Blokiraj sve</string>
+    <string name="config_daily_limit_time">Konfigurirajte dnevno ograničenje vremena</string>
+    <string name="daily_limit">Dnevna granica</string>
+    <string name="duration">Trajanje</string>
+    <string name="feature_coming_soon">Značajka dolazi uskoro</string>
+    <string name="help">Pomoć</string>
+    <string name="help_button">Gumb za pomoć</string>
+    <string name="interval_timer">Interval Timer</string>
+    <string name="pause">Pauza</string>
+    <string name="rate_scrolless">Ocijenite Scrolless na Play Store-u</string>
+    <string name="show_timer_overlay">Prikaži preklopnik tajmera</string>
+    <string name="temporary_unblock">Privremeno deblokiranje</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Proteklo vrijeme</string>
+    <string name="total_time_wasted">Ukupno vrijeme izgubljeno na besmislenim aktivnostima</string>
 </resources>
