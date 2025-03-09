@@ -33,6 +33,9 @@ android {
         versionName = "0.1.0" // X.Y.Z; X = Major, Y = minor, Z = Patch level
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments += mapOf(
+            "clearPackageData" to "true"
+        )
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -67,6 +70,19 @@ android {
 
             applicationIdSuffix = ScrollessBuildType.DEBUG.applicationIdSuffix
             isDebuggable = true
+            testCoverageEnabled = false
+        }
+    }
+
+    // Add testOptions for screenshot tests
+    testOptions {
+        animationsDisabled = true
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
+        
+        // Configure the directory where screenshots will be saved
+        unitTests {
+            isReturnDefaultValues = true
+            isIncludeAndroidResources = true
         }
     }
 
@@ -115,4 +131,35 @@ dependencies {
     testImplementation(libs.test.junit)
     androidTestImplementation(libs.test.androidx.junit)
     androidTestImplementation(libs.test.androidx.espresso.core)
+
+    // Screenshot testing dependencies
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
+    androidTestImplementation("com.github.takahirom.roborazzi:roborazzi:1.6.0")
+    androidTestImplementation("com.github.takahirom.roborazzi:roborazzi-compose:1.6.0")
+    androidTestImplementation("com.github.takahirom.roborazzi:roborazzi-junit-rule:1.6.0")
+    debugImplementation("androidx.fragment:fragment-testing:1.6.2")
+    debugImplementation("androidx.test:core:1.5.0")
+    
+    // For Hilt testing
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.48")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48")
+}
+
+// Add this task to execute screenshot tests
+tasks.register("executeScreenshotTests", type = com.android.build.gradle.internal.testing.TestRunnable::class) {
+    description = "Execute screenshot tests for all variants"
+    group = "verification"
+    
+    dependsOn("assembleDebugAndroidTest")
+    
+    val testTask = this
+    android.testVariants.configureEach {
+        val variant = this
+        if (variant.name.endsWith("Debug")) {
+            testTask.dependsOn(variant.connectedInstrumentTest)
+        }
+    }
 }
