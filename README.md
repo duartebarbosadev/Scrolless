@@ -46,7 +46,7 @@ Your feedback is very important for us - we're actively working to improve the a
   Set intervals for usage and breaks, allowing controlled social media access throughout the day.
 
 - **Usage Tracking**  (Upcoming Feature)  
-  Keep track of how much time you’ve spent on Instagram Reels, TikTok, YouTube Shorts, and Facebook Reels.
+  Keep track of how much time you've spent on Instagram Reels, TikTok, YouTube Shorts, and Facebook Reels.
 
 ## Screenshots
 
@@ -54,6 +54,7 @@ Your feedback is very important for us - we're actively working to improve the a
 |-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | <img src="art/scrollessapp.png" alt="Scrolless app" width="250"> <br> UI in progress | <img src="art/block_in_action.gif" alt="Scrolless app" width="250"> <br> As soon as the user enters the reel view, the app automatically blocks it by pressing back |
 
+> **Note**: Screenshots are automatically updated by our CI pipeline whenever significant UI changes are made to the application.
 
 # Architecture
 

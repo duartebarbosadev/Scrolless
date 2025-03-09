@@ -1,0 +1,86 @@
+name: Update App Screenshots
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'app/src/main/res/layout/**'
+      - 'app/src/main/res/drawable/**'
+      - 'app/src/main/res/values/styles.xml'
+      - 'app/src/main/res/values/themes.xml'
+      - 'app/src/main/res/values/colors.xml'
+      - 'app/src/main/kotlin/com/scrolless/app/features/**/*.kt'
+      - 'libraries/components/src/main/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'app/src/main/res/layout/**'
+      - 'app/src/main/res/drawable/**'
+      - 'app/src/main/res/values/styles.xml'
+      - 'app/src/main/res/values/themes.xml'
+      - 'app/src/main/res/values/colors.xml'
+      - 'app/src/main/kotlin/com/scrolless/app/features/**/*.kt'
+      - 'libraries/components/src/main/**'
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  screenshots:
+    name: Generate App Screenshots
+    runs-on: macos-latest # Using macOS for hardware acceleration in emulators
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }} # Personal access token with write permissions
+      
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'gradle'
+      
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+      
+      - name: Create AVD and start emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          profile: pixel_3a
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          disable-animations: true
+          script: echo "Emulator started"
+      
+      - name: Run screenshot tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          arch: x86_64
+          profile: pixel_3a
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim
+          disable-animations: true
+          script: ./gradlew executeScreenshotTests -Pandroid.testInstrumentationRunnerArguments.class=com.scrolless.app.screenshots.CaptureAppScreenshotsTest
+      
+      - name: Copy screenshots to art folder
+        run: |
+          mkdir -p art/screenshots
+          cp -R app/build/outputs/screenshots/debug/* art/screenshots/
+          
+      - name: Update main screenshots
+        run: |
+          cp art/screenshots/home_screen.png art/scrollessapp.png
+          # Add more specific screenshot copies if needed
+      
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add art/
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update app screenshots [skip ci]" && git push)
