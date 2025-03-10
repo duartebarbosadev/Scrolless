@@ -7,9 +7,7 @@
     <string name="accessibility_service_description">Questo servizio rileva quando vengono aperti i reel/shorts in modo che Scrolless possa bloccarli se configurato.</string>
     <string name="accessibility_settings_toast">Per favore, abilita Scrolless nelle impostazioni di accessibilità.</string>
     <string name="app_exit_label">Premi INDIETRO di nuovo per uscire</string>
-    <string name="block_all">Blocca tutto</string>
     <string name="config_daily_limit_time">Configura il limite di tempo giornaliero</string>
-    <string name="daily_limit">Limite giornaliero</string>
     <string name="duration">Durata</string>
     <string name="feature_coming_soon">Funzionalità in arrivo</string>
     <string name="help">Aiuto</string>
@@ -18,9 +16,7 @@
     <string name="pause">Pausa</string>
     <string name="rate_scrolless">Valuta Scrolless su Play Store</string>
     <string name="show_timer_overlay">Mostra sovrapposizione timer</string>
-    <string name="temporary_unblock">Sblocco temporaneo</string>
     <string name="time_track">%1$s</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Tempo trascorso</string>
-    <string name="total_time_wasted">Tempo totale sprecato in attività senza senso</string>
 </resources>

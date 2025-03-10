@@ -7,9 +7,7 @@
     <string name="accessibility_service_description">Ova usluga detektuje kada su otvoreni reelovi/shorts kako bi Scrolless mogao da ih blokira ako je podešeno.</string>
     <string name="accessibility_settings_toast">Molimo vas da omogućite Scrolless u postavkama pristupačnosti.</string>
     <string name="app_exit_label">Pritisnite BACK ponovo da izađete</string>
-    <string name="block_all">Blokiraj sve</string>
     <string name="config_daily_limit_time">Konfigurišite dnevno ograničenje vremena</string>
-    <string name="daily_limit">Dnevni limit</string>
     <string name="duration">Trajanje</string>
     <string name="feature_coming_soon">Funkcija dolazi uskoro</string>
     <string name="help">Pomoć</string>
@@ -18,9 +16,7 @@
     <string name="pause">Pauza</string>
     <string name="rate_scrolless">Ocijenite Scrolless na Play Store</string>
     <string name="show_timer_overlay">Prikaži preklopnik tajmera</string>
-    <string name="temporary_unblock">Privremeno deblokiranje</string>
     <string name="time_track">%1$s</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Prošlo vreme</string>
-    <string name="total_time_wasted">Ukupno vreme izgubljeno na besmisleno trošenje vremena</string>
 </resources>

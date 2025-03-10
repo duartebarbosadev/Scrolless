@@ -7,20 +7,15 @@
     <string name="accessibility_service_description">Aquest servei detecta quan s\'obren reels/shorts perquè Scrolless els pugui bloquejar si està configurat.</string>
     <string name="accessibility_settings_toast">Si us plau, habiliteu Scrolless a la configuració d\'accessibilitat.</string>
     <string name="app_exit_label">Prem el botó enrere de nou per sortir</string>
-    <string name="block_all">Bloqueja-ho tot</string>
     <string name="config_daily_limit_time">Configura el límit diari de temps</string>
-    <string name="daily_limit">Límit diari</string>
     <string name="duration">Durada</string>
     <string name="feature_coming_soon">Funció disponible aviat</string>
     <string name="help">Ajuda</string>
     <string name="help_button">Botó d\'ajuda</string>
-    <string name="interval_timer">Temporitzador d\'intervals</string>
     <string name="pause">Pausa</string>
     <string name="rate_scrolless">Valora Scrolless a Play Store</string>
     <string name="show_timer_overlay">Mostra el superposador del temporitzador</string>
-    <string name="temporary_unblock">Desbloqueig temporal</string>
     <string name="time_track">%1$s</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Temps transcorregut</string>
-    <string name="total_time_wasted">Temps total perdut en activitats sense sentit</string>
 </resources>

@@ -7,9 +7,7 @@
     <string name="accessibility_service_description">Usługa ta wykrywa, kiedy otwierane są rolki/shorty, aby Scrolless mogło je zablokować, jeśli jest to skonfigurowane.</string>
     <string name="accessibility_settings_toast">Proszę włączyć Scrolless w ustawieniach dostępności.</string>
     <string name="app_exit_label">Naciśnij WSTECZ ponownie, aby wyjść</string>
-    <string name="block_all">Zablokuj wszystko</string>
     <string name="config_daily_limit_time">Skonfiguruj dzienny limit czasu</string>
-    <string name="daily_limit">Dzienny limit</string>
     <string name="duration">Czas trwania</string>
     <string name="feature_coming_soon">Funkcja wkrótce dostępna</string>
     <string name="help">Pomoc</string>
@@ -18,9 +16,7 @@
     <string name="pause">Pauza</string>
     <string name="rate_scrolless">Oceń Scrolless w Sklepie Play</string>
     <string name="show_timer_overlay">Pokaż nakładkę timera</string>
-    <string name="temporary_unblock">Tymczasowe odblokowanie</string>
     <string name="time_track">%1$s</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Czas trwania</string>
-    <string name="total_time_wasted">Całkowity czas stracony na marnowanie czasu</string>
 </resources>
