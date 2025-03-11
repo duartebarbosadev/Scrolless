@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.scrolless.android.application.flavors)
     alias(libs.plugins.scrolless.hilt)
     alias(libs.plugins.kotlin.android)
+    id("io.github.takahirom.roborazzi") version "1.6.0"
 }
 
 android {
@@ -129,23 +130,22 @@ dependencies {
 
     // Test dependencies
     testImplementation(libs.test.junit)
+    testImplementation(libs.test.robolectric)
     androidTestImplementation(libs.test.androidx.junit)
     androidTestImplementation(libs.test.androidx.espresso.core)
 
-    // Screenshot testing dependencies
-    androidTestImplementation("androidx.test:runner:1.5.2")
-    androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
-    androidTestImplementation("com.github.takahirom.roborazzi:roborazzi:1.6.0")
-    androidTestImplementation("com.github.takahirom.roborazzi:roborazzi-compose:1.6.0")
-    androidTestImplementation("com.github.takahirom.roborazzi:roborazzi-junit-rule:1.6.0")
-    debugImplementation("androidx.fragment:fragment-testing:1.6.2")
+    // Roborazzi screenshot testing dependencies
+    testImplementation("io.github.takahirom.roborazzi:roborazzi:1.6.0")
+    testImplementation("io.github.takahirom.roborazzi:roborazzi-compose:1.6.0")
+    testImplementation("io.github.takahirom.roborazzi:roborazzi-junit-rule:1.6.0")
+    
+    // For fragment testing in UI tests
+    debugImplementation(libs.test.fragment.test)
     debugImplementation("androidx.test:core:1.5.0")
     
     // For Hilt testing
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.48")
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48")
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
 }
 
 // Add this task to execute screenshot tests
@@ -162,4 +162,10 @@ tasks.register("executeScreenshotTests", type = com.android.build.gradle.interna
             testTask.dependsOn(variant.connectedInstrumentTest)
         }
     }
+}
+
+// Configure Roborazzi
+roborazzi {
+    outputDir = "build/outputs/roborazzi"
+    captureType = "compose"
 }
