@@ -7,9 +7,7 @@
     <string name="accessibility_service_description">यह सेवा यह पहचानती है कि कब रील/शॉर्ट्स खोले जाते हैं ताकि Scrolless उन्हें ब्लॉक कर सके यदि इसे कॉन्फ़िगर किया गया हो।</string>
     <string name="accessibility_settings_toast">कृपया पहुँचता सेटिंग्स में Scrolless सक्षम करें।</string>
     <string name="app_exit_label">फिर से बाहर निकलने के लिए BACK दबाएँ</string>
-    <string name="block_all">सभी ब्लॉक करें</string>
     <string name="config_daily_limit_time">दैनिक सीमा समय सेट करें</string>
-    <string name="daily_limit">दैनिक सीमा</string>
     <string name="duration">अवधि</string>
     <string name="feature_coming_soon">विशेषता जल्द ही आ रही है</string>
     <string name="help">सहायता</string>
@@ -18,9 +16,7 @@
     <string name="pause">रोकें</string>
     <string name="rate_scrolless">Scrolless को Play Store पर रेट करें</string>
     <string name="show_timer_overlay">टाइमर ओवरले दिखाएँ</string>
-    <string name="temporary_unblock">अस्थायी अनब्लॉक</string>
     <string name="time_track">%1$s</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">व्यतीत समय</string>
-    <string name="total_time_wasted">कुल समय बर्बाद हुआ</string>
 </resources>

@@ -7,9 +7,7 @@
     <string name="accessibility_service_description">Denne tjenesten oppdager når reels/shorts åpnes slik at Scrolless kan blokkere dem hvis det er konfigurert.</string>
     <string name="accessibility_settings_toast">Vennligst aktiver Scrolless i tilgjengelighetsinnstillingene.</string>
     <string name="app_exit_label">Trykk BACK igjen for å avslutte</string>
-    <string name="block_all">Blokker alt</string>
     <string name="config_daily_limit_time">Konfigurer daglig grense for tid</string>
-    <string name="daily_limit">Daglig grense</string>
     <string name="duration">Varighet</string>
     <string name="feature_coming_soon">Funksjon kommer snart</string>
     <string name="help">Hjelp</string>
@@ -18,9 +16,7 @@
     <string name="pause">Pause</string>
     <string name="rate_scrolless">Vurder Scrolless på Play Store</string>
     <string name="show_timer_overlay">Vis timeroverlegg</string>
-    <string name="temporary_unblock">Midler blokkering</string>
     <string name="time_track">%1$s</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Forløpt tid</string>
-    <string name="total_time_wasted">Total tid tapt i bortkastet tid</string>
 </resources>

@@ -7,9 +7,7 @@
     <string name="accessibility_service_description">Этот сервис обнаруживает, когда открываются ролики/шорты, чтобы Scrolless мог их заблокировать, если это настроено.</string>
     <string name="accessibility_settings_toast">Пожалуйста, включите Scrolless в настройках доступности.</string>
     <string name="app_exit_label">Нажмите НАЗАД еще раз, чтобы выйти</string>
-    <string name="block_all">Заблокировать все</string>
     <string name="config_daily_limit_time">Настроить ежедневный лимит времени</string>
-    <string name="daily_limit">Ежедневный лимит</string>
     <string name="duration">Продолжительность</string>
     <string name="feature_coming_soon">Функция скоро появится</string>
     <string name="help">Помощь</string>
@@ -18,9 +16,7 @@
     <string name="pause">Пауза</string>
     <string name="rate_scrolless">Оцените Scrolless в Play Store</string>
     <string name="show_timer_overlay">Показать наложение таймера</string>
-    <string name="temporary_unblock">Временная разблокировка</string>
     <string name="time_track">%1$s</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Затраченное время</string>
-    <string name="total_time_wasted">Общее время, потраченное на бесполезные занятия</string>
 </resources>
