@@ -4,4 +4,33 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Tilgangstillating-ikon</string>
+    <string name="accessibility_explainer_not_now_button">Ikkje no</string>
+    <string name="accessibility_explainer_open_source">Koden vår er 100 % open source på GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Vi verdset din personvern. Scrolless bruker berre denne tillatelsen for å oppdage og stoppe kortforminnhald. Vi samlar ikkje inn personleg informasjon.</string>
+    <string name="accessibility_explainer_proceed_button">Gå til Innstillingar</string>
+    <string name="accessibility_explainer_step1">Trykk "Gå til innstillingar" under for å opne Androids tilgjengelegheitsinnstillingar</string>
+    <string name="accessibility_explainer_step2">Finn applikasjonar og trykk på "Scrolless" i lista over tenester</string>
+    <string name="accessibility_explainer_step3">Snu bryteren til PÅ for å aktivere Scrolless til å hjelpe deg med å stoppe endeløs scrolling</string>
+    <string name="accessibility_explainer_subtitle">Scrolless treng tilgang til tilgjengelegheit for å oppdage og stoppe korte videoar.</string>
+    <string name="accessibility_explainer_title">Vi treng tilgang til tilgjengelegheit</string>
+    <string name="accessibility_service_description">Denne tenesta oppdagar når reels/shorts blir opna slik at Scrolless kan blokkere dei om det er konfigurert.</string>
+    <string name="accessibility_settings_toast">Vennligst aktiver Scrolless i innstillingene for tilgjengelegheit.</string>
+    <string name="app_exit_label">Trykk BAK igjen for å avslutte</string>
+    <string name="block_all">Blokker\nalle</string>
+    <string name="config_daily_limit_time">Konfigurer dagleg tidsgrense</string>
+    <string name="daily_limit">Dagleg\ngrense</string>
+    <string name="duration">Varighet</string>
+    <string name="feature_coming_soon">Funksjon kjem snart</string>
+    <string name="help">Hjelp</string>
+    <string name="help_button">Hjelpeknapp</string>
+    <string name="interval_timer">Intervall\nTimer</string>
+    <string name="pause">Pause</string>
+    <string name="rate_scrolless">Vurder Scrolless på Play Store</string>
+    <string name="show_timer_overlay">Vis tidtaker-overlay</string>
+    <string name="temporary_unblock">Desbloquear\nTemporært</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Forløpt tid</string>
+    <string name="total_time_wasted">Total tid bortkasta i mental forfall</string>
 </resources>

@@ -4,4 +4,33 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">無障礙權限圖示</string>
+    <string name="accessibility_explainer_not_now_button">現在不行</string>
+    <string name="accessibility_explainer_open_source">我們的程式碼在 GitHub 上是 100% 開源的。</string>
+    <string name="accessibility_explainer_privacy_note">我們重視您的隱私。Scrolless 僅使用此權限來檢測和停止短格式內容。我們不會收集任何個人資訊。</string>
+    <string name="accessibility_explainer_proceed_button">前往設定</string>
+    <string name="accessibility_explainer_step1">點擊下面的「前往設定」以打開 Android 的無障礙設定</string>
+    <string name="accessibility_explainer_step2">尋找應用程式並在服務列表中點擊「Scrolless」</string>
+    <string name="accessibility_explainer_step3">將開關切換至開啟，以啟用 Scrolless 幫助您停止無止境的滾動</string>
+    <string name="accessibility_explainer_subtitle">Scrolless 需要無障礙訪問權限來檢測和停止短影片。</string>
+    <string name="accessibility_explainer_title">我們需要無障礙訪問</string>
+    <string name="accessibility_service_description">此服務會檢測何時開啟短片/短片，以便 Scrolless 可以在配置的情況下阻止它們。</string>
+    <string name="accessibility_settings_toast">請在無障礙設置中啟用 Scrolless。</string>
+    <string name="app_exit_label">再按一次返回鍵以退出</string>
+    <string name="block_all">封鎖\n所有</string>
+    <string name="config_daily_limit_time">設定每日限制時間</string>
+    <string name="daily_limit">每日\n限制</string>
+    <string name="duration">持續時間</string>
+    <string name="feature_coming_soon">功能即將推出</string>
+    <string name="help">幫助</string>
+    <string name="help_button">幫助按鈕</string>
+    <string name="interval_timer">間隔\n計時器</string>
+    <string name="pause">暫停</string>
+    <string name="rate_scrolless">在 Play Store 評價 Scrolless</string>
+    <string name="show_timer_overlay">顯示計時器覆蓋層</string>
+    <string name="temporary_unblock">暫時\n解鎖</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">經過時間</string>
+    <string name="total_time_wasted">浪費在腦袋空轉上的總時間</string>
 </resources>

@@ -4,4 +4,33 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Icona Permisiune Accesibilitate</string>
+    <string name="accessibility_explainer_not_now_button">Nu acum</string>
+    <string name="accessibility_explainer_open_source">Codul nostru este 100% open source pe GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Apreciem confidențialitatea dumneavoastră. Scrolless folosește această permisiune doar pentru a detecta și opri conținutul de scurtă durată. Nu colectăm nicio informație personală.</string>
+    <string name="accessibility_explainer_proceed_button">Mergi la Setări</string>
+    <string name="accessibility_explainer_step1">Apasă "Mergi la Setări" mai jos pentru a deschide setările de Accesibilitate ale Android</string>
+    <string name="accessibility_explainer_step2">Găsește aplicațiile și apasă pe "Scrolless" în lista de servicii</string>
+    <string name="accessibility_explainer_step3">Comută întrerupătorul pe ON pentru a activa Scrolless și a te ajuta să oprești derularea fără sfârșit.</string>
+    <string name="accessibility_explainer_subtitle">Scrolless are nevoie de acces la servicii de accesibilitate pentru a detecta și opri videoclipurile scurte.</string>
+    <string name="accessibility_explainer_title">Avem nevoie de accesibilitate</string>
+    <string name="accessibility_service_description">Acest serviciu detectează când sunt deschise reels/shorts pentru ca Scrolless să le poată bloca dacă este configurat.</string>
+    <string name="accessibility_settings_toast">Vă rugăm să activați Scrolless în setările de accesibilitate.</string>
+    <string name="app_exit_label">Apasă din nou ÎNAPOI pentru a ieși</string>
+    <string name="block_all">Blochează\ntot</string>
+    <string name="config_daily_limit_time">Configurează timpul limită zilnic</string>
+    <string name="daily_limit">Limită\nZilnică</string>
+    <string name="duration">Durată</string>
+    <string name="feature_coming_soon">Funcție disponibilă în curând</string>
+    <string name="help">Ajutor</string>
+    <string name="help_button">Buton Ajutor</string>
+    <string name="interval_timer">Interval\nTemporizator</string>
+    <string name="pause">Pauză</string>
+    <string name="rate_scrolless">Evaluează Scrolless pe Play Store</string>
+    <string name="show_timer_overlay">Afișați suprapunerea temporizatorului</string>
+    <string name="temporary_unblock">Deblocare\nTemporară</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Timp scurs</string>
+    <string name="total_time_wasted">Timp total pierdut în degradare mentală</string>
 </resources>

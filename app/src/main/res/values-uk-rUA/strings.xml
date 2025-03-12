@@ -4,4 +4,33 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Іконка дозволу доступу</string>
+    <string name="accessibility_explainer_not_now_button">Не зараз</string>
+    <string name="accessibility_explainer_open_source">Наш код на 100% відкритий на GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Ми цінуємо вашу конфіденційність. Scrolless використовує цей дозвіл лише для виявлення та зупинки короткого контенту. Ми не збираємо жодної особистої інформації.</string>
+    <string name="accessibility_explainer_proceed_button">Перейти до Налаштувань</string>
+    <string name="accessibility_explainer_step1">Натисніть "Перейти до налаштувань" нижче, щоб відкрити налаштування доступності Android.</string>
+    <string name="accessibility_explainer_step2">Знайдіть програми та натисніть на "Scrolless" у списку служб</string>
+    <string name="accessibility_explainer_step3">Перемкніть перемикач на УВІМКНЕННЯ, щоб активувати Scrolless і допомогти вам зупинити безкінечне прокручування.</string>
+    <string name="accessibility_explainer_subtitle">Scrolless потребує доступу до служб доступності, щоб виявляти та зупиняти короткі відео.</string>
+    <string name="accessibility_explainer_title">Нам потрібен доступ до служби доступності</string>
+    <string name="accessibility_service_description">Ця служба виявляє, коли відкриваються рілси/короткі відео, щоб Scrolless міг їх заблокувати, якщо це налаштовано.</string>
+    <string name="accessibility_settings_toast">Будь ласка, увімкніть Scrolless у налаштуваннях доступності.</string>
+    <string name="app_exit_label">Натисніть BACK ще раз, щоб вийти</string>
+    <string name="block_all">Заблокувати\nвсе</string>
+    <string name="config_daily_limit_time">Налаштувати щоденний ліміт часу</string>
+    <string name="daily_limit">Щоденний\nліміт</string>
+    <string name="duration">Тривалість</string>
+    <string name="feature_coming_soon">Функція незабаром з\'явиться</string>
+    <string name="help">Допомога</string>
+    <string name="help_button">Кнопка допомоги</string>
+    <string name="interval_timer">Інтервал\nТаймер</string>
+    <string name="pause">Пауза</string>
+    <string name="rate_scrolless">Оцініть Scrolless у Play Store</string>
+    <string name="show_timer_overlay">Показати накладку таймера</string>
+    <string name="temporary_unblock">Тимчасове\nРозблокування</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Час, що минув</string>
+    <string name="total_time_wasted">Загальний час, витрачений на ментальне виснаження</string>
 </resources>

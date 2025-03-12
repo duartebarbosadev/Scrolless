@@ -4,4 +4,33 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">ആക്സസിബിലിറ്റി അനുമതി ഐക്കൺ</string>
+    <string name="accessibility_explainer_not_now_button">ഇപ്പോൾ അല്ല</string>
+    <string name="accessibility_explainer_open_source">നമ്മുടെ കോഡ് 100% ഓപ്പൺ സോഴ്സ് ആണ് GitHub-ൽ.</string>
+    <string name="accessibility_explainer_privacy_note">നിങ്ങളുടെ സ്വകാര്യതയെ ഞങ്ങൾ വിലമതിക്കുന്നു. Scrolless ഈ അനുമതി ചെറുകിട ഉള്ളടക്കം കണ്ടെത്താനും തടയാനും മാത്രം ഉപയോഗിക്കുന്നു. ഞങ്ങൾ ഏതെങ്കിലും വ്യക്തിഗത വിവരങ്ങൾ ശേഖരിക്കുന്നില്ല.</string>
+    <string name="accessibility_explainer_proceed_button">സജ്ജീകരണത്തിലേക്ക് പോകുക</string>
+    <string name="accessibility_explainer_step1">താഴെ "സജ്ജീകരണത്തിലേക്ക് പോകുക" എന്നതിൽ തട്ടുക, Android-ന്റെ ആക്സസിബിലിറ്റി സജ്ജീകരണങ്ങൾ തുറക്കാൻ.</string>
+    <string name="accessibility_explainer_step2">അപ്ലിക്കേഷനുകൾ കണ്ടെത്തി സേവനങ്ങളുടെ പട്ടികയിൽ "Scrolless" എന്നതിൽ ടാപ്പ് ചെയ്യുക</string>
+    <string name="accessibility_explainer_step3">സ്ക്രോലിംഗ് അവസാനിപ്പിക്കാൻ Scrolless-നെ സഹായിക്കാൻ ON-ലേക്ക് സ്വിച്ച് മാറ്റുക</string>
+    <string name="accessibility_explainer_subtitle">Scrolless-ന് ചെറുവീഡിയോകൾ കണ്ടെത്താനും നിർത്താനും ആക്സസിബിലിറ്റി ആക്സസ് ആവശ്യമാണ്.</string>
+    <string name="accessibility_explainer_title">ഞങ്ങൾക്ക് ആക്സസിബിലിറ്റി ആക്സസ് ആവശ്യമുണ്ട്</string>
+    <string name="accessibility_service_description">ഈ സേവനം റീൽസ്/ഷോർട്ടുകൾ തുറക്കുമ്പോൾ കണ്ടെത്തുന്നു, അതിനാൽ Scrolless, ക്രമീകരിച്ചാൽ അവയെ തടയാൻ കഴിയും.</string>
+    <string name="accessibility_settings_toast">ദയവായി ആക്സസിബിലിറ്റി ക്രമീകരണങ്ങളിൽ Scrolless സജീവമാക്കുക.</string>
+    <string name="app_exit_label">മടങ്ങാൻ വീണ്ടും BACK അമർത്തുക</string>
+    <string name="block_all">ബ്ലോക്ക്\nഎല്ലാം</string>
+    <string name="config_daily_limit_time">ദിവസം പരിധി സമയം ക്രമീകരിക്കുക</string>
+    <string name="daily_limit">ദൈനംദിന\nപരിമിതി</string>
+    <string name="duration">കാലാവധി</string>
+    <string name="feature_coming_soon">സവിശേഷത ഉടൻ വരുന്നു</string>
+    <string name="help">സഹായം</string>
+    <string name="help_button">സഹായ ബട്ടൺ</string>
+    <string name="interval_timer">അവധിയിടം\nടൈമർ</string>
+    <string name="pause">അവസാനിപ്പിക്കുക</string>
+    <string name="rate_scrolless">Play Store-ൽ Scrolless-നെ റേറ്റുചെയ്യുക</string>
+    <string name="show_timer_overlay">ടൈമർ ഓവർലേ കാണിക്കുക</string>
+    <string name="temporary_unblock">താൽക്കാലികമായി\nഅൺബ്ലോക്ക്</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">കഴിഞ്ഞ സമയം</string>
+    <string name="total_time_wasted">മനസ്സിന്റെ ക്ഷീണത്തിൽ കളയുന്ന മൊത്തം സമയം</string>
 </resources>

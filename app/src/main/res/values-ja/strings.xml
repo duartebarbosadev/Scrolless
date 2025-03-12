@@ -4,4 +4,33 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">アクセシビリティ許可アイコン</string>
+    <string name="accessibility_explainer_not_now_button">今はやめておきます</string>
+    <string name="accessibility_explainer_open_source">私たちのコードはGitHubで100%オープンソースです。</string>
+    <string name="accessibility_explainer_privacy_note">私たちはあなたのプライバシーを大切にしています。Scrollessはこの権限を短い形式のコンテンツを検出して停止するためにのみ使用します。私たちは個人情報を収集しません。</string>
+    <string name="accessibility_explainer_proceed_button">設定に移動</string>
+    <string name="accessibility_explainer_step1">下の「設定に移動」をタップして、Androidのアクセシビリティ設定を開いてください。</string>
+    <string name="accessibility_explainer_step2">アプリケーションを見つけて、サービスのリストから「Scrolless」をタップしてください</string>
+    <string name="accessibility_explainer_step3">スイッチをONに切り替えて、Scrollessが無限スクロールを止めるのを手伝えるようにします。</string>
+    <string name="accessibility_explainer_subtitle">Scrollessは短い動画を検出して停止するために、アクセシビリティアクセスが必要です。</string>
+    <string name="accessibility_explainer_title">アクセシビリティアクセスが必要です</string>
+    <string name="accessibility_service_description">このサービスは、Reels/Shortsが開かれたときに検出し、設定されている場合はScrollessがそれらをブロックできるようにします。</string>
+    <string name="accessibility_settings_toast">Scrollessをアクセシビリティ設定で有効にしてください。</string>
+    <string name="app_exit_label">もう一度BACKを押すと終了します</string>
+    <string name="block_all">すべてを\nブロック</string>
+    <string name="config_daily_limit_time">毎日の制限時間を設定</string>
+    <string name="daily_limit">毎日の\n制限</string>
+    <string name="duration">期間</string>
+    <string name="feature_coming_soon">機能は近日公開予定です</string>
+    <string name="help">ヘルプ</string>
+    <string name="help_button">ヘルプボタン</string>
+    <string name="interval_timer">インターバル\nタイマー</string>
+    <string name="pause">一時停止</string>
+    <string name="rate_scrolless">Play StoreでScrollessを評価してください</string>
+    <string name="show_timer_overlay">タイマーオーバーレイを表示</string>
+    <string name="temporary_unblock">一時的に\nブロック解除</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">経過時間</string>
+    <string name="total_time_wasted">脳の劣化に無駄に費やした合計時間</string>
 </resources>
