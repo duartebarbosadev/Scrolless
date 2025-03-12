@@ -6,7 +6,7 @@
 <resources>
     <string name="accessibility_explainer_icon_description">Toegangsrechtenpictogram</string>
     <string name="accessibility_explainer_not_now_button">Niet nu</string>
-    <string name="accessibility_explainer_open_source">Onze code is 100% open source op GitHub.</string>
+    <string name="accessibility_explainer_open_source">Onze code is 100\% open source op GitHub.</string>
     <string name="accessibility_explainer_privacy_note">We waarderen uw privacy. Scrolless gebruikt deze toestemming alleen om korte inhoud te detecteren en te stoppen. We verzamelen geen persoonlijke informatie.</string>
     <string name="accessibility_explainer_proceed_button">Ga naar Instellingen</string>
     <string name="accessibility_explainer_step1">Tik op "Ga naar Instellingen" hieronder om de toegankelijkheidsinstellingen van Android te openen.</string>

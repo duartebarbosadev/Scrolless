@@ -6,7 +6,7 @@
 <resources>
     <string name="accessibility_explainer_icon_description">एक्सेसिबिलिटी अनुमति आइकन</string>
     <string name="accessibility_explainer_not_now_button">अभी नहीं</string>
-    <string name="accessibility_explainer_open_source">हमारा कोड GitHub पर 100% ओपन सोर्स है।</string>
+    <string name="accessibility_explainer_open_source">हमारा कोड GitHub पर 100\% ओपन सोर्स है।</string>
     <string name="accessibility_explainer_privacy_note">हम आपकी गोपनीयता की सराहना करते हैं। Scrolless केवल इस अनुमति का उपयोग संक्षिप्त सामग्री का पता लगाने और रोकने के लिए करता है। हम कोई व्यक्तिगत जानकारी एकत्र नहीं करते हैं।</string>
     <string name="accessibility_explainer_proceed_button">सेटिंग्स पर जाएं</string>
     <string name="accessibility_explainer_step1">नीचे "सेटिंग्स पर जाएं" पर टैप करें ताकि Android की पहुंच सेटिंग्स खोली जा सकें</string>

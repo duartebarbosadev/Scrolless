@@ -6,7 +6,7 @@
 <resources>
     <string name="accessibility_explainer_icon_description">无障碍权限图标</string>
     <string name="accessibility_explainer_not_now_button">稍后再说</string>
-    <string name="accessibility_explainer_open_source">我们的代码在GitHub上是100%开源的。</string>
+    <string name="accessibility_explainer_open_source">我们的代码在GitHub上是100\%开源的。</string>
     <string name="accessibility_explainer_privacy_note">我们重视您的隐私。Scrolless 仅使用此权限来检测和阻止短视频内容。我们不收集任何个人信息。</string>
     <string name="accessibility_explainer_proceed_button">前往设置</string>
     <string name="accessibility_explainer_step1">点击下面的“前往设置”以打开Android的无障碍设置</string>

@@ -6,7 +6,7 @@
 <resources>
     <string name="accessibility_explainer_icon_description">Ikona oprávnění přístupu</string>
     <string name="accessibility_explainer_not_now_button">Ne teď</string>
-    <string name="accessibility_explainer_open_source">Náš kód je 100% open source na GitHubu.</string>
+    <string name="accessibility_explainer_open_source">Náš kód je 100\% open source na GitHubu.</string>
     <string name="accessibility_explainer_privacy_note">Ceníme si vašeho soukromí. Scrolless používá toto oprávnění pouze k detekci a zastavení krátkého obsahu. Neshromažďujeme žádné osobní informace.</string>
     <string name="accessibility_explainer_proceed_button">Přejít do nastavení</string>
     <string name="accessibility_explainer_step1">Klepněte na "Přejít do nastavení" níže pro otevření nastavení přístupnosti systému Android</string>

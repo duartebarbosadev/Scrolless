@@ -6,7 +6,7 @@
 <resources>
     <string name="accessibility_explainer_icon_description">無障礙權限圖示</string>
     <string name="accessibility_explainer_not_now_button">現在不行</string>
-    <string name="accessibility_explainer_open_source">我們的程式碼在 GitHub 上是 100% 開源的。</string>
+    <string name="accessibility_explainer_open_source">我們的程式碼在 GitHub 上是 100\% 開源的。</string>
     <string name="accessibility_explainer_privacy_note">我們重視您的隱私。Scrolless 僅使用此權限來檢測和停止短格式內容。我們不會收集任何個人資訊。</string>
     <string name="accessibility_explainer_proceed_button">前往設定</string>
     <string name="accessibility_explainer_step1">點擊下面的「前往設定」以打開 Android 的無障礙設定</string>

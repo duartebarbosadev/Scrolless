@@ -6,7 +6,7 @@
 <resources>
     <string name="accessibility_explainer_icon_description">アクセシビリティ許可アイコン</string>
     <string name="accessibility_explainer_not_now_button">今はやめておきます</string>
-    <string name="accessibility_explainer_open_source">私たちのコードはGitHubで100%オープンソースです。</string>
+    <string name="accessibility_explainer_open_source">私たちのコードはGitHubで100\%オープンソースです。</string>
     <string name="accessibility_explainer_privacy_note">私たちはあなたのプライバシーを大切にしています。Scrollessはこの権限を短い形式のコンテンツを検出して停止するためにのみ使用します。私たちは個人情報を収集しません。</string>
     <string name="accessibility_explainer_proceed_button">設定に移動</string>
     <string name="accessibility_explainer_step1">下の「設定に移動」をタップして、Androidのアクセシビリティ設定を開いてください。</string>

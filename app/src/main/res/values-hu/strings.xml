@@ -6,7 +6,7 @@
 <resources>
     <string name="accessibility_explainer_icon_description">Hozzáférési engedély ikon</string>
     <string name="accessibility_explainer_not_now_button">Most nem</string>
-    <string name="accessibility_explainer_open_source">A kódunk 100%-ban nyílt forráskódú a GitHubon.</string>
+    <string name="accessibility_explainer_open_source">A kódunk 100\%-ban nyílt forráskódú a GitHubon.</string>
     <string name="accessibility_explainer_privacy_note">Tiszteletben tartjuk a magánéletét. A Scrolless ezt az engedélyt csak a rövid formátumú tartalom észlelésére és leállítására használja. Nem gyűjtünk személyes adatokat.</string>
     <string name="accessibility_explainer_proceed_button">Menj a Beállításokhoz</string>
     <string name="accessibility_explainer_step1">Koppintson az alábbi "Beállítások megnyitása" gombra az Android hozzáférhetőségi beállításainak megnyitásához</string>
