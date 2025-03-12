@@ -4,4 +4,33 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Icono de permiso de accesibilidad</string>
+    <string name="accessibility_explainer_not_now_button">No ahora</string>
+    <string name="accessibility_explainer_open_source">Nuestro código es 100\% de código abierto en GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Valoramos su privacidad. Scrolless solo utiliza este permiso para detectar y detener contenido de formato corto. No recopilamos ninguna información personal.</string>
+    <string name="accessibility_explainer_proceed_button">Ir a Configuración</string>
+    <string name="accessibility_explainer_step1">Toca "Ir a Configuración" abajo para abrir la configuración de Accesibilidad de Android.</string>
+    <string name="accessibility_explainer_step2">Encuentra aplicaciones y toca "Scrolless" en la lista de servicios</string>
+    <string name="accessibility_explainer_step3">Activa el interruptor para habilitar Scrolless y ayudarte a detener el desplazamiento infinito.</string>
+    <string name="accessibility_explainer_subtitle">Scrolless necesita acceso de accesibilidad para detectar y detener videos cortos.</string>
+    <string name="accessibility_explainer_title">Necesitamos acceso a la accesibilidad</string>
+    <string name="accessibility_service_description">Este servicio detecta cuando se abren reels/shorts para que Scrolless pueda bloquearlos si está configurado.</string>
+    <string name="accessibility_settings_toast">Por favor, activa Scrolless en la configuración de Accesibilidad.</string>
+    <string name="app_exit_label">Presiona ATRÁS nuevamente para salir</string>
+    <string name="block_all">Bloquear\ntodo</string>
+    <string name="config_daily_limit_time">Configurar tiempo límite diario</string>
+    <string name="daily_limit">Límite\ndiario</string>
+    <string name="duration">Duración</string>
+    <string name="feature_coming_soon">Función disponible pronto</string>
+    <string name="help">Ayuda</string>
+    <string name="help_button">Botón de ayuda</string>
+    <string name="interval_timer">Intervalo\nTemporizador</string>
+    <string name="pause">Pausa</string>
+    <string name="rate_scrolless">Califica Scrolless en Play Store</string>
+    <string name="show_timer_overlay">Mostrar superposición del temporizador</string>
+    <string name="temporary_unblock">Desbloquear\nTemporalmente</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Tiempo transcurrido</string>
+    <string name="total_time_wasted">Tiempo total perdido en deterioro mental</string>
 </resources>

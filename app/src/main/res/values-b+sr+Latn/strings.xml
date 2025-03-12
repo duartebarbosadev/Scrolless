@@ -4,4 +4,33 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Ikona dozvole za pristupnost</string>
+    <string name="accessibility_explainer_not_now_button">Ne sada</string>
+    <string name="accessibility_explainer_open_source">Naš kod je 100\% otvorenog koda na GitHub-u.</string>
+    <string name="accessibility_explainer_privacy_note">Cenimo vašu privatnost. Scrolless koristi ovu dozvolu samo za otkrivanje i zaustavljanje kratkog sadržaja. Ne prikupljamo nikakve lične informacije.</string>
+    <string name="accessibility_explainer_proceed_button">Idite na Podešavanja</string>
+    <string name="accessibility_explainer_step1">Dodirnite "Idite na Podešavanja" ispod da otvorite Androidove postavke pristupačnosti</string>
+    <string name="accessibility_explainer_step2">Pronađite aplikacije i dodirnite "Scrolless" na listi usluga</string>
+    <string name="accessibility_explainer_step3">Prebacite prekidač na UKLJUČENO da omogućite Scrolless da vam pomogne da prekinete beskrajno skrolovanje.</string>
+    <string name="accessibility_explainer_subtitle">Scrolless zahteva pristup pristupačnosti kako bi otkrio i zaustavio kratke video snimke.</string>
+    <string name="accessibility_explainer_title">Potrebna nam je pristupnost</string>
+    <string name="accessibility_service_description">Ova usluga detektuje kada su otvoreni reeli/šorti kako bi Scrolless mogao da ih blokira ako je podešeno.</string>
+    <string name="accessibility_settings_toast">Molimo vas da omogućite Scrolless u podešavanjima pristupačnosti.</string>
+    <string name="app_exit_label">Pritisnite BACK ponovo da izađete</string>
+    <string name="block_all">Blokiraj\nsve</string>
+    <string name="config_daily_limit_time">Konfiguriši dnevno ograničenje vremena</string>
+    <string name="daily_limit">Dnevni\nLimit</string>
+    <string name="duration">Trajanje</string>
+    <string name="feature_coming_soon">Funkcija dolazi uskoro</string>
+    <string name="help">Pomoć</string>
+    <string name="help_button">Dugme za pomoć</string>
+    <string name="interval_timer">Interval\nTajmer</string>
+    <string name="pause">Pauza</string>
+    <string name="rate_scrolless">Oceni Scrolless na Play Store</string>
+    <string name="show_timer_overlay">Prikaži preklapanje tajmera</string>
+    <string name="temporary_unblock">Privremeno\nOtključavanje</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Proteklo vreme</string>
+    <string name="total_time_wasted">Ukupno vreme izgubljeno na mentalni dekadenciji</string>
 </resources>

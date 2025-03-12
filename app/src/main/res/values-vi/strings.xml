@@ -4,4 +4,33 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Biểu tượng quyền truy cập</string>
+    <string name="accessibility_explainer_not_now_button">Không bây giờ</string>
+    <string name="accessibility_explainer_open_source">Mã của chúng tôi hoàn toàn mã nguồn mở trên GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Chúng tôi coi trọng quyền riêng tư của bạn. Scrolless chỉ sử dụng quyền này để phát hiện và ngăn chặn nội dung dạng ngắn. Chúng tôi không thu thập bất kỳ thông tin cá nhân nào.</string>
+    <string name="accessibility_explainer_proceed_button">Đi tới Cài đặt</string>
+    <string name="accessibility_explainer_step1">Nhấn "Đi đến Cài đặt" bên dưới để mở cài đặt Truy cập của Android</string>
+    <string name="accessibility_explainer_step2">Tìm ứng dụng và chạm vào "Scrolless" trong danh sách dịch vụ</string>
+    <string name="accessibility_explainer_step3">Bật công tắc lên để cho phép Scrolless giúp bạn ngừng cuộn không ngừng.</string>
+    <string name="accessibility_explainer_subtitle">Scrolless cần quyền truy cập trợ năng để phát hiện và dừng các video ngắn.</string>
+    <string name="accessibility_explainer_title">Chúng tôi cần quyền truy cập vào dịch vụ hỗ trợ tiếp cận</string>
+    <string name="accessibility_service_description">Dịch vụ này phát hiện khi các reel/short được mở để Scrolless có thể chặn chúng nếu được cấu hình.</string>
+    <string name="accessibility_settings_toast">Vui lòng bật Scrolless trong cài đặt Trợ năng.</string>
+    <string name="app_exit_label">Nhấn QUAY LẠI lần nữa để thoát</string>
+    <string name="block_all">Chặn\ntất cả</string>
+    <string name="config_daily_limit_time">Cấu hình Thời gian Giới hạn Hàng ngày</string>
+    <string name="daily_limit">Giới hạn\nHàng ngày</string>
+    <string name="duration">Thời gian</string>
+    <string name="feature_coming_soon">Tính năng sẽ sớm ra mắt</string>
+    <string name="help">Giúp đỡ</string>
+    <string name="help_button">Nút trợ giúp</string>
+    <string name="interval_timer">Khoảng thời gian\nBộ hẹn giờ</string>
+    <string name="pause">Tạm dừng</string>
+    <string name="rate_scrolless">Đánh giá Scrolless trên Play Store</string>
+    <string name="show_timer_overlay">Hiển thị lớp phủ đồng hồ</string>
+    <string name="temporary_unblock">Bỏ chặn\nTạm thời</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Thời gian đã trôi qua</string>
+    <string name="total_time_wasted">Tổng thời gian lãng phí cho sự suy giảm trí não</string>
 </resources>

@@ -4,4 +4,33 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">அணுகல் அனுமதி ஐகான்</string>
+    <string name="accessibility_explainer_not_now_button">இப்போது இல்லை</string>
+    <string name="accessibility_explainer_open_source">எங்கள் குறியீடு 100\% திறந்த மூலமாக GitHub இல் உள்ளது.</string>
+    <string name="accessibility_explainer_privacy_note">நாங்கள் உங்கள் தனியுரிமையை மதிக்கிறோம். Scrolless இந்த அனுமதியை குறுகிய வடிவ உள்ளடக்கத்தை கண்டறிந்து நிறுத்துவதற்காக மட்டுமே பயன்படுத்துகிறது. நாங்கள் எந்த தனிப்பட்ட தகவலையும் சேகரிக்கவில்லை.</string>
+    <string name="accessibility_explainer_proceed_button">அமைப்புகளுக்கு செல்லவும்</string>
+    <string name="accessibility_explainer_step1">"கீழே உள்ள \"அமைப்புகளைப் செல்லவும்\" என்பதைத் தொடுங்கள், Android இன் அணுகல் அமைப்புகளை திறக்க."</string>
+    <string name="accessibility_explainer_step2">சேவைகளின் பட்டியலில் "Scrolless" என்பதைக் கண்டறிந்து அதைப் தொட்டு தேர்ந்தெடுக்கவும்.</string>
+    <string name="accessibility_explainer_step3">ஸ்க்ரோலெஸ் உங்கள் முடிவற்ற ஸ்க்ரோலிங்கை நிறுத்த உதவுவதற்கு ON ஆக மாறியை மாற்றவும்.</string>
+    <string name="accessibility_explainer_subtitle">Scrolless குறுகிய வீடியோக்களை கண்டறிந்து நிறுத்த அணுகல் சேவையை தேவைப்படுகிறது.</string>
+    <string name="accessibility_explainer_title">எங்களுக்கு அணுகல் சேவையின் அணுகல் தேவை</string>
+    <string name="accessibility_service_description">இந்த சேவை ரீல்ஸ்/ஷார்ட்ஸ் திறக்கப்படும் போது கண்டறிகிறது, எனவே Scrolless, அதை கட்டமைக்கப்பட்டால் தடுக்கும்.</string>
+    <string name="accessibility_settings_toast">தயவுசெய்து அணுகல் அமைப்புகளில் Scrolless-ஐ இயக்கவும்.</string>
+    <string name="app_exit_label">மீண்டும் வெளியேற BACK அழுத்தவும்</string>
+    <string name="block_all">அனைத்தையும்\nதடுக்கவும்</string>
+    <string name="config_daily_limit_time">தினசரி வரம்பு நேரத்தை அமைக்கவும்</string>
+    <string name="daily_limit">தினசரி\nவரம்பு</string>
+    <string name="duration">காலம்</string>
+    <string name="feature_coming_soon">சிறப்பு விரைவில் வர உள்ளது</string>
+    <string name="help">உதவி</string>
+    <string name="help_button">உதவி பொத்தான்</string>
+    <string name="interval_timer">இடைவெளி\nகால அளவீட்டாளர்</string>
+    <string name="pause">நிறுத்து</string>
+    <string name="rate_scrolless">Play Store-ல் Scrolless-ஐ மதிப்பீடு செய்யவும்</string>
+    <string name="show_timer_overlay">கணக்கீட்டு மேலோட்டத்தை காட்டு</string>
+    <string name="temporary_unblock">தற்காலிகமாக\nதடை நீக்கு</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">கடந்த நேரம்</string>
+    <string name="total_time_wasted">மனநிலையை பாதிக்கும் நேரம் மொத்தம் வீணாகியுள்ளது</string>
 </resources>

@@ -4,4 +4,33 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Hozzáférési engedély ikon</string>
+    <string name="accessibility_explainer_not_now_button">Most nem</string>
+    <string name="accessibility_explainer_open_source">A kódunk 100\%-ban nyílt forráskódú a GitHubon.</string>
+    <string name="accessibility_explainer_privacy_note">Tiszteletben tartjuk a magánéletét. A Scrolless ezt az engedélyt csak a rövid formátumú tartalom észlelésére és leállítására használja. Nem gyűjtünk személyes adatokat.</string>
+    <string name="accessibility_explainer_proceed_button">Menj a Beállításokhoz</string>
+    <string name="accessibility_explainer_step1">Koppintson az alábbi "Beállítások megnyitása" gombra az Android hozzáférhetőségi beállításainak megnyitásához</string>
+    <string name="accessibility_explainer_step2">Keresse meg az alkalmazásokat, és érintse meg a "Scrolless" lehetőséget a szolgáltatások listájában.</string>
+    <string name="accessibility_explainer_step3">Kapcsolja be a kapcsolót, hogy a Scrolless segítsen megállítani a végtelen görgetést.</string>
+    <string name="accessibility_explainer_subtitle">A Scrolless-nek hozzáférési engedélyre van szüksége a rövid videók észleléséhez és leállításához.</string>
+    <string name="accessibility_explainer_title">Szükségünk van akadálymentesítési hozzáférésre</string>
+    <string name="accessibility_service_description">Ez a szolgáltatás észleli, amikor a reel-ek/short-ok megnyílnak, így a Scrolless blokkolhatja őket, ha be van állítva.</string>
+    <string name="accessibility_settings_toast">Kérjük, engedélyezze a Scrolless-t az Akadálymentességi beállításokban.</string>
+    <string name="app_exit_label">Nyomja meg újra a VISSZA gombot a kilépéshez</string>
+    <string name="block_all">Blokkolja\naz összeset</string>
+    <string name="config_daily_limit_time">Állítsa be a napi időkorlátot</string>
+    <string name="daily_limit">Napi\nKorlát</string>
+    <string name="duration">Időtartam</string>
+    <string name="feature_coming_soon">A funkció hamarosan érkezik</string>
+    <string name="help">Segítség</string>
+    <string name="help_button">Segítség gomb</string>
+    <string name="interval_timer">Időköz\nIdőzítő</string>
+    <string name="pause">Szünet</string>
+    <string name="rate_scrolless">Értékelje a Scrolless-t a Play Áruházban</string>
+    <string name="show_timer_overlay">Időzítő átfedés megjelenítése</string>
+    <string name="temporary_unblock">Ideiglenes\nFeloldás</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Eltelt idő</string>
+    <string name="total_time_wasted">Összesen elpazarolt idő a mentális leépülésben</string>
 </resources>

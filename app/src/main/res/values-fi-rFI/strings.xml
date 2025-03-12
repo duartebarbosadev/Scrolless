@@ -4,4 +4,33 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Esteettömyysoikeuskuvake</string>
+    <string name="accessibility_explainer_not_now_button">Ei nyt</string>
+    <string name="accessibility_explainer_open_source">Koodimme on 100 \% avointa lähdekoodia GitHubissa.</string>
+    <string name="accessibility_explainer_privacy_note">Arvostamme yksityisyyttäsi. Scrolless käyttää tätä lupaa vain lyhyen muotoisen sisällön havaitsemiseen ja estämiseen. Emme kerää mitään henkilökohtaisia tietoja.</string>
+    <string name="accessibility_explainer_proceed_button">Siirry asetuksiin</string>
+    <string name="accessibility_explainer_step1">Napauta "Siirry asetuksiin" alla avataksesi Androidin saavutettavuusasetukset.</string>
+    <string name="accessibility_explainer_step2">Etsi sovelluksia ja napauta "Scrolless" palveluiden listalta</string>
+    <string name="accessibility_explainer_step3">Kytke kytkin PÄÄLLE, jotta Scrolless voi auttaa sinua lopettamaan loputtoman selaamisen.</string>
+    <string name="accessibility_explainer_subtitle">Scrolless tarvitsee saavutettavuusluvan havaitakseen ja estääkseen lyhyet videot.</string>
+    <string name="accessibility_explainer_title">Tarvitsemme saavutettavuusoikeudet</string>
+    <string name="accessibility_service_description">Tämä palvelu havaitsee, kun reelejä/lyhyitä videoita avataan, jotta Scrolless voi estää ne, jos se on määritetty.</string>
+    <string name="accessibility_settings_toast">Ota Scrolless käyttöön saavutettavuusasetuksissa.</string>
+    <string name="app_exit_label">Paina TAKAS uudelleen poistuaksesi</string>
+    <string name="block_all">Estä\nkaikki</string>
+    <string name="config_daily_limit_time">Määritä päivittäinen aikaraja</string>
+    <string name="daily_limit">Päivittäinen\nraja</string>
+    <string name="duration">Kesto</string>
+    <string name="feature_coming_soon">Ominaisuus tulossa pian</string>
+    <string name="help">Apu</string>
+    <string name="help_button">Apu-painike</string>
+    <string name="interval_timer">Aikaväli\nAjastin</string>
+    <string name="pause">Pysäytä</string>
+    <string name="rate_scrolless">Arvostele Scrolless Play Storessa</string>
+    <string name="show_timer_overlay">Näytä ajastin päälle</string>
+    <string name="temporary_unblock">Tilapäinen\nEston poistaminen</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Kulunut aika</string>
+    <string name="total_time_wasted">Kokonaisaika, joka on hukattu aivovaurioon</string>
 </resources>

@@ -4,4 +4,33 @@
      All rights reserved.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Ikona oprávnění přístupu</string>
+    <string name="accessibility_explainer_not_now_button">Ne teď</string>
+    <string name="accessibility_explainer_open_source">Náš kód je 100\% open source na GitHubu.</string>
+    <string name="accessibility_explainer_privacy_note">Ceníme si vašeho soukromí. Scrolless používá toto oprávnění pouze k detekci a zastavení krátkého obsahu. Neshromažďujeme žádné osobní informace.</string>
+    <string name="accessibility_explainer_proceed_button">Přejít do nastavení</string>
+    <string name="accessibility_explainer_step1">Klepněte na "Přejít do nastavení" níže pro otevření nastavení přístupnosti systému Android</string>
+    <string name="accessibility_explainer_step2">Najděte aplikace a klepněte na "Scrolless" v seznamu služeb</string>
+    <string name="accessibility_explainer_step3">Přepněte přepínač na ZAPNUTO, aby Scrolless mohl pomoci zastavit nekonečné scrollování.</string>
+    <string name="accessibility_explainer_subtitle">Scrolless potřebuje přístup k přístupnosti, aby detekoval a zastavil krátká videa.</string>
+    <string name="accessibility_explainer_title">Potřebujeme přístup k přístupnosti</string>
+    <string name="accessibility_service_description">Tato služba detekuje, kdy jsou otevřeny Reels/Shorts, aby je Scrolless mohl zablokovat, pokud je to nastaveno.</string>
+    <string name="accessibility_settings_toast">Prosím, povolte Scrolless v nastavení přístupnosti.</string>
+    <string name="app_exit_label">Stiskněte ZPĚT znovu pro opuštění</string>
+    <string name="block_all">Blokovat\nvše</string>
+    <string name="config_daily_limit_time">Nastavit denní limit času</string>
+    <string name="daily_limit">Denní\nlimit</string>
+    <string name="duration">Doba</string>
+    <string name="feature_coming_soon">Funkce brzy přijde</string>
+    <string name="help">Pomoc</string>
+    <string name="help_button">Tlačítko nápovědy</string>
+    <string name="interval_timer">Interval\nČasovač</string>
+    <string name="pause">Pozastavit</string>
+    <string name="rate_scrolless">Ohodnoťte Scrolless na Play Store</string>
+    <string name="show_timer_overlay">Zobrazit překryv časovače</string>
+    <string name="temporary_unblock">Dočasné\nOdblokování</string>
+    <string name="time_track">%1$s</string>
+    <string name="time_track_limit">%1$s/%2$s</string>
+    <string name="timer_content_description">Uplynulý čas</string>
+    <string name="total_time_wasted">Celkový čas ztracený na mentální únavu</string>
 </resources>
