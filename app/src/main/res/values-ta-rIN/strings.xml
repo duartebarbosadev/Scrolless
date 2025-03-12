@@ -4,19 +4,4 @@
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">இந்த சேவை ரீல்ஸ்/ஷார்ட்ஸ் திறக்கப்படும் போது கண்டறிகிறது, எனவே Scrolless, அவற்றை தடுக்கும் வகையில் கட்டமைக்கப்பட்டால்.</string>
-    <string name="accessibility_settings_toast">தயவுசெய்து அணுகல் அமைப்புகளில் Scrolless-ஐ செயல்படுத்தவும்.</string>
-    <string name="app_exit_label">மீண்டும் வெளியேற, BACK ஐ அழுத்தவும்</string>
-    <string name="config_daily_limit_time">தினசரி வரம்பு நேரத்தை அமைக்கவும்</string>
-    <string name="duration">கால அளவு</string>
-    <string name="feature_coming_soon">செயல்பாடு விரைவில் வர உள்ளது</string>
-    <string name="help">உதவி</string>
-    <string name="help_button">உதவி பொத்தான்</string>
-    <string name="interval_timer">இன்டர்வல் டைமர்</string>
-    <string name="pause">இடைநிறுத்து</string>
-    <string name="rate_scrolless">Play Store-ல் Scrolless-ஐ மதிப்பீடு செய்யவும்</string>
-    <string name="show_timer_overlay">கணக்கீட்டு மேலோட்டத்தை காட்டு</string>
-    <string name="time_track">%1$s</string>
-    <string name="time_track_limit">%1$s/%2$s</string>
-    <string name="timer_content_description">கடந்த நேரம்</string>
 </resources>

@@ -4,8 +4,4 @@
      All rights reserved.
 -->
 <resources>
-    <string name="libraries_components_btn_check_internet_close">關閉</string>
-    <string name="libraries_components_internet_connection_error">檢查您的連線！</string>
-    <string name="libraries_components_retry">重試</string>
-    <string name="libraries_components_text_check_internet_dialog_message">檢查您的網路連線！</string>
 </resources>

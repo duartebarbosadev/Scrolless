@@ -4,19 +4,4 @@
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">Dieser Dienst erkennt, wenn Reels/Shorts geöffnet werden, damit Scrolless sie blockieren kann, wenn dies konfiguriert ist.</string>
-    <string name="accessibility_settings_toast">Bitte aktivieren Sie Scrolless in den Barrierefreiheitseinstellungen.</string>
-    <string name="app_exit_label">Drücken Sie erneut die RÜCK-TASTE, um zu beenden.</string>
-    <string name="config_daily_limit_time">Tägliches Limit festlegen</string>
-    <string name="duration">Dauer</string>
-    <string name="feature_coming_soon">Funktion demnächst verfügbar</string>
-    <string name="help">Hilfe</string>
-    <string name="help_button">Hilfe-Button</string>
-    <string name="interval_timer">Intervall-Timer</string>
-    <string name="pause">Pause</string>
-    <string name="rate_scrolless">Bewerte Scrolless im Play Store</string>
-    <string name="show_timer_overlay">Timer-Overlay anzeigen</string>
-    <string name="time_track">%1$s</string>
-    <string name="time_track_limit">%1$s/%2$s</string>
-    <string name="timer_content_description">Verstrichene Zeit</string>
 </resources>

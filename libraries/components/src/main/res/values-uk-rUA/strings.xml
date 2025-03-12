@@ -4,8 +4,4 @@
      All rights reserved.
 -->
 <resources>
-    <string name="libraries_components_btn_check_internet_close">Закрити</string>
-    <string name="libraries_components_internet_connection_error">Перевірте своє з\'єднання!</string>
-    <string name="libraries_components_retry">Спробувати ще раз</string>
-    <string name="libraries_components_text_check_internet_dialog_message">Перевірте своє інтернет-з\'єднання!</string>
 </resources>

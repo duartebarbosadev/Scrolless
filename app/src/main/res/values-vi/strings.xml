@@ -4,19 +4,4 @@
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">Dịch vụ này phát hiện khi các reel/shorts được mở để Scrolless có thể chặn chúng nếu được cấu hình.</string>
-    <string name="accessibility_settings_toast">Vui lòng bật Scrolless trong cài đặt Trợ năng.</string>
-    <string name="app_exit_label">Nhấn QUAY LẠI một lần nữa để thoát</string>
-    <string name="config_daily_limit_time">Cấu hình Thời gian Giới hạn Hàng ngày</string>
-    <string name="duration">Thời gian</string>
-    <string name="feature_coming_soon">Tính năng sẽ sớm ra mắt</string>
-    <string name="help">Giúp đỡ</string>
-    <string name="help_button">Nút trợ giúp</string>
-    <string name="interval_timer">Bộ hẹn giờ khoảng thời gian</string>
-    <string name="pause">Tạm dừng</string>
-    <string name="rate_scrolless">Đánh giá Scrolless trên Play Store</string>
-    <string name="show_timer_overlay">Hiển thị lớp phủ đồng hồ</string>
-    <string name="time_track">%1$s</string>
-    <string name="time_track_limit">%1$s/%2$s</string>
-    <string name="timer_content_description">Thời gian đã trôi qua</string>
 </resources>

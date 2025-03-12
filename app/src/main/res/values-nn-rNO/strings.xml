@@ -4,19 +4,4 @@
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">Denne tenesta oppdagar når reels/shorts blir opna, slik at Scrolless kan blokkere dei om det er konfigurert.</string>
-    <string name="accessibility_settings_toast">Vennligst aktiver Scrolless i tilgjengelighetsinnstillingene.</string>
-    <string name="app_exit_label">Trykk BAKK igjen for å avslutte</string>
-    <string name="config_daily_limit_time">Konfigurer dagleg grense for tid</string>
-    <string name="duration">Varighet</string>
-    <string name="feature_coming_soon">Funksjon kjem snart</string>
-    <string name="help">Hjelp</string>
-    <string name="help_button">Hjelpeknapp</string>
-    <string name="interval_timer">Intervalltimer</string>
-    <string name="pause">Pause</string>
-    <string name="rate_scrolless">Vurder Scrolless på Play Store</string>
-    <string name="show_timer_overlay">Vis timeroverlegg</string>
-    <string name="time_track">%1$s</string>
-    <string name="time_track_limit">%1$s/%2$s</string>
-    <string name="timer_content_description">Forløpt tid</string>
 </resources>

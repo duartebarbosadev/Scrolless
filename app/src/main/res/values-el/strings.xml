@@ -4,19 +4,4 @@
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">Αυτή η υπηρεσία ανιχνεύει πότε ανοίγουν οι ροές/σύντομα βίντεο, ώστε το Scrolless να μπορεί να τα αποκλείσει αν έχει ρυθμιστεί.</string>
-    <string name="accessibility_settings_toast">Παρακαλώ ενεργοποιήστε το Scrolless στις ρυθμίσεις προσβασιμότητας.</string>
-    <string name="app_exit_label">Πατήστε ΠΙΣΩ ξανά για έξοδο</string>
-    <string name="config_daily_limit_time">Ρυθμίστε το ημερήσιο όριο χρόνου</string>
-    <string name="duration">Διάρκεια</string>
-    <string name="feature_coming_soon">Η δυνατότητα έρχεται σύντομα</string>
-    <string name="help">Βοήθεια</string>
-    <string name="help_button">Κουμπί βοήθειας</string>
-    <string name="interval_timer">Χρονοδιακόπτης διαστήματος</string>
-    <string name="pause">Παύση</string>
-    <string name="rate_scrolless">Βαθμολογήστε το Scrolless στο Play Store</string>
-    <string name="show_timer_overlay">Εμφάνιση επικαλυπτόμενου χρονομέτρου</string>
-    <string name="time_track">%1$s</string>
-    <string name="time_track_limit">%1$s/%2$s</string>
-    <string name="timer_content_description">Χρόνος που έχει παρέλθει</string>
 </resources>
