@@ -4,19 +4,4 @@
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">Ця служба виявляє, коли відкриваються ролики/шорти, щоб Scrolless міг їх заблокувати, якщо це налаштовано.</string>
-    <string name="accessibility_settings_toast">Будь ласка, увімкніть Scrolless у налаштуваннях доступності.</string>
-    <string name="app_exit_label">Натисніть ЗНОВУ кнопку НАЗАД, щоб вийти</string>
-    <string name="config_daily_limit_time">Налаштувати щоденний ліміт часу</string>
-    <string name="duration">Тривалість</string>
-    <string name="feature_coming_soon">Функція незабаром з\'явиться</string>
-    <string name="help">Допомога</string>
-    <string name="help_button">Кнопка допомоги</string>
-    <string name="interval_timer">Інтервальний таймер</string>
-    <string name="pause">Пауза</string>
-    <string name="rate_scrolless">Оцініть Scrolless у Play Store</string>
-    <string name="show_timer_overlay">Показати накладку таймера</string>
-    <string name="time_track">%1$s</string>
-    <string name="time_track_limit">%1$s/%2$s</string>
-    <string name="timer_content_description">Час, що минув</string>
 </resources>

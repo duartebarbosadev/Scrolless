@@ -4,19 +4,4 @@
      All rights reserved.
 -->
 <resources>
-    <string name="accessibility_service_description">Tämä palvelu havaitsee, kun rullat/lyhyet videot avataan, jotta Scrolless voi estää ne, jos se on määritetty.</string>
-    <string name="accessibility_settings_toast">Ota Scrolless käyttöön esteettömyysasetuksista.</string>
-    <string name="app_exit_label">Paina TAKAS-nappia uudelleen poistuaksesi</string>
-    <string name="config_daily_limit_time">Määritä päivittäinen aikaraja</string>
-    <string name="duration">Kesto</string>
-    <string name="feature_coming_soon">Ominaisuus tulossa pian</string>
-    <string name="help">Apu</string>
-    <string name="help_button">Apu-painike</string>
-    <string name="interval_timer">Aikavälin ajastin</string>
-    <string name="pause">Pysäytä</string>
-    <string name="rate_scrolless">Arvostele Scrolless Play Storessa</string>
-    <string name="show_timer_overlay">Näytä ajastin päälle</string>
-    <string name="time_track">%1$s</string>
-    <string name="time_track_limit">%1$s/%2$s</string>
-    <string name="timer_content_description">Kulunut aika</string>
 </resources>
