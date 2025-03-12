@@ -32,5 +32,5 @@
     <string name="time_track">%1$s</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">व्यतीत समय</string>
-    <string name="total_time_wasted">बर्बाद किया गया कुल समय मानसिक क्षति</string>
+    <string name="total_time_wasted">कुल समय\nमानसिक क्षति में बर्बाद किया गया</string>
 </resources>

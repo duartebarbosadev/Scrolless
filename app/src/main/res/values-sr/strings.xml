@@ -32,5 +32,5 @@
     <string name="time_track">%1$s</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Proteklo vreme</string>
-    <string name="total_time_wasted">Ukupno vreme izgubljeno na mentalni dekadenciju</string>
+    <string name="total_time_wasted">Ukupno vreme\nizgubljeno na mentalnu dekadenciju</string>
 </resources>

@@ -28,7 +28,7 @@
     <string name="pause">Παύση</string>
     <string name="rate_scrolless">Βαθμολογήστε το Scrolless στο Play Store</string>
     <string name="show_timer_overlay">Εμφάνιση επικαλυπτόμενου χρονομέτρου</string>
-    <string name="temporary_unblock">Προσωρινή\nΑποκλεισμός</string>
+    <string name="temporary_unblock">Προσωρινή\nΆρση αποκλεισμού</string>
     <string name="time_track">%1$s</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Χρόνος που έχει παρέλθει</string>

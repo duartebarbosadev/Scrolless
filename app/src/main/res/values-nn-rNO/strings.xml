@@ -28,7 +28,7 @@
     <string name="pause">Pause</string>
     <string name="rate_scrolless">Vurder Scrolless på Play Store</string>
     <string name="show_timer_overlay">Vis tidtaker-overlay</string>
-    <string name="temporary_unblock">Desbloquear\nTemporært</string>
+    <string name="temporary_unblock">Deblocare\nTemporært</string>
     <string name="time_track">%1$s</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Forløpt tid</string>

@@ -28,7 +28,7 @@
     <string name="pause">Tạm dừng</string>
     <string name="rate_scrolless">Đánh giá Scrolless trên Play Store</string>
     <string name="show_timer_overlay">Hiển thị lớp phủ đồng hồ</string>
-    <string name="temporary_unblock">Đ desbloquear\nTạm thời</string>
+    <string name="temporary_unblock">Bỏ chặn\nTạm thời</string>
     <string name="time_track">%1$s</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Thời gian đã trôi qua</string>

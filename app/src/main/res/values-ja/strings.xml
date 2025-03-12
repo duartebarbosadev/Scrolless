@@ -32,5 +32,5 @@
     <string name="time_track">%1$s</string>
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">経過時間</string>
-    <string name="total_time_wasted">脳の劣化に無駄に費やした合計時間</string>
+    <string name="total_time_wasted">精神的な疲労に費やした合計時間</string>
 </resources>
