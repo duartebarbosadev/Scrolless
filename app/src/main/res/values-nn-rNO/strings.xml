@@ -6,7 +6,7 @@
 <resources>
     <string name="accessibility_explainer_icon_description">Tilgangstillating-ikon</string>
     <string name="accessibility_explainer_not_now_button">Ikkje no</string>
-    <string name="accessibility_explainer_open_source">Koden vår er 100 % open source på GitHub.</string>
+    <string name="accessibility_explainer_open_source">Koden vår er 100 %% open source på GitHub.</string>
     <string name="accessibility_explainer_privacy_note">Vi verdset din personvern. Scrolless bruker berre denne tillatelsen for å oppdage og stoppe kortforminnhald. Vi samlar ikkje inn personleg informasjon.</string>
     <string name="accessibility_explainer_proceed_button">Gå til Innstillingar</string>
     <string name="accessibility_explainer_step1">Trykk "Gå til innstillingar" under for å opne Androids tilgjengelegheitsinnstillingar</string>
