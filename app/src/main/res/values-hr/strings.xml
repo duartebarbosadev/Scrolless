@@ -9,8 +9,8 @@
     <string name="accessibility_explainer_open_source">Naš kod je 100\% otvoren izvor na GitHubu.</string>
     <string name="accessibility_explainer_privacy_note">Cijenimo vašu privatnost. Scrolless koristi ovu dozvolu samo za otkrivanje i zaustavljanje kratkog sadržaja. Ne prikupljamo nikakve osobne informacije.</string>
     <string name="accessibility_explainer_proceed_button">Idite na Postavke</string>
-    <string name="accessibility_explainer_step1">Dodirnite "Idite na postavke" ispod za otvaranje Androidovih postavki pristupačnosti</string>
-    <string name="accessibility_explainer_step2">Pronađite aplikacije i dodirnite "Scrolless" na popisu usluga</string>
+    <string name="accessibility_explainer_step1">Dodirnite \"Idite na postavke\" ispod za otvaranje Androidovih postavki pristupačnosti</string>
+    <string name="accessibility_explainer_step2">Pronađite aplikacije i dodirnite \"Scrolless\" na popisu usluga</string>
     <string name="accessibility_explainer_step3">Prebacite prekidač na UKLJUČENO kako biste omogućili Scrolless da vam pomogne da prekinete beskrajno pomicanje.</string>
     <string name="accessibility_explainer_subtitle">Scrolless treba pristup pristupačnosti kako bi otkrio i zaustavio kratke videozapise.</string>
     <string name="accessibility_explainer_title">Trebamo pristup pristupačnosti</string>

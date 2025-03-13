@@ -40,8 +40,8 @@
     <string name="accessibility_explainer_icon_description">Accessibility Permission Icon</string>
     <string name="accessibility_explainer_title">We Need Accessibility Access</string>
     <string name="accessibility_explainer_subtitle">Scrolless needs accessibility access to detect and stop short videos.</string>
-    <string name="accessibility_explainer_step1">Tap "Go to Settings" below to open Android\'s Accessibility settings</string>
-    <string name="accessibility_explainer_step2">Find applications and tap on "Scrolless" in the list of services</string>
+    <string name="accessibility_explainer_step1">Tap \"Go to Settings\" below to open Android\'s Accessibility settings</string>
+    <string name="accessibility_explainer_step2">Find applications and tap on \"Scrolless\" in the list of services</string>
     <string name="accessibility_explainer_step3">Toggle the switch to ON to enable Scrolless to help you stop endless scrolling</string>
     <string name="accessibility_explainer_privacy_note">We value your privacy. Scrolless only uses this permission to detect and stop short form content. We don\'t collect any personal information.</string>
      <string name="accessibility_explainer_open_source">Our code is 100\% open source on GitHub.</string>

@@ -9,8 +9,8 @@
     <string name="accessibility_explainer_open_source">Mã của chúng tôi hoàn toàn mã nguồn mở trên GitHub.</string>
     <string name="accessibility_explainer_privacy_note">Chúng tôi coi trọng quyền riêng tư của bạn. Scrolless chỉ sử dụng quyền này để phát hiện và ngăn chặn nội dung dạng ngắn. Chúng tôi không thu thập bất kỳ thông tin cá nhân nào.</string>
     <string name="accessibility_explainer_proceed_button">Đi tới Cài đặt</string>
-    <string name="accessibility_explainer_step1">Nhấn "Đi đến Cài đặt" bên dưới để mở cài đặt Truy cập của Android</string>
-    <string name="accessibility_explainer_step2">Tìm ứng dụng và chạm vào "Scrolless" trong danh sách dịch vụ</string>
+    <string name="accessibility_explainer_step1">Nhấn \"Đi đến Cài đặt\" bên dưới để mở cài đặt Truy cập của Android</string>
+    <string name="accessibility_explainer_step2">Tìm ứng dụng và chạm vào \"Scrolless\" trong danh sách dịch vụ</string>
     <string name="accessibility_explainer_step3">Bật công tắc lên để cho phép Scrolless giúp bạn ngừng cuộn không ngừng.</string>
     <string name="accessibility_explainer_subtitle">Scrolless cần quyền truy cập trợ năng để phát hiện và dừng các video ngắn.</string>
     <string name="accessibility_explainer_title">Chúng tôi cần quyền truy cập vào dịch vụ hỗ trợ tiếp cận</string>

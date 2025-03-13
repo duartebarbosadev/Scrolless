@@ -9,8 +9,8 @@
     <string name="accessibility_explainer_open_source">നമ്മുടെ കോഡ് 100\% ഓപ്പൺ സോഴ്സ് ആണ് GitHub-ൽ.</string>
     <string name="accessibility_explainer_privacy_note">നിങ്ങളുടെ സ്വകാര്യതയെ ഞങ്ങൾ വിലമതിക്കുന്നു. Scrolless ഈ അനുമതി ചെറുകിട ഉള്ളടക്കം കണ്ടെത്താനും തടയാനും മാത്രം ഉപയോഗിക്കുന്നു. ഞങ്ങൾ ഏതെങ്കിലും വ്യക്തിഗത വിവരങ്ങൾ ശേഖരിക്കുന്നില്ല.</string>
     <string name="accessibility_explainer_proceed_button">സജ്ജീകരണത്തിലേക്ക് പോകുക</string>
-    <string name="accessibility_explainer_step1">താഴെ "സജ്ജീകരണത്തിലേക്ക് പോകുക" എന്നതിൽ തട്ടുക, Android-ന്റെ ആക്സസിബിലിറ്റി സജ്ജീകരണങ്ങൾ തുറക്കാൻ.</string>
-    <string name="accessibility_explainer_step2">അപ്ലിക്കേഷനുകൾ കണ്ടെത്തി സേവനങ്ങളുടെ പട്ടികയിൽ "Scrolless" എന്നതിൽ ടാപ്പ് ചെയ്യുക</string>
+    <string name="accessibility_explainer_step1">താഴെ \"സജ്ജീകരണത്തിലേക്ക് പോകുക\" എന്നതിൽ തട്ടുക, Android-ന്റെ ആക്സസിബിലിറ്റി സജ്ജീകരണങ്ങൾ തുറക്കാൻ.</string>
+    <string name="accessibility_explainer_step2">അപ്ലിക്കേഷനുകൾ കണ്ടെത്തി സേവനങ്ങളുടെ പട്ടികയിൽ \"Scrolless\" എന്നതിൽ ടാപ്പ് ചെയ്യുക</string>
     <string name="accessibility_explainer_step3">സ്ക്രോലിംഗ് അവസാനിപ്പിക്കാൻ Scrolless-നെ സഹായിക്കാൻ ON-ലേക്ക് സ്വിച്ച് മാറ്റുക</string>
     <string name="accessibility_explainer_subtitle">Scrolless-ന് ചെറുവീഡിയോകൾ കണ്ടെത്താനും നിർത്താനും ആക്സസിബിലിറ്റി ആക്സസ് ആവശ്യമാണ്.</string>
     <string name="accessibility_explainer_title">ഞങ്ങൾക്ക് ആക്സസിബിലിറ്റി ആക്സസ് ആവശ്യമുണ്ട്</string>

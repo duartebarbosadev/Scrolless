@@ -9,8 +9,8 @@
     <string name="accessibility_explainer_open_source">Наш код на 100\% відкритий на GitHub.</string>
     <string name="accessibility_explainer_privacy_note">Ми цінуємо вашу конфіденційність. Scrolless використовує цей дозвіл лише для виявлення та зупинки короткого контенту. Ми не збираємо жодної особистої інформації.</string>
     <string name="accessibility_explainer_proceed_button">Перейти до Налаштувань</string>
-    <string name="accessibility_explainer_step1">Натисніть "Перейти до налаштувань" нижче, щоб відкрити налаштування доступності Android.</string>
-    <string name="accessibility_explainer_step2">Знайдіть програми та натисніть на "Scrolless" у списку служб</string>
+    <string name="accessibility_explainer_step1">Натисніть \"Перейти до налаштувань\" нижче, щоб відкрити налаштування доступності Android.</string>
+    <string name="accessibility_explainer_step2">Знайдіть програми та натисніть на \"Scrolless\" у списку служб</string>
     <string name="accessibility_explainer_step3">Перемкніть перемикач на УВІМКНЕННЯ, щоб активувати Scrolless і допомогти вам зупинити безкінечне прокручування.</string>
     <string name="accessibility_explainer_subtitle">Scrolless потребує доступу до служб доступності, щоб виявляти та зупиняти короткі відео.</string>
     <string name="accessibility_explainer_title">Нам потрібен доступ до служби доступності</string>
