@@ -9,8 +9,8 @@
     <string name="accessibility_explainer_open_source">Koodimme on 100 \% avointa lähdekoodia GitHubissa.</string>
     <string name="accessibility_explainer_privacy_note">Arvostamme yksityisyyttäsi. Scrolless käyttää tätä lupaa vain lyhyen muotoisen sisällön havaitsemiseen ja estämiseen. Emme kerää mitään henkilökohtaisia tietoja.</string>
     <string name="accessibility_explainer_proceed_button">Siirry asetuksiin</string>
-    <string name="accessibility_explainer_step1">Napauta "Siirry asetuksiin" alla avataksesi Androidin saavutettavuusasetukset.</string>
-    <string name="accessibility_explainer_step2">Etsi sovelluksia ja napauta "Scrolless" palveluiden listalta</string>
+    <string name="accessibility_explainer_step1">Napauta \"Siirry asetuksiin\" alla avataksesi Androidin saavutettavuusasetukset.</string>
+    <string name="accessibility_explainer_step2">Etsi sovelluksia ja napauta \"Scrolless\" palveluiden listalta</string>
     <string name="accessibility_explainer_step3">Kytke kytkin PÄÄLLE, jotta Scrolless voi auttaa sinua lopettamaan loputtoman selaamisen.</string>
     <string name="accessibility_explainer_subtitle">Scrolless tarvitsee saavutettavuusluvan havaitakseen ja estääkseen lyhyet videot.</string>
     <string name="accessibility_explainer_title">Tarvitsemme saavutettavuusoikeudet</string>

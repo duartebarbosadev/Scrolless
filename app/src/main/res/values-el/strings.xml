@@ -9,8 +9,8 @@
     <string name="accessibility_explainer_open_source">Ο κώδικάς μας είναι 100\% ανοιχτού κώδικα στο GitHub.</string>
     <string name="accessibility_explainer_privacy_note">Εκτιμούμε την ιδιωτικότητά σας. Το Scrolless χρησιμοποιεί αυτή την άδεια μόνο για να ανιχνεύει και να σταματά περιεχόμενο μικρού μήκους. Δεν συλλέγουμε καμία προσωπική πληροφορία.</string>
     <string name="accessibility_explainer_proceed_button">Μετάβαση στις Ρυθμίσεις</string>
-    <string name="accessibility_explainer_step1">Πατήστε "Μετάβαση στις Ρυθμίσεις" παρακάτω για να ανοίξετε τις ρυθμίσεις Προσβασιμότητας του Android</string>
-    <string name="accessibility_explainer_step2">Βρείτε εφαρμογές και πατήστε στο "Scrolless" στη λίστα υπηρεσιών</string>
+    <string name="accessibility_explainer_step1">Πατήστε \"Μετάβαση στις Ρυθμίσεις\" παρακάτω για να ανοίξετε τις ρυθμίσεις Προσβασιμότητας του Android</string>
+    <string name="accessibility_explainer_step2">Βρείτε εφαρμογές και πατήστε στο \"Scrolless\" στη λίστα υπηρεσιών</string>
     <string name="accessibility_explainer_step3">Ενεργοποιήστε τον διακόπτη για να επιτρέψετε στο Scrolless να σας βοηθήσει να σταματήσετε το ατελείωτο scrolling.</string>
     <string name="accessibility_explainer_subtitle">Η εφαρμογή Scrolless χρειάζεται πρόσβαση προσβασιμότητας για να ανιχνεύσει και να σταματήσει τα σύντομα βίντεο.</string>
     <string name="accessibility_explainer_title">Χρειαζόμαστε πρόσβαση προσβασιμότητας</string>

@@ -9,8 +9,8 @@
     <string name="accessibility_explainer_open_source">A kódunk 100\%-ban nyílt forráskódú a GitHubon.</string>
     <string name="accessibility_explainer_privacy_note">Tiszteletben tartjuk a magánéletét. A Scrolless ezt az engedélyt csak a rövid formátumú tartalom észlelésére és leállítására használja. Nem gyűjtünk személyes adatokat.</string>
     <string name="accessibility_explainer_proceed_button">Menj a Beállításokhoz</string>
-    <string name="accessibility_explainer_step1">Koppintson az alábbi "Beállítások megnyitása" gombra az Android hozzáférhetőségi beállításainak megnyitásához</string>
-    <string name="accessibility_explainer_step2">Keresse meg az alkalmazásokat, és érintse meg a "Scrolless" lehetőséget a szolgáltatások listájában.</string>
+    <string name="accessibility_explainer_step1">Koppintson az alábbi \"Beállítások megnyitása\" gombra az Android hozzáférhetőségi beállításainak megnyitásához</string>
+    <string name="accessibility_explainer_step2">Keresse meg az alkalmazásokat, és érintse meg a \"Scrolless\" lehetőséget a szolgáltatások listájában.</string>
     <string name="accessibility_explainer_step3">Kapcsolja be a kapcsolót, hogy a Scrolless segítsen megállítani a végtelen görgetést.</string>
     <string name="accessibility_explainer_subtitle">A Scrolless-nek hozzáférési engedélyre van szüksége a rövid videók észleléséhez és leállításához.</string>
     <string name="accessibility_explainer_title">Szükségünk van akadálymentesítési hozzáférésre</string>

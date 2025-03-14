@@ -10,7 +10,7 @@
     <string name="accessibility_explainer_privacy_note">நாங்கள் உங்கள் தனியுரிமையை மதிக்கிறோம். Scrolless இந்த அனுமதியை குறுகிய வடிவ உள்ளடக்கத்தை கண்டறிந்து நிறுத்துவதற்காக மட்டுமே பயன்படுத்துகிறது. நாங்கள் எந்த தனிப்பட்ட தகவலையும் சேகரிக்கவில்லை.</string>
     <string name="accessibility_explainer_proceed_button">அமைப்புகளுக்கு செல்லவும்</string>
     <string name="accessibility_explainer_step1">"கீழே உள்ள \"அமைப்புகளைப் செல்லவும்\" என்பதைத் தொடுங்கள், Android இன் அணுகல் அமைப்புகளை திறக்க."</string>
-    <string name="accessibility_explainer_step2">சேவைகளின் பட்டியலில் "Scrolless" என்பதைக் கண்டறிந்து அதைப் தொட்டு தேர்ந்தெடுக்கவும்.</string>
+    <string name="accessibility_explainer_step2">சேவைகளின் பட்டியலில் \"Scrolless\" என்பதைக் கண்டறிந்து அதைப் தொட்டு தேர்ந்தெடுக்கவும்.</string>
     <string name="accessibility_explainer_step3">ஸ்க்ரோலெஸ் உங்கள் முடிவற்ற ஸ்க்ரோலிங்கை நிறுத்த உதவுவதற்கு ON ஆக மாறியை மாற்றவும்.</string>
     <string name="accessibility_explainer_subtitle">Scrolless குறுகிய வீடியோக்களை கண்டறிந்து நிறுத்த அணுகல் சேவையை தேவைப்படுகிறது.</string>
     <string name="accessibility_explainer_title">எங்களுக்கு அணுகல் சேவையின் அணுகல் தேவை</string>

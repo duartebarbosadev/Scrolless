@@ -9,8 +9,8 @@
     <string name="accessibility_explainer_open_source">Nuestro código es 100\% de código abierto en GitHub.</string>
     <string name="accessibility_explainer_privacy_note">Valoramos su privacidad. Scrolless solo utiliza este permiso para detectar y detener contenido de formato corto. No recopilamos ninguna información personal.</string>
     <string name="accessibility_explainer_proceed_button">Ir a Configuración</string>
-    <string name="accessibility_explainer_step1">Toca "Ir a Configuración" abajo para abrir la configuración de Accesibilidad de Android.</string>
-    <string name="accessibility_explainer_step2">Encuentra aplicaciones y toca "Scrolless" en la lista de servicios</string>
+    <string name="accessibility_explainer_step1">Toca \"Ir a Configuración\" abajo para abrir la configuración de Accesibilidad de Android.</string>
+    <string name="accessibility_explainer_step2">Encuentra aplicaciones y toca \"Scrolless\" en la lista de servicios</string>
     <string name="accessibility_explainer_step3">Activa el interruptor para habilitar Scrolless y ayudarte a detener el desplazamiento infinito.</string>
     <string name="accessibility_explainer_subtitle">Scrolless necesita acceso de accesibilidad para detectar y detener videos cortos.</string>
     <string name="accessibility_explainer_title">Necesitamos acceso a la accesibilidad</string>

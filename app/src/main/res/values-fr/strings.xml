@@ -8,9 +8,9 @@
     <string name="accessibility_explainer_not_now_button">Pas maintenant</string>
     <string name="accessibility_explainer_open_source">Notre code est 100 \% open source sur GitHub.</string>
     <string name="accessibility_explainer_privacy_note">Nous valorisons votre vie privée. Scrolless utilise cette autorisation uniquement pour détecter et arrêter le contenu de courte durée. Nous ne collectons aucune information personnelle.</string>
-    <string name="accessibility_explainer_proceed_button">Allez dans les paramètres</string>
-    <string name="accessibility_explainer_step1">Appuyez sur "Accéder aux paramètres" ci-dessous pour ouvrir les paramètres d\'accessibilité d\'Android.</string>
-    <string name="accessibility_explainer_step2">Trouvez des applications et appuyez sur "Scrolless" dans la liste des services</string>
+    <string name="accessibility_explainer_proceed_button">Accéder aux paramètres</string>
+    <string name="accessibility_explainer_step1">Appuyez sur \"Accéder aux paramètres\" ci-dessous pour ouvrir les paramètres d\'accessibilité d\'Android.</string>
+    <string name="accessibility_explainer_step2">Trouvez des applications et appuyez sur \"Scrolless\" dans la liste des services</string>
     <string name="accessibility_explainer_step3">Activez l\'interrupteur pour permettre à Scrolless de vous aider à arrêter le défilement sans fin.</string>
     <string name="accessibility_explainer_subtitle">Scrolless a besoin d\'un accès à l\'accessibilité pour détecter et arrêter les vidéos courtes.</string>
     <string name="accessibility_explainer_title">Nous avons besoin d\'un accès à l\'accessibilité</string>

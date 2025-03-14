@@ -9,8 +9,8 @@
     <string name="accessibility_explainer_open_source">Vår kod är 100\% öppen källkod på GitHub.</string>
     <string name="accessibility_explainer_privacy_note">Vi värdesätter din integritet. Scrolless använder endast denna behörighet för att upptäcka och stoppa kortformat innehåll. Vi samlar inte in någon personlig information.</string>
     <string name="accessibility_explainer_proceed_button">Gå till Inställningar</string>
-    <string name="accessibility_explainer_step1">Tryck på "Gå till inställningar" nedan för att öppna Androids tillgänglighetsinställningar</string>
-    <string name="accessibility_explainer_step2">Hitta appar och tryck på "Scrolless" i listan över tjänster</string>
+    <string name="accessibility_explainer_step1">Tryck på \"Gå till inställningar\" nedan för att öppna Androids tillgänglighetsinställningar</string>
+    <string name="accessibility_explainer_step2">Hitta appar och tryck på \"Scrolless\" i listan över tjänster</string>
     <string name="accessibility_explainer_step3">Slå på knappen för att aktivera Scrolless så att du kan sluta med oändligt scrollande</string>
     <string name="accessibility_explainer_subtitle">Scrolless behöver tillgång till tillgänglighet för att upptäcka och stoppa korta videor.</string>
     <string name="accessibility_explainer_title">Vi behöver tillgång till tillgänglighet</string>
