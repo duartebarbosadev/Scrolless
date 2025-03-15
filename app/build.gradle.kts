@@ -10,7 +10,6 @@ plugins {
     alias(libs.plugins.scrolless.android.application.flavors)
     alias(libs.plugins.scrolless.hilt)
     alias(libs.plugins.kotlin.android)
-    id("io.github.takahirom.roborazzi") version "1.6.0"
 }
 
 android {
@@ -34,9 +33,6 @@ android {
         versionName = "0.1.0" // X.Y.Z; X = Major, Y = minor, Z = Patch level
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments += mapOf(
-            "clearPackageData" to "true"
-        )
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -71,19 +67,6 @@ android {
 
             applicationIdSuffix = ScrollessBuildType.DEBUG.applicationIdSuffix
             isDebuggable = true
-            testCoverageEnabled = false
-        }
-    }
-
-    // Add testOptions for screenshot tests
-    testOptions {
-        animationsDisabled = true
-        execution = "ANDROIDX_TEST_ORCHESTRATOR"
-        
-        // Configure the directory where screenshots will be saved
-        unitTests {
-            isReturnDefaultValues = true
-            isIncludeAndroidResources = true
         }
     }
 
@@ -133,39 +116,4 @@ dependencies {
     testImplementation(libs.test.robolectric)
     androidTestImplementation(libs.test.androidx.junit)
     androidTestImplementation(libs.test.androidx.espresso.core)
-
-    // Roborazzi screenshot testing dependencies
-    testImplementation("io.github.takahirom.roborazzi:roborazzi:1.6.0")
-    testImplementation("io.github.takahirom.roborazzi:roborazzi-compose:1.6.0")
-    testImplementation("io.github.takahirom.roborazzi:roborazzi-junit-rule:1.6.0")
-    
-    // For fragment testing in UI tests
-    debugImplementation(libs.test.fragment.test)
-    debugImplementation("androidx.test:core:1.5.0")
-    
-    // For Hilt testing
-    androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.compiler)
-}
-
-// Add this task to execute screenshot tests
-tasks.register("executeScreenshotTests", type = com.android.build.gradle.internal.testing.TestRunnable::class) {
-    description = "Execute screenshot tests for all variants"
-    group = "verification"
-    
-    dependsOn("assembleDebugAndroidTest")
-    
-    val testTask = this
-    android.testVariants.configureEach {
-        val variant = this
-        if (variant.name.endsWith("Debug")) {
-            testTask.dependsOn(variant.connectedInstrumentTest)
-        }
-    }
-}
-
-// Configure Roborazzi
-roborazzi {
-    outputDir = "build/outputs/roborazzi"
-    captureType = "compose"
 }
