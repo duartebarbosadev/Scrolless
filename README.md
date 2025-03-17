@@ -48,6 +48,10 @@ Your feedback is very important for us - we're actively working to improve the a
 - **Usage Tracking**  (Upcoming Feature)  
   Keep track of how much time you’ve spent on Instagram Reels, TikTok, YouTube Shorts, and Facebook Reels.
 
+## Feedback and Contribution
+
+We welcome your comments and suggestions in the issues section, or you can contribute your code by submitting a PR directly to us.
+
 ## Screenshots
 
 | Main Screen | Blocking in Action                                                                                                                                                  |

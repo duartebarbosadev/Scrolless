@@ -111,7 +111,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         super.onDestroy()
         stopPeriodicCheck()
 
-        // Save usage in memory to SharedPreferences, so we don’t lose it
+        // Save usage in memory to SharedPreferences, so we don't lose it
         usageTracker.save()
         serviceScope.cancel()
     }
