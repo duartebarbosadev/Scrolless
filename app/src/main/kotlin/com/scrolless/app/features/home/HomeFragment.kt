@@ -26,6 +26,7 @@ import com.scrolless.app.R
 import com.scrolless.app.base.BaseFragment
 import com.scrolless.app.databinding.FragmentHomeBinding
 import com.scrolless.app.features.dialogs.AccessibilityExplainerDialog
+import com.scrolless.app.features.dialogs.HelpDialog
 import com.scrolless.app.provider.AppProvider
 import com.scrolless.app.provider.UsageTracker
 import com.scrolless.app.services.ScrollessBlockAccessibilityService
@@ -157,9 +158,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.detailsHelpButton.setOnClickListener {
-            if (!requireContext().isAccessibilityServiceEnabled(HomeFragment::class.java)) {
-                showAccessibilityExplainerDialog()
-            }
+            showHelpDialog()
         }
 
 //        binding.intervalTimerButton.setOnClickListener {
@@ -494,5 +493,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             BlockOption.IntervalTimer -> applyButtonEffect(binding.intervalTimerButton, true)
             BlockOption.NothingSelected -> Unit // No action needed
         }
+    }
+
+    /**
+     * Shows the help dialog with instructions on how to use the app
+     */
+    private fun showHelpDialog() {
+        HelpDialog(requireContext()).show()
     }
 }

@@ -21,6 +21,7 @@ import com.scrolless.app.databinding.DialogAccessibilityExplainerBinding
 import com.scrolless.app.services.ScrollessBlockAccessibilityService
 import com.scrolless.framework.extensions.isAccessibilityServiceEnabled
 import com.scrolless.framework.extensions.showToast
+import androidx.core.net.toUri
 
 /**
  * A dialog that explains to the user why accessibility permissions are needed
@@ -39,7 +40,7 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "AccessibilityExplainerDialog"
-        private const val GITHUB_URL = "https://github.com/duartebarbosadev/scrolless"
+        const val GITHUB_URL = "https://github.com/duartebarbosadev/scrolless"
 
         fun newInstance(): AccessibilityExplainerDialog = AccessibilityExplainerDialog()
     }
@@ -95,7 +96,7 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
 
         // Add GitHub link
         binding.tvOpenSourceNote.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_URL))
+            val intent = Intent(Intent.ACTION_VIEW, GITHUB_URL.toUri())
             startActivity(intent)
         }
     }
