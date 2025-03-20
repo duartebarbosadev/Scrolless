@@ -5,7 +5,6 @@
 package com.scrolless.app.features.dialogs
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,13 +14,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnimationUtils
+import androidx.core.net.toUri
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.scrolless.app.R
 import com.scrolless.app.databinding.DialogAccessibilityExplainerBinding
 import com.scrolless.app.services.ScrollessBlockAccessibilityService
 import com.scrolless.framework.extensions.isAccessibilityServiceEnabled
 import com.scrolless.framework.extensions.showToast
-import androidx.core.net.toUri
 
 /**
  * A dialog that explains to the user why accessibility permissions are needed

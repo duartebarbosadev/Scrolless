@@ -176,9 +176,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 //        }
 
         setTimerOverlayCheckBoxListener()
-
         setupProgressIndicator()
-        // TODO add <a target="_blank" href="https://icons8.com/icon/XyExeYckBY4H/unavailable">Block</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
     }
 
     /**

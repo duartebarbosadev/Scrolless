@@ -76,24 +76,47 @@
                         android:id="@+id/step_block_option"
                         layout="@layout/item_help_step" />
 
-                    <!-- Step 3: Troubleshooting -->
+                    <!-- Step 3: Contact Support with custom layout -->
                     <include
                         android:id="@+id/step_troubleshooting"
-                        layout="@layout/item_help_step" />
+                        layout="@layout/item_help_step_contact" />
 
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
+
+            <!-- Icons8 attribution -->
+            <TextView
+                android:id="@+id/icons8_attribution"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:alpha="0.7"
+                android:gravity="center"
+                android:text="@string/icons8_attribution"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/scroll_container" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_go_to_accessibility"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/margin_large"
+                android:backgroundTint="@color/blue_primary"
+                android:paddingVertical="12dp"
                 android:text="@string/go_to_accessibility_settings"
-                app:cornerRadius="8dp"
+                android:textColor="@color/white"
+                app:cornerRadius="12dp"
+                app:elevation="8dp"
+                app:rippleColor="@color/blue_primary_dark"
+                app:strokeColor="@color/white"
+                app:strokeWidth="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/scroll_container" />
+                app:layout_constraintTop_toBottomOf="@id/icons8_attribution" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_close_help"
@@ -102,8 +125,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/close"
-                android:textColor="?attr/colorPrimary"
-                app:strokeColor="?attr/colorPrimary"
                 app:cornerRadius="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

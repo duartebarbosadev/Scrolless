@@ -7,17 +7,16 @@ package com.scrolless.app.features.dialogs
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import androidx.core.net.toUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.scrolless.app.R
 import com.scrolless.app.databinding.DialogHelpBinding
 import com.scrolless.app.databinding.ItemHelpStepBinding
 import com.scrolless.app.features.dialogs.AccessibilityExplainerDialog.Companion.GITHUB_URL
-import androidx.core.net.toUri
 
 /**
  * Dialog that explains how to use the app and troubleshoot common issues
@@ -56,7 +55,6 @@ class HelpDialog(
      * Method to set up the steps in the help dialog
      */
     private fun setupSteps() {
-
         // Setup Step 1: Enable Accessibility
         val step1Binding = ItemHelpStepBinding.bind(binding.helpStepsContainer.findViewById(R.id.step_accessibility))
         with(step1Binding) {
@@ -73,19 +71,32 @@ class HelpDialog(
             stepDescription.text = context.getString(R.string.help_step2_description)
         }
 
-        // Setup Step 3: Troubleshooting
-        val step3Binding = ItemHelpStepBinding.bind(binding.helpStepsContainer.findViewById(R.id.step_troubleshooting))
+        // Setup Step 3: Contact Support with custom layout and buttons
+        val step3View = binding.helpStepsContainer.findViewById<View>(R.id.step_troubleshooting)
+
+        // First set the basic step info
+        val step3Binding = ItemHelpStepBinding.bind(step3View)
         with(step3Binding) {
             stepNumber.text = context.getString(R.string.step_three)
             stepTitle.text = context.getString(R.string.help_step3_title)
             stepDescription.text = context.getString(R.string.help_step3_description)
-            root.setOnClickListener {
+        }
 
+        // Setup the GitHub card button
+        step3View.findViewById<View>(R.id.card_github)?.apply {
+            setOnClickListener {
                 context.startActivity(
                     Intent(Intent.ACTION_VIEW).apply {
                         data = GITHUB_URL.toUri()
                     },
                 )
+            }
+        }
+
+        // Setup the App Review card button
+        step3View.findViewById<View>(R.id.card_app_review)?.apply {
+            setOnClickListener {
+                // TODO App review
             }
         }
     }
