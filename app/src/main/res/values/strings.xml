@@ -5,6 +5,7 @@
 -->
 <resources>
     <string name="app_name" translatable="false">Scrolless</string>
+    <string name="github_url" translatable="false">https://github.com/duartebarbosadev/scrolless</string>
 
     <string name="app_exit_label">Press BACK again to exit</string>
 

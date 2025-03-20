@@ -39,7 +39,6 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "AccessibilityExplainerDialog"
-        const val GITHUB_URL = "https://github.com/duartebarbosadev/scrolless"
 
         fun newInstance(): AccessibilityExplainerDialog = AccessibilityExplainerDialog()
     }
@@ -95,8 +94,11 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
 
         // Add GitHub link
         binding.tvOpenSourceNote.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, GITHUB_URL.toUri())
-            startActivity(intent)
+            startActivity(
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = getString(R.string.github_url).toUri()
+                },
+            )
         }
     }
 

@@ -11,12 +11,12 @@ import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import androidx.core.content.ContextCompat.getString
 import androidx.core.net.toUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.scrolless.app.R
 import com.scrolless.app.databinding.DialogHelpBinding
 import com.scrolless.app.databinding.ItemHelpStepBinding
-import com.scrolless.app.features.dialogs.AccessibilityExplainerDialog.Companion.GITHUB_URL
 
 /**
  * Dialog that explains how to use the app and troubleshoot common issues
@@ -87,7 +87,7 @@ class HelpDialog(
             setOnClickListener {
                 context.startActivity(
                     Intent(Intent.ACTION_VIEW).apply {
-                        data = GITHUB_URL.toUri()
+                        data = context.getString(R.string.github_url).toUri()
                     },
                 )
             }
