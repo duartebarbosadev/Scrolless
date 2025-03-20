@@ -67,8 +67,7 @@ Scrolless code was inspired by the following open-source projects:
 - [Rorty-Android](https://github.com/developersancho/Rorty.Android) (Apache 2.0 License)
 - [Birday](https://github.com/m-i-n-a-r/birday) (GPL v3 License)
 
-Some icons used in this app are obtained on [Icons8](https://icons8.com).
-
+Some icons used in this app are obtained from [Icons8](https://icons8.com).
 
 ## Star History
 
