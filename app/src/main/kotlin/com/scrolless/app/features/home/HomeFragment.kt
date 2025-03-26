@@ -4,13 +4,18 @@
  */
 package com.scrolless.app.features.home
 
+import android.R.attr.data
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -20,6 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.maxkeppeler.sheets.duration.DurationSheet
 import com.maxkeppeler.sheets.duration.DurationTimeFormat
 import com.scrolless.app.R
@@ -29,10 +35,12 @@ import com.scrolless.app.features.dialogs.AccessibilityExplainerDialog
 import com.scrolless.app.provider.AppProvider
 import com.scrolless.app.provider.UsageTracker
 import com.scrolless.app.services.ScrollessBlockAccessibilityService
+import com.scrolless.framework.core.base.application.CoreConfig
 import com.scrolless.framework.extensions.*
 import com.scrolless.framework.extensions.isAccessibilityServiceEnabled
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -52,6 +60,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     @Inject
     lateinit var usageTracker: UsageTracker
+
+    @Inject
+    lateinit var appConfig: CoreConfig
 
     override fun onViewReady(bundle: Bundle?) {
         val rootView = binding.root
@@ -160,6 +171,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             if (!requireContext().isAccessibilityServiceEnabled(HomeFragment::class.java)) {
                 showAccessibilityExplainerDialog()
             }
+        }
+
+        binding.btnRateScrolless.setOnClickListener {
+            reviewApp()
         }
 
 //        binding.intervalTimerButton.setOnClickListener {
@@ -281,16 +296,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      *  it means the limit has been reached or exceeded, so the progress is set to maxProgress.
      * If the time limit is 0 or less, it means there's no limit, so the progress is set to 0.
      */
-    private fun calculateTargetProgress(currentUsage: Long, timeLimit: Long): Int = if (timeLimit > 0) {
-        val remainingTime = timeLimit - currentUsage
-        if (remainingTime > 0) {
-            ((currentUsage.toDouble() / timeLimit.toDouble()) * maxProgress).toInt()
-        } else { // The limit is reached or exceeded
-            maxProgress
+    private fun calculateTargetProgress(currentUsage: Long, timeLimit: Long): Int =
+        if (timeLimit > 0) {
+            val remainingTime = timeLimit - currentUsage
+            if (remainingTime > 0) {
+                ((currentUsage.toDouble() / timeLimit.toDouble()) * maxProgress).toInt()
+            } else { // The limit is reached or exceeded
+                maxProgress
+            }
+        } else {
+            0
         }
-    } else {
-        0
-    }
 
     /**
      * Animate the progress indicator
@@ -494,5 +510,60 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             BlockOption.IntervalTimer -> applyButtonEffect(binding.intervalTimerButton, true)
             BlockOption.NothingSelected -> Unit // No action needed
         }
+    }
+
+    /**
+     * Show the app review dialog.
+     * If app is in dev mode, it will open the Play Store.
+     * Otherwise it will show the review dialog.
+     */
+    private fun reviewApp() {
+        // If app is in dev mode, open the play store instead
+        if (appConfig.isDev()) {
+            Timber.d("Debug mode, skipping review flow, opening Play Store instead")
+            openPlayStore()
+            return
+        }
+
+        showReviewPopup()
+    }
+
+    /**
+     * Show the review popup.
+     *
+     * If the review manager fails (as itself as api quotas limits), it will open the PlayStore url
+     */
+    private fun showReviewPopup() {
+        val reviewManager =
+            ReviewManagerFactory.create(requireContext())
+
+        Timber.d("Requesting review flow")
+        reviewManager.requestReviewFlow().addOnCompleteListener { request ->
+
+            if (request.isSuccessful) {
+                Timber.d("Review flow request successful")
+                val reviewInfo = request.result
+                val flow = reviewManager.launchReviewFlow(requireActivity(), reviewInfo)
+                flow.addOnCompleteListener { _ ->
+                    Timber.d("Review flow completed")
+                }
+            } else {
+                // If the request failed, open the Play Store instead
+                Timber.d("Review flow request failed")
+                openPlayStore()
+            }
+        }
+    }
+
+    /**
+     * Open the Play Store page for the app.
+     */
+    private fun openPlayStore() {
+        startActivity(
+            Intent(Intent.ACTION_VIEW).apply {
+                data = appConfig.getPlayStoreUrl(requireContext())?.toUri()
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            },
+        )
     }
 }
