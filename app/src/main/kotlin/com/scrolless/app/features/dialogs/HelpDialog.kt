@@ -16,7 +16,6 @@ import androidx.core.net.toUri
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.scrolless.app.R
 import com.scrolless.app.databinding.DialogHelpBinding
-import com.scrolless.app.databinding.ItemHelpStepBinding
 
 /**
  * Dialog that explains how to use the app and troubleshoot common issues
