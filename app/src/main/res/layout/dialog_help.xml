@@ -5,6 +5,7 @@
 -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_dialog_background"
@@ -66,20 +67,224 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <!-- Step 1: Enable Accessibility -->
-                    <include
+                    <!-- Step 1: Enable Accessibility (Directly integrated) -->
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/step_accessibility"
-                        layout="@layout/item_help_step" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        app:cardBackgroundColor="@color/color_background_darker"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp"
+                        app:strokeColor="?attr/colorPrimary"
+                        app:strokeWidth="1dp">
 
-                    <!-- Step 2: Choose Block Option -->
-                    <include
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/step_number_1"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/step_circle_background"
+                                android:gravity="center"
+                                android:text="@string/step_one"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/step_title_1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:text="@string/help_step1_title"
+                                android:textAppearance="?attr/textAppearanceBodyLarge"
+                                android:textColor="?attr/colorPrimary"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/step_number_1"
+                                app:layout_constraintTop_toTopOf="@id/step_number_1"
+                                app:layout_constraintBottom_toBottomOf="@id/step_number_1"/>
+
+                            <TextView
+                                android:id="@+id/step_description_1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="44dp"
+                                android:layout_marginTop="8dp"
+                                android:text="@string/help_step1_description"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="@color/white"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/step_title_1" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Step 2: Choose Block Option (Directly integrated) -->
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/step_block_option"
-                        layout="@layout/item_help_step" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        app:cardBackgroundColor="@color/color_background_darker"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp"
+                        app:strokeColor="?attr/colorPrimary"
+                        app:strokeWidth="1dp">
 
-                    <!-- Step 3: Contact Support with custom layout -->
-                    <include
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/step_number_2"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/step_circle_background"
+                                android:gravity="center"
+                                android:text="@string/step_two"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/step_title_2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:text="@string/help_step2_title"
+                                android:textAppearance="?attr/textAppearanceBodyLarge"
+                                android:textColor="?attr/colorPrimary"
+                                android:textStyle="bold"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/step_number_2"
+                                app:layout_constraintTop_toTopOf="@id/step_number_2"
+                                app:layout_constraintBottom_toBottomOf="@id/step_number_2"/>
+
+                            <TextView
+                                android:id="@+id/step_description_2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="44dp"
+                                android:layout_marginTop="8dp"
+                                android:text="@string/help_step2_description"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="@color/white"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/step_title_2" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- Step 3: Contact Support (Directly integrated) -->
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/step_troubleshooting"
-                        layout="@layout/item_help_step_contact" />
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        app:cardBackgroundColor="@color/color_background_darker"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="2dp"
+                        app:strokeColor="?attr/colorPrimary"
+                        app:strokeWidth="1dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="12dp">
+
+                            <TextView
+                                android:id="@+id/step_number_3"
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/step_circle_background"
+                                android:gravity="center"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:text="@string/step_three" />
+
+                            <TextView
+                                android:id="@+id/step_title_3"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="12dp"
+                                android:textAppearance="?attr/textAppearanceBodyLarge"
+                                android:textColor="?attr/colorPrimary"
+                                android:textStyle="bold"
+                                app:layout_constraintBottom_toBottomOf="@id/step_number_3"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@id/step_number_3"
+                                app:layout_constraintTop_toTopOf="@id/step_number_3"
+                                android:text="Contact Support" />
+
+                            <TextView
+                                android:id="@+id/step_description_3"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="44dp"
+                                android:layout_marginTop="8dp"
+                                android:textAppearance="?attr/textAppearanceBodyMedium"
+                                android:textColor="@color/white"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/step_title_3"
+                                android:text="@string/help_step3_description" />
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/card_github"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginHorizontal="32dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?attr/selectableItemBackground"
+                                app:cardCornerRadius="16dp"
+                                app:cardElevation="4dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/step_description_3"
+                                app:rippleColor="@color/white">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:orientation="horizontal"
+                                    android:padding="8dp">
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="32dp"
+                                        android:layout_marginEnd="16dp"
+                                        android:contentDescription="@string/visit_github"
+                                        android:src="@drawable/ic_github" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:text="@string/visit_github"
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+                                </LinearLayout>
+                            </com.google.android.material.card.MaterialCardView>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>

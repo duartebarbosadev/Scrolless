@@ -56,7 +56,7 @@
     <string name="help_step2_title">Troubleshooting</string>
     <string name="help_step2_description">If blocking isn\'t working, disable and then enable the accessibility service and try to disable battery optimization for Scrolless.</string>
     <string name="help_step3_title">Contact Support</string>
-    <string name="help_step3_description">Still having issues? We\'re here to help! Use the buttons below to reach out or leave feedback.</string>
+    <string name="help_step3_description">Still having issues? We\'re here to help! Use the button below to reach out on our GitHub repo.</string>
     <string name="visit_github">Visit GitHub Repository</string>
     <string name="leave_app_review">Leave App Review</string>
     <string name="icons8_attribution">Icons provided by Icons8 (icons8.com)</string>

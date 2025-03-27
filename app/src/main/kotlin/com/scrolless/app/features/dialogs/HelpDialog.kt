@@ -56,47 +56,14 @@ class HelpDialog(
      */
     private fun setupSteps() {
         // Setup Step 1: Enable Accessibility
-        val step1Binding = ItemHelpStepBinding.bind(binding.helpStepsContainer.findViewById(R.id.step_accessibility))
-        with(step1Binding) {
-            stepNumber.text = context.getString(R.string.step_one)
-            stepTitle.text = context.getString(R.string.help_step1_title)
-            stepDescription.text = context.getString(R.string.help_step1_description)
-        }
-
-        // Setup Step 2: Choose Block Option
-        val step2Binding = ItemHelpStepBinding.bind(binding.helpStepsContainer.findViewById(R.id.step_block_option))
-        with(step2Binding) {
-            stepNumber.text = context.getString(R.string.step_two)
-            stepTitle.text = context.getString(R.string.help_step2_title)
-            stepDescription.text = context.getString(R.string.help_step2_description)
-        }
-
-        // Setup Step 3: Contact Support with custom layout and buttons
-        val step3View = binding.helpStepsContainer.findViewById<View>(R.id.step_troubleshooting)
-
-        // First set the basic step info
-        val step3Binding = ItemHelpStepBinding.bind(step3View)
-        with(step3Binding) {
-            stepNumber.text = context.getString(R.string.step_three)
-            stepTitle.text = context.getString(R.string.help_step3_title)
-            stepDescription.text = context.getString(R.string.help_step3_description)
-        }
-
         // Setup the GitHub card button
-        step3View.findViewById<View>(R.id.card_github)?.apply {
+        binding.cardGithub.findViewById<View>(R.id.card_github)?.apply {
             setOnClickListener {
                 context.startActivity(
                     Intent(Intent.ACTION_VIEW).apply {
                         data = context.getString(R.string.github_url).toUri()
                     },
                 )
-            }
-        }
-
-        // Setup the App Review card button
-        step3View.findViewById<View>(R.id.card_app_review)?.apply {
-            setOnClickListener {
-                // TODO App review
             }
         }
     }
