@@ -14,15 +14,15 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="@dimen/margin_large"
         app:cardBackgroundColor="@color/color_background_dark"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp">
+        app:cardCornerRadius="@dimen/radius_bigger"
+        app:cardElevation="@dimen/margin_small">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/margin_large">
 
             <!-- Header -->
             <TextView
@@ -30,8 +30,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingTop="8dp"
-                android:paddingBottom="16dp"
+                android:paddingTop="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_large"
                 android:text="@string/help_dialog_title"
                 android:textAppearance="?attr/textAppearanceHeadlineSmall"
                 android:textColor="?attr/colorPrimary"
@@ -55,7 +55,7 @@
                 android:id="@+id/scroll_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/margin_large"
                 android:maxHeight="400dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -72,10 +72,10 @@
                         android:id="@+id/step_accessibility"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginBottom="@dimen/margin_small"
                         app:cardBackgroundColor="@color/color_background_darker"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="4dp">
+                        app:cardCornerRadius="@dimen/radius_bigger"
+                        app:cardElevation="@dimen/margin_xs">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -84,8 +84,8 @@
 
                             <TextView
                                 android:id="@+id/step_number_1"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
+                                android:layout_width="@dimen/radius_xl"
+                                android:layout_height="@dimen/radius_xl"
                                 android:background="@drawable/step_circle_background"
                                 android:gravity="center"
                                 android:text="@string/step_one"
@@ -99,7 +99,7 @@
                                 android:id="@+id/step_title_1"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
+                                android:layout_marginStart="@dimen/margin_medium"
                                 android:text="@string/help_step1_title"
                                 android:textAppearance="?attr/textAppearanceBodyLarge"
                                 android:textColor="?attr/colorPrimary"
@@ -113,13 +113,12 @@
                                 android:id="@+id/step_description_1"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="44dp"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="@dimen/margin_small"
                                 android:text="@string/help_step1_description"
                                 android:textAppearance="?attr/textAppearanceBodyMedium"
                                 android:textColor="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintStart_toStartOf="@id/step_title_1"
                                 app:layout_constraintTop_toBottomOf="@id/step_title_1" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -130,20 +129,20 @@
                         android:id="@+id/step_block_option"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginBottom="@dimen/margin_small"
                         app:cardBackgroundColor="@color/color_background_darker"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="4dp">
+                        app:cardCornerRadius="@dimen/radius_bigger"
+                        app:cardElevation="@dimen/margin_xs">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="12dp">
+                            android:padding="@dimen/margin_medium">
 
                             <TextView
                                 android:id="@+id/step_number_2"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
+                                android:layout_width="@dimen/radius_xl"
+                                android:layout_height="@dimen/radius_xl"
                                 android:background="@drawable/step_circle_background"
                                 android:gravity="center"
                                 android:text="@string/step_two"
@@ -157,7 +156,7 @@
                                 android:id="@+id/step_title_2"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
+                                android:layout_marginStart="@dimen/margin_medium"
                                 android:text="@string/help_step2_title"
                                 android:textAppearance="?attr/textAppearanceBodyLarge"
                                 android:textColor="?attr/colorPrimary"
@@ -171,13 +170,12 @@
                                 android:id="@+id/step_description_2"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="44dp"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="@dimen/margin_small"
                                 android:text="@string/help_step2_description"
                                 android:textAppearance="?attr/textAppearanceBodyMedium"
                                 android:textColor="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintStart_toStartOf="@id/step_title_2"
                                 app:layout_constraintTop_toBottomOf="@id/step_title_2" />
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -188,20 +186,20 @@
                         android:id="@+id/step_troubleshooting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="@dimen/radius_big"
                         app:cardBackgroundColor="@color/color_background_darker"
-                        app:cardCornerRadius="16dp"
-                        app:cardElevation="4dp">
+                        app:cardCornerRadius="@dimen/radius_bigger"
+                        app:cardElevation="@dimen/margin_xs">
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="12dp">
+                            android:padding="@dimen/margin_medium">
 
                             <TextView
                                 android:id="@+id/step_number_3"
-                                android:layout_width="32dp"
-                                android:layout_height="32dp"
+                                android:layout_width="@dimen/radius_xl"
+                                android:layout_height="@dimen/radius_xl"
                                 android:background="@drawable/step_circle_background"
                                 android:gravity="center"
                                 android:textAppearance="?attr/textAppearanceBodyMedium"
@@ -215,7 +213,7 @@
                                 android:id="@+id/step_title_3"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="12dp"
+                                android:layout_marginStart="@dimen/margin_medium"
                                 android:textAppearance="?attr/textAppearanceBodyLarge"
                                 android:textColor="?attr/colorPrimary"
                                 android:textStyle="bold"
@@ -229,12 +227,11 @@
                                 android:id="@+id/step_description_3"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="44dp"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginTop="@dimen/margin_small"
                                 android:textAppearance="?attr/textAppearanceBodyMedium"
                                 android:textColor="@color/white"
                                 app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintStart_toStartOf="@id/step_title_3"
                                 app:layout_constraintTop_toBottomOf="@id/step_title_3"
                                 android:text="@string/help_step3_description" />
 
@@ -242,13 +239,13 @@
                                 android:id="@+id/card_github"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginHorizontal="32dp"
+                                android:layout_marginTop="@dimen/radius_big"
+                                android:layout_marginHorizontal="@dimen/radius_xl"
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:foreground="?attr/selectableItemBackground"
-                                app:cardCornerRadius="16dp"
-                                app:cardElevation="4dp"
+                                app:cardCornerRadius="@dimen/radius_bigger"
+                                app:cardElevation="@dimen/margin_xs"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/step_description_3"
@@ -259,12 +256,12 @@
                                     android:layout_height="match_parent"
                                     android:gravity="center"
                                     android:orientation="horizontal"
-                                    android:padding="8dp">
+                                    android:padding="@dimen/margin_small">
 
                                     <ImageView
                                         android:layout_width="wrap_content"
-                                        android:layout_height="32dp"
-                                        android:layout_marginEnd="16dp"
+                                        android:layout_height="@dimen/radius_xl"
+                                        android:layout_marginEnd="@dimen/margin_large"
                                         android:contentDescription="@string/visit_github"
                                         android:src="@drawable/ic_github" />
 
@@ -288,7 +285,7 @@
                 android:id="@+id/icons8_attribution"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="@dimen/margin_xs"
                 android:alpha="0.7"
                 android:gravity="center"
                 android:text="@string/icons8_attribution"
@@ -305,11 +302,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_large"
                 android:backgroundTint="@color/blue_primary"
-                android:paddingVertical="12dp"
+                android:paddingVertical="@dimen/margin_medium"
                 android:text="@string/go_to_accessibility_settings"
                 android:textColor="@color/white"
-                app:cornerRadius="12dp"
-                app:elevation="8dp"
+                app:cornerRadius="@dimen/rounded_corners_inner"
+                app:elevation="@dimen/margin_small"
                 app:rippleColor="@color/blue_primary_dark"
                 app:strokeColor="@color/white"
                 app:strokeWidth="1dp"
@@ -322,10 +319,10 @@
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="@dimen/margin_small"
                 android:textColor="?attr/colorPrimary"
                 android:text="@string/close"
-                app:cornerRadius="8dp"
+                app:cornerRadius="@dimen/margin_small"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_go_to_accessibility" />
