@@ -7,7 +7,7 @@ package com.scrolless.app.provider
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentManager
-import com.scrolless.app.features.dialogs.HelpDialogFragment
+import com.scrolless.app.features.dialogs.HelpDialog
 import com.scrolless.app.features.main.MainActivity
 import com.scrolless.framework.extensions.launchActivity
 
@@ -18,7 +18,7 @@ class NavigationProviderImpl(private val context: Context) : NavigationProvider 
         }
     }
 
-    override fun launchHelpDialog(childFragmentManager : FragmentManager) {
-        HelpDialogFragment.show(childFragmentManager)
+    override fun launchHelpDialog(childFragmentManager: FragmentManager) {
+        HelpDialog.newInstance().show(childFragmentManager, HelpDialog.TAG)
     }
 }

@@ -63,4 +63,7 @@
     <string name="close">Close</string>
     <string name="contact_support">Contact Support</string>
 
+
+    <string name="error_accessibility_settings_unavailable">Could not open Accessibility Settings.</string>
+    <string name="error_unknown">An unexpected error occurred.</string>
 </resources>

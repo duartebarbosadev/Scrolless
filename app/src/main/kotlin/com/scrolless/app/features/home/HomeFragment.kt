@@ -26,7 +26,6 @@ import com.scrolless.app.R
 import com.scrolless.app.base.BaseFragment
 import com.scrolless.app.databinding.FragmentHomeBinding
 import com.scrolless.app.features.dialogs.AccessibilityExplainerDialog
-import com.scrolless.app.features.dialogs.HelpDialogFragment
 import com.scrolless.app.provider.AppProvider
 import com.scrolless.app.provider.NavigationProvider
 import com.scrolless.app.provider.UsageTracker

@@ -9,5 +9,5 @@ import androidx.fragment.app.FragmentManager
 interface NavigationProvider {
 
     fun launchMainActivity()
-    fun launchHelpDialog(childFragmentManager : FragmentManager)
+    fun launchHelpDialog(childFragmentManager: FragmentManager)
 }
