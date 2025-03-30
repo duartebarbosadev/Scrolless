@@ -5,7 +5,6 @@
 package com.scrolless.app.features.dialogs
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -15,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnimationUtils
+import androidx.core.net.toUri
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.scrolless.app.R
 import com.scrolless.app.databinding.DialogAccessibilityExplainerBinding
@@ -39,7 +39,6 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
 
     companion object {
         const val TAG = "AccessibilityExplainerDialog"
-        private const val GITHUB_URL = "https://github.com/duartebarbosadev/scrolless"
 
         fun newInstance(): AccessibilityExplainerDialog = AccessibilityExplainerDialog()
     }
@@ -95,8 +94,11 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
 
         // Add GitHub link
         binding.tvOpenSourceNote.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_URL))
-            startActivity(intent)
+            startActivity(
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = getString(R.string.github_url).toUri()
+                },
+            )
         }
     }
 

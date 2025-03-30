@@ -4,7 +4,10 @@
  */
 package com.scrolless.app.provider
 
+import androidx.fragment.app.FragmentManager
+
 interface NavigationProvider {
 
     fun launchMainActivity()
+    fun launchHelpDialog(childFragmentManager: FragmentManager)
 }
