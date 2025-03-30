@@ -22,7 +22,6 @@ import timber.log.Timber
 
 /**
  * DialogFragment that explains how to use the app and troubleshoot common issues.
- * Uses DialogFragment for better lifecycle management and ViewBinding for UI interaction.
  */
 class HelpDialog : DialogFragment() {
 
