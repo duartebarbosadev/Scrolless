@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">經過時間</string>
     <string name="total_time_wasted">浪費在腦袋空轉上的總時間</string>
+    <string name="close">關閉</string>
+    <string name="contact_support">聯絡客服</string>
+    <string name="error_accessibility_settings_unavailable">無法打開無障礙設定。</string>
+    <string name="error_unknown">發生了意外錯誤。</string>
+    <string name="go_to_accessibility_settings">前往無障礙設定</string>
+    <string name="help_dialog_title">Scrolless 無法運作？</string>
+    <string name="help_step1_description">從主畫面選擇一個封鎖選項</string>
+    <string name="help_step1_title">選擇您的封鎖選項</string>
+    <string name="help_step2_description">如果阻擋無效，請先停用再啟用無障礙服務，並嘗試停用 Scrolless 的電池優化。</string>
+    <string name="help_step2_title">故障排除</string>
+    <string name="help_step3_description">還有問題嗎？我們在這裡幫助您！請使用下面的按鈕聯繫我們的 GitHub 倉庫。</string>
+    <string name="help_step3_title">聯絡客服</string>
+    <string name="icons8_attribution">圖示由 Icons8 提供 (icons8.com)</string>
+    <string name="leave_app_review">離開應用程式評價</string>
+    <string name="visit_github">造訪 GitHub 倉庫</string>
 </resources>

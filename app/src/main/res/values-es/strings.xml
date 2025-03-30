@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Tiempo transcurrido</string>
     <string name="total_time_wasted">Tiempo total perdido en deterioro mental</string>
+    <string name="close">Cerrar</string>
+    <string name="contact_support">Contactar con Soporte</string>
+    <string name="error_accessibility_settings_unavailable">No se pudo abrir la Configuración de accesibilidad.</string>
+    <string name="error_unknown">Ocurrió un error inesperado.</string>
+    <string name="go_to_accessibility_settings">Ir a Configuración de accesibilidad</string>
+    <string name="help_dialog_title">¿Scrolless no funciona?</string>
+    <string name="help_step1_description">Selecciona una de las opciones de bloqueo desde la pantalla principal</string>
+    <string name="help_step1_title">Elige tu opción de bloqueo</string>
+    <string name="help_step2_description">Si el bloqueo no funciona, desactiva y luego activa el servicio de accesibilidad y trata de desactivar la optimización de batería para Scrolless.</string>
+    <string name="help_step2_title">Solución de problemas</string>
+    <string name="help_step3_description">¿Sigues teniendo problemas? ¡Estamos aquí para ayudar! Usa el botón de abajo para contactarnos en nuestro repositorio de GitHub.</string>
+    <string name="help_step3_title">Contactar con Soporte</string>
+    <string name="icons8_attribution">Iconos proporcionados por Icons8 (icons8.com)</string>
+    <string name="leave_app_review">Dejar reseña de la app</string>
+    <string name="visit_github">Visita el repositorio de GitHub</string>
 </resources>

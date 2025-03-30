@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Temps transcorregut</string>
     <string name="total_time_wasted">Temps total perdut en degradació mental</string>
+    <string name="close">Tanca</string>
+    <string name="contact_support">Contacta amb el suport</string>
+    <string name="error_accessibility_settings_unavailable">No s\'ha pogut obrir la configuració d\'accessibilitat.</string>
+    <string name="error_unknown">S\'ha produït un error inesperat.</string>
+    <string name="go_to_accessibility_settings">Vés a la configuració d\'accessibilitat</string>
+    <string name="help_dialog_title">Scrolless no funciona?</string>
+    <string name="help_step1_description">Selecciona una de les opcions de bloqueig de la pantalla principal</string>
+    <string name="help_step1_title">Trieu la vostra opció de bloqueig</string>
+    <string name="help_step2_description">Si el bloqueig no funciona, desactiva i torna a activar el servei d\'accessibilitat i intenta desactivar l\'optimització de la bateria per a Scrolless.</string>
+    <string name="help_step2_title">Resolució de problemes</string>
+    <string name="help_step3_description">Encara tens problemes? Estem aquí per ajudar-te! Utilitza el botó a continuació per contactar amb el nostre repositori de GitHub.</string>
+    <string name="help_step3_title">Contacta amb el suport</string>
+    <string name="icons8_attribution">Icons proporcionats per Icons8 (icons8.com)</string>
+    <string name="leave_app_review">Deixa una valoració de l\'aplicació</string>
+    <string name="visit_github">Visita el repositori de GitHub</string>
 </resources>

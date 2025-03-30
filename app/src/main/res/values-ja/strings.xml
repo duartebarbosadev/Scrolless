@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">経過時間</string>
     <string name="total_time_wasted">精神的な疲労に費やした合計時間</string>
+    <string name="close">閉じる</string>
+    <string name="contact_support">サポートに連絡</string>
+    <string name="error_accessibility_settings_unavailable">アクセシビリティ設定を開けませんでした。</string>
+    <string name="error_unknown">予期しないエラーが発生しました。</string>
+    <string name="go_to_accessibility_settings">アクセシビリティ設定に移動</string>
+    <string name="help_dialog_title">Scrollessが動作していませんか？</string>
+    <string name="help_step1_description">メイン画面からブロックオプションのいずれかを選択してください</string>
+    <string name="help_step1_title">ブロックオプションを選択してください</string>
+    <string name="help_step2_description">ブロックが機能しない場合は、アクセシビリティサービスを無効にしてから再度有効にし、Scrollessのバッテリー最適化を無効にしてみてください。</string>
+    <string name="help_step2_title">トラブルシューティング</string>
+    <string name="help_step3_description">まだ問題がありますか？私たちが助けます！下のボタンを使って、私たちのGitHubリポジトリに連絡してください。</string>
+    <string name="help_step3_title">サポートに連絡</string>
+    <string name="icons8_attribution">IconsはIcons8（icons8.com）によって提供されています</string>
+    <string name="leave_app_review">アプリレビューを残す</string>
+    <string name="visit_github">GitHubリポジトリを訪問する</string>
 </resources>

@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Proteklo vrijeme</string>
     <string name="total_time_wasted">Ukupno vrijeme izgubljeno na mentalno propadanje</string>
+    <string name="close">Zatvori</string>
+    <string name="contact_support">Kontaktirajte podršku</string>
+    <string name="error_accessibility_settings_unavailable">Nije moguće otvoriti postavke pristupačnosti.</string>
+    <string name="error_unknown">Došlo je do neočekivane pogreške.</string>
+    <string name="go_to_accessibility_settings">Idite na postavke pristupačnosti</string>
+    <string name="help_dialog_title">Scrolless ne radi?</string>
+    <string name="help_step1_description">Odaberite jednu od opcija blokiranja s glavnog ekrana</string>
+    <string name="help_step1_title">Odaberite svoju opciju blokiranja</string>
+    <string name="help_step2_description">Ako blokiranje ne radi, onemogućite pa ponovno omogućite uslugu pristupačnosti i pokušajte onemogućiti optimizaciju baterije za Scrolless.</string>
+    <string name="help_step2_title">Rješavanje problema</string>
+    <string name="help_step3_description">I dalje imate problema? Ovdje smo da pomognemo! Iskoristite gumb ispod da nas kontaktirate na našem GitHub repozitoriju.</string>
+    <string name="help_step3_title">Kontaktirajte podršku</string>
+    <string name="icons8_attribution">Ikone pruža Icons8 (icons8.com)</string>
+    <string name="leave_app_review">Ostavite recenziju aplikacije</string>
+    <string name="visit_github">Posjetite GitHub repozitorij</string>
 </resources>

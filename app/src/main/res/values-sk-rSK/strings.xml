@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Uplynulý čas</string>
     <string name="total_time_wasted">Celkový čas strávený v mentálnom úpadku</string>
+    <string name="close">Zavrieť</string>
+    <string name="contact_support">Kontaktujte podporu</string>
+    <string name="error_accessibility_settings_unavailable">Nepodarilo sa otvoriť nastavenia prístupnosti.</string>
+    <string name="error_unknown">Vyskytla sa neočakávaná chyba.</string>
+    <string name="go_to_accessibility_settings">Prejdite na nastavenia prístupnosti</string>
+    <string name="help_dialog_title">Scrolless nefunguje?</string>
+    <string name="help_step1_description">Vyberte jednu z blokovacích možností z hlavnej obrazovky</string>
+    <string name="help_step1_title">Vyberte si možnosť blokovania</string>
+    <string name="help_step2_description">Ak blokovanie nefunguje, deaktivujte a potom aktivujte službu prístupnosti a skúste deaktivovať optimalizáciu batérie pre Scrolless.</string>
+    <string name="help_step2_title">Riešenie problémov</string>
+    <string name="help_step3_description">Stále máte problémy? Sme tu, aby sme pomohli! Použite tlačidlo nižšie na kontaktovanie našej GitHub repo.</string>
+    <string name="help_step3_title">Kontaktujte podporu</string>
+    <string name="icons8_attribution">Ikony poskytol Icons8 (icons8.com)</string>
+    <string name="leave_app_review">Zanechať recenziu aplikácie</string>
+    <string name="visit_github">Navštívte GitHub Repository</string>
 </resources>
