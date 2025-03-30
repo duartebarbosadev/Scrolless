@@ -27,6 +27,7 @@ import com.scrolless.app.base.BaseFragment
 import com.scrolless.app.databinding.FragmentHomeBinding
 import com.scrolless.app.features.dialogs.AccessibilityExplainerDialog
 import com.scrolless.app.provider.AppProvider
+import com.scrolless.app.provider.NavigationProvider
 import com.scrolless.app.provider.UsageTracker
 import com.scrolless.app.services.ScrollessBlockAccessibilityService
 import com.scrolless.framework.extensions.*
@@ -52,6 +53,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     @Inject
     lateinit var usageTracker: UsageTracker
+
+    @Inject
+    lateinit var navigationProvider: NavigationProvider
 
     override fun onViewReady(bundle: Bundle?) {
         val rootView = binding.root
@@ -157,9 +161,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         binding.detailsHelpButton.setOnClickListener {
-            if (!requireContext().isAccessibilityServiceEnabled(HomeFragment::class.java)) {
-                showAccessibilityExplainerDialog()
-            }
+            showHelpDialog()
         }
 
 //        binding.intervalTimerButton.setOnClickListener {
@@ -177,9 +179,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 //        }
 
         setTimerOverlayCheckBoxListener()
-
         setupProgressIndicator()
-        // TODO add <a target="_blank" href="https://icons8.com/icon/XyExeYckBY4H/unavailable">Block</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
     }
 
     /**
@@ -494,5 +494,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             BlockOption.IntervalTimer -> applyButtonEffect(binding.intervalTimerButton, true)
             BlockOption.NothingSelected -> Unit // No action needed
         }
+    }
+
+    /**
+     * Shows the help dialog with instructions on how to use the app
+     */
+    private fun showHelpDialog() {
+        navigationProvider.launchHelpDialog(childFragmentManager)
     }
 }

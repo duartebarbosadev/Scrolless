@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2025, Scrolless
+     All rights reserved.
+-->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_dialog_background"
+    android:fillViewport="true">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_large"
+        app:cardBackgroundColor="@color/color_background_dark"
+        app:cardCornerRadius="@dimen/radius_bigger"
+        app:cardElevation="@dimen/margin_small">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_large">
+
+            <!-- Header -->
+            <TextView
+                android:id="@+id/help_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="@dimen/margin_small"
+                android:paddingBottom="@dimen/margin_large"
+                android:text="@string/help_dialog_title"
+                android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?attr/colorPrimary"
+                android:alpha="0.5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/help_title" />
+
+            <!-- Help Steps Container -->
+            <LinearLayout
+                android:id="@+id/help_steps_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/margin_large"
+                app:layout_constraintTop_toBottomOf="@id/divider"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <!-- Step 1: Enable Accessibility -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/step_accessibility"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    app:cardBackgroundColor="@color/color_background_darker"
+                    app:cardCornerRadius="@dimen/radius_bigger"
+                    app:cardElevation="@dimen/margin_xs">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_medium">
+
+                        <TextView
+                            android:id="@+id/step_number_1"
+                            android:layout_width="@dimen/radius_xl"
+                            android:layout_height="@dimen/radius_xl"
+                            android:background="@drawable/step_circle_background"
+                            android:gravity="center"
+                            android:text="@string/step_one"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/step_title_1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_medium"
+                            android:text="@string/help_step1_title"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorPrimary"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/step_number_1"
+                            app:layout_constraintTop_toTopOf="@id/step_number_1"
+                            app:layout_constraintBottom_toBottomOf="@id/step_number_1"/>
+
+                        <TextView
+                            android:id="@+id/step_description_1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:text="@string/help_step1_description"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="@color/white"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/step_title_1"
+                            app:layout_constraintTop_toBottomOf="@id/step_title_1" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Step 2: Choose Block Option -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/step_block_option"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_small"
+                    app:cardBackgroundColor="@color/color_background_darker"
+                    app:cardCornerRadius="@dimen/radius_bigger"
+                    app:cardElevation="@dimen/margin_xs">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_medium">
+
+                        <TextView
+                            android:id="@+id/step_number_2"
+                            android:layout_width="@dimen/radius_xl"
+                            android:layout_height="@dimen/radius_xl"
+                            android:background="@drawable/step_circle_background"
+                            android:gravity="center"
+                            android:text="@string/step_two"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/step_title_2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_medium"
+                            android:text="@string/help_step2_title"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorPrimary"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/step_number_2"
+                            app:layout_constraintTop_toTopOf="@id/step_number_2"
+                            app:layout_constraintBottom_toBottomOf="@id/step_number_2"/>
+
+                        <TextView
+                            android:id="@+id/step_description_2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:text="@string/help_step2_description"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="@color/white"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/step_title_2"
+                            app:layout_constraintTop_toBottomOf="@id/step_title_2" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Step 3: Contact Support -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/step_troubleshooting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/radius_big"
+                    app:cardBackgroundColor="@color/color_background_darker"
+                    app:cardCornerRadius="@dimen/radius_bigger"
+                    app:cardElevation="@dimen/margin_xs">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/margin_medium">
+
+                        <TextView
+                            android:id="@+id/step_number_3"
+                            android:layout_width="@dimen/radius_xl"
+                            android:layout_height="@dimen/radius_xl"
+                            android:background="@drawable/step_circle_background"
+                            android:gravity="center"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:text="@string/step_three" />
+
+                        <TextView
+                            android:id="@+id/step_title_3"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_medium"
+                            android:textAppearance="?attr/textAppearanceBodyLarge"
+                            android:textColor="?attr/colorPrimary"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="@id/step_number_3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/step_number_3"
+                            app:layout_constraintTop_toTopOf="@id/step_number_3"
+                            android:text="@string/contact_support" />
+
+                        <TextView
+                            android:id="@+id/step_description_3"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_small"
+                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textColor="@color/white"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/step_title_3"
+                            app:layout_constraintTop_toBottomOf="@id/step_title_3"
+                            android:text="@string/help_step3_description" />
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_github"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/radius_big"
+                            android:layout_marginHorizontal="@dimen/radius_xl"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            app:cardCornerRadius="@dimen/radius_bigger"
+                            app:cardElevation="@dimen/margin_xs"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/step_description_3"
+                            app:rippleColor="@color/white">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/margin_small">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/radius_xl"
+                                    android:layout_marginEnd="@dimen/margin_large"
+                                    android:contentDescription="@string/visit_github"
+                                    android:src="@drawable/ic_github" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:text="@string/visit_github"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+                        </com.google.android.material.card.MaterialCardView>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <!-- Icons8 attribution -->
+            <TextView
+                android:id="@+id/icons8_attribution"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:alpha="0.7"
+                android:gravity="center"
+                android:text="@string/icons8_attribution"
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="@color/white"
+                android:textSize="11sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/help_steps_container" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_go_to_accessibility"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:backgroundTint="@color/blue_primary"
+                android:paddingVertical="@dimen/margin_medium"
+                android:text="@string/go_to_accessibility_settings"
+                android:textColor="@color/white"
+                app:cornerRadius="@dimen/rounded_corners_inner"
+                app:elevation="@dimen/margin_small"
+                app:rippleColor="@color/blue_primary_dark"
+                app:strokeColor="@color/white"
+                app:strokeWidth="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/icons8_attribution" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_close_help"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:textColor="?attr/colorPrimary"
+                android:text="@string/close"
+                app:cornerRadius="@dimen/margin_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_go_to_accessibility"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.core.widget.NestedScrollView>
