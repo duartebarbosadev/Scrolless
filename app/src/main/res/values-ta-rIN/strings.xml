@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">கடந்த நேரம்</string>
     <string name="total_time_wasted">மனநிலையை பாதிக்கும் நேரம் மொத்தம் வீணாகியுள்ளது</string>
+    <string name="close">மூடு</string>
+    <string name="contact_support">ஆதரவை தொடர்பு கொள்ளுங்கள்</string>
+    <string name="error_accessibility_settings_unavailable">அணுகல் அமைப்புகளை திறக்க முடியவில்லை.</string>
+    <string name="error_unknown">ஒரு எதிர்பாராத பிழை ஏற்பட்டது.</string>
+    <string name="go_to_accessibility_settings">அணுகல் அமைப்புகளுக்கு செல்லவும்</string>
+    <string name="help_dialog_title">Scrolless வேலை செய்யவில்லை?</string>
+    <string name="help_step1_description">முதன்மை திரையிலிருந்து தடுக்கும் விருப்பங்களில் ஒன்றை தேர்ந்தெடுக்கவும்</string>
+    <string name="help_step1_title">உங்கள் தடுப்பு விருப்பத்தை தேர்வு செய்யவும்</string>
+    <string name="help_step2_description">எதிர்ப்பு செயல்படவில்லை என்றால், அணுகல் சேவையை முடக்கவும், பின்னர் மீண்டும் இயக்கவும் மற்றும் Scrolless க்கான பேட்டரி மேம்பாட்டை முடக்க முயற்சிக்கவும்.</string>
+    <string name="help_step2_title">பிரச்சினைகளை தீர்க்கும்</string>
+    <string name="help_step3_description">இன்னும் சிக்கல்கள் உள்ளதா? நாங்கள் உதவிக்காக இங்கே இருக்கிறோம்! எங்கள் GitHub repo-வில் தொடர்பு கொள்ள கீழே உள்ள பொத்தானை பயன்படுத்தவும்.</string>
+    <string name="help_step3_title">ஆதரவை தொடர்பு கொள்ளுங்கள்</string>
+    <string name="icons8_attribution">Icons8 மூலம் வழங்கப்பட்ட ஐகான்கள் (icons8.com)</string>
+    <string name="leave_app_review">அப்பிள்ளை மதிப்பீடு செய்யவும்</string>
+    <string name="visit_github">GitHub Repository-ஐ பார்வையிடவும்</string>
 </resources>

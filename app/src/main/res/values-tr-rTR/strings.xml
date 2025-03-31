@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Geçen Süre</string>
     <string name="total_time_wasted">Zihin çürümesine harcanan toplam zaman</string>
+    <string name="close">Kapat</string>
+    <string name="contact_support">Destekle İletişime Geçin</string>
+    <string name="error_accessibility_settings_unavailable">Erişilebilirlik Ayarları açılamadı.</string>
+    <string name="error_unknown">Beklenmedik bir hata oluştu.</string>
+    <string name="go_to_accessibility_settings">Erişilebilirlik Ayarlarına Git</string>
+    <string name="help_dialog_title">Scrolless çalışmıyor mu?</string>
+    <string name="help_step1_description">Ana ekrandan engelleme seçeneklerinden birini seçin</string>
+    <string name="help_step1_title">Blok Seçeneklerinizi Seçin</string>
+    <string name="help_step2_description">Eğer engelleme işe yaramıyorsa, erişilebilirlik hizmetini devre dışı bırakıp tekrar etkinleştirin ve Scrolless için pil optimizasyonunu devre dışı bırakmayı deneyin.</string>
+    <string name="help_step2_title">Sorun Giderme</string>
+    <string name="help_step3_description">Hala sorun mu yaşıyorsunuz? Size yardımcı olmaya buradayız! Aşağıdaki butonu kullanarak GitHub reposuna ulaşabilirsiniz.</string>
+    <string name="help_step3_title">Destekle İletişime Geç</string>
+    <string name="icons8_attribution">Icons8 tarafından sağlanan simgeler (icons8.com)</string>
+    <string name="leave_app_review">Uygulama Değerlendirmesi Bırak</string>
+    <string name="visit_github">GitHub Deposu\'nu Ziyaret Et</string>
 </resources>

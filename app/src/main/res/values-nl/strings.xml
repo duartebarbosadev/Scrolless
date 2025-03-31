@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Verstreken tijd</string>
     <string name="total_time_wasted">Totaal tijd verspild aan mentale achteruitgang</string>
+    <string name="close">Sluiten</string>
+    <string name="contact_support">Neem contact op met ondersteuning</string>
+    <string name="error_accessibility_settings_unavailable">Kon de toegankelijkheidsinstellingen niet openen.</string>
+    <string name="error_unknown">Er is een onverwachte fout opgetreden.</string>
+    <string name="go_to_accessibility_settings">Ga naar Toegankelijkheidsinstellingen</string>
+    <string name="help_dialog_title">Scrolless werkt niet?</string>
+    <string name="help_step1_description">Selecteer een van de blokkering opties vanaf het hoofdscherm</string>
+    <string name="help_step1_title">Kies uw blokkeermogelijkheid</string>
+    <string name="help_step2_description">Als blokkeren niet werkt, schakel dan de toegankelijkheidsdienst uit en weer in en probeer de batterijoptimalisatie voor Scrolless uit te schakelen.</string>
+    <string name="help_step2_title">Probleemoplossing</string>
+    <string name="help_step3_description">Heb je nog steeds problemen? We zijn hier om te helpen! Gebruik de knop hieronder om contact op te nemen via onze GitHub-repo.</string>
+    <string name="help_step3_title">Neem contact op met ondersteuning</string>
+    <string name="icons8_attribution">Pictogrammen geleverd door Icons8 (icons8.com)</string>
+    <string name="leave_app_review">Laat een app-beoordeling achter</string>
+    <string name="visit_github">Bezoek GitHub-repository</string>
 </resources>

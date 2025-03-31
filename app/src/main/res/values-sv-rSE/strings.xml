@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Förfluten tid</string>
     <string name="total_time_wasted">Total tid bortkastad på mental nedbrytning</string>
+    <string name="close">Stäng</string>
+    <string name="contact_support">Kontakta supporten</string>
+    <string name="error_accessibility_settings_unavailable">Kunde inte öppna tillgänglighetsinställningar.</string>
+    <string name="error_unknown">Ett oväntat fel inträffade.</string>
+    <string name="go_to_accessibility_settings">Gå till tillgänglighetsinställningar</string>
+    <string name="help_dialog_title">Scrolless fungerar inte?</string>
+    <string name="help_step1_description">Välj ett av blockeringsalternativen från huvudskärmen</string>
+    <string name="help_step1_title">Välj din blockeringsalternativ</string>
+    <string name="help_step2_description">Om blockering inte fungerar, inaktivera och aktivera sedan tillgänglighetstjänsten och försök att inaktivera batterioptimering för Scrolless.</string>
+    <string name="help_step2_title">Felsökning</string>
+    <string name="help_step3_description">Har du fortfarande problem? Vi är här för att hjälpa till! Använd knappen nedan för att kontakta oss på vår GitHub-repo.</string>
+    <string name="help_step3_title">Kontakta supporten</string>
+    <string name="icons8_attribution">Ikoner tillhandahållna av Icons8 (icons8.com)</string>
+    <string name="leave_app_review">Lämna apprecension</string>
+    <string name="visit_github">Besök GitHub-repositoriet</string>
 </resources>
