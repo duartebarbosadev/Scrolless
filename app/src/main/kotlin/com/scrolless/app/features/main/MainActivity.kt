@@ -18,6 +18,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun onViewReady(bundle: Bundle?) {
         navigateFragment(
             HomeFragment.newInstance(),
+            addToBackStack = false,
             clearBackStack = true,
         )
 
