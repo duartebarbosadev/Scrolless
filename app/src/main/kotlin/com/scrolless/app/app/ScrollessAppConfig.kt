@@ -4,6 +4,7 @@
  */
 package com.scrolless.app.app
 
+import android.content.Context
 import com.scrolless.app.BuildConfig
 import com.scrolless.app.features.main.MainActivity
 import com.scrolless.framework.core.base.application.CoreConfig
@@ -26,4 +27,14 @@ class ScrollessAppConfig : CoreConfig() {
     override fun uncaughtExceptionPage(): Class<*> = MainActivity::class.java
 
     override fun uncaughtExceptionMessage(): String = "Unknown Error"
+
+    override fun getPlayStoreUrl(context: Context): String {
+        // Get app namespace
+        val packageName = context.packageName
+        val baseNamespace = packageName
+            .replace(".dev", "")
+            .replace(".debug", "")
+
+        return "https://play.google.com/store/apps/details?id=$baseNamespace"
+    }
 }
