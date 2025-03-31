@@ -26,6 +26,7 @@ junit = "4.13.2"
 androidxJUnit = "1.2.1"
 espressoCore = "3.6.1"
 material = "1.12.0"
+review = "2.0.2"
 paging = "3.3.6"
 workmanager = "2.10.0"
 
@@ -70,6 +71,10 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 # AppCompat and Material Design
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+# Review Library
+android-review = { group = "com.google.android.play", name = "review", version.ref = "review" }
+android-review-ktx = { group = "com.google.android.play", name = "review-ktx", version.ref = "review" }
 
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }

@@ -83,7 +83,6 @@ dependencies {
     implementation(libs.androidx.preference.ktx)
     testImplementation(projects.libraries.testutils)
 
-    implementation(libs.androidx.viewbinding)
 
     // Core libraries
     implementation(libs.kotlin.stdlib)
@@ -103,6 +102,9 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.security.crypto)
+
+    implementation(libs.android.review)
+    implementation(libs.android.review.ktx)
 
     // Other libraries
     implementation(libs.timber)

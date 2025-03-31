@@ -4,6 +4,8 @@
  */
 package com.scrolless.framework.core.base.application
 
+import android.content.Context
+
 abstract class CoreConfig {
     abstract fun appName(): String
 
@@ -16,4 +18,6 @@ abstract class CoreConfig {
     open fun uncaughtExceptionPage(): Class<*>? = null
 
     open fun uncaughtExceptionMessage(): String? = null
+
+    open fun getPlayStoreUrl(context: Context): String? = null
 }
