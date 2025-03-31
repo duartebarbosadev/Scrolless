@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">व्यतीत समय</string>
     <string name="total_time_wasted">कुल समय\nमानसिक क्षति में बर्बाद किया गया</string>
+    <string name="close">बंद करें</string>
+    <string name="contact_support">संपर्क करें सहायता</string>
+    <string name="error_accessibility_settings_unavailable">एक्सेसिबिलिटी सेटिंग्स खोलने में असफल।</string>
+    <string name="error_unknown">एक अप्रत्याशित त्रुटि हुई।</string>
+    <string name="go_to_accessibility_settings">एक्सेसिबिलिटी सेटिंग्स पर जाएं</string>
+    <string name="help_dialog_title">Scrolless काम नहीं कर रहा?</string>
+    <string name="help_step1_description">मुख्य स्क्रीन से अवरोध विकल्पों में से एक चुनें</string>
+    <string name="help_step1_title">अपने ब्लॉक विकल्प का चयन करें</string>
+    <string name="help_step2_description">यदि ब्लॉकिंग काम नहीं कर रही है, तो एक्सेसिबिलिटी सेवा को बंद करें और फिर से चालू करें और Scrolless के लिए बैटरी ऑप्टिमाइजेशन को बंद करने का प्रयास करें।</string>
+    <string name="help_step2_title">समस्या निवारण</string>
+    <string name="help_step3_description">अभी भी समस्याएँ हैं? हम मदद के लिए यहाँ हैं! हमारे GitHub रिपॉजिटरी पर संपर्क करने के लिए नीचे दिए गए बटन का उपयोग करें।</string>
+    <string name="help_step3_title">संपर्क करें सहायता</string>
+    <string name="icons8_attribution">Icons8 द्वारा प्रदान किए गए आइकन (icons8.com)</string>
+    <string name="leave_app_review">ऐप समीक्षा छोड़ें</string>
+    <string name="visit_github">GitHub रिपॉजिटरी पर जाएं</string>
 </resources>

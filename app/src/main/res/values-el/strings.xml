@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Χρόνος που έχει παρέλθει</string>
     <string name="total_time_wasted">Συνολικός χρόνος που χάθηκε σε πνευματική φθορά</string>
+    <string name="close">Κλείσιμο</string>
+    <string name="contact_support">Επικοινωνήστε με την Υποστήριξη</string>
+    <string name="error_accessibility_settings_unavailable">Δεν ήταν δυνατή η ανοίγμα των Ρυθμίσεων Προσβασιμότητας.</string>
+    <string name="error_unknown">Παρουσιάστηκε ένα απρόσμενο σφάλμα.</string>
+    <string name="go_to_accessibility_settings">Μετάβαση στις Ρυθμίσεις Προσβασιμότητας</string>
+    <string name="help_dialog_title">Το Scrolless δεν λειτουργεί;</string>
+    <string name="help_step1_description">Επιλέξτε μία από τις επιλογές αποκλεισμού από την κύρια οθόνη</string>
+    <string name="help_step1_title">Επιλέξτε την επιλογή αποκλεισμού σας</string>
+    <string name="help_step2_description">Αν η απαγόρευση δεν λειτουργεί, απενεργοποιήστε και στη συνέχεια ενεργοποιήστε την υπηρεσία προσβασιμότητας και προσπαθήστε να απενεργοποιήσετε την βελτιστοποίηση μπαταρίας για το Scrolless.</string>
+    <string name="help_step2_title">Αντιμετώπιση προβλημάτων</string>
+    <string name="help_step3_description">Έχετε ακόμα προβλήματα; Είμαστε εδώ για να βοηθήσουμε! Χρησιμοποιήστε το κουμπί παρακάτω για να επικοινωνήσετε με το GitHub repo μας.</string>
+    <string name="help_step3_title">Επικοινωνήστε με την Υποστήριξη</string>
+    <string name="icons8_attribution">Εικονίδια που παρέχονται από το Icons8 (icons8.com)</string>
+    <string name="leave_app_review">Αφήστε κριτική για την εφαρμογή</string>
+    <string name="visit_github">Επισκεφθείτε το GitHub Repository</string>
 </resources>

@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Timp scurs</string>
     <string name="total_time_wasted">Timp total pierdut în degradare mentală</string>
+    <string name="close">Închide</string>
+    <string name="contact_support">Contactați suportul</string>
+    <string name="error_accessibility_settings_unavailable">Nu s-au putut deschide Setările de accesibilitate.</string>
+    <string name="error_unknown">A apărut o eroare neașteptată.</string>
+    <string name="go_to_accessibility_settings">Mergi la Setările de accesibilitate</string>
+    <string name="help_dialog_title">Scrolless nu funcționează?</string>
+    <string name="help_step1_description">Selectați una dintre opțiunile de blocare de pe ecranul principal</string>
+    <string name="help_step1_title">Alegeți opțiunea de blocare</string>
+    <string name="help_step2_description">Dacă blocarea nu funcționează, dezactivează și apoi activează serviciul de accesibilitate și încearcă să dezactivezi optimizarea bateriei pentru Scrolless.</string>
+    <string name="help_step2_title">Depanare</string>
+    <string name="help_step3_description">Încă ai probleme? Suntem aici să te ajutăm! Folosește butonul de mai jos pentru a ne contacta pe repo-ul nostru GitHub.</string>
+    <string name="help_step3_title">Contactați suportul</string>
+    <string name="icons8_attribution">Iconi furnizate de Icons8 (icons8.com)</string>
+    <string name="leave_app_review">Lasă un review pentru aplicație</string>
+    <string name="visit_github">Vizitați GitHub Repository</string>
 </resources>

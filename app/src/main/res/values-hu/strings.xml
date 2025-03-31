@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Eltelt idő</string>
     <string name="total_time_wasted">Összesen elpazarolt idő a mentális leépülésben</string>
+    <string name="close">Bezárás</string>
+    <string name="contact_support">Kapcsolatfelvétel a támogatással</string>
+    <string name="error_accessibility_settings_unavailable">Nem sikerült megnyitni az Akadálymentességi beállításokat.</string>
+    <string name="error_unknown">Váratlan hiba történt.</string>
+    <string name="go_to_accessibility_settings">Menj az Akadálymentességi beállításokhoz</string>
+    <string name="help_dialog_title">A Scrolless nem működik?</string>
+    <string name="help_step1_description">Válasszon az alapképernyőről egy blokkolási lehetőséget</string>
+    <string name="help_step1_title">Válaszd ki a blokkolási lehetőségedet</string>
+    <string name="help_step2_description">Ha a blokkolás nem működik, tiltsa le, majd engedélyezze az akadálymentességi szolgáltatást, és próbálja meg letiltani az akkumulátor optimalizálást a Scrolless számára.</string>
+    <string name="help_step2_title">Hibaelhárítás</string>
+    <string name="help_step3_description">Még mindig problémái vannak? Itt vagyunk, hogy segítsünk! Használja az alábbi gombot, hogy kapcsolatba lépjen a GitHub repónkkal.</string>
+    <string name="help_step3_title">Kapcsolatfelvétel a támogatással</string>
+    <string name="icons8_attribution">Az ikonokat az Icons8 biztosította (icons8.com)</string>
+    <string name="leave_app_review">Alkalmazás értékelése</string>
+    <string name="visit_github">Látogasson el a GitHub tárolóra</string>
 </resources>

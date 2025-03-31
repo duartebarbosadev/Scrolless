@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">经过时间</string>
     <string name="total_time_wasted">浪费在脑力衰退上的总时间</string>
+    <string name="close">关闭</string>
+    <string name="contact_support">联系支持</string>
+    <string name="error_accessibility_settings_unavailable">无法打开辅助功能设置。</string>
+    <string name="error_unknown">发生了意外错误。</string>
+    <string name="go_to_accessibility_settings">前往无障碍设置</string>
+    <string name="help_dialog_title">Scrolless无法工作？</string>
+    <string name="help_step1_description">从主屏幕选择一个阻止选项</string>
+    <string name="help_step1_title">选择您的阻止选项</string>
+    <string name="help_step2_description">如果屏蔽无效，请禁用并重新启用无障碍服务，然后尝试禁用Scrolless的电池优化。</string>
+    <string name="help_step2_title">故障排除</string>
+    <string name="help_step3_description">仍然有问题吗？我们在这里帮助您！请使用下面的按钮在我们的 GitHub 仓库中联系我们。</string>
+    <string name="help_step3_title">联系支持</string>
+    <string name="icons8_attribution">由 Icons8 提供的图标 (icons8.com)</string>
+    <string name="leave_app_review">离开应用评价</string>
+    <string name="visit_github">访问 GitHub 仓库</string>
 </resources>

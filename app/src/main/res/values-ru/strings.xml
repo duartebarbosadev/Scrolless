@@ -33,4 +33,19 @@
     <string name="time_track_limit">%1$s/%2$s</string>
     <string name="timer_content_description">Затраченное время</string>
     <string name="total_time_wasted">Общее время, потраченное на ментальное выгорание</string>
+    <string name="close">Закрыть</string>
+    <string name="contact_support">Связаться с поддержкой</string>
+    <string name="error_accessibility_settings_unavailable">Не удалось открыть настройки доступности.</string>
+    <string name="error_unknown">Произошла неожиданная ошибка.</string>
+    <string name="go_to_accessibility_settings">Перейти в настройки доступности</string>
+    <string name="help_dialog_title">Scrolless не работает?</string>
+    <string name="help_step1_description">Выберите один из вариантов блокировки на главном экране</string>
+    <string name="help_step1_title">Выберите вариант блокировки</string>
+    <string name="help_step2_description">Если блокировка не работает, отключите и затем включите службу доступности и попробуйте отключить оптимизацию батареи для Scrolless.</string>
+    <string name="help_step2_title">Устранение неполадок</string>
+    <string name="help_step3_description">Все еще есть проблемы? Мы здесь, чтобы помочь! Используйте кнопку ниже, чтобы обратиться к нашему репозиторию на GitHub.</string>
+    <string name="help_step3_title">Связаться с поддержкой</string>
+    <string name="icons8_attribution">Иконки предоставлены Icons8 (icons8.com)</string>
+    <string name="leave_app_review">Оставить отзыв о приложении</string>
+    <string name="visit_github">Посетите репозиторий GitHub</string>
 </resources>
