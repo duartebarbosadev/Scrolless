@@ -65,6 +65,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     @Inject
     lateinit var appConfig: CoreConfig
 
+    private var progressAnimator: ValueAnimator? = null
+
+    private var backgroundAnimation: AnimationDrawable? = null
+
     override fun onViewReady(bundle: Bundle?) {
         val rootView = binding.root
         ViewCompat.setOnApplyWindowInsetsListener(rootView) { v, insets ->
@@ -312,8 +316,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      */
 
     private fun animateProgressTo(targetProgress: Int, duration: Long = 1000) {
+        // Cancel any existing animation
+        progressAnimator?.cancel()
+
+        // Create a new animator
         val startProgress = lastProgress
         val valueAnimator = ValueAnimator.ofInt(startProgress, targetProgress)
+        progressAnimator = valueAnimator
+
         valueAnimator.apply {
             this.duration = duration
             interpolator = AccelerateDecelerateInterpolator()
@@ -391,10 +401,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      */
     private fun startGradientAnimation() {
         val layout = binding.layout
-        val animationDrawable = layout.background as AnimationDrawable
-        animationDrawable.setEnterFadeDuration(6000)
-        animationDrawable.setExitFadeDuration(2000)
-        animationDrawable.start()
+        backgroundAnimation = layout.background as AnimationDrawable
+        backgroundAnimation?.apply {
+            setEnterFadeDuration(6000)
+            setExitFadeDuration(2000)
+            start()
+        }
     }
 
     /**
@@ -413,6 +425,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
+
+        backgroundAnimation?.start()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        backgroundAnimation?.stop()
     }
 
     /**
@@ -467,6 +487,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun onDestroyView() {
+        // Cancel the progress animator if it's running
+        progressAnimator?.removeAllUpdateListeners()
+        progressAnimator?.cancel()
+        progressAnimator = null
+
+        // Stop the background animation if it's running
+        backgroundAnimation?.stop()
+        backgroundAnimation = null
+
         super.onDestroyView()
     }
 
