@@ -52,7 +52,7 @@ Your feedback is very important for us - we're actively working to improve the a
 
 | Main Screen | Blocking in Action                                                                                                                                                  |
 |-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| <img src="art/Scrolless.png" alt="Scrolless app" width="250"> <br> UI in progress | <img src="art/block_in_action.gif" alt="Scrolless app" width="250"> <br> As soon as the user enters the reel view, the app automatically blocks it by pressing back |
+| <img src="art/Scrolless.png" alt="Scrolless app" width="250"> <br> Main screen | <img src="art/block_in_action.gif" alt="Scrolless app" width="250"> <br> As soon as the user enters the reel view, the app automatically blocks it by pressing back |
 
 
 # Architecture
