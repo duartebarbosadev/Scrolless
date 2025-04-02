@@ -4,7 +4,10 @@
  */
 package com.scrolless.app.features.dialogs
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,18 +17,29 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnimationUtils
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.scrolless.app.R
 import com.scrolless.app.databinding.DialogAccessibilityExplainerBinding
+import com.scrolless.app.features.main.MainActivity
 import com.scrolless.app.services.ScrollessBlockAccessibilityService
 import com.scrolless.framework.extensions.isAccessibilityServiceEnabled
 import com.scrolless.framework.extensions.showToast
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import timber.log.Timber
 
 /**
  * A dialog that explains to the user why accessibility permissions are needed
  * and guides them through the process of enabling them.
  */
+@AndroidEntryPoint
 class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
 
     private var _binding: DialogAccessibilityExplainerBinding? = null
@@ -33,6 +47,8 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
 
     // Keep track of animation handlers to prevent memory leaks
     private val handlers = mutableListOf<Handler>()
+
+    private var serviceEnabledReceiver: BroadcastReceiver? = null
 
     // Flag to ensure animations only run once
     private var animationsApplied = false
@@ -65,6 +81,36 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
             // If we're restoring state, make everything visible without animation
             makeAllElementsVisible()
         }
+
+        // Setup broadcast receiver to dismiss dialog when service is enabled
+        setupBroadcastReceiver()
+    }
+
+    /**
+     * This method sets up a broadcast receiver to listen for the event when the accessibility service is enabled.
+     */
+    private fun setupBroadcastReceiver() {
+        serviceEnabledReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                Timber.d("Accessibility service enabled, reopening app to front.")
+                context?.let {
+                    // Launch MainActivity to bring app to foreground
+                    val mainIntent = Intent(context, MainActivity::class.java).apply {
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    }
+                    context.startActivity(mainIntent)
+                    dismissAllowingStateLoss()
+                }
+            }
+        }
+
+        // Register the broadcast receiver
+        context?.let {
+            LocalBroadcastManager.getInstance(it).registerReceiver(
+                serviceEnabledReceiver!!,
+                IntentFilter(ScrollessBlockAccessibilityService.ACTION_ACCESSIBILITY_SERVICE_ENABLE)
+            )
+        }
     }
 
     private fun makeAllElementsVisible() {
@@ -85,7 +131,7 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
         // Setup buttons
         binding.btnProceed.setOnClickListener {
             openAccessibilitySettings()
-            dismiss()
+            // Don't dismiss here, we'll wait for the broadcast or onResume check
         }
 
         binding.btnNotNow.setOnClickListener {
@@ -164,6 +210,13 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
         // Clear all animation handlers to prevent memory leaks
         handlers.forEach { it.removeCallbacksAndMessages(null) }
         handlers.clear()
+
+        // Unregister broadcast receiver
+        serviceEnabledReceiver?.let { receiver ->
+            context?.let { ctx ->
+                LocalBroadcastManager.getInstance(ctx).unregisterReceiver(receiver)
+            }
+        }
 
         super.onDestroyView()
         _binding = null
