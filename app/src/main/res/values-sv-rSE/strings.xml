@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Ikoner tillhandahållna av Icons8 (icons8.com)</string>
     <string name="leave_app_review">Lämna apprecension</string>
     <string name="visit_github">Besök GitHub-repositoriet</string>
+    <string name="accessibility_success_description">Scrolless är nu redo!</string>
+    <string name="accessibility_success_title">Allt klart!</string>
+    <string name="get_started">Låt oss komma igång</string>
+    <string name="next_step_1">Välj en blockeringsläge</string>
+    <string name="next_step_2">Prova daglig gräns-funktionen och aktivera timeröverlägget</string>
+    <string name="next_steps_title">Nästa steg</string>
+    <string name="success_icon_desc">Checkmark-ikon för framgång</string>
 </resources>

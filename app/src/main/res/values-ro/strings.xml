@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Iconi furnizate de Icons8 (icons8.com)</string>
     <string name="leave_app_review">Lasă un review pentru aplicație</string>
     <string name="visit_github">Vizitați GitHub Repository</string>
+    <string name="accessibility_success_description">Scrolless este acum gata!</string>
+    <string name="accessibility_success_title">Totul este pregătit!</string>
+    <string name="get_started">Să începem</string>
+    <string name="next_step_1">Selectați un mod de blocare</string>
+    <string name="next_step_2">Încearcă funcția de limită zilnică și activează suprapunerea temporizatorului</string>
+    <string name="next_steps_title">Pașii următori</string>
+    <string name="success_icon_desc">Iconă de verificare a succesului</string>
 </resources>

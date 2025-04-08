@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Pictogrammen geleverd door Icons8 (icons8.com)</string>
     <string name="leave_app_review">Laat een app-beoordeling achter</string>
     <string name="visit_github">Bezoek GitHub-repository</string>
+    <string name="accessibility_success_description">Scrolless is nu klaar!</string>
+    <string name="accessibility_success_title">Alles gereed!</string>
+    <string name="get_started">Laten we beginnen</string>
+    <string name="next_step_1">Selecteer een blokkeringmodus</string>
+    <string name="next_step_2">Probeer de dagelijkse limietfunctie en activeer de timeroverlay</string>
+    <string name="next_steps_title">Volgende stappen</string>
+    <string name="success_icon_desc">Succes vinkje icoon</string>
 </resources>

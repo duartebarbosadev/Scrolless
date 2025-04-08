@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Ikony dostarczone przez Icons8 (icons8.com)</string>
     <string name="leave_app_review">Zostaw recenzję aplikacji</string>
     <string name="visit_github">Odwiedź repozytorium GitHub</string>
+    <string name="accessibility_success_description">Scrolless jest teraz gotowy!</string>
+    <string name="accessibility_success_title">Wszystko gotowe!</string>
+    <string name="get_started">Zacznijmy</string>
+    <string name="next_step_1">Wybierz tryb blokady</string>
+    <string name="next_step_2">Wypróbuj funkcję dziennego limitu i aktywuj nakładkę timera</string>
+    <string name="next_steps_title">Następne kroki</string>
+    <string name="success_icon_desc">Ikona znaku zatwierdzenia sukcesu</string>
 </resources>

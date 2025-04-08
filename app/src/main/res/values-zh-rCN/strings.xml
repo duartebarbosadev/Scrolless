@@ -48,4 +48,11 @@
     <string name="icons8_attribution">由 Icons8 提供的图标 (icons8.com)</string>
     <string name="leave_app_review">离开应用评价</string>
     <string name="visit_github">访问 GitHub 仓库</string>
+    <string name="accessibility_success_description">Scrolless 现在准备好了！</string>
+    <string name="accessibility_success_title">一切就绪！</string>
+    <string name="get_started">让我们开始吧</string>
+    <string name="next_step_1">选择阻止模式</string>
+    <string name="next_step_2">尝试每日限制功能并激活计时器叠加层</string>
+    <string name="next_steps_title">下一步</string>
+    <string name="success_icon_desc">成功勾选图标</string>
 </resources>

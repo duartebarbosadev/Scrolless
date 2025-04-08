@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Icons proporcionats per Icons8 (icons8.com)</string>
     <string name="leave_app_review">Deixa una valoració de l\'aplicació</string>
     <string name="visit_github">Visita el repositori de GitHub</string>
+    <string name="accessibility_success_description">Scrolless ja està llest!</string>
+    <string name="accessibility_success_title">Tot a punt!</string>
+    <string name="get_started">Comencem</string>
+    <string name="next_step_1">Selecciona un mode de bloqueig</string>
+    <string name="next_step_2">Prova la funció de límit diari i activa la superposició del temporitzador</string>
+    <string name="next_steps_title">Properes passes</string>
+    <string name="success_icon_desc">Ícon de marca de verificació d\'èxit</string>
 </resources>
