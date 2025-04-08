@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Icônes fournies par Icons8 (icons8.com)</string>
     <string name="leave_app_review">Laisser un avis sur l\'application</string>
     <string name="visit_github">Visitez le dépôt GitHub</string>
+    <string name="accessibility_success_description">Scrolless est maintenant prêt !</string>
+    <string name="accessibility_success_title">Tout est prêt !</string>
+    <string name="get_started">Commençons</string>
+    <string name="next_step_1">Sélectionnez un mode de blocage</string>
+    <string name="next_step_2">Essayez la fonction de limite quotidienne et activez le superposition du minuteur</string>
+    <string name="next_steps_title">Prochaines étapes</string>
+    <string name="success_icon_desc">Icône de vérification de succès</string>
 </resources>

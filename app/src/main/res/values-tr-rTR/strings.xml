@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Icons8 tarafından sağlanan simgeler (icons8.com)</string>
     <string name="leave_app_review">Uygulama Değerlendirmesi Bırak</string>
     <string name="visit_github">GitHub Deposu\'nu Ziyaret Et</string>
+    <string name="accessibility_success_description">Scrolless artık hazır!</string>
+    <string name="accessibility_success_title">Her şey hazır!</string>
+    <string name="get_started">Haydi Başlayalım</string>
+    <string name="next_step_1">Engelleme modu seçin</string>
+    <string name="next_step_2">Günlük limit özelliğini deneyin ve zamanlayıcı katmanını etkinleştirin</string>
+    <string name="next_steps_title">Sonraki Adımlar</string>
+    <string name="success_icon_desc">Başarı onay simgesi</string>
 </resources>

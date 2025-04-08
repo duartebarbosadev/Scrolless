@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Ikone obezbeđene od strane Icons8 (icons8.com)</string>
     <string name="leave_app_review">Ostavite recenziju aplikacije</string>
     <string name="visit_github">Posetite GitHub repozitorijum</string>
+    <string name="accessibility_success_description">Scrolless je sada spreman!</string>
+    <string name="accessibility_success_title">Sve je spremno!</string>
+    <string name="get_started">Hajde da počnemo</string>
+    <string name="next_step_1">Izaberite način blokiranja</string>
+    <string name="next_step_2">Isprobajte funkciju dnevnog limita i aktivirajte preklapanje tajmera</string>
+    <string name="next_steps_title">Sledeći koraci</string>
+    <string name="success_icon_desc">Ikona za potvrdu uspeha</string>
 </resources>

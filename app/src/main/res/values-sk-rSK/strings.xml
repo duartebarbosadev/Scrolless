@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Ikony poskytol Icons8 (icons8.com)</string>
     <string name="leave_app_review">Zanechať recenziu aplikácie</string>
     <string name="visit_github">Navštívte GitHub Repository</string>
+    <string name="accessibility_success_description">Scrolless je teraz pripravený!</string>
+    <string name="accessibility_success_title">Všetko pripravené!</string>
+    <string name="get_started">Poďme začať</string>
+    <string name="next_step_1">Vyberte režim blokovania</string>
+    <string name="next_step_2">Vyskúšajte funkciu denného limitu a aktivujte prekrytie časovača</string>
+    <string name="next_steps_title">Ďalšie kroky</string>
+    <string name="success_icon_desc">Ikona zaškrtnutia úspechu</string>
 </resources>

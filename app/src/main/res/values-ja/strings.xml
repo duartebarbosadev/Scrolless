@@ -48,4 +48,11 @@
     <string name="icons8_attribution">IconsはIcons8（icons8.com）によって提供されています</string>
     <string name="leave_app_review">アプリレビューを残す</string>
     <string name="visit_github">GitHubリポジトリを訪問する</string>
+    <string name="accessibility_success_description">Scrollessは準備が整いました！</string>
+    <string name="accessibility_success_title">すべて準備完了！</string>
+    <string name="get_started">始めましょう</string>
+    <string name="next_step_1">ブロックモードを選択してください</string>
+    <string name="next_step_2">日次制限機能を試して、タイマーオーバーレイを有効にしてください</string>
+    <string name="next_steps_title">次のステップ</string>
+    <string name="success_icon_desc">成功チェックマークアイコン</string>
 </resources>
