@@ -14,7 +14,9 @@ import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -32,7 +34,6 @@ import com.scrolless.app.R
 import com.scrolless.app.base.BaseFragment
 import com.scrolless.app.databinding.FragmentHomeBinding
 import com.scrolless.app.features.dialogs.AccessibilityExplainerDialog
-import com.scrolless.app.features.dialogs.AccessibilitySuccessDialog
 import com.scrolless.app.features.main.MainActivity
 import com.scrolless.app.features.main.MainActivity.Companion.EXTRA_SHOW_ACCESSIBILITY_PERMISSION_GRANTED
 import com.scrolless.app.provider.AppProvider
@@ -82,6 +83,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private var backgroundAnimation: AnimationDrawable? = null
 
     private var serviceEnabledReceiver: BroadcastReceiver? = null
+
+    private var isReceiverRegistered = false
 
     override fun onViewReady(bundle: Bundle?) {
         val rootView = binding.root
@@ -215,7 +218,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         setupBroadcastReceiver()
 
         // Handle the argument passed from MainActivity
-        val accessibilityServiceGranted = arguments?.getBoolean(ARG_ACCESSIBILITY_GRANTED, false) == true
+        val accessibilityServiceGranted =
+            arguments?.getBoolean(ARG_ACCESSIBILITY_GRANTED, false) == true
         if (accessibilityServiceGranted) {
             Timber.d("Received argument that accessibility service was granted.")
             showAccessibilitySuccessDialog()
@@ -252,14 +256,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         // Register the broadcast receiver
         context?.let { context ->
-            ContextCompat.registerReceiver(
-                context,
-                serviceEnabledReceiver,
-                IntentFilter(ScrollessBlockAccessibilityService.ACTION_ACCESSIBILITY_SERVICE_ENABLE),
-                permission,
-                null,
-                ContextCompat.RECEIVER_EXPORTED,
-            )
+            if (!isReceiverRegistered && serviceEnabledReceiver != null) {
+                ContextCompat.registerReceiver(
+                    context,
+                    serviceEnabledReceiver,
+                    IntentFilter(ScrollessBlockAccessibilityService.ACTION_ACCESSIBILITY_SERVICE_ENABLE),
+                    permission,
+                    null,
+                    ContextCompat.RECEIVER_EXPORTED,
+                )
+                isReceiverRegistered = true
+                Timber.d("BroadcastReceiver registered.")
+            } else {
+                Timber.w("BroadcastReceiver was already registered, skipping registration.")
+            }
         }
     }
 
@@ -349,7 +359,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             val remainingTime = timeLimit - currentUsage
             if (remainingTime > 0) {
                 // Ensure progress doesn't exceed maxProgress due to floating point inaccuracies
-                minOf(maxProgress, ((currentUsage.toDouble() / timeLimit.toDouble()) * maxProgress).toInt())
+                minOf(
+                    maxProgress,
+                    ((currentUsage.toDouble() / timeLimit.toDouble()) * maxProgress).toInt(),
+                )
             } else { // The limit is reached or exceeded
                 maxProgress
             }
@@ -428,11 +441,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 middleColor,
                 progress / middleProgress,
             )
+
             else -> blendColors(
                 middleColor,
                 endColor,
                 // Ensure ratio doesn't divide by zero or go > 1 if progress is exactly 100 or middleProgress
-                if (maxProgress - middleProgress <= 0) 1f else ((progress - middleProgress) / (maxProgress - middleProgress)).coerceIn(0f, 1f),
+                if (maxProgress - middleProgress <= 0) {
+                    1f
+                } else {
+                    ((progress - middleProgress) / (maxProgress - middleProgress)).coerceIn(
+                        0f,
+                        1f,
+                    )
+                },
             )
         }
     }
@@ -447,10 +468,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      */
     private fun blendColors(color1: Int, color2: Int, ratio: Float): Int {
         val inverseRatio = 1f - ratio
-        val r = (android.graphics.Color.red(color1) * inverseRatio + android.graphics.Color.red(color2) * ratio)
-        val g = (android.graphics.Color.green(color1) * inverseRatio + android.graphics.Color.green(color2) * ratio)
-        val b = (android.graphics.Color.blue(color1) * inverseRatio + android.graphics.Color.blue(color2) * ratio)
-        val a = (android.graphics.Color.alpha(color1) * inverseRatio + android.graphics.Color.alpha(color2) * ratio) // Blend alpha too
+        val r =
+            (android.graphics.Color.red(color1) * inverseRatio + android.graphics.Color.red(color2) * ratio)
+        val g = (
+            android.graphics.Color.green(color1) * inverseRatio + android.graphics.Color.green(
+                color2,
+            ) * ratio
+            )
+        val b =
+            (android.graphics.Color.blue(color1) * inverseRatio + android.graphics.Color.blue(color2) * ratio)
+        val a = (
+            android.graphics.Color.alpha(color1) * inverseRatio + android.graphics.Color.alpha(
+                color2,
+            ) * ratio
+            ) // Blend alpha too
         return android.graphics.Color.argb(a.toInt(), r.toInt(), g.toInt(), b.toInt())
     }
 
@@ -566,14 +597,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         // Unregister receiver
         context?.let { ctx ->
-            try {
-                serviceEnabledReceiver?.let { receiver ->
-                    ctx.unregisterReceiver(receiver)
+
+            if (isReceiverRegistered && serviceEnabledReceiver != null) {
+                Timber.d("BroadcastReceiver is registered, attempting to unregister.")
+                try {
+                    ctx.unregisterReceiver(serviceEnabledReceiver)
                     Timber.d("BroadcastReceiver unregistered.")
+                } catch (e: IllegalArgumentException) {
+                    // Receiver might have already been unregistered or never registered
+                    Timber.w("Error unregistering receiver: ${e.message}")
+                } finally {
+                    isReceiverRegistered = false // Reset flag
                 }
-            } catch (e: IllegalArgumentException) {
-                // Receiver might have already been unregistered or never registered
-                Timber.w("Error unregistering receiver: ${e.message}")
             }
         }
 
@@ -707,7 +742,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      * and providing guidance on next steps.
      */
     private fun showAccessibilitySuccessDialog() {
-        val dialog = AccessibilitySuccessDialog.newInstance()
-        dialog.show(childFragmentManager, AccessibilitySuccessDialog.TAG)
+        navigationProvider.launchAccessibilityGrantedDialog(childFragmentManager)
     }
 }
