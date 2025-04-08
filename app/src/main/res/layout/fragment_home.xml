@@ -57,7 +57,7 @@
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:max="100"
-                android:progress="25"
+                android:progress="0"
                 app:indicatorDirectionCircular="clockwise"
                 app:indicatorInset="0dp"
                 app:indicatorSize="180dp"

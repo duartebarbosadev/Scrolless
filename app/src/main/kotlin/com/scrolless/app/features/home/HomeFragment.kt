@@ -5,7 +5,10 @@
 package com.scrolless.app.features.home
 
 import android.animation.ValueAnimator
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.ColorStateList
 import android.graphics.drawable.AnimationDrawable
 import android.os.Bundle
@@ -29,6 +32,9 @@ import com.scrolless.app.R
 import com.scrolless.app.base.BaseFragment
 import com.scrolless.app.databinding.FragmentHomeBinding
 import com.scrolless.app.features.dialogs.AccessibilityExplainerDialog
+import com.scrolless.app.features.dialogs.AccessibilitySuccessDialog
+import com.scrolless.app.features.main.MainActivity
+import com.scrolless.app.features.main.MainActivity.Companion.EXTRA_SHOW_ACCESSIBILITY_PERMISSION_GRANTED
 import com.scrolless.app.provider.AppProvider
 import com.scrolless.app.provider.NavigationProvider
 import com.scrolless.app.provider.UsageTracker
@@ -44,8 +50,14 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     companion object {
+        private const val ARG_ACCESSIBILITY_GRANTED = "accessibilityServiceGranted"
+
         @JvmStatic
-        fun newInstance() = HomeFragment()
+        fun newInstance(accessibilityServiceGranted: Boolean): HomeFragment = HomeFragment().apply {
+            arguments = Bundle().apply {
+                putBoolean(ARG_ACCESSIBILITY_GRANTED, accessibilityServiceGranted)
+            }
+        }
 
         private const val FEATURE_NOT_IMPLEMENTED_ALPHA = 0.5f
     }
@@ -68,6 +80,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private var progressAnimator: ValueAnimator? = null
 
     private var backgroundAnimation: AnimationDrawable? = null
+
+    private var serviceEnabledReceiver: BroadcastReceiver? = null
 
     override fun onViewReady(bundle: Bundle?) {
         val rootView = binding.root
@@ -196,6 +210,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         setTimerOverlayCheckBoxListener()
         setupProgressIndicator()
+
+        // Setup broadcast receiver to listen for service enablement
+        setupBroadcastReceiver()
+
+        // Handle the argument passed from MainActivity
+        val accessibilityServiceGranted = arguments?.getBoolean(ARG_ACCESSIBILITY_GRANTED, false) == true
+        if (accessibilityServiceGranted) {
+            Timber.d("Received argument that accessibility service was granted.")
+            showAccessibilitySuccessDialog()
+            // IMPORTANT: Consume the argument so it doesn't trigger again on config change/recreation
+            arguments?.remove(ARG_ACCESSIBILITY_GRANTED)
+        }
     }
 
     /**
@@ -205,11 +231,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      * @param action The action to run if the accessibility service is enabled.
      */
     private inline fun safeguardedAction(crossinline action: () -> Unit) {
-        if (requireContext().isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
-            action()
-        } else {
-            showAccessibilityExplainerDialog()
-        }
+        context?.let { ctx ->
+            if (ctx.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+                action()
+            } else {
+                showAccessibilityExplainerDialog()
+            }
+        } ?: Timber.w("Context was null during safeguardedAction")
     }
 
     /**
@@ -219,6 +247,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun showAccessibilityExplainerDialog() {
         val dialog = AccessibilityExplainerDialog.newInstance()
         dialog.show(childFragmentManager, AccessibilityExplainerDialog.TAG)
+
+        val permission = ScrollessBlockAccessibilityService.ACTION_ACCESSIBILITY_SERVICE_ENABLE
+
+        // Register the broadcast receiver
+        context?.let { context ->
+            ContextCompat.registerReceiver(
+                context,
+                serviceEnabledReceiver,
+                IntentFilter(ScrollessBlockAccessibilityService.ACTION_ACCESSIBILITY_SERVICE_ENABLE),
+                permission,
+                null,
+                ContextCompat.RECEIVER_EXPORTED,
+            )
+        }
     }
 
     private fun showFeatureComingSoonSnackBar() {
@@ -232,7 +274,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     /**
      * Setup the progress indicator
      */
-
     private fun setupProgressIndicator() {
         observeFlow(appProvider.blockConfigFlow) { config ->
             updateProgress()
@@ -254,15 +295,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             title(R.string.duration)
             format(DurationTimeFormat.HH_MM)
             onPositive { durationTimeInSeconds: Long ->
+                Timber.d("Duration selected: $durationTimeInSeconds seconds")
                 val newTimeLimit = durationTimeInSeconds * 1000
                 val updatedConfig = appProvider.blockConfig.copy(
                     timeLimit = newTimeLimit,
-                    blockOption = BlockOption.DailyLimit,
+                    blockOption = BlockOption.DailyLimit, // Ensure DailyLimit is set when duration picked
                 )
                 appProvider.blockConfig = updatedConfig
                 onSuccess()
             }
-            onNegative { onCancel() }
+            onNegative {
+                Timber.d("Duration selection cancelled")
+                onCancel()
+            }
         }
     }
 
@@ -276,10 +321,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         // If the block option is daily limit, use the daily usage,
         //  otherwise use 0 as there's no time limit associated with the block option
         val currentUsage =
-            if (appProvider.blockConfig.blockOption == BlockOption.DailyLimit) usageTracker.dailyUsageInMemory else 0L
+            if (config.blockOption == BlockOption.DailyLimit) usageTracker.dailyUsageInMemory else 0L
 
         val targetProgress = calculateTargetProgress(currentUsage, timeLimit)
-        animateProgressTo(targetProgress)
+        if (view != null) {
+            animateProgressTo(targetProgress)
+        }
     }
 
     /**
@@ -301,12 +348,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         if (timeLimit > 0) {
             val remainingTime = timeLimit - currentUsage
             if (remainingTime > 0) {
-                ((currentUsage.toDouble() / timeLimit.toDouble()) * maxProgress).toInt()
+                // Ensure progress doesn't exceed maxProgress due to floating point inaccuracies
+                minOf(maxProgress, ((currentUsage.toDouble() / timeLimit.toDouble()) * maxProgress).toInt())
             } else { // The limit is reached or exceeded
                 maxProgress
             }
         } else {
-            0
+            0 // No limit set or not applicable block option
         }
 
     /**
@@ -314,27 +362,36 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      * @param targetProgress The target progress to animate to.
      * @param duration The duration of the animation.
      */
-
     private fun animateProgressTo(targetProgress: Int, duration: Long = 1000) {
+        // Ensure targetProgress is within bounds
+        val clampedTargetProgress = targetProgress.coerceIn(0, maxProgress)
+
+        // Prevent animation if already at target or view is gone
+        if (lastProgress == clampedTargetProgress || view == null) {
+            if (view == null) Timber.w("View is null, skipping animation to $clampedTargetProgress")
+            return
+        }
+
         // Cancel any existing animation
         progressAnimator?.cancel()
 
         // Create a new animator
         val startProgress = lastProgress
-        val valueAnimator = ValueAnimator.ofInt(startProgress, targetProgress)
-        progressAnimator = valueAnimator
-
-        valueAnimator.apply {
+        progressAnimator = ValueAnimator.ofInt(startProgress, clampedTargetProgress).apply {
             this.duration = duration
             interpolator = AccelerateDecelerateInterpolator()
 
             addUpdateListener { animator ->
+                // Check view again inside listener in case fragment is detached during animation
+                if (view == null) {
+                    animator.cancel()
+                    return@addUpdateListener
+                }
                 val progress = animator.animatedValue as Int
                 binding.circleProgress.progress = progress
                 updateProgressIndicatorColor(progress)
                 lastProgress = progress
             }
-
             start()
         }
     }
@@ -345,34 +402,37 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      * @param progress The current progress value (0-100).
      */
     private fun updateProgressIndicatorColor(progress: Int) {
-        binding.circleProgress.setIndicatorColor(calculateColorForProgress(progress))
+        // Ensure fragment is attached and context is available
+        context?.let { ctx ->
+            binding.circleProgress.setIndicatorColor(calculateColorForProgress(ctx, progress))
+        } ?: Timber.w("Context null in updateProgressIndicatorColor")
     }
 
     /**
      *
      * Calculates the color for the progress indicator based on the current progress.
-     *
+     * @param context Context to resolve colors.
      * @param progress The current progress value (0-100).
      * @return The color to be used for the progress indicator.
      */
-    private fun calculateColorForProgress(progress: Int): Int {
-        val startColor = ContextCompat.getColor(requireContext(), R.color.green)
-        val middleColor = ContextCompat.getColor(requireContext(), R.color.orangeDark)
-        val endColor = ContextCompat.getColor(requireContext(), R.color.red)
+    private fun calculateColorForProgress(context: Context, progress: Int): Int {
+        val startColor = ContextCompat.getColor(context, R.color.green)
+        val middleColor = ContextCompat.getColor(context, R.color.orangeDark)
+        val endColor = ContextCompat.getColor(context, R.color.red)
 
-        val middleProgress = 75
+        val middleProgress = 75f // Use float for ratio calculation
 
         return when {
             progress < middleProgress -> blendColors(
                 startColor,
                 middleColor,
-                progress / middleProgress.toFloat(),
+                progress / middleProgress,
             )
-
             else -> blendColors(
                 middleColor,
                 endColor,
-                (progress - middleProgress) / (100f - middleProgress),
+                // Ensure ratio doesn't divide by zero or go > 1 if progress is exactly 100 or middleProgress
+                if (maxProgress - middleProgress <= 0) 1f else ((progress - middleProgress) / (maxProgress - middleProgress)).coerceIn(0f, 1f),
             )
         }
     }
@@ -385,16 +445,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      * @param ratio The ratio of the second color to blend (0.0-1.0).
      * @return The blended color.
      */
-    private fun blendColors(color1: Int, color2: Int, ratio: Float): Int =
-        android.graphics.Color.rgb(
-            (android.graphics.Color.red(color1) * (1 - ratio) + android.graphics.Color.red(color2) * ratio).toInt(),
-            (
-                android.graphics.Color.green(color1) * (1 - ratio) + android.graphics.Color.green(
-                    color2,
-                ) * ratio
-                ).toInt(),
-            (android.graphics.Color.blue(color1) * (1 - ratio) + android.graphics.Color.blue(color2) * ratio).toInt(),
-        )
+    private fun blendColors(color1: Int, color2: Int, ratio: Float): Int {
+        val inverseRatio = 1f - ratio
+        val r = (android.graphics.Color.red(color1) * inverseRatio + android.graphics.Color.red(color2) * ratio)
+        val g = (android.graphics.Color.green(color1) * inverseRatio + android.graphics.Color.green(color2) * ratio)
+        val b = (android.graphics.Color.blue(color1) * inverseRatio + android.graphics.Color.blue(color2) * ratio)
+        val a = (android.graphics.Color.alpha(color1) * inverseRatio + android.graphics.Color.alpha(color2) * ratio) // Blend alpha too
+        return android.graphics.Color.argb(a.toInt(), r.toInt(), g.toInt(), b.toInt())
+    }
 
     /**
      * Start the gradient animation.
@@ -416,6 +474,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      *  and updates it when the checkbox is toggled.
      */
     private fun setTimerOverlayCheckBoxListener() {
+        // Initialize state only once, maybe check if binding is already initialized if needed
         binding.switchTimerOverlay.isChecked = appProvider.timerOverlayEnabled
 
         binding.switchTimerOverlay.setOnCheckedChangeListener { _, isChecked ->
@@ -425,13 +484,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
-
-        backgroundAnimation?.start()
+        // Ensure animation restarts only if it exists and wasn't already running
+        if (backgroundAnimation?.isRunning == false) {
+            backgroundAnimation?.start()
+        }
+        // Re-check service status in case it was disabled while paused
+        context?.let {
+            if (!it.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+                // Optional: Maybe show a warning or disable controls if service disabled externally
+                Timber.w("Accessibility service seems disabled onResume.")
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
-
+        // Check if animation exists before stopping
         backgroundAnimation?.stop()
     }
 
@@ -496,6 +564,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         backgroundAnimation?.stop()
         backgroundAnimation = null
 
+        // Unregister receiver
+        context?.let { ctx ->
+            try {
+                serviceEnabledReceiver?.let { receiver ->
+                    ctx.unregisterReceiver(receiver)
+                    Timber.d("BroadcastReceiver unregistered.")
+                }
+            } catch (e: IllegalArgumentException) {
+                // Receiver might have already been unregistered or never registered
+                Timber.w("Error unregistering receiver: ${e.message}")
+            }
+        }
+
+        serviceEnabledReceiver = null // Clear reference
         super.onDestroyView()
     }
 
@@ -567,8 +649,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      * If the review manager fails (as itself as api quotas limits), it will open the PlayStore url
      */
     private fun showReviewPopup() {
-        val reviewManager =
-            ReviewManagerFactory.create(requireContext())
+        val reviewManager = ReviewManagerFactory.create(requireContext())
 
         Timber.d("Requesting review flow")
         reviewManager.requestReviewFlow().addOnCompleteListener { request ->
@@ -598,5 +679,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             },
         )
+    }
+
+    /**
+     * This method sets up a broadcast receiver to listen for the event when the accessibility service is enabled.
+     */
+    private fun setupBroadcastReceiver() {
+        serviceEnabledReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                Timber.d("Accessibility service enabled, reopening app to front.")
+                if (intent?.action == ScrollessBlockAccessibilityService.ACTION_ACCESSIBILITY_SERVICE_ENABLE) {
+                    context?.let {
+                        // Launch MainActivity to bring app to foreground
+                        val mainIntent = Intent(context, MainActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            putExtra(EXTRA_SHOW_ACCESSIBILITY_PERMISSION_GRANTED, true)
+                        }
+                        it.startActivity(mainIntent)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Shows a bottom sheet dialog celebrating successful setup of accessibility permissions
+     * and providing guidance on next steps.
+     */
+    private fun showAccessibilitySuccessDialog() {
+        val dialog = AccessibilitySuccessDialog.newInstance()
+        dialog.show(childFragmentManager, AccessibilitySuccessDialog.TAG)
     }
 }

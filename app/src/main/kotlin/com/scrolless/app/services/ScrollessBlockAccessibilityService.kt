@@ -12,7 +12,6 @@ import android.os.Handler
 import android.os.Looper
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.scrolless.app.features.home.BlockOption
 import com.scrolless.app.overlay.TimerOverlayManager
 import com.scrolless.app.provider.AppProvider
@@ -88,7 +87,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // Service is now connected and running!
         // Send a local broadcast to notify the app
         val intent = Intent(ACTION_ACCESSIBILITY_SERVICE_ENABLE)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        sendBroadcast(intent)
 
         // Observe changes to the block config
         serviceScope.launch {
