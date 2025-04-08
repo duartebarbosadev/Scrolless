@@ -4,35 +4,27 @@
  */
 package com.scrolless.app.features.dialogs
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnimationUtils
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.startActivity
-import androidx.core.net.toUri
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.scrolless.app.R
-import com.scrolless.app.databinding.DialogAccessibilityExplainerBinding
-import com.scrolless.app.services.ScrollessBlockAccessibilityService
-import com.scrolless.framework.extensions.isAccessibilityServiceEnabled
-import com.scrolless.framework.extensions.showToast
+import com.scrolless.app.databinding.DialogAccessibilitySuccessBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * A dialog that explains to the user why accessibility permissions are needed
- * and guides them through the process of enabling them.
+ * A dialog that celebrates the successful enabling of accessibility permissions
+ * and guides the user on how to begin using the app.
  */
 @AndroidEntryPoint
-class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
+class AccessibilitySuccessDialog : BottomSheetDialogFragment() {
 
-    private var _binding: DialogAccessibilityExplainerBinding? = null
+    private var _binding: DialogAccessibilitySuccessBinding? = null
     private val binding get() = _binding!!
 
     // Keep track of animation handlers to prevent memory leaks
@@ -42,10 +34,9 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
     private var animationsApplied = false
 
     companion object {
+        const val TAG = "AccessibilitySuccessDialog"
 
-        const val TAG = "AccessibilityExplainerDialog"
-
-        fun newInstance(): AccessibilityExplainerDialog = AccessibilityExplainerDialog()
+        fun newInstance(): AccessibilitySuccessDialog = AccessibilitySuccessDialog()
     }
 
     override fun onCreateView(
@@ -53,7 +44,7 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DialogAccessibilityExplainerBinding.inflate(inflater, container, false)
+        _binding = DialogAccessibilitySuccessBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -76,42 +67,26 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
         binding.apply {
             cardContent.alpha = 1f
             cardContent.translationY = 0f
-            step1Container.alpha = 1f
-            step2Container.alpha = 1f
-            step3Container.alpha = 1f
-            privacyContainer.alpha = 1f
-            tvOpenSourceNote.alpha = 1f
-            btnProceed.alpha = 1f
-            btnNotNow.alpha = 1f
+            nextStepsContainer.alpha = 1f
+            btnGetStarted.alpha = 1f
         }
     }
 
     private fun setupUI() {
-        // Setup buttons
-        binding.btnProceed.setOnClickListener {
-            openAccessibilitySettings()
-            // Don't dismiss here, we'll wait for the broadcast or onResume check
-        }
-
-        binding.btnNotNow.setOnClickListener {
+        // Setup button
+        binding.btnGetStarted.setOnClickListener {
             dismiss()
-        }
-
-        // Add GitHub link
-        binding.tvOpenSourceNote.setOnClickListener {
-            startActivity(
-                Intent(Intent.ACTION_VIEW).apply {
-                    data = getString(R.string.github_url).toUri()
-                },
-            )
         }
     }
 
     private fun setupAnimations() {
-        // Animate the icon container with elevation and pulse
+        // Animate the icon with success check animation
+        val checkAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.check_bounce_animation)
+        binding.imgSuccess.startAnimation(checkAnimation)
+
+        // Animate the icon container with pulse
         val pulseAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.pulse_animation)
         binding.iconContainer.startAnimation(pulseAnimation)
-        binding.imgLogo.startAnimation(pulseAnimation)
 
         // Animate content card with slight float animation
         binding.cardContent.apply {
@@ -120,21 +95,16 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
             animate()
                 .alpha(1f)
                 .translationY(0f)
-                .setDuration(400)
+                .setDuration(600)
                 .setInterpolator(AccelerateDecelerateInterpolator())
                 .start()
         }
 
-        // Animate steps with a staggered entry
-        animateWithDelay(binding.step1Container, 200)
-        animateWithDelay(binding.step2Container, 400)
-        animateWithDelay(binding.step3Container, 600)
-        animateWithDelay(binding.privacyContainer, 800)
-        animateWithDelay(binding.tvOpenSourceNote, 900)
+        // Animate next steps with a staggered entry
+        animateWithDelay(binding.nextStepsContainer, 800)
 
-        // Button animations
-        animateWithDelay(binding.btnProceed, 1000)
-        animateWithDelay(binding.btnNotNow, 1100)
+        // Button animation
+        animateWithDelay(binding.btnGetStarted, 1000)
     }
 
     private fun animateWithDelay(view: View, delay: Long) {
@@ -153,20 +123,6 @@ class AccessibilityExplainerDialog : BottomSheetDialogFragment() {
             },
             delay,
         )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Check if the service was enabled while in settings
-        if (requireContext().isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
-            dismiss()
-        }
-    }
-
-    private fun openAccessibilitySettings() {
-        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-        requireContext().startActivity(intent)
-        requireContext().showToast(getString(R.string.accessibility_settings_toast))
     }
 
     override fun onDestroyView() {

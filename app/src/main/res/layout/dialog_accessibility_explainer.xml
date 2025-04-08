@@ -9,6 +9,7 @@
     android:layout_height="wrap_content"
     android:clipToPadding="false"
     android:paddingBottom="@dimen/margin_medium"
+    android:background="@android:color/transparent"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout

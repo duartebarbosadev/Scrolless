@@ -15,9 +15,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
+    companion object {
+        const val EXTRA_SHOW_ACCESSIBILITY_PERMISSION_GRANTED = "EXTRA_SHOW_ACCESSIBILITY_PERMISSION_GRANTED"
+    }
+
     override fun onViewReady(bundle: Bundle?) {
+        val accessibilityServiceGranted = intent.getBooleanExtra(EXTRA_SHOW_ACCESSIBILITY_PERMISSION_GRANTED, false)
         navigateFragment(
-            HomeFragment.newInstance(),
+            HomeFragment.newInstance(accessibilityServiceGranted),
             addToBackStack = false,
             clearBackStack = true,
         )

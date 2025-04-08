@@ -7,6 +7,7 @@ package com.scrolless.app.services
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.view.accessibility.AccessibilityEvent
@@ -32,6 +33,10 @@ import javax.inject.Inject
  */
 @AndroidEntryPoint
 class ScrollessBlockAccessibilityService : AccessibilityService() {
+
+    companion object {
+        const val ACTION_ACCESSIBILITY_SERVICE_ENABLE = "com.scrolless.app.ACCESSIBILITY_SERVICE_ENABLED"
+    }
 
     @Inject
     lateinit var appProvider: AppProvider
@@ -78,6 +83,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         // Make sure the timer overlay manager has the service's context
         timerOverlayManager.attachServiceContext(this)
+
+        // Service is now connected and running!
+        // Send a local broadcast to notify the app
+        val intent = Intent(ACTION_ACCESSIBILITY_SERVICE_ENABLE)
+        sendBroadcast(intent)
 
         // Observe changes to the block config
         serviceScope.launch {

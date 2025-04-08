@@ -66,4 +66,12 @@
 
     <string name="error_accessibility_settings_unavailable">Could not open Accessibility Settings.</string>
     <string name="error_unknown">An unexpected error occurred.</string>
+
+    <string name="get_started">Let\'s Get Started</string>
+    <string name="accessibility_success_title">All Set!</string>
+    <string name="accessibility_success_description">Scrolless is now ready!</string>
+    <string name="success_icon_desc">Success checkmark icon</string>
+    <string name="next_steps_title">Next Steps</string>
+    <string name="next_step_1">Select a blocking mode</string>
+    <string name="next_step_2">Try the daily limit feature and activate the timer overlay</string>
 </resources>
