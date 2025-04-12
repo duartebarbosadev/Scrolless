@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Εικονίδια που παρέχονται από το Icons8 (icons8.com)</string>
     <string name="leave_app_review">Αφήστε κριτική για την εφαρμογή</string>
     <string name="visit_github">Επισκεφθείτε το GitHub Repository</string>
+    <string name="accessibility_success_description">Το Scrolless είναι τώρα έτοιμο!</string>
+    <string name="accessibility_success_title">Όλα έτοιμα!</string>
+    <string name="get_started">Ας Ξεκινήσουμε</string>
+    <string name="next_step_1">Επιλέξτε μια λειτουργία αποκλεισμού</string>
+    <string name="next_step_2">Δοκιμάστε τη λειτουργία ημερήσιου ορίου και ενεργοποιήστε την επικαλυπτόμενη χρονομέτρηση</string>
+    <string name="next_steps_title">Επόμενα Βήματα</string>
+    <string name="success_icon_desc">Επιτυχία εικονίδιο επιβεβαίωσης</string>
 </resources>

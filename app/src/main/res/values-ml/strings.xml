@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Icons8 (icons8.com) വഴി നൽകിയ ഐക്കണുകൾ</string>
     <string name="leave_app_review">ആപ്പ് അവലോകനം വിടുക</string>
     <string name="visit_github">GitHub റിപോസിറ്ററി സന്ദർശിക്കുക</string>
+    <string name="accessibility_success_description">Scrolless ഇപ്പോൾ തയ്യാറാണ്!</string>
+    <string name="accessibility_success_title">എല്ലാം സജ്ജമാണ്!</string>
+    <string name="get_started">നമുക്ക് ആരംഭിക്കാം</string>
+    <string name="next_step_1">ബ്ലോക്കിംഗ് മോഡ് തിരഞ്ഞെടുക്കുക</string>
+    <string name="next_step_2">ദിവസം പരിധി ഫീച്ചർ പരീക്ഷിക്കുക, ടൈമർ ഓവർലേയ് പ്രവർത്തനക്ഷമമാക്കുക</string>
+    <string name="next_steps_title">അടുത്ത ഘട്ടങ്ങൾ</string>
+    <string name="success_icon_desc">സഫലമായത് ചെക്ക് മാർക്ക് ഐക്കൺ</string>
 </resources>

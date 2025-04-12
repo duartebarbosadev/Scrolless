@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Az ikonokat az Icons8 biztosította (icons8.com)</string>
     <string name="leave_app_review">Alkalmazás értékelése</string>
     <string name="visit_github">Látogasson el a GitHub tárolóra</string>
+    <string name="accessibility_success_description">A Scrolless most már készen áll!</string>
+    <string name="accessibility_success_title">Minden rendben!</string>
+    <string name="get_started">Kezdjük el</string>
+    <string name="next_step_1">Válasszon egy blokkolási módot</string>
+    <string name="next_step_2">Próbáld ki a napi limit funkciót, és aktiváld az időzítő átfedést</string>
+    <string name="next_steps_title">Következő lépések</string>
+    <string name="success_icon_desc">Siker ellenőrző jelvény ikon</string>
 </resources>

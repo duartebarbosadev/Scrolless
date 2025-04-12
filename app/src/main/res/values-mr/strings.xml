@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Icons8 कडून प्रदान केलेले चिन्हे (icons8.com)</string>
     <string name="leave_app_review">अॅप पुनरावलोकन सोडा</string>
     <string name="visit_github">GitHub रेपॉजिटरीला भेट द्या</string>
+    <string name="accessibility_success_description">Scrolless आता तयार आहे!</string>
+    <string name="accessibility_success_title">सर्व सेट!</string>
+    <string name="get_started">चला सुरुवात करूया</string>
+    <string name="next_step_1">अवरोध मोड निवडा</string>
+    <string name="next_step_2">दैनिक मर्यादा वैशिष्ट्य वापरून पहा आणि टाइमर ओव्हरले सक्रिय करा</string>
+    <string name="next_steps_title">पुढील टप्पे</string>
+    <string name="success_icon_desc">सफलता चेकमार्क आयकॉन</string>
 </resources>

@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Icons8 மூலம் வழங்கப்பட்ட ஐகான்கள் (icons8.com)</string>
     <string name="leave_app_review">அப்பிள்ளை மதிப்பீடு செய்யவும்</string>
     <string name="visit_github">GitHub Repository-ஐ பார்வையிடவும்</string>
+    <string name="accessibility_success_description">Scrolless இப்போது தயாராக உள்ளது!</string>
+    <string name="accessibility_success_title">அனைத்தும் தயார்!</string>
+    <string name="get_started">தொடங்கலாம்</string>
+    <string name="next_step_1">ஒரு தடுப்புக் கோட்பாட்டை தேர்ந்தெடுக்கவும்</string>
+    <string name="next_step_2">தினசரி வரம்பு அம்சத்தை முயற்சிக்கவும் மற்றும் டைமர் ஓவர்லேவை செயல்படுத்தவும்</string>
+    <string name="next_steps_title">அடுத்த படிகள்</string>
+    <string name="success_icon_desc">வெற்றி சோதனை குறியீடு</string>
 </resources>

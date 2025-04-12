@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Biểu tượng được cung cấp bởi Icons8 (icons8.com)</string>
     <string name="leave_app_review">Để lại đánh giá ứng dụng</string>
     <string name="visit_github">Truy cập kho lưu trữ GitHub</string>
+    <string name="accessibility_success_description">Scrolless đã sẵn sàng!</string>
+    <string name="accessibility_success_title">Tất cả đã sẵn sàng!</string>
+    <string name="get_started">Hãy Bắt Đầu</string>
+    <string name="next_step_1">Chọn chế độ chặn</string>
+    <string name="next_step_2">Hãy thử tính năng giới hạn hàng ngày và kích hoạt lớp phủ hẹn giờ</string>
+    <string name="next_steps_title">Các bước tiếp theo</string>
+    <string name="success_icon_desc">Biểu tượng dấu kiểm thành công</string>
 </resources>

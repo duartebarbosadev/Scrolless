@@ -48,4 +48,11 @@
     <string name="icons8_attribution">Іконки надані Icons8 (icons8.com)</string>
     <string name="leave_app_review">Залишити відгук про додаток</string>
     <string name="visit_github">Відвідайте GitHub репозиторій</string>
+    <string name="accessibility_success_description">Scrolless тепер готовий!</string>
+    <string name="accessibility_success_title">Усе готово!</string>
+    <string name="get_started">Почнемо</string>
+    <string name="next_step_1">Виберіть режим блокування</string>
+    <string name="next_step_2">Спробуйте функцію щоденного ліміту та активуйте накладку таймера</string>
+    <string name="next_steps_title">Наступні кроки</string>
+    <string name="success_icon_desc">Іконка галочки успіху</string>
 </resources>
