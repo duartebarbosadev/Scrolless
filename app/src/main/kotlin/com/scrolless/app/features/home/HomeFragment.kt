@@ -604,7 +604,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      * Unregisters the broadcast receiver that opens the app after enabling accessibility service.
      */
     private fun unregisterBroadcastReceiver() {
-
         // Unregister receiver
         context?.let { ctx ->
 
