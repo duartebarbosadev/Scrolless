@@ -5,7 +5,6 @@
 package com.scrolless.app.services
 
 import android.accessibilityservice.AccessibilityService
-import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Intent
 import android.os.Handler
@@ -54,7 +53,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     @Inject
     lateinit var timerOverlayManager: TimerOverlayManager
 
-    private var currentOnVideos = false
+    private var isProcessingBlockedContent = false
     private var timeStartOnBrainRot: Long = 0L
 
     private val blockedViews = setOf(
@@ -65,7 +64,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     private val videoCheckRunnable = object : Runnable {
         override fun run() {
-            if (currentOnVideos) {
+            if (isProcessingBlockedContent) {
                 val elapsed = System.currentTimeMillis() - timeStartOnBrainRot
                 if (blockController.onPeriodicCheck(elapsed)) {
                     performBackNavigation()
@@ -143,11 +142,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     private fun onBlockedContentEntered() {
         // If the currentOnVideos boolean is set to true, we already dealt with the event
-        if (currentOnVideos) {
+        if (isProcessingBlockedContent) {
             return
         }
 
-        currentOnVideos = true
+        isProcessingBlockedContent = true
         timeStartOnBrainRot = System.currentTimeMillis()
         startPeriodicCheck()
 
@@ -165,7 +164,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     private fun onBlockedContentExited() {
-        if (currentOnVideos) {
+        if (isProcessingBlockedContent) {
             val sessionTime = System.currentTimeMillis() - timeStartOnBrainRot
 
             // Add to usage in memory
@@ -174,7 +173,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             // Let block controller do its logic, if needed
             blockController.onExitBlockedContent(sessionTime)
 
-            currentOnVideos = false
+            isProcessingBlockedContent = false
             stopPeriodicCheck()
 
             if (appProvider.timerOverlayEnabled) {
