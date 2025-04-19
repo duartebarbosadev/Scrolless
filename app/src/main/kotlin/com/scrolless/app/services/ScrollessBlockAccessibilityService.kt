@@ -34,7 +34,8 @@ import javax.inject.Inject
 class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     companion object {
-        const val ACTION_ACCESSIBILITY_SERVICE_ENABLE = "com.scrolless.app.ACCESSIBILITY_SERVICE_ENABLED"
+        const val ACTION_ACCESSIBILITY_SERVICE_ENABLE =
+            "com.scrolless.app.ACCESSIBILITY_SERVICE_ENABLED"
     }
 
     @Inject
@@ -56,11 +57,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private var isProcessingBlockedContent = false
     private var timeStartOnBrainRot: Long = 0L
 
-    private val blockedViews = setOf(
-        "com.google.android.youtube:id/reel_player_page_container",
-        "com.instagram.android:id/clips_viewer_view_pager",
-        // TODO Tiktok is not supported yet
-    )
+    private var detectedApp: AppEnum? = null
 
     private val videoCheckRunnable = object : Runnable {
         override fun run() {
@@ -102,9 +99,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         if (event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) return
 
         val rootNode = rootInActiveWindow ?: return
-        val foundBlockedContent = detectBlockedContent(rootNode)
+        detectedApp = detectAppForBlockedContent(rootNode)
 
-        if (foundBlockedContent) {
+        if (detectedApp != null) {
             onBlockedContentEntered()
         } else {
             onBlockedContentExited()
@@ -135,9 +132,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         serviceInfo = info
     }
 
-    private fun detectBlockedContent(rootNode: AccessibilityNodeInfo): Boolean =
-        blockedViews.any { id ->
-            rootNode.findAccessibilityNodeInfosByViewId(id).isNotEmpty()
+    private fun detectAppForBlockedContent(rootNode: AccessibilityNodeInfo): AppEnum? =
+        AppEnum.entries.firstOrNull { appEnum ->
+            rootNode.findAccessibilityNodeInfosByViewId(appEnum.getViewId()).isNotEmpty()
         }
 
     private fun onBlockedContentEntered() {
@@ -164,24 +161,27 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     private fun onBlockedContentExited() {
-        if (isProcessingBlockedContent) {
-            val sessionTime = System.currentTimeMillis() - timeStartOnBrainRot
-
-            // Add to usage in memory
-            usageTracker.addToDailyUsage(sessionTime)
-
-            // Let block controller do its logic, if needed
-            blockController.onExitBlockedContent(sessionTime)
-
-            isProcessingBlockedContent = false
-            stopPeriodicCheck()
-
-            if (appProvider.timerOverlayEnabled) {
-                timerOverlayManager.hide()
-            }
-
-            usageTracker.save()
+        // Early stop, If we are no longer processing blocked content, we already dealt with the event
+        if (!isProcessingBlockedContent) {
+            return
         }
+
+        val sessionTime = System.currentTimeMillis() - timeStartOnBrainRot
+
+        // Add to usage in memory
+        usageTracker.addToDailyUsage(sessionTime)
+
+        // Let block controller do its logic, if needed
+        blockController.onExitBlockedContent(sessionTime)
+
+        isProcessingBlockedContent = false
+        stopPeriodicCheck()
+
+        if (appProvider.timerOverlayEnabled) {
+            timerOverlayManager.hide()
+        }
+
+        usageTracker.save()
     }
 
     private fun startPeriodicCheck() {
@@ -195,7 +195,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     private fun performBackNavigation() {
         mainHandler.post {
-            performGlobalAction(GLOBAL_ACTION_BACK)
+            performGlobalAction(detectedApp?.getGetawayStrategy() ?: GLOBAL_ACTION_BACK)
         }
     }
 }
