@@ -595,6 +595,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         backgroundAnimation?.stop()
         backgroundAnimation = null
 
+        // Unregister the Accessibility enabled permission
+        unregisterBroadcastReceiver()
+        super.onDestroyView()
+    }
+
+    /**
+     * Unregisters the broadcast receiver that opens the app after enabling accessibility service.
+     */
+    private fun unregisterBroadcastReceiver() {
         // Unregister receiver
         context?.let { ctx ->
 
@@ -613,7 +622,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
 
         serviceEnabledReceiver = null // Clear reference
-        super.onDestroyView()
     }
 
     /**
@@ -643,15 +651,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
      */
     private fun updateUIForBlockOption(blockOption: BlockOption) {
         resetButtons()
-        when (blockOption) {
-            BlockOption.BlockAll -> applyButtonEffect(binding.blockAllButton, true)
-            BlockOption.DailyLimit -> {
-                binding.configDailyLimitButton.visibility = View.VISIBLE
-                applyButtonEffect(binding.dailyLimitButton, true)
-            }
 
-            BlockOption.IntervalTimer -> applyButtonEffect(binding.intervalTimerButton, true)
-            BlockOption.NothingSelected -> Unit // No action needed
+        if (blockOption == BlockOption.NothingSelected) {
+            return
+        }
+        safeguardedAction {
+            @Suppress("KotlinConstantConditions")
+            when (blockOption) {
+                BlockOption.BlockAll -> applyButtonEffect(binding.blockAllButton, true)
+                BlockOption.DailyLimit -> {
+                    binding.configDailyLimitButton.visibility = View.VISIBLE
+                    applyButtonEffect(binding.dailyLimitButton, true)
+                }
+
+                BlockOption.IntervalTimer -> applyButtonEffect(binding.intervalTimerButton, true)
+                BlockOption.NothingSelected -> Unit // No action needed
+            }
         }
     }
 
