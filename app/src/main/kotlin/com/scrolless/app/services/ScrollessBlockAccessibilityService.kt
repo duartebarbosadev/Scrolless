@@ -99,7 +99,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         if (event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) return
 
         val rootNode = rootInActiveWindow ?: return
-        detectedApp = detectBlockedContent(rootNode)
+        detectedApp = detectAppForBlockedContent(rootNode)
 
         if (detectedApp != null) {
             onBlockedContentEntered()
@@ -132,7 +132,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         serviceInfo = info
     }
 
-    private fun detectBlockedContent(rootNode: AccessibilityNodeInfo): AppEnum? =
+    private fun detectAppForBlockedContent(rootNode: AccessibilityNodeInfo): AppEnum? =
         AppEnum.entries.firstOrNull { appEnum ->
             rootNode.findAccessibilityNodeInfosByViewId(appEnum.getViewId()).isNotEmpty()
         }
