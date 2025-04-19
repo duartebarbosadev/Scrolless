@@ -154,15 +154,14 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         // Check for daily reset (If its past midnight, reset the daily usage)
         usageTracker.checkDailyReset()
-        
+
         if (blockController.onEnterBlockedContent()) {
             performBackNavigation()
         }
     }
 
     private fun onBlockedContentExited() {
-
-      // Early stop, If we are no longer processing blocked content, we already dealt with the event
+        // Early stop, If we are no longer processing blocked content, we already dealt with the event
         if (!isProcessingBlockedContent) {
             return
         }
