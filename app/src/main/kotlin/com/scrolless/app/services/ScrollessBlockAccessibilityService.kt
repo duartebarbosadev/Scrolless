@@ -54,7 +54,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     @Inject
     lateinit var timerOverlayManager: TimerOverlayManager
 
-    private var active = true
     private var currentOnVideos = false
     private var timeStartOnBrainRot: Long = 0L
 
@@ -93,7 +92,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         serviceScope.launch {
             appProvider.blockConfigFlow.collect { newConfig ->
                 blockController.init(newConfig)
-                active = (newConfig.blockOption != BlockOption.NothingSelected)
             }
         }
 
@@ -102,7 +100,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        if (!active) return
         if (event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) return
 
         val rootNode = rootInActiveWindow ?: return
@@ -145,22 +142,25 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
 
     private fun onBlockedContentEntered() {
-        if (!currentOnVideos) {
-            // If timer overlay is enabled, show it
-            if (appProvider.timerOverlayEnabled) {
-                timerOverlayManager.show()
-            }
+        // If the currentOnVideos boolean is set to true, we already dealt with the event
+        if (currentOnVideos) {
+            return
+        }
 
-            currentOnVideos = true
-            timeStartOnBrainRot = System.currentTimeMillis()
-            startPeriodicCheck()
+        currentOnVideos = true
+        timeStartOnBrainRot = System.currentTimeMillis()
+        startPeriodicCheck()
 
-            // Re-check daily reset if you like
-            usageTracker.checkDailyReset()
+        // If timer overlay is enabled, show it
+        if (appProvider.timerOverlayEnabled) {
+            timerOverlayManager.show()
+        }
 
-            if (blockController.onEnterBlockedContent()) {
-                performBackNavigation()
-            }
+        // Check for daily reset (If its past midnight, reset the daily usage)
+        usageTracker.checkDailyReset()
+
+        if (blockController.onEnterBlockedContent()) {
+            performBackNavigation()
         }
     }
 
