@@ -5,7 +5,6 @@
 package com.scrolless.app.services
 
 import android.accessibilityservice.AccessibilityService
-import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Intent
 import android.os.Handler
@@ -54,8 +53,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     @Inject
     lateinit var timerOverlayManager: TimerOverlayManager
 
-    private var active = true
-    private var currentOnVideos = false
+    private var isProcessingBlockedContent = false
     private var timeStartOnBrainRot: Long = 0L
 
     private val blockedViews = setOf(
@@ -66,7 +64,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     private val videoCheckRunnable = object : Runnable {
         override fun run() {
-            if (currentOnVideos) {
+            if (isProcessingBlockedContent) {
                 val elapsed = System.currentTimeMillis() - timeStartOnBrainRot
                 if (blockController.onPeriodicCheck(elapsed)) {
                     performBackNavigation()
@@ -93,7 +91,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         serviceScope.launch {
             appProvider.blockConfigFlow.collect { newConfig ->
                 blockController.init(newConfig)
-                active = (newConfig.blockOption != BlockOption.NothingSelected)
             }
         }
 
@@ -102,7 +99,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        if (!active) return
         if (event.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) return
 
         val rootNode = rootInActiveWindow ?: return
@@ -145,27 +141,30 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
 
     private fun onBlockedContentEntered() {
-        if (!currentOnVideos) {
-            // If timer overlay is enabled, show it
-            if (appProvider.timerOverlayEnabled) {
-                timerOverlayManager.show()
-            }
+        // If the currentOnVideos boolean is set to true, we already dealt with the event
+        if (isProcessingBlockedContent) {
+            return
+        }
 
-            currentOnVideos = true
-            timeStartOnBrainRot = System.currentTimeMillis()
-            startPeriodicCheck()
+        isProcessingBlockedContent = true
+        timeStartOnBrainRot = System.currentTimeMillis()
+        startPeriodicCheck()
 
-            // Re-check daily reset if you like
-            usageTracker.checkDailyReset()
+        // If timer overlay is enabled, show it
+        if (appProvider.timerOverlayEnabled) {
+            timerOverlayManager.show()
+        }
 
-            if (blockController.onEnterBlockedContent()) {
-                performBackNavigation()
-            }
+        // Check for daily reset (If its past midnight, reset the daily usage)
+        usageTracker.checkDailyReset()
+
+        if (blockController.onEnterBlockedContent()) {
+            performBackNavigation()
         }
     }
 
     private fun onBlockedContentExited() {
-        if (currentOnVideos) {
+        if (isProcessingBlockedContent) {
             val sessionTime = System.currentTimeMillis() - timeStartOnBrainRot
 
             // Add to usage in memory
@@ -174,7 +173,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             // Let block controller do its logic, if needed
             blockController.onExitBlockedContent(sessionTime)
 
-            currentOnVideos = false
+            isProcessingBlockedContent = false
             stopPeriodicCheck()
 
             if (appProvider.timerOverlayEnabled) {
