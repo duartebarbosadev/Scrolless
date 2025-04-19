@@ -214,10 +214,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         setTimerOverlayCheckBoxListener()
         setupProgressIndicator()
 
-        // Setup broadcast receiver to listen for service enablement
-        setupBroadcastReceiver()
-
-        // Handle the argument passed from MainActivity
+       // Handle the argument passed from MainActivity
         val accessibilityServiceGranted =
             arguments?.getBoolean(ARG_ACCESSIBILITY_GRANTED, false) == true
         if (accessibilityServiceGranted) {
@@ -256,7 +253,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         // Register the broadcast receiver
         context?.let { context ->
-            if (!isReceiverRegistered && serviceEnabledReceiver != null) {
+            if (!isReceiverRegistered) {
+
+                if (serviceEnabledReceiver == null)
+                    setupBroadcastReceiver()
+
                 ContextCompat.registerReceiver(
                     context,
                     serviceEnabledReceiver,
