@@ -1,31 +1,36 @@
-# Gradle
-.gradle
-build/
-
-/local.properties
-
-# Log/OS Files
+# Operating System
+.DS_Store
 *.log
 
-# Android Studio generated files and folders
+# Java/Kotlin
+*.class
+*.dex
+
+# Gradle
+.gradle/
+build/
+gradle.xml
+
+# Android
+local.properties
+*.apk
+output.json
 captures/
 .externalNativeBuild/
 .cxx/
-*.apk
-output.json
+bin/
+gen/
+
+# IntelliJ IDEA / Android Studio
+.idea/
+*.iml
 .kotlin/
 
-# IntelliJ .idea folder
-.idea/workspace.xml
-.idea/libraries
-.idea/caches
-.idea/navEditor.xml
-.idea/tasks.xml
-.idea/modules.xml
-.idea/compiler.xml
-/.idea/jarRepositories.xml
-gradle.xml
-*.iml
+# Eclipse
+.project
+.classpath
+.settings/
 
-# General
-.DS_Store
+# ProGuard
+proguard/
+proguard-project.txt
