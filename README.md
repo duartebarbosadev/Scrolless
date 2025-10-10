@@ -20,7 +20,7 @@ Since the app requires accessibility permissions, which are significant for user
 
 # Note
 
-This project is a **work in progress** 🚧. 
+This project is a **work in progress** 🚧.
 Your feedback is very important for us - we're actively working to improve the app.
 
 *The UI is not final*
@@ -57,15 +57,7 @@ Your feedback is very important for us - we're actively working to improve the a
 
 # Architecture
 
-Scrolless app architecture is inspired by the open source project [Rorty-Android](https://github.com/developersancho/Rorty.Android/), published under the [Apache License](https://github.com/developersancho/Rorty.Android/blob/main/LICENSE).
-
-## Acknowledgements
-
-Scrolless code was inspired by the following open-source projects:
-
-- [NowInAndroid](https://github.com/android/nowinandroid/) (Apache 2.0 License)
-- [Rorty-Android](https://github.com/developersancho/Rorty.Android) (Apache 2.0 License)
-- [Birday](https://github.com/m-i-n-a-r/birday) (GPL v3 License)
+Scrolless app architecture is inspired by the Google open source project [Jetcaster](https://github.com/android/compose-samples/tree/main/Jetcaster), published under the [Apache License](https://github.com/android/compose-samples/blob/main/LICENSE).
 
 Some icons used in this app are obtained from [Icons8](https://icons8.com).
 

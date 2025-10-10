@@ -1,0 +1,79 @@
+/*
+ * Copyright (C) 2025 Scrolless
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+package com.scrolless.app.core.data.database.dao
+
+import androidx.room.Dao
+import androidx.room.Query
+import com.scrolless.app.core.data.database.model.BlockOption
+import com.scrolless.app.core.data.database.model.UserSettings
+import java.time.LocalDate
+import kotlinx.coroutines.flow.Flow
+
+/**
+ * [androidx.room.Room] DAO for [UserSettings] related operations.
+ */
+@Dao
+abstract class UserSettingsDao : BaseDao<UserSettings> {
+
+    @Query("SELECT active_block_option FROM user_settings WHERE id = 1")
+    abstract fun getActiveBlockOption(): Flow<BlockOption>
+
+    @Query("UPDATE user_settings SET active_block_option = :blockOption WHERE id = 1")
+    abstract suspend fun setActiveBlockOption(blockOption: BlockOption)
+
+    @Query("SELECT time_limit FROM user_settings WHERE id = 1")
+    abstract fun getTimeLimit(): Flow<Long>
+
+    @Query("UPDATE user_settings SET time_limit = :timeLimit WHERE id = 1")
+    abstract suspend fun setTimeLimit(timeLimit: Long)
+
+    @Query("SELECT interval_length FROM user_settings WHERE id = 1")
+    abstract fun getIntervalLength(): Flow<Long>
+
+    @Query("UPDATE user_settings SET interval_length = :intervalLength WHERE id = 1")
+    abstract suspend fun setIntervalLength(intervalLength: Long)
+
+    @Query("SELECT timer_overlay_enabled FROM user_settings WHERE id = 1")
+    abstract fun getTimerOverlayEnabled(): Flow<Boolean>
+
+    @Query("UPDATE user_settings SET timer_overlay_enabled = :enabled WHERE id = 1")
+    abstract suspend fun setTimerOverlayEnabled(enabled: Boolean)
+
+    @Query("SELECT last_reset_day FROM user_settings WHERE id = 1")
+    abstract fun getLastResetDay(): Flow<LocalDate>
+
+    @Query("UPDATE user_settings SET last_reset_day = :date WHERE id = 1")
+    abstract suspend fun setLastResetDay(date: LocalDate)
+
+    @Query("SELECT total_daily_usage FROM user_settings WHERE id = 1")
+    abstract fun getTotalDailyUsage(): Flow<Long>
+
+    @Query("UPDATE user_settings SET total_daily_usage = :usage WHERE id = 1")
+    abstract suspend fun updateTotalDailyUsage(usage: Long)
+
+    @Query("SELECT timer_overlay_x FROM user_settings WHERE id = 1")
+    abstract fun getTimerOverlayPositionX(): Flow<Int>
+
+    @Query("SELECT timer_overlay_y FROM user_settings WHERE id = 1")
+    abstract fun getTimerOverlayPositionY(): Flow<Int>
+
+    @Query("UPDATE user_settings SET timer_overlay_x = :x WHERE id = 1")
+    abstract suspend fun setTimerOverlayPositionX(x: Int)
+
+    @Query("UPDATE user_settings SET timer_overlay_y = :y WHERE id = 1")
+    abstract suspend fun setTimerOverlayPositionY(y: Int)
+}

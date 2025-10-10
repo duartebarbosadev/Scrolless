@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <style name="Theme.Scrolless" parent="android:Theme.Material.NoActionBar">
+        <item name="android:colorPrimary">@color/teal_200</item>
+        <item name="android:colorAccent">@color/teal_700</item>
+    </style>
+</resources>
