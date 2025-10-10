@@ -338,7 +338,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         // If timer overlay is enabled and block all isn't selected, show it
         if (currentTimerOverlayEnabled &&
-            currentBlockOption != BlockOption.BlockAll) {
+            currentBlockOption != BlockOption.BlockAll
+        ) {
 
             Timber.v("Showing timer overlay")
             timerOverlayManager.show()

@@ -95,10 +95,7 @@ import com.scrolless.app.util.requestAppReview
 import timber.log.Timber
 
 @Composable
-fun MainScreen(
-    modifier: Modifier = Modifier,
-    viewModel: MainViewModel = hiltViewModel(),
-) {
+fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -567,7 +564,7 @@ private fun ProgressCard(
                 modifier = Modifier.size(180.dp),
                 color = progressColor,
                 strokeWidth = 8.dp,
-                trackColor = MaterialTheme.colorScheme.primary
+                trackColor = MaterialTheme.colorScheme.primary,
             )
 
             Column(
@@ -618,10 +615,7 @@ fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun MainBackground(
-    modifier: Modifier = Modifier,
-    content: @Composable BoxScope.() -> Unit,
-) {
+private fun MainBackground(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
     Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
         Box(
             modifier = Modifier
@@ -662,6 +656,22 @@ fun PreviewBlockAll() {
     ScrollessTheme {
         HomeContent(
             uiState = MainUiState(blockOption = BlockOption.BlockAll),
+            onBlockOptionSelected = {},
+            onConfigureDailyLimit = {},
+            onTimerOverlayToggled = {},
+            onHelpClicked = {},
+            onReviewClicked = {},
+            onPauseClicked = {},
+        )
+    }
+}
+
+@Preview(name = "Nothing Selected")
+@Composable
+fun PreviewNothingSelected() {
+    ScrollessTheme {
+        HomeContent(
+            uiState = MainUiState(blockOption = BlockOption.NothingSelected, currentUsage = 3590000L),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
             onTimerOverlayToggled = {},

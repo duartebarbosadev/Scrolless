@@ -25,11 +25,9 @@ import kotlin.time.Duration.Companion.minutes
 private const val SECONDS_PER_MINUTE = 60
 private const val MINUTES_PER_HOUR = 60
 
-
 private const val MILLISECONDS_PER_SECOND = 1000
 private const val MILLISECONDS_PER_MINUTE = MILLISECONDS_PER_SECOND * SECONDS_PER_MINUTE // 60000
 private const val MILLISECONDS_PER_HOUR = MILLISECONDS_PER_MINUTE * MINUTES_PER_HOUR // 3600000
-
 
 /**
  * Formats a duration given in milliseconds into a compact time representation.
