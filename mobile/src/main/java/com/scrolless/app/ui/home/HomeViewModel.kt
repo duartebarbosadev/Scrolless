@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.ui.main
+package com.scrolless.app.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,13 +37,13 @@ import timber.log.Timber
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class MainViewModel @Inject constructor(private val userSettingsStore: UserSettingsStore) : ViewModel() {
+class HomeViewModel @Inject constructor(private val userSettingsStore: UserSettingsStore) : ViewModel() {
 
     private val _showComingSoonSnackBar = MutableStateFlow(false)
     private val _showAccessibilitySuccess = MutableStateFlow(false)
     private val _requestReview = MutableStateFlow(false)
 
-    val uiState: StateFlow<MainUiState> = combine(
+    val uiState: StateFlow<HomeUiState> = combine(
         userSettingsStore.getActiveBlockOption(),
         userSettingsStore.getTimeLimit(),
         userSettingsStore.getTotalDailyUsage(),
@@ -58,7 +58,7 @@ class MainViewModel @Inject constructor(private val userSettingsStore: UserSetti
             timeLimit = timeLimit,
         )
 
-        MainUiState(
+        HomeUiState(
             blockOption = blockOption,
             timeLimit = timeLimit,
             currentUsage = currentUsage,
@@ -71,7 +71,7 @@ class MainViewModel @Inject constructor(private val userSettingsStore: UserSetti
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = MainUiState(),
+        initialValue = HomeUiState(),
     )
 
     fun onBlockOptionSelected(blockOption: BlockOption) {
@@ -134,7 +134,7 @@ class MainViewModel @Inject constructor(private val userSettingsStore: UserSetti
     }
 }
 
-data class MainUiState(
+data class HomeUiState(
     val blockOption: BlockOption = BlockOption.NothingSelected,
     val timeLimit: Long = 0L,
     val currentUsage: Long = 0L,

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.ui.main.components
+package com.scrolless.app.ui.home.components
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.EaseInOut

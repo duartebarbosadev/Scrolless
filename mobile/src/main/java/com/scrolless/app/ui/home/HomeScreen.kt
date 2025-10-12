@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.ui.main
+package com.scrolless.app.ui.home
 
 import android.app.Activity
 import androidx.compose.animation.animateColorAsState
@@ -83,10 +83,9 @@ import com.scrolless.app.core.data.database.model.BlockOption
 import com.scrolless.app.designsystem.theme.green
 import com.scrolless.app.designsystem.theme.orange
 import com.scrolless.app.designsystem.theme.red
-import com.scrolless.app.ui.main.components.AccessibilityExplainerBottomSheet
-import com.scrolless.app.ui.main.components.AccessibilitySuccessBottomSheet
-import com.scrolless.app.ui.main.components.HelpDialog
-import com.scrolless.app.ui.main.components.TimeLimitDialog
+import com.scrolless.app.ui.home.components.AccessibilityExplainerBottomSheet
+import com.scrolless.app.ui.home.components.HelpDialog
+import com.scrolless.app.ui.home.components.TimeLimitDialog
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.tooling.DevicePreviews
 import com.scrolless.app.util.formatTime
@@ -96,7 +95,7 @@ import com.scrolless.app.util.requestAppReview
 import timber.log.Timber
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel = hiltViewModel()) {
+fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -110,7 +109,7 @@ fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel = hiltVie
     val activity = context as? Activity
 
     LaunchedEffect(Unit) {
-        Timber.d("MainScreen composed")
+        Timber.d("HomeScreen composed")
     }
 
     // Show snackbar when needed
@@ -122,7 +121,7 @@ fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel = hiltVie
         }
     }
 
-    MainBackground(modifier = modifier.fillMaxSize()) {
+    HomeBackground(modifier = modifier.fillMaxSize()) {
         HomeContent(
             modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing),
             uiState = uiState,
@@ -207,7 +206,7 @@ fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel = hiltVie
         Timber.d("Showing AccessibilityExplainerBottomSheet")
         AccessibilityExplainerBottomSheet(
             onDismiss = {
-                Timber.d("AccessibilityExplainer: Dismiss from main screen")
+                Timber.d("AccessibilityExplainer: Dismiss from home screen")
                 showAccessibilityExplainer = false
             },
         )
@@ -224,7 +223,7 @@ fun MainScreen(modifier: Modifier = Modifier, viewModel: MainViewModel = hiltVie
 
 @Composable
 private fun HomeContent(
-    uiState: MainUiState,
+    uiState: HomeUiState,
     modifier: Modifier = Modifier,
     onBlockOptionSelected: (BlockOption) -> Unit,
     onConfigureDailyLimit: () -> Unit,
@@ -616,7 +615,7 @@ fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun MainBackground(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
+private fun HomeBackground(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
     Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
         Box(
             modifier = Modifier
@@ -629,8 +628,8 @@ private fun MainBackground(modifier: Modifier = Modifier, content: @Composable B
 
 @DevicePreviews
 @Composable
-fun MainScreenPreview() {
-    val mockState = MainUiState(
+fun HomeScreenPreview() {
+    val mockState = HomeUiState(
         blockOption = BlockOption.DailyLimit,
         timeLimit = 7200000L, // 2 hours
         currentUsage = 5400000L, // 1.5 hours
@@ -656,7 +655,7 @@ fun MainScreenPreview() {
 fun PreviewBlockAll() {
     ScrollessTheme {
         HomeContent(
-            uiState = MainUiState(blockOption = BlockOption.BlockAll),
+            uiState = HomeUiState(blockOption = BlockOption.BlockAll),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
             onTimerOverlayToggled = {},
@@ -672,7 +671,7 @@ fun PreviewBlockAll() {
 fun PreviewNothingSelected() {
     ScrollessTheme {
         HomeContent(
-            uiState = MainUiState(blockOption = BlockOption.NothingSelected, currentUsage = 3590000L),
+            uiState = HomeUiState(blockOption = BlockOption.NothingSelected, currentUsage = 3590000L),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
             onTimerOverlayToggled = {},
@@ -688,7 +687,7 @@ fun PreviewNothingSelected() {
 fun PreviewIntervalTimer() {
     ScrollessTheme {
         HomeContent(
-            uiState = MainUiState(blockOption = BlockOption.DailyLimit),
+            uiState = HomeUiState(blockOption = BlockOption.DailyLimit),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
             onTimerOverlayToggled = {},
@@ -705,7 +704,7 @@ fun PreviewIntervalTimer() {
 fun PreviewHelpDialog() {
     ScrollessTheme {
         HomeContent(
-            uiState = MainUiState(blockOption = BlockOption.BlockAll),
+            uiState = HomeUiState(blockOption = BlockOption.BlockAll),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
             onTimerOverlayToggled = {},
@@ -722,7 +721,7 @@ fun PreviewHelpDialog() {
 fun PreviewAccessibilityExplainer() {
     ScrollessTheme {
         HomeContent(
-            uiState = MainUiState(blockOption = BlockOption.BlockAll),
+            uiState = HomeUiState(blockOption = BlockOption.BlockAll),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
             onTimerOverlayToggled = {},
