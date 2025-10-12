@@ -65,4 +65,14 @@
     <string name="visit_github">Visit GitHub Repository</string>
     <string name="icons8_attribution">Icons provided by Icons8 (icons8.com)</string>
     <string name="close">Close</string>
+
+    <string name="accessibility_success_title">All Set!</string>
+    <string name="accessibility_success_description">Scrolless is now ready!</string>
+    <string name="next_steps_title">Next Steps</string>
+    <string name="success_icon_description">Success checkmark icon</string>
+    <string name="get_started">Get Started</string>
+
+    <string name="next_step_1">Select a blocking mode</string>
+    <string name="next_step_2">Try the daily limit feature and activate the timer overlay</string>
+
 </resources>

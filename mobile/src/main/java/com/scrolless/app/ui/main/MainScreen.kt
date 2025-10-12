@@ -84,6 +84,7 @@ import com.scrolless.app.designsystem.theme.green
 import com.scrolless.app.designsystem.theme.orange
 import com.scrolless.app.designsystem.theme.red
 import com.scrolless.app.ui.main.components.AccessibilityExplainerBottomSheet
+import com.scrolless.app.ui.main.components.AccessibilitySuccessBottomSheet
 import com.scrolless.app.ui.main.components.HelpDialog
 import com.scrolless.app.ui.main.components.TimeLimitDialog
 import com.scrolless.app.ui.theme.ScrollessTheme
@@ -351,7 +352,7 @@ fun PauseButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
             .alpha(0.7f),
 
         colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = (0.7f)),
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = (0.7f)),
         ),
         shape = RoundedCornerShape(16.dp),
     ) {
@@ -409,7 +410,7 @@ private fun RateButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
         onClick = onClick,
         modifier = modifier,
         colors = ButtonDefaults.elevatedButtonColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
         ),
     ) {
         Icon(

@@ -18,11 +18,7 @@ package com.scrolless.app.ui.main.components
 
 import android.content.Intent
 import android.provider.Settings
-import androidx.compose.animation.core.EaseInOut
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -54,13 +50,11 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -72,6 +66,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import com.scrolless.app.R
+import com.scrolless.app.designsystem.component.AnimatedIcon
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.tooling.DevicePreviews
 import timber.log.Timber
@@ -280,44 +275,10 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
         }
 
         // Floating Icon at the top
-        FloatingIcon(
+        AnimatedIcon(
             modifier = Modifier.align(Alignment.TopCenter),
-        )
-    }
-}
-
-@Composable
-private fun FloatingIcon(modifier: Modifier = Modifier) {
-    val isPreview = LocalInspectionMode.current
-
-    // Pulse animation (disabled in preview)
-    val scale by if (isPreview) {
-        remember { mutableFloatStateOf(1f) }
-    } else {
-        val infiniteTransition = rememberInfiniteTransition(label = "pulse")
-        infiniteTransition.animateFloat(
-            initialValue = 1f,
-            targetValue = 1.1f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(1000, easing = EaseInOut),
-                repeatMode = RepeatMode.Reverse,
-            ),
-            label = "scale",
-        )
-    }
-
-    Box(
-        modifier = modifier
-            .size(90.dp)
-            .scale(scale),
-        contentAlignment = Alignment.Center,
-
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_logo_outline),
+            iconRes = R.drawable.ic_logo_outline,
             contentDescription = stringResource(R.string.accessibility_explainer_icon_description),
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(48.dp),
         )
     }
 }
@@ -334,7 +295,7 @@ private fun AccessibilityStep(stepNumber: String, text: String) {
         }
     }
 
-    androidx.compose.animation.AnimatedVisibility(
+    AnimatedVisibility(
         visible = isVisible,
         enter = androidx.compose.animation.fadeIn(
             animationSpec = tween(durationMillis = 500),
