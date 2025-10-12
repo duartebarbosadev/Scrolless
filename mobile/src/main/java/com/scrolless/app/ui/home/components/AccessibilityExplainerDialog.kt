@@ -150,7 +150,7 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
             Text(
                 text = stringResource(R.string.accessibility_explainer_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
             )
 

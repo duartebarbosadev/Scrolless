@@ -33,7 +33,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import com.scrolless.app.designsystem.component.AnimatedButton
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -55,6 +54,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.scrolless.app.R
+import com.scrolless.app.designsystem.component.AnimatedButton
 import com.scrolless.app.designsystem.component.PopupCircleIcon
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.tooling.DevicePreviews
@@ -169,7 +169,7 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
                         text = stringResource(R.string.accessibility_success_title),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onSurface,
                         textAlign = TextAlign.Center,
                     )
 
@@ -179,7 +179,7 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
                     Text(
                         text = stringResource(R.string.accessibility_success_description),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = TextAlign.Center,
                     )
 
@@ -202,7 +202,7 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
                                 text = stringResource(R.string.next_steps_title),
                                 style = MaterialTheme.typography.titleSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = Color.White,
+                                color = MaterialTheme.colorScheme.onSurface,
                             )
 
                             Spacer(modifier = Modifier.height(12.dp))
@@ -309,7 +309,7 @@ private fun NextStep(stepNumber: String, text: String, delay: Long) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.weight(1f),
         )
     }

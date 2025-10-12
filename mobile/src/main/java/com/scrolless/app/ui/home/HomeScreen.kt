@@ -80,10 +80,11 @@ import com.scrolless.app.BuildConfig
 import com.scrolless.app.R
 import com.scrolless.app.accessibility.ScrollessBlockAccessibilityService
 import com.scrolless.app.core.data.database.model.BlockOption
-import com.scrolless.app.designsystem.theme.green
-import com.scrolless.app.designsystem.theme.orange
-import com.scrolless.app.designsystem.theme.red
+import com.scrolless.app.designsystem.theme.progressbar_green_use
+import com.scrolless.app.designsystem.theme.progressbar_orange_use
+import com.scrolless.app.designsystem.theme.progressbar_red_use
 import com.scrolless.app.ui.home.components.AccessibilityExplainerBottomSheet
+import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheetPreview
 import com.scrolless.app.ui.home.components.HelpDialog
 import com.scrolless.app.ui.home.components.TimeLimitDialog
 import com.scrolless.app.ui.theme.ScrollessTheme
@@ -305,14 +306,12 @@ private fun HomeContent(
 
             PauseButton(onClick = onPauseClicked)
 
-            if (uiState.blockOption == BlockOption.DailyLimit) {
-                Spacer(modifier = Modifier.height(24.dp))
-                TimerOverlayToggle(
-                    checked = uiState.timerOverlayEnabled,
-                    onCheckedChange = onTimerOverlayToggled,
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                )
-            }
+            Spacer(modifier = Modifier.height(24.dp))
+            TimerOverlayToggle(
+                checked = uiState.timerOverlayEnabled,
+                onCheckedChange = onTimerOverlayToggled,
+                modifier = Modifier.padding(horizontal = 8.dp),
+            )
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -364,7 +363,7 @@ fun PauseButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = stringResource(id = R.string.pause),
-            color = MaterialTheme.colorScheme.onTertiaryContainer,
+            color = MaterialTheme.colorScheme.onSurface,
         )
     }
 }
@@ -420,7 +419,7 @@ private fun RateButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = stringResource(R.string.rate_scrolless),
-            color = MaterialTheme.colorScheme.onTertiaryContainer,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
     }
 }
@@ -476,7 +475,7 @@ fun FeatureButton(
 ) {
     val colors = if (isSelected) {
         ButtonDefaults.outlinedButtonColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
         )
     } else {
         ButtonDefaults.outlinedButtonColors(
@@ -484,7 +483,7 @@ fun FeatureButton(
         )
     }
     val textColors = if (isSelected) {
-        MaterialTheme.colorScheme.onSecondaryContainer
+        MaterialTheme.colorScheme.onPrimaryContainer
     } else {
         MaterialTheme.colorScheme.onSurface
     }
@@ -537,9 +536,9 @@ private fun ProgressCard(
 
     val progressColor by animateColorAsState(
         targetValue = when {
-            progress < 75 -> green // Green
-            progress < 100 -> orange // Orange
-            else -> red // Red
+            progress < 75 -> progressbar_green_use // Green
+            progress < 100 -> progressbar_orange_use // Orange
+            else -> progressbar_red_use // Red
         },
         animationSpec = tween(durationMillis = 500),
         label = "color",
@@ -721,7 +720,7 @@ fun PreviewHelpDialog() {
 fun PreviewAccessibilityExplainer() {
     ScrollessTheme {
         HomeContent(
-            uiState = HomeUiState(blockOption = BlockOption.BlockAll),
+            uiState = HomeUiState(blockOption = BlockOption.NothingSelected),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
             onTimerOverlayToggled = {},
@@ -730,5 +729,22 @@ fun PreviewAccessibilityExplainer() {
             onPauseClicked = {},
         )
         AccessibilityExplainerBottomSheet { }
+    }
+}
+
+@Preview(name = "Accessibility success dialog")
+@Composable
+fun PreviewAccessibilitySuccessDialog() {
+    ScrollessTheme {
+        HomeContent(
+            uiState = HomeUiState(blockOption = BlockOption.NothingSelected),
+            onBlockOptionSelected = {},
+            onConfigureDailyLimit = {},
+            onTimerOverlayToggled = {},
+            onHelpClicked = {},
+            onReviewClicked = {},
+            onPauseClicked = {},
+        )
+        AccessibilitySuccessBottomSheetPreview()
     }
 }
