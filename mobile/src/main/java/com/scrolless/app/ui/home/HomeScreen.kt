@@ -17,14 +17,19 @@
 package com.scrolless.app.ui.home
 
 import android.app.Activity
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -32,6 +37,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -60,6 +66,7 @@ import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonColors
 import androidx.compose.material3.ToggleButtonShapes
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -79,6 +86,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.scrolless.app.BuildConfig
 import com.scrolless.app.R
@@ -88,6 +98,7 @@ import com.scrolless.app.designsystem.theme.progressbar_green_use
 import com.scrolless.app.designsystem.theme.progressbar_orange_use
 import com.scrolless.app.designsystem.theme.progressbar_red_use
 import com.scrolless.app.ui.home.components.AccessibilityExplainerBottomSheet
+import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheet
 import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheetPreview
 import com.scrolless.app.ui.home.components.HelpDialog
 import com.scrolless.app.ui.home.components.TimeLimitDialog
@@ -109,12 +120,30 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
     var showTimeLimitDialog by remember { mutableStateOf(false) }
     var showHelpDialog by remember { mutableStateOf(false) }
     var showAccessibilityExplainer by remember { mutableStateOf(false) }
+    var showAccessibilitySuccess by remember { mutableStateOf(false) }
     var debugBypassAccessibilityCheck by remember { mutableStateOf(false) }
 
     val activity = context as? Activity
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(Unit) {
-        Timber.d("HomeScreen composed")
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                Timber.d("HomeScreen resumed")
+                if (context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+                    if (showAccessibilityExplainer) {
+                        Timber.i("Accessibility service enabled - showing success dialog")
+                        showAccessibilityExplainer = false
+                        showAccessibilitySuccess = true
+                        viewModel.setWaitingForAccessibility(false)
+                    }
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
     }
 
     // Show snackbar when needed
@@ -137,6 +166,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                     viewModel.onBlockOptionSelected(blockOption)
                 } else {
                     Timber.w("Accessibility service not enabled. Showing explainer.")
+                    viewModel.setWaitingForAccessibility(true)
                     showAccessibilityExplainer = true
                 }
             },
@@ -147,6 +177,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                     showTimeLimitDialog = true
                 } else {
                     Timber.w("Accessibility service not enabled. Showing explainer (daily limit).")
+                    viewModel.setWaitingForAccessibility(true)
                     showAccessibilityExplainer = true
                 }
             },
@@ -213,6 +244,15 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
             onDismiss = {
                 Timber.d("AccessibilityExplainer: Dismiss from home screen")
                 showAccessibilityExplainer = false
+                viewModel.setWaitingForAccessibility(false)
+            },
+        )
+    }
+
+    if (showAccessibilitySuccess) {
+        AccessibilitySuccessBottomSheet(
+            onDismiss = {
+                showAccessibilitySuccess = false
             },
         )
     }
@@ -226,6 +266,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun HomeContent(
     uiState: HomeUiState,
@@ -238,6 +279,11 @@ private fun HomeContent(
     onPauseClicked: () -> Unit,
     onProgressCardClicked: () -> Unit = {},
 ) {
+    // Define weights outside of composition flow
+    val WEIGHT_BASE = 1f
+    val WEIGHT_EXPANDED = 1.2f
+    val WEIGHT_SHRUNK = 0.9f
+
     Box(
         modifier
             .fillMaxSize()
@@ -264,6 +310,44 @@ private fun HomeContent(
             )
 
             Spacer(modifier = Modifier.height(8.dp))
+
+            // 1. Define interaction sources for ALL buttons
+            val blockAllInteractionSource = remember { MutableInteractionSource() }
+            val dailyLimitInteractionSource = remember { MutableInteractionSource() }
+            val intervalInteractionSource = remember { MutableInteractionSource() }
+
+            val isBlockAllPressed by blockAllInteractionSource.collectIsPressedAsState()
+            val isDailyLimitPressed by dailyLimitInteractionSource.collectIsPressedAsState()
+            val isIntervalPressed by intervalInteractionSource.collectIsPressedAsState()
+
+            // 2. Calculate Animated Weights (Float) based on interaction states
+            val blockAllWeight by animateFloatAsState(
+                targetValue = when {
+                    isBlockAllPressed -> WEIGHT_EXPANDED
+                    isDailyLimitPressed || isIntervalPressed -> WEIGHT_SHRUNK
+                    else -> WEIGHT_BASE
+                },
+                animationSpec = tween(100), label = "blockAllWeight",
+            )
+
+            val dailyLimitWeight by animateFloatAsState(
+                targetValue = when {
+                    isDailyLimitPressed -> WEIGHT_EXPANDED
+                    isBlockAllPressed || isIntervalPressed -> WEIGHT_SHRUNK
+                    else -> WEIGHT_BASE
+                },
+                animationSpec = tween(100), label = "dailyLimitWeight",
+            )
+
+            val intervalWeight by animateFloatAsState(
+                targetValue = when {
+                    isIntervalPressed -> WEIGHT_EXPANDED
+                    isBlockAllPressed || isDailyLimitPressed -> WEIGHT_SHRUNK
+                    else -> WEIGHT_BASE
+                },
+                animationSpec = tween(100), label = "intervalWeight",
+            )
+
 
             FeatureButtonsRow(
                 selectedOption = uiState.blockOption,
@@ -294,16 +378,60 @@ private fun HomeContent(
                 onIntervalTimerClick = {
                     Timber.i("IntervalTimer clicked (feature not implemented)")
                     onPauseClicked()
-                }, // Feature not implemented yet
+                },
+                // Pass sources
+                blockAllInteractionSource = blockAllInteractionSource,
+                dailyLimitInteractionSource = dailyLimitInteractionSource,
+                intervalInteractionSource = intervalInteractionSource,
+                // Pass animated weights to sync top row
+                blockAllAnimatedWeight = blockAllWeight,
+                dailyLimitAnimatedWeight = dailyLimitWeight,
+                intervalAnimatedWeight = intervalWeight,
             )
 
-            if (uiState.blockOption == BlockOption.DailyLimit) {
-                ConfigButton(
-                    onClick = {
-                        Timber.d("Open DailyLimit config button clicked")
-                        onConfigureDailyLimit()
-                    },
-                )
+            // 3. Smooth appearance for ConfigButton
+            AnimatedVisibility(
+                visible = uiState.blockOption == BlockOption.DailyLimit,
+                enter = expandVertically(
+                    expandFrom = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeIn(animationSpec = tween(200)),
+                exit = shrinkVertically(
+                    shrinkTowards = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeOut(animationSpec = tween(200)),
+            ) {
+                // Mimic ButtonGroup layout to sync width exactly using animated weights
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    // Invisible spacer mirroring "Block All" width behavior
+                    Spacer(modifier = Modifier.weight(blockAllWeight))
+                    Box(
+                        modifier = Modifier
+                            .weight(dailyLimitWeight)
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.TopCenter,
+                    ) {
+                        ConfigButton(
+                            onClick = {
+                                Timber.d("Open DailyLimit config button clicked")
+                                onConfigureDailyLimit()
+                            },
+                            dailyLimitInteractionSource = dailyLimitInteractionSource,
+                            blockAllInteractionSource = blockAllInteractionSource,
+                            // Set fixed width to approximately half of the feature button width
+                            modifier = Modifier
+                                .fillMaxWidth(0.6f) // Occupy 60% of the Box's (Daily Limit Slot's) width
+                                .align(Alignment.Center), // Center horizontally within the Box
+                        )
+                    }
+
+
+                    // Invisible spacer mirroring "Interval Timer" width behavior
+                    Spacer(
+                        modifier = Modifier
+                            .weight(intervalWeight),
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -325,22 +453,256 @@ private fun HomeContent(
 }
 
 @Composable
-fun ConfigButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun ConfigButton(
+    onClick: () -> Unit,
+    dailyLimitInteractionSource: MutableInteractionSource,
+    blockAllInteractionSource: MutableInteractionSource,
+    modifier: Modifier = Modifier,
+) {
+    // Collect pressed state from both sources
+    val isDailyLimitPressed by dailyLimitInteractionSource.collectIsPressedAsState()
+    val isBlockAllPressed by blockAllInteractionSource.collectIsPressedAsState()
+
+    // Wiggle if EITHER linked button is pressed
+    val isPressed = isDailyLimitPressed || isBlockAllPressed
+
+    // Fast tweens for visual feedback
+    val animationSpec = tween<Float>(durationMillis = 100)
+    val colorAnimationSpec = tween<androidx.compose.ui.graphics.Color>(durationMillis = 100)
+
+    val bottomCorner by animateFloatAsState(
+        targetValue = if (isPressed) 24f else 16f,
+        animationSpec = animationSpec,
+        label = "configButtonCorner",
+    )
+
+    val baseColor = MaterialTheme.colorScheme.surface
+    val pressedColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+
+    val containerColor by animateColorAsState(
+        targetValue = if (isPressed) pressedColor else baseColor,
+        animationSpec = colorAnimationSpec,
+        label = "configButtonColor",
+    )
+
     OutlinedButton(
         onClick = onClick,
-        modifier = modifier
-            .height(48.dp)
-            .wrapContentWidth(),
+        modifier = modifier.height(48.dp),
+        // Use internal source to prevent default press overlay, since we handle styling externally
+        interactionSource = remember { MutableInteractionSource() },
         colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = containerColor,
         ),
-        shape = RoundedCornerShape(0.dp, 0.dp, 16.dp, 16.dp),
+        shape = RoundedCornerShape(0.dp, 0.dp, bottomCorner.dp, bottomCorner.dp),
     ) {
         Image(
             painter = painterResource(id = R.drawable.icons8_control_48),
-            contentDescription = stringResource(id = R.string.go_to_accessibility_settings), // TODO Fix this string
-            modifier = Modifier.size(24.dp),
+            contentDescription = stringResource(id = R.string.go_to_accessibility_settings),
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
         )
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun FeatureButtonsRow(
+    selectedOption: BlockOption,
+    onBlockAllClick: () -> Unit,
+    onDailyLimitClick: () -> Unit,
+    onIntervalTimerClick: () -> Unit,
+    // Accept sources from parent
+    blockAllInteractionSource: MutableInteractionSource,
+    dailyLimitInteractionSource: MutableInteractionSource,
+    intervalInteractionSource: MutableInteractionSource,
+    // Accept animated weights
+    blockAllAnimatedWeight: Float,
+    dailyLimitAnimatedWeight: Float,
+    intervalAnimatedWeight: Float,
+) {
+    ButtonGroup(
+        overflowIndicator = {},
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(128.dp),
+    ) {
+        customItem(
+            buttonGroupContent = {
+                FeatureButton(
+                    onClick = onBlockAllClick,
+                    icon = R.drawable.icons8_block_120,
+                    text = stringResource(id = R.string.block_all),
+                    contentDescription = stringResource(id = R.string.block_all),
+                    isSelected = selectedOption == BlockOption.BlockAll,
+                    interactionSource = blockAllInteractionSource,
+                    modifier = Modifier.weight(blockAllAnimatedWeight), // Using animated weight
+                )
+            },
+            menuContent = {},
+        )
+
+        customItem(
+            buttonGroupContent = {
+                FeatureButton(
+                    onClick = onDailyLimitClick,
+                    icon = R.drawable.icons8_timer_64,
+                    text = stringResource(id = R.string.daily_limit),
+                    contentDescription = stringResource(id = R.string.daily_limit),
+                    isSelected = selectedOption == BlockOption.DailyLimit,
+                    interactionSource = dailyLimitInteractionSource,
+                    modifier = Modifier.weight(dailyLimitAnimatedWeight), // Using animated weight
+                )
+            },
+            menuContent = {},
+        )
+
+        customItem(
+            buttonGroupContent = {
+                FeatureButton(
+                    onClick = onIntervalTimerClick,
+                    icon = R.drawable.icons8_stopwatch_64,
+                    text = stringResource(id = R.string.interval_timer),
+                    contentDescription = stringResource(id = R.string.interval_timer),
+                    isSelected = selectedOption == BlockOption.IntervalTimer,
+                    isEnabled = false,
+                    interactionSource = intervalInteractionSource,
+                    modifier = Modifier.weight(intervalAnimatedWeight), // Using animated weight
+                )
+            },
+            menuContent = {},
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun FeatureButton(
+    onClick: () -> Unit,
+    icon: Int,
+    text: String,
+    contentDescription: String,
+    modifier: Modifier = Modifier,
+    isSelected: Boolean = false,
+    isEnabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    val finalModifier = if (!isEnabled) modifier.alpha(0.7f) else modifier
+
+    ToggleButton(
+        checked = isSelected,
+        onCheckedChange = { onClick() },
+        modifier = finalModifier.fillMaxSize(), // fillMaxSize respects the weight set by the caller
+        enabled = isEnabled,
+        colors = ToggleButtonColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.38f),
+            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+            checkedContainerColor = MaterialTheme.colorScheme.primary,
+            checkedContentColor = MaterialTheme.colorScheme.onPrimary,
+        ),
+        shapes = ToggleButtonShapes(
+            shape = RoundedCornerShape(16.dp),
+            pressedShape = RoundedCornerShape(24.dp),
+            checkedShape = RoundedCornerShape(24.dp),
+        ),
+        interactionSource = interactionSource,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Image(
+                painter = painterResource(id = icon),
+                contentDescription = contentDescription,
+                modifier = Modifier.size(32.dp),
+            )
+            Text(
+                text = text,
+                textAlign = TextAlign.Center,
+                fontSize = 15.sp,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, start = 4.dp, end = 4.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun ProgressCard(
+    progress: Int,
+    currentUsage: Long,
+    timeLimit: Long,
+    showTimeLimit: Boolean,
+    onProgressCardClicked: () -> Unit = {},
+) {
+    val animatedProgress by animateFloatAsState(
+        targetValue = progress / 100f,
+        animationSpec = if (LocalInspectionMode.current) tween(durationMillis = 1000) else tween(durationMillis = 1000),
+        label = "progress",
+    )
+
+    val progressColor by animateColorAsState(
+        targetValue = when {
+            progress < 75 -> progressbar_green_use // Green
+            progress < 100 -> progressbar_orange_use // Orange
+            else -> progressbar_red_use // Red
+        },
+        animationSpec = tween(durationMillis = 500),
+        label = "color",
+    )
+
+    Card(
+        modifier = Modifier
+            .size(220.dp)
+            .padding(16.dp)
+            .clickable(onClick = onProgressCardClicked),
+        shape = RoundedCornerShape(96.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
+        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator(
+                progress = { animatedProgress },
+                modifier = Modifier.size(180.dp),
+                color = progressColor,
+                strokeWidth = 8.dp,
+                trackColor = MaterialTheme.colorScheme.primary,
+            )
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(16.dp),
+            ) {
+                Text(
+                    text = if (showTimeLimit) {
+                        "${currentUsage.formatTime()} / ${timeLimit.formatTime()}"
+                    } else {
+                        currentUsage.formatTime()
+                    },
+                    modifier = Modifier.padding(top = 16.dp),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    textAlign = TextAlign.Center,
+                )
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = stringResource(R.string.total_time_wasted),
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
     }
 }
 
@@ -425,209 +787,6 @@ private fun RateButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
             text = stringResource(R.string.rate_scrolless),
             color = MaterialTheme.colorScheme.onSecondary,
         )
-    }
-}
-
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
-@Composable
-fun FeatureButtonsRow(
-    selectedOption: BlockOption,
-    onBlockAllClick: () -> Unit,
-    onDailyLimitClick: () -> Unit,
-    onIntervalTimerClick: () -> Unit,
-) {
-    val interactionSource1 = remember { MutableInteractionSource() }
-    val interactionSource2 = remember { MutableInteractionSource() }
-    val interactionSource3 = remember { MutableInteractionSource() }
-
-    ButtonGroup(
-        overflowIndicator = {},
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(128.dp),
-    ) {
-        customItem(
-            buttonGroupContent = {
-                FeatureButton(
-                    onClick = onBlockAllClick,
-                    icon = R.drawable.icons8_block_120,
-                    text = stringResource(id = R.string.block_all),
-                    contentDescription = stringResource(id = R.string.block_all),
-                    isSelected = selectedOption == BlockOption.BlockAll,
-                    interactionSource = interactionSource1,
-                    modifier = Modifier
-                        .weight(1f)
-                        .animateWidth(interactionSource = interactionSource1),
-                )
-            },
-            menuContent = {},
-        )
-
-        customItem(
-            buttonGroupContent = {
-                FeatureButton(
-                    onClick = onDailyLimitClick,
-                    icon = R.drawable.icons8_timer_64,
-                    text = stringResource(id = R.string.daily_limit),
-                    contentDescription = stringResource(id = R.string.daily_limit),
-                    isSelected = selectedOption == BlockOption.DailyLimit,
-                    interactionSource = interactionSource2,
-                    modifier = Modifier
-                        .weight(1f)
-                        .animateWidth(interactionSource = interactionSource2),
-                )
-            },
-            menuContent = {},
-        )
-
-        customItem(
-            buttonGroupContent = {
-                FeatureButton(
-                    onClick = onIntervalTimerClick,
-                    icon = R.drawable.icons8_stopwatch_64,
-                    text = stringResource(id = R.string.interval_timer),
-                    contentDescription = stringResource(id = R.string.interval_timer),
-                    isSelected = selectedOption == BlockOption.IntervalTimer,
-                    isEnabled = false,
-                    interactionSource = interactionSource3,
-                    modifier = Modifier
-                        .weight(1f)
-                        .animateWidth(interactionSource = interactionSource3),
-                )
-            },
-            menuContent = {},
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
-@Composable
-fun FeatureButton(
-    onClick: () -> Unit,
-    icon: Int,
-    text: String,
-    contentDescription: String,
-    modifier: Modifier = Modifier,
-    isSelected: Boolean = false,
-    isEnabled: Boolean = true,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-) {
-    val finalModifier = if (!isEnabled) modifier.alpha(0.7f) else modifier
-
-    ToggleButton(
-        checked = isSelected,
-        onCheckedChange = { onClick() },
-        modifier = finalModifier.fillMaxSize(),
-        enabled = isEnabled,
-        colors = ToggleButtonColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface,
-            disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.38f),
-            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-            checkedContainerColor = MaterialTheme.colorScheme.primary,
-            checkedContentColor = MaterialTheme.colorScheme.onPrimary,
-        ),
-        shapes = ToggleButtonShapes(
-            shape = RoundedCornerShape(16.dp),
-            pressedShape = RoundedCornerShape(24.dp),
-            checkedShape = RoundedCornerShape(24.dp),
-        ),
-        interactionSource = interactionSource,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Image(
-                painter = painterResource(id = icon),
-                contentDescription = contentDescription,
-                modifier = Modifier.size(32.dp),
-            )
-            Text(
-                text = text,
-                textAlign = TextAlign.Center,
-                fontSize = 15.sp,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp, start = 4.dp, end = 4.dp),
-            )
-        }
-    }
-}
-
-@Composable
-private fun ProgressCard(
-    progress: Int,
-    currentUsage: Long,
-    timeLimit: Long,
-    showTimeLimit: Boolean,
-    onProgressCardClicked: () -> Unit = {},
-) {
-    val animatedProgress by animateFloatAsState(
-        targetValue = progress / 100f,
-        animationSpec = if (LocalInspectionMode.current) snap() else tween(durationMillis = 1000),
-        label = "progress",
-    )
-
-    val progressColor by animateColorAsState(
-        targetValue = when {
-            progress < 75 -> progressbar_green_use // Green
-            progress < 100 -> progressbar_orange_use // Orange
-            else -> progressbar_red_use // Red
-        },
-        animationSpec = tween(durationMillis = 500),
-        label = "color",
-    )
-
-    Card(
-        modifier = Modifier
-            .size(220.dp)
-            .padding(16.dp)
-            .clickable(onClick = onProgressCardClicked),
-        shape = RoundedCornerShape(96.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
-        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            CircularProgressIndicator(
-                progress = { animatedProgress },
-                modifier = Modifier.size(180.dp),
-                color = progressColor,
-                strokeWidth = 8.dp,
-                trackColor = MaterialTheme.colorScheme.primary,
-            )
-
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(16.dp),
-            ) {
-                Text(
-                    text = if (showTimeLimit) {
-                        "${currentUsage.formatTime()} / ${timeLimit.formatTime()}"
-                    } else {
-                        currentUsage.formatTime()
-                    },
-                    modifier = Modifier.padding(top = 16.dp),
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    textAlign = TextAlign.Center,
-                )
-                Spacer(Modifier.height(8.dp))
-                Text(
-                    text = stringResource(R.string.total_time_wasted),
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
-                    textAlign = TextAlign.Center,
-                )
-            }
-        }
     }
 }
 

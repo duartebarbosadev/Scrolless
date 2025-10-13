@@ -22,8 +22,6 @@ import com.scrolless.app.core.data.database.model.BlockOption
 import com.scrolless.app.core.data.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-import kotlin.math.min
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -31,16 +29,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
+import kotlin.math.min
 
 /**
  * ViewModel that handles the business logic and screen state of the Podcast details screen.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val userSettingsStore: UserSettingsStore) : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val userSettingsStore: UserSettingsStore,
+) : ViewModel() {
 
     private val _showComingSoonSnackBar = MutableStateFlow(false)
-    private val _showAccessibilitySuccess = MutableStateFlow(false)
     private val _requestReview = MutableStateFlow(false)
 
     val uiState: StateFlow<HomeUiState> = combine(
@@ -49,9 +50,8 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         userSettingsStore.getTotalDailyUsage(),
         userSettingsStore.getTimerOverlayEnabled(),
         _showComingSoonSnackBar,
-        _showAccessibilitySuccess,
         _requestReview,
-    ) { blockOption, timeLimit, currentUsage, timerEnabled, showComingSoonSnackBar, showAccessibilitySuccess, requestReview ->
+    ) { blockOption, timeLimit, currentUsage, timerEnabled, showComingSoonSnackBar, requestReview ->
 
         val progress = calculateProgress(
             currentUsage = if (blockOption == BlockOption.DailyLimit) currentUsage else 0L,
@@ -65,7 +65,6 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
             progress = progress,
             timerOverlayEnabled = timerEnabled,
             showComingSoonSnackBar = showComingSoonSnackBar,
-            showAccessibilitySuccess = showAccessibilitySuccess,
             requestReview = requestReview,
         )
     }.stateIn(
@@ -129,6 +128,13 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         _requestReview.value = false
     }
 
+    fun setWaitingForAccessibility(waiting: Boolean) {
+        Timber.d("Setting waiting for accessibility: %s", waiting)
+        viewModelScope.launch {
+            userSettingsStore.setWaitingForAccessibility(waiting)
+        }
+    }
+
     companion object {
         private const val PROGRESS_MAX = 100
     }
@@ -141,7 +147,6 @@ data class HomeUiState(
     val progress: Int = 0,
     val timerOverlayEnabled: Boolean = false,
     val showComingSoonSnackBar: Boolean = false,
-    val showAccessibilitySuccess: Boolean = false,
     val requestReview: Boolean = false,
     val isDevMode: Boolean = false,
     val playStoreUrl: String? = null,

@@ -73,7 +73,7 @@ fun PopupCircleIcon(modifier: Modifier = Modifier, @DrawableRes iconRes: Int, co
             .scale(scale),
         shape = CircleShape,
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
     ) {

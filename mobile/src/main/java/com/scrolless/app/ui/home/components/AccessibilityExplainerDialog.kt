@@ -352,7 +352,7 @@ private fun AccessibilityStep(stepNumber: String, text: String) {
 @DevicePreviews
 @Composable
 fun AccessibilityExplainerBottomSheetPreview() {
-    ScrollessTheme {
+    ScrollessTheme(darkTheme = true) {
         AccessibilityExplainerBottomSheet(
             onDismiss = {},
         )

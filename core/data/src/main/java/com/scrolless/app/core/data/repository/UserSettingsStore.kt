@@ -18,13 +18,13 @@ package com.scrolless.app.core.data.repository
 
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.data.database.model.BlockOption
-import java.time.LocalDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 interface UserSettingsStore {
 
@@ -51,6 +51,9 @@ interface UserSettingsStore {
 
     fun getTimerOverlayPositionX(): Flow<Int>
     suspend fun setTimerOverlayPositionX(positionX: Int)
+
+    fun getWaitingForAccessibility(): Flow<Boolean>
+    suspend fun setWaitingForAccessibility(waiting: Boolean)
 }
 
 suspend fun UserSettingsStore.setTimerOverlayPosition(positionX: Int, positionY: Int) {
@@ -73,6 +76,7 @@ class UserSettingsStoreImpl constructor(private val userSettingsDao: UserSetting
     private val _totalDailyUsage = MutableStateFlow(0L)
     private val _timerOverlayPositionY = MutableStateFlow(0)
     private val _timerOverlayPositionX = MutableStateFlow(0)
+    private val _waitingForAccessibility = MutableStateFlow(false)
 
     init {
         coroutineScope.launch {
@@ -98,6 +102,9 @@ class UserSettingsStoreImpl constructor(private val userSettingsDao: UserSetting
         }
         coroutineScope.launch {
             userSettingsDao.getTimerOverlayPositionX().collect { _timerOverlayPositionX.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getWaitingForAccessibility().collect { _waitingForAccessibility.value = it }
         }
     }
 
@@ -147,5 +154,11 @@ class UserSettingsStoreImpl constructor(private val userSettingsDao: UserSetting
 
     override suspend fun setTimerOverlayPositionX(positionX: Int) {
         userSettingsDao.setTimerOverlayPositionX(positionX)
+    }
+
+    override fun getWaitingForAccessibility(): Flow<Boolean> = _waitingForAccessibility
+
+    override suspend fun setWaitingForAccessibility(waiting: Boolean) {
+        userSettingsDao.setWaitingForAccessibility(waiting)
     }
 }

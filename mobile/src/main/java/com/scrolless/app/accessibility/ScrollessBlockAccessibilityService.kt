@@ -18,7 +18,6 @@ package com.scrolless.app.accessibility
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
-import android.content.Intent
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -32,7 +31,6 @@ import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.BlockingResult
 import com.scrolless.app.ui.overlay.TimerOverlayManager
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -41,6 +39,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Accessibility service that monitors and blocks access to "brain rot" content based on user-configured limits.
@@ -66,14 +65,6 @@ import timber.log.Timber
  */
 @AndroidEntryPoint
 class ScrollessBlockAccessibilityService : AccessibilityService() {
-
-    companion object {
-        /**
-         * Broadcast action sent when the accessibility service is successfully enabled.
-         * The app can listen for this action to update UI state.
-         */
-        const val ACTION_ACCESSIBILITY_SERVICE_ENABLE = "com.scrolless.app.ACCESSIBILITY_SERVICE_ENABLED"
-    }
 
     /**
      * Main thread handler for executing UI-related operations like back navigation.
@@ -184,7 +175,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * Performs initialization:
      * - Configures accessibility service info (event types, flags)
      * - Attaches service context to [TimerOverlayManager]
-     * - Sends broadcast to notify the app
      * - Starts observing user settings for block option changes
      * - Performs initial daily usage reset check
      */
@@ -195,10 +185,17 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // Make sure the timer overlay manager has the service's context
         timerOverlayManager.attachServiceContext(this)
 
-        // Service is now connected and running!
-        // Send a local broadcast to notify the app
-        val intent = Intent(ACTION_ACCESSIBILITY_SERVICE_ENABLE)
-        sendBroadcast(intent)
+        // Check if we need to bring the app to foreground
+        serviceScope.launch {
+            val waitingForAccessibility = userSettingsStore.getWaitingForAccessibility().distinctUntilChanged()
+            waitingForAccessibility.collect { waiting ->
+                if (waiting) {
+                    Timber.i("Waiting for accessibility flag is set - bringing app to foreground")
+                    bringAppToForeground()
+                    userSettingsStore.setWaitingForAccessibility(false)
+                }
+            }
+        }
 
         // Observe changes to the block config
         serviceScope.launch {
@@ -450,6 +447,24 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             Timber.d("Performing back navigation with action=%d", action)
             val success = performGlobalAction(action)
             Timber.d("Back navigation result: success=%b", success)
+        }
+    }
+
+    /**
+     * Brings the app to the foreground by starting the MainActivity.
+     *
+     * Uses FLAG_ACTIVITY_NEW_TASK and FLAG_ACTIVITY_REORDER_TO_FRONT to bring
+     * the existing activity to front without recreating it.
+     */
+    private fun bringAppToForeground() {
+        try {
+            val intent = packageManager.getLaunchIntentForPackage(packageName)
+            intent?.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent?.addFlags(android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            startActivity(intent)
+            Timber.i("Successfully launched app to foreground")
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to bring app to foreground")
         }
     }
 }

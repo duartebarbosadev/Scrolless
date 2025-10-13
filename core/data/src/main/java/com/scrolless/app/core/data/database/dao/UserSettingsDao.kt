@@ -20,8 +20,8 @@ import androidx.room.Dao
 import androidx.room.Query
 import com.scrolless.app.core.data.database.model.BlockOption
 import com.scrolless.app.core.data.database.model.UserSettings
-import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 /**
  * [androidx.room.Room] DAO for [UserSettings] related operations.
@@ -76,4 +76,10 @@ abstract class UserSettingsDao : BaseDao<UserSettings> {
 
     @Query("UPDATE user_settings SET timer_overlay_y = :y WHERE id = 1")
     abstract suspend fun setTimerOverlayPositionY(y: Int)
+
+    @Query("SELECT waiting_for_accessibility FROM user_settings WHERE id = 1")
+    abstract fun getWaitingForAccessibility(): Flow<Boolean>
+
+    @Query("UPDATE user_settings SET waiting_for_accessibility = :waiting WHERE id = 1")
+    abstract suspend fun setWaitingForAccessibility(waiting: Boolean)
 }

@@ -128,7 +128,7 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = MaterialTheme.colorScheme.background,
+                color = MaterialTheme.colorScheme.surfaceContainer,
                 shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
             ),
     ) {
@@ -144,19 +144,7 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
             Spacer(modifier = Modifier.height(50.dp))
 
             // Content Card (positioned below the floating icon)
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .graphicsLayer {
-                        alpha = cardAlpha.value
-                        translationY = cardOffsetY.value
-                    },
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.9f),
-                ),
-                shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-            ) {
+
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -167,7 +155,7 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
                     // Title
                     Text(
                         text = stringResource(R.string.accessibility_success_title),
-                        style = MaterialTheme.typography.headlineSmall,
+                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
                         textAlign = TextAlign.Center,
@@ -183,7 +171,7 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
                         textAlign = TextAlign.Center,
                     )
 
-                    Spacer(modifier = Modifier.height(24.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     // Next Steps Card
                     Card(
@@ -196,11 +184,11 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp),
+                                .padding(4.dp),
                         ) {
                             Text(
                                 text = stringResource(R.string.next_steps_title),
-                                style = MaterialTheme.typography.titleSmall,
+                                style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface,
                             )
@@ -225,7 +213,6 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
                         }
                     }
                 }
-            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -276,49 +263,59 @@ private fun NextStep(stepNumber: String, text: String, delay: Long) {
         }
     }
 
-    Row(
+    Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .graphicsLayer {
-                this.alpha = alpha.value
-                translationY = offsetY.value
-            },
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        // Step Number
-        Box(
-            modifier = Modifier
-                .size(40.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.secondaryContainer,
-                    shape = CircleShape,
-                ),
-            contentAlignment = Alignment.Center,
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.1f),
+        ),
+        shape = RoundedCornerShape(12.dp),
+
         ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .graphicsLayer {
+                    this.alpha = alpha.value
+                    translationY = offsetY.value
+                },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // Step Number
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        shape = CircleShape,
+                    ),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = stepNumber,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                )
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            // Step Text
             Text(
-                text = stepNumber,
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
+                text = text,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.weight(1f),
             )
         }
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        // Step Text
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.weight(1f),
-        )
     }
 }
 
 @DevicePreviews
 @Composable
 fun AccessibilitySuccessBottomSheetPreview() {
-    ScrollessTheme {
+    ScrollessTheme(darkTheme = true) {
         AccessibilitySuccessBottomSheet(
             onDismiss = {},
         )
