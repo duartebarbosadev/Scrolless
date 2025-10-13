@@ -270,8 +270,7 @@ private fun NextStep(stepNumber: String, text: String, delay: Long) {
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.1f),
         ),
         shape = RoundedCornerShape(12.dp),
-
-        ) {
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
