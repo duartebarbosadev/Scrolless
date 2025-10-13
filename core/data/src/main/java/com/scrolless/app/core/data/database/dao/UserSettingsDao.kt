@@ -20,8 +20,8 @@ import androidx.room.Dao
 import androidx.room.Query
 import com.scrolless.app.core.data.database.model.BlockOption
 import com.scrolless.app.core.data.database.model.UserSettings
-import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
+import kotlinx.coroutines.flow.Flow
 
 /**
  * [androidx.room.Room] DAO for [UserSettings] related operations.

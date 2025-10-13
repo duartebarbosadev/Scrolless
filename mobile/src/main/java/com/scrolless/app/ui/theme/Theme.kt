@@ -475,7 +475,7 @@ fun ScrollessTheme(
     dynamicColor: Boolean = true,
     content:
     @Composable()
-        () -> Unit,
+    () -> Unit,
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
