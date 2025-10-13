@@ -412,18 +412,18 @@ private fun RateButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
         onClick = onClick,
         modifier = modifier,
         colors = ButtonDefaults.elevatedButtonColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            containerColor = MaterialTheme.colorScheme.secondary,
         ),
     ) {
         Icon(
             painter = painterResource(id = R.drawable.baseline_rate_review),
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
+            tint = MaterialTheme.colorScheme.onSecondary,
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = stringResource(R.string.rate_scrolless),
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            color = MaterialTheme.colorScheme.onSecondary,
         )
     }
 }
