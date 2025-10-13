@@ -52,7 +52,7 @@ jobs:
         run: ./gradlew test
 
       - name: Build all build type and flavor permutations
-        run: ./gradlew :app:assemble
+        run: ./gradlew :mobile:assemble
 
       - name: Upload build outputs (APKs)
         uses: actions/upload-artifact@v4
@@ -68,14 +68,14 @@ jobs:
           path: '**/build/test-results/test*UnitTest/**.xml'
 
       - name: Check lint
-        run: ./gradlew :app:lintProdRelease
+        run: ./gradlew :mobile:lintRelease
 
       - name: Upload lint reports (HTML)
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: lint-reports
-          path: '**/build/reports/lint-results-*.html'
+          path: 'mobile/build/reports/lint-results-*.html'
 
       - name: Upload lint reports (SARIF)
         if: ${{ !cancelled() && hashFiles('**/*.sarif') != '' }}
