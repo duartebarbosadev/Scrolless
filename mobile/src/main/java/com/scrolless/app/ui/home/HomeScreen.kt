@@ -1,0 +1,944 @@
+/*
+ * Copyright (C) 2025 Scrolless
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+package com.scrolless.app.ui.home
+
+import android.app.Activity
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonGroup
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.material3.ToggleButton
+import androidx.compose.material3.ToggleButtonColors
+import androidx.compose.material3.ToggleButtonShapes
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.scrolless.app.BuildConfig
+import com.scrolless.app.R
+import com.scrolless.app.accessibility.ScrollessBlockAccessibilityService
+import com.scrolless.app.core.data.database.model.BlockOption
+import com.scrolless.app.designsystem.theme.progressbar_green_use
+import com.scrolless.app.designsystem.theme.progressbar_orange_use
+import com.scrolless.app.designsystem.theme.progressbar_red_use
+import com.scrolless.app.ui.home.components.AccessibilityExplainerBottomSheet
+import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheet
+import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheetPreview
+import com.scrolless.app.ui.home.components.HelpDialog
+import com.scrolless.app.ui.home.components.TimeLimitDialog
+import com.scrolless.app.ui.theme.ScrollessTheme
+import com.scrolless.app.ui.tooling.DevicePreviews
+import com.scrolless.app.util.formatTime
+import com.scrolless.app.util.isAccessibilityServiceEnabled
+import com.scrolless.app.util.radialGradientScrim
+import com.scrolless.app.util.requestAppReview
+import timber.log.Timber
+
+@Composable
+fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val featureComingSoonMessage = stringResource(R.string.feature_coming_soon)
+
+    var showTimeLimitDialog by remember { mutableStateOf(false) }
+    var showHelpDialog by remember { mutableStateOf(false) }
+    var showAccessibilityExplainer by remember { mutableStateOf(false) }
+    var showAccessibilitySuccess by remember { mutableStateOf(false) }
+    var debugBypassAccessibilityCheck by remember { mutableStateOf(false) }
+
+    val activity = context as? Activity
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                Timber.d("HomeScreen resumed")
+                if (context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+                    if (showAccessibilityExplainer) {
+                        Timber.i("Accessibility service enabled - showing success dialog")
+                        showAccessibilityExplainer = false
+                        showAccessibilitySuccess = true
+                        viewModel.setWaitingForAccessibility(false)
+                    }
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    // Show snackbar when needed
+    LaunchedEffect(uiState.showComingSoonSnackBar) {
+        if (uiState.showComingSoonSnackBar) {
+            Timber.i("Showing 'feature coming soon' snackbar")
+            snackbarHostState.showSnackbar(featureComingSoonMessage)
+            viewModel.onSnackbarShown()
+        }
+    }
+
+    HomeBackground(modifier = modifier.fillMaxSize()) {
+        HomeContent(
+            modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing),
+            uiState = uiState,
+            onBlockOptionSelected = { blockOption ->
+                val shouldBypass = BuildConfig.DEBUG && debugBypassAccessibilityCheck
+                if (shouldBypass || context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+                    Timber.i("Block option click -> %s (debug bypass: %s)", blockOption, shouldBypass)
+                    viewModel.onBlockOptionSelected(blockOption)
+                } else {
+                    Timber.w("Accessibility service not enabled. Showing explainer.")
+                    viewModel.setWaitingForAccessibility(true)
+                    showAccessibilityExplainer = true
+                }
+            },
+            onConfigureDailyLimit = {
+                val shouldBypass = BuildConfig.DEBUG && debugBypassAccessibilityCheck
+                if (shouldBypass || context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+                    Timber.d("Open TimeLimitDialog (debug bypass: %s)", shouldBypass)
+                    showTimeLimitDialog = true
+                } else {
+                    Timber.w("Accessibility service not enabled. Showing explainer (daily limit).")
+                    viewModel.setWaitingForAccessibility(true)
+                    showAccessibilityExplainer = true
+                }
+            },
+            onTimerOverlayToggled = { enabled ->
+                Timber.d("Timer overlay toggle from UI: %s", enabled)
+                viewModel.onTimerOverlayToggled(enabled)
+            },
+            onHelpClicked = {
+                Timber.d("Help clicked -> show HelpDialog")
+                showHelpDialog = true
+            },
+            onReviewClicked = {
+                Timber.i("Review button clicked")
+                viewModel.onReviewRequested()
+            },
+            onPauseClicked = {
+                Timber.i("Pause clicked (coming soon)")
+                viewModel.onFeatureComingSoon()
+            },
+            onProgressCardClicked = {
+                if (BuildConfig.DEBUG) {
+                    debugBypassAccessibilityCheck = !debugBypassAccessibilityCheck
+                    Timber.i("Progress card clicked - Debug bypass mode: %s", debugBypassAccessibilityCheck)
+                } else {
+                    Timber.d("Progress card clicked (no action in release build)")
+                }
+            },
+        )
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(16.dp),
+        )
+    }
+
+    // Show dialog when needed
+    if (showTimeLimitDialog) {
+        TimeLimitDialog(
+            onDismiss = { selectedSeconds ->
+                Timber.d("TimeLimitDialog dismissed: selected=%d s", selectedSeconds)
+                showTimeLimitDialog = false
+                if (selectedSeconds > 0) {
+                    Timber.i("Setting time limit to %d seconds", selectedSeconds)
+                    viewModel.onTimeLimitChange(selectedSeconds * 1000) // Convert to millis
+                }
+            },
+        )
+    }
+
+    if (showHelpDialog) {
+        HelpDialog(
+            onDismiss = {
+                Timber.d("HelpDialog dismissed")
+                showHelpDialog = false
+            },
+        )
+    }
+
+    if (showAccessibilityExplainer) {
+        Timber.d("Showing AccessibilityExplainerBottomSheet")
+        AccessibilityExplainerBottomSheet(
+            onDismiss = {
+                Timber.d("AccessibilityExplainer: Dismiss from home screen")
+                showAccessibilityExplainer = false
+                viewModel.setWaitingForAccessibility(false)
+            },
+        )
+    }
+
+    if (showAccessibilitySuccess) {
+        AccessibilitySuccessBottomSheet(
+            onDismiss = {
+                showAccessibilitySuccess = false
+            },
+        )
+    }
+
+    LaunchedEffect(uiState.requestReview) {
+        if (uiState.requestReview && activity != null) {
+            Timber.i("Requesting in-app review")
+            requestAppReview(activity)
+            viewModel.onReviewRequestHandled()
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+private fun HomeContent(
+    uiState: HomeUiState,
+    modifier: Modifier = Modifier,
+    onBlockOptionSelected: (BlockOption) -> Unit,
+    onConfigureDailyLimit: () -> Unit,
+    onTimerOverlayToggled: (Boolean) -> Unit,
+    onHelpClicked: () -> Unit,
+    onReviewClicked: () -> Unit,
+    onPauseClicked: () -> Unit,
+    onProgressCardClicked: () -> Unit = {},
+) {
+    // Define weights outside of composition flow
+    val WEIGHT_BASE = 1f
+    val WEIGHT_EXPANDED = 1.2f
+    val WEIGHT_SHRUNK = 0.9f
+
+    Box(
+        modifier
+            .fillMaxSize()
+            .padding(16.dp),
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            // Help Button with padding
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                HelpButton(onClick = onHelpClicked)
+            }
+
+            ProgressCard(
+                progress = uiState.progress,
+                currentUsage = uiState.currentUsage,
+                timeLimit = uiState.timeLimit,
+                showTimeLimit = uiState.blockOption == BlockOption.DailyLimit,
+                onProgressCardClicked = onProgressCardClicked,
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // 1. Define interaction sources for ALL buttons
+            val blockAllInteractionSource = remember { MutableInteractionSource() }
+            val dailyLimitInteractionSource = remember { MutableInteractionSource() }
+            val intervalInteractionSource = remember { MutableInteractionSource() }
+
+            val isBlockAllPressed by blockAllInteractionSource.collectIsPressedAsState()
+            val isDailyLimitPressed by dailyLimitInteractionSource.collectIsPressedAsState()
+            val isIntervalPressed by intervalInteractionSource.collectIsPressedAsState()
+
+            // 2. Calculate Animated Weights (Float) based on interaction states
+            val blockAllWeight by animateFloatAsState(
+                targetValue = when {
+                    isBlockAllPressed -> WEIGHT_EXPANDED
+                    isDailyLimitPressed || isIntervalPressed -> WEIGHT_SHRUNK
+                    else -> WEIGHT_BASE
+                },
+                animationSpec = tween(100), label = "blockAllWeight",
+            )
+
+            val dailyLimitWeight by animateFloatAsState(
+                targetValue = when {
+                    isDailyLimitPressed -> WEIGHT_EXPANDED
+                    isBlockAllPressed || isIntervalPressed -> WEIGHT_SHRUNK
+                    else -> WEIGHT_BASE
+                },
+                animationSpec = tween(100), label = "dailyLimitWeight",
+            )
+
+            val intervalWeight by animateFloatAsState(
+                targetValue = when {
+                    isIntervalPressed -> WEIGHT_EXPANDED
+                    isBlockAllPressed || isDailyLimitPressed -> WEIGHT_SHRUNK
+                    else -> WEIGHT_BASE
+                },
+                animationSpec = tween(100), label = "intervalWeight",
+            )
+
+            FeatureButtonsRow(
+                selectedOption = uiState.blockOption,
+                onBlockAllClick = {
+                    val newOption = if (uiState.blockOption == BlockOption.BlockAll) {
+                        BlockOption.NothingSelected
+                    } else {
+                        BlockOption.BlockAll
+                    }
+                    Timber.i("BlockAll clicked -> newOption=%s (prev=%s)", newOption, uiState.blockOption)
+                    onBlockOptionSelected(newOption)
+                },
+                onDailyLimitClick = {
+                    if (uiState.timeLimit == 0L && uiState.blockOption != BlockOption.DailyLimit) {
+                        Timber.d("DailyLimit clicked -> open TimeLimitDialog (no limit set)")
+                        // If no time limit set, open the picker
+                        onConfigureDailyLimit()
+                    } else {
+                        val newOption = if (uiState.blockOption == BlockOption.DailyLimit) {
+                            BlockOption.NothingSelected
+                        } else {
+                            BlockOption.DailyLimit
+                        }
+                        Timber.i("DailyLimit clicked -> newOption=%s (prev=%s)", newOption, uiState.blockOption)
+                        onBlockOptionSelected(newOption)
+                    }
+                },
+                onIntervalTimerClick = {
+                    Timber.i("IntervalTimer clicked (feature not implemented)")
+                    onPauseClicked()
+                },
+                // Pass sources
+                blockAllInteractionSource = blockAllInteractionSource,
+                dailyLimitInteractionSource = dailyLimitInteractionSource,
+                intervalInteractionSource = intervalInteractionSource,
+                // Pass animated weights to sync top row
+                blockAllAnimatedWeight = blockAllWeight,
+                dailyLimitAnimatedWeight = dailyLimitWeight,
+                intervalAnimatedWeight = intervalWeight,
+            )
+
+            // 3. Smooth appearance for ConfigButton
+            AnimatedVisibility(
+                visible = uiState.blockOption == BlockOption.DailyLimit,
+                enter = expandVertically(
+                    expandFrom = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeIn(animationSpec = tween(200)),
+                exit = shrinkVertically(
+                    shrinkTowards = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeOut(animationSpec = tween(200)),
+            ) {
+                // Mimic ButtonGroup layout to sync width exactly using animated weights
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    // Invisible spacer mirroring "Block All" width behavior
+                    Spacer(modifier = Modifier.weight(blockAllWeight))
+                    Box(
+                        modifier = Modifier
+                            .weight(dailyLimitWeight)
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.TopCenter,
+                    ) {
+                        ConfigButton(
+                            onClick = {
+                                Timber.d("Open DailyLimit config button clicked")
+                                onConfigureDailyLimit()
+                            },
+                            dailyLimitInteractionSource = dailyLimitInteractionSource,
+                            blockAllInteractionSource = blockAllInteractionSource,
+                            // Set fixed width to approximately half of the feature button width
+                            modifier = Modifier
+                                .fillMaxWidth(0.6f) // Occupy 60% of the Box's (Daily Limit Slot's) width
+                                .align(Alignment.Center), // Center horizontally within the Box
+                        )
+                    }
+
+                    // Invisible spacer mirroring "Interval Timer" width behavior
+                    Spacer(
+                        modifier = Modifier
+                            .weight(intervalWeight),
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            PauseButton(onClick = onPauseClicked)
+
+            Spacer(modifier = Modifier.height(24.dp))
+            TimerOverlayToggle(
+                checked = uiState.timerOverlayEnabled,
+                onCheckedChange = onTimerOverlayToggled,
+                modifier = Modifier.padding(horizontal = 8.dp),
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            RateButton(onClick = onReviewClicked)
+        }
+    }
+}
+
+@Composable
+fun ConfigButton(
+    onClick: () -> Unit,
+    dailyLimitInteractionSource: MutableInteractionSource,
+    blockAllInteractionSource: MutableInteractionSource,
+    modifier: Modifier = Modifier,
+) {
+    // Collect pressed state from both sources
+    val isDailyLimitPressed by dailyLimitInteractionSource.collectIsPressedAsState()
+    val isBlockAllPressed by blockAllInteractionSource.collectIsPressedAsState()
+
+    // Wiggle if EITHER linked button is pressed
+    val isPressed = isDailyLimitPressed || isBlockAllPressed
+
+    // Fast tweens for visual feedback
+    val animationSpec = tween<Float>(durationMillis = 100)
+    val colorAnimationSpec = tween<androidx.compose.ui.graphics.Color>(durationMillis = 100)
+
+    val bottomCorner by animateFloatAsState(
+        targetValue = if (isPressed) 24f else 16f,
+        animationSpec = animationSpec,
+        label = "configButtonCorner",
+    )
+
+    val baseColor = MaterialTheme.colorScheme.surface
+    val pressedColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
+
+    val containerColor by animateColorAsState(
+        targetValue = if (isPressed) pressedColor else baseColor,
+        animationSpec = colorAnimationSpec,
+        label = "configButtonColor",
+    )
+
+    OutlinedButton(
+        onClick = onClick,
+        modifier = modifier.height(48.dp),
+        // Use internal source to prevent default press overlay, since we handle styling externally
+        interactionSource = remember { MutableInteractionSource() },
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = containerColor,
+        ),
+        shape = RoundedCornerShape(0.dp, 0.dp, bottomCorner.dp, bottomCorner.dp),
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.icons8_control_48),
+            contentDescription = stringResource(id = R.string.go_to_accessibility_settings),
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun FeatureButtonsRow(
+    selectedOption: BlockOption,
+    onBlockAllClick: () -> Unit,
+    onDailyLimitClick: () -> Unit,
+    onIntervalTimerClick: () -> Unit,
+    // Accept sources from parent
+    blockAllInteractionSource: MutableInteractionSource,
+    dailyLimitInteractionSource: MutableInteractionSource,
+    intervalInteractionSource: MutableInteractionSource,
+    // Accept animated weights
+    blockAllAnimatedWeight: Float,
+    dailyLimitAnimatedWeight: Float,
+    intervalAnimatedWeight: Float,
+) {
+    ButtonGroup(
+        overflowIndicator = {},
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(128.dp),
+    ) {
+        customItem(
+            buttonGroupContent = {
+                FeatureButton(
+                    onClick = onBlockAllClick,
+                    icon = R.drawable.icons8_block_120,
+                    text = stringResource(id = R.string.block_all),
+                    contentDescription = stringResource(id = R.string.block_all),
+                    isSelected = selectedOption == BlockOption.BlockAll,
+                    interactionSource = blockAllInteractionSource,
+                    modifier = Modifier.weight(blockAllAnimatedWeight), // Using animated weight
+                )
+            },
+            menuContent = {},
+        )
+
+        customItem(
+            buttonGroupContent = {
+                FeatureButton(
+                    onClick = onDailyLimitClick,
+                    icon = R.drawable.icons8_timer_64,
+                    text = stringResource(id = R.string.daily_limit),
+                    contentDescription = stringResource(id = R.string.daily_limit),
+                    isSelected = selectedOption == BlockOption.DailyLimit,
+                    interactionSource = dailyLimitInteractionSource,
+                    modifier = Modifier.weight(dailyLimitAnimatedWeight), // Using animated weight
+                )
+            },
+            menuContent = {},
+        )
+
+        customItem(
+            buttonGroupContent = {
+                FeatureButton(
+                    onClick = onIntervalTimerClick,
+                    icon = R.drawable.icons8_stopwatch_64,
+                    text = stringResource(id = R.string.interval_timer),
+                    contentDescription = stringResource(id = R.string.interval_timer),
+                    isSelected = selectedOption == BlockOption.IntervalTimer,
+                    isEnabled = false,
+                    interactionSource = intervalInteractionSource,
+                    modifier = Modifier.weight(intervalAnimatedWeight), // Using animated weight
+                )
+            },
+            menuContent = {},
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@Composable
+fun FeatureButton(
+    onClick: () -> Unit,
+    icon: Int,
+    text: String,
+    contentDescription: String,
+    modifier: Modifier = Modifier,
+    isSelected: Boolean = false,
+    isEnabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+) {
+    val finalModifier = if (!isEnabled) modifier.alpha(0.7f) else modifier
+
+    ToggleButton(
+        checked = isSelected,
+        onCheckedChange = { onClick() },
+        modifier = finalModifier.fillMaxSize(), // fillMaxSize respects the weight set by the caller
+        enabled = isEnabled,
+        colors = ToggleButtonColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.38f),
+            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+            checkedContainerColor = MaterialTheme.colorScheme.primary,
+            checkedContentColor = MaterialTheme.colorScheme.onPrimary,
+        ),
+        shapes = ToggleButtonShapes(
+            shape = RoundedCornerShape(16.dp),
+            pressedShape = RoundedCornerShape(24.dp),
+            checkedShape = RoundedCornerShape(24.dp),
+        ),
+        interactionSource = interactionSource,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Image(
+                painter = painterResource(id = icon),
+                contentDescription = contentDescription,
+                modifier = Modifier.size(32.dp),
+            )
+            Text(
+                text = text,
+                textAlign = TextAlign.Center,
+                fontSize = 15.sp,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, start = 4.dp, end = 4.dp),
+            )
+        }
+    }
+}
+
+@Composable
+private fun ProgressCard(
+    progress: Int,
+    currentUsage: Long,
+    timeLimit: Long,
+    showTimeLimit: Boolean,
+    onProgressCardClicked: () -> Unit = {},
+) {
+    val animatedProgress by animateFloatAsState(
+        targetValue = progress / 100f,
+        animationSpec = if (LocalInspectionMode.current) tween(durationMillis = 1000) else tween(durationMillis = 1000),
+        label = "progress",
+    )
+
+    val progressColor by animateColorAsState(
+        targetValue = when {
+            progress < 75 -> progressbar_green_use // Green
+            progress < 100 -> progressbar_orange_use // Orange
+            else -> progressbar_red_use // Red
+        },
+        animationSpec = tween(durationMillis = 500),
+        label = "color",
+    )
+
+    Card(
+        modifier = Modifier
+            .size(220.dp)
+            .padding(16.dp)
+            .clickable(onClick = onProgressCardClicked),
+        shape = RoundedCornerShape(96.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
+        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator(
+                progress = { animatedProgress },
+                modifier = Modifier.size(180.dp),
+                color = progressColor,
+                strokeWidth = 8.dp,
+                trackColor = MaterialTheme.colorScheme.primary,
+            )
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(16.dp),
+            ) {
+                Text(
+                    text = if (showTimeLimit) {
+                        "${currentUsage.formatTime()} / ${timeLimit.formatTime()}"
+                    } else {
+                        currentUsage.formatTime()
+                    },
+                    modifier = Modifier.padding(top = 16.dp),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    textAlign = TextAlign.Center,
+                )
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    text = stringResource(R.string.total_time_wasted),
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
+                    textAlign = TextAlign.Center,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun PauseButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    OutlinedButton(
+        onClick = onClick,
+        modifier = modifier
+            .height(60.dp)
+            .wrapContentWidth()
+            .alpha(0.7f),
+
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = (0.7f)),
+        ),
+        shape = RoundedCornerShape(16.dp),
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_pause),
+            contentDescription = stringResource(id = R.string.pause),
+            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.size(24.dp),
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = stringResource(id = R.string.pause),
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+    }
+}
+
+@Composable
+fun TimerOverlayToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = {
+                    Timber.d("Timer overlay row click -> toggle to %s", !checked)
+                    onCheckedChange(!checked)
+                },
+            )
+            .wrapContentWidth()
+            .padding(8.dp),
+    ) {
+        Text(
+            text = stringResource(id = R.string.show_timer_overlay),
+            color = MaterialTheme.colorScheme.onSurface,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Switch(
+            checked = checked,
+            onCheckedChange = {
+                Timber.d("Timer overlay switch toggled -> %s", it)
+                onCheckedChange(it)
+            },
+        )
+    }
+}
+
+@Composable
+private fun RateButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    ElevatedButton(
+        onClick = onClick,
+        modifier = modifier,
+        colors = ButtonDefaults.elevatedButtonColors(
+            containerColor = MaterialTheme.colorScheme.secondary,
+        ),
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.baseline_rate_review),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSecondary,
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = stringResource(R.string.rate_scrolless),
+            color = MaterialTheme.colorScheme.onSecondary,
+        )
+    }
+}
+
+@Composable
+fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    ElevatedButton(onClick = onClick, modifier = modifier) {
+        Icon(
+            painter = painterResource(id = R.drawable.baseline_help_outline_24),
+            contentDescription = stringResource(R.string.cd_add),
+            tint = MaterialTheme.colorScheme.onSurface,
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = stringResource(id = R.string.help),
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface,
+            ),
+        )
+    }
+}
+
+@Composable
+private fun HomeBackground(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
+    Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .radialGradientScrim(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)),
+        )
+        content()
+    }
+}
+
+@DevicePreviews
+@Composable
+fun HomeScreenPreview() {
+    val mockState = HomeUiState(
+        blockOption = BlockOption.DailyLimit,
+        timeLimit = 7200000L, // 2 hours
+        currentUsage = 5400000L, // 1.5 hours
+        progress = 75,
+        timerOverlayEnabled = true,
+    )
+
+    ScrollessTheme {
+        HomeContent(
+            uiState = mockState,
+            onBlockOptionSelected = {},
+            onConfigureDailyLimit = {},
+            onTimerOverlayToggled = {},
+            onHelpClicked = {},
+            onReviewClicked = {},
+            onPauseClicked = {},
+        )
+    }
+}
+
+@Preview(name = "Block All Active")
+@Composable
+fun PreviewBlockAll() {
+    ScrollessTheme {
+        HomeContent(
+            uiState = HomeUiState(blockOption = BlockOption.BlockAll),
+            onBlockOptionSelected = {},
+            onConfigureDailyLimit = {},
+            onTimerOverlayToggled = {},
+            onHelpClicked = {},
+            onReviewClicked = {},
+            onPauseClicked = {},
+        )
+    }
+}
+
+@Preview(name = "Nothing Selected")
+@Composable
+fun PreviewNothingSelected() {
+    ScrollessTheme {
+        HomeContent(
+            uiState = HomeUiState(blockOption = BlockOption.NothingSelected, currentUsage = 3590000L),
+            onBlockOptionSelected = {},
+            onConfigureDailyLimit = {},
+            onTimerOverlayToggled = {},
+            onHelpClicked = {},
+            onReviewClicked = {},
+            onPauseClicked = {},
+        )
+    }
+}
+
+@Preview(name = "Interval Timer Active")
+@Composable
+fun PreviewIntervalTimer() {
+    ScrollessTheme {
+        HomeContent(
+            uiState = HomeUiState(blockOption = BlockOption.DailyLimit),
+            onBlockOptionSelected = {},
+            onConfigureDailyLimit = {},
+            onTimerOverlayToggled = {},
+            onHelpClicked = {},
+            onReviewClicked = {},
+            onPauseClicked = {},
+        )
+        TimeLimitDialog { onDismissedSeconds -> {} }
+    }
+}
+
+@Preview(name = "Interval Timer Active")
+@Composable
+fun PreviewHelpDialog() {
+    ScrollessTheme {
+        HomeContent(
+            uiState = HomeUiState(blockOption = BlockOption.BlockAll),
+            onBlockOptionSelected = {},
+            onConfigureDailyLimit = {},
+            onTimerOverlayToggled = {},
+            onHelpClicked = {},
+            onReviewClicked = {},
+            onPauseClicked = {},
+        )
+        HelpDialog { }
+    }
+}
+
+@Preview(name = "Accessibility Explainer")
+@Composable
+fun PreviewAccessibilityExplainer() {
+    ScrollessTheme {
+        HomeContent(
+            uiState = HomeUiState(blockOption = BlockOption.NothingSelected),
+            onBlockOptionSelected = {},
+            onConfigureDailyLimit = {},
+            onTimerOverlayToggled = {},
+            onHelpClicked = {},
+            onReviewClicked = {},
+            onPauseClicked = {},
+        )
+        AccessibilityExplainerBottomSheet { }
+    }
+}
+
+@Preview(name = "Accessibility success dialog")
+@Composable
+fun PreviewAccessibilitySuccessDialog() {
+    ScrollessTheme {
+        HomeContent(
+            uiState = HomeUiState(blockOption = BlockOption.NothingSelected),
+            onBlockOptionSelected = {},
+            onConfigureDailyLimit = {},
+            onTimerOverlayToggled = {},
+            onHelpClicked = {},
+            onReviewClicked = {},
+            onPauseClicked = {},
+        )
+        AccessibilitySuccessBottomSheetPreview()
+    }
+}

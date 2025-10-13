@@ -18,14 +18,6 @@
 **Scrolless** is an open-source Android application designed to help users avoid excessive consumption of brain rot by blocking distracting content like Instagram Reels, TikTok, and YouTube Shorts. Using Android's accessibility permissions, the app detects and blocks this type of content whenever it appears on the screen.
 Since the app requires accessibility permissions, which are significant for user privacy, Scrolless is fully open-source.
 
-# Note
-
-This project is a **work in progress** 🚧. 
-Your feedback is very important for us - we're actively working to improve the app.
-
-*The UI is not final*
-
-*In future this app will be added to the Play Store*
 
 ## Features
 
@@ -57,15 +49,7 @@ Your feedback is very important for us - we're actively working to improve the a
 
 # Architecture
 
-Scrolless app architecture is inspired by the open source project [Rorty-Android](https://github.com/developersancho/Rorty.Android/), published under the [Apache License](https://github.com/developersancho/Rorty.Android/blob/main/LICENSE).
-
-## Acknowledgements
-
-Scrolless code was inspired by the following open-source projects:
-
-- [NowInAndroid](https://github.com/android/nowinandroid/) (Apache 2.0 License)
-- [Rorty-Android](https://github.com/developersancho/Rorty.Android) (Apache 2.0 License)
-- [Birday](https://github.com/m-i-n-a-r/birday) (GPL v3 License)
+Scrolless app architecture is inspired by the Google open source project [Jetcaster](https://github.com/android/compose-samples/tree/main/Jetcaster), published under the [Apache License](https://github.com/android/compose-samples/blob/main/LICENSE).
 
 Some icons used in this app are obtained from [Icons8](https://icons8.com).
 
