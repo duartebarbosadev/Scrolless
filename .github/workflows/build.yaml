@@ -45,7 +45,7 @@ jobs:
           build-scan-terms-of-use-agree: "yes"
 
       - name: Check spotless
-        run: ./gradlew spotlessCheck --init-script gradle/init.gradle.kts --no-configuration-cache
+        run: ./gradlew spotlessCheck
 
       # Run local tests
       - name: Run local tests
