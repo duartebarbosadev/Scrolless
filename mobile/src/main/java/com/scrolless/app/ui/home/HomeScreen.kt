@@ -524,8 +524,8 @@ fun FeatureButton(
             contentColor = MaterialTheme.colorScheme.onSurface,
             disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.38f),
             disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-            checkedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            checkedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            checkedContainerColor = MaterialTheme.colorScheme.primary,
+            checkedContentColor = MaterialTheme.colorScheme.onPrimary,
         ),
         shapes = ToggleButtonShapes(
             shape = RoundedCornerShape(16.dp),
