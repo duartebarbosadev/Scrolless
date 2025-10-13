@@ -69,6 +69,7 @@ subprojects {
 
         format("xml") {
             target("**/*.xml")
+            toggleOffOn()
             targetExclude("${layout.buildDirectory}/**/*.xml", "**/build-reports/**/*.xml")
             licenseHeaderFile(rootProject.file("spotless/copyright.xml"), "(<[^!?])")
         }
