@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-// spotless:off
 /*
  * Copyright 2025 The Android Open Source Project
  *
@@ -30,7 +29,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// spotless:on
 
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 

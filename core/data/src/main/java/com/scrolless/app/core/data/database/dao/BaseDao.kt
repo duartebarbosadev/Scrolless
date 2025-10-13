@@ -1,4 +1,3 @@
-// spotless:off
 /*
  * Copyright 2022 The Android Open Source Project
  *
@@ -13,7 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
 /*
  * Copyright (C) 2025 Scrolless
  *
@@ -30,7 +29,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-// spotless:on
 package com.scrolless.app.core.data.database.dao
 
 import androidx.room.Delete

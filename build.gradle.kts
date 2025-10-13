@@ -50,7 +50,19 @@ subprojects {
     configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         kotlin {
             target("**/*.kt")
-            targetExclude("${layout.buildDirectory}/**/*.kt")
+            targetExclude(
+                "${layout.buildDirectory}/**/*.kt",
+                "src/main/java/com/scrolless/app/ui/ScrollessAppState.kt",
+                "src/main/java/com/scrolless/app/ui/tooling/DevicePreviews.kt",
+                "src/main/java/com/scrolless/app/util/GradientScrim.kt",
+                "src/main/java/com/scrolless/app/designsystem/theme/Typography.kt",
+                "src/main/java/com/scrolless/app/designsystem/theme/Shape.kt",
+                "src/main/java/com/scrolless/app/designsystem/theme/Type.kt",
+                "src/main/java/com/scrolless/app/core/di/DomainDiModule.kt",
+                "src/main/java/com/scrolless/app/core/util/Flows.kt",
+                "src/main/java/com/scrolless/app/core/data/di/DataDiModule.kt",
+                "src/main/java/com/scrolless/app/core/data/database/dao/BaseDao.kt"
+            )
             ktlint()
             // Allow file/local toggling via comments: // spotless:off and // spotless:on
             toggleOffOn()
@@ -59,7 +71,10 @@ subprojects {
 
         kotlinGradle {
             target("*.gradle.kts")
-            targetExclude("${layout.buildDirectory}/**/*.kt")
+            targetExclude(
+                "${layout.buildDirectory}/**/*.kt",
+                "build.gradle.kts"
+            )
             ktlint()
             // Allow toggling in Gradle scripts too
             toggleOffOn()
@@ -70,7 +85,11 @@ subprojects {
         format("xml") {
             target("**/*.xml")
             toggleOffOn()
-            targetExclude("${layout.buildDirectory}/**/*.xml", "**/build-reports/**/*.xml")
+            targetExclude(
+                "${layout.buildDirectory}/**/*.xml",
+                "**/build-reports/**/*.xml",
+                "src/main/res/drawable/ic_launcher_background.xml"
+            )
             licenseHeaderFile(rootProject.file("spotless/copyright.xml"), "(<[^!?])")
         }
     }

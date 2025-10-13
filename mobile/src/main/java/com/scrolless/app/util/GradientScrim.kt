@@ -1,4 +1,3 @@
-// spotless:off
 /*
  * Copyright 2020 The Android Open Source Project
  *
@@ -30,7 +29,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-// spotless:on
 package com.scrolless.app.util
 
 import androidx.compose.foundation.background
@@ -61,4 +59,3 @@ fun Modifier.radialGradientScrim(color: Color): Modifier {
     }
     return this.background(radialGradient)
 }
-
