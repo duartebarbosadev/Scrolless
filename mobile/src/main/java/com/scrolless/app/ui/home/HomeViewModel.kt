@@ -37,9 +37,7 @@ import kotlin.math.min
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val userSettingsStore: UserSettingsStore,
-) : ViewModel() {
+class HomeViewModel @Inject constructor(private val userSettingsStore: UserSettingsStore) : ViewModel() {
 
     private val _showComingSoonSnackBar = MutableStateFlow(false)
     private val _requestReview = MutableStateFlow(false)

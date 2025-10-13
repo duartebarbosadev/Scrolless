@@ -348,7 +348,6 @@ private fun HomeContent(
                 animationSpec = tween(100), label = "intervalWeight",
             )
 
-
             FeatureButtonsRow(
                 selectedOption = uiState.blockOption,
                 onBlockAllClick = {
@@ -424,7 +423,6 @@ private fun HomeContent(
                                 .align(Alignment.Center), // Center horizontally within the Box
                         )
                     }
-
 
                     // Invisible spacer mirroring "Interval Timer" width behavior
                     Spacer(

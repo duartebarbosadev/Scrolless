@@ -109,13 +109,13 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
             launch {
                 cardAlpha.animateTo(
                     targetValue = 1f,
-                    animationSpec = tween(durationMillis = 600, easing = EaseInOut)
+                    animationSpec = tween(durationMillis = 600, easing = EaseInOut),
                 )
             }
             launch {
                 cardOffsetY.animateTo(
                     targetValue = 0f,
-                    animationSpec = tween(durationMillis = 600, easing = EaseInOut)
+                    animationSpec = tween(durationMillis = 600, easing = EaseInOut),
                 )
             }
         } else {
@@ -145,74 +145,74 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
 
             // Content Card (positioned below the floating icon)
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp)
-                        .padding(top = 36.dp), // Extra padding for icon overlap
-                    horizontalAlignment = Alignment.CenterHorizontally,
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+                    .padding(top = 36.dp), // Extra padding for icon overlap
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                // Title
+                Text(
+                    text = stringResource(R.string.accessibility_success_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Description
+                Text(
+                    text = stringResource(R.string.accessibility_success_description),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Next Steps Card
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.6f),
+                    ),
+                    shape = RoundedCornerShape(16.dp),
                 ) {
-                    // Title
-                    Text(
-                        text = stringResource(R.string.accessibility_success_title),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        textAlign = TextAlign.Center,
-                    )
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    // Description
-                    Text(
-                        text = stringResource(R.string.accessibility_success_description),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        textAlign = TextAlign.Center,
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    // Next Steps Card
-                    Card(
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.6f),
-                        ),
-                        shape = RoundedCornerShape(16.dp),
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(4.dp),
                     ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp),
-                        ) {
-                            Text(
-                                text = stringResource(R.string.next_steps_title),
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface,
-                            )
+                        Text(
+                            text = stringResource(R.string.next_steps_title),
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
 
-                            Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
 
-                            // Step 1
-                            NextStep(
-                                stepNumber = stringResource(R.string.step_one),
-                                text = stringResource(R.string.next_step_1),
-                                delay = 200L,
-                            )
+                        // Step 1
+                        NextStep(
+                            stepNumber = stringResource(R.string.step_one),
+                            text = stringResource(R.string.next_step_1),
+                            delay = 200L,
+                        )
 
-                            Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(8.dp))
 
-                            // Step 2
-                            NextStep(
-                                stepNumber = stringResource(R.string.step_two),
-                                text = stringResource(R.string.next_step_2),
-                                delay = 300L,
-                            )
-                        }
+                        // Step 2
+                        NextStep(
+                            stepNumber = stringResource(R.string.step_two),
+                            text = stringResource(R.string.next_step_2),
+                            delay = 300L,
+                        )
                     }
                 }
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
 
@@ -233,7 +233,7 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
                 .align(Alignment.TopCenter)
                 .padding(top = 16.dp),
             iconRes = R.drawable.ic_circle_success,
-            contentDescription = stringResource(R.string.success_icon_description)
+            contentDescription = stringResource(R.string.success_icon_description),
         )
     }
 }
@@ -251,13 +251,13 @@ private fun NextStep(stepNumber: String, text: String, delay: Long) {
             launch {
                 alpha.animateTo(
                     targetValue = 1f,
-                    animationSpec = tween(durationMillis = 600, easing = EaseInOut)
+                    animationSpec = tween(durationMillis = 600, easing = EaseInOut),
                 )
             }
             launch {
                 offsetY.animateTo(
                     targetValue = 0f,
-                    animationSpec = tween(durationMillis = 600, easing = EaseInOut)
+                    animationSpec = tween(durationMillis = 600, easing = EaseInOut),
                 )
             }
         }
