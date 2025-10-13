@@ -32,7 +32,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -44,10 +43,12 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonGroup
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -55,6 +56,9 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.ToggleButton
+import androidx.compose.material3.ToggleButtonColors
+import androidx.compose.material3.ToggleButtonShapes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -424,6 +428,7 @@ private fun RateButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun FeatureButtonsRow(
     selectedOption: BlockOption,
@@ -431,76 +436,108 @@ fun FeatureButtonsRow(
     onDailyLimitClick: () -> Unit,
     onIntervalTimerClick: () -> Unit,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.fillMaxWidth(),
+    val interactionSource1 = remember { MutableInteractionSource() }
+    val interactionSource2 = remember { MutableInteractionSource() }
+    val interactionSource3 = remember { MutableInteractionSource() }
+
+    ButtonGroup(
+        overflowIndicator = {},
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(128.dp),
     ) {
-        FeatureButton(
-            onClick = onBlockAllClick,
-            icon = R.drawable.icons8_block_120,
-            text = stringResource(id = R.string.block_all),
-            contentDescription = stringResource(id = R.string.block_all),
-            isSelected = selectedOption == BlockOption.BlockAll,
-            modifier = Modifier.weight(1f),
+        customItem(
+            buttonGroupContent = {
+                FeatureButton(
+                    onClick = onBlockAllClick,
+                    icon = R.drawable.icons8_block_120,
+                    text = stringResource(id = R.string.block_all),
+                    contentDescription = stringResource(id = R.string.block_all),
+                    isSelected = selectedOption == BlockOption.BlockAll,
+                    interactionSource = interactionSource1,
+                    modifier = Modifier
+                        .weight(1f)
+                        .animateWidth(interactionSource = interactionSource1),
+                )
+            },
+            menuContent = {},
         )
-        FeatureButton(
-            onClick = onDailyLimitClick,
-            icon = R.drawable.icons8_timer_64,
-            text = stringResource(id = R.string.daily_limit),
-            contentDescription = stringResource(id = R.string.daily_limit),
-            isSelected = selectedOption == BlockOption.DailyLimit,
-            modifier = Modifier.weight(1f),
+
+        customItem(
+            buttonGroupContent = {
+                FeatureButton(
+                    onClick = onDailyLimitClick,
+                    icon = R.drawable.icons8_timer_64,
+                    text = stringResource(id = R.string.daily_limit),
+                    contentDescription = stringResource(id = R.string.daily_limit),
+                    isSelected = selectedOption == BlockOption.DailyLimit,
+                    interactionSource = interactionSource2,
+                    modifier = Modifier
+                        .weight(1f)
+                        .animateWidth(interactionSource = interactionSource2),
+                )
+            },
+            menuContent = {},
         )
-        FeatureButton(
-            onClick = onIntervalTimerClick,
-            icon = R.drawable.icons8_stopwatch_64,
-            text = stringResource(id = R.string.interval_timer),
-            contentDescription = stringResource(id = R.string.interval_timer),
-            isSelected = selectedOption == BlockOption.IntervalTimer,
-            isEnabled = false, // Feature not implemented
-            modifier = Modifier.weight(1f),
+
+        customItem(
+            buttonGroupContent = {
+                FeatureButton(
+                    onClick = onIntervalTimerClick,
+                    icon = R.drawable.icons8_stopwatch_64,
+                    text = stringResource(id = R.string.interval_timer),
+                    contentDescription = stringResource(id = R.string.interval_timer),
+                    isSelected = selectedOption == BlockOption.IntervalTimer,
+                    isEnabled = false,
+                    interactionSource = interactionSource3,
+                    modifier = Modifier
+                        .weight(1f)
+                        .animateWidth(interactionSource = interactionSource3),
+                )
+            },
+            menuContent = {},
         )
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun FeatureButton(
     onClick: () -> Unit,
     icon: Int,
     text: String,
     contentDescription: String,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     isEnabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
-    val colors = if (isSelected) {
-        ButtonDefaults.outlinedButtonColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-        )
-    } else {
-        ButtonDefaults.outlinedButtonColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-        )
-    }
-    val textColors = if (isSelected) {
-        MaterialTheme.colorScheme.onPrimaryContainer
-    } else {
-        MaterialTheme.colorScheme.onSurface
-    }
+    val finalModifier = if (!isEnabled) modifier.alpha(0.7f) else modifier
 
-    OutlinedButton(
-        onClick = onClick,
-        modifier = modifier
-            .height(128.dp)
-            .then(if (!isEnabled) Modifier.alpha(0.7f) else Modifier),
+    ToggleButton(
+        checked = isSelected,
+        onCheckedChange = { onClick() },
+        modifier = finalModifier.fillMaxSize(),
         enabled = isEnabled,
-        colors = colors,
-        shape = RoundedCornerShape(16.dp),
+        colors = ToggleButtonColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.38f),
+            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+            checkedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            checkedContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        ),
+        shapes = ToggleButtonShapes(
+            shape = RoundedCornerShape(16.dp),
+            pressedShape = RoundedCornerShape(24.dp),
+            checkedShape = RoundedCornerShape(24.dp),
+        ),
+        interactionSource = interactionSource,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Image(
                 painter = painterResource(id = icon),
@@ -509,12 +546,13 @@ fun FeatureButton(
             )
             Text(
                 text = text,
-                color = textColors,
                 textAlign = TextAlign.Center,
                 fontSize = 15.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.padding(top = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp, start = 4.dp, end = 4.dp),
             )
         }
     }
@@ -556,7 +594,6 @@ private fun ProgressCard(
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center,
-
         ) {
             CircularProgressIndicator(
                 progress = { animatedProgress },
