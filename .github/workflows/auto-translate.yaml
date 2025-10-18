@@ -32,7 +32,7 @@ jobs:
           project_context: "Scrolless is an Android app designed to help users reduce time spent on social media and avoid brainrot by limiting endless scrolling of Reels, Shorts, and TikToks."
           
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
