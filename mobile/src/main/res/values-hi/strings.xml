@@ -16,4 +16,45 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">एक्सेसिबिलिटी अनुमति आइकॉन</string>
+    <string name="accessibility_explainer_not_now_button">अभी नहीं</string>
+    <string name="accessibility_explainer_open_source">हमारा कोड GitHub पर 100% ओपन सोर्स है।</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless इस अनुमति का उपयोग केवल शॉर्ट फॉर्म सामग्री का पता लगाने और उसे रोकने के लिए करता है। हम कोई व्यक्तिगत जानकारी एकत्र नहीं करते हैं।</string>
+    <string name="accessibility_explainer_proceed_button">सेटिंग्स पर जाएं</string>
+    <string name="accessibility_explainer_step1">Android की एक्सेसिबिलिटी सेटिंग्स खोलने के लिए नीचे \"सेटिंग्स पर जाएं\" पर टैप करें</string>
+    <string name="accessibility_explainer_step2">एप्लिकेशन ढूंढें और सेवाओं की सूची में \"Scrolless\" पर टैप करें</string>
+    <string name="accessibility_explainer_step3">Scrolless को अंतहीन स्क्रॉलिंग रोकने में मदद करने के लिए स्विच को ON करें</string>
+    <string name="accessibility_explainer_subtitle">शॉर्ट वीडियो का पता लगाने और उन्हें रोकने के लिए Scrolless को एक्सेसिबिलिटी एक्सेस की आवश्यकता है।</string>
+    <string name="accessibility_explainer_title">हमें एक्सेसिबिलिटी एक्सेस चाहिए</string>
+    <string name="accessibility_service_description">यह सेवा पता लगाती है कि रील्स/शॉर्ट्स/टिकटॉक कब खोले जाते हैं ताकि Scrolless, कॉन्फ़िगर किए जाने पर उन्हें ब्लॉक कर सके।</string>
+    <string name="accessibility_success_description">Scrolless अब तैयार है!</string>
+    <string name="accessibility_success_title">सब सेट है!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">सभी\nब्लॉक करें</string>
+    <string name="cd_add">जोड़ें</string>
+    <string name="close">बंद करें</string>
+    <string name="daily_limit">दैनिक\nसीमा</string>
+    <string name="feature_coming_soon">सुविधा जल्द आ रही है</string>
+    <string name="get_started">शुरू करें</string>
+    <string name="go_to_accessibility_settings">एक्सेसिबिलिटी सेटिंग्स पर जाएं</string>
+    <string name="help">सहायता</string>
+    <string name="help_dialog_title">Scrolless काम नहीं कर रहा है?</string>
+    <string name="help_step1_description">मुख्य स्क्रीन से ब्लॉकिंग विकल्पों में से एक चुनें</string>
+    <string name="help_step1_title">अपना ब्लॉक विकल्प चुनें</string>
+    <string name="help_step2_description">यदि ब्लॉकिंग काम नहीं कर रही है, तो एक्सेसिबिलिटी सेवा को अक्षम करें और फिर सक्षम करें और Scrolless के लिए बैटरी ऑप्टिमाइज़ेशन को अक्षम करने का प्रयास करें।</string>
+    <string name="help_step2_title">समस्या निवारण</string>
+    <string name="help_step3_description">अभी भी समस्या आ रही है? हम मदद के लिए यहां हैं! हमारे GitHub रेपो पर पहुंचने के लिए नीचे दिए गए बटन का उपयोग करें।</string>
+    <string name="help_step3_title">सहायता से संपर्क करें</string>
+    <string name="icons8_attribution">Icons8 (icons8.com) द्वारा प्रदान किए गए आइकॉन</string>
+    <string name="interval_timer">अंतराल\nटाइमर</string>
+    <string name="next_step_1">एक ब्लॉकिंग मोड चुनें</string>
+    <string name="next_step_2">दैनिक सीमा सुविधा आज़माएं और टाइमर ओवरले सक्रिय करें</string>
+    <string name="next_steps_title">अगले कदम</string>
+    <string name="pause">रोकें</string>
+    <string name="rate_scrolless">Play Store पर Scrolless को रेट करें</string>
+    <string name="show_timer_overlay">टाइमर ओवरले दिखाएं</string>
+    <string name="success_icon_description">सफलता चेक मार्क आइकॉन</string>
+    <string name="time_limit_dialog_title">दैनिक सीमा समय सेट करें</string>
+    <string name="total_time_wasted">ब्रेन रॉट में बर्बाद हुआ कुल समय</string>
+    <string name="visit_github">GitHub रिपॉजिटरी पर जाएं</string>
 </resources>

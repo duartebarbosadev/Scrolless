@@ -16,4 +16,45 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">ユーザー補助権限アイコン</string>
+    <string name="accessibility_explainer_not_now_button">今はしない</string>
+    <string name="accessibility_explainer_open_source">当社のコードは100%オープンソースでGitHubで公開されています。</string>
+    <string name="accessibility_explainer_privacy_note">Scrollessは、この権限をショートフォームコンテンツの検出と停止にのみ使用します。個人情報は一切収集しません。</string>
+    <string name="accessibility_explainer_proceed_button">設定へ移動</string>
+    <string name="accessibility_explainer_step1">下の「設定へ移動」をタップして、Androidのユーザー補助設定を開きます</string>
+    <string name="accessibility_explainer_step2">アプリケーションを見つけ、サービスの一覧から「Scrolless」をタップします</string>
+    <string name="accessibility_explainer_step3">スイッチをONに切り替えて、Scrollessがエンドレススクロールを停止できるようにします</string>
+    <string name="accessibility_explainer_subtitle">Scrollessがショート動画を検出して停止するには、ユーザー補助機能へのアクセスが必要です。</string>
+    <string name="accessibility_explainer_title">ユーザー補助機能へのアクセスが必要です</string>
+    <string name="accessibility_service_description">このサービスは、リール/ショート/TikTokが開かれたときに検出し、設定されている場合はScrollessがそれらをブロックできるようにします。</string>
+    <string name="accessibility_success_description">Scrollessの準備が整いました！</string>
+    <string name="accessibility_success_title">すべて設定完了！</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">すべて\nブロック</string>
+    <string name="cd_add">追加</string>
+    <string name="close">閉じる</string>
+    <string name="daily_limit">1日の\n制限時間</string>
+    <string name="feature_coming_soon">機能は近日公開予定です</string>
+    <string name="get_started">始める</string>
+    <string name="go_to_accessibility_settings">ユーザー補助設定へ移動</string>
+    <string name="help">ヘルプ</string>
+    <string name="help_dialog_title">Scrollessが動作しませんか？</string>
+    <string name="help_step1_description">メイン画面からブロックオプションのいずれかを選択します</string>
+    <string name="help_step1_title">ブロックオプションを選択</string>
+    <string name="help_step2_description">ブロックが機能しない場合は、ユーザー補助サービスを無効にしてから再度有効にし、Scrollessのバッテリー最適化を無効にしてみてください。</string>
+    <string name="help_step2_title">トラブルシューティング</string>
+    <string name="help_step3_description">まだ問題がありますか？私たちがお手伝いします！下のボタンを使用して、GitHubリポジトリでお問い合わせください。</string>
+    <string name="help_step3_title">サポートに連絡</string>
+    <string name="icons8_attribution">Icons8 (icons8.com) 提供のアイコン</string>
+    <string name="interval_timer">インターバル\nタイマー</string>
+    <string name="next_step_1">ブロックモードを選択します</string>
+    <string name="next_step_2">1日の制限時間機能を試して、タイマーオーバーレイを有効にします</string>
+    <string name="next_steps_title">次のステップ</string>
+    <string name="pause">一時停止</string>
+    <string name="rate_scrolless">PlayストアでScrollessを評価する</string>
+    <string name="show_timer_overlay">タイマーオーバーレイを表示</string>
+    <string name="success_icon_description">成功チェックマークアイコン</string>
+    <string name="time_limit_dialog_title">1日の制限時間を設定</string>
+    <string name="total_time_wasted">脳の腐敗に浪費された合計時間</string>
+    <string name="visit_github">GitHubリポジトリにアクセス</string>
 </resources>

@@ -16,4 +16,45 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Ikona dopuštenja pristupačnosti</string>
+    <string name="accessibility_explainer_not_now_button">Ne sada</string>
+    <string name="accessibility_explainer_open_source">Naš je kôd 100\% otvorenog kôda na GitHubu.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless koristi ovo dopuštenje samo za otkrivanje i zaustavljanje kratkog sadržaja. Ne prikupljamo nikakve osobne podatke.</string>
+    <string name="accessibility_explainer_proceed_button">Idi na Postavke</string>
+    <string name="accessibility_explainer_step1">Dodirnite \"Idi na Postavke\" u nastavku da biste otvorili Androidove postavke pristupačnosti</string>
+    <string name="accessibility_explainer_step2">Pronađite aplikacije i dodirnite \"Scrolless\" na popisu usluga</string>
+    <string name="accessibility_explainer_step3">Prebacite prekidač na UKLJUČENO kako biste omogućili Scrollessu da vam pomogne zaustaviti beskonačno skrolanje</string>
+    <string name="accessibility_explainer_subtitle">Scrolless treba pristup pristupačnosti za otkrivanje i zaustavljanje kratkih videozapisa.</string>
+    <string name="accessibility_explainer_title">Trebamo pristup pristupačnosti</string>
+    <string name="accessibility_service_description">Ova usluga otkriva kada se otvore Reels/Shorts/TikTok videozapisi kako bi ih Scrolless mogao blokirati ako je konfiguriran.</string>
+    <string name="accessibility_success_description">Scrolless je sada spreman!</string>
+    <string name="accessibility_success_title">Sve spremno!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">Blokiraj\nSve</string>
+    <string name="cd_add">Dodaj</string>
+    <string name="close">Zatvori</string>
+    <string name="daily_limit">Dnevno\nOgraničenje</string>
+    <string name="feature_coming_soon">Značajka uskoro dolazi</string>
+    <string name="get_started">Započnite</string>
+    <string name="go_to_accessibility_settings">Idi na Postavke pristupačnosti</string>
+    <string name="help">Pomoć</string>
+    <string name="help_dialog_title">Scrolless ne radi?</string>
+    <string name="help_step1_description">Odaberite jednu od opcija blokiranja s glavnog zaslona</string>
+    <string name="help_step1_title">Odaberite opciju blokiranja</string>
+    <string name="help_step2_description">Ako blokiranje ne radi, onemogućite, a zatim omogućite uslugu pristupačnosti i pokušajte onemogućiti optimizaciju baterije za Scrolless.</string>
+    <string name="help_step2_title">Rješavanje problema</string>
+    <string name="help_step3_description">I dalje imate problema? Ovdje smo da vam pomognemo! Koristite gumb u nastavku da nas kontaktirate na našem GitHub repozitoriju.</string>
+    <string name="help_step3_title">Kontaktirajte podršku</string>
+    <string name="icons8_attribution">Ikone pruža Icons8 (icons8.com)</string>
+    <string name="interval_timer">Intervalni\nMjerač</string>
+    <string name="next_step_1">Odaberite način blokiranja</string>
+    <string name="next_step_2">Isprobajte značajku dnevnog ograničenja i aktivirajte preklapanje mjerača vremena</string>
+    <string name="next_steps_title">Sljedeći koraci</string>
+    <string name="pause">Pauziraj</string>
+    <string name="rate_scrolless">Ocijenite Scrolless na Trgovini Play</string>
+    <string name="show_timer_overlay">Prikaži preklapanje mjerača vremena</string>
+    <string name="success_icon_description">Ikona kvačice za uspjeh</string>
+    <string name="time_limit_dialog_title">Postavi vrijeme dnevnog ograničenja</string>
+    <string name="total_time_wasted">Ukupno izgubljeno vrijeme na mentalno propadanje</string>
+    <string name="visit_github">Posjetite GitHub repozitorij</string>
 </resources>
