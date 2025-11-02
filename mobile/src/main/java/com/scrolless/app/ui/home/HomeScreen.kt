@@ -25,6 +25,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,6 +47,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -78,6 +80,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -502,7 +506,11 @@ private fun HomeContent(
                 }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(
+                modifier = Modifier.height(
+                    if (uiState.blockOption == BlockOption.IntervalTimer) 12.dp else 24.dp,
+                ),
+            )
 
             AnimatedVisibility(
                 visible = uiState.blockOption == BlockOption.IntervalTimer,
@@ -624,27 +632,20 @@ private fun IntervalTimerSettingsCard(
                 .padding(horizontal = 20.dp, vertical = 24.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(
-                    text = stringResource(R.string.interval_timer_card_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                )
-                Text(
-                    text = if (hasSchedule) {
-                        stringResource(
-                            R.string.interval_timer_card_summary,
-                            allowanceLabel,
-                            breakLabel,
-                        )
-                    } else {
-                        stringResource(R.string.interval_timer_card_summary_empty)
-                    },
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.85f),
-                )
-            }
+            Text(
+                text = if (hasSchedule) {
+                    stringResource(
+                        R.string.interval_timer_card_summary,
+                        allowanceLabel,
+                        breakLabel,
+                    )
+                } else {
+                    stringResource(R.string.interval_timer_card_summary_empty)
+                },
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+            )
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -706,6 +707,22 @@ private fun IntervalValueChip(label: String, value: String, modifier: Modifier =
                 color = MaterialTheme.colorScheme.onSurface,
             )
         }
+    }
+}
+
+@Composable
+private fun IntervalTimerPointer(
+    color: Color,
+    modifier: Modifier = Modifier,
+) {
+    Canvas(modifier = modifier.size(width = 42.dp, height = 16.dp)) {
+        val path = Path().apply {
+            moveTo(0f, 0f)
+            lineTo(size.width, 0f)
+            lineTo(size.width / 2f, size.height)
+            close()
+        }
+        drawPath(path = path, color = color)
     }
 }
 
@@ -781,15 +798,30 @@ fun FeatureButtonsRow(
 
         customItem(
             buttonGroupContent = {
-                FeatureButton(
-                    onClick = onIntervalTimerClick,
-                    icon = R.drawable.icons8_stopwatch_64,
-                    text = stringResource(id = R.string.interval_timer),
-                    contentDescription = stringResource(id = R.string.interval_timer),
-                    isSelected = selectedOption == BlockOption.IntervalTimer,
-                    interactionSource = intervalInteractionSource,
-                    modifier = Modifier.weight(intervalAnimatedWeight), // Using animated weight
-                )
+                Box(
+                    modifier = Modifier
+                        .weight(intervalAnimatedWeight)
+                        .fillMaxSize(),
+                ) {
+                    FeatureButton(
+                        onClick = onIntervalTimerClick,
+                        icon = R.drawable.icons8_stopwatch_64,
+                        text = stringResource(id = R.string.interval_timer),
+                        contentDescription = stringResource(id = R.string.interval_timer),
+                        isSelected = selectedOption == BlockOption.IntervalTimer,
+                        interactionSource = intervalInteractionSource,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+
+                    if (selectedOption == BlockOption.IntervalTimer) {
+                        IntervalTimerPointer(
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .offset(y = 10.dp),
+                        )
+                    }
+                }
             },
             menuContent = {},
         )
@@ -1104,6 +1136,29 @@ fun PreviewNothingSelected() {
     }
 }
 
+
+@Preview(name = "Interval Timer Selected")
+@Composable
+fun PreviewIntervalTimerSelected() {
+    ScrollessTheme {
+        HomeContent(
+            uiState = HomeUiState(
+                blockOption = BlockOption.IntervalTimer,
+                timeLimit = TimeUnit.MINUTES.toMillis(5),
+                intervalLength = TimeUnit.MINUTES.toMillis(60),
+            ),
+            onBlockOptionSelected = {},
+            onConfigureDailyLimit = {},
+            onTimerOverlayToggled = {},
+            onHelpClicked = {},
+            onReviewClicked = {},
+            onIntervalTimerClick = {},
+            onIntervalTimerEdit = {},
+            onPauseClicked = {},
+        )
+    }
+}
+
 @Preview(name = "Interval Timer Active")
 @Composable
 fun PreviewIntervalTimer() {
@@ -1131,6 +1186,7 @@ fun PreviewIntervalTimer() {
         )
     }
 }
+
 
 @Preview(name = "Help Dialog")
 @Composable
