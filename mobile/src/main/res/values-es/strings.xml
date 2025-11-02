@@ -16,4 +16,45 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Icono de Permiso de Accesibilidad</string>
+    <string name="accessibility_explainer_not_now_button">Ahora no</string>
+    <string name="accessibility_explainer_open_source">Nuestro código es 100\% de código abierto en GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless solo usa este permiso para detectar y detener contenido de formato corto. No recopilamos ninguna información personal.</string>
+    <string name="accessibility_explainer_proceed_button">Ir a Ajustes</string>
+    <string name="accessibility_explainer_step1">Toca \"Ir a Ajustes\" a continuación para abrir los ajustes de Accesibilidad de Android</string>
+    <string name="accessibility_explainer_step2">Busca aplicaciones y toca \"Scrolless\" en la lista de servicios</string>
+    <string name="accessibility_explainer_step3">Activa el interruptor para que Scrolless pueda ayudarte a detener el scroll sin fin</string>
+    <string name="accessibility_explainer_subtitle">Scrolless necesita acceso de accesibilidad para detectar y detener vídeos cortos.</string>
+    <string name="accessibility_explainer_title">Necesitamos Acceso de Accesibilidad</string>
+    <string name="accessibility_service_description">Este servicio detecta cuándo se abren reels/shorts/tiktok para que Scrolless pueda bloquearlos si está configurado.</string>
+    <string name="accessibility_success_description">¡Scrolless ya está listo!</string>
+    <string name="accessibility_success_title">¡Todo listo!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">Bloquear\nTodo</string>
+    <string name="cd_add">Añadir</string>
+    <string name="close">Cerrar</string>
+    <string name="daily_limit">Límite\nDiario</string>
+    <string name="feature_coming_soon">Función próximamente</string>
+    <string name="get_started">Empezar</string>
+    <string name="go_to_accessibility_settings">Ir a Ajustes de Accesibilidad</string>
+    <string name="help">Ayuda</string>
+    <string name="help_dialog_title">¿Scrolless no funciona?</string>
+    <string name="help_step1_description">Selecciona una de las opciones de bloqueo en la pantalla principal</string>
+    <string name="help_step1_title">Elige tu Opción de Bloqueo</string>
+    <string name="help_step2_description">Si el bloqueo no funciona, desactiva y vuelve a activar el servicio de accesibilidad e intenta desactivar la optimización de batería para Scrolless.</string>
+    <string name="help_step2_title">Solución de Problemas</string>
+    <string name="help_step3_description">¿Sigues teniendo problemas? ¡Estamos aquí para ayudarte! Usa el botón de abajo para contactarnos en nuestro repositorio de GitHub.</string>
+    <string name="help_step3_title">Contactar con Soporte</string>
+    <string name="icons8_attribution">Iconos proporcionados por Icons8 (icons8.com)</string>
+    <string name="interval_timer">Temporizador\nde Intervalo</string>
+    <string name="next_step_1">Selecciona un modo de bloqueo</string>
+    <string name="next_step_2">Prueba la función de límite diario y activa la superposición del temporizador</string>
+    <string name="next_steps_title">Próximos Pasos</string>
+    <string name="pause">Pausar</string>
+    <string name="rate_scrolless">Valora Scrolless en Play Store</string>
+    <string name="show_timer_overlay">Mostrar Superposición del Temporizador</string>
+    <string name="success_icon_description">Icono de marca de verificación de éxito</string>
+    <string name="time_limit_dialog_title">Establecer Tiempo de Límite Diario</string>
+    <string name="total_time_wasted">Tiempo total perdido en atontamiento mental</string>
+    <string name="visit_github">Visitar Repositorio de GitHub</string>
 </resources>

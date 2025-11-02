@@ -16,4 +16,45 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Erişilebilirlik İzni Simgesi</string>
+    <string name="accessibility_explainer_not_now_button">Şimdi Değil</string>
+    <string name="accessibility_explainer_open_source">Kodumuzun tamamı (100\%) GitHub\'da açık kaynaklıdır.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless bu izni yalnızca kısa biçimli içerikleri algılamak ve durdurmak için kullanır. Hiçbir kişisel bilgi toplamıyoruz.</string>
+    <string name="accessibility_explainer_proceed_button">Ayarlara Git</string>
+    <string name="accessibility_explainer_step1">Android\'in Erişilebilirlik ayarlarına gitmek için aşağıdaki \"Ayarlara Git\" düğmesine dokunun</string>
+    <string name="accessibility_explainer_step2">Hizmetler listesinde uygulamaları bulun ve \"Scrolless\" üzerine dokunun</string>
+    <string name="accessibility_explainer_step3">Scrolless\'in sonsuz kaydırmayı durdurmanıza yardımcı olmasını sağlamak için anahtarı AÇIK konuma getirin</string>
+    <string name="accessibility_explainer_subtitle">Scrolless\'in kısa videoları algılayıp durdurması için erişilebilirlik iznine ihtiyacı var.</string>
+    <string name="accessibility_explainer_title">Erişilebilirlik İznine İhtiyacımız Var</string>
+    <string name="accessibility_service_description">Bu hizmet, Reels/Shorts/TikTok açıldığında algılar ve Scrolless yapılandırılmışsa bunları engeller.</string>
+    <string name="accessibility_success_description">Scrolless artık hazır!</string>
+    <string name="accessibility_success_title">Her Şey Ayarlandı!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">Tümünü\nEngelle</string>
+    <string name="cd_add">Ekle</string>
+    <string name="close">Kapat</string>
+    <string name="daily_limit">Günlük\nSınır</string>
+    <string name="feature_coming_soon">Yakında eklenecek özellik</string>
+    <string name="get_started">Başlayın</string>
+    <string name="go_to_accessibility_settings">Erişilebilirlik Ayarlarına Git</string>
+    <string name="help">Yardım</string>
+    <string name="help_dialog_title">Scrolless çalışmıyor mu?</string>
+    <string name="help_step1_description">Ana ekrandan engelleme seçeneklerinden birini seçin</string>
+    <string name="help_step1_title">Engelleme Seçeneğinizi Belirleyin</string>
+    <string name="help_step2_description">Engelleme çalışmıyorsa, erişilebilirlik hizmetini devre dışı bırakıp tekrar etkinleştirin ve Scrolless için pil optimizasyonunu devre dışı bırakmayı deneyin.</string>
+    <string name="help_step2_title">Sorun Giderme</string>
+    <string name="help_step3_description">Hâlâ sorun mu yaşıyorsunuz? Yardım etmek için buradayız! GitHub depomuz üzerinden bize ulaşmak için aşağıdaki düğmeyi kullanın.</string>
+    <string name="help_step3_title">Destekle İletişime Geçin</string>
+    <string name="icons8_attribution">Simgeler Icons8 tarafından sağlanmıştır (icons8.com)</string>
+    <string name="interval_timer">Aralık\nZamanlayıcı</string>
+    <string name="next_step_1">Bir engelleme modu seçin</string>
+    <string name="next_step_2">Günlük sınır özelliğini deneyin ve zamanlayıcı yer paylaşımını etkinleştirin</string>
+    <string name="next_steps_title">Sonraki Adımlar</string>
+    <string name="pause">Duraklat</string>
+    <string name="rate_scrolless">Scrolless\'i Play Store\'da oyla</string>
+    <string name="show_timer_overlay">Zamanlayıcı Yer Paylaşımını Göster</string>
+    <string name="success_icon_description">Başarı onay işareti simgesi</string>
+    <string name="time_limit_dialog_title">Günlük Sınır Süresini Ayarla</string>
+    <string name="total_time_wasted">Zihinsel çürümede harcanan toplam süre</string>
+    <string name="visit_github">GitHub Deposunu Ziyaret Et</string>
 </resources>

@@ -16,4 +16,45 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">ॲक्सेसिबिलिटी परवानगी चिन्ह</string>
+    <string name="accessibility_explainer_not_now_button">आत्ता नाही</string>
+    <string name="accessibility_explainer_open_source">आमचा कोड GitHub वर १००% ओपन सोर्स आहे.</string>
+    <string name="accessibility_explainer_privacy_note">शॉर्ट फॉर्म सामग्री शोधण्यासाठी आणि थांबवण्यासाठी स्क्रॉलेस फक्त या परवानगीचा वापर करते. आम्ही कोणतीही वैयक्तिक माहिती गोळा करत नाही.</string>
+    <string name="accessibility_explainer_proceed_button">सेटिंग्जवर जा</string>
+    <string name="accessibility_explainer_step1">Android च्या ॲक्सेसिबिलिटी सेटिंग्ज उघडण्यासाठी खालील \"सेटिंग्जवर जा\" वर टॅप करा</string>
+    <string name="accessibility_explainer_step2">सेवांच्या सूचीमध्ये ॲप्लिकेशन्स शोधा आणि \"Scrolless\" वर टॅप करा</string>
+    <string name="accessibility_explainer_step3">तुम्हाला अंतहीन स्क्रोलिंग थांबविण्यात मदत करण्यासाठी स्क्रॉलेस सक्षम करण्यासाठी स्विच चालू करा</string>
+    <string name="accessibility_explainer_subtitle">शॉर्ट व्हिडिओ शोधण्यासाठी आणि थांबवण्यासाठी स्क्रॉलेसला ॲक्सेसिबिलिटी ॲक्सेसची आवश्यकता आहे.</string>
+    <string name="accessibility_explainer_title">आम्हाला ॲक्सेसिबिलिटी ॲक्सेसची आवश्यकता आहे</string>
+    <string name="accessibility_service_description">जेव्हा रील्स/शॉर्ट्स/टिकटॉक उघडले जातात, तेव्हा ही सेवा शोधते, जेणेकरून स्क्रॉलेस, कॉन्फिगर केले असल्यास त्यांना ब्लॉक करू शकेल.</string>
+    <string name="accessibility_success_description">स्क्रॉलेस आता तयार आहे!</string>
+    <string name="accessibility_success_title">सर्व सेट!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">सर्व\nब्लॉक करा</string>
+    <string name="cd_add">जोडा</string>
+    <string name="close">बंद करा</string>
+    <string name="daily_limit">दैनंदिन\nमर्यादा</string>
+    <string name="feature_coming_soon">वैशिष्ट्य लवकरच येत आहे</string>
+    <string name="get_started">प्रारंभ करा</string>
+    <string name="go_to_accessibility_settings">ॲक्सेसिबिलिटी सेटिंग्जवर जा</string>
+    <string name="help">मदत</string>
+    <string name="help_dialog_title">स्क्रॉलेस काम करत नाहीये?</string>
+    <string name="help_step1_description">मुख्य स्क्रीनमधून ब्लॉकिंग पर्यायांपैकी एक निवडा</string>
+    <string name="help_step1_title">तुमचा ब्लॉक पर्याय निवडा</string>
+    <string name="help_step2_description">ब्लॉकिंग काम करत नसल्यास, ॲक्सेसिबिलिटी सेवा अक्षम करा आणि नंतर सक्षम करा आणि स्क्रॉलेससाठी बॅटरी ऑप्टिमायझेशन अक्षम करण्याचा प्रयत्न करा.</string>
+    <string name="help_step2_title">समस्यानिवारण</string>
+    <string name="help_step3_description">अजूनही समस्या येत आहेत? आम्ही मदतीसाठी येथे आहोत! आमच्या GitHub रेपोवर पोहोचण्यासाठी खालील बटण वापरा.</string>
+    <string name="help_step3_title">संपर्क समर्थन</string>
+    <string name="icons8_attribution">Icons8 (icons8.com) द्वारे प्रदान केलेले चिन्ह</string>
+    <string name="interval_timer">अंतराल\nटायमर</string>
+    <string name="next_step_1">ब्लॉकिंग मोड निवडा</string>
+    <string name="next_step_2">दैनंदिन मर्यादा वैशिष्ट्य वापरून पहा आणि टायमर आच्छादन सक्रिय करा</string>
+    <string name="next_steps_title">पुढील पायऱ्या</string>
+    <string name="pause">विराम द्या</string>
+    <string name="rate_scrolless">Play Store वर स्क्रॉलेसला रेट करा</string>
+    <string name="show_timer_overlay">टायमर आच्छादन दर्शवा</string>
+    <string name="success_icon_description">यश चेक मार्क चिन्ह</string>
+    <string name="time_limit_dialog_title">दैनंदिन मर्यादा वेळ सेट करा</string>
+    <string name="total_time_wasted">ब्रेन रॉटमध्ये वाया गेलेला एकूण वेळ</string>
+    <string name="visit_github">GitHub रेपॉजिटरीला भेट द्या</string>
 </resources>

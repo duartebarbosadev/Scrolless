@@ -16,4 +16,45 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">அணுகல் அனுமதி ஐகான்</string>
+    <string name="accessibility_explainer_not_now_button">இப்போது வேண்டாம்</string>
+    <string name="accessibility_explainer_open_source">எங்கள் குறியீடு 100% GitHub இல் திறந்த மூலமாகும்.</string>
+    <string name="accessibility_explainer_privacy_note">குறுகிய வடிவ உள்ளடக்கத்தைக் கண்டறிந்து நிறுத்த மட்டுமே Scrolless இந்த அனுமதியைப் பயன்படுத்துகிறது. நாங்கள் எந்த தனிப்பட்ட தகவலையும் சேகரிப்பதில்லை.</string>
+    <string name="accessibility_explainer_proceed_button">அமைப்புகளுக்குச் செல்லவும்</string>
+    <string name="accessibility_explainer_step1">Android இன் அணுகல் அமைப்புகளைத் திறக்க கீழே உள்ள \"அமைப்புகளுக்குச் செல்லவும்\" என்பதைத் தட்டவும்</string>
+    <string name="accessibility_explainer_step2">சேவைகளின் பட்டியலில் பயன்பாடுகளைக் கண்டறிந்து \"Scrolless\" என்பதைத் தட்டவும்</string>
+    <string name="accessibility_explainer_step3">முடிவில்லாத ஸ்க்ரோலிங்கை நிறுத்த உங்களுக்கு உதவ Scrolless ஐ இயக்க, சுவிட்சை ON க்கு மாற்றவும்</string>
+    <string name="accessibility_explainer_subtitle">குறுகிய வீடியோக்களைக் கண்டறிந்து நிறுத்த Scrolless க்கு அணுகல் தேவை.</string>
+    <string name="accessibility_explainer_title">எங்களுக்கு அணுகல் தேவை</string>
+    <string name="accessibility_service_description">ரீல்ஸ்/ஷார்ட்ஸ்/டிக்டாக் திறக்கப்படும்போது இந்தச் சேவை கண்டறிகிறது, இதனால் Scrolless, கட்டமைக்கப்பட்டால் அவற்றைத் தடுக்க முடியும்.</string>
+    <string name="accessibility_success_description">Scrolless இப்போது தயாராக உள்ளது!</string>
+    <string name="accessibility_success_title">அனைத்தும் தயார்!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">அனைத்தையும்\nதடு</string>
+    <string name="cd_add">சேர்</string>
+    <string name="close">மூடு</string>
+    <string name="daily_limit">தினசரி\nவரம்பு</string>
+    <string name="feature_coming_soon">வசதி விரைவில் வருகிறது</string>
+    <string name="get_started">தொடங்குங்கள்</string>
+    <string name="go_to_accessibility_settings">அணுகல் அமைப்புகளுக்குச் செல்லவும்</string>
+    <string name="help">உதவி</string>
+    <string name="help_dialog_title">Scrolless வேலை செய்யவில்லையா?</string>
+    <string name="help_step1_description">முக்கியத் திரையில் இருந்து தடுக்கும் விருப்பங்களில் ஒன்றைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="help_step1_title">உங்கள் தடுப்பு விருப்பத்தைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="help_step2_description">தடுப்பது வேலை செய்யவில்லை என்றால், அணுகல் சேவையை முடக்கி, பின்னர் இயக்கி, Scrolless க்கான பேட்டரி மேம்படுத்தலை முடக்க முயற்சிக்கவும்.</string>
+    <string name="help_step2_title">சிக்கலைத் தீர்த்தல்</string>
+    <string name="help_step3_description">இன்னும் சிக்கல்கள் உள்ளதா? உதவ நாங்கள் இங்கே இருக்கிறோம்! எங்கள் GitHub ரெப்போவில் அணுக கீழே உள்ள பொத்தானைப் பயன்படுத்தவும்.</string>
+    <string name="help_step3_title">ஆதரவைத் தொடர்பு கொள்ளவும்</string>
+    <string name="icons8_attribution">Icons8 (icons8.com) வழங்கிய ஐகான்கள்</string>
+    <string name="interval_timer">இடைவெளி\nநேரங்காட்டி</string>
+    <string name="next_step_1">தடுக்கும் பயன்முறையைத் தேர்ந்தெடுக்கவும்</string>
+    <string name="next_step_2">தினசரி வரம்பு அம்சத்தை முயற்சி செய்து, நேரங்காட்டி மேலடுக்கை இயக்கவும்</string>
+    <string name="next_steps_title">அடுத்த படிகள்</string>
+    <string name="pause">இடைநிறுத்து</string>
+    <string name="rate_scrolless">Play Store இல் Scrolless க்கு மதிப்பிடவும்</string>
+    <string name="show_timer_overlay">நேரங்காட்டி மேலடுக்கைக் காட்டு</string>
+    <string name="success_icon_description">வெற்றிக் குறியீடு ஐகான்</string>
+    <string name="time_limit_dialog_title">தினசரி வரம்பு நேரத்தை அமைக்கவும்</string>
+    <string name="total_time_wasted">மூளைச் சிதைவில் வீணடிக்கப்பட்ட மொத்த நேரம்</string>
+    <string name="visit_github">GitHub களஞ்சியத்தைப் பார்வையிடவும்</string>
 </resources>
