@@ -200,8 +200,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // Observe changes to the block config
         serviceScope.launch {
             val timeLimitFlow = userSettingsStore.getTimeLimit().distinctUntilChanged()
+            val intervalLengthFlow = userSettingsStore.getIntervalLength().distinctUntilChanged()
             val blockOptionFlow = userSettingsStore.getActiveBlockOption().distinctUntilChanged()
-            combine(timeLimitFlow, blockOptionFlow) { _, blockOption -> blockOption }.collect { blockOption ->
+            combine(timeLimitFlow, intervalLengthFlow, blockOptionFlow) { _, _, blockOption -> blockOption }.collect { blockOption ->
                 Timber.d("Settings changed, re-initializing blocking manager with %s", blockOption)
                 blockingManager.init(blockOption)
             }
@@ -250,6 +251,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         // Only trigger changes if detection state actually changed
         if (onBrainRotApp != null) {
+
+            //val watchingBrainrotContent =
             Timber.v("Detected brain rot app running: %s", onBrainRotApp)
             detectedApp = onBrainRotApp
             onBlockedContentEntered()

@@ -37,6 +37,12 @@ interface UserSettingsStore {
     suspend fun setIntervalLength(intervalLength: Long)
     fun getIntervalLength(): Flow<Long>
 
+    fun getIntervalWindowStart(): Flow<Long>
+    suspend fun setIntervalWindowStart(windowStart: Long)
+    fun getIntervalUsage(): Flow<Long>
+    suspend fun setIntervalUsage(usage: Long)
+    suspend fun updateIntervalState(windowStart: Long, usage: Long)
+
     suspend fun setTimerOverlayToggle(enabled: Boolean)
     fun getTimerOverlayEnabled(): Flow<Boolean>
 
@@ -71,6 +77,8 @@ class UserSettingsStoreImpl constructor(private val userSettingsDao: UserSetting
     private val _activeBlockOption = MutableStateFlow(BlockOption.NothingSelected)
     private val _timeLimit = MutableStateFlow(0L)
     private val _intervalLength = MutableStateFlow(0L)
+    private val _intervalWindowStart = MutableStateFlow(0L)
+    private val _intervalUsage = MutableStateFlow(0L)
     private val _timerOverlayEnabled = MutableStateFlow(false)
     private val _lastResetDay = MutableStateFlow(LocalDate.now())
     private val _totalDailyUsage = MutableStateFlow(0L)
@@ -87,6 +95,12 @@ class UserSettingsStoreImpl constructor(private val userSettingsDao: UserSetting
         }
         coroutineScope.launch {
             userSettingsDao.getIntervalLength().collect { _intervalLength.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getIntervalWindowStart().collect { _intervalWindowStart.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getIntervalUsage().collect { _intervalUsage.value = it }
         }
         coroutineScope.launch {
             userSettingsDao.getTimerOverlayEnabled().collect { _timerOverlayEnabled.value = it }
@@ -125,6 +139,22 @@ class UserSettingsStoreImpl constructor(private val userSettingsDao: UserSetting
     }
 
     override fun getIntervalLength(): Flow<Long> = _intervalLength
+
+    override fun getIntervalWindowStart(): Flow<Long> = _intervalWindowStart
+
+    override suspend fun setIntervalWindowStart(windowStart: Long) {
+        userSettingsDao.setIntervalWindowStart(windowStart)
+    }
+
+    override fun getIntervalUsage(): Flow<Long> = _intervalUsage
+
+    override suspend fun setIntervalUsage(usage: Long) {
+        userSettingsDao.setIntervalUsage(usage)
+    }
+
+    override suspend fun updateIntervalState(windowStart: Long, usage: Long) {
+        userSettingsDao.updateIntervalState(windowStart, usage)
+    }
 
     override suspend fun setTimerOverlayToggle(enabled: Boolean) {
         userSettingsDao.setTimerOverlayEnabled(enabled)

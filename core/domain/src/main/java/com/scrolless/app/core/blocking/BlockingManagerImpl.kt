@@ -20,6 +20,7 @@ import com.scrolless.app.core.blocking.handler.BlockAllBlockHandler
 import com.scrolless.app.core.blocking.handler.BlockOptionHandler
 import com.scrolless.app.core.blocking.handler.DayLimitBlockHandler
 import com.scrolless.app.core.blocking.handler.IntervalTimerBlockHandler
+import com.scrolless.app.core.blocking.handler.IntervalTimerState
 import com.scrolless.app.core.blocking.handler.NoBlockHandler
 import com.scrolless.app.core.data.database.model.BlockOption
 import com.scrolless.app.core.data.repository.UsageTracker
@@ -27,7 +28,11 @@ import com.scrolless.app.core.data.repository.UserSettingsStore
 import com.scrolless.app.core.model.BlockingResult
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
@@ -41,6 +46,7 @@ class BlockingManagerImpl @Inject constructor(private val usageTracker: UsageTra
     BlockingManager {
 
     private lateinit var handler: BlockOptionHandler
+    private val persistenceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     /**
      * Initializes the manager with a block option configuration.
@@ -51,9 +57,19 @@ class BlockingManagerImpl @Inject constructor(private val usageTracker: UsageTra
     override suspend fun init(blockOption: BlockOption) {
         val timeLimit = userSettingsStore.getTimeLimit().first()
         val intervalLength = userSettingsStore.getIntervalLength().first()
+        val intervalState = IntervalTimerState(
+            windowStartMillis = userSettingsStore.getIntervalWindowStart().first(),
+            usageMillis = userSettingsStore.getIntervalUsage().first(),
+        )
 
-        Timber.i("BlockingManager.init: option=%s, timeLimit=%d, intervalLength=%d", blockOption, timeLimit, intervalLength)
-        handler = createHandlerForConfig(blockOption, timeLimit, intervalLength)
+        Timber.i(
+            "init: option=%s, timeLimit=%d, intervalLength=%d, intervalState=%s",
+            blockOption,
+            timeLimit,
+            intervalLength,
+            intervalState,
+        )
+        handler = createHandlerForConfig(blockOption, timeLimit, intervalLength, intervalState)
         usageTracker.checkDailyReset()
     }
 
@@ -65,13 +81,26 @@ class BlockingManagerImpl @Inject constructor(private val usageTracker: UsageTra
      * @param intervalLength Interval duration in milliseconds (for IntervalTimer).
      * @return A handler matching the configuration.
      */
-    private fun createHandlerForConfig(blockOption: BlockOption, timeLimit: Long, intervalLength: Long): BlockOptionHandler =
+    private fun createHandlerForConfig(
+        blockOption: BlockOption,
+        timeLimit: Long,
+        intervalLength: Long,
+        intervalState: IntervalTimerState,
+    ): BlockOptionHandler =
         when (blockOption) {
             BlockOption.BlockAll -> BlockAllBlockHandler().also { Timber.d("Using BlockAll handler") }
             BlockOption.DailyLimit -> DayLimitBlockHandler(timeLimit).also { Timber.d("Using DayLimit handler (limit=%d)", timeLimit) }
-            BlockOption.IntervalTimer -> IntervalTimerBlockHandler(
-                timeLimit,
-            ).also { Timber.d("Using IntervalTimer handler (limit=%d, interval=%d)", timeLimit, intervalLength) }
+            BlockOption.IntervalTimer ->
+                IntervalTimerBlockHandler(
+                    allowanceMillis = timeLimit,
+                    intervalLengthMillis = intervalLength,
+                    initialState = intervalState,
+                    onStateChanged = { state ->
+                        persistenceScope.launch {
+                            userSettingsStore.updateIntervalState(state.windowStartMillis, state.usageMillis)
+                        }
+                    },
+                ).also { Timber.d("Using IntervalTimer handler (limit=%d, interval=%d)", timeLimit, intervalLength) }
 
             BlockOption.NothingSelected -> NoBlockHandler().also { Timber.d("Using NothingSelected handler") }
         }

@@ -47,6 +47,21 @@ abstract class UserSettingsDao : BaseDao<UserSettings> {
     @Query("UPDATE user_settings SET interval_length = :intervalLength WHERE id = 1")
     abstract suspend fun setIntervalLength(intervalLength: Long)
 
+    @Query("SELECT interval_window_start_at FROM user_settings WHERE id = 1")
+    abstract fun getIntervalWindowStart(): Flow<Long>
+
+    @Query("UPDATE user_settings SET interval_window_start_at = :windowStart WHERE id = 1")
+    abstract suspend fun setIntervalWindowStart(windowStart: Long)
+
+    @Query("SELECT interval_usage FROM user_settings WHERE id = 1")
+    abstract fun getIntervalUsage(): Flow<Long>
+
+    @Query("UPDATE user_settings SET interval_usage = :usage WHERE id = 1")
+    abstract suspend fun setIntervalUsage(usage: Long)
+
+    @Query("UPDATE user_settings SET interval_window_start_at = :windowStart, interval_usage = :usage WHERE id = 1")
+    abstract suspend fun updateIntervalState(windowStart: Long, usage: Long)
+
     @Query("SELECT timer_overlay_enabled FROM user_settings WHERE id = 1")
     abstract fun getTimerOverlayEnabled(): Flow<Boolean>
 

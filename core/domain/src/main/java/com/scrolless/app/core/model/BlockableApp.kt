@@ -24,12 +24,12 @@ import androidx.compose.runtime.Immutable
 enum class BlockableApp(val packageId: String, private val viewIds: List<String>, private val exitStrategy: Int) {
     REELS(
         "com.instagram.android",
-        listOf("com.instagram.android:id/clips_viewer_view_pager", "com.instagram.android:id/clips_video_container"),
+        listOf("com.instagram.android:id/clips_viewer_view_pager"),
         GLOBAL_ACTION_BACK,
     ),
     SHORTS(
         "com.google.android.youtube",
-        listOf("com.google.android.youtube:id/reel_player_page_container", "com.google.android.youtube:id/reel_recycler"),
+        listOf("com.google.android.youtube:id/reel_player_page_container"),
         GLOBAL_ACTION_BACK,
     ),
     TIKTOK(

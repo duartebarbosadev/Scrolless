@@ -33,7 +33,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -45,14 +45,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.scrolless.app.R
+import com.scrolless.app.ui.theme.ScrollessTheme
+import com.scrolless.app.ui.tooling.DevicePreviews
 import kotlin.math.roundToInt
 
 private const val MIN_BREAK_MINUTES = 30
 private const val MAX_BREAK_MINUTES = 180
 private const val BREAK_STEP_MINUTES = 15
 
+private const val ALLOWANCE_STEP_MINUTES = 1
 private const val MIN_ALLOWANCE_MINUTES = 1
-private const val MAX_ALLOWANCE_MINUTES = 15
+private const val MAX_ALLOWANCE_MINUTES = 30
 
 @Composable
 fun IntervalTimerDialog(
@@ -62,7 +65,7 @@ fun IntervalTimerDialog(
     onDismiss: () -> Unit,
 ) {
     var breakMinutes by rememberSaveable {
-        mutableStateOf(
+        mutableIntStateOf(
             initialBreakMillis.millisToRoundedMinutes(
                 step = BREAK_STEP_MINUTES,
                 min = MIN_BREAK_MINUTES,
@@ -71,7 +74,7 @@ fun IntervalTimerDialog(
         )
     }
     var allowanceMinutes by rememberSaveable {
-        mutableStateOf(
+        mutableIntStateOf(
             initialAllowanceMillis.millisToRoundedMinutes(
                 step = 1,
                 min = MIN_ALLOWANCE_MINUTES,
@@ -97,7 +100,7 @@ fun IntervalTimerDialog(
             ) {
                 Text(
                     text = stringResource(R.string.interval_timer_dialog_title),
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold,
                 )
@@ -144,7 +147,7 @@ fun IntervalTimerDialog(
                         onValueChange = { rawValue ->
                             allowanceMinutes = snapToStepValue(
                                 value = rawValue,
-                                step = 1,
+                                step = ALLOWANCE_STEP_MINUTES,
                                 min = MIN_ALLOWANCE_MINUTES,
                                 max = MAX_ALLOWANCE_MINUTES,
                             )
@@ -260,3 +263,16 @@ private fun snapToStepValue(value: Float, step: Int, min: Int, max: Int): Int {
 }
 
 private const val MINUTE_IN_MILLIS = 60_000L
+
+@DevicePreviews
+@Composable
+fun IntervalTimerPreview() {
+    ScrollessTheme(darkTheme = true) {
+        IntervalTimerDialog(
+            initialBreakMillis = 1000L,
+            initialAllowanceMillis = 1000L,
+            onConfirm = { _, _ -> },
+            onDismiss = { },
+        )
+    }
+}

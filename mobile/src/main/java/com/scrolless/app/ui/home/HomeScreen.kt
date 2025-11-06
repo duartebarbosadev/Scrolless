@@ -75,6 +75,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -119,6 +120,8 @@ import com.scrolless.app.util.radialGradientScrim
 import com.scrolless.app.util.requestAppReview
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 
 private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
 private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)
@@ -376,10 +379,13 @@ private fun HomeContent(
             }
 
             ProgressCard(
+                blockOption = uiState.blockOption,
                 progress = uiState.progress,
                 currentUsage = uiState.currentUsage,
+                intervalUsage = uiState.intervalUsage,
                 timeLimit = uiState.timeLimit,
-                showTimeLimit = uiState.blockOption == BlockOption.DailyLimit,
+                intervalLength = uiState.intervalLength,
+                intervalWindowStart = uiState.intervalWindowStart,
                 onProgressCardClicked = onProgressCardClicked,
             )
 
@@ -726,6 +732,41 @@ private fun IntervalTimerPointer(
     }
 }
 
+@Composable
+private fun rememberIntervalRemainingTime(
+    isRunning: Boolean,
+    intervalLength: Long,
+    windowStart: Long,
+): Long {
+    val isInspectionMode = LocalInspectionMode.current
+
+    fun calculateRemaining(): Long {
+        if (intervalLength <= 0L || windowStart <= 0L) return 0L
+        val now = System.currentTimeMillis()
+        val elapsed = now - windowStart
+        if (elapsed < 0L) return intervalLength
+        val remainder = intervalLength - (elapsed % intervalLength)
+        return remainder.coerceAtLeast(0L)
+    }
+
+    var remaining by remember(isRunning, intervalLength, windowStart) {
+        mutableLongStateOf(calculateRemaining())
+    }
+
+    LaunchedEffect(isRunning, intervalLength, windowStart, isInspectionMode) {
+        if (!isRunning || intervalLength <= 0L || windowStart <= 0L || isInspectionMode) {
+            remaining = calculateRemaining()
+        } else {
+            while (isActive) {
+                remaining = calculateRemaining()
+                delay(1_000L)
+            }
+        }
+    }
+
+    return remaining
+}
+
 private fun Long.toIntervalLabel(): String {
     if (this <= 0L) return "--"
     val totalMinutes = (this / 60_000L).toInt()
@@ -888,27 +929,67 @@ fun FeatureButton(
 
 @Composable
 private fun ProgressCard(
+    blockOption: BlockOption,
     progress: Int,
     currentUsage: Long,
+    intervalUsage: Long,
     timeLimit: Long,
-    showTimeLimit: Boolean,
+    intervalLength: Long,
+    intervalWindowStart: Long,
     onProgressCardClicked: () -> Unit = {},
 ) {
+    val clampedProgress = progress.coerceIn(0, 100)
+
     val animatedProgress by animateFloatAsState(
-        targetValue = progress / 100f,
+        targetValue = clampedProgress / 100f,
         animationSpec = if (LocalInspectionMode.current) tween(durationMillis = 1000) else tween(durationMillis = 1000),
         label = "progress",
     )
 
     val progressColor by animateColorAsState(
         targetValue = when {
-            progress < 75 -> progressbar_green_use // Green
-            progress < 100 -> progressbar_orange_use // Orange
+            clampedProgress < 75 -> progressbar_green_use // Green
+            clampedProgress < 100 -> progressbar_orange_use // Orange
             else -> progressbar_red_use // Red
         },
         animationSpec = tween(durationMillis = 500),
         label = "color",
     )
+
+    val isIntervalMode = blockOption == BlockOption.IntervalTimer
+    val intervalAllowanceConfigured = isIntervalMode && timeLimit > 0L
+    val intervalRemainingMillis = if (isIntervalMode) {
+        rememberIntervalRemainingTime(
+            isRunning = intervalAllowanceConfigured && intervalLength > 0L && intervalWindowStart > 0L,
+            intervalLength = intervalLength,
+            windowStart = intervalWindowStart,
+        )
+    } else {
+        0L
+    }
+
+    val primaryText = when {
+        isIntervalMode && intervalAllowanceConfigured ->
+            "${intervalUsage.coerceAtLeast(0L).coerceAtMost(timeLimit).formatTime()} / ${timeLimit.formatTime()}"
+        isIntervalMode -> intervalUsage.formatTime()
+        blockOption == BlockOption.DailyLimit && timeLimit > 0L ->
+            "${currentUsage.formatTime()} / ${timeLimit.formatTime()}"
+        else -> currentUsage.formatTime()
+    }
+
+    val resetText = if (isIntervalMode) {
+        when {
+            !intervalAllowanceConfigured -> stringResource(R.string.interval_timer_next_reset_unknown)
+            intervalLength <= 0L || intervalWindowStart <= 0L -> stringResource(R.string.interval_timer_next_reset_unknown)
+            intervalRemainingMillis <= 1_000L -> stringResource(R.string.interval_timer_next_reset_ready)
+            else -> stringResource(
+                R.string.interval_timer_next_reset_in,
+                intervalRemainingMillis.formatTime(),
+            )
+        }
+    } else {
+        null
+    }
 
     Card(
         modifier = Modifier
@@ -936,11 +1017,7 @@ private fun ProgressCard(
                 modifier = Modifier.padding(16.dp),
             ) {
                 Text(
-                    text = if (showTimeLimit) {
-                        "${currentUsage.formatTime()} / ${timeLimit.formatTime()}"
-                    } else {
-                        currentUsage.formatTime()
-                    },
+                    text = primaryText,
                     modifier = Modifier.padding(top = 16.dp),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
@@ -954,6 +1031,16 @@ private fun ProgressCard(
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
                     textAlign = TextAlign.Center,
                 )
+
+                if (resetText != null) {
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        text = resetText,
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
         }
     }
@@ -1146,6 +1233,9 @@ fun PreviewIntervalTimerSelected() {
                 blockOption = BlockOption.IntervalTimer,
                 timeLimit = TimeUnit.MINUTES.toMillis(5),
                 intervalLength = TimeUnit.MINUTES.toMillis(60),
+                intervalUsage = TimeUnit.MINUTES.toMillis(3),
+                intervalWindowStart = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(30),
+                currentUsage = TimeUnit.MINUTES.toMillis(42),
             ),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
@@ -1168,6 +1258,9 @@ fun PreviewIntervalTimer() {
                 blockOption = BlockOption.IntervalTimer,
                 timeLimit = TimeUnit.MINUTES.toMillis(5),
                 intervalLength = TimeUnit.MINUTES.toMillis(60),
+                intervalUsage = TimeUnit.MINUTES.toMillis(4),
+                intervalWindowStart = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(45),
+                currentUsage = TimeUnit.MINUTES.toMillis(50),
             ),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},

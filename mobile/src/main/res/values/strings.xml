@@ -44,7 +44,7 @@
     <string name="interval_timer_card_edit">Edit schedule</string>
     <string name="interval_timer_card_set_schedule">Set schedule</string>
     <string name="interval_timer_dialog_title">Configure interval timer</string>
-    <string name="interval_timer_dialog_subtitle">Choose how long Scrolless stays locked and how much time you can watch in each break.</string>
+    <string name="interval_timer_dialog_subtitle">Choose how long content stays locked and how much time you can watch in each break.</string>
     <string name="interval_timer_dialog_break_label">Break duration</string>
     <string name="interval_timer_dialog_break_description">Scrolless keeps supported apps blocked for this long before the next break.</string>
     <string name="interval_timer_dialog_allowance_label">Allowed watch time</string>
@@ -52,6 +52,9 @@
     <string name="interval_timer_dialog_summary">Result: up to %1$s every %2$s</string>
     <string name="interval_timer_dialog_cancel">Cancel</string>
     <string name="interval_timer_dialog_save">Save schedule</string>
+    <string name="interval_timer_next_reset_in">Resets in %1$s</string>
+    <string name="interval_timer_next_reset_ready">Next break unlocked</string>
+    <string name="interval_timer_next_reset_unknown">Schedule will start after your first break window.</string>
 
     <!-- Step numbers - non-translatable -->
     <string name="step_one" translatable="false">1</string>

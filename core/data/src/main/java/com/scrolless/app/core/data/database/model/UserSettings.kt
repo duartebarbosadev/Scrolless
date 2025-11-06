@@ -34,6 +34,8 @@ data class UserSettings(
     @ColumnInfo(name = "active_block_option") val activeBlockOption: BlockOption,
     @ColumnInfo(name = "time_limit") val timeLimit: Long,
     @ColumnInfo(name = "interval_length") val intervalLength: Long,
+    @ColumnInfo(name = "interval_window_start_at") val intervalWindowStartAt: Long = 0L,
+    @ColumnInfo(name = "interval_usage") val intervalUsage: Long = 0L,
     @ColumnInfo(name = "timer_overlay_enabled") val timerOverlayEnabled: Boolean,
     @ColumnInfo(name = "last_reset_day") val lastResetDay: String, // Store as ISO date string
     @ColumnInfo(name = "total_daily_usage") val totalDailyUsage: Long,

@@ -46,21 +46,37 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         userSettingsStore.getActiveBlockOption(),
         userSettingsStore.getTimeLimit(),
         userSettingsStore.getIntervalLength(),
+        userSettingsStore.getIntervalUsage(),
+        userSettingsStore.getIntervalWindowStart(),
         userSettingsStore.getTotalDailyUsage(),
         userSettingsStore.getTimerOverlayEnabled(),
         _showComingSoonSnackBar,
         _requestReview,
-    ) { blockOption, timeLimit, intervalLength, currentUsage, timerEnabled, showComingSoonSnackBar, requestReview ->
+    ) {
+            blockOption,
+            timeLimit,
+            intervalLength,
+            intervalUsage,
+            intervalWindowStart,
+            currentUsage,
+            timerEnabled,
+            showComingSoonSnackBar,
+            requestReview,
+        ->
 
         val progress = calculateProgress(
-            currentUsage = if (blockOption == BlockOption.DailyLimit) currentUsage else 0L,
+            blockOption = blockOption,
+            currentUsage = currentUsage,
             timeLimit = timeLimit,
+            intervalUsage = intervalUsage,
         )
 
         HomeUiState(
             blockOption = blockOption,
             timeLimit = timeLimit,
             intervalLength = intervalLength,
+            intervalUsage = intervalUsage,
+            intervalWindowStart = intervalWindowStart,
             currentUsage = currentUsage,
             progress = progress,
             timerOverlayEnabled = timerEnabled,
@@ -102,23 +118,42 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
             allowanceMillis,
         )
         viewModelScope.launch {
+            val now = System.currentTimeMillis()
             userSettingsStore.setIntervalLength(intervalBreakMillis)
             userSettingsStore.setTimeLimit(allowanceMillis)
+            userSettingsStore.updateIntervalState(windowStart = now, usage = 0L)
             userSettingsStore.setActiveBlockOption(BlockOption.IntervalTimer)
         }
     }
 
-    private fun calculateProgress(currentUsage: Long, timeLimit: Long): Int {
-        return if (timeLimit > 0) {
-            val remainingTime = timeLimit - currentUsage
-            if (remainingTime > 0) {
-                min(PROGRESS_MAX, ((currentUsage.toDouble() / timeLimit.toDouble()) * PROGRESS_MAX).toInt())
+    private fun calculateProgress(
+        blockOption: BlockOption,
+        currentUsage: Long,
+        timeLimit: Long,
+        intervalUsage: Long,
+    ): Int = when (blockOption) {
+        BlockOption.DailyLimit -> {
+            if (timeLimit > 0) {
+                val remainingTime = timeLimit - currentUsage
+                if (remainingTime > 0) {
+                    min(PROGRESS_MAX, ((currentUsage.toDouble() / timeLimit.toDouble()) * PROGRESS_MAX).toInt())
+                } else {
+                    PROGRESS_MAX
+                }
             } else {
-                PROGRESS_MAX
+                0
             }
-        } else {
-            0
         }
+
+        BlockOption.IntervalTimer -> {
+            if (timeLimit > 0) {
+                min(PROGRESS_MAX, ((intervalUsage.toDouble() / timeLimit.toDouble()) * PROGRESS_MAX).toInt())
+            } else {
+                0
+            }
+        }
+
+        else -> 0
     }
 
     fun onSnackbarShown() {
@@ -157,6 +192,8 @@ data class HomeUiState(
     val blockOption: BlockOption = BlockOption.NothingSelected,
     val timeLimit: Long = 0L,
     val intervalLength: Long = 0L,
+    val intervalUsage: Long = 0L,
+    val intervalWindowStart: Long = 0L,
     val currentUsage: Long = 0L,
     val progress: Int = 0,
     val timerOverlayEnabled: Boolean = false,
