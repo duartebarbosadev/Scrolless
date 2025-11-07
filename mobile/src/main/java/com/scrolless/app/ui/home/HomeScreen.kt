@@ -571,7 +571,7 @@ fun ConfigButton(
 
     // Fast tweens for visual feedback
     val animationSpec = tween<Float>(durationMillis = 100)
-    val colorAnimationSpec = tween<androidx.compose.ui.graphics.Color>(durationMillis = 100)
+    val colorAnimationSpec = tween<Color>(durationMillis = 100)
 
     val bottomCorner by animateFloatAsState(
         targetValue = if (isPressed) 24f else 16f,
@@ -940,22 +940,6 @@ private fun ProgressCard(
 ) {
     val clampedProgress = progress.coerceIn(0, 100)
 
-    val animatedProgress by animateFloatAsState(
-        targetValue = clampedProgress / 100f,
-        animationSpec = if (LocalInspectionMode.current) tween(durationMillis = 1000) else tween(durationMillis = 1000),
-        label = "progress",
-    )
-
-    val progressColor by animateColorAsState(
-        targetValue = when {
-            clampedProgress < 75 -> progressbar_green_use // Green
-            clampedProgress < 100 -> progressbar_orange_use // Orange
-            else -> progressbar_red_use // Red
-        },
-        animationSpec = tween(durationMillis = 500),
-        label = "color",
-    )
-
     val isIntervalMode = blockOption == BlockOption.IntervalTimer
     val intervalAllowanceConfigured = isIntervalMode && timeLimit > 0L
     val intervalRemainingMillis = if (isIntervalMode) {
@@ -967,11 +951,34 @@ private fun ProgressCard(
     } else {
         0L
     }
+    val intervalResetReady =
+        intervalAllowanceConfigured &&
+            intervalLength > 0L &&
+            intervalWindowStart > 0L &&
+            intervalRemainingMillis <= 1_000L
+    val displayIntervalUsage = if (intervalResetReady) 0L else intervalUsage
+    val displayProgress = if (intervalResetReady) 0 else clampedProgress
+
+    val animatedProgress by animateFloatAsState(
+        targetValue = displayProgress / 100f,
+        animationSpec = if (LocalInspectionMode.current) tween(durationMillis = 1000) else tween(durationMillis = 1000),
+        label = "progress",
+    )
+
+    val progressColor by animateColorAsState(
+        targetValue = when {
+            displayProgress < 75 -> progressbar_green_use // Green
+            displayProgress < 100 -> progressbar_orange_use // Orange
+            else -> progressbar_red_use // Red
+        },
+        animationSpec = tween(durationMillis = 500),
+        label = "color",
+    )
 
     val primaryText = when {
         isIntervalMode && intervalAllowanceConfigured ->
-            "${intervalUsage.coerceAtLeast(0L).coerceAtMost(timeLimit).formatTime()} / ${timeLimit.formatTime()}"
-        isIntervalMode -> intervalUsage.formatTime()
+            "${displayIntervalUsage.coerceAtLeast(0L).coerceAtMost(timeLimit).formatTime()} / ${timeLimit.formatTime()}"
+        isIntervalMode -> displayIntervalUsage.formatTime()
         blockOption == BlockOption.DailyLimit && timeLimit > 0L ->
             "${currentUsage.formatTime()} / ${timeLimit.formatTime()}"
         else -> currentUsage.formatTime()

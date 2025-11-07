@@ -118,10 +118,9 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
             allowanceMillis,
         )
         viewModelScope.launch {
-            val now = System.currentTimeMillis()
             userSettingsStore.setIntervalLength(intervalBreakMillis)
             userSettingsStore.setTimeLimit(allowanceMillis)
-            userSettingsStore.updateIntervalState(windowStart = now, usage = 0L)
+            userSettingsStore.updateIntervalState(windowStart = 0L, usage = 0L)
             userSettingsStore.setActiveBlockOption(BlockOption.IntervalTimer)
         }
     }
