@@ -77,7 +77,7 @@ fun IntervalTimerDialog(
     var allowanceMinutes by rememberSaveable {
         mutableIntStateOf(
             initialAllowanceMillis.millisToRoundedMinutes(
-                step = 1,
+                step = ALLOWANCE_STEP_MINUTES,
                 min = MIN_ALLOWANCE_MINUTES,
                 max = MAX_ALLOWANCE_MINUTES,
             ),
@@ -197,12 +197,7 @@ fun IntervalTimerDialog(
 }
 
 @Composable
-private fun IntervalSettingSection(
-    label: String,
-    description: String,
-    formattedValue: String,
-    slider: @Composable () -> Unit,
-) {
+private fun IntervalSettingSection(label: String, description: String, formattedValue: String, slider: @Composable () -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),

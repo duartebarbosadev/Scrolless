@@ -125,35 +125,31 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         }
     }
 
-    private fun calculateProgress(
-        blockOption: BlockOption,
-        currentUsage: Long,
-        timeLimit: Long,
-        intervalUsage: Long,
-    ): Int = when (blockOption) {
-        BlockOption.DailyLimit -> {
-            if (timeLimit > 0) {
-                val remainingTime = timeLimit - currentUsage
-                if (remainingTime > 0) {
-                    min(PROGRESS_MAX, ((currentUsage.toDouble() / timeLimit.toDouble()) * PROGRESS_MAX).toInt())
+    private fun calculateProgress(blockOption: BlockOption, currentUsage: Long, timeLimit: Long, intervalUsage: Long): Int =
+        when (blockOption) {
+            BlockOption.DailyLimit -> {
+                if (timeLimit > 0) {
+                    val remainingTime = timeLimit - currentUsage
+                    if (remainingTime > 0) {
+                        min(PROGRESS_MAX, ((currentUsage.toDouble() / timeLimit.toDouble()) * PROGRESS_MAX).toInt())
+                    } else {
+                        PROGRESS_MAX
+                    }
                 } else {
-                    PROGRESS_MAX
+                    0
                 }
-            } else {
-                0
             }
-        }
 
-        BlockOption.IntervalTimer -> {
-            if (timeLimit > 0) {
-                min(PROGRESS_MAX, ((intervalUsage.toDouble() / timeLimit.toDouble()) * PROGRESS_MAX).toInt())
-            } else {
-                0
+            BlockOption.IntervalTimer -> {
+                if (timeLimit > 0) {
+                    min(PROGRESS_MAX, ((intervalUsage.toDouble() / timeLimit.toDouble()) * PROGRESS_MAX).toInt())
+                } else {
+                    0
+                }
             }
-        }
 
-        else -> 0
-    }
+            else -> 0
+        }
 
     fun onSnackbarShown() {
         Timber.v("Snackbar dismissed")

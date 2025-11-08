@@ -26,10 +26,7 @@ import timber.log.Timber
  * @property windowStartMillis Epoch millis at which the current allowance window started.
  * @property usageMillis Milliseconds already consumed during the active allowance window.
  */
-data class IntervalTimerState(
-    val windowStartMillis: Long,
-    val usageMillis: Long,
-)
+data class IntervalTimerState(val windowStartMillis: Long, val usageMillis: Long)
 
 /**
  * Blocks content when the watch allowance for the current interval window is exhausted.

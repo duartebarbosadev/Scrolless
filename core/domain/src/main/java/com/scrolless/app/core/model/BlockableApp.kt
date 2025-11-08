@@ -36,7 +36,8 @@ enum class BlockableApp(val packageId: String, private val viewId: String, priva
         "com.zhiliaoapp.musically",
         "com.zhiliaoapp.musically:id/ulz",
         GLOBAL_ACTION_HOME,
-    );
+    ),
+    ;
 
     fun getViewId(): String = viewId
 

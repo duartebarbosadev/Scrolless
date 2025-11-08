@@ -86,24 +86,23 @@ class BlockingManagerImpl @Inject constructor(private val usageTracker: UsageTra
         timeLimit: Long,
         intervalLength: Long,
         intervalState: IntervalTimerState,
-    ): BlockOptionHandler =
-        when (blockOption) {
-            BlockOption.BlockAll -> BlockAllBlockHandler().also { Timber.d("Using BlockAll handler") }
-            BlockOption.DailyLimit -> DayLimitBlockHandler(timeLimit).also { Timber.d("Using DayLimit handler (limit=%d)", timeLimit) }
-            BlockOption.IntervalTimer ->
-                IntervalTimerBlockHandler(
-                    allowanceMillis = timeLimit,
-                    intervalLengthMillis = intervalLength,
-                    initialState = intervalState,
-                    onStateChanged = { state ->
-                        persistenceScope.launch {
-                            userSettingsStore.updateIntervalState(state.windowStartMillis, state.usageMillis)
-                        }
-                    },
-                ).also { Timber.d("Using IntervalTimer handler (limit=%d, interval=%d)", timeLimit, intervalLength) }
+    ): BlockOptionHandler = when (blockOption) {
+        BlockOption.BlockAll -> BlockAllBlockHandler().also { Timber.d("Using BlockAll handler") }
+        BlockOption.DailyLimit -> DayLimitBlockHandler(timeLimit).also { Timber.d("Using DayLimit handler (limit=%d)", timeLimit) }
+        BlockOption.IntervalTimer ->
+            IntervalTimerBlockHandler(
+                allowanceMillis = timeLimit,
+                intervalLengthMillis = intervalLength,
+                initialState = intervalState,
+                onStateChanged = { state ->
+                    persistenceScope.launch {
+                        userSettingsStore.updateIntervalState(state.windowStartMillis, state.usageMillis)
+                    }
+                },
+            ).also { Timber.d("Using IntervalTimer handler (limit=%d, interval=%d)", timeLimit, intervalLength) }
 
-            BlockOption.NothingSelected -> NoBlockHandler().also { Timber.d("Using NothingSelected handler") }
-        }
+        BlockOption.NothingSelected -> NoBlockHandler().also { Timber.d("Using NothingSelected handler") }
+    }
 
     /**
      * Called when entering blocked content.

@@ -35,7 +35,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -43,21 +42,22 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonGroup
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Button
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -65,12 +65,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonColors
 import androidx.compose.material3.ToggleButtonShapes
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -81,9 +81,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
@@ -114,15 +114,15 @@ import com.scrolless.app.ui.home.components.IntervalTimerDialog
 import com.scrolless.app.ui.home.components.TimeLimitDialog
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.tooling.DevicePreviews
+import com.scrolless.app.ui.utils.formatMinutes
 import com.scrolless.app.util.formatTime
 import com.scrolless.app.util.isAccessibilityServiceEnabled
 import com.scrolless.app.util.radialGradientScrim
 import com.scrolless.app.util.requestAppReview
-import com.scrolless.app.ui.utils.formatMinutes
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
+import timber.log.Timber
 
 private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
 private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)
@@ -718,10 +718,7 @@ private fun IntervalValueChip(label: String, value: String, modifier: Modifier =
 }
 
 @Composable
-private fun IntervalTimerPointer(
-    color: Color,
-    modifier: Modifier = Modifier,
-) {
+private fun IntervalTimerPointer(color: Color, modifier: Modifier = Modifier) {
     Canvas(modifier = modifier.size(width = 42.dp, height = 16.dp)) {
         val path = Path().apply {
             moveTo(0f, 0f)
@@ -734,11 +731,7 @@ private fun IntervalTimerPointer(
 }
 
 @Composable
-private fun rememberIntervalRemainingTime(
-    isRunning: Boolean,
-    intervalLength: Long,
-    windowStart: Long,
-): Long {
+private fun rememberIntervalRemainingTime(isRunning: Boolean, intervalLength: Long, windowStart: Long): Long {
     val isInspectionMode = LocalInspectionMode.current
 
     fun calculateRemaining(): Long {
@@ -1219,7 +1212,6 @@ fun PreviewNothingSelected() {
     }
 }
 
-
 @Preview(name = "Interval Timer Selected")
 @Composable
 fun PreviewIntervalTimerSelected() {
@@ -1275,7 +1267,6 @@ fun PreviewIntervalTimer() {
         )
     }
 }
-
 
 @Preview(name = "Help Dialog")
 @Composable
