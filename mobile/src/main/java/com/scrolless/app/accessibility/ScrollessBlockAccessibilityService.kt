@@ -252,7 +252,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // Only trigger changes if detection state actually changed
         if (onBrainRotApp != null) {
 
-            //val watchingBrainrotContent =
             Timber.v("Detected brain rot app running: %s", onBrainRotApp)
             detectedApp = onBrainRotApp
             onBlockedContentEntered()
@@ -298,12 +297,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private fun detectAppForBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): BlockableApp? =
         BlockableApp.entries.firstOrNull { appEnum ->
             if (appEnum.packageId == packageId) {
-
-                for (id in appEnum.getViewIds()) {
-                    if (rootNode.findAccessibilityNodeInfosByViewId(id).isNotEmpty()) {
-                        Timber.d("Detected blocked content for app: %s (viewId=%s)", appEnum.name, id)
-                        return@firstOrNull true
-                    }
+                val id = appEnum.getViewId()
+                if (rootNode.findAccessibilityNodeInfosByViewId(appEnum.getViewId()).isNotEmpty()) {
+                    Timber.d("Detected blocked content for app: %s (viewId=%s)", appEnum.name, id)
+                    return@firstOrNull true
                 }
             }
 
@@ -337,9 +334,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         startPeriodicCheck()
 
         // If timer overlay is enabled and block all isn't selected, show it
-        if (currentTimerOverlayEnabled &&
-            currentBlockOption != BlockOption.BlockAll
-        ) {
+        if (currentTimerOverlayEnabled && currentBlockOption != BlockOption.BlockAll) {
 
             Timber.v("Showing timer overlay")
             timerOverlayManager.show()
