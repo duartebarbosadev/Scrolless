@@ -138,6 +138,20 @@ fun <T1, T2, T3, T4, T5, T6, T7, R> combine(
     )
 }
 
+/**
+ * Combines seven flows into a single flow by combining their latest values using the provided transform function.
+ *
+ * @param flow The first flow.
+ * @param flow2 The second flow.
+ * @param flow3 The third flow.
+ * @param flow4 The fourth flow.
+ * @param flow5 The fifth flow.
+ * @param flow6 The sixth flow.
+ * @param flow7 The seventh flow.
+ * @param flow8 The eighth flow.
+ * @param transform The transform function to combine the latest values of the seven flows.
+ * @return A flow that emits the results of the transform function applied to the latest values of the seven flows.
+ */
 fun <T1, T2, T3, T4, T5, T6, T7, T8, R> combine(
     flow: Flow<T1>,
     flow2: Flow<T2>,
@@ -170,6 +184,21 @@ fun <T1, T2, T3, T4, T5, T6, T7, T8, R> combine(
     )
 }
 
+/**
+ * Combines nine flows into a single flow by combining their latest values using the provided transform function.
+ *
+ * @param flow The first flow.
+ * @param flow2 The second flow.
+ * @param flow3 The third flow.
+ * @param flow4 The fourth flow.
+ * @param flow5 The fifth flow.
+ * @param flow6 The sixth flow.
+ * @param flow7 The seventh flow.
+ * @param flow8 The eighth flow.
+ * @param flow9 The ninth flow.
+ * @param transform The transform function to combine the latest values of the nine flows.
+ * @return A flow that emits the results of the transform function applied to the latest values of the nine flows.
+ */
 fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, R> combine(
     flow: Flow<T1>,
     flow2: Flow<T2>,
