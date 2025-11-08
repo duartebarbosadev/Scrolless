@@ -47,6 +47,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.scrolless.app.R
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.tooling.DevicePreviews
+import com.scrolless.app.ui.utils.formatMinutes
 import kotlin.math.roundToInt
 
 private const val MIN_BREAK_MINUTES = 30
@@ -118,7 +119,7 @@ fun IntervalTimerDialog(
                 IntervalSettingSection(
                     label = stringResource(R.string.interval_timer_dialog_break_label),
                     description = stringResource(R.string.interval_timer_dialog_break_description),
-                    formattedValue = formatMinutes(breakMinutes),
+                    formattedValue = breakMinutes.formatMinutes(),
                 ) {
                     Slider(
                         value = breakMinutes.toFloat(),
@@ -140,7 +141,7 @@ fun IntervalTimerDialog(
                 IntervalSettingSection(
                     label = stringResource(R.string.interval_timer_dialog_allowance_label),
                     description = stringResource(R.string.interval_timer_dialog_allowance_description),
-                    formattedValue = formatMinutes(allowanceMinutes),
+                    formattedValue = allowanceMinutes.formatMinutes(),
                 ) {
                     Slider(
                         value = allowanceMinutes.toFloat(),
@@ -162,8 +163,8 @@ fun IntervalTimerDialog(
                 Text(
                     text = stringResource(
                         R.string.interval_timer_dialog_summary,
-                        formatMinutes(allowanceMinutes),
-                        formatMinutes(breakMinutes),
+                        allowanceMinutes.formatMinutes(),
+                        breakMinutes.formatMinutes(),
                     ),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -239,22 +240,6 @@ private fun Long.millisToRoundedMinutes(step: Int, min: Int, max: Int): Int {
 }
 
 private fun Int.minutesToMillis(): Long = this * MINUTE_IN_MILLIS
-
-private fun formatMinutes(minutes: Int): String {
-    val hours = minutes / 60
-    val remainingMinutes = minutes % 60
-    return buildString {
-        if (hours > 0) {
-            append(hours)
-            append("h")
-        }
-        if (remainingMinutes > 0 || hours == 0) {
-            if (isNotEmpty()) append(" ")
-            append(remainingMinutes)
-            append("m")
-        }
-    }
-}
 
 private fun snapToStepValue(value: Float, step: Int, min: Int, max: Int): Int {
     val coerced = value.coerceIn(min.toFloat(), max.toFloat())

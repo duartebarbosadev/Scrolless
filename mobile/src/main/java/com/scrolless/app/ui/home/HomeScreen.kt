@@ -118,6 +118,7 @@ import com.scrolless.app.util.formatTime
 import com.scrolless.app.util.isAccessibilityServiceEnabled
 import com.scrolless.app.util.radialGradientScrim
 import com.scrolless.app.util.requestAppReview
+import com.scrolless.app.ui.utils.formatMinutes
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.delay
@@ -770,19 +771,7 @@ private fun rememberIntervalRemainingTime(
 private fun Long.toIntervalLabel(): String {
     if (this <= 0L) return "--"
     val totalMinutes = (this / 60_000L).toInt()
-    val hours = totalMinutes / 60
-    val minutes = totalMinutes % 60
-    return buildString {
-        if (hours > 0) {
-            append(hours)
-            append("h")
-        }
-        if (minutes > 0 || hours == 0) {
-            if (isNotEmpty()) append(" ")
-            append(minutes)
-            append("m")
-        }
-    }
+    return totalMinutes.formatMinutes()
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
