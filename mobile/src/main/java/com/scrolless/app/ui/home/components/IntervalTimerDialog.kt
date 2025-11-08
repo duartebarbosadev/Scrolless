@@ -51,8 +51,8 @@ import com.scrolless.app.ui.utils.formatMinutes
 import kotlin.math.roundToInt
 
 private const val MIN_BREAK_MINUTES = 30
-private const val MAX_BREAK_MINUTES = 180
-private const val BREAK_STEP_MINUTES = 15
+private const val MAX_BREAK_MINUTES = 600
+private const val BREAK_STEP_MINUTES = 30
 
 private const val ALLOWANCE_STEP_MINUTES = 1
 private const val MIN_ALLOWANCE_MINUTES = 1
