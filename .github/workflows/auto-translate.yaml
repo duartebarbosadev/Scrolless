@@ -34,15 +34,6 @@ jobs:
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
 
-      - name: Persist translation report
-        run: |
-          cat <<'EOF' > translation-report.md
-          ${{ steps.translate.outputs.translation_report }}
-
-          ---
-          This pull request was automatically generated.
-          EOF
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
@@ -52,7 +43,11 @@ jobs:
           author: "${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>"
           signoff: "false"
           title: "[Translate Bot] Auto-generated translations for non-English languages"
-          body-path: translation-report.md
+          body: |
+            ${{ steps.translate.outputs.translation_report }}
+
+            ---
+            This pull request was automatically generated.
           labels: "translation, automated pr"
           assignees: "duartebarbosadev"
           reviewers: "duartebarbosadev"
