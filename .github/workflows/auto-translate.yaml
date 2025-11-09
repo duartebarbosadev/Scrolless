@@ -25,13 +25,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Debug paths
-        run: |
-          echo "PWD=$PWD"
-          echo "RUNNER_TEMP=$RUNNER_TEMP"
-          ls -la .
-          ls -la "$RUNNER_TEMP" || true
-
       - name: Translate strings.xml to supported languages
         id: translate
         uses: duartebarbosadev/AndroidResourceTranslator@main
