@@ -251,7 +251,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         // Only trigger changes if detection state actually changed
         if (onBrainRotApp != null) {
-
             Timber.v("Detected brain rot app running: %s", onBrainRotApp)
             detectedApp = onBrainRotApp
             onBlockedContentEntered()
