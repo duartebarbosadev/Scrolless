@@ -36,7 +36,7 @@ jobs:
 
       - name: Save translation report for PR body
         run: |
-          cat <<'EOF' > translation_report.md
+          cat <<'EOF' > "$RUNNER_TEMP/translation_report.md"
           ${{ steps.translate.outputs.translation_report }}
           EOF
 
@@ -49,12 +49,7 @@ jobs:
           author: "${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>"
           signoff: "false"
           title: "[Translate Bot] Auto-generated translations for non-English languages"
-          body-path: translation_report.md
+          body-path: ${{ env.RUNNER_TEMP }}/translation_report.md
           labels: "translation, automated pr"
           assignees: "duartebarbosadev"
           reviewers: "duartebarbosadev"
-
-
-      - name: Cleanup report file
-        if: always()
-        run: rm -f translation_report.md
