@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">दैनिक मर्यादा वेळ सेट करा</string>
     <string name="total_time_wasted">ब्रेन रॉटमध्ये वाया गेलेला एकूण वेळ</string>
     <string name="visit_github">GitHub रेपॉजिटरीला भेट द्या</string>
+    <string name="interval_timer_card_allowance_chip">पाहण्याचा वेळ</string>
+    <string name="interval_timer_card_break_chip">ब्रेकची लांबी</string>
+    <string name="interval_timer_card_edit">शेड्यूल संपादित करा</string>
+    <string name="interval_timer_card_hint">प्रत्येक ब्रेक विंडो नंतर स्क्रॉलेस तुमची अनुमती रीसेट करते.</string>
+    <string name="interval_timer_card_set_schedule">शेड्यूल सेट करा</string>
+    <string name="interval_timer_card_summary">प्रत्येक %2$s मध्ये %1$s पर्यंत पहा</string>
+    <string name="interval_timer_card_summary_empty">ब्रेक बदलणे सुरू करण्यासाठी तुमचे पहिले शेड्यूल सेट करा.</string>
+    <string name="interval_timer_card_title">इंटरव्हल टाइमर शेड्यूल</string>
+    <string name="interval_timer_dialog_allowance_description">ब्रेक सुरू झाल्यावर तुम्ही शॉर्ट्स किती वेळ पाहू शकता.</string>
+    <string name="interval_timer_dialog_allowance_label">पाहण्याची अनुमती दिलेली वेळ</string>
+    <string name="interval_timer_dialog_break_description">पुढील ब्रेकपूर्वी स्क्रॉलेस समर्थित ॲप्स इतक्या वेळेसाठी ब्लॉक ठेवते.</string>
+    <string name="interval_timer_dialog_break_label">ब्रेक कालावधी</string>
+    <string name="interval_timer_dialog_cancel">रद्द करा</string>
+    <string name="interval_timer_dialog_save">शेड्यूल सेव्ह करा</string>
+    <string name="interval_timer_dialog_subtitle">सामग्री किती वेळ लॉक राहते आणि तुम्ही प्रत्येक ब्रेक मध्ये किती वेळ पाहू शकता ते निवडा.</string>
+    <string name="interval_timer_dialog_summary">परिणाम: प्रत्येक %2$s मध्ये %1$s पर्यंत</string>
+    <string name="interval_timer_dialog_title">इंटरव्हल टाइमर कॉन्फिगर करा</string>
+    <string name="interval_timer_next_reset_in">%1$s मध्ये रीसेट होईल</string>
+    <string name="interval_timer_next_reset_ready">पुढील ब्रेक अनलॉक झाला</string>
+    <string name="interval_timer_next_reset_unknown">तुमच्या पहिल्या ब्रेक विंडो नंतर शेड्यूल सुरू होईल.</string>
 </resources>

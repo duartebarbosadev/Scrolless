@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Setați Limita Zilnică de Timp</string>
     <string name="total_time_wasted">Timp total pierdut în „brain rot”</string>
     <string name="visit_github">Vizitați Repozitoriul GitHub</string>
+    <string name="interval_timer_card_allowance_chip">Timp de vizionare</string>
+    <string name="interval_timer_card_break_chip">Durata pauzei</string>
+    <string name="interval_timer_card_edit">Editează programul</string>
+    <string name="interval_timer_card_hint">Scrolless îți resetează timpul permis după fiecare fereastră de pauză.</string>
+    <string name="interval_timer_card_set_schedule">Setează programul</string>
+    <string name="interval_timer_card_summary">Vizionează până la %1$s la fiecare %2$s</string>
+    <string name="interval_timer_card_summary_empty">Setează primul tău program pentru a începe alternarea pauzelor.</string>
+    <string name="interval_timer_card_title">Program cronometru interval</string>
+    <string name="interval_timer_dialog_allowance_description">Cât timp poți viziona conținut scurt odată ce începe o pauză.</string>
+    <string name="interval_timer_dialog_allowance_label">Timp de vizionare permis</string>
+    <string name="interval_timer_dialog_break_description">Scrolless menține aplicațiile suportate blocate pentru această durată înainte de următoarea pauză.</string>
+    <string name="interval_timer_dialog_break_label">Durata pauzei</string>
+    <string name="interval_timer_dialog_cancel">Anulează</string>
+    <string name="interval_timer_dialog_save">Salvează programul</string>
+    <string name="interval_timer_dialog_subtitle">Alege cât timp rămâne conținutul blocat și cât timp poți viziona în fiecare pauză.</string>
+    <string name="interval_timer_dialog_summary">Rezultat: până la %1$s la fiecare %2$s</string>
+    <string name="interval_timer_dialog_title">Configurează cronometrul interval</string>
+    <string name="interval_timer_next_reset_in">Se resetează în %1$s</string>
+    <string name="interval_timer_next_reset_ready">Următoarea pauză deblocată</string>
+    <string name="interval_timer_next_reset_unknown">Programul va începe după prima ta fereastră de pauză.</string>
 </resources>

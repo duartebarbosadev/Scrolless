@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Ορισμός Ώρας Ημερήσιου Ορίου</string>
     <string name="total_time_wasted">Συνολικός χρόνος που σπαταλήθηκε σε brain rot</string>
     <string name="visit_github">Επίσκεψη στο Αποθετήριο GitHub</string>
+    <string name="interval_timer_card_allowance_chip">Χρόνος παρακολούθησης</string>
+    <string name="interval_timer_card_break_chip">Διάρκεια διαλείμματος</string>
+    <string name="interval_timer_card_edit">Επεξεργασία προγράμματος</string>
+    <string name="interval_timer_card_hint">Το Scrolless μηδενίζει το επιτρεπόμενο όριό σας μετά από κάθε παράθυρο διαλείμματος.</string>
+    <string name="interval_timer_card_set_schedule">Ορισμός προγράμματος</string>
+    <string name="interval_timer_card_summary">Παρακολουθήστε έως %1$s κάθε %2$s</string>
+    <string name="interval_timer_card_summary_empty">Ορίστε το πρώτο σας πρόγραμμα για να ξεκινήσετε τα εναλλασσόμενα διαλείμματα.</string>
+    <string name="interval_timer_card_title">Πρόγραμμα χρονοδιακόπτη διαστήματος</string>
+    <string name="interval_timer_dialog_allowance_description">Πόσο καιρό μπορείτε να παρακολουθήσετε shorts μόλις ξεκινήσει ένα διάλειμμα.</string>
+    <string name="interval_timer_dialog_allowance_label">Επιτρεπόμενος χρόνος παρακολούθησης</string>
+    <string name="interval_timer_dialog_break_description">Το Scrolless διατηρεί τις υποστηριζόμενες εφαρμογές μπλοκαρισμένες για αυτό το διάστημα πριν από το επόμενο διάλειμμα.</string>
+    <string name="interval_timer_dialog_break_label">Διάρκεια διαλείμματος</string>
+    <string name="interval_timer_dialog_cancel">Ακύρωση</string>
+    <string name="interval_timer_dialog_save">Αποθήκευση προγράμματος</string>
+    <string name="interval_timer_dialog_subtitle">Επιλέξτε πόσο καιρό το περιεχόμενο παραμένει κλειδωμένο και πόσο χρόνο μπορείτε να παρακολουθήσετε σε κάθε διάλειμμα.</string>
+    <string name="interval_timer_dialog_summary">Αποτέλεσμα: έως %1$s κάθε %2$s</string>
+    <string name="interval_timer_dialog_title">Διαμόρφωση χρονοδιακόπτη διαστήματος</string>
+    <string name="interval_timer_next_reset_in">Επαναφορά σε %1$s</string>
+    <string name="interval_timer_next_reset_ready">Το επόμενο διάλειμμα ξεκλείδωσε</string>
+    <string name="interval_timer_next_reset_unknown">Το πρόγραμμα θα ξεκινήσει μετά το πρώτο σας παράθυρο διαλείμματος.</string>
 </resources>

@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Günlük Sınır Süresini Ayarla</string>
     <string name="total_time_wasted">Beyin çürümesinde harcanan toplam süre</string>
     <string name="visit_github">GitHub Deposunu Ziyaret Et</string>
+    <string name="interval_timer_card_allowance_chip">İzleme süresi</string>
+    <string name="interval_timer_card_break_chip">Mola süresi</string>
+    <string name="interval_timer_card_edit">Programı düzenle</string>
+    <string name="interval_timer_card_hint">Scrolless, her moladan sonra izleme sürenizi sıfırlar.</string>
+    <string name="interval_timer_card_set_schedule">Program ayarla</string>
+    <string name="interval_timer_card_summary">Her %2$s sürede %1$s kadar izle</string>
+    <string name="interval_timer_card_summary_empty">Molaları değiştirmeye başlamak için ilk programınızı ayarlayın.</string>
+    <string name="interval_timer_card_title">Aralıklı zamanlayıcı programı</string>
+    <string name="interval_timer_dialog_allowance_description">Mola başladıktan sonra kısa videoları ne kadar izleyebileceğiniz.</string>
+    <string name="interval_timer_dialog_allowance_label">İzin verilen izleme süresi</string>
+    <string name="interval_timer_dialog_break_description">Scrolless, bir sonraki moladan önce desteklenen uygulamaları bu süre boyunca engeller.</string>
+    <string name="interval_timer_dialog_break_label">Mola süresi</string>
+    <string name="interval_timer_dialog_cancel">İptal</string>
+    <string name="interval_timer_dialog_save">Programı kaydet</string>
+    <string name="interval_timer_dialog_subtitle">İçeriğin ne kadar süreyle kilitli kalacağını ve her molada ne kadar süre izleyebileceğinizi seçin.</string>
+    <string name="interval_timer_dialog_summary">Sonuç: her %2$s sürede %1$s kadar</string>
+    <string name="interval_timer_dialog_title">Aralıklı zamanlayıcıyı yapılandır</string>
+    <string name="interval_timer_next_reset_in">Sıfırlanmasına %1$s kaldı</string>
+    <string name="interval_timer_next_reset_ready">Sonraki mola kilidi açıldı</string>
+    <string name="interval_timer_next_reset_unknown">Program, ilk mola pencerenizden sonra başlayacaktır.</string>
 </resources>

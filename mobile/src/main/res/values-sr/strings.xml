@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Podesite vreme dnevnog ograničenja</string>
     <string name="total_time_wasted">Ukupno izgubljeno vreme u „brain rot-u“</string>
     <string name="visit_github">Poseti GitHub repozitorijum</string>
+    <string name="interval_timer_card_allowance_chip">Vreme gledanja</string>
+    <string name="interval_timer_card_break_chip">Dužina pauze</string>
+    <string name="interval_timer_card_edit">Uredi raspored</string>
+    <string name="interval_timer_card_hint">Scrolless resetuje vaše dozvoljeno vreme nakon svakog prozora pauze.</string>
+    <string name="interval_timer_card_set_schedule">Podesi raspored</string>
+    <string name="interval_timer_card_summary">Gledajte do %1$s svakih %2$s</string>
+    <string name="interval_timer_card_summary_empty">Podesite svoj prvi raspored da biste počeli sa naizmeničnim pauzama.</string>
+    <string name="interval_timer_card_title">Raspored intervalnog tajmera</string>
+    <string name="interval_timer_dialog_allowance_description">Koliko dugo možete da gledate kratke video zapise kada pauza počne.</string>
+    <string name="interval_timer_dialog_allowance_label">Dozvoljeno vreme gledanja</string>
+    <string name="interval_timer_dialog_break_description">Scrolless drži podržane aplikacije blokirane tokom ovog vremena pre sledeće pauze.</string>
+    <string name="interval_timer_dialog_break_label">Trajanje pauze</string>
+    <string name="interval_timer_dialog_cancel">Otkaži</string>
+    <string name="interval_timer_dialog_save">Sačuvaj raspored</string>
+    <string name="interval_timer_dialog_subtitle">Izaberite koliko dugo sadržaj ostaje zaključan i koliko vremena možete da gledate tokom svake pauze.</string>
+    <string name="interval_timer_dialog_summary">Rezultat: do %1$s svakih %2$s</string>
+    <string name="interval_timer_dialog_title">Konfiguriši intervalni tajmer</string>
+    <string name="interval_timer_next_reset_in">Resetuje se za %1$s</string>
+    <string name="interval_timer_next_reset_ready">Sledeća pauza otključana</string>
+    <string name="interval_timer_next_reset_unknown">Raspored će početi nakon vašeg prvog prozora pauze.</string>
 </resources>
