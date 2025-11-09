@@ -840,8 +840,8 @@ fun FeatureButtonsRow(
                         IntervalTimerPointer(
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .offset(y = 10.dp),
+                                .align(Alignment.BottomEnd)
+                                .offset(y = 10.dp, x = (-10).dp),
                         )
                     }
                 }
