@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">Εικονίδιο Άδειας Προσβασιμότητας</string>
+    <string name="accessibility_explainer_not_now_button">Όχι Τώρα</string>
+    <string name="accessibility_explainer_open_source">Ο κώδικάς μας είναι 100\\% ανοιχτού κώδικα στο GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Το Scrolless χρησιμοποιεί αυτήν την άδεια μόνο για να εντοπίζει και να σταματά το περιεχόμενο σύντομης μορφής. Δεν συλλέγουμε προσωπικά δεδομένα.</string>
+    <string name="accessibility_explainer_proceed_button">Μετάβαση στις Ρυθμίσεις</string>
+    <string name="accessibility_explainer_step1">Πατήστε \"Μετάβαση στις Ρυθμίσεις\" παρακάτω για να ανοίξετε τις ρυθμίσεις Προσβασιμότητας του Android</string>
+    <string name="accessibility_explainer_step2">Βρείτε τις εφαρμογές και πατήστε στο \"Scrolless\" στη λίστα υπηρεσιών</string>
+    <string name="accessibility_explainer_step3">Ενεργοποιήστε τον διακόπτη για να επιτρέψετε στο Scrolless να σας βοηθήσει να σταματήσετε το ατελείωτο scrolling</string>
+    <string name="accessibility_explainer_subtitle">Το Scrolless χρειάζεται πρόσβαση στην προσβασιμότητα για να εντοπίζει και να σταματά τα σύντομα βίντεο.</string>
+    <string name="accessibility_explainer_title">Χρειαζόμαστε Πρόσβαση στην Προσβασιμότητα</string>
+    <string name="accessibility_service_description">Αυτή η υπηρεσία εντοπίζει πότε ανοίγουν reels/shorts/tiktok, ώστε το Scrolless να μπορεί να τα μπλοκάρει, αν έχει ρυθμιστεί.</string>
+    <string name="accessibility_success_description">Το Scrolless είναι τώρα έτοιμο!</string>
+    <string name="accessibility_success_title">Όλα Έτοιμα!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">Μπλοκάρισμα\nΌλων</string>
+    <string name="cd_add">Προσθήκη</string>
+    <string name="close">Κλείσιμο</string>
+    <string name="daily_limit">Ημερήσιο\nΌριο</string>
+    <string name="feature_coming_soon">Η λειτουργία έρχεται σύντομα</string>
+    <string name="get_started">Ξεκινήστε</string>
+    <string name="go_to_accessibility_settings">Μετάβαση στις Ρυθμίσεις Προσβασιμότητας</string>
+    <string name="help">Βοήθεια</string>
+    <string name="help_dialog_title">Το Scrolless δεν λειτουργεί;</string>
+    <string name="help_step1_description">Επιλέξτε μία από τις επιλογές μπλοκαρίσματος από την κύρια οθόνη</string>
+    <string name="help_step1_title">Επιλέξτε την Επιλογή Μπλοκαρίσματος</string>
+    <string name="help_step2_description">Αν το μπλοκάρισμα δεν λειτουργεί, απενεργοποιήστε και μετά ενεργοποιήστε την υπηρεσία προσβασιμότητας και δοκιμάστε να απενεργοποιήσετε τη βελτιστοποίηση μπαταρίας για το Scrolless.</string>
+    <string name="help_step2_title">Αντιμετώπιση Προβλημάτων</string>
+    <string name="help_step3_description">Εξακολουθείτε να αντιμετωπίζετε προβλήματα; Είμαστε εδώ για να βοηθήσουμε! Χρησιμοποιήστε το παρακάτω κουμπί για να επικοινωνήσετε στο αποθετήριο GitHub.</string>
+    <string name="help_step3_title">Επικοινωνία με την Υποστήριξη</string>
+    <string name="icons8_attribution">Εικονίδια παρέχονται από το Icons8 (icons8.com)</string>
+    <string name="interval_timer">Χρονόμετρο\nΔιαστήματος</string>
+    <string name="next_step_1">Επιλέξτε μια λειτουργία μπλοκαρίσματος</string>
+    <string name="next_step_2">Δοκιμάστε τη λειτουργία ημερήσιου ορίου και ενεργοποιήστε την επικάλυψη χρονομέτρου</string>
+    <string name="next_steps_title">Επόμενα Βήματα</string>
+    <string name="pause">Παύση</string>
+    <string name="rate_scrolless">Βαθμολογήστε το Scrolless στο Play Store</string>
+    <string name="show_timer_overlay">Εμφάνιση Επικάλυψης Χρονομέτρου</string>
+    <string name="success_icon_description">Εικονίδιο επιτυχίας (τικ)</string>
+    <string name="time_limit_dialog_title">Ορισμός Ώρας Ημερήσιου Ορίου</string>
+    <string name="total_time_wasted">Συνολικός χρόνος που σπαταλήθηκε σε brain rot</string>
+    <string name="visit_github">Επίσκεψη στο Αποθετήριο GitHub</string>
+</resources>

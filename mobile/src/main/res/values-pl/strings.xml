@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">Ikona uprawnienia ułatwień dostępu</string>
+    <string name="accessibility_explainer_not_now_button">Nie teraz</string>
+    <string name="accessibility_explainer_open_source">Nasz kod jest w 100\\% otwarty na GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless używa tego uprawnienia tylko do wykrywania i zatrzymywania krótkich treści. Nie zbieramy żadnych danych osobowych.</string>
+    <string name="accessibility_explainer_proceed_button">Przejdź do Ustawień</string>
+    <string name="accessibility_explainer_step1">Dotknij \"Przejdź do Ustawień\" poniżej, aby otworzyć ustawienia ułatwień dostępu Androida</string>
+    <string name="accessibility_explainer_step2">Znajdź aplikacje i dotknij \"Scrolless\" na liście usług</string>
+    <string name="accessibility_explainer_step3">Przełącz przełącznik na WŁ., aby umożliwić Scrolless pomoc w zatrzymaniu niekończącego się przewijania</string>
+    <string name="accessibility_explainer_subtitle">Scrolless potrzebuje dostępu do ułatwień dostępu, aby wykrywać i zatrzymywać krótkie filmy.</string>
+    <string name="accessibility_explainer_title">Potrzebujemy dostępu do ułatwień dostępu</string>
+    <string name="accessibility_service_description">Ta usługa wykrywa, kiedy otwierane są Reels/Shorts/TikTok, aby Scrolless mógł je zablokować, jeśli jest to skonfigurowane.</string>
+    <string name="accessibility_success_description">Scrolless jest teraz gotowy!</string>
+    <string name="accessibility_success_title">Wszystko gotowe!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">Blokuj\nWszystko</string>
+    <string name="cd_add">Dodaj</string>
+    <string name="close">Zamknij</string>
+    <string name="daily_limit">Limit\nDzienny</string>
+    <string name="feature_coming_soon">Funkcja wkrótce dostępna</string>
+    <string name="get_started">Rozpocznij</string>
+    <string name="go_to_accessibility_settings">Przejdź do Ustawień ułatwień dostępu</string>
+    <string name="help">Pomoc</string>
+    <string name="help_dialog_title">Scrolless nie działa\?</string>
+    <string name="help_step1_description">Wybierz jedną z opcji blokowania z ekranu głównego</string>
+    <string name="help_step1_title">Wybierz opcję blokowania</string>
+    <string name="help_step2_description">Jeśli blokowanie nie działa, wyłącz, a następnie włącz usługę ułatwień dostępu i spróbuj wyłączyć optymalizację baterii dla Scrolless.</string>
+    <string name="help_step2_title">Rozwiązywanie problemów</string>
+    <string name="help_step3_description">Nadal masz problemy\? Jesteśmy tu, aby pomóc! Użyj przycisku poniżej, aby skontaktować się z nami w naszym repozytorium GitHub.</string>
+    <string name="help_step3_title">Skontaktuj się z pomocą techniczną</string>
+    <string name="icons8_attribution">Ikony dostarczone przez Icons8 (icons8.com)</string>
+    <string name="interval_timer">Licznik\nInterwałowy</string>
+    <string name="next_step_1">Wybierz tryb blokowania</string>
+    <string name="next_step_2">Wypróbuj funkcję limitu dziennego i aktywuj nakładkę licznika czasu</string>
+    <string name="next_steps_title">Następne kroki</string>
+    <string name="pause">Pauza</string>
+    <string name="rate_scrolless">Oceń Scrolless w Sklepie Play</string>
+    <string name="show_timer_overlay">Pokaż nakładkę licznika czasu</string>
+    <string name="success_icon_description">Ikona znacznika sukcesu</string>
+    <string name="time_limit_dialog_title">Ustaw dzienny limit czasu</string>
+    <string name="total_time_wasted">Całkowity czas zmarnowany na brain rot</string>
+    <string name="visit_github">Odwiedź repozytorium GitHub</string>
+</resources>

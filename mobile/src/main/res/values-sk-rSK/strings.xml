@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">Ikona povolenia prístupnosti</string>
+    <string name="accessibility_explainer_not_now_button">Teraz nie</string>
+    <string name="accessibility_explainer_open_source">Náš kód je 100\\% open source na GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless používa toto povolenie len na detekciu a zastavenie krátkeho obsahu. Nezhromažďujeme žiadne osobné informácie.</string>
+    <string name="accessibility_explainer_proceed_button">Prejsť do Nastavení</string>
+    <string name="accessibility_explainer_step1">Ťuknite na \"Prejsť do Nastavení\" nižšie, aby ste otvorili nastavenia prístupnosti systému Android</string>
+    <string name="accessibility_explainer_step2">Nájdite aplikácie a ťuknite na \"Scrolless\" v zozname služieb</string>
+    <string name="accessibility_explainer_step3">Prepnite prepínač do polohy ZAPNUTÉ, aby ste povolili aplikácii Scrolless pomôcť vám zastaviť nekonečné scrollovanie</string>
+    <string name="accessibility_explainer_subtitle">Scrolless potrebuje prístup k prístupnosti na detekciu a zastavenie krátkych videí.</string>
+    <string name="accessibility_explainer_title">Potrebujeme prístup k prístupnosti</string>
+    <string name="accessibility_service_description">Táto služba detekuje, kedy sú otvorené reels/shorts/tiktok, aby ich Scrolless mohol zablokovať, ak je to nakonfigurované.</string>
+    <string name="accessibility_success_description">Scrolless je teraz pripravený!</string>
+    <string name="accessibility_success_title">Všetko nastavené!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">Blokovať\nVšetko</string>
+    <string name="cd_add">Pridať</string>
+    <string name="close">Zavrieť</string>
+    <string name="daily_limit">Denný\nLimit</string>
+    <string name="feature_coming_soon">Funkcia už čoskoro</string>
+    <string name="get_started">Začať</string>
+    <string name="go_to_accessibility_settings">Prejsť do Nastavení prístupnosti</string>
+    <string name="help">Pomoc</string>
+    <string name="help_dialog_title">Scrolless nefunguje\?</string>
+    <string name="help_step1_description">Vyberte jednu z možností blokovania na hlavnej obrazovke</string>
+    <string name="help_step1_title">Vyberte si možnosť blokovania</string>
+    <string name="help_step2_description">Ak blokovanie nefunguje, vypnite a potom zapnite službu prístupnosti a skúste vypnúť optimalizáciu batérie pre Scrolless.</string>
+    <string name="help_step2_title">Riešenie problémov</string>
+    <string name="help_step3_description">Stále máte problémy\? Sme tu, aby sme vám pomohli! Použite tlačidlo nižšie a kontaktujte nás v našom GitHub repozitári.</string>
+    <string name="help_step3_title">Kontaktovať podporu</string>
+    <string name="icons8_attribution">Ikony poskytuje Icons8 (icons8.com)</string>
+    <string name="interval_timer">Intervalový\nČasovač</string>
+    <string name="next_step_1">Vyberte režim blokovania</string>
+    <string name="next_step_2">Vyskúšajte funkciu denného limitu a aktivujte prekrytie časovača</string>
+    <string name="next_steps_title">Ďalšie kroky</string>
+    <string name="pause">Pozastaviť</string>
+    <string name="rate_scrolless">Ohodnotiť Scrolless v Obchode Play</string>
+    <string name="show_timer_overlay">Zobraziť prekrytie časovača</string>
+    <string name="success_icon_description">Ikona začiarknutia úspechu</string>
+    <string name="time_limit_dialog_title">Nastaviť čas denného limitu</string>
+    <string name="total_time_wasted">Celkový čas premrhaný v brain rot</string>
+    <string name="visit_github">Navštíviť GitHub Repozitár</string>
+</resources>

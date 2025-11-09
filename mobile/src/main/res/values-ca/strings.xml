@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">Icon de permís d\'accessibilitat</string>
+    <string name="accessibility_explainer_not_now_button">Ara no</string>
+    <string name="accessibility_explainer_open_source">El nostre codi és 100\\% de codi obert a GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless només utilitza aquest permís per detectar i aturar el contingut de format curt. No recollim cap informació personal.</string>
+    <string name="accessibility_explainer_proceed_button">Vés a Configuració</string>
+    <string name="accessibility_explainer_step1">Toca \"Vés a Configuració\" a continuació per obrir la configuració d\'Accessibilitat d\'Android</string>
+    <string name="accessibility_explainer_step2">Cerca aplicacions i toca \"Scrolless\" a la llista de serveis</string>
+    <string name="accessibility_explainer_step3">Activa l\'interruptor per permetre que Scrolless t\'ajudi a aturar el desplaçament sense fi</string>
+    <string name="accessibility_explainer_subtitle">Scrolless necessita accés a l\'accessibilitat per detectar i aturar vídeos curts.</string>
+    <string name="accessibility_explainer_title">Necessitem accés a l\'accessibilitat</string>
+    <string name="accessibility_service_description">Aquest servei detecta quan s\'obren reels/shorts/tiktok perquè Scrolless els pugui bloquejar si està configurat.</string>
+    <string name="accessibility_success_description">Scrolless ja està a punt!</string>
+    <string name="accessibility_success_title">Tot a punt!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">Bloqueja\nTot</string>
+    <string name="cd_add">Afegeix</string>
+    <string name="close">Tanca</string>
+    <string name="daily_limit">Límit\ndiari</string>
+    <string name="feature_coming_soon">Funció properament</string>
+    <string name="get_started">Comença</string>
+    <string name="go_to_accessibility_settings">Vés a Configuració d\'Accessibilitat</string>
+    <string name="help">Ajuda</string>
+    <string name="help_dialog_title">Scrolless no funciona\?</string>
+    <string name="help_step1_description">Selecciona una de les opcions de bloqueig a la pantalla principal</string>
+    <string name="help_step1_title">Tria la teva opció de bloqueig</string>
+    <string name="help_step2_description">Si el bloqueig no funciona, desactiva i torna a activar el servei d\'accessibilitat i prova de desactivar l\'optimització de la bateria per a Scrolless.</string>
+    <string name="help_step2_title">Resolució de problemes</string>
+    <string name="help_step3_description">Encara tens problemes\? Som aquí per ajudar-te! Utilitza el botó següent per contactar-nos al nostre repositori de GitHub.</string>
+    <string name="help_step3_title">Contacta amb el suport</string>
+    <string name="icons8_attribution">Icones proporcionades per Icons8 (icons8.com)</string>
+    <string name="interval_timer">Temporitzador\nd\'interval</string>
+    <string name="next_step_1">Selecciona un mode de bloqueig</string>
+    <string name="next_step_2">Prova la funció de límit diari i activa la superposició del temporitzador</string>
+    <string name="next_steps_title">Passos següents</string>
+    <string name="pause">Pausa</string>
+    <string name="rate_scrolless">Valora Scrolless a Play Store</string>
+    <string name="show_timer_overlay">Mostra la superposició del temporitzador</string>
+    <string name="success_icon_description">Icona de marca de verificació d\'èxit</string>
+    <string name="time_limit_dialog_title">Estableix el temps límit diari</string>
+    <string name="total_time_wasted">Temps total perdut en deteriorament mental</string>
+    <string name="visit_github">Visita el repositori de GitHub</string>
+</resources>

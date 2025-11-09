@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">Tilgangstillatelsesikon</string>
+    <string name="accessibility_explainer_not_now_button">Ikke nå</string>
+    <string name="accessibility_explainer_open_source">Koden vår er 100\\% åpen kildekode på GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless bruker kun denne tillatelsen til å oppdage og stoppe kortformatinnhold. Vi samler ikke inn personlig informasjon.</string>
+    <string name="accessibility_explainer_proceed_button">Gå til Innstillinger</string>
+    <string name="accessibility_explainer_step1">Trykk på \"Gå til Innstillinger\" nedenfor for å åpne Androids Tilgjengelighetsinnstillinger</string>
+    <string name="accessibility_explainer_step2">Finn applikasjoner og trykk på \"Scrolless\" i listen over tjenester</string>
+    <string name="accessibility_explainer_step3">Slå bryteren PÅ for å la Scrolless hjelpe deg med å stoppe endeløs scrolling</string>
+    <string name="accessibility_explainer_subtitle">Scrolless trenger tilgang til tilgjengelighet for å oppdage og stoppe korte videoer.</string>
+    <string name="accessibility_explainer_title">Vi trenger tilgang til tilgjengelighet</string>
+    <string name="accessibility_service_description">Denne tjenesten oppdager når Reels/Shorts/TikTok åpnes, slik at Scrolless kan blokkere dem hvis konfigurert.</string>
+    <string name="accessibility_success_description">Scrolless er nå klar!</string>
+    <string name="accessibility_success_title">Alt klart!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">Blokker\nAlt</string>
+    <string name="cd_add">Legg til</string>
+    <string name="close">Lukk</string>
+    <string name="daily_limit">Daglig\nGrense</string>
+    <string name="feature_coming_soon">Funksjon kommer snart</string>
+    <string name="get_started">Kom i gang</string>
+    <string name="go_to_accessibility_settings">Gå til Tilgjengelighetsinnstillinger</string>
+    <string name="help">Hjelp</string>
+    <string name="help_dialog_title">Scrolless fungerer ikke\?</string>
+    <string name="help_step1_description">Velg et av blokkeringsalternativene fra hovedskjermen</string>
+    <string name="help_step1_title">Velg blokkeringsalternativ</string>
+    <string name="help_step2_description">Hvis blokkeringen ikke fungerer, deaktiver og deretter aktiver tilgjengelighetstjenesten, og prøv å deaktivere batterioptimalisering for Scrolless.</string>
+    <string name="help_step2_title">Feilsøking</string>
+    <string name="help_step3_description">Har du fortsatt problemer\? Vi er her for å hjelpe! Bruk knappen nedenfor for å kontakte oss på vårt GitHub-repo.</string>
+    <string name="help_step3_title">Kontakt kundestøtte</string>
+    <string name="icons8_attribution">Ikoner levert av Icons8 (icons8.com)</string>
+    <string name="interval_timer">Intervall\nTidtaker</string>
+    <string name="next_step_1">Velg en blokkeringsmodus</string>
+    <string name="next_step_2">Prøv funksjonen for daglig grense og aktiver tidtakeroverlegget</string>
+    <string name="next_steps_title">Neste trinn</string>
+    <string name="pause">Pause</string>
+    <string name="rate_scrolless">Vurder Scrolless på Play Store</string>
+    <string name="show_timer_overlay">Vis tidtakeroverlegg</string>
+    <string name="success_icon_description">Suksess-hakeikon</string>
+    <string name="time_limit_dialog_title">Angi daglig grensetid</string>
+    <string name="total_time_wasted">Total tid bortkastet på hjernedød underholdning</string>
+    <string name="visit_github">Besøk GitHub-repositoriet</string>
+</resources>

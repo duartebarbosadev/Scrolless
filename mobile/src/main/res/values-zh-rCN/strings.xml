@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">无障碍权限图标</string>
+    <string name="accessibility_explainer_not_now_button">暂不</string>
+    <string name="accessibility_explainer_open_source">我们的代码在 GitHub 上 100\% 开源。</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless 仅使用此权限来检测和阻止短视频内容。我们不会收集任何个人信息。</string>
+    <string name="accessibility_explainer_proceed_button">前往设置</string>
+    <string name="accessibility_explainer_step1">点击下方的“前往设置”以打开 Android 的无障碍设置</string>
+    <string name="accessibility_explainer_step2">在服务列表中找到应用并点击“Scrolless”</string>
+    <string name="accessibility_explainer_step3">将开关切换到“开”以启用 Scrolless，帮助您停止无休止的滚动</string>
+    <string name="accessibility_explainer_subtitle">Scrolless 需要无障碍权限才能检测和阻止短视频。</string>
+    <string name="accessibility_explainer_title">我们需要无障碍权限</string>
+    <string name="accessibility_service_description">此服务用于检测何时打开 Reels/Shorts/TikTok，以便 Scrolless 在配置后可以阻止它们。</string>
+    <string name="accessibility_success_description">Scrolless 现已就绪！</string>
+    <string name="accessibility_success_title">全部设置完毕！</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">全部\n阻止</string>
+    <string name="cd_add">添加</string>
+    <string name="close">关闭</string>
+    <string name="daily_limit">每日\n限制</string>
+    <string name="feature_coming_soon">功能即将推出</string>
+    <string name="get_started">开始使用</string>
+    <string name="go_to_accessibility_settings">前往无障碍设置</string>
+    <string name="help">帮助</string>
+    <string name="help_dialog_title">Scrolless 不工作？</string>
+    <string name="help_step1_description">从主屏幕选择一个阻止选项</string>
+    <string name="help_step1_title">选择您的阻止选项</string>
+    <string name="help_step2_description">如果阻止不工作，请禁用然后重新启用无障碍服务，并尝试禁用 Scrolless 的电池优化。</string>
+    <string name="help_step2_title">故障排除</string>
+    <string name="help_step3_description">仍然有问题？我们随时为您提供帮助！使用下面的按钮在我们的 GitHub 仓库中联系我们。</string>
+    <string name="help_step3_title">联系支持</string>
+    <string name="icons8_attribution">图标由 Icons8 (icons8.com) 提供</string>
+    <string name="interval_timer">间隔\n计时器</string>
+    <string name="next_step_1">选择一个阻止模式</string>
+    <string name="next_step_2">尝试每日限制功能并激活计时器浮层</string>
+    <string name="next_steps_title">后续步骤</string>
+    <string name="pause">暂停</string>
+    <string name="rate_scrolless">在 Play 商店评价 Scrolless</string>
+    <string name="show_timer_overlay">显示计时器浮层</string>
+    <string name="success_icon_description">成功复选标记图标</string>
+    <string name="time_limit_dialog_title">设置每日限制时间</string>
+    <string name="total_time_wasted">浪费在“脑力退化”上的总时间</string>
+    <string name="visit_github">访问 GitHub 仓库</string>
+</resources>

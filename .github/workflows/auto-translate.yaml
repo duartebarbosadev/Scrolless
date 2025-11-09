@@ -30,33 +30,26 @@ jobs:
         uses: duartebarbosadev/AndroidResourceTranslator@main
         with:
           project_context: "Scrolless is an Android app designed to help users reduce time spent on social media and avoid brainrot by limiting endless scrolling of Reels, Shorts, and TikToks."
+          log_trace: "true"
           
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
 
-      - name: Persist translation report
+      - name: Save translation report for PR body
         run: |
-          cat <<'EOF' > translation-report.md
+          cat <<'EOF' > "${{ runner.temp }}/translation_report.md"
           ${{ steps.translate.outputs.translation_report }}
-
-          ---
-          This pull request was automatically generated.
           EOF
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          branch: auto-translate  # Fixed branch name
+          branch: auto-translate
           commit-message: "[Translate Bot] Auto-generated translations for non-English languages"
           committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
           author: "${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>"
           signoff: "false"
           title: "[Translate Bot] Auto-generated translations for non-English languages"
-          body-path: translation-report.md
+          body-path: ${{ runner.temp }}/translation_report.md
           labels: "translation, automated pr"
           assignees: "duartebarbosadev"
           reviewers: "duartebarbosadev"
-
-
-      - name: Cleanup temporary files
-        run: rm -f translation-report.md
