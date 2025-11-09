@@ -35,6 +35,26 @@
 
     <string name="feature_coming_soon">Feature coming soon</string>
     <string name="time_limit_dialog_title">Set Daily Limit Time</string>
+    <string name="interval_timer_card_title">Interval timer schedule</string>
+    <string name="interval_timer_card_summary">Watch up to %1$s every %2$s</string>
+    <string name="interval_timer_card_summary_empty">Set your first schedule to start alternating breaks.</string>
+    <string name="interval_timer_card_allowance_chip">Watch time</string>
+    <string name="interval_timer_card_break_chip">Break length</string>
+    <string name="interval_timer_card_hint">Scrolless resets your allowance after each break window.</string>
+    <string name="interval_timer_card_edit">Edit schedule</string>
+    <string name="interval_timer_card_set_schedule">Set schedule</string>
+    <string name="interval_timer_dialog_title">Configure interval timer</string>
+    <string name="interval_timer_dialog_subtitle">Choose how long content stays locked and how much time you can watch in each break.</string>
+    <string name="interval_timer_dialog_break_label">Break duration</string>
+    <string name="interval_timer_dialog_break_description">Scrolless keeps supported apps blocked for this long before the next break.</string>
+    <string name="interval_timer_dialog_allowance_label">Allowed watch time</string>
+    <string name="interval_timer_dialog_allowance_description">How long you can watch shorts once a break starts.</string>
+    <string name="interval_timer_dialog_summary">Result: up to %1$s every %2$s</string>
+    <string name="interval_timer_dialog_cancel">Cancel</string>
+    <string name="interval_timer_dialog_save">Save schedule</string>
+    <string name="interval_timer_next_reset_in">Resets in %1$s</string>
+    <string name="interval_timer_next_reset_ready">Next break unlocked</string>
+    <string name="interval_timer_next_reset_unknown">Schedule will start after your first break window.</string>
 
     <!-- Step numbers - non-translatable -->
     <string name="step_one" translatable="false">1</string>

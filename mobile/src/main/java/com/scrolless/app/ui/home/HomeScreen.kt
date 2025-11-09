@@ -25,6 +25,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,13 +42,17 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonGroup
 import androidx.compose.material3.Card
@@ -60,6 +65,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
@@ -69,12 +75,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
@@ -101,14 +110,22 @@ import com.scrolless.app.ui.home.components.AccessibilityExplainerBottomSheet
 import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheet
 import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheetPreview
 import com.scrolless.app.ui.home.components.HelpDialog
+import com.scrolless.app.ui.home.components.IntervalTimerDialog
 import com.scrolless.app.ui.home.components.TimeLimitDialog
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.tooling.DevicePreviews
+import com.scrolless.app.ui.utils.formatMinutes
 import com.scrolless.app.util.formatTime
 import com.scrolless.app.util.isAccessibilityServiceEnabled
 import com.scrolless.app.util.radialGradientScrim
 import com.scrolless.app.util.requestAppReview
+import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import timber.log.Timber
+
+private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
+private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
@@ -122,6 +139,9 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
     var showAccessibilityExplainer by remember { mutableStateOf(false) }
     var showAccessibilitySuccess by remember { mutableStateOf(false) }
     var debugBypassAccessibilityCheck by remember { mutableStateOf(false) }
+    var showIntervalTimerDialog by remember { mutableStateOf(false) }
+    var pendingIntervalBreak by remember { mutableStateOf(DEFAULT_INTERVAL_BREAK_MILLIS) }
+    var pendingIntervalAllowance by remember { mutableStateOf(DEFAULT_INTERVAL_ALLOWANCE_MILLIS) }
 
     val activity = context as? Activity
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -156,6 +176,12 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
     }
 
     HomeBackground(modifier = modifier.fillMaxSize()) {
+        fun openIntervalConfig() {
+            pendingIntervalBreak = uiState.intervalLength.takeIf { it > 0L } ?: DEFAULT_INTERVAL_BREAK_MILLIS
+            pendingIntervalAllowance = uiState.timeLimit.takeIf { it > 0L } ?: DEFAULT_INTERVAL_ALLOWANCE_MILLIS
+            showIntervalTimerDialog = true
+        }
+
         HomeContent(
             modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing),
             uiState = uiState,
@@ -193,6 +219,34 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                 Timber.i("Review button clicked")
                 viewModel.onReviewRequested()
             },
+            onIntervalTimerClick = {
+                val shouldBypass = BuildConfig.DEBUG && debugBypassAccessibilityCheck
+                if (shouldBypass || context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+                    Timber.i("Interval timer clicked -> current=%s", uiState.blockOption)
+                    if (uiState.blockOption == BlockOption.IntervalTimer) {
+                        viewModel.onBlockOptionSelected(BlockOption.NothingSelected)
+                    } else if (uiState.intervalLength == 0L || uiState.timeLimit == 0L) {
+                        openIntervalConfig()
+                    } else {
+                        viewModel.onBlockOptionSelected(BlockOption.IntervalTimer)
+                    }
+                } else {
+                    Timber.w("Accessibility service not enabled. Showing explainer (interval timer).")
+                    viewModel.setWaitingForAccessibility(true)
+                    showAccessibilityExplainer = true
+                }
+            },
+            onIntervalTimerEdit = {
+                val shouldBypass = BuildConfig.DEBUG && debugBypassAccessibilityCheck
+                if (shouldBypass || context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+                    Timber.d("Interval timer edit requested")
+                    openIntervalConfig()
+                } else {
+                    Timber.w("Accessibility service not enabled. Showing explainer (interval timer config).")
+                    viewModel.setWaitingForAccessibility(true)
+                    showAccessibilityExplainer = true
+                }
+            },
             onPauseClicked = {
                 Timber.i("Pause clicked (coming soon)")
                 viewModel.onFeatureComingSoon()
@@ -225,6 +279,26 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                     Timber.i("Setting time limit to %d seconds", selectedSeconds)
                     viewModel.onTimeLimitChange(selectedSeconds * 1000) // Convert to millis
                 }
+            },
+        )
+    }
+
+    if (showIntervalTimerDialog) {
+        IntervalTimerDialog(
+            initialBreakMillis = pendingIntervalBreak,
+            initialAllowanceMillis = pendingIntervalAllowance,
+            onConfirm = { breakMillis, allowanceMillis ->
+                Timber.i(
+                    "Interval timer schedule saved: break=%d, allowance=%d",
+                    breakMillis,
+                    allowanceMillis,
+                )
+                showIntervalTimerDialog = false
+                viewModel.onIntervalTimerConfigChange(breakMillis, allowanceMillis)
+            },
+            onDismiss = {
+                Timber.d("Interval timer dialog dismissed")
+                showIntervalTimerDialog = false
             },
         )
     }
@@ -276,6 +350,8 @@ private fun HomeContent(
     onTimerOverlayToggled: (Boolean) -> Unit,
     onHelpClicked: () -> Unit,
     onReviewClicked: () -> Unit,
+    onIntervalTimerClick: () -> Unit,
+    onIntervalTimerEdit: () -> Unit,
     onPauseClicked: () -> Unit,
     onProgressCardClicked: () -> Unit = {},
 ) {
@@ -290,7 +366,9 @@ private fun HomeContent(
             .padding(16.dp),
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             // Help Button with padding
@@ -302,10 +380,13 @@ private fun HomeContent(
             }
 
             ProgressCard(
+                blockOption = uiState.blockOption,
                 progress = uiState.progress,
                 currentUsage = uiState.currentUsage,
+                intervalUsage = uiState.intervalUsage,
                 timeLimit = uiState.timeLimit,
-                showTimeLimit = uiState.blockOption == BlockOption.DailyLimit,
+                intervalLength = uiState.intervalLength,
+                intervalWindowStart = uiState.intervalWindowStart,
                 onProgressCardClicked = onProgressCardClicked,
             )
 
@@ -375,8 +456,8 @@ private fun HomeContent(
                     }
                 },
                 onIntervalTimerClick = {
-                    Timber.i("IntervalTimer clicked (feature not implemented)")
-                    onPauseClicked()
+                    Timber.i("IntervalTimer clicked from feature row")
+                    onIntervalTimerClick()
                 },
                 // Pass sources
                 blockAllInteractionSource = blockAllInteractionSource,
@@ -432,6 +513,31 @@ private fun HomeContent(
                 }
             }
 
+            Spacer(
+                modifier = Modifier.height(
+                    if (uiState.blockOption == BlockOption.IntervalTimer) 12.dp else 24.dp,
+                ),
+            )
+
+            AnimatedVisibility(
+                visible = uiState.blockOption == BlockOption.IntervalTimer,
+                enter = expandVertically(
+                    expandFrom = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeIn(animationSpec = tween(200)),
+                exit = shrinkVertically(
+                    shrinkTowards = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeOut(animationSpec = tween(200)),
+            ) {
+                IntervalTimerSettingsCard(
+                    intervalLengthMillis = uiState.intervalLength,
+                    allowanceMillis = uiState.timeLimit,
+                    onEditClick = onIntervalTimerEdit,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+
             Spacer(modifier = Modifier.height(24.dp))
 
             PauseButton(onClick = onPauseClicked)
@@ -466,7 +572,7 @@ fun ConfigButton(
 
     // Fast tweens for visual feedback
     val animationSpec = tween<Float>(durationMillis = 100)
-    val colorAnimationSpec = tween<androidx.compose.ui.graphics.Color>(durationMillis = 100)
+    val colorAnimationSpec = tween<Color>(durationMillis = 100)
 
     val bottomCorner by animateFloatAsState(
         targetValue = if (isPressed) 24f else 16f,
@@ -501,6 +607,164 @@ fun ConfigButton(
                 .fillMaxHeight(),
         )
     }
+}
+
+@Composable
+private fun IntervalTimerSettingsCard(
+    intervalLengthMillis: Long,
+    allowanceMillis: Long,
+    onEditClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val hasSchedule = intervalLengthMillis > 0 && allowanceMillis > 0
+    val allowanceLabel = if (hasSchedule) allowanceMillis.toIntervalLabel() else "--"
+    val breakLabel = if (hasSchedule) intervalLengthMillis.toIntervalLabel() else "--"
+    val actionLabel = if (hasSchedule) {
+        stringResource(R.string.interval_timer_card_edit)
+    } else {
+        stringResource(R.string.interval_timer_card_set_schedule)
+    }
+
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            Text(
+                text = if (hasSchedule) {
+                    stringResource(
+                        R.string.interval_timer_card_summary,
+                        allowanceLabel,
+                        breakLabel,
+                    )
+                } else {
+                    stringResource(R.string.interval_timer_card_summary_empty)
+                },
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                IntervalValueChip(
+                    label = stringResource(R.string.interval_timer_card_allowance_chip),
+                    value = allowanceLabel,
+                    modifier = Modifier.weight(1f),
+                )
+                IntervalValueChip(
+                    label = stringResource(R.string.interval_timer_card_break_chip),
+                    value = breakLabel,
+                    modifier = Modifier.weight(1f),
+                )
+            }
+
+            Text(
+                text = stringResource(R.string.interval_timer_card_hint),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.75f),
+            )
+
+            Button(
+                onClick = onEditClick,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                ),
+            ) {
+                Text(text = actionLabel)
+            }
+        }
+    }
+}
+
+@Composable
+private fun IntervalValueChip(label: String, value: String, modifier: Modifier = Modifier) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(20.dp),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.65f),
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                text = value,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+    }
+}
+
+@Composable
+private fun IntervalTimerPointer(color: Color, modifier: Modifier = Modifier) {
+    Canvas(modifier = modifier.size(width = 42.dp, height = 16.dp)) {
+        val path = Path().apply {
+            moveTo(0f, 0f)
+            lineTo(size.width, 0f)
+            lineTo(size.width / 2f, size.height)
+            close()
+        }
+        drawPath(path = path, color = color)
+    }
+}
+
+@Composable
+private fun rememberIntervalRemainingTime(isRunning: Boolean, intervalLength: Long, windowStart: Long): Long {
+    val isInspectionMode = LocalInspectionMode.current
+
+    fun calculateRemaining(): Long {
+        if (intervalLength <= 0L || windowStart <= 0L) return 0L
+        val now = System.currentTimeMillis()
+        val elapsed = now - windowStart
+        if (elapsed < 0L) return intervalLength
+        val remainder = intervalLength - (elapsed % intervalLength)
+        return remainder.coerceAtLeast(0L)
+    }
+
+    var remaining by remember(isRunning, intervalLength, windowStart) {
+        mutableLongStateOf(calculateRemaining())
+    }
+
+    LaunchedEffect(isRunning, intervalLength, windowStart, isInspectionMode) {
+        if (!isRunning || intervalLength <= 0L || windowStart <= 0L || isInspectionMode) {
+            remaining = calculateRemaining()
+        } else {
+            while (isActive) {
+                remaining = calculateRemaining()
+                delay(1_000L)
+            }
+        }
+    }
+
+    return remaining
+}
+
+private fun Long.toIntervalLabel(): String {
+    if (this <= 0L) return "--"
+    val totalMinutes = (this / 60_000L).toInt()
+    return totalMinutes.formatMinutes()
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -557,16 +821,30 @@ fun FeatureButtonsRow(
 
         customItem(
             buttonGroupContent = {
-                FeatureButton(
-                    onClick = onIntervalTimerClick,
-                    icon = R.drawable.icons8_stopwatch_64,
-                    text = stringResource(id = R.string.interval_timer),
-                    contentDescription = stringResource(id = R.string.interval_timer),
-                    isSelected = selectedOption == BlockOption.IntervalTimer,
-                    isEnabled = false,
-                    interactionSource = intervalInteractionSource,
-                    modifier = Modifier.weight(intervalAnimatedWeight), // Using animated weight
-                )
+                Box(
+                    modifier = Modifier
+                        .weight(intervalAnimatedWeight)
+                        .fillMaxSize(),
+                ) {
+                    FeatureButton(
+                        onClick = onIntervalTimerClick,
+                        icon = R.drawable.icons8_stopwatch_64,
+                        text = stringResource(id = R.string.interval_timer),
+                        contentDescription = stringResource(id = R.string.interval_timer),
+                        isSelected = selectedOption == BlockOption.IntervalTimer,
+                        interactionSource = intervalInteractionSource,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+
+                    if (selectedOption == BlockOption.IntervalTimer) {
+                        IntervalTimerPointer(
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .offset(y = 10.dp, x = (-10).dp),
+                        )
+                    }
+                }
             },
             menuContent = {},
         )
@@ -633,27 +911,74 @@ fun FeatureButton(
 
 @Composable
 private fun ProgressCard(
+    blockOption: BlockOption,
     progress: Int,
     currentUsage: Long,
+    intervalUsage: Long,
     timeLimit: Long,
-    showTimeLimit: Boolean,
+    intervalLength: Long,
+    intervalWindowStart: Long,
     onProgressCardClicked: () -> Unit = {},
 ) {
+    val clampedProgress = progress.coerceIn(0, 100)
+
+    val isIntervalMode = blockOption == BlockOption.IntervalTimer
+    val intervalAllowanceConfigured = isIntervalMode && timeLimit > 0L
+    val intervalRemainingMillis = if (isIntervalMode) {
+        rememberIntervalRemainingTime(
+            isRunning = intervalAllowanceConfigured && intervalLength > 0L && intervalWindowStart > 0L,
+            intervalLength = intervalLength,
+            windowStart = intervalWindowStart,
+        )
+    } else {
+        0L
+    }
+    val intervalResetReady =
+        intervalAllowanceConfigured &&
+            intervalLength > 0L &&
+            intervalWindowStart > 0L &&
+            intervalRemainingMillis <= 1_000L
+    val displayIntervalUsage = if (intervalResetReady) 0L else intervalUsage
+    val displayProgress = if (intervalResetReady) 0 else clampedProgress
+
     val animatedProgress by animateFloatAsState(
-        targetValue = progress / 100f,
+        targetValue = displayProgress / 100f,
         animationSpec = if (LocalInspectionMode.current) tween(durationMillis = 1000) else tween(durationMillis = 1000),
         label = "progress",
     )
 
     val progressColor by animateColorAsState(
         targetValue = when {
-            progress < 75 -> progressbar_green_use // Green
-            progress < 100 -> progressbar_orange_use // Orange
+            displayProgress < 75 -> progressbar_green_use // Green
+            displayProgress < 100 -> progressbar_orange_use // Orange
             else -> progressbar_red_use // Red
         },
         animationSpec = tween(durationMillis = 500),
         label = "color",
     )
+
+    val primaryText = when {
+        isIntervalMode && intervalAllowanceConfigured ->
+            "${displayIntervalUsage.coerceAtLeast(0L).coerceAtMost(timeLimit).formatTime()} / ${timeLimit.formatTime()}"
+        isIntervalMode -> displayIntervalUsage.formatTime()
+        blockOption == BlockOption.DailyLimit && timeLimit > 0L ->
+            "${currentUsage.formatTime()} / ${timeLimit.formatTime()}"
+        else -> currentUsage.formatTime()
+    }
+
+    val resetText = if (isIntervalMode) {
+        when {
+            !intervalAllowanceConfigured -> stringResource(R.string.interval_timer_next_reset_unknown)
+            intervalLength <= 0L || intervalWindowStart <= 0L -> stringResource(R.string.interval_timer_next_reset_unknown)
+            intervalRemainingMillis <= 1_000L -> stringResource(R.string.interval_timer_next_reset_ready)
+            else -> stringResource(
+                R.string.interval_timer_next_reset_in,
+                intervalRemainingMillis.formatTime(),
+            )
+        }
+    } else {
+        null
+    }
 
     Card(
         modifier = Modifier
@@ -681,11 +1006,7 @@ private fun ProgressCard(
                 modifier = Modifier.padding(16.dp),
             ) {
                 Text(
-                    text = if (showTimeLimit) {
-                        "${currentUsage.formatTime()} / ${timeLimit.formatTime()}"
-                    } else {
-                        currentUsage.formatTime()
-                    },
+                    text = primaryText,
                     modifier = Modifier.padding(top = 16.dp),
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
@@ -699,6 +1020,16 @@ private fun ProgressCard(
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
                     textAlign = TextAlign.Center,
                 )
+
+                if (resetText != null) {
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        text = resetText,
+                        fontSize = 12.sp,
+                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
         }
     }
@@ -838,6 +1169,8 @@ fun HomeScreenPreview() {
             onTimerOverlayToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
+            onIntervalTimerClick = {},
+            onIntervalTimerEdit = {},
             onPauseClicked = {},
         )
     }
@@ -854,6 +1187,8 @@ fun PreviewBlockAll() {
             onTimerOverlayToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
+            onIntervalTimerClick = {},
+            onIntervalTimerEdit = {},
             onPauseClicked = {},
         )
     }
@@ -870,6 +1205,33 @@ fun PreviewNothingSelected() {
             onTimerOverlayToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
+            onIntervalTimerClick = {},
+            onIntervalTimerEdit = {},
+            onPauseClicked = {},
+        )
+    }
+}
+
+@Preview(name = "Interval Timer Selected")
+@Composable
+fun PreviewIntervalTimerSelected() {
+    ScrollessTheme {
+        HomeContent(
+            uiState = HomeUiState(
+                blockOption = BlockOption.IntervalTimer,
+                timeLimit = TimeUnit.MINUTES.toMillis(5),
+                intervalLength = TimeUnit.MINUTES.toMillis(60),
+                intervalUsage = TimeUnit.MINUTES.toMillis(3),
+                intervalWindowStart = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(30),
+                currentUsage = TimeUnit.MINUTES.toMillis(42),
+            ),
+            onBlockOptionSelected = {},
+            onConfigureDailyLimit = {},
+            onTimerOverlayToggled = {},
+            onHelpClicked = {},
+            onReviewClicked = {},
+            onIntervalTimerClick = {},
+            onIntervalTimerEdit = {},
             onPauseClicked = {},
         )
     }
@@ -880,19 +1242,33 @@ fun PreviewNothingSelected() {
 fun PreviewIntervalTimer() {
     ScrollessTheme {
         HomeContent(
-            uiState = HomeUiState(blockOption = BlockOption.DailyLimit),
+            uiState = HomeUiState(
+                blockOption = BlockOption.IntervalTimer,
+                timeLimit = TimeUnit.MINUTES.toMillis(5),
+                intervalLength = TimeUnit.MINUTES.toMillis(60),
+                intervalUsage = TimeUnit.MINUTES.toMillis(4),
+                intervalWindowStart = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(45),
+                currentUsage = TimeUnit.MINUTES.toMillis(50),
+            ),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
             onTimerOverlayToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
+            onIntervalTimerClick = {},
+            onIntervalTimerEdit = {},
             onPauseClicked = {},
         )
-        TimeLimitDialog { onDismissedSeconds -> {} }
+        IntervalTimerDialog(
+            initialBreakMillis = TimeUnit.MINUTES.toMillis(60),
+            initialAllowanceMillis = TimeUnit.MINUTES.toMillis(5),
+            onConfirm = { _, _ -> },
+            onDismiss = {},
+        )
     }
 }
 
-@Preview(name = "Interval Timer Active")
+@Preview(name = "Help Dialog")
 @Composable
 fun PreviewHelpDialog() {
     ScrollessTheme {
@@ -903,6 +1279,8 @@ fun PreviewHelpDialog() {
             onTimerOverlayToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
+            onIntervalTimerClick = {},
+            onIntervalTimerEdit = {},
             onPauseClicked = {},
         )
         HelpDialog { }
@@ -920,6 +1298,8 @@ fun PreviewAccessibilityExplainer() {
             onTimerOverlayToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
+            onIntervalTimerClick = {},
+            onIntervalTimerEdit = {},
             onPauseClicked = {},
         )
         AccessibilityExplainerBottomSheet { }
@@ -937,6 +1317,8 @@ fun PreviewAccessibilitySuccessDialog() {
             onTimerOverlayToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
+            onIntervalTimerClick = {},
+            onIntervalTimerEdit = {},
             onPauseClicked = {},
         )
         AccessibilitySuccessBottomSheetPreview()

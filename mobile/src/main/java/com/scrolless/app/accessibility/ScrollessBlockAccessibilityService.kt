@@ -200,8 +200,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // Observe changes to the block config
         serviceScope.launch {
             val timeLimitFlow = userSettingsStore.getTimeLimit().distinctUntilChanged()
+            val intervalLengthFlow = userSettingsStore.getIntervalLength().distinctUntilChanged()
             val blockOptionFlow = userSettingsStore.getActiveBlockOption().distinctUntilChanged()
-            combine(timeLimitFlow, blockOptionFlow) { _, blockOption -> blockOption }.collect { blockOption ->
+            combine(timeLimitFlow, intervalLengthFlow, blockOptionFlow) { _, _, blockOption -> blockOption }.collect { blockOption ->
                 Timber.d("Settings changed, re-initializing blocking manager with %s", blockOption)
                 blockingManager.init(blockOption)
             }
@@ -295,12 +296,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private fun detectAppForBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): BlockableApp? =
         BlockableApp.entries.firstOrNull { appEnum ->
             if (appEnum.packageId == packageId) {
-
-                for (id in appEnum.getViewIds()) {
-                    if (rootNode.findAccessibilityNodeInfosByViewId(id).isNotEmpty()) {
-                        Timber.d("Detected blocked content for app: %s (viewId=%s)", appEnum.name, id)
-                        return@firstOrNull true
-                    }
+                val id = appEnum.getViewId()
+                if (rootNode.findAccessibilityNodeInfosByViewId(appEnum.getViewId()).isNotEmpty()) {
+                    Timber.d("Detected blocked content for app: %s (viewId=%s)", appEnum.name, id)
+                    return@firstOrNull true
                 }
             }
 
@@ -334,9 +333,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         startPeriodicCheck()
 
         // If timer overlay is enabled and block all isn't selected, show it
-        if (currentTimerOverlayEnabled &&
-            currentBlockOption != BlockOption.BlockAll
-        ) {
+        if (currentTimerOverlayEnabled && currentBlockOption != BlockOption.BlockAll) {
 
             Timber.v("Showing timer overlay")
             timerOverlayManager.show()
