@@ -16,4 +16,45 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Kisegítő lehetőségek engedély ikon</string>
+    <string name="accessibility_explainer_not_now_button">Most nem</string>
+    <string name="accessibility_explainer_open_source">A kódunk 100\%-ban nyílt forráskódú a GitHubon.</string>
+    <string name="accessibility_explainer_privacy_note">A Scrolless csak arra használja ezt az engedélyt, hogy észlelje és leállítsa a rövid formátumú tartalmakat. Nem gyűjtünk semmilyen személyes információt.</string>
+    <string name="accessibility_explainer_proceed_button">Ugrás a Beállításokhoz</string>
+    <string name="accessibility_explainer_step1">Koppintson az alábbi \"Ugrás a Beállításokhoz\" gombra az Android Kisegítő lehetőségek beállításainak megnyitásához</string>
+    <string name="accessibility_explainer_step2">Keresse meg az alkalmazásokat, és koppintson a \"Scrolless\" elemre a szolgáltatások listájában</string>
+    <string name="accessibility_explainer_step3">Kapcsolja BE állásba a kapcsolót, hogy a Scrolless segíthessen leállítani a végtelen görgetést</string>
+    <string name="accessibility_explainer_subtitle">A Scrollessnek kisegítő lehetőségek hozzáférésre van szüksége a rövid videók észleléséhez és leállításához.</string>
+    <string name="accessibility_explainer_title">Kisegítő lehetőségek hozzáférésre van szükségünk</string>
+    <string name="accessibility_service_description">Ez a szolgáltatás észleli, amikor Reels/Shorts/TikTok videók nyílnak meg, így a Scrolless blokkolhatja őket, ha be van állítva.</string>
+    <string name="accessibility_success_description">A Scrolless most már készen áll!</string>
+    <string name="accessibility_success_title">Minden beállítva!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">Összes\nblokkolása</string>
+    <string name="cd_add">Hozzáadás</string>
+    <string name="close">Bezárás</string>
+    <string name="daily_limit">Napi\nlimit</string>
+    <string name="feature_coming_soon">Hamarosan érkező funkció</string>
+    <string name="get_started">Kezdés</string>
+    <string name="go_to_accessibility_settings">Ugrás a Kisegítő lehetőségek beállításaihoz</string>
+    <string name="help">Súgó</string>
+    <string name="help_dialog_title">A Scrolless nem működik\?</string>
+    <string name="help_step1_description">Válasszon egy blokkolási lehetőséget a főképernyőn</string>
+    <string name="help_step1_title">Válassza ki a blokkolási lehetőséget</string>
+    <string name="help_step2_description">Ha a blokkolás nem működik, tiltsa le, majd engedélyezze újra a kisegítő lehetőségek szolgáltatást, és próbálja meg letiltani az akkumulátor-optimalizálást a Scrolless számára.</string>
+    <string name="help_step2_title">Hibaelhárítás</string>
+    <string name="help_step3_description">Továbbra is problémái vannak\? Itt vagyunk, hogy segítsünk! Használja az alábbi gombot, hogy felvegye velünk a kapcsolatot a GitHub repónkon.</string>
+    <string name="help_step3_title">Kapcsolatfelvétel az ügyfélszolgálattal</string>
+    <string name="icons8_attribution">Ikonok forrása: Icons8 (icons8.com)</string>
+    <string name="interval_timer">Intervallum\nidőzítő</string>
+    <string name="next_step_1">Válasszon egy blokkolási módot</string>
+    <string name="next_step_2">Próbálja ki a napi limit funkciót, és aktiválja az időzítő átfedést</string>
+    <string name="next_steps_title">Következő lépések</string>
+    <string name="pause">Szüneteltetés</string>
+    <string name="rate_scrolless">Értékelje a Scrolless-t a Play Áruházban</string>
+    <string name="show_timer_overlay">Időzítő átfedés megjelenítése</string>
+    <string name="success_icon_description">Siker jelölő ikon</string>
+    <string name="time_limit_dialog_title">Napi limit idő beállítása</string>
+    <string name="total_time_wasted">Összes elpazarolt idő agyhalálban</string>
+    <string name="visit_github">GitHub tároló felkeresése</string>
 </resources>

@@ -16,4 +16,45 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">無障礙權限圖示</string>
+    <string name="accessibility_explainer_not_now_button">暫不</string>
+    <string name="accessibility_explainer_open_source">我們的程式碼 100\% 在 GitHub 上開源。</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless 僅使用此權限來偵測並停止短影音內容。我們不會收集任何個人資訊。</string>
+    <string name="accessibility_explainer_proceed_button">前往設定</string>
+    <string name="accessibility_explainer_step1">點擊下方的「前往設定」以開啟 Android 的無障礙設定</string>
+    <string name="accessibility_explainer_step2">在服務清單中找到應用程式並點擊「Scrolless」</string>
+    <string name="accessibility_explainer_step3">將開關切換為「開啟」以啟用 Scrolless，協助您停止無止盡的捲動</string>
+    <string name="accessibility_explainer_subtitle">Scrolless 需要無障礙使用權限來偵測並停止短影音。</string>
+    <string name="accessibility_explainer_title">我們需要無障礙使用權限</string>
+    <string name="accessibility_service_description">此服務會在 Reels/Shorts/TikTok 開啟時偵測，以便 Scrolless 可以在設定後將其封鎖。</string>
+    <string name="accessibility_success_description">Scrolless 現已準備就緒！</string>
+    <string name="accessibility_success_title">全部設定完成！</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">全部\n封鎖</string>
+    <string name="cd_add">新增</string>
+    <string name="close">關閉</string>
+    <string name="daily_limit">每日\n限制</string>
+    <string name="feature_coming_soon">功能即將推出</string>
+    <string name="get_started">開始使用</string>
+    <string name="go_to_accessibility_settings">前往無障礙設定</string>
+    <string name="help">說明</string>
+    <string name="help_dialog_title">Scrolless 無法運作？</string>
+    <string name="help_step1_description">從主畫面中選擇其中一個封鎖選項</string>
+    <string name="help_step1_title">選擇您的封鎖選項</string>
+    <string name="help_step2_description">如果封鎖無效，請停用然後再啟用無障礙服務，並嘗試停用 Scrolless 的電池最佳化。</string>
+    <string name="help_step2_title">疑難排解</string>
+    <string name="help_step3_description">仍然有問題？我們隨時為您提供協助！使用下方的按鈕在我們的 GitHub 儲存庫上與我們聯繫。</string>
+    <string name="help_step3_title">聯絡支援</string>
+    <string name="icons8_attribution">圖示由 Icons8 提供 (icons8.com)</string>
+    <string name="interval_timer">間隔\n計時器</string>
+    <string name="next_step_1">選擇封鎖模式</string>
+    <string name="next_step_2">試用每日限制功能並啟用計時器疊加層</string>
+    <string name="next_steps_title">後續步驟</string>
+    <string name="pause">暫停</string>
+    <string name="rate_scrolless">在 Play 商店評價 Scrolless</string>
+    <string name="show_timer_overlay">顯示計時器疊加層</string>
+    <string name="success_icon_description">成功核取標記圖示</string>
+    <string name="time_limit_dialog_title">設定每日限制時間</string>
+    <string name="total_time_wasted">浪費在腦霧上的總時間</string>
+    <string name="visit_github">造訪 GitHub 儲存庫</string>
 </resources>
