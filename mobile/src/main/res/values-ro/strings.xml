@@ -16,4 +16,45 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Pictogram Permisiune Accesibilitate</string>
+    <string name="accessibility_explainer_not_now_button">Nu acum</string>
+    <string name="accessibility_explainer_open_source">Codul nostru este 100\% open source pe GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless folosește această permisiune doar pentru a detecta și opri conținutul de format scurt. Nu colectăm informații personale.</string>
+    <string name="accessibility_explainer_proceed_button">Mergi la Setări</string>
+    <string name="accessibility_explainer_step1">Atingeți \"Mergi la Setări\" mai jos pentru a deschide setările de Accesibilitate ale Android</string>
+    <string name="accessibility_explainer_step2">Găsiți aplicațiile și atingeți \"Scrolless\" în lista de servicii</string>
+    <string name="accessibility_explainer_step3">Comutați butonul pe PORNIT pentru a permite Scrolless să vă ajute să opriți derularea fără sfârșit</string>
+    <string name="accessibility_explainer_subtitle">Scrolless are nevoie de accesibilitate pentru a detecta și opri videoclipurile scurte.</string>
+    <string name="accessibility_explainer_title">Avem nevoie de accesibilitate</string>
+    <string name="accessibility_service_description">Acest serviciu detectează când sunt deschise reels/shorts/tiktok, astfel încât Scrolless să le poată bloca dacă este configurat.</string>
+    <string name="accessibility_success_description">Scrolless este gata!</string>
+    <string name="accessibility_success_title">Totul e gata!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">Blochează\nTot</string>
+    <string name="cd_add">Adaugă</string>
+    <string name="close">Închide</string>
+    <string name="daily_limit">Limită\nZilnică</string>
+    <string name="feature_coming_soon">Funcție disponibilă în curând</string>
+    <string name="get_started">Începeți</string>
+    <string name="go_to_accessibility_settings">Mergi la Setările de Accesibilitate</string>
+    <string name="help">Ajutor</string>
+    <string name="help_dialog_title">Scrolless nu funcționează\?</string>
+    <string name="help_step1_description">Selectați una dintre opțiunile de blocare din ecranul principal</string>
+    <string name="help_step1_title">Alegeți Opțiunea de Blocare</string>
+    <string name="help_step2_description">Dacă blocarea nu funcționează, dezactivați și apoi activați serviciul de accesibilitate și încercați să dezactivați optimizarea bateriei pentru Scrolless.</string>
+    <string name="help_step2_title">Depanare</string>
+    <string name="help_step3_description">Încă aveți probleme\? Suntem aici să vă ajutăm! Folosiți butonul de mai jos pentru a ne contacta pe repo-ul nostru GitHub.</string>
+    <string name="help_step3_title">Contactați Asistența</string>
+    <string name="icons8_attribution">Pictograme oferite de Icons8 (icons8.com)</string>
+    <string name="interval_timer">Cronometru\nInterval</string>
+    <string name="next_step_1">Selectați un mod de blocare</string>
+    <string name="next_step_2">Încercați funcția de limită zilnică și activați suprapunerea cronometrului</string>
+    <string name="next_steps_title">Pași Următori</string>
+    <string name="pause">Pauză</string>
+    <string name="rate_scrolless">Evaluați Scrolless pe Magazin Play</string>
+    <string name="show_timer_overlay">Afișează Suprapunerea Cronometrului</string>
+    <string name="success_icon_description">Pictogramă de succes (bifă)</string>
+    <string name="time_limit_dialog_title">Setați Limita Zilnică de Timp</string>
+    <string name="total_time_wasted">Timp total pierdut în „brain rot”</string>
+    <string name="visit_github">Vizitați Repozitoriul GitHub</string>
 </resources>
