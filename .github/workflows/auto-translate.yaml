@@ -44,17 +44,9 @@ jobs:
           signoff: "false"
           title: "[Translate Bot] Auto-generated translations for non-English languages"
           body: |
-
-
             ${{ steps.translate.outputs.translation_report }}
 
-
-
-
-
             ---
-
-
             This pull request was automatically generated.
           labels: "translation, automated pr"
           assignees: "duartebarbosadev"
