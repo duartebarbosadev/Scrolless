@@ -16,4 +16,45 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
+    <string name="accessibility_explainer_icon_description">Biểu tượng Quyền Trợ năng</string>
+    <string name="accessibility_explainer_not_now_button">Để Sau</string>
+    <string name="accessibility_explainer_open_source">Mã của chúng tôi là 100\% mã nguồn mở trên GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless chỉ sử dụng quyền này để phát hiện và chặn nội dung dạng ngắn. Chúng tôi không thu thập bất kỳ thông tin cá nhân nào.</string>
+    <string name="accessibility_explainer_proceed_button">Đi tới Cài đặt</string>
+    <string name="accessibility_explainer_step1">Chạm vào \"Đi tới Cài đặt\" bên dưới để mở cài đặt Trợ năng của Android</string>
+    <string name="accessibility_explainer_step2">Tìm ứng dụng và chạm vào \"Scrolless\" trong danh sách dịch vụ</string>
+    <string name="accessibility_explainer_step3">Bật công tắc sang BẬT để cho phép Scrolless giúp bạn dừng cuộn vô tận</string>
+    <string name="accessibility_explainer_subtitle">Scrolless cần quyền truy cập trợ năng để phát hiện và chặn các video ngắn.</string>
+    <string name="accessibility_explainer_title">Chúng tôi Cần Quyền Truy cập Trợ năng</string>
+    <string name="accessibility_service_description">Dịch vụ này phát hiện khi reels/shorts/tiktok được mở để Scrolless có thể chặn chúng nếu được cấu hình.</string>
+    <string name="accessibility_success_description">Scrolless đã sẵn sàng!</string>
+    <string name="accessibility_success_title">Đã Xong!</string>
+    <string name="app_name">Scrolless</string>
+    <string name="block_all">Chặn\nTất cả</string>
+    <string name="cd_add">Thêm</string>
+    <string name="close">Đóng</string>
+    <string name="daily_limit">Giới hạn\nHàng ngày</string>
+    <string name="feature_coming_soon">Tính năng sắp ra mắt</string>
+    <string name="get_started">Bắt đầu</string>
+    <string name="go_to_accessibility_settings">Đi tới Cài đặt Trợ năng</string>
+    <string name="help">Trợ giúp</string>
+    <string name="help_dialog_title">Scrolless không hoạt động\?</string>
+    <string name="help_step1_description">Chọn một trong các tùy chọn chặn từ màn hình chính</string>
+    <string name="help_step1_title">Chọn Tùy chọn Chặn của Bạn</string>
+    <string name="help_step2_description">Nếu tính năng chặn không hoạt động, hãy tắt rồi bật lại dịch vụ trợ năng và thử tắt tính năng tối ưu hóa pin cho Scrolless.</string>
+    <string name="help_step2_title">Khắc phục sự cố</string>
+    <string name="help_step3_description">Vẫn gặp sự cố\? Chúng tôi sẵn sàng trợ giúp! Sử dụng nút bên dưới để liên hệ trên kho lưu trữ GitHub của chúng tôi.</string>
+    <string name="help_step3_title">Liên hệ Hỗ trợ</string>
+    <string name="icons8_attribution">Biểu tượng được cung cấp bởi Icons8 (icons8.com)</string>
+    <string name="interval_timer">Hẹn giờ\nKhoảng thời gian</string>
+    <string name="next_step_1">Chọn chế độ chặn</string>
+    <string name="next_step_2">Thử tính năng giới hạn hàng ngày và kích hoạt lớp phủ hẹn giờ</string>
+    <string name="next_steps_title">Các Bước Tiếp theo</string>
+    <string name="pause">Tạm dừng</string>
+    <string name="rate_scrolless">Đánh giá Scrolless trên Cửa hàng Play</string>
+    <string name="show_timer_overlay">Hiển thị Lớp phủ Hẹn giờ</string>
+    <string name="success_icon_description">Biểu tượng dấu kiểm thành công</string>
+    <string name="time_limit_dialog_title">Đặt Thời gian Giới hạn Hàng ngày</string>
+    <string name="total_time_wasted">Tổng thời gian lãng phí vào brain rot</string>
+    <string name="visit_github">Truy cập Kho lưu trữ GitHub</string>
 </resources>
