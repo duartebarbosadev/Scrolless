@@ -46,7 +46,14 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.setViewTreeLifecycleOwner
+import androidx.lifecycle.setViewTreeViewModelStoreOwner
+import androidx.savedstate.SavedStateRegistry
+import androidx.savedstate.SavedStateRegistryController
+import androidx.savedstate.SavedStateRegistryOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.scrolless.app.core.data.repository.UserSettingsStore
 import com.scrolless.app.core.data.repository.setTimerOverlayPosition
 import com.scrolless.app.ui.theme.ScrollessTheme
@@ -70,7 +77,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     private var composeView: ComposeView? = null
     private var windowManager: WindowManager? = null
     private var layoutParams: WindowManager.LayoutParams? = null
-    private var lifecycleOwner: MyLifecycleOwner? = null
+    private var lifecycleOwner: WindowLifecycleOwner? = null
 
     private lateinit var serviceContext: Context
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
@@ -85,23 +92,19 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     fun show() {
         if (composeView != null) return
 
-        // Check overlay permission
-        if (!canDrawOverlays()) {
-            Timber.i("Overlay permission not granted")
-            return
-        }
-
         // Subtract 1 second to account for initial delay in showing overlay
         // This ensures the timer starts closer to the actual session start
         sessionStartTime = System.currentTimeMillis() - 1000L
 
         // Create lifecycle owner
-        lifecycleOwner = MyLifecycleOwner()
+        lifecycleOwner = WindowLifecycleOwner()
 
         // Create Compose view
         composeView = ComposeView(serviceContext).apply {
             // Set up lifecycle owner before setContent
             setViewTreeLifecycleOwner(lifecycleOwner)
+            setViewTreeViewModelStoreOwner(lifecycleOwner)
+            setViewTreeSavedStateRegistryOwner(lifecycleOwner)
 
             setContent {
                 ScrollessTheme {
@@ -172,6 +175,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
     private fun cleanupView() {
         // Destroy lifecycle
+        lifecycleOwner?.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+        lifecycleOwner?.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
         lifecycleOwner?.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         lifecycleOwner = null
 
@@ -236,22 +241,35 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 }
 
 /**
- * Minimal lifecycle owner for ComposeView in overlay.
- * Only provides lifecycle management without ViewModel or SavedState support.
+ * A lifecycle owner for a view that is added directly to the WindowManager.
+ *
+ * This is required for Compose views that are not part of an Activity.
  */
-private class MyLifecycleOwner : LifecycleOwner {
+private class WindowLifecycleOwner : LifecycleOwner, ViewModelStoreOwner, SavedStateRegistryOwner {
     private val lifecycleRegistry = LifecycleRegistry(this)
-
-    init {
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-        lifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START)
-    }
+    private val savedStateRegistryController = SavedStateRegistryController.create(this)
+    private val _viewModelStore = ViewModelStore()
 
     override val lifecycle: Lifecycle
         get() = lifecycleRegistry
 
+    override val viewModelStore: ViewModelStore
+        get() = _viewModelStore
+
+    override val savedStateRegistry: SavedStateRegistry
+        get() = savedStateRegistryController.savedStateRegistry
+
+    init {
+        savedStateRegistryController.performRestore(null)
+        handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+        handleLifecycleEvent(Lifecycle.Event.ON_START)
+    }
+
     fun handleLifecycleEvent(event: Lifecycle.Event) {
         lifecycleRegistry.handleLifecycleEvent(event)
+        if (event == Lifecycle.Event.ON_DESTROY) {
+            viewModelStore.clear()
+        }
     }
 }
 
