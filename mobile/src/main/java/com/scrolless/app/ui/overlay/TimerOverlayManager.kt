@@ -138,7 +138,9 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             windowManager?.addView(composeView, layoutParams)
 
             // Move lifecycle to RESUMED state after view is attached
-            lifecycleOwner?.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+            lifecycleOwner
+                ?.takeIf { it.lifecycle.currentState == Lifecycle.State.STARTED }
+                ?.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
             // Fade in
             composeView?.animate()
@@ -174,11 +176,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     }
 
     private fun cleanupView() {
-        // Destroy lifecycle
-        lifecycleOwner?.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-        lifecycleOwner?.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
-        lifecycleOwner?.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-        lifecycleOwner = null
+        destroyLifecycleOwner()
 
         try {
             composeView?.let { view ->
@@ -238,6 +236,19 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     private fun canDrawOverlays(): Boolean {
         return Settings.canDrawOverlays(serviceContext)
     }
+
+    private fun destroyLifecycleOwner() {
+        lifecycleOwner?.let { owner ->
+            if (owner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)) {
+                owner.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+            }
+            if (owner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                owner.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
+            }
+            owner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+        }
+        lifecycleOwner = null
+    }
 }
 
 /**
@@ -260,6 +271,8 @@ private class WindowLifecycleOwner : LifecycleOwner, ViewModelStoreOwner, SavedS
         get() = savedStateRegistryController.savedStateRegistry
 
     init {
+        // Overlay state is ephemeral, so we intentionally skip restoring from a Bundle.
+        // Provide a persisted bundle here if we ever need to survive process death.
         savedStateRegistryController.performRestore(null)
         handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
         handleLifecycleEvent(Lifecycle.Event.ON_START)
