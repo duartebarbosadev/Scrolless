@@ -16,9 +16,10 @@
  */
 package com.scrolless.app.ui.overlay
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PixelFormat
-import android.provider.Settings
+import android.os.Bundle
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.WindowManager
@@ -91,6 +92,15 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
     fun show() {
         if (composeView != null) return
+        if (!::serviceContext.isInitialized) {
+            Timber.w("Timer overlay requested before service context was attached")
+            return
+        }
+        val wm = windowManager
+        if (wm == null) {
+            Timber.w("WindowManager not attached, cannot show timer overlay")
+            return
+        }
 
         // Subtract 1 second to account for initial delay in showing overlay
         // This ensures the timer starts closer to the actual session start
@@ -135,11 +145,14 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         try {
             // Start invisible for fade-in
             composeView?.alpha = 0f
-            windowManager?.addView(composeView, layoutParams)
+            wm.addView(composeView, layoutParams)
 
             // Move lifecycle to RESUMED state after view is attached
             lifecycleOwner
-                ?.takeIf { it.lifecycle.currentState == Lifecycle.State.STARTED }
+                ?.takeIf {
+                    it.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED) &&
+                        !it.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)
+                }
                 ?.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
 
             // Fade in
@@ -186,9 +199,11 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             Timber.e(e, "Failed to remove overlay")
         } finally {
             composeView = null
+            layoutParams = null
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun enableDragging() {
         var initialX = 0
         var initialY = 0
@@ -231,10 +246,6 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                 else -> false
             }
         }
-    }
-
-    private fun canDrawOverlays(): Boolean {
-        return Settings.canDrawOverlays(serviceContext)
     }
 
     private fun destroyLifecycleOwner() {
@@ -280,6 +291,9 @@ private class WindowLifecycleOwner : LifecycleOwner, ViewModelStoreOwner, SavedS
 
     fun handleLifecycleEvent(event: Lifecycle.Event) {
         lifecycleRegistry.handleLifecycleEvent(event)
+        if (event == Lifecycle.Event.ON_STOP || event == Lifecycle.Event.ON_DESTROY) {
+            savedStateRegistryController.performSave(Bundle())
+        }
         if (event == Lifecycle.Event.ON_DESTROY) {
             viewModelStore.clear()
         }
