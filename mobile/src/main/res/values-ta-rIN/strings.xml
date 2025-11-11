@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">தினசரி வரம்பு நேரத்தை அமைக்கவும்</string>
     <string name="total_time_wasted">மூளைச் சிதைவில் வீணடிக்கப்பட்ட மொத்த நேரம்</string>
     <string name="visit_github">GitHub களஞ்சியத்தைப் பார்வையிடவும்</string>
+    <string name="interval_timer_card_allowance_chip">பார்க்கும் நேரம்</string>
+    <string name="interval_timer_card_break_chip">இடைவேளை நீளம்</string>
+    <string name="interval_timer_card_edit">அட்டவணையைத் திருத்து</string>
+    <string name="interval_timer_card_hint">ஒவ்வொரு இடைவேளை சாளரத்திற்குப் பிறகும் Scrolless உங்கள் சலுகையை மீட்டமைக்கிறது.</string>
+    <string name="interval_timer_card_set_schedule">அட்டவணையை அமைக்கவும்</string>
+    <string name="interval_timer_card_summary">ஒவ்வொரு %2$s க்கும் %1$s வரை பார்க்கலாம்</string>
+    <string name="interval_timer_card_summary_empty">மாற்று இடைவேளைகளைத் தொடங்க உங்கள் முதல் அட்டவணையை அமைக்கவும்.</string>
+    <string name="interval_timer_card_title">இடைவெளி டைமர் அட்டவணை</string>
+    <string name="interval_timer_dialog_allowance_description">ஒரு இடைவேளை தொடங்கியவுடன் நீங்கள் எவ்வளவு நேரம் ஷார்ட்ஸைப் பார்க்கலாம்.</string>
+    <string name="interval_timer_dialog_allowance_label">அனுமதிக்கப்பட்ட பார்க்கும் நேரம்</string>
+    <string name="interval_timer_dialog_break_description">அடுத்த இடைவேளைக்கு முன் இந்த நேரம் வரை ஆதரிக்கப்படும் பயன்பாடுகளை Scrolless தடுக்கிறது.</string>
+    <string name="interval_timer_dialog_break_label">இடைவேளை கால அளவு</string>
+    <string name="interval_timer_dialog_cancel">ரத்துசெய்</string>
+    <string name="interval_timer_dialog_save">அட்டவணையைச் சேமிக்கவும்</string>
+    <string name="interval_timer_dialog_subtitle">உள்ளடக்கம் எவ்வளவு நேரம் பூட்டப்பட்டிருக்கும் என்பதையும், ஒவ்வொரு இடைவேளையிலும் நீங்கள் எவ்வளவு நேரம் பார்க்கலாம் என்பதையும் தேர்வு செய்யவும்.</string>
+    <string name="interval_timer_dialog_summary">விளைவு: ஒவ்வொரு %2$s க்கும் %1$s வரை</string>
+    <string name="interval_timer_dialog_title">இடைவெளி டைமரை உள்ளமைக்கவும்</string>
+    <string name="interval_timer_next_reset_in">%1$s இல் மீட்டமைக்கிறது</string>
+    <string name="interval_timer_next_reset_ready">அடுத்த இடைவேளை திறக்கப்பட்டது</string>
+    <string name="interval_timer_next_reset_unknown">உங்கள் முதல் இடைவேளை சாளரத்திற்குப் பிறகு அட்டவணை தொடங்கும்.</string>
 </resources>

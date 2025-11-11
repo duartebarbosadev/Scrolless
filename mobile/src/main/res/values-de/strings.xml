@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Tageslimit-Zeit festlegen</string>
     <string name="total_time_wasted">Gesamtzeit, die mit „Brain Rot“ verschwendet wurde</string>
     <string name="visit_github">GitHub-Repository besuchen</string>
+    <string name="interval_timer_card_allowance_chip">Sehzeit</string>
+    <string name="interval_timer_card_break_chip">Pausenlänge</string>
+    <string name="interval_timer_card_edit">Zeitplan bearbeiten</string>
+    <string name="interval_timer_card_hint">Scrolless setzt Ihre erlaubte Zeit nach jeder Pause zurück.</string>
+    <string name="interval_timer_card_set_schedule">Zeitplan festlegen</string>
+    <string name="interval_timer_card_summary">Bis zu %1$s alle %2$s ansehen</string>
+    <string name="interval_timer_card_summary_empty">Legen Sie Ihren ersten Zeitplan fest, um mit abwechselnden Pausen zu beginnen.</string>
+    <string name="interval_timer_card_title">Intervall-Timer-Zeitplan</string>
+    <string name="interval_timer_dialog_allowance_description">Wie lange Sie Shorts ansehen können, sobald eine Pause beginnt.</string>
+    <string name="interval_timer_dialog_allowance_label">Erlaubte Sehzeit</string>
+    <string name="interval_timer_dialog_break_description">Scrolless hält unterstützte Apps für diese Dauer blockiert, bevor die nächste Pause beginnt.</string>
+    <string name="interval_timer_dialog_break_label">Pausendauer</string>
+    <string name="interval_timer_dialog_cancel">Abbrechen</string>
+    <string name="interval_timer_dialog_save">Zeitplan speichern</string>
+    <string name="interval_timer_dialog_subtitle">Wählen Sie, wie lange Inhalte gesperrt bleiben und wie viel Zeit Sie in jeder Pause ansehen können.</string>
+    <string name="interval_timer_dialog_summary">Ergebnis: bis zu %1$s alle %2$s</string>
+    <string name="interval_timer_dialog_title">Intervall-Timer konfigurieren</string>
+    <string name="interval_timer_next_reset_in">Zurücksetzung in %1$s</string>
+    <string name="interval_timer_next_reset_ready">Nächste Pause freigeschaltet</string>
+    <string name="interval_timer_next_reset_unknown">Der Zeitplan beginnt nach Ihrem ersten Pausenfenster.</string>
 </resources>

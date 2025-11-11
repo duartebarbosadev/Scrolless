@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Définir la limite de temps quotidienne</string>
     <string name="total_time_wasted">Temps total perdu en \"brain rot\"</string>
     <string name="visit_github">Visiter le dépôt GitHub</string>
+    <string name="interval_timer_card_allowance_chip">Temps de visionnage</string>
+    <string name="interval_timer_card_break_chip">Durée de la pause</string>
+    <string name="interval_timer_card_edit">Modifier le programme</string>
+    <string name="interval_timer_card_hint">Scrolless réinitialise votre temps autorisé après chaque fenêtre de pause.</string>
+    <string name="interval_timer_card_set_schedule">Définir le programme</string>
+    <string name="interval_timer_card_summary">Regardez jusqu\'à %1$s toutes les %2$s</string>
+    <string name="interval_timer_card_summary_empty">Définissez votre premier programme pour commencer à alterner les pauses.</string>
+    <string name="interval_timer_card_title">Programme de la minuterie d\'intervalle</string>
+    <string name="interval_timer_dialog_allowance_description">Combien de temps vous pouvez regarder des shorts une fois qu\'une pause commence.</string>
+    <string name="interval_timer_dialog_allowance_label">Temps de visionnage autorisé</string>
+    <string name="interval_timer_dialog_break_description">Scrolless maintient les applications prises en charge bloquées pendant cette durée avant la prochaine pause.</string>
+    <string name="interval_timer_dialog_break_label">Durée de la pause</string>
+    <string name="interval_timer_dialog_cancel">Annuler</string>
+    <string name="interval_timer_dialog_save">Enregistrer le programme</string>
+    <string name="interval_timer_dialog_subtitle">Choisissez combien de temps le contenu reste verrouillé et combien de temps vous pouvez regarder pendant chaque pause.</string>
+    <string name="interval_timer_dialog_summary">Résultat : jusqu\'à %1$s toutes les %2$s</string>
+    <string name="interval_timer_dialog_title">Configurer la minuterie d\'intervalle</string>
+    <string name="interval_timer_next_reset_in">Réinitialisation dans %1$s</string>
+    <string name="interval_timer_next_reset_ready">Prochaine pause déverrouillée</string>
+    <string name="interval_timer_next_reset_unknown">Le programme commencera après votre première fenêtre de pause.</string>
 </resources>

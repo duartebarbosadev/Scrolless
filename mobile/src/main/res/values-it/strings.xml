@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Imposta Limite di Tempo Giornaliero</string>
     <string name="total_time_wasted">Tempo totale sprecato in \"brain rot\"</string>
     <string name="visit_github">Visita il Repository GitHub</string>
+    <string name="interval_timer_card_allowance_chip">Tempo di visione</string>
+    <string name="interval_timer_card_break_chip">Durata della pausa</string>
+    <string name="interval_timer_card_edit">Modifica programma</string>
+    <string name="interval_timer_card_hint">Scrolless reimposta il tuo tempo di visione dopo ogni finestra di pausa.</string>
+    <string name="interval_timer_card_set_schedule">Imposta programma</string>
+    <string name="interval_timer_card_summary">Guarda fino a %1$s ogni %2$s</string>
+    <string name="interval_timer_card_summary_empty">Imposta il tuo primo programma per iniziare ad alternare le pause.</string>
+    <string name="interval_timer_card_title">Programma timer a intervalli</string>
+    <string name="interval_timer_dialog_allowance_description">Per quanto tempo puoi guardare i contenuti brevi una volta iniziata una pausa.</string>
+    <string name="interval_timer_dialog_allowance_label">Tempo di visione consentito</string>
+    <string name="interval_timer_dialog_break_description">Scrolless mantiene le app supportate bloccate per questo periodo di tempo prima della pausa successiva.</string>
+    <string name="interval_timer_dialog_break_label">Durata della pausa</string>
+    <string name="interval_timer_dialog_cancel">Annulla</string>
+    <string name="interval_timer_dialog_save">Salva programma</string>
+    <string name="interval_timer_dialog_subtitle">Scegli per quanto tempo i contenuti rimangono bloccati e quanto tempo puoi guardare in ogni pausa.</string>
+    <string name="interval_timer_dialog_summary">Risultato: fino a %1$s ogni %2$s</string>
+    <string name="interval_timer_dialog_title">Configura timer a intervalli</string>
+    <string name="interval_timer_next_reset_in">Si ripristina tra %1$s</string>
+    <string name="interval_timer_next_reset_ready">Prossima pausa sbloccata</string>
+    <string name="interval_timer_next_reset_unknown">Il programma inizierà dopo la tua prima finestra di pausa.</string>
 </resources>

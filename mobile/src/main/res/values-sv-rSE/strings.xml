@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Ställ in daglig gränstid</string>
     <string name="total_time_wasted">Total tid slösad på hjärnslöhet</string>
     <string name="visit_github">Besök GitHub-arkivet</string>
+    <string name="interval_timer_card_allowance_chip">Tittid</string>
+    <string name="interval_timer_card_break_chip">Pauslängd</string>
+    <string name="interval_timer_card_edit">Redigera schema</string>
+    <string name="interval_timer_card_hint">Scrolless återställer din tillåtna tid efter varje pausfönster.</string>
+    <string name="interval_timer_card_set_schedule">Ställ in schema</string>
+    <string name="interval_timer_card_summary">Titta upp till %1$s var %2$s</string>
+    <string name="interval_timer_card_summary_empty">Ställ in ditt första schema för att börja växla pauser.</string>
+    <string name="interval_timer_card_title">Intervalltimerschema</string>
+    <string name="interval_timer_dialog_allowance_description">Hur länge du kan titta på shorts när en paus börjar.</string>
+    <string name="interval_timer_dialog_allowance_label">Tillåten tittid</string>
+    <string name="interval_timer_dialog_break_description">Scrolless håller appar som stöds blockerade under denna tid före nästa paus.</string>
+    <string name="interval_timer_dialog_break_label">Pauslängd</string>
+    <string name="interval_timer_dialog_cancel">Avbryt</string>
+    <string name="interval_timer_dialog_save">Spara schema</string>
+    <string name="interval_timer_dialog_subtitle">Välj hur länge innehållet förblir låst och hur mycket tid du kan titta under varje paus.</string>
+    <string name="interval_timer_dialog_summary">Resultat: upp till %1$s var %2$s</string>
+    <string name="interval_timer_dialog_title">Konfigurera intervalltimer</string>
+    <string name="interval_timer_next_reset_in">Återställs om %1$s</string>
+    <string name="interval_timer_next_reset_ready">Nästa paus upplåst</string>
+    <string name="interval_timer_next_reset_unknown">Schemat startar efter ditt första pausfönster.</string>
 </resources>

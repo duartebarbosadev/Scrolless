@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Estableix el temps límit diari</string>
     <string name="total_time_wasted">Temps total perdut en deteriorament mental</string>
     <string name="visit_github">Visita el repositori de GitHub</string>
+    <string name="interval_timer_card_allowance_chip">Temps de visualització</string>
+    <string name="interval_timer_card_break_chip">Durada de la pausa</string>
+    <string name="interval_timer_card_edit">Edita l\'horari</string>
+    <string name="interval_timer_card_hint">Scrolless restableix el teu temps permès després de cada finestra de pausa.</string>
+    <string name="interval_timer_card_set_schedule">Estableix l\'horari</string>
+    <string name="interval_timer_card_summary">Mira fins a %1$s cada %2$s</string>
+    <string name="interval_timer_card_summary_empty">Estableix el teu primer horari per començar a alternar pauses.</string>
+    <string name="interval_timer_card_title">Horari del temporitzador d\'intervals</string>
+    <string name="interval_timer_dialog_allowance_description">Quant de temps pots veure vídeos curts un cop comença una pausa.</string>
+    <string name="interval_timer_dialog_allowance_label">Temps de visualització permès</string>
+    <string name="interval_timer_dialog_break_description">Scrolless manté les aplicacions compatibles bloquejades durant aquest temps abans de la següent pausa.</string>
+    <string name="interval_timer_dialog_break_label">Durada de la pausa</string>
+    <string name="interval_timer_dialog_cancel">Cancel·la</string>
+    <string name="interval_timer_dialog_save">Desa l\'horari</string>
+    <string name="interval_timer_dialog_subtitle">Tria quant de temps el contingut es manté bloquejat i quant de temps pots veure en cada pausa.</string>
+    <string name="interval_timer_dialog_summary">Resultat: fins a %1$s cada %2$s</string>
+    <string name="interval_timer_dialog_title">Configura el temporitzador d\'intervals</string>
+    <string name="interval_timer_next_reset_in">Es restableix en %1$s</string>
+    <string name="interval_timer_next_reset_ready">Pròxima pausa desbloquejada</string>
+    <string name="interval_timer_next_reset_unknown">L\'horari començarà després de la teva primera finestra de pausa.</string>
 </resources>

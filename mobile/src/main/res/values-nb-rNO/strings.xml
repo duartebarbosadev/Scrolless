@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Angi daglig grensetid</string>
     <string name="total_time_wasted">Total tid bortkastet på hjernedød underholdning</string>
     <string name="visit_github">Besøk GitHub-repositoriet</string>
+    <string name="interval_timer_card_allowance_chip">Se tid</string>
+    <string name="interval_timer_card_break_chip">Pauselengde</string>
+    <string name="interval_timer_card_edit">Rediger tidsplan</string>
+    <string name="interval_timer_card_hint">Scrolless tilbakestiller tillatt tid etter hver pause.</string>
+    <string name="interval_timer_card_set_schedule">Angi tidsplan</string>
+    <string name="interval_timer_card_summary">Se opptil %1$s hver %2$s</string>
+    <string name="interval_timer_card_summary_empty">Angi din første tidsplan for å starte vekslende pauser.</string>
+    <string name="interval_timer_card_title">Tidsplan for intervalltimer</string>
+    <string name="interval_timer_dialog_allowance_description">Hvor lenge du kan se på shorts når en pause starter.</string>
+    <string name="interval_timer_dialog_allowance_label">Tillatt se tid</string>
+    <string name="interval_timer_dialog_break_description">Scrolless holder støttede apper blokkert så lenge før neste pause.</string>
+    <string name="interval_timer_dialog_break_label">Pauselengde</string>
+    <string name="interval_timer_dialog_cancel">Avbryt</string>
+    <string name="interval_timer_dialog_save">Lagre tidsplan</string>
+    <string name="interval_timer_dialog_subtitle">Velg hvor lenge innhold forblir låst og hvor mye tid du kan se i hver pause.</string>
+    <string name="interval_timer_dialog_summary">Resultat: opptil %1$s hver %2$s</string>
+    <string name="interval_timer_dialog_title">Konfigurer intervalltimer</string>
+    <string name="interval_timer_next_reset_in">Tilbakestilles om %1$s</string>
+    <string name="interval_timer_next_reset_ready">Neste pause ulåst</string>
+    <string name="interval_timer_next_reset_unknown">Tidsplanen starter etter din første pause.</string>
 </resources>

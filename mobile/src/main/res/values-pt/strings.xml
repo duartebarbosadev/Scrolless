@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Definir Tempo Limite Diário</string>
     <string name="total_time_wasted">Tempo total desperdiçado em \"brain rot\"</string>
     <string name="visit_github">Visitar Repositório do GitHub</string>
+    <string name="interval_timer_card_allowance_chip">Tempo de visualização</string>
+    <string name="interval_timer_card_break_chip">Duração da pausa</string>
+    <string name="interval_timer_card_edit">Editar horário</string>
+    <string name="interval_timer_card_hint">O Scrolless repõe o seu tempo após cada janela de pausa.</string>
+    <string name="interval_timer_card_set_schedule">Definir horário</string>
+    <string name="interval_timer_card_summary">Veja até %1$s a cada %2$s</string>
+    <string name="interval_timer_card_summary_empty">Defina o seu primeiro horário para começar a alternar pausas.</string>
+    <string name="interval_timer_card_title">Horário do temporizador de intervalo</string>
+    <string name="interval_timer_dialog_allowance_description">Quanto tempo pode ver shorts assim que uma pausa começa.</string>
+    <string name="interval_timer_dialog_allowance_label">Tempo de visualização permitido</string>
+    <string name="interval_timer_dialog_break_description">O Scrolless mantém as aplicações suportadas bloqueadas durante este tempo antes da próxima pausa.</string>
+    <string name="interval_timer_dialog_break_label">Duração da pausa</string>
+    <string name="interval_timer_dialog_cancel">Cancelar</string>
+    <string name="interval_timer_dialog_save">Guardar horário</string>
+    <string name="interval_timer_dialog_subtitle">Escolha quanto tempo o conteúdo permanece bloqueado e quanto tempo pode ver em cada pausa.</string>
+    <string name="interval_timer_dialog_summary">Resultado: até %1$s a cada %2$s</string>
+    <string name="interval_timer_dialog_title">Configurar temporizador de intervalo</string>
+    <string name="interval_timer_next_reset_in">Repõe em %1$s</string>
+    <string name="interval_timer_next_reset_ready">Próxima pausa desbloqueada</string>
+    <string name="interval_timer_next_reset_unknown">O horário começará após a sua primeira janela de pausa.</string>
 </resources>

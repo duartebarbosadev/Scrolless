@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">दैनिक सीमा समय सेट करें</string>
     <string name="total_time_wasted">ब्रेन रॉट में बर्बाद हुआ कुल समय</string>
     <string name="visit_github">GitHub रिपॉजिटरी पर जाएँ</string>
+    <string name="interval_timer_card_allowance_chip">देखने का समय</string>
+    <string name="interval_timer_card_break_chip">ब्रेक की अवधि</string>
+    <string name="interval_timer_card_edit">शेड्यूल संपादित करें</string>
+    <string name="interval_timer_card_hint">Scrolless हर ब्रेक विंडो के बाद आपकी अनुमति रीसेट कर देता है।</string>
+    <string name="interval_timer_card_set_schedule">शेड्यूल सेट करें</string>
+    <string name="interval_timer_card_summary">हर %2$s में %1$s तक देखें</string>
+    <string name="interval_timer_card_summary_empty">ब्रेक को बारी-बारी से शुरू करने के लिए अपना पहला शेड्यूल सेट करें।</string>
+    <string name="interval_timer_card_title">इंटरवल टाइमर शेड्यूल</string>
+    <string name="interval_timer_dialog_allowance_description">ब्रेक शुरू होने के बाद आप कितनी देर तक शॉर्ट्स देख सकते हैं।</string>
+    <string name="interval_timer_dialog_allowance_label">अनुमत देखने का समय</string>
+    <string name="interval_timer_dialog_break_description">Scrolless अगले ब्रेक से पहले समर्थित ऐप्स को इतनी देर तक ब्लॉक रखता है।</string>
+    <string name="interval_timer_dialog_break_label">ब्रेक की अवधि</string>
+    <string name="interval_timer_dialog_cancel">रद्द करें</string>
+    <string name="interval_timer_dialog_save">शेड्यूल सहेजें</string>
+    <string name="interval_timer_dialog_subtitle">चुनें कि सामग्री कितनी देर तक लॉक रहती है और आप हर ब्रेक में कितना समय देख सकते हैं।</string>
+    <string name="interval_timer_dialog_summary">परिणाम: हर %2$s में %1$s तक</string>
+    <string name="interval_timer_dialog_title">इंटरवल टाइमर कॉन्फ़िगर करें</string>
+    <string name="interval_timer_next_reset_in">%1$s में रीसेट होता है</string>
+    <string name="interval_timer_next_reset_ready">अगला ब्रेक अनलॉक हो गया</string>
+    <string name="interval_timer_next_reset_unknown">आपका पहला ब्रेक विंडो के बाद शेड्यूल शुरू होगा।</string>
 </resources>

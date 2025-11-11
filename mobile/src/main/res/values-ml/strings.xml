@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">ദിവസേനയുള്ള പരിധി സമയം സജ്ജമാക്കുക</string>
     <string name="total_time_wasted">ബ്രെയിൻ റോട്ടിനായി പാഴാക്കിയ ആകെ സമയം</string>
     <string name="visit_github">GitHub റിപ്പോസിറ്ററി സന്ദർശിക്കുക</string>
+    <string name="interval_timer_card_allowance_chip">കാണാനുള്ള സമയം</string>
+    <string name="interval_timer_card_break_chip">ബ്രേക്ക് ദൈർഘ്യം</string>
+    <string name="interval_timer_card_edit">ഷെഡ്യൂൾ എഡിറ്റ് ചെയ്യുക</string>
+    <string name="interval_timer_card_hint">ഓരോ ബ്രേക്ക് വിൻഡോയ്ക്ക് ശേഷവും Scrolless നിങ്ങളുടെ അലവൻസ് പുനഃസജ്ജമാക്കുന്നു.</string>
+    <string name="interval_timer_card_set_schedule">ഷെഡ്യൂൾ സജ്ജമാക്കുക</string>
+    <string name="interval_timer_card_summary">ഓരോ %2$s-ലും %1$s വരെ കാണുക</string>
+    <string name="interval_timer_card_summary_empty">ബ്രേക്കുകൾ മാറിമാറി തുടങ്ങാൻ നിങ്ങളുടെ ആദ്യ ഷെഡ്യൂൾ സജ്ജമാക്കുക.</string>
+    <string name="interval_timer_card_title">ഇന്റർവെൽ ടൈമർ ഷെഡ്യൂൾ</string>
+    <string name="interval_timer_dialog_allowance_description">ഒരു ബ്രേക്ക് ആരംഭിച്ചുകഴിഞ്ഞാൽ നിങ്ങൾക്ക് എത്രത്തോളം ഷോർട്ട്‌സ് കാണാൻ കഴിയും.</string>
+    <string name="interval_timer_dialog_allowance_label">അനുവദനീയമായ കാണൽ സമയം</string>
+    <string name="interval_timer_dialog_break_description">അടുത്ത ബ്രേക്ക് വരെ Scrolless പിന്തുണയ്ക്കുന്ന ആപ്പുകൾ ഇത്രയും നേരം ബ്ലോക്ക് ചെയ്‌തിരിക്കും.</string>
+    <string name="interval_timer_dialog_break_label">ബ്രേക്ക് ദൈർഘ്യം</string>
+    <string name="interval_timer_dialog_cancel">റദ്ദാക്കുക</string>
+    <string name="interval_timer_dialog_save">ഷെഡ്യൂൾ സംരക്ഷിക്കുക</string>
+    <string name="interval_timer_dialog_subtitle">ഉള്ളടക്കം എത്രത്തോളം ലോക്ക് ചെയ്‌തിരിക്കുമെന്നും ഓരോ ബ്രേക്കിലും നിങ്ങൾക്ക് എത്ര സമയം കാണാമെന്നും തിരഞ്ഞെടുക്കുക.</string>
+    <string name="interval_timer_dialog_summary">ഫലം: ഓരോ %2$s-ലും %1$s വരെ</string>
+    <string name="interval_timer_dialog_title">ഇന്റർവെൽ ടൈമർ കോൺഫിഗർ ചെയ്യുക</string>
+    <string name="interval_timer_next_reset_in">%1$s-ൽ പുനഃസജ്ജമാക്കുന്നു</string>
+    <string name="interval_timer_next_reset_ready">അടുത്ത ബ്രേക്ക് അൺലോക്ക് ചെയ്തു</string>
+    <string name="interval_timer_next_reset_unknown">നിങ്ങളുടെ ആദ്യ ബ്രേക്ക് വിൻഡോയ്ക്ക് ശേഷം ഷെഡ്യൂൾ ആരംഭിക്കും.</string>
 </resources>
