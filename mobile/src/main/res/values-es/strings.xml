@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Establecer Límite de Tiempo Diario</string>
     <string name="total_time_wasted">Tiempo total perdido en deterioro mental</string>
     <string name="visit_github">Visitar Repositorio de GitHub</string>
+    <string name="interval_timer_card_allowance_chip">Tiempo de visualización</string>
+    <string name="interval_timer_card_break_chip">Duración del descanso</string>
+    <string name="interval_timer_card_edit">Editar horario</string>
+    <string name="interval_timer_card_hint">Scrolless restablece tu tiempo permitido después de cada ventana de descanso.</string>
+    <string name="interval_timer_card_set_schedule">Establecer horario</string>
+    <string name="interval_timer_card_summary">Ver hasta %1$s cada %2$s</string>
+    <string name="interval_timer_card_summary_empty">Establece tu primer horario para empezar a alternar descansos.</string>
+    <string name="interval_timer_card_title">Horario del temporizador de intervalo</string>
+    <string name="interval_timer_dialog_allowance_description">Cuánto tiempo puedes ver vídeos cortos una vez que comienza un descanso.</string>
+    <string name="interval_timer_dialog_allowance_label">Tiempo de visualización permitido</string>
+    <string name="interval_timer_dialog_break_description">Scrolless mantiene las aplicaciones compatibles bloqueadas durante este tiempo antes del siguiente descanso.</string>
+    <string name="interval_timer_dialog_break_label">Duración del descanso</string>
+    <string name="interval_timer_dialog_cancel">Cancelar</string>
+    <string name="interval_timer_dialog_save">Guardar horario</string>
+    <string name="interval_timer_dialog_subtitle">Elige cuánto tiempo permanece bloqueado el contenido y cuánto tiempo puedes verlo en cada descanso.</string>
+    <string name="interval_timer_dialog_summary">Resultado: hasta %1$s cada %2$s</string>
+    <string name="interval_timer_dialog_title">Configurar temporizador de intervalo</string>
+    <string name="interval_timer_next_reset_in">Se restablece en %1$s</string>
+    <string name="interval_timer_next_reset_ready">Próximo descanso desbloqueado</string>
+    <string name="interval_timer_next_reset_unknown">El horario comenzará después de tu primera ventana de descanso.</string>
 </resources>

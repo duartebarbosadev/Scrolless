@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">一日の制限時間を設定</string>
     <string name="total_time_wasted">脳の腐敗に浪費された合計時間</string>
     <string name="visit_github">GitHubリポジトリにアクセス</string>
+    <string name="interval_timer_card_allowance_chip">視聴時間</string>
+    <string name="interval_timer_card_break_chip">休憩時間</string>
+    <string name="interval_timer_card_edit">スケジュールを編集</string>
+    <string name="interval_timer_card_hint">Scrollessは、休憩ウィンドウごとに許可された時間をリセットします。</string>
+    <string name="interval_timer_card_set_schedule">スケジュールを設定</string>
+    <string name="interval_timer_card_summary">%2$sごとに最大%1$s視聴できます</string>
+    <string name="interval_timer_card_summary_empty">最初のスケジュールを設定して、休憩を交互に開始します。</string>
+    <string name="interval_timer_card_title">インターバルタイマースケジュール</string>
+    <string name="interval_timer_dialog_allowance_description">休憩が始まってからショート動画を視聴できる時間。</string>
+    <string name="interval_timer_dialog_allowance_label">許可された視聴時間</string>
+    <string name="interval_timer_dialog_break_description">Scrollessは、次の休憩までの間、サポートされているアプリをこの時間ブロックし続けます。</string>
+    <string name="interval_timer_dialog_break_label">休憩時間</string>
+    <string name="interval_timer_dialog_cancel">キャンセル</string>
+    <string name="interval_timer_dialog_save">スケジュールを保存</string>
+    <string name="interval_timer_dialog_subtitle">コンテンツがロックされる時間と、各休憩で視聴できる時間を選択します。</string>
+    <string name="interval_timer_dialog_summary">結果: %2$sごとに最大%1$s</string>
+    <string name="interval_timer_dialog_title">インターバルタイマーを設定</string>
+    <string name="interval_timer_next_reset_in">%1$s後にリセット</string>
+    <string name="interval_timer_next_reset_ready">次の休憩はロック解除されました</string>
+    <string name="interval_timer_next_reset_unknown">スケジュールは最初の休憩ウィンドウ後に開始されます。</string>
 </resources>

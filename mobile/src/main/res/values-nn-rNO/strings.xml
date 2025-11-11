@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Set dagleg grensetid</string>
     <string name="total_time_wasted">Total tid bortkasta i «brain rot»</string>
     <string name="visit_github">Gå til GitHub-lageret</string>
+    <string name="interval_timer_card_allowance_chip">Sjåtid</string>
+    <string name="interval_timer_card_break_chip">Pauselengd</string>
+    <string name="interval_timer_card_edit">Rediger tidsplan</string>
+    <string name="interval_timer_card_hint">Scrolless nullstiller tida di etter kvar pause.</string>
+    <string name="interval_timer_card_set_schedule">Set tidsplan</string>
+    <string name="interval_timer_card_summary">Sjå opptil %1$s kvar %2$s</string>
+    <string name="interval_timer_card_summary_empty">Set den første tidsplanen din for å starte vekslande pausar.</string>
+    <string name="interval_timer_card_title">Tidsplan for intervalltidtakar</string>
+    <string name="interval_timer_dialog_allowance_description">Kor lenge du kan sjå shorts når ein pause startar.</string>
+    <string name="interval_timer_dialog_allowance_label">Tillaten sjåtid</string>
+    <string name="interval_timer_dialog_break_description">Scrolless held støtta apper blokkerte så lenge før neste pause.</string>
+    <string name="interval_timer_dialog_break_label">Pauselengd</string>
+    <string name="interval_timer_dialog_cancel">Avbryt</string>
+    <string name="interval_timer_dialog_save">Lagre tidsplan</string>
+    <string name="interval_timer_dialog_subtitle">Vel kor lenge innhaldet er låst og kor mykje tid du kan sjå i kvar pause.</string>
+    <string name="interval_timer_dialog_summary">Resultat: opptil %1$s kvar %2$s</string>
+    <string name="interval_timer_dialog_title">Konfigurer intervalltidtakar</string>
+    <string name="interval_timer_next_reset_in">Nullstiller om %1$s</string>
+    <string name="interval_timer_next_reset_ready">Neste pause er låst opp</string>
+    <string name="interval_timer_next_reset_unknown">Tidsplanen startar etter den første pausen din.</string>
 </resources>

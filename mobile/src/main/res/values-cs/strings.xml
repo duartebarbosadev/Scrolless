@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Nastavit čas denního limitu</string>
     <string name="total_time_wasted">Celkový čas promarněný v brain rot</string>
     <string name="visit_github">Navštívit GitHub repozitář</string>
+    <string name="interval_timer_card_allowance_chip">Doba sledování</string>
+    <string name="interval_timer_card_break_chip">Délka přestávky</string>
+    <string name="interval_timer_card_edit">Upravit rozvrh</string>
+    <string name="interval_timer_card_hint">Scrolless resetuje váš povolený čas po každém okně přestávky.</string>
+    <string name="interval_timer_card_set_schedule">Nastavit rozvrh</string>
+    <string name="interval_timer_card_summary">Sledujte až %1$s každých %2$s</string>
+    <string name="interval_timer_card_summary_empty">Nastavte si svůj první rozvrh pro střídání přestávek.</string>
+    <string name="interval_timer_card_title">Rozvrh intervalového časovače</string>
+    <string name="interval_timer_dialog_allowance_description">Jak dlouho můžete sledovat krátká videa, jakmile začne přestávka.</string>
+    <string name="interval_timer_dialog_allowance_label">Povolená doba sledování</string>
+    <string name="interval_timer_dialog_break_description">Scrolless udržuje podporované aplikace zablokované po tuto dobu před další přestávkou.</string>
+    <string name="interval_timer_dialog_break_label">Délka přestávky</string>
+    <string name="interval_timer_dialog_cancel">Zrušit</string>
+    <string name="interval_timer_dialog_save">Uložit rozvrh</string>
+    <string name="interval_timer_dialog_subtitle">Zvolte, jak dlouho zůstane obsah uzamčen a kolik času můžete sledovat během každé přestávky.</string>
+    <string name="interval_timer_dialog_summary">Výsledek: až %1$s každých %2$s</string>
+    <string name="interval_timer_dialog_title">Konfigurace intervalového časovače</string>
+    <string name="interval_timer_next_reset_in">Reset za %1$s</string>
+    <string name="interval_timer_next_reset_ready">Další přestávka odemčena</string>
+    <string name="interval_timer_next_reset_unknown">Rozvrh začne po vašem prvním okně přestávky.</string>
 </resources>

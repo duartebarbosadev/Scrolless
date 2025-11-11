@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Dagelijkse limiettijd instellen</string>
     <string name="total_time_wasted">Totale tijd verspild aan hersenrot</string>
     <string name="visit_github">Bezoek GitHub-repository</string>
+    <string name="interval_timer_card_allowance_chip">Kijktijd</string>
+    <string name="interval_timer_card_break_chip">Pauzeduur</string>
+    <string name="interval_timer_card_edit">Schema bewerken</string>
+    <string name="interval_timer_card_hint">Scrolless reset uw kijktijd na elke pauze.</string>
+    <string name="interval_timer_card_set_schedule">Schema instellen</string>
+    <string name="interval_timer_card_summary">Kijk tot %1$s elke %2$s</string>
+    <string name="interval_timer_card_summary_empty">Stel uw eerste schema in om te beginnen met afwisselende pauzes.</string>
+    <string name="interval_timer_card_title">Intervaltimer schema</string>
+    <string name="interval_timer_dialog_allowance_description">Hoe lang u shorts kunt kijken zodra een pauze begint.</string>
+    <string name="interval_timer_dialog_allowance_label">Toegestane kijktijd</string>
+    <string name="interval_timer_dialog_break_description">Scrolless houdt ondersteunde apps zolang geblokkeerd vóór de volgende pauze.</string>
+    <string name="interval_timer_dialog_break_label">Pauzeduur</string>
+    <string name="interval_timer_dialog_cancel">Annuleren</string>
+    <string name="interval_timer_dialog_save">Schema opslaan</string>
+    <string name="interval_timer_dialog_subtitle">Kies hoe lang content vergrendeld blijft en hoeveel tijd u kunt kijken tijdens elke pauze.</string>
+    <string name="interval_timer_dialog_summary">Resultaat: tot %1$s elke %2$s</string>
+    <string name="interval_timer_dialog_title">Intervaltimer configureren</string>
+    <string name="interval_timer_next_reset_in">Reset over %1$s</string>
+    <string name="interval_timer_next_reset_ready">Volgende pauze ontgrendeld</string>
+    <string name="interval_timer_next_reset_unknown">Schema start na uw eerste pauze.</string>
 </resources>

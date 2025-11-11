@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Установить время дневного лимита</string>
     <string name="total_time_wasted">Общее время, потраченное на «мозговую гниль»</string>
     <string name="visit_github">Посетить репозиторий GitHub</string>
+    <string name="interval_timer_card_allowance_chip">Время просмотра</string>
+    <string name="interval_timer_card_break_chip">Длительность перерыва</string>
+    <string name="interval_timer_card_edit">Изменить расписание</string>
+    <string name="interval_timer_card_hint">Scrolless сбрасывает ваше разрешенное время после каждого перерыва.</string>
+    <string name="interval_timer_card_set_schedule">Установить расписание</string>
+    <string name="interval_timer_card_summary">Смотрите до %1$s каждые %2$s</string>
+    <string name="interval_timer_card_summary_empty">Установите свое первое расписание, чтобы начать чередовать перерывы.</string>
+    <string name="interval_timer_card_title">Расписание интервального таймера</string>
+    <string name="interval_timer_dialog_allowance_description">Как долго вы можете смотреть короткие видео после начала перерыва.</string>
+    <string name="interval_timer_dialog_allowance_label">Разрешенное время просмотра</string>
+    <string name="interval_timer_dialog_break_description">Scrolless будет блокировать поддерживаемые приложения в течение этого времени до следующего перерыва.</string>
+    <string name="interval_timer_dialog_break_label">Длительность перерыва</string>
+    <string name="interval_timer_dialog_cancel">Отмена</string>
+    <string name="interval_timer_dialog_save">Сохранить расписание</string>
+    <string name="interval_timer_dialog_subtitle">Выберите, как долго контент остается заблокированным и сколько времени вы можете смотреть во время каждого перерыва.</string>
+    <string name="interval_timer_dialog_summary">Результат: до %1$s каждые %2$s</string>
+    <string name="interval_timer_dialog_title">Настроить интервальный таймер</string>
+    <string name="interval_timer_next_reset_in">Сброс через %1$s</string>
+    <string name="interval_timer_next_reset_ready">Следующий перерыв разблокирован</string>
+    <string name="interval_timer_next_reset_unknown">Расписание начнется после вашего первого перерыва.</string>
 </resources>

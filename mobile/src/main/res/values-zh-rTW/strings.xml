@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">設定每日限制時間</string>
     <string name="total_time_wasted">浪費在「腦霧」的總時間</string>
     <string name="visit_github">造訪 GitHub 儲存庫</string>
+    <string name="interval_timer_card_allowance_chip">觀看時間</string>
+    <string name="interval_timer_card_break_chip">休息長度</string>
+    <string name="interval_timer_card_edit">編輯排程</string>
+    <string name="interval_timer_card_hint">每次休息時間結束後，Scrolless 會重設您的觀看額度。</string>
+    <string name="interval_timer_card_set_schedule">設定排程</string>
+    <string name="interval_timer_card_summary">每 %2$s 最多可觀看 %1$s</string>
+    <string name="interval_timer_card_summary_empty">設定您的第一個排程以開始交替休息。</string>
+    <string name="interval_timer_card_title">間隔計時器排程</string>
+    <string name="interval_timer_dialog_allowance_description">休息開始後，您可以觀看短影音的時間長度。</string>
+    <string name="interval_timer_dialog_allowance_label">允許的觀看時間</string>
+    <string name="interval_timer_dialog_break_description">在下一次休息之前，Scrolless 會將支援的應用程式封鎖這麼長的時間。</string>
+    <string name="interval_timer_dialog_break_label">休息持續時間</string>
+    <string name="interval_timer_dialog_cancel">取消</string>
+    <string name="interval_timer_dialog_save">儲存排程</string>
+    <string name="interval_timer_dialog_subtitle">選擇內容鎖定多久，以及您在每次休息中可以觀看多少時間。</string>
+    <string name="interval_timer_dialog_summary">結果：每 %2$s 最多可觀看 %1$s</string>
+    <string name="interval_timer_dialog_title">設定間隔計時器</string>
+    <string name="interval_timer_next_reset_in">將在 %1$s 後重設</string>
+    <string name="interval_timer_next_reset_ready">下一次休息已解鎖</string>
+    <string name="interval_timer_next_reset_unknown">排程將在您的第一次休息時間結束後開始。</string>
 </resources>

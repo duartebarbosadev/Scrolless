@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Ustaw dzienny limit czasu</string>
     <string name="total_time_wasted">Całkowity czas zmarnowany na brain rot</string>
     <string name="visit_github">Odwiedź repozytorium GitHub</string>
+    <string name="interval_timer_card_allowance_chip">Czas oglądania</string>
+    <string name="interval_timer_card_break_chip">Długość przerwy</string>
+    <string name="interval_timer_card_edit">Edytuj harmonogram</string>
+    <string name="interval_timer_card_hint">Scrolless resetuje Twój limit po każdym oknie przerwy.</string>
+    <string name="interval_timer_card_set_schedule">Ustaw harmonogram</string>
+    <string name="interval_timer_card_summary">Oglądaj do %1$s co %2$s</string>
+    <string name="interval_timer_card_summary_empty">Ustaw swój pierwszy harmonogram, aby rozpocząć przeplatanie przerw.</string>
+    <string name="interval_timer_card_title">Harmonogram czasomierza interwałowego</string>
+    <string name="interval_timer_dialog_allowance_description">Jak długo możesz oglądać krótkie filmy po rozpoczęciu przerwy.</string>
+    <string name="interval_timer_dialog_allowance_label">Dozwolony czas oglądania</string>
+    <string name="interval_timer_dialog_break_description">Scrolless utrzymuje zablokowane obsługiwane aplikacje przez ten czas przed następną przerwą.</string>
+    <string name="interval_timer_dialog_break_label">Czas trwania przerwy</string>
+    <string name="interval_timer_dialog_cancel">Anuluj</string>
+    <string name="interval_timer_dialog_save">Zapisz harmonogram</string>
+    <string name="interval_timer_dialog_subtitle">Wybierz, jak długo treść pozostaje zablokowana i ile czasu możesz oglądać podczas każdej przerwy.</string>
+    <string name="interval_timer_dialog_summary">Wynik: do %1$s co %2$s</string>
+    <string name="interval_timer_dialog_title">Skonfiguruj czasomierz interwałowy</string>
+    <string name="interval_timer_next_reset_in">Reset za %1$s</string>
+    <string name="interval_timer_next_reset_ready">Następna przerwa odblokowana</string>
+    <string name="interval_timer_next_reset_unknown">Harmonogram rozpocznie się po pierwszym oknie przerwy.</string>
 </resources>

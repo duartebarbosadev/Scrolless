@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Встановити час денного ліміту</string>
     <string name="total_time_wasted">Загальний час, витрачений на «розумову деградацію»</string>
     <string name="visit_github">Відвідати репозиторій GitHub</string>
+    <string name="interval_timer_card_allowance_chip">Час перегляду</string>
+    <string name="interval_timer_card_break_chip">Тривалість перерви</string>
+    <string name="interval_timer_card_edit">Редагувати розклад</string>
+    <string name="interval_timer_card_hint">Scrolless скидає ваш ліміт після кожного вікна перерви.</string>
+    <string name="interval_timer_card_set_schedule">Встановити розклад</string>
+    <string name="interval_timer_card_summary">Дивіться до %1$s кожні %2$s</string>
+    <string name="interval_timer_card_summary_empty">Встановіть свій перший розклад, щоб почати чергувати перерви.</string>
+    <string name="interval_timer_card_title">Розклад інтервального таймера</string>
+    <string name="interval_timer_dialog_allowance_description">Як довго ви можете дивитися короткі відео, коли починається перерва.</string>
+    <string name="interval_timer_dialog_allowance_label">Дозволений час перегляду</string>
+    <string name="interval_timer_dialog_break_description">Scrolless тримає підтримувані програми заблокованими протягом цього часу до наступної перерви.</string>
+    <string name="interval_timer_dialog_break_label">Тривалість перерви</string>
+    <string name="interval_timer_dialog_cancel">Скасувати</string>
+    <string name="interval_timer_dialog_save">Зберегти розклад</string>
+    <string name="interval_timer_dialog_subtitle">Виберіть, як довго контент залишається заблокованим і скільки часу ви можете дивитися під час кожної перерви.</string>
+    <string name="interval_timer_dialog_summary">Результат: до %1$s кожні %2$s</string>
+    <string name="interval_timer_dialog_title">Налаштувати інтервальний таймер</string>
+    <string name="interval_timer_next_reset_in">Скидання через %1$s</string>
+    <string name="interval_timer_next_reset_ready">Наступна перерва розблокована</string>
+    <string name="interval_timer_next_reset_unknown">Розклад почнеться після вашого першого вікна перерви.</string>
 </resources>

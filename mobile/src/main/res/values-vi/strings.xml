@@ -57,4 +57,24 @@
     <string name="time_limit_dialog_title">Đặt Thời gian Giới hạn Hàng ngày</string>
     <string name="total_time_wasted">Tổng thời gian lãng phí vào brain rot</string>
     <string name="visit_github">Truy cập Kho lưu trữ GitHub</string>
+    <string name="interval_timer_card_allowance_chip">Thời gian xem</string>
+    <string name="interval_timer_card_break_chip">Thời gian nghỉ</string>
+    <string name="interval_timer_card_edit">Chỉnh sửa lịch trình</string>
+    <string name="interval_timer_card_hint">Scrolless đặt lại thời gian cho phép của bạn sau mỗi khoảng thời gian nghỉ.</string>
+    <string name="interval_timer_card_set_schedule">Đặt lịch trình</string>
+    <string name="interval_timer_card_summary">Xem tối đa %1$s sau mỗi %2$s</string>
+    <string name="interval_timer_card_summary_empty">Đặt lịch trình đầu tiên của bạn để bắt đầu xen kẽ thời gian nghỉ.</string>
+    <string name="interval_timer_card_title">Lịch trình hẹn giờ ngắt quãng</string>
+    <string name="interval_timer_dialog_allowance_description">Thời gian bạn có thể xem video ngắn sau khi thời gian nghỉ bắt đầu.</string>
+    <string name="interval_timer_dialog_allowance_label">Thời gian xem được phép</string>
+    <string name="interval_timer_dialog_break_description">Scrolless giữ các ứng dụng được hỗ trợ bị chặn trong khoảng thời gian này trước khi đến thời gian nghỉ tiếp theo.</string>
+    <string name="interval_timer_dialog_break_label">Thời lượng nghỉ</string>
+    <string name="interval_timer_dialog_cancel">Hủy</string>
+    <string name="interval_timer_dialog_save">Lưu lịch trình</string>
+    <string name="interval_timer_dialog_subtitle">Chọn thời gian nội dung bị khóa và thời gian bạn có thể xem trong mỗi lần nghỉ.</string>
+    <string name="interval_timer_dialog_summary">Kết quả: tối đa %1$s sau mỗi %2$s</string>
+    <string name="interval_timer_dialog_title">Cấu hình hẹn giờ ngắt quãng</string>
+    <string name="interval_timer_next_reset_in">Đặt lại sau %1$s</string>
+    <string name="interval_timer_next_reset_ready">Thời gian nghỉ tiếp theo đã mở khóa</string>
+    <string name="interval_timer_next_reset_unknown">Lịch trình sẽ bắt đầu sau khoảng thời gian nghỉ đầu tiên của bạn.</string>
 </resources>
