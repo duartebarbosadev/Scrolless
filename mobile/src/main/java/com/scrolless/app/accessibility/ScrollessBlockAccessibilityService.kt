@@ -18,6 +18,7 @@ package com.scrolless.app.accessibility
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -63,8 +64,14 @@ import timber.log.Timber
  * @see BlockOption for available blocking strategies
  * @see BlockableApp for supported apps
  */
+@SuppressLint("AccessibilityPolicy")
 @AndroidEntryPoint
 class ScrollessBlockAccessibilityService : AccessibilityService() {
+
+    override fun onCreate() {
+        super.onCreate()
+        timerOverlayManager.attachServiceContext(this)
+    }
 
     /**
      * Main thread handler for executing UI-related operations like back navigation.
@@ -135,6 +142,13 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private var currentBlockOption: BlockOption = BlockOption.NothingSelected
 
     /**
+     * Epoch millis until which blocking logic should remain paused.
+     */
+    private var pauseUntilMillis: Long = 0L
+
+    private fun isPauseActive(now: Long = System.currentTimeMillis()): Boolean = pauseUntilMillis > now
+
+    /**
      * Runnable that performs periodic checks (every 1 second) to determine if the user
      * has exceeded their time limit while in blocked content.
      *
@@ -182,9 +196,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         super.onServiceConnected()
         Timber.i("Accessibility service connected")
 
-        // Make sure the timer overlay manager has the service's context
-        timerOverlayManager.attachServiceContext(this)
-
         // Check if we need to bring the app to foreground
         serviceScope.launch {
             val waitingForAccessibility = userSettingsStore.getWaitingForAccessibility().distinctUntilChanged()
@@ -218,6 +229,26 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             userSettingsStore.getActiveBlockOption().collect { currentBlockOption = it }
         }
 
+        // Observe pause toggle
+        serviceScope.launch {
+            userSettingsStore.getPauseUntil().collect { newPauseUntil ->
+                val wasPaused = isPauseActive()
+                pauseUntilMillis = newPauseUntil
+                val nowPaused = isPauseActive()
+                if (nowPaused && !wasPaused) {
+                    Timber.i("Pause activated until %d", pauseUntilMillis)
+                    if (isProcessingBlockedContent) {
+                        Timber.i("Active session detected on pause - finalizing session before pausing")
+                        onBlockedContentExited()
+                    }
+                } else if (!nowPaused && wasPaused) {
+                    Timber.i("Pause expired, resuming automatic blocking")
+                } else {
+                    Timber.v("Pause timestamp updated to %d (no state change)", pauseUntilMillis)
+                }
+            }
+        }
+
         // Check daily reset on service start
         serviceScope.launch {
             usageTracker.checkDailyReset()
@@ -236,6 +267,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * @param event The accessibility event containing information about the UI change
      */
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
+
+        if (isPauseActive()) {
+            Timber.v("Accessibility event ignored because blocking is paused")
+            return
+        }
 
         // Get root node
         val rootNode = rootInActiveWindow
@@ -296,9 +332,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private fun detectAppForBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): BlockableApp? =
         BlockableApp.entries.firstOrNull { appEnum ->
             if (appEnum.packageId == packageId) {
-                val id = appEnum.getViewId()
                 if (rootNode.findAccessibilityNodeInfosByViewId(appEnum.getViewId()).isNotEmpty()) {
-                    Timber.d("Detected blocked content for app: %s (viewId=%s)", appEnum.name, id)
                     return@firstOrNull true
                 }
             }
@@ -320,6 +354,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * - Immediately blocks if limit already exceeded (e.g., BlockAll mode)
      */
     private fun onBlockedContentEntered() {
+
+        if (isPauseActive()) {
+            Timber.v("Ignoring blocked content entry because pause is active")
+            return
+        }
 
         // If the currentOnVideos boolean is set to true, we already dealt with the event
         if (isProcessingBlockedContent) {

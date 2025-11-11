@@ -42,44 +42,49 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
     private val _showComingSoonSnackBar = MutableStateFlow(false)
     private val _requestReview = MutableStateFlow(false)
 
-    val uiState: StateFlow<HomeUiState> = combine(
+    private val usageSnapshot = combine(
         userSettingsStore.getActiveBlockOption(),
         userSettingsStore.getTimeLimit(),
         userSettingsStore.getIntervalLength(),
         userSettingsStore.getIntervalUsage(),
         userSettingsStore.getIntervalWindowStart(),
         userSettingsStore.getTotalDailyUsage(),
-        userSettingsStore.getTimerOverlayEnabled(),
-        _showComingSoonSnackBar,
-        _requestReview,
-    ) {
-            blockOption,
-            timeLimit,
-            intervalLength,
-            intervalUsage,
-            intervalWindowStart,
-            currentUsage,
-            timerEnabled,
-            showComingSoonSnackBar,
-            requestReview,
-        ->
-
-        val progress = calculateProgress(
-            blockOption = blockOption,
-            currentUsage = currentUsage,
-            timeLimit = timeLimit,
-            intervalUsage = intervalUsage,
-        )
-
-        HomeUiState(
+    ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage ->
+        UsageSnapshot(
             blockOption = blockOption,
             timeLimit = timeLimit,
             intervalLength = intervalLength,
             intervalUsage = intervalUsage,
             intervalWindowStart = intervalWindowStart,
             currentUsage = currentUsage,
+        )
+    }
+
+    val uiState: StateFlow<HomeUiState> = combine(
+        usageSnapshot,
+        userSettingsStore.getTimerOverlayEnabled(),
+        userSettingsStore.getPauseUntil(),
+        _showComingSoonSnackBar,
+        _requestReview,
+    ) { usage, timerEnabled, pauseUntil, showComingSoonSnackBar, requestReview ->
+
+        val progress = calculateProgress(
+            blockOption = usage.blockOption,
+            currentUsage = usage.currentUsage,
+            timeLimit = usage.timeLimit,
+            intervalUsage = usage.intervalUsage,
+        )
+
+        HomeUiState(
+            blockOption = usage.blockOption,
+            timeLimit = usage.timeLimit,
+            intervalLength = usage.intervalLength,
+            intervalUsage = usage.intervalUsage,
+            intervalWindowStart = usage.intervalWindowStart,
+            currentUsage = usage.currentUsage,
             progress = progress,
             timerOverlayEnabled = timerEnabled,
+            pauseUntilMillis = pauseUntil,
             showComingSoonSnackBar = showComingSoonSnackBar,
             requestReview = requestReview,
         )
@@ -108,6 +113,22 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         Timber.d("Timer overlay toggled: %s", enabled)
         viewModelScope.launch {
             userSettingsStore.setTimerOverlayToggle(enabled)
+        }
+    }
+
+    fun onPauseToggle(shouldPause: Boolean) {
+        val targetTimestamp = if (shouldPause) {
+            System.currentTimeMillis() + PAUSE_DURATION_MILLIS
+        } else {
+            0L
+        }
+        if (shouldPause) {
+            Timber.i("Pause requested until %d", targetTimestamp)
+        } else {
+            Timber.i("Pause cancelled early, resuming automatic blocking")
+        }
+        viewModelScope.launch {
+            userSettingsStore.setPauseUntil(targetTimestamp)
         }
     }
 
@@ -156,11 +177,6 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         _showComingSoonSnackBar.value = false
     }
 
-    fun onFeatureComingSoon() {
-        Timber.i("Feature coming soon clicked")
-        _showComingSoonSnackBar.value = true
-    }
-
     fun onReviewRequested() {
         Timber.i("Review requested")
         _requestReview.value = true
@@ -180,6 +196,7 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
 
     companion object {
         private const val PROGRESS_MAX = 100
+        private const val PAUSE_DURATION_MILLIS = 5 * 60 * 1000L
     }
 }
 
@@ -196,4 +213,14 @@ data class HomeUiState(
     val requestReview: Boolean = false,
     val isDevMode: Boolean = false,
     val playStoreUrl: String? = null,
+    val pauseUntilMillis: Long = 0L,
+)
+
+private data class UsageSnapshot(
+    val blockOption: BlockOption,
+    val timeLimit: Long,
+    val intervalLength: Long,
+    val intervalUsage: Long,
+    val intervalWindowStart: Long,
+    val currentUsage: Long,
 )

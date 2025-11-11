@@ -67,8 +67,9 @@ object DataDiModule {
                         INSERT INTO user_settings (id, active_block_option, time_limit, interval_length,
                                                    interval_window_start_at, interval_usage,
                                                    timer_overlay_enabled, last_reset_day, total_daily_usage,
-                                                   timer_overlay_x, timer_overlay_y, waiting_for_accessibility)
-                        VALUES (1, 'NothingSelected', 0, 0, 0, 0, 0, date('now'), 0, 0, 100, 0)
+                                                   timer_overlay_x, timer_overlay_y, waiting_for_accessibility,
+                                                   pause_until_at)
+                        VALUES (1, 'NothingSelected', 0, 0, 0, 0, 0, date('now'), 0, 0, 100, 0, 0)
                         """,
                         )
                     }
