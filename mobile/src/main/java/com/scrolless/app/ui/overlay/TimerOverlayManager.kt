@@ -267,7 +267,10 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
  *
  * This is required for Compose views that are not part of an Activity.
  */
-private class WindowLifecycleOwner : LifecycleOwner, ViewModelStoreOwner, SavedStateRegistryOwner {
+private class WindowLifecycleOwner :
+    LifecycleOwner,
+    ViewModelStoreOwner,
+    SavedStateRegistryOwner {
     private val lifecycleRegistry = LifecycleRegistry(this)
     private val savedStateRegistryController = SavedStateRegistryController.create(this)
     private val _viewModelStore = ViewModelStore()
