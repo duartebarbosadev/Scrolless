@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Si ripristina tra %1$s</string>
     <string name="interval_timer_next_reset_ready">Prossima pausa sbloccata</string>
     <string name="interval_timer_next_reset_unknown">Il programma inizierà dopo la tua prima finestra di pausa.</string>
+    <string name="pause_duration_hint">Mette in pausa il blocco per 5 minuti</string>
+    <string name="pause_resumes_in">Riprende tra %1$s</string>
+    <string name="resume">Riprendi</string>
 </resources>

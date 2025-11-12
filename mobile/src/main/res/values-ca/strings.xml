@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Es restableix en %1$s</string>
     <string name="interval_timer_next_reset_ready">Pròxima pausa desbloquejada</string>
     <string name="interval_timer_next_reset_unknown">L\'horari començarà després de la teva primera finestra de pausa.</string>
+    <string name="pause_duration_hint">Pausa el bloqueig durant 5 minuts</string>
+    <string name="pause_resumes_in">Es reprèn en %1$s</string>
+    <string name="resume">Reprèn</string>
 </resources>

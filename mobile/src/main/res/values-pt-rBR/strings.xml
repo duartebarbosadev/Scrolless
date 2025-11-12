@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Redefine em %1$s</string>
     <string name="interval_timer_next_reset_ready">Próxima pausa desbloqueada</string>
     <string name="interval_timer_next_reset_unknown">O agendamento começará após sua primeira janela de pausa.</string>
+    <string name="pause_duration_hint">Pausa o bloqueio por 5 minutos</string>
+    <string name="pause_resumes_in">Retoma em %1$s</string>
+    <string name="resume">Retomar</string>
 </resources>

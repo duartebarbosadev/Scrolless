@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Скидання через %1$s</string>
     <string name="interval_timer_next_reset_ready">Наступна перерва розблокована</string>
     <string name="interval_timer_next_reset_unknown">Розклад почнеться після вашого першого вікна перерви.</string>
+    <string name="pause_duration_hint">Призупиняє блокування на 5 хвилин</string>
+    <string name="pause_resumes_in">Відновиться через %1$s</string>
+    <string name="resume">Відновити</string>
 </resources>

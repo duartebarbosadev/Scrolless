@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Сброс через %1$s</string>
     <string name="interval_timer_next_reset_ready">Следующий перерыв разблокирован</string>
     <string name="interval_timer_next_reset_unknown">Расписание начнется после вашего первого перерыва.</string>
+    <string name="pause_duration_hint">Приостанавливает блокировку на 5 минут</string>
+    <string name="pause_resumes_in">Возобновится через %1$s</string>
+    <string name="resume">Возобновить</string>
 </resources>

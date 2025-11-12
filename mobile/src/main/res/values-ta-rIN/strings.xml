@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">%1$s இல் மீட்டமைக்கிறது</string>
     <string name="interval_timer_next_reset_ready">அடுத்த இடைவேளை திறக்கப்பட்டது</string>
     <string name="interval_timer_next_reset_unknown">உங்கள் முதல் இடைவேளை சாளரத்திற்குப் பிறகு அட்டவணை தொடங்கும்.</string>
+    <string name="pause_duration_hint">5 நிமிடங்களுக்குத் தடுப்பதை இடைநிறுத்துகிறது</string>
+    <string name="pause_resumes_in">%1$s இல் மீண்டும் தொடங்கும்</string>
+    <string name="resume">மீண்டும் தொடங்கு</string>
 </resources>

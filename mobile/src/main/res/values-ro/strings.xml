@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Se resetează în %1$s</string>
     <string name="interval_timer_next_reset_ready">Următoarea pauză deblocată</string>
     <string name="interval_timer_next_reset_unknown">Programul va începe după prima ta fereastră de pauză.</string>
+    <string name="pause_duration_hint">Întrerupe blocarea pentru 5 minute</string>
+    <string name="pause_resumes_in">Se reia în %1$s</string>
+    <string name="resume">Reia</string>
 </resources>

@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Visszaállítás %1$s múlva</string>
     <string name="interval_timer_next_reset_ready">Következő szünet feloldva</string>
     <string name="interval_timer_next_reset_unknown">Az ütemezés az első szünet után indul el.</string>
+    <string name="pause_duration_hint">5 percre szünetelteti a blokkolást</string>
+    <string name="pause_resumes_in">Folytatás %1$s múlva</string>
+    <string name="resume">Folytatás</string>
 </resources>

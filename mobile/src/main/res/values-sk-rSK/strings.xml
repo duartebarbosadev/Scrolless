@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Resetuje sa za %1$s</string>
     <string name="interval_timer_next_reset_ready">Ďalšia prestávka odomknutá</string>
     <string name="interval_timer_next_reset_unknown">Rozvrh sa začne po vašom prvom okne prestávky.</string>
+    <string name="pause_duration_hint">Pozastaví blokovanie na 5 minút</string>
+    <string name="pause_resumes_in">Pokračuje o %1$s</string>
+    <string name="resume">Pokračovať</string>
 </resources>

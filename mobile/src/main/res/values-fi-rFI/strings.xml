@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Nollaus %1$s kuluttua</string>
     <string name="interval_timer_next_reset_ready">Seuraava tauko avattu</string>
     <string name="interval_timer_next_reset_unknown">Aikataulu alkaa ensimmäisen taukoikkunasi jälkeen.</string>
+    <string name="pause_duration_hint">Keskeyttää eston 5 minuutiksi</string>
+    <string name="pause_resumes_in">Jatkuu %1$s kuluttua</string>
+    <string name="resume">Jatka</string>
 </resources>
