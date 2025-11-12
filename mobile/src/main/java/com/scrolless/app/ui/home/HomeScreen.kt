@@ -756,8 +756,8 @@ private fun rememberIntervalRemainingTime(isRunning: Boolean, intervalLength: Lo
         val now = System.currentTimeMillis()
         val elapsed = now - windowStart
         if (elapsed < 0L) return intervalLength
-        val remainder = intervalLength - (elapsed % intervalLength)
-        return remainder.coerceAtLeast(0L)
+        val remaining = intervalLength - elapsed
+        return remaining.coerceAtLeast(0L)
     }
 
     var remaining by remember(isRunning, intervalLength, windowStart) {
@@ -769,7 +769,9 @@ private fun rememberIntervalRemainingTime(isRunning: Boolean, intervalLength: Lo
             remaining = calculateRemaining()
         } else {
             while (isActive) {
-                remaining = calculateRemaining()
+                val nextRemaining = calculateRemaining()
+                remaining = nextRemaining
+                if (nextRemaining <= 0L) break
                 delay(1_000L)
             }
         }
