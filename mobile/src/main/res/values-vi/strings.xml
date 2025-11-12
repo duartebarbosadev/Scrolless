@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Đặt lại sau %1$s</string>
     <string name="interval_timer_next_reset_ready">Thời gian nghỉ tiếp theo đã mở khóa</string>
     <string name="interval_timer_next_reset_unknown">Lịch trình sẽ bắt đầu sau khoảng thời gian nghỉ đầu tiên của bạn.</string>
+    <string name="pause_duration_hint">Tạm dừng chặn trong 5 phút</string>
+    <string name="pause_resumes_in">Tiếp tục sau %1$s</string>
+    <string name="resume">Tiếp tục</string>
 </resources>

@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Återställs om %1$s</string>
     <string name="interval_timer_next_reset_ready">Nästa paus upplåst</string>
     <string name="interval_timer_next_reset_unknown">Schemat startar efter ditt första pausfönster.</string>
+    <string name="pause_duration_hint">Pausar blockeringen i 5 minuter</string>
+    <string name="pause_resumes_in">Återupptas om %1$s</string>
+    <string name="resume">Återuppta</string>
 </resources>

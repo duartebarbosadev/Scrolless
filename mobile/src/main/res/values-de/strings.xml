@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Zurücksetzung in %1$s</string>
     <string name="interval_timer_next_reset_ready">Nächste Pause freigeschaltet</string>
     <string name="interval_timer_next_reset_unknown">Der Zeitplan beginnt nach Ihrem ersten Pausenfenster.</string>
+    <string name="pause_duration_hint">Blockierung für 5 Minuten pausieren</string>
+    <string name="pause_resumes_in">Wird in %1$s fortgesetzt</string>
+    <string name="resume">Fortsetzen</string>
 </resources>

@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">将在 %1$s 后重置</string>
     <string name="interval_timer_next_reset_ready">下一次休息已解锁</string>
     <string name="interval_timer_next_reset_unknown">日程将在您的第一个休息窗口后开始。</string>
+    <string name="pause_duration_hint">暂停阻止 5 分钟</string>
+    <string name="pause_resumes_in">将在 %1$s 后恢复</string>
+    <string name="resume">恢复</string>
 </resources>

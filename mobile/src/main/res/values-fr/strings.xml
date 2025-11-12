@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Réinitialisation dans %1$s</string>
     <string name="interval_timer_next_reset_ready">Prochaine pause déverrouillée</string>
     <string name="interval_timer_next_reset_unknown">Le programme commencera après votre première fenêtre de pause.</string>
+    <string name="pause_duration_hint">Met le blocage en pause pendant 5 minutes</string>
+    <string name="pause_resumes_in">Reprise dans %1$s</string>
+    <string name="resume">Reprendre</string>
 </resources>

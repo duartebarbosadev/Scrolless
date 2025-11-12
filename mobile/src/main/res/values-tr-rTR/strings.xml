@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Sıfırlanmasına %1$s kaldı</string>
     <string name="interval_timer_next_reset_ready">Sonraki mola kilidi açıldı</string>
     <string name="interval_timer_next_reset_unknown">Program, ilk mola pencerenizden sonra başlayacaktır.</string>
+    <string name="pause_duration_hint">Engellemeyi 5 dakika duraklatır</string>
+    <string name="pause_resumes_in">%1$s içinde devam edecek</string>
+    <string name="resume">Devam Et</string>
 </resources>

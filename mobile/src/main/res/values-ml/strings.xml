@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">%1$s-ൽ പുനഃസജ്ജമാക്കുന്നു</string>
     <string name="interval_timer_next_reset_ready">അടുത്ത ബ്രേക്ക് അൺലോക്ക് ചെയ്തു</string>
     <string name="interval_timer_next_reset_unknown">നിങ്ങളുടെ ആദ്യ ബ്രേക്ക് വിൻഡോയ്ക്ക് ശേഷം ഷെഡ്യൂൾ ആരംഭിക്കും.</string>
+    <string name="pause_duration_hint">5 മിനിറ്റിന് ബ്ലോക്കിംഗ് താൽക്കാലികമായി നിർത്തുന്നു</string>
+    <string name="pause_resumes_in">%1$s-ൽ പുനരാരംഭിക്കുന്നു</string>
+    <string name="resume">പുനരാരംഭിക്കുക</string>
 </resources>

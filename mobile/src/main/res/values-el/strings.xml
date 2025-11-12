@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Επαναφορά σε %1$s</string>
     <string name="interval_timer_next_reset_ready">Το επόμενο διάλειμμα ξεκλείδωσε</string>
     <string name="interval_timer_next_reset_unknown">Το πρόγραμμα θα ξεκινήσει μετά το πρώτο σας παράθυρο διαλείμματος.</string>
+    <string name="pause_duration_hint">Παύει το μπλοκάρισμα για 5 λεπτά</string>
+    <string name="pause_resumes_in">Συνέχιση σε %1$s</string>
+    <string name="resume">Συνέχιση</string>
 </resources>

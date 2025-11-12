@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Se restablece en %1$s</string>
     <string name="interval_timer_next_reset_ready">Próximo descanso desbloqueado</string>
     <string name="interval_timer_next_reset_unknown">El horario comenzará después de tu primera ventana de descanso.</string>
+    <string name="pause_duration_hint">Pausa el bloqueo durante 5 minutos</string>
+    <string name="pause_resumes_in">Se reanuda en %1$s</string>
+    <string name="resume">Reanudar</string>
 </resources>

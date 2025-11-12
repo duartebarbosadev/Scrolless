@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Reset over %1$s</string>
     <string name="interval_timer_next_reset_ready">Volgende pauze ontgrendeld</string>
     <string name="interval_timer_next_reset_unknown">Schema start na uw eerste pauze.</string>
+    <string name="pause_duration_hint">Pauzeert blokkeren gedurende 5 minuten</string>
+    <string name="pause_resumes_in">Hervat over %1$s</string>
+    <string name="resume">Hervatten</string>
 </resources>

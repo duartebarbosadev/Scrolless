@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Nullstiller om %1$s</string>
     <string name="interval_timer_next_reset_ready">Neste pause er låst opp</string>
     <string name="interval_timer_next_reset_unknown">Tidsplanen startar etter den første pausen din.</string>
+    <string name="pause_duration_hint">Set blokkeringa på pause i 5 minutt</string>
+    <string name="pause_resumes_in">Gjenopptek om %1$s</string>
+    <string name="resume">Gjenoppta</string>
 </resources>

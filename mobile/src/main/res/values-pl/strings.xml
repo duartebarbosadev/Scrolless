@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Reset za %1$s</string>
     <string name="interval_timer_next_reset_ready">Następna przerwa odblokowana</string>
     <string name="interval_timer_next_reset_unknown">Harmonogram rozpocznie się po pierwszym oknie przerwy.</string>
+    <string name="pause_duration_hint">Wstrzymuje blokowanie na 5 minut</string>
+    <string name="pause_resumes_in">Wznowienie za %1$s</string>
+    <string name="resume">Wznów</string>
 </resources>

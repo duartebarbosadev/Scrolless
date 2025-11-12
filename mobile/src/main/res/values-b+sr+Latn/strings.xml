@@ -77,4 +77,7 @@
     <string name="interval_timer_next_reset_in">Resetuje se za %1$s</string>
     <string name="interval_timer_next_reset_ready">Sledeća pauza otključana</string>
     <string name="interval_timer_next_reset_unknown">Raspored će početi nakon vašeg prvog prozora pauze.</string>
+    <string name="pause_duration_hint">Pauziranje blokiranja na 5 minuta</string>
+    <string name="pause_resumes_in">Nastavlja se za %1$s</string>
+    <string name="resume">Nastavi</string>
 </resources>
