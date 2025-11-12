@@ -58,13 +58,12 @@ import timber.log.Timber
  *
  * Permissions Required:
  * - Accessibility service permission must be granted by the user
- * - SYSTEM_ALERT_WINDOW permission (for timer overlay)
  *
  * @see com.scrolless.app.core.blocking.BlockingManager for blocking logic
  * @see BlockOption for available blocking strategies
  * @see BlockableApp for supported apps
  */
-@SuppressLint("AccessibilityPolicy")
+@SuppressLint("AccessibilityPolicy") // Accessibility APIs are required to enforce user-configured blocking policies.
 @AndroidEntryPoint
 class ScrollessBlockAccessibilityService : AccessibilityService() {
 
@@ -144,6 +143,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     /**
      * Epoch millis until which blocking logic should remain paused.
      */
+    @Volatile
     private var pauseUntilMillis: Long = 0L
 
     private fun isPauseActive(now: Long = System.currentTimeMillis()): Boolean = pauseUntilMillis > now
@@ -269,7 +269,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
 
         if (isPauseActive()) {
-            Timber.v("Accessibility event ignored because blocking is paused")
+            Timber.i("Accessibility event ignored because blocking is paused")
             return
         }
 
