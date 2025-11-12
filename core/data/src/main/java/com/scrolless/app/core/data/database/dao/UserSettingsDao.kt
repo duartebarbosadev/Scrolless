@@ -97,4 +97,10 @@ abstract class UserSettingsDao : BaseDao<UserSettings> {
 
     @Query("UPDATE user_settings SET waiting_for_accessibility = :waiting WHERE id = 1")
     abstract suspend fun setWaitingForAccessibility(waiting: Boolean)
+
+    @Query("SELECT pause_until_at FROM user_settings WHERE id = 1")
+    abstract fun getPauseUntil(): Flow<Long>
+
+    @Query("UPDATE user_settings SET pause_until_at = :pauseUntil WHERE id = 1")
+    abstract suspend fun setPauseUntil(pauseUntil: Long)
 }

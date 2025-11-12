@@ -42,4 +42,5 @@ data class UserSettings(
     @ColumnInfo(name = "timer_overlay_x") val timerOverlayX: Int = 0,
     @ColumnInfo(name = "timer_overlay_y") val timerOverlayY: Int = 100,
     @ColumnInfo(name = "waiting_for_accessibility") val waitingForAccessibility: Boolean = false,
+    @ColumnInfo(name = "pause_until_at") val pauseUntilAt: Long = 0L,
 )

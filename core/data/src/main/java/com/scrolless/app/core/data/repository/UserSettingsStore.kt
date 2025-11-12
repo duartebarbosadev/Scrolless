@@ -60,6 +60,9 @@ interface UserSettingsStore {
 
     fun getWaitingForAccessibility(): Flow<Boolean>
     suspend fun setWaitingForAccessibility(waiting: Boolean)
+
+    fun getPauseUntil(): Flow<Long>
+    suspend fun setPauseUntil(pauseUntil: Long)
 }
 
 suspend fun UserSettingsStore.setTimerOverlayPosition(positionX: Int, positionY: Int) {
@@ -85,6 +88,7 @@ class UserSettingsStoreImpl constructor(private val userSettingsDao: UserSetting
     private val _timerOverlayPositionY = MutableStateFlow(0)
     private val _timerOverlayPositionX = MutableStateFlow(0)
     private val _waitingForAccessibility = MutableStateFlow(false)
+    private val _pauseUntil = MutableStateFlow(0L)
 
     init {
         coroutineScope.launch {
@@ -119,6 +123,9 @@ class UserSettingsStoreImpl constructor(private val userSettingsDao: UserSetting
         }
         coroutineScope.launch {
             userSettingsDao.getWaitingForAccessibility().collect { _waitingForAccessibility.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getPauseUntil().collect { _pauseUntil.value = it }
         }
     }
 
@@ -190,5 +197,11 @@ class UserSettingsStoreImpl constructor(private val userSettingsDao: UserSetting
 
     override suspend fun setWaitingForAccessibility(waiting: Boolean) {
         userSettingsDao.setWaitingForAccessibility(waiting)
+    }
+
+    override fun getPauseUntil(): Flow<Long> = _pauseUntil
+
+    override suspend fun setPauseUntil(pauseUntil: Long) {
+        userSettingsDao.setPauseUntil(pauseUntil)
     }
 }

@@ -17,6 +17,7 @@
 package com.scrolless.app.ui.home
 
 import android.app.Activity
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -25,6 +26,7 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -119,6 +121,7 @@ import com.scrolless.app.util.formatTime
 import com.scrolless.app.util.isAccessibilityServiceEnabled
 import com.scrolless.app.util.radialGradientScrim
 import com.scrolless.app.util.requestAppReview
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -247,9 +250,13 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                     showAccessibilityExplainer = true
                 }
             },
-            onPauseClicked = {
-                Timber.i("Pause clicked (coming soon)")
-                viewModel.onFeatureComingSoon()
+            onPauseToggle = { shouldPause ->
+                if (shouldPause) {
+                    Timber.i("Pause clicked -> pausing blocking for 5 minutes")
+                } else {
+                    Timber.i("Pause clicked -> resuming blocking immediately")
+                }
+                viewModel.onPauseToggle(shouldPause)
             },
             onProgressCardClicked = {
                 if (BuildConfig.DEBUG) {
@@ -352,13 +359,17 @@ private fun HomeContent(
     onReviewClicked: () -> Unit,
     onIntervalTimerClick: () -> Unit,
     onIntervalTimerEdit: () -> Unit,
-    onPauseClicked: () -> Unit,
+    onPauseToggle: (Boolean) -> Unit,
     onProgressCardClicked: () -> Unit = {},
 ) {
     // Define weights outside of composition flow
     val WEIGHT_BASE = 1f
     val WEIGHT_EXPANDED = 1.2f
     val WEIGHT_SHRUNK = 0.9f
+
+    val pauseRemainingMillis = rememberPauseRemainingTime(uiState.pauseUntilMillis)
+    val isPauseActive = pauseRemainingMillis > 0L
+    val hasActiveBlockOption = uiState.blockOption != BlockOption.NothingSelected
 
     Box(
         modifier
@@ -538,11 +549,17 @@ private fun HomeContent(
                 )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            if (hasActiveBlockOption) {
+                Spacer(modifier = Modifier.height(24.dp))
 
-            PauseButton(onClick = onPauseClicked)
+                PauseButton(
+                    onTogglePause = onPauseToggle,
+                    isPaused = isPauseActive,
+                    remainingMillis = pauseRemainingMillis,
+                )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
+            }
             TimerOverlayToggle(
                 checked = uiState.timerOverlayEnabled,
                 onCheckedChange = onTimerOverlayToggled,
@@ -739,8 +756,8 @@ private fun rememberIntervalRemainingTime(isRunning: Boolean, intervalLength: Lo
         val now = System.currentTimeMillis()
         val elapsed = now - windowStart
         if (elapsed < 0L) return intervalLength
-        val remainder = intervalLength - (elapsed % intervalLength)
-        return remainder.coerceAtLeast(0L)
+        val remaining = intervalLength - elapsed
+        return remaining.coerceAtLeast(0L)
     }
 
     var remaining by remember(isRunning, intervalLength, windowStart) {
@@ -752,7 +769,38 @@ private fun rememberIntervalRemainingTime(isRunning: Boolean, intervalLength: Lo
             remaining = calculateRemaining()
         } else {
             while (isActive) {
+                val nextRemaining = calculateRemaining()
+                remaining = nextRemaining
+                if (nextRemaining <= 0L) break
+                delay(1_000L)
+            }
+        }
+    }
+
+    return remaining
+}
+
+@Composable
+private fun rememberPauseRemainingTime(pauseUntilMillis: Long): Long {
+    val isInspectionMode = LocalInspectionMode.current
+
+    fun calculateRemaining(): Long {
+        if (pauseUntilMillis <= 0L) return 0L
+        val delta = pauseUntilMillis - System.currentTimeMillis()
+        return delta.coerceAtLeast(0L)
+    }
+
+    var remaining by remember(pauseUntilMillis) {
+        mutableLongStateOf(calculateRemaining())
+    }
+
+    LaunchedEffect(pauseUntilMillis, isInspectionMode) {
+        if (pauseUntilMillis <= 0L || isInspectionMode) {
+            remaining = calculateRemaining()
+        } else {
+            while (isActive) {
                 remaining = calculateRemaining()
+                if (remaining <= 0L) break
                 delay(1_000L)
             }
         }
@@ -765,6 +813,14 @@ private fun Long.toIntervalLabel(): String {
     if (this <= 0L) return "--"
     val totalMinutes = (this / 60_000L).toInt()
     return totalMinutes.formatMinutes()
+}
+
+private fun Long.toCountdownLabel(): String {
+    if (this <= 0L) return "0:00"
+    val totalSeconds = (this / 1000L).coerceAtLeast(0L)
+    val minutes = totalSeconds / 60
+    val seconds = totalSeconds % 60
+    return String.format(Locale.getDefault(), "%d:%02d", minutes, seconds)
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
@@ -1036,30 +1092,90 @@ private fun ProgressCard(
 }
 
 @Composable
-fun PauseButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
-    OutlinedButton(
-        onClick = onClick,
-        modifier = modifier
-            .height(60.dp)
-            .wrapContentWidth()
-            .alpha(0.7f),
+fun PauseButton(onTogglePause: (Boolean) -> Unit, isPaused: Boolean, remainingMillis: Long, modifier: Modifier = Modifier) {
+    val buttonShape = RoundedCornerShape(20.dp)
+    val containerColor by animateColorAsState(
+        targetValue = if (isPaused) {
+            MaterialTheme.colorScheme.errorContainer
+        } else {
+            MaterialTheme.colorScheme.primaryContainer
+        },
+        label = "pauseButtonContainer",
+    )
+    val contentColor by animateColorAsState(
+        targetValue = if (isPaused) {
+            MaterialTheme.colorScheme.onErrorContainer
+        } else {
+            MaterialTheme.colorScheme.onPrimaryContainer
+        },
+        label = "pauseButtonContent",
+    )
 
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = (0.7f)),
-        ),
-        shape = RoundedCornerShape(16.dp),
+    val borderColor by animateColorAsState(
+        targetValue = if (isPaused) {
+            MaterialTheme.colorScheme.error
+        } else {
+            MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
+        },
+        label = "pauseButtonBorder",
+    )
+
+    val iconRes = if (isPaused) R.drawable.ic_play else R.drawable.ic_pause
+    val buttonLabel = if (isPaused) {
+        stringResource(id = R.string.resume)
+    } else {
+        stringResource(id = R.string.pause)
+    }
+
+    Column(
+        modifier = modifier.wrapContentWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_pause),
-            contentDescription = stringResource(id = R.string.pause),
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(24.dp),
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = stringResource(id = R.string.pause),
-            color = MaterialTheme.colorScheme.onSurface,
-        )
+        Button(
+            onClick = { onTogglePause(!isPaused) },
+            shape = buttonShape,
+            border = BorderStroke(1.dp, borderColor),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = containerColor,
+                contentColor = contentColor,
+            ),
+            modifier = Modifier
+                .height(64.dp),
+        ) {
+            Icon(
+                painter = painterResource(id = iconRes),
+                contentDescription = buttonLabel,
+                tint = contentColor,
+                modifier = Modifier.size(24.dp),
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Text(
+                text = buttonLabel,
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
+
+        AnimatedContent(
+            targetState = isPaused,
+            modifier = Modifier.padding(top = 8.dp),
+            label = "pauseButtonSupportingText",
+        ) { paused ->
+            val text = if (paused) {
+                stringResource(id = R.string.pause_resumes_in, remainingMillis.toCountdownLabel())
+            } else {
+                stringResource(id = R.string.pause_duration_hint)
+            }
+            Text(
+                text = text,
+                color = if (paused) {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.9f)
+                },
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
 
@@ -1171,7 +1287,7 @@ fun HomeScreenPreview() {
             onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
-            onPauseClicked = {},
+            onPauseToggle = { _ -> },
         )
     }
 }
@@ -1189,7 +1305,7 @@ fun PreviewBlockAll() {
             onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
-            onPauseClicked = {},
+            onPauseToggle = { _ -> },
         )
     }
 }
@@ -1207,7 +1323,7 @@ fun PreviewNothingSelected() {
             onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
-            onPauseClicked = {},
+            onPauseToggle = { _ -> },
         )
     }
 }
@@ -1232,7 +1348,7 @@ fun PreviewIntervalTimerSelected() {
             onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
-            onPauseClicked = {},
+            onPauseToggle = { _ -> },
         )
     }
 }
@@ -1257,7 +1373,7 @@ fun PreviewIntervalTimer() {
             onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
-            onPauseClicked = {},
+            onPauseToggle = { _ -> },
         )
         IntervalTimerDialog(
             initialBreakMillis = TimeUnit.MINUTES.toMillis(60),
@@ -1281,7 +1397,7 @@ fun PreviewHelpDialog() {
             onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
-            onPauseClicked = {},
+            onPauseToggle = { _ -> },
         )
         HelpDialog { }
     }
@@ -1300,7 +1416,7 @@ fun PreviewAccessibilityExplainer() {
             onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
-            onPauseClicked = {},
+            onPauseToggle = { _ -> },
         )
         AccessibilityExplainerBottomSheet { }
     }
@@ -1319,7 +1435,7 @@ fun PreviewAccessibilitySuccessDialog() {
             onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
-            onPauseClicked = {},
+            onPauseToggle = { _ -> },
         )
         AccessibilitySuccessBottomSheetPreview()
     }

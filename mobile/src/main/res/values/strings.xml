@@ -32,6 +32,9 @@
     <string name="show_timer_overlay">Show Timer Overlay</string>
     <string name="rate_scrolless">Rate Scrolless on Play Store</string>
     <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="pause_duration_hint">Pauses blocking for 5 minutes</string>
+    <string name="pause_resumes_in">Resumes in %1$s</string>
 
     <string name="feature_coming_soon">Feature coming soon</string>
     <string name="time_limit_dialog_title">Set Daily Limit Time</string>
