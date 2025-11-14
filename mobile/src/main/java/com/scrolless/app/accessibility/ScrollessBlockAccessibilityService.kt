@@ -329,15 +329,26 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * @param rootNode The root accessibility node of the current window
      * @return The detected [BlockableApp], or null if no blocked content is found
      */
-    private fun detectAppForBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): BlockableApp? =
+    private fun detectAppForBlockedContent(
+        packageId: String,
+        rootNode: AccessibilityNodeInfo,
+    ): BlockableApp? =
         BlockableApp.entries.firstOrNull { appEnum ->
-            if (appEnum.packageId == packageId) {
-                if (rootNode.findAccessibilityNodeInfosByViewId(appEnum.getViewId()).isNotEmpty()) {
-                    return@firstOrNull true
-                }
+            if (appEnum.packageId != packageId) return@firstOrNull false
+
+            val nodes = rootNode.findAccessibilityNodeInfosByViewId(appEnum.getViewId())
+
+            // Make sure if we found nodes, they are visible to the user
+            val match = nodes.any { node ->
+                val rect = android.graphics.Rect()
+                node.getBoundsInScreen(rect)
+
+                node.isVisibleToUser &&
+                        rect.width() > 0 &&
+                        rect.height() > 0
             }
 
-            return@firstOrNull false
+            match
         }
 
     /**
