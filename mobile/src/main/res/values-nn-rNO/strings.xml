@@ -46,7 +46,6 @@
     <string name="help_step3_description">Har du framleis problem\? Vi er her for å hjelpe! Bruk knappen nedanfor for å ta kontakt på GitHub-repoet vårt.</string>
     <string name="help_step3_title">Kontakt kundestøtte</string>
     <string name="icons8_attribution">Ikon levert av Icons8 (icons8.com)</string>
-    <string name="interval_timer">Intervall\nTimer</string>
     <string name="interval_timer_card_allowance_chip">Sjåtid</string>
     <string name="interval_timer_card_break_chip">Pauselengd</string>
     <string name="interval_timer_card_edit">Rediger tidsplan</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Vis timer-overlegg</string>
     <string name="success_icon_description">Ikon for suksess-hake</string>
     <string name="time_limit_dialog_title">Set dagleg grensetid</string>
-    <string name="total_time_wasted">Total tid kasta bort på «brain rot»</string>
     <string name="visit_github">Gå til GitHub-lageret</string>
 </resources>

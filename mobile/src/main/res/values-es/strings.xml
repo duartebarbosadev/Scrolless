@@ -46,7 +46,6 @@
     <string name="help_step3_description">¿Sigues teniendo problemas\? ¡Estamos aquí para ayudarte! Usa el botón de abajo para contactarnos en nuestro repositorio de GitHub.</string>
     <string name="help_step3_title">Contactar con Soporte</string>
     <string name="icons8_attribution">Iconos proporcionados por Icons8 (icons8.com)</string>
-    <string name="interval_timer">Temporizador\nde Intervalo</string>
     <string name="interval_timer_card_allowance_chip">Tiempo de visualización</string>
     <string name="interval_timer_card_break_chip">Duración del descanso</string>
     <string name="interval_timer_card_edit">Editar horario</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Mostrar Superposición del Temporizador</string>
     <string name="success_icon_description">Icono de marca de verificación de éxito</string>
     <string name="time_limit_dialog_title">Establecer Tiempo Límite Diario</string>
-    <string name="total_time_wasted">Tiempo total perdido en deterioro mental</string>
     <string name="visit_github">Visitar Repositorio de GitHub</string>
 </resources>

@@ -46,7 +46,6 @@
     <string name="help_step3_description">Továbbra is problémái vannak\? Itt vagyunk, hogy segítsünk! Használja az alábbi gombot, hogy felvegye velünk a kapcsolatot a GitHub repónkon.</string>
     <string name="help_step3_title">Kapcsolatfelvétel az ügyfélszolgálattal</string>
     <string name="icons8_attribution">Ikonok forrása: Icons8 (icons8.com)</string>
-    <string name="interval_timer">Intervallum\nidőzítő</string>
     <string name="interval_timer_card_allowance_chip">Nézési idő</string>
     <string name="interval_timer_card_break_chip">Szünet hossza</string>
     <string name="interval_timer_card_edit">Ütemezés szerkesztése</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Időzítő átfedés megjelenítése</string>
     <string name="success_icon_description">Siker jelölőnégyzet ikon</string>
     <string name="time_limit_dialog_title">Napi limit idő beállítása</string>
-    <string name="total_time_wasted">Összes elpazarolt idő „brain rot”-ra</string>
     <string name="visit_github">GitHub tároló megtekintése</string>
 </resources>

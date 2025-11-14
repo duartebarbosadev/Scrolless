@@ -46,7 +46,6 @@
     <string name="help_step3_description">Nadal masz problemy\? Jesteśmy tu, aby pomóc! Użyj przycisku poniżej, aby skontaktować się z nami w naszym repozytorium GitHub.</string>
     <string name="help_step3_title">Skontaktuj się z pomocą techniczną</string>
     <string name="icons8_attribution">Ikony dostarczone przez Icons8 (icons8.com)</string>
-    <string name="interval_timer">Licznik\ninterwałowy</string>
     <string name="interval_timer_card_allowance_chip">Czas oglądania</string>
     <string name="interval_timer_card_break_chip">Długość przerwy</string>
     <string name="interval_timer_card_edit">Edytuj harmonogram</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Pokaż nakładkę licznika</string>
     <string name="success_icon_description">Ikona znacznika sukcesu</string>
     <string name="time_limit_dialog_title">Ustaw dzienny limit czasu</string>
-    <string name="total_time_wasted">Całkowity czas zmarnowany na „brain rot”</string>
     <string name="visit_github">Odwiedź repozytorium GitHub</string>
 </resources>

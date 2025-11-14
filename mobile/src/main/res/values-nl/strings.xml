@@ -46,7 +46,6 @@
     <string name="help_step3_description">Nog steeds problemen\? We helpen u graag! Gebruik de knop hieronder om contact op te nemen via onze GitHub-repo.</string>
     <string name="help_step3_title">Contact opnemen met ondersteuning</string>
     <string name="icons8_attribution">Pictogrammen geleverd door Icons8 (icons8.com)</string>
-    <string name="interval_timer">Interval\ntimer</string>
     <string name="interval_timer_card_allowance_chip">Kijktijd</string>
     <string name="interval_timer_card_break_chip">Pauzeduur</string>
     <string name="interval_timer_card_edit">Schema bewerken</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Timeroverlay tonen</string>
     <string name="success_icon_description">Pictogram van vinkje voor succes</string>
     <string name="time_limit_dialog_title">Stel dagelijkse limiettijd in</string>
-    <string name="total_time_wasted">Totale tijd verspild aan hersenrot</string>
     <string name="visit_github">Bezoek GitHub-repository</string>
 </resources>

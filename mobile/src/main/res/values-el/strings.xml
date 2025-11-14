@@ -46,7 +46,7 @@
     <string name="help_step3_description">Εξακολουθείτε να αντιμετωπίζετε προβλήματα; Είμαστε εδώ για να βοηθήσουμε! Χρησιμοποιήστε το παρακάτω κουμπί για να επικοινωνήσετε μαζί μας στο αποθετήριο μας στο GitHub.</string>
     <string name="help_step3_title">Επικοινωνία με την Υποστήριξη</string>
     <string name="icons8_attribution">Εικονίδια παρέχονται από το Icons8 (icons8.com)</string>
-    <string name="interval_timer">Χρονόμετρο\nΔιαλείμματος</string>
+    <string name="time_interval">Χρονόμετρο\nΔιαλείμματος</string>
     <string name="interval_timer_card_allowance_chip">Χρόνος παρακολούθησης</string>
     <string name="interval_timer_card_break_chip">Διάρκεια διαλείμματος</string>
     <string name="interval_timer_card_edit">Επεξεργασία προγράμματος</string>
@@ -78,6 +78,5 @@
     <string name="show_timer_overlay">Εμφάνιση Επικάλυψης Χρονομέτρου</string>
     <string name="success_icon_description">Εικονίδιο επιτυχίας (τικ)</string>
     <string name="time_limit_dialog_title">Ορισμός Χρόνου Ημερήσιου Ορίου</string>
-    <string name="total_time_wasted">Συνολικός χρόνος που σπαταλήθηκε σε brain rot</string>
     <string name="visit_github">Επίσκεψη στο Αποθετήριο GitHub</string>
 </resources>

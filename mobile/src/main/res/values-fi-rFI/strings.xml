@@ -46,7 +46,7 @@
     <string name="help_step3_description">Onko sinulla edelleen ongelmia\? Olemme täällä auttaaksemme! Käytä alla olevaa painiketta ottaaksesi meihin yhteyttä GitHub-arkistossamme.</string>
     <string name="help_step3_title">Ota yhteyttä tukeen</string>
     <string name="icons8_attribution">Kuvakkeet tarjoaa Icons8 (icons8.com)</string>
-    <string name="interval_timer">Aikaväli\najastin</string>
+    <string name="time_interval">Aikaväli\najastin</string>
     <string name="interval_timer_card_allowance_chip">Katseluaika</string>
     <string name="interval_timer_card_break_chip">Tauon pituus</string>
     <string name="interval_timer_card_edit">Muokkaa aikataulua</string>
@@ -78,6 +78,5 @@
     <string name="show_timer_overlay">Näytä ajastinpeittokuva</string>
     <string name="success_icon_description">Onnistumisen valintamerkkikuvake</string>
     <string name="time_limit_dialog_title">Aseta päivittäinen aikaraja</string>
-    <string name="total_time_wasted">Aivojen rappeutumiseen hukattu kokonaisaika</string>
     <string name="visit_github">Vieraile GitHub-arkistossa</string>
 </resources>

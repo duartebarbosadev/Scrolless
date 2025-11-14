@@ -105,6 +105,7 @@ import com.scrolless.app.BuildConfig
 import com.scrolless.app.R
 import com.scrolless.app.accessibility.ScrollessBlockAccessibilityService
 import com.scrolless.app.core.data.database.model.BlockOption
+import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.theme.progressbar_green_use
 import com.scrolless.app.designsystem.theme.progressbar_orange_use
 import com.scrolless.app.designsystem.theme.progressbar_red_use
@@ -885,8 +886,8 @@ fun FeatureButtonsRow(
                     FeatureButton(
                         onClick = onIntervalTimerClick,
                         icon = R.drawable.icons8_stopwatch_64,
-                        text = stringResource(id = R.string.interval_timer),
-                        contentDescription = stringResource(id = R.string.interval_timer),
+                        text = stringResource(id = R.string.time_interval),
+                        contentDescription = stringResource(id = R.string.time_interval),
                         isSelected = selectedOption == BlockOption.IntervalTimer,
                         interactionSource = intervalInteractionSource,
                         modifier = Modifier.fillMaxSize(),
@@ -951,15 +952,16 @@ fun FeatureButton(
                 contentDescription = contentDescription,
                 modifier = Modifier.size(32.dp),
             )
-            Text(
+            AutoResizingText(
                 text = text,
                 textAlign = TextAlign.Center,
-                fontSize = 15.sp,
+                style = MaterialTheme.typography.labelLarge,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp, start = 4.dp, end = 4.dp),
+                minFontSize = 12.sp,
             )
         }
     }
@@ -1061,29 +1063,39 @@ private fun ProgressCard(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(16.dp),
             ) {
-                Text(
+                AutoResizingText(
                     text = primaryText,
-                    modifier = Modifier.padding(top = 16.dp),
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onPrimary,
                     textAlign = TextAlign.Center,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    minFontSize = 16.sp,
                 )
                 Spacer(Modifier.height(8.dp))
-                Text(
-                    text = stringResource(R.string.total_time_wasted),
-                    fontSize = 14.sp,
+                AutoResizingText(
+                    text = stringResource(R.string.time_wasted),
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
                     textAlign = TextAlign.Center,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    minFontSize = 12.sp,
                 )
 
                 if (resetText != null) {
                     Spacer(Modifier.height(6.dp))
-                    Text(
+                    AutoResizingText(
                         text = resetText,
-                        fontSize = 12.sp,
+                        style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
                         textAlign = TextAlign.Center,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        minFontSize = 11.sp,
                     )
                 }
             }

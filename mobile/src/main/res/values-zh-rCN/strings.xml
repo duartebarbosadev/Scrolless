@@ -46,7 +46,7 @@
     <string name="help_step3_description">仍然有问题？我们随时为您提供帮助！使用下面的按钮在我们的 GitHub 仓库上联系我们。</string>
     <string name="help_step3_title">联系支持</string>
     <string name="icons8_attribution">图标由 Icons8 提供 (icons8.com)</string>
-    <string name="interval_timer">间隔\n计时器</string>
+    <string name="time_interval">间隔\n计时器</string>
     <string name="interval_timer_card_allowance_chip">观看时间</string>
     <string name="interval_timer_card_break_chip">休息时长</string>
     <string name="interval_timer_card_edit">编辑日程</string>
@@ -78,6 +78,5 @@
     <string name="show_timer_overlay">显示计时器叠加层</string>
     <string name="success_icon_description">成功复选标记图标</string>
     <string name="time_limit_dialog_title">设置每日限制时间</string>
-    <string name="total_time_wasted">浪费在“脑烂”上的总时间</string>
     <string name="visit_github">访问 GitHub 仓库</string>
 </resources>

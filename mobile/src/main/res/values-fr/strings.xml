@@ -46,7 +46,6 @@
     <string name="help_step3_description">Vous avez toujours des problèmes \? Nous sommes là pour vous aider ! Utilisez le bouton ci-dessous pour nous contacter sur notre dépôt GitHub.</string>
     <string name="help_step3_title">Contacter le support</string>
     <string name="icons8_attribution">Icônes fournies par Icons8 (icons8.com)</string>
-    <string name="interval_timer">Minuterie\nd\'intervalle</string>
     <string name="interval_timer_card_allowance_chip">Temps de visionnage</string>
     <string name="interval_timer_card_break_chip">Durée de la pause</string>
     <string name="interval_timer_card_edit">Modifier le programme</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Afficher la superposition de la minuterie</string>
     <string name="success_icon_description">Icône de coche de succès</string>
     <string name="time_limit_dialog_title">Définir la limite de temps quotidienne</string>
-    <string name="total_time_wasted">Temps total perdu en \"brain rot\"</string>
     <string name="visit_github">Visiter le dépôt GitHub</string>
 </resources>

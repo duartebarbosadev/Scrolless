@@ -46,7 +46,6 @@
     <string name="help_step3_description">Hala sorun mu yaşıyorsunuz\? Yardım etmek için buradayız! GitHub depomuza ulaşmak için aşağıdaki düğmeyi kullanın.</string>
     <string name="help_step3_title">Destekle İletişime Geçin</string>
     <string name="icons8_attribution">Icons8 tarafından sağlanan simgeler (icons8.com)</string>
-    <string name="interval_timer">Aralık\nZamanlayıcı</string>
     <string name="interval_timer_card_allowance_chip">İzleme süresi</string>
     <string name="interval_timer_card_break_chip">Mola süresi</string>
     <string name="interval_timer_card_edit">Programı düzenle</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Zamanlayıcı Yer Paylaşımını Göster</string>
     <string name="success_icon_description">Başarı onay işareti simgesi</string>
     <string name="time_limit_dialog_title">Günlük Sınır Süresini Ayarla</string>
-    <string name="total_time_wasted">Beyin çürümesinde boşa harcanan toplam süre</string>
     <string name="visit_github">GitHub Deposunu Ziyaret Et</string>
 </resources>

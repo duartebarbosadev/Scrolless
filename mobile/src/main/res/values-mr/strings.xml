@@ -46,7 +46,6 @@
     <string name="help_step3_description">अजूनही समस्या येत आहेत\? आम्ही मदतीसाठी येथे आहोत! आमच्या GitHub रेपोवर पोहोचण्यासाठी खालील बटण वापरा.</string>
     <string name="help_step3_title">संपर्क समर्थन</string>
     <string name="icons8_attribution">Icons8 (icons8.com) द्वारे प्रदान केलेले चिन्ह</string>
-    <string name="interval_timer">अंतराल\nटायमर</string>
     <string name="interval_timer_card_allowance_chip">पाहण्याचा वेळ</string>
     <string name="interval_timer_card_break_chip">ब्रेकची लांबी</string>
     <string name="interval_timer_card_edit">वेळापत्रक संपादित करा</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">टायमर आच्छादन दर्शवा</string>
     <string name="success_icon_description">यश चेक मार्क चिन्ह</string>
     <string name="time_limit_dialog_title">दैनिक मर्यादा वेळ सेट करा</string>
-    <string name="total_time_wasted">ब्रेन रॉटमध्ये वाया गेलेला एकूण वेळ</string>
     <string name="visit_github">GitHub रेपॉजिटरीला भेट द्या</string>
 </resources>

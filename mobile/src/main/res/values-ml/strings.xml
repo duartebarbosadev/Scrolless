@@ -46,7 +46,6 @@
     <string name="help_step3_description">ഇപ്പോഴും പ്രശ്‌നങ്ങളുണ്ടോ\? നിങ്ങളെ സഹായിക്കാൻ ഞങ്ങൾ ഇവിടെയുണ്ട്! ഞങ്ങളുടെ GitHub റിപ്പോയിൽ ബന്ധപ്പെടാൻ താഴെയുള്ള ബട്ടൺ ഉപയോഗിക്കുക.</string>
     <string name="help_step3_title">പിന്തുണയുമായി ബന്ധപ്പെടുക</string>
     <string name="icons8_attribution">Icons8 നൽകുന്ന ഐക്കണുകൾ (icons8.com)</string>
-    <string name="interval_timer">ഇന്റർവെൽ\nടൈമർ</string>
     <string name="interval_timer_card_allowance_chip">കാണാനുള്ള സമയം</string>
     <string name="interval_timer_card_break_chip">ബ്രേക്ക് ദൈർഘ്യം</string>
     <string name="interval_timer_card_edit">ഷെഡ്യൂൾ എഡിറ്റ് ചെയ്യുക</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">ടൈമർ ഓവർലേ കാണിക്കുക</string>
     <string name="success_icon_description">വിജയത്തിന്റെ ചെക്ക്മാർക്ക് ഐക്കൺ</string>
     <string name="time_limit_dialog_title">ദിവസേനയുള്ള പരിധി സമയം സജ്ജമാക്കുക</string>
-    <string name="total_time_wasted">ബ്രെയിൻ റോട്ടിനായി പാഴാക്കിയ ആകെ സമയം</string>
     <string name="visit_github">GitHub റിപ്പോസിറ്ററി സന്ദർശിക്കുക</string>
 </resources>

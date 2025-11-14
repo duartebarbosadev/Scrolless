@@ -46,7 +46,6 @@
     <string name="help_step3_description">まだ問題がありますか？サポートいたします！下のボタンを使用して、GitHubリポジトリでお問い合わせください。</string>
     <string name="help_step3_title">サポートに連絡</string>
     <string name="icons8_attribution">Icons8 (icons8.com) 提供のアイコン</string>
-    <string name="interval_timer">インターバル\nタイマー</string>
     <string name="interval_timer_card_allowance_chip">視聴時間</string>
     <string name="interval_timer_card_break_chip">休憩時間</string>
     <string name="interval_timer_card_edit">スケジュールを編集</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">タイマーオーバーレイを表示</string>
     <string name="success_icon_description">成功チェックマークアイコン</string>
     <string name="time_limit_dialog_title">1日の制限時間を設定</string>
-    <string name="total_time_wasted">脳の腐敗で浪費された合計時間</string>
     <string name="visit_github">GitHubリポジトリにアクセス</string>
 </resources>

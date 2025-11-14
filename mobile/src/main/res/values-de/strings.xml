@@ -46,7 +46,6 @@
     <string name="help_step3_description">Haben Sie immer noch Probleme\? Wir helfen Ihnen gerne! Nutzen Sie die Schaltfläche unten, um uns über unser GitHub-Repository zu kontaktieren.</string>
     <string name="help_step3_title">Support kontaktieren</string>
     <string name="icons8_attribution">Symbole bereitgestellt von Icons8 (icons8.com)</string>
-    <string name="interval_timer">Intervall-\nTimer</string>
     <string name="interval_timer_card_allowance_chip">Sehzeit</string>
     <string name="interval_timer_card_break_chip">Pausenlänge</string>
     <string name="interval_timer_card_edit">Zeitplan bearbeiten</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Timer-Einblendung anzeigen</string>
     <string name="success_icon_description">Erfolgs-Häkchen-Symbol</string>
     <string name="time_limit_dialog_title">Tageslimit-Zeit festlegen</string>
-    <string name="total_time_wasted">Gesamtzeit, die mit „Brain Rot“ verschwendet wurde</string>
     <string name="visit_github">GitHub-Repository besuchen</string>
 </resources>

@@ -46,7 +46,6 @@
     <string name="help_step3_description">Усе ще виникають проблеми\? Ми тут, щоб допомогти! Скористайтеся кнопкою нижче, щоб зв’язатися з нами в нашому репозиторії GitHub.</string>
     <string name="help_step3_title">Зв’язатися зі службою підтримки</string>
     <string name="icons8_attribution">Іконки надано Icons8 (icons8.com)</string>
-    <string name="interval_timer">Інтервальний\nтаймер</string>
     <string name="interval_timer_card_allowance_chip">Час перегляду</string>
     <string name="interval_timer_card_break_chip">Тривалість перерви</string>
     <string name="interval_timer_card_edit">Редагувати розклад</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Показати накладання таймера</string>
     <string name="success_icon_description">Іконка галочки успіху</string>
     <string name="time_limit_dialog_title">Встановити час щоденного ліміту</string>
-    <string name="total_time_wasted">Загальний час, витрачений на «розумову деградацію»</string>
     <string name="visit_github">Відвідати репозиторій GitHub</string>
 </resources>

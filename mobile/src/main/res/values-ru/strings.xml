@@ -46,7 +46,7 @@
     <string name="help_step3_description">Все еще есть проблемы\? Мы здесь, чтобы помочь! Используйте кнопку ниже, чтобы связаться с нами в нашем репозитории GitHub.</string>
     <string name="help_step3_title">Связаться со службой поддержки</string>
     <string name="icons8_attribution">Иконки предоставлены Icons8 (icons8.com)</string>
-    <string name="interval_timer">Интервальный\nтаймер</string>
+    <string name="time_interval">Интервальный\nтаймер</string>
     <string name="interval_timer_card_allowance_chip">Время просмотра</string>
     <string name="interval_timer_card_break_chip">Длительность перерыва</string>
     <string name="interval_timer_card_edit">Изменить расписание</string>
@@ -78,6 +78,5 @@
     <string name="show_timer_overlay">Показать наложение таймера</string>
     <string name="success_icon_description">Значок галочки успеха</string>
     <string name="time_limit_dialog_title">Установить время дневного лимита</string>
-    <string name="total_time_wasted">Общее время, потраченное на «мозговую гниль»</string>
     <string name="visit_github">Посетить репозиторий GitHub</string>
 </resources>

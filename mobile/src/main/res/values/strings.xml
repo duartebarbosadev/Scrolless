@@ -26,9 +26,9 @@
     <string name="accessibility_service_description">This service detects when reels/shorts/tiktok are opened so that Scrolless, can block them if configured.</string>
     <string name="block_all">Block\nAll</string>
     <string name="daily_limit">Daily\nLimit</string>
-    <string name="interval_timer">Interval\nTimer</string>
+    <string name="time_interval">Time\nInterval</string>
 
-    <string name="total_time_wasted">Total time wasted in brain rot</string>
+    <string name="time_wasted">Time wasted</string>
     <string name="show_timer_overlay">Show Timer Overlay</string>
     <string name="rate_scrolless">Rate Scrolless on Play Store</string>
     <string name="pause">Pause</string>
