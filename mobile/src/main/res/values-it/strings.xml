@@ -78,4 +78,6 @@
     <string name="success_icon_description">Icona spunta di successo</string>
     <string name="time_limit_dialog_title">Imposta Limite Giornaliero</string>
     <string name="visit_github">Visita il Repository GitHub</string>
+    <string name="time_interval">Intervallo\ndi tempo</string>
+    <string name="time_wasted">Tempo sprecato</string>
 </resources>

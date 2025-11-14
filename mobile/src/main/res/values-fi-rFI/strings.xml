@@ -78,4 +78,6 @@
     <string name="success_icon_description">Onnistumisen valintamerkkikuvake</string>
     <string name="time_limit_dialog_title">Aseta päivittäinen aikaraja</string>
     <string name="visit_github">Vieraile GitHub-arkistossa</string>
+    <string name="time_interval">Aika\nväli</string>
+    <string name="time_wasted">Hukattu aika</string>
 </resources>

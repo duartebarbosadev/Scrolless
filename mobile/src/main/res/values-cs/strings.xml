@@ -78,4 +78,6 @@
     <string name="success_icon_description">Ikona zaškrtnutí úspěchu</string>
     <string name="time_limit_dialog_title">Nastavit čas denního limitu</string>
     <string name="visit_github">Navštívit GitHub repozitář</string>
+    <string name="time_interval">Časový\nInterval</string>
+    <string name="time_wasted">Ztracený čas</string>
 </resources>

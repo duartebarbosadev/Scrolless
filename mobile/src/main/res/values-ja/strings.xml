@@ -78,4 +78,6 @@
     <string name="success_icon_description">成功チェックマークアイコン</string>
     <string name="time_limit_dialog_title">1日の制限時間を設定</string>
     <string name="visit_github">GitHubリポジトリにアクセス</string>
+    <string name="time_interval">時間\n間隔</string>
+    <string name="time_wasted">無駄にした時間</string>
 </resources>

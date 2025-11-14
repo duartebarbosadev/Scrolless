@@ -78,4 +78,6 @@
     <string name="success_icon_description">வெற்றிக் குறியீடு ஐகான்</string>
     <string name="time_limit_dialog_title">தினசரி வரம்பு நேரத்தை அமைக்கவும்</string>
     <string name="visit_github">GitHub களஞ்சியத்தைப் பார்வையிடவும்</string>
+    <string name="time_interval">நேர\nஇடைவெளி</string>
+    <string name="time_wasted">வீணான நேரம்</string>
 </resources>

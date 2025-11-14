@@ -78,4 +78,6 @@
     <string name="success_icon_description">Erfolgs-Häkchen-Symbol</string>
     <string name="time_limit_dialog_title">Tageslimit-Zeit festlegen</string>
     <string name="visit_github">GitHub-Repository besuchen</string>
+    <string name="time_interval">Zeit-\nintervall</string>
+    <string name="time_wasted">Verschwendete Zeit</string>
 </resources>
