@@ -46,7 +46,6 @@
     <string name="help_step3_description">Hai ancora problemi\? Siamo qui per aiutarti! Usa il pulsante qui sotto per contattarci sul nostro repository GitHub.</string>
     <string name="help_step3_title">Contatta l\'assistenza</string>
     <string name="icons8_attribution">Icone fornite da Icons8 (icons8.com)</string>
-    <string name="interval_timer">Timer\nIntervallo</string>
     <string name="interval_timer_card_allowance_chip">Tempo di visione</string>
     <string name="interval_timer_card_break_chip">Durata della pausa</string>
     <string name="interval_timer_card_edit">Modifica programma</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Mostra Overlay Timer</string>
     <string name="success_icon_description">Icona spunta di successo</string>
     <string name="time_limit_dialog_title">Imposta Limite Giornaliero</string>
-    <string name="total_time_wasted">Tempo totale sprecato in brain rot</string>
     <string name="visit_github">Visita il Repository GitHub</string>
 </resources>

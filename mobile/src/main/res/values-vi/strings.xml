@@ -46,7 +46,6 @@
     <string name="help_step3_description">Vẫn gặp sự cố\? Chúng tôi sẵn sàng trợ giúp! Sử dụng nút bên dưới để liên hệ trên kho lưu trữ GitHub của chúng tôi.</string>
     <string name="help_step3_title">Liên hệ Hỗ trợ</string>
     <string name="icons8_attribution">Biểu tượng được cung cấp bởi Icons8 (icons8.com)</string>
-    <string name="interval_timer">Hẹn giờ\nKhoảng thời gian</string>
     <string name="interval_timer_card_allowance_chip">Thời gian xem</string>
     <string name="interval_timer_card_break_chip">Độ dài nghỉ giải lao</string>
     <string name="interval_timer_card_edit">Chỉnh sửa lịch trình</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Hiển thị Lớp phủ Hẹn giờ</string>
     <string name="success_icon_description">Biểu tượng dấu kiểm thành công</string>
     <string name="time_limit_dialog_title">Đặt Thời gian Giới hạn Hàng ngày</string>
-    <string name="total_time_wasted">Tổng thời gian lãng phí vào \"não thối\"</string>
     <string name="visit_github">Truy cập Kho lưu trữ GitHub</string>
 </resources>

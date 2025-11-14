@@ -46,7 +46,6 @@
     <string name="help_step3_description">Încă aveți probleme\? Suntem aici să vă ajutăm! Folosiți butonul de mai jos pentru a ne contacta pe depozitul nostru GitHub.</string>
     <string name="help_step3_title">Contactați asistența</string>
     <string name="icons8_attribution">Pictograme furnizate de Icons8 (icons8.com)</string>
-    <string name="interval_timer">Cronometru\nInterval</string>
     <string name="interval_timer_card_allowance_chip">Timp de vizionare</string>
     <string name="interval_timer_card_break_chip">Durata pauzei</string>
     <string name="interval_timer_card_edit">Editează programul</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Afișează Suprapunerea Cronometrului</string>
     <string name="success_icon_description">Pictogramă bifă de succes</string>
     <string name="time_limit_dialog_title">Setează Timpul Limită Zilnic</string>
-    <string name="total_time_wasted">Timp total irosit în \"brain rot\"</string>
     <string name="visit_github">Vizitează Depozitul GitHub</string>
 </resources>

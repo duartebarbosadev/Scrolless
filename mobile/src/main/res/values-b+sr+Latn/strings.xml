@@ -46,7 +46,6 @@
     <string name="help_step3_description">I dalje imate problema\? Tu smo da pomognemo! Koristite dugme ispod da nas kontaktirate na našem GitHub repozitorijumu.</string>
     <string name="help_step3_title">Kontaktirajte podršku</string>
     <string name="icons8_attribution">Ikone obezbedio Icons8 (icons8.com)</string>
-    <string name="interval_timer">Intervalni\nTajmer</string>
     <string name="interval_timer_card_allowance_chip">Vreme gledanja</string>
     <string name="interval_timer_card_break_chip">Dužina pauze</string>
     <string name="interval_timer_card_edit">Uredi raspored</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Prikaži preklapanje tajmera</string>
     <string name="success_icon_description">Ikona kvačice za uspeh</string>
     <string name="time_limit_dialog_title">Podesi vreme dnevnog ograničenja</string>
-    <string name="total_time_wasted">Ukupno izgubljeno vreme u „brain rot-u“</string>
     <string name="visit_github">Poseti GitHub repozitorijum</string>
 </resources>

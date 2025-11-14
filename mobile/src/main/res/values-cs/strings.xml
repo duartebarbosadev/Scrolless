@@ -46,7 +46,6 @@
     <string name="help_step3_description">Stále máte problémy\? Jsme tu, abychom vám pomohli! Použijte tlačítko níže a kontaktujte nás na našem GitHub repozitáři.</string>
     <string name="help_step3_title">Kontaktovat podporu</string>
     <string name="icons8_attribution">Ikony poskytuje Icons8 (icons8.com)</string>
-    <string name="interval_timer">Intervalový\nČasovač</string>
     <string name="interval_timer_card_allowance_chip">Doba sledování</string>
     <string name="interval_timer_card_break_chip">Délka přestávky</string>
     <string name="interval_timer_card_edit">Upravit rozvrh</string>
@@ -78,6 +77,5 @@
     <string name="show_timer_overlay">Zobrazit překrytí časovače</string>
     <string name="success_icon_description">Ikona zaškrtnutí úspěchu</string>
     <string name="time_limit_dialog_title">Nastavit čas denního limitu</string>
-    <string name="total_time_wasted">Celkový čas promarněný v „brain rot“</string>
     <string name="visit_github">Navštívit GitHub repozitář</string>
 </resources>
