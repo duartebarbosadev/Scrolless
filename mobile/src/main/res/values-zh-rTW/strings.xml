@@ -78,4 +78,6 @@
     <string name="success_icon_description">成功核取標記圖示</string>
     <string name="time_limit_dialog_title">設定每日限制時間</string>
     <string name="visit_github">造訪 GitHub 儲存庫</string>
+    <string name="time_interval">時間\n間隔</string>
+    <string name="time_wasted">浪費的時間</string>
 </resources>

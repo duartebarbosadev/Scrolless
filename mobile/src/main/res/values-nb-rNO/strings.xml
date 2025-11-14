@@ -78,4 +78,6 @@
     <string name="success_icon_description">Suksess-hakeikon</string>
     <string name="time_limit_dialog_title">Angi daglig grensetid</string>
     <string name="visit_github">Besøk GitHub-repositoriet</string>
+    <string name="time_interval">Tids\nIntervall</string>
+    <string name="time_wasted">Tid bortkastet</string>
 </resources>

@@ -78,4 +78,6 @@
     <string name="success_icon_description">Pictogram van vinkje voor succes</string>
     <string name="time_limit_dialog_title">Stel dagelijkse limiettijd in</string>
     <string name="visit_github">Bezoek GitHub-repository</string>
+    <string name="time_interval">Tijds\ninterval</string>
+    <string name="time_wasted">Verspilde tijd</string>
 </resources>

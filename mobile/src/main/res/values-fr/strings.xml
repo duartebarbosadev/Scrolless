@@ -78,4 +78,6 @@
     <string name="success_icon_description">Icône de coche de succès</string>
     <string name="time_limit_dialog_title">Définir la limite de temps quotidienne</string>
     <string name="visit_github">Visiter le dépôt GitHub</string>
+    <string name="time_interval">Intervalle\nde temps</string>
+    <string name="time_wasted">Temps perdu</string>
 </resources>

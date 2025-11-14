@@ -78,4 +78,6 @@
     <string name="success_icon_description">Значок галочки успеха</string>
     <string name="time_limit_dialog_title">Установить время дневного лимита</string>
     <string name="visit_github">Посетить репозиторий GitHub</string>
+    <string name="time_interval">Временной\nинтервал</string>
+    <string name="time_wasted">Потраченное время</string>
 </resources>

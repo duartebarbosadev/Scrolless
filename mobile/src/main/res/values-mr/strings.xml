@@ -78,4 +78,6 @@
     <string name="success_icon_description">यश चेक मार्क चिन्ह</string>
     <string name="time_limit_dialog_title">दैनिक मर्यादा वेळ सेट करा</string>
     <string name="visit_github">GitHub रेपॉजिटरीला भेट द्या</string>
+    <string name="time_interval">वेळ\nअंतराल</string>
+    <string name="time_wasted">वाया गेलेला वेळ</string>
 </resources>

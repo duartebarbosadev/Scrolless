@@ -78,4 +78,6 @@
     <string name="success_icon_description">Ikona kvačice za uspjeh</string>
     <string name="time_limit_dialog_title">Postavi vrijeme dnevnog ograničenja</string>
     <string name="visit_github">Posjeti GitHub repozitorij</string>
+    <string name="time_interval">Vremenski\nInterval</string>
+    <string name="time_wasted">Izgubljeno vrijeme</string>
 </resources>

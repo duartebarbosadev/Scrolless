@@ -78,4 +78,6 @@
     <string name="success_icon_description">Ikon for suksess-hake</string>
     <string name="time_limit_dialog_title">Set dagleg grensetid</string>
     <string name="visit_github">Gå til GitHub-lageret</string>
+    <string name="time_interval">Tids\nintervall</string>
+    <string name="time_wasted">Bortkasta tid</string>
 </resources>

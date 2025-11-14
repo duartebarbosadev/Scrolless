@@ -78,4 +78,6 @@
     <string name="success_icon_description">Εικονίδιο επιτυχίας (τικ)</string>
     <string name="time_limit_dialog_title">Ορισμός Χρόνου Ημερήσιου Ορίου</string>
     <string name="visit_github">Επίσκεψη στο Αποθετήριο GitHub</string>
+    <string name="time_interval">Χρονικό\nΔιάστημα</string>
+    <string name="time_wasted">Χρόνος που σπαταλήθηκε</string>
 </resources>

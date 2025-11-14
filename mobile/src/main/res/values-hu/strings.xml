@@ -78,4 +78,6 @@
     <string name="success_icon_description">Siker jelölőnégyzet ikon</string>
     <string name="time_limit_dialog_title">Napi limit idő beállítása</string>
     <string name="visit_github">GitHub tároló megtekintése</string>
+    <string name="time_interval">Idő\nintervallum</string>
+    <string name="time_wasted">Eltékozolt idő</string>
 </resources>

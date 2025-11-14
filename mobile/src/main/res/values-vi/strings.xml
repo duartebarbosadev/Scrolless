@@ -78,4 +78,6 @@
     <string name="success_icon_description">Biểu tượng dấu kiểm thành công</string>
     <string name="time_limit_dialog_title">Đặt Thời gian Giới hạn Hàng ngày</string>
     <string name="visit_github">Truy cập Kho lưu trữ GitHub</string>
+    <string name="time_interval">Khoảng\nThời gian</string>
+    <string name="time_wasted">Thời gian lãng phí</string>
 </resources>

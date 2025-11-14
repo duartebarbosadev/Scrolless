@@ -78,4 +78,6 @@
     <string name="success_icon_description">Ikona znacznika sukcesu</string>
     <string name="time_limit_dialog_title">Ustaw dzienny limit czasu</string>
     <string name="visit_github">Odwiedź repozytorium GitHub</string>
+    <string name="time_interval">Interwał\nczasowy</string>
+    <string name="time_wasted">Zmarnowany czas</string>
 </resources>

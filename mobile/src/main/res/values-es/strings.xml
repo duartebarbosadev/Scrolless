@@ -78,4 +78,6 @@
     <string name="success_icon_description">Icono de marca de verificación de éxito</string>
     <string name="time_limit_dialog_title">Establecer Tiempo Límite Diario</string>
     <string name="visit_github">Visitar Repositorio de GitHub</string>
+    <string name="time_interval">Intervalo\nde Tiempo</string>
+    <string name="time_wasted">Tiempo perdido</string>
 </resources>

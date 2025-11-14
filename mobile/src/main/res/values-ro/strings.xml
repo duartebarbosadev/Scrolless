@@ -78,4 +78,6 @@
     <string name="success_icon_description">Pictogramă bifă de succes</string>
     <string name="time_limit_dialog_title">Setează Timpul Limită Zilnic</string>
     <string name="visit_github">Vizitează Depozitul GitHub</string>
+    <string name="time_interval">Interval\nDe Timp</string>
+    <string name="time_wasted">Timp pierdut</string>
 </resources>

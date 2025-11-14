@@ -78,4 +78,6 @@
     <string name="success_icon_description">Başarı onay işareti simgesi</string>
     <string name="time_limit_dialog_title">Günlük Sınır Süresini Ayarla</string>
     <string name="visit_github">GitHub Deposunu Ziyaret Et</string>
+    <string name="time_interval">Zaman\nAralığı</string>
+    <string name="time_wasted">Boşa harcanan süre</string>
 </resources>
