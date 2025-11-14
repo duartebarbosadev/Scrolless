@@ -276,7 +276,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // Get root node
         val rootNode = rootInActiveWindow
         if (rootNode == null) {
-            Timber.v("No root node available, skipping event")
+            if (isProcessingBlockedContent) {
+                Timber.w("Root node missing while processing content, treating as exit")
+                onBlockedContentExited()
+            } else {
+                Timber.v("No root node available, skipping event")
+            }
             return
         }
 
