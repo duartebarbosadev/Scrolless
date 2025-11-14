@@ -32,13 +32,17 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.unit.sp
 
+private const val MIN_STEP_SP = 0.5f
+private const val DEFAULT_STEP_SP = 1f
+
 /**
- * Text that automatically shrink-wraps its font size to avoid overflowing the given bounds.
+ * Text that automatically adjusts its font size to fit within the given bounds.
  *
  * The composable starts at [maxFontSize] (or the font size coming from [style]) and repeatedly
  * decreases the size by [step] while the layout still overflows. Once the string fits or reaches
  * [minFontSize], the final size is drawn. Because the algorithm relies on successive layout passes,
- * prefer it for compact labels rather than large paragraphs.
+ * prefer it for compact labels rather than large paragraphs. To prevent excessive passes the step
+ * is clamped to a minimum of `0.5.sp`.
  *
  * @param text text content to display.
  * @param modifier optional [Modifier] for styling/placement.
@@ -71,10 +75,17 @@ fun AutoResizingText(
         else -> 16.sp
     }
     val resolvedMinFontSize = if (minFontSize.isSpecified) minFontSize else 12.sp
-    val resolvedStep = if (step.isSpecified && step.value > 0f) step else 1.sp
+    val resolvedStep = when {
+        step.isSpecified && step.value > 0f -> step.value.coerceAtLeast(MIN_STEP_SP)
+        else -> DEFAULT_STEP_SP
+    }
 
-    var readyToDraw by remember(text, resolvedMaxFontSize, resolvedMinFontSize, maxLines) { mutableStateOf(false) }
-    var currentFontSize by remember(text, resolvedMaxFontSize, resolvedMinFontSize, maxLines) { mutableStateOf(resolvedMaxFontSize.value) }
+    var readyToDraw by remember(text, resolvedMaxFontSize, resolvedMinFontSize, maxLines, style, overflow) {
+        mutableStateOf(false)
+    }
+    var currentFontSize by remember(text, resolvedMaxFontSize, resolvedMinFontSize, maxLines, style, overflow) {
+        mutableStateOf(resolvedMaxFontSize.value)
+    }
 
     Text(
         text = text,
@@ -93,9 +104,8 @@ fun AutoResizingText(
         onTextLayout = { result ->
             val overflowed = result.didOverflowWidth || result.didOverflowHeight
             val minValue = resolvedMinFontSize.value
-            val stepValue = resolvedStep.value.coerceAtLeast(0.5f)
             if (overflowed && currentFontSize > minValue) {
-                val nextFontSize = (currentFontSize - stepValue).coerceAtLeast(minValue)
+                val nextFontSize = (currentFontSize - resolvedStep).coerceAtLeast(minValue)
                 if (nextFontSize == currentFontSize) {
                     readyToDraw = true
                 } else {
