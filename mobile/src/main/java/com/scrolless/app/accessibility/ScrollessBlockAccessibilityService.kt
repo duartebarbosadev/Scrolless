@@ -329,10 +329,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * @param rootNode The root accessibility node of the current window
      * @return The detected [BlockableApp], or null if no blocked content is found
      */
-    private fun detectAppForBlockedContent(
-        packageId: String,
-        rootNode: AccessibilityNodeInfo,
-    ): BlockableApp? =
+    private fun detectAppForBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): BlockableApp? =
         BlockableApp.entries.firstOrNull { appEnum ->
             if (appEnum.packageId != packageId) return@firstOrNull false
 
@@ -344,8 +341,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 node.getBoundsInScreen(rect)
 
                 node.isVisibleToUser &&
-                        rect.width() > 0 &&
-                        rect.height() > 0
+                    rect.width() > 0 &&
+                    rect.height() > 0
             }
 
             match
