@@ -46,7 +46,6 @@
     <string name="help_step3_description">Encara tens problemes\? Som aquí per ajudar-te! Utilitza el botó següent per contactar-nos al nostre repositori de GitHub.</string>
     <string name="help_step3_title">Contacta amb el suport</string>
     <string name="icons8_attribution">Icones proporcionades per Icons8 (icons8.com)</string>
-    <string name="time_interval">Temporitzador\nd\'intervals</string>
     <string name="interval_timer_card_allowance_chip">Temps de visualització</string>
     <string name="interval_timer_card_break_chip">Durada de la pausa</string>
     <string name="interval_timer_card_edit">Edita l\'horari</string>

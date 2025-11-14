@@ -46,7 +46,6 @@
     <string name="help_step3_description">இன்னும் சிக்கல்கள் உள்ளதா\? நாங்கள் உதவ இங்கே இருக்கிறோம்! எங்கள் GitHub ரெப்போவில் தொடர்பு கொள்ள கீழே உள்ள பொத்தானைப் பயன்படுத்தவும்.</string>
     <string name="help_step3_title">ஆதரவைத் தொடர்பு கொள்ளவும்</string>
     <string name="icons8_attribution">Icons8 (icons8.com) வழங்கிய ஐகான்கள்</string>
-    <string name="time_interval">இடைவெளி\nநேரம்</string>
     <string name="interval_timer_card_allowance_chip">பார்த்த நேரம்</string>
     <string name="interval_timer_card_break_chip">இடைவெளி நீளம்</string>
     <string name="interval_timer_card_edit">அட்டவணையைத் திருத்தவும்</string>

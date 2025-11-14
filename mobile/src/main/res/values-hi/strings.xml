@@ -46,7 +46,6 @@
     <string name="help_step3_description">अभी भी समस्याएँ आ रही हैं\? हम मदद के लिए यहाँ हैं! हमारे GitHub रेपो पर पहुंचने के लिए नीचे दिए गए बटन का उपयोग करें।</string>
     <string name="help_step3_title">सहायता से संपर्क करें</string>
     <string name="icons8_attribution">Icons8 (icons8.com) द्वारा प्रदान किए गए आइकॉन</string>
-    <string name="time_interval">अंतराल\nटाइमर</string>
     <string name="interval_timer_card_allowance_chip">देखने का समय</string>
     <string name="interval_timer_card_break_chip">ब्रेक की अवधि</string>
     <string name="interval_timer_card_edit">शेड्यूल संपादित करें</string>

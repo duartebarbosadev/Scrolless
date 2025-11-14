@@ -46,7 +46,6 @@
     <string name="help_step3_description">Εξακολουθείτε να αντιμετωπίζετε προβλήματα; Είμαστε εδώ για να βοηθήσουμε! Χρησιμοποιήστε το παρακάτω κουμπί για να επικοινωνήσετε μαζί μας στο αποθετήριο μας στο GitHub.</string>
     <string name="help_step3_title">Επικοινωνία με την Υποστήριξη</string>
     <string name="icons8_attribution">Εικονίδια παρέχονται από το Icons8 (icons8.com)</string>
-    <string name="time_interval">Χρονόμετρο\nΔιαλείμματος</string>
     <string name="interval_timer_card_allowance_chip">Χρόνος παρακολούθησης</string>
     <string name="interval_timer_card_break_chip">Διάρκεια διαλείμματος</string>
     <string name="interval_timer_card_edit">Επεξεργασία προγράμματος</string>

@@ -46,7 +46,6 @@
     <string name="help_step3_description">Все еще есть проблемы\? Мы здесь, чтобы помочь! Используйте кнопку ниже, чтобы связаться с нами в нашем репозитории GitHub.</string>
     <string name="help_step3_title">Связаться со службой поддержки</string>
     <string name="icons8_attribution">Иконки предоставлены Icons8 (icons8.com)</string>
-    <string name="time_interval">Интервальный\nтаймер</string>
     <string name="interval_timer_card_allowance_chip">Время просмотра</string>
     <string name="interval_timer_card_break_chip">Длительность перерыва</string>
     <string name="interval_timer_card_edit">Изменить расписание</string>

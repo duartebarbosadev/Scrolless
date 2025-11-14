@@ -46,7 +46,6 @@
     <string name="help_step3_description">I dalje imate problema\? Tu smo da pomognemo! Koristite dugme ispod da nas kontaktirate na našem GitHub repozitorijumu.</string>
     <string name="help_step3_title">Kontaktirajte podršku</string>
     <string name="icons8_attribution">Ikone obezbeđuje Icons8 (icons8.com)</string>
-    <string name="time_interval">Intervalni\nTajmer</string>
     <string name="interval_timer_card_allowance_chip">Vreme gledanja</string>
     <string name="interval_timer_card_break_chip">Dužina pauze</string>
     <string name="interval_timer_card_edit">Uredi raspored</string>

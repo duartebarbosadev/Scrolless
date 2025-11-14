@@ -46,7 +46,6 @@
     <string name="help_step3_description">仍然有問題？我們隨時為您提供協助！使用下方的按鈕在我們的 GitHub 儲存庫上與我們聯繫。</string>
     <string name="help_step3_title">聯絡支援</string>
     <string name="icons8_attribution">圖示由 Icons8 (icons8.com) 提供</string>
-    <string name="time_interval">間隔\n計時器</string>
     <string name="interval_timer_card_allowance_chip">觀看時間</string>
     <string name="interval_timer_card_break_chip">休息長度</string>
     <string name="interval_timer_card_edit">編輯排程</string>
