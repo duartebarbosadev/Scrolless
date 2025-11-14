@@ -41,6 +41,7 @@ import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import com.scrolless.app.core.data.database.model.BlockOption
 import com.scrolless.app.core.data.repository.UsageTracker
 import com.scrolless.app.core.data.repository.UserSettingsStore
 import com.scrolless.app.core.data.repository.setTimerOverlayPosition
@@ -76,6 +77,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     private val overlayModeState = mutableStateOf(OverlayMode.Timer)
     private val summaryTextState = mutableStateOf("")
     private var screenBounds: ScreenBounds? = null
+    private var activeBlockOption: BlockOption = BlockOption.NothingSelected
+    private var intervalUsageMillis: Long = 0L
     private val dragHandler = TimerOverlayDragHandler(
         viewProvider = { composeView },
         layoutParamsProvider = { layoutParams },
@@ -83,6 +86,19 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         boundsProvider = { resolveScreenBounds() },
         persistPosition = { x, y -> persistOverlayPosition(x, y) },
     )
+
+    init {
+        coroutineScope.launch {
+            userSettingsStore.getActiveBlockOption().collect { option ->
+                activeBlockOption = option
+            }
+        }
+        coroutineScope.launch {
+            userSettingsStore.getIntervalUsage().collect { usage ->
+                intervalUsageMillis = usage
+            }
+        }
+    }
 
     fun attachServiceContext(context: Context) {
         serviceContext = context
@@ -178,7 +194,12 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     fun hide() {
         composeView ?: return
         exitAnimationJob?.cancel()
-        val totalMillis = usageTracker.getDailyUsage() + computeActiveSessionMillis()
+        val sessionMillis = computeActiveSessionMillis()
+        val totalMillis = if (activeBlockOption == BlockOption.IntervalTimer) {
+            intervalUsageMillis + sessionMillis
+        } else {
+            usageTracker.getDailyUsage() + sessionMillis
+        }
         summaryTextState.value = totalMillis.formatAsTime()
         overlayModeState.value = OverlayMode.Summary
         exitAnimationJob = coroutineScope.launch {
