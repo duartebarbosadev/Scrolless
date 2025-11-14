@@ -15,8 +15,10 @@
 
 ---
 
-**Scrolless** is an open-source Android application designed to help users avoid excessive consumption of brain rot by blocking distracting content like Instagram Reels, TikTok, and YouTube Shorts. Using Android's accessibility permissions, the app detects and blocks this type of content whenever it appears on the screen.
-Since the app requires accessibility permissions, which are significant for user privacy, Scrolless is fully open-source.
+**Scrolless** is an open-source Android application designed to help users avoid excessive consumption of brain rot by blocking distracting content like Instagram Reels, TikTok, and YouTube Shorts. 
+
+Using Android's accessibility permissions, the app detects and blocks this type of content whenever it appears on the screen.
+Since the app requires accessibility permissions, which can have sketchy uses, Scrolless is fully open-source.
 
 
 ## Features
@@ -31,10 +33,10 @@ Since the app requires accessibility permissions, which are significant for user
 - **Live Brain Rot Timer**  
   A real-time overlay timer tracks your session while watching Shorts or Reels, keeping you aware of your screen time.
 
-- **Temporary Unblock**  (Upcoming Feature)   
-  Unblock access to all supported platforms for a specified amount of time.
+- **Pause**   
+  Pause the blocking feature for 5 minutes, allowing temporary access to the platforms.
 
-- **Interval Timer**  (Upcoming Feature)  
+- **Interval Timer**  
   Set intervals for usage and breaks, allowing controlled social media access throughout the day.
 
 - **Usage Tracking**  (Upcoming Feature)  
@@ -42,10 +44,7 @@ Since the app requires accessibility permissions, which are significant for user
 
 ## Screenshots
 
-| Main Screen | Blocking in Action                                                                                                                                                  |
-|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| <img src="art/Scrolless.png" alt="Scrolless app" width="250"> <br> Main screen | <img src="art/block_in_action.gif" alt="Scrolless app" width="250"> <br> As soon as the user enters the reel view, the app automatically blocks it by pressing back |
-
+<img src="art/Scrolless.png" alt="Scrolless app" width="250">
 
 # Architecture
 
