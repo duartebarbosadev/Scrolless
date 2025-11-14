@@ -100,6 +100,10 @@ internal class TimerOverlayDragHandler(
         cancelFling()
     }
 
+    fun cancelAnimations() {
+        cancelFling()
+    }
+
     private fun tryUpdateLayout(windowManager: WindowManager, params: WindowManager.LayoutParams) {
         try {
             windowManager.updateViewLayout(viewProvider(), params)

@@ -106,8 +106,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     }
 
     fun show() {
+        cancelPendingExitAnimations(resetViewState = true)
         if (composeView != null) {
-            cancelPendingExitAnimations(resetViewState = false)
             cleanupView()
         }
         if (!::serviceContext.isInitialized) {
@@ -229,6 +229,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             exitAnimator = null
             exitAnimationJob?.cancel()
             exitAnimationJob = null
+            dragHandler.cancelAnimations()
             dragHandler.detach()
             screenBounds = null
             composeView = null
