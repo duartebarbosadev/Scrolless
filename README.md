@@ -18,7 +18,7 @@
 **Scrolless** is an open-source Android application designed to help users avoid excessive consumption of brain rot by blocking distracting content like Instagram Reels, TikTok, and YouTube Shorts. 
 
 Using Android's accessibility permissions, the app detects and blocks this type of content whenever it appears on the screen.
-Since the app requires accessibility permissions, which can have sketchy usages, Scrolless is fully open-source.
+Since the app requires accessibility permissions, which can have sketchy uses, Scrolless is fully open-source.
 
 
 ## Features
