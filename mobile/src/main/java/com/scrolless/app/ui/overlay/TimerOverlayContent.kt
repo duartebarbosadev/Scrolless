@@ -53,13 +53,16 @@ internal fun TimerOverlayContent(sessionStartTime: Long, displayMode: OverlayMod
     val wiggleRotation = remember { Animatable(0f) }
 
     LaunchedEffect(sessionStartTime, displayMode) {
+        fun updateElapsed() {
+            elapsedTime = System.currentTimeMillis() - sessionStartTime
+        }
         if (displayMode == OverlayMode.Timer) {
             while (isActive) {
-                elapsedTime = System.currentTimeMillis() - sessionStartTime
+                updateElapsed()
                 delay(1000)
             }
         } else {
-            elapsedTime = System.currentTimeMillis() - sessionStartTime
+            updateElapsed()
         }
     }
 
