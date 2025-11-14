@@ -32,11 +32,30 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.unit.sp
 
+/**
+ * Text that automatically shrink-wraps its font size to avoid overflowing the given bounds.
+ *
+ * The composable starts at [maxFontSize] (or the font size coming from [style]) and repeatedly
+ * decreases the size by [step] while the layout still overflows. Once the string fits or reaches
+ * [minFontSize], the final size is drawn. Because the algorithm relies on successive layout passes,
+ * prefer it for compact labels rather than large paragraphs.
+ *
+ * @param text text content to display.
+ * @param modifier optional [Modifier] for styling/placement.
+ * @param style base [TextStyle]; defaults to [TextStyle.Default].
+ * @param color explicit text color. Defaults to using [style]'s color.
+ * @param textAlign horizontal alignment for the text.
+ * @param maxLines maximum line count permitted.
+ * @param overflow overflow behavior once [maxLines] is reached.
+ * @param minFontSize lower bound for the auto-scaling process.
+ * @param maxFontSize upper bound for the auto-scaling process.
+ * @param step decrement applied to the font size whenever overflow occurs.
+ */
 @Composable
 fun AutoResizingText(
     text: String,
     modifier: Modifier = Modifier,
-    style: TextStyle,
+    style: TextStyle = TextStyle.Default,
     color: Color = Color.Unspecified,
     textAlign: TextAlign? = null,
     maxLines: Int = Int.MAX_VALUE,
@@ -54,8 +73,8 @@ fun AutoResizingText(
     val resolvedMinFontSize = if (minFontSize.isSpecified) minFontSize else 12.sp
     val resolvedStep = if (step.isSpecified && step.value > 0f) step else 1.sp
 
-    var readyToDraw by remember(text, resolvedMaxFontSize) { mutableStateOf(false) }
-    var currentFontSize by remember(text, resolvedMaxFontSize) { mutableStateOf(resolvedMaxFontSize.value) }
+    var readyToDraw by remember(text, resolvedMaxFontSize, resolvedMinFontSize, maxLines) { mutableStateOf(false) }
+    var currentFontSize by remember(text, resolvedMaxFontSize, resolvedMinFontSize, maxLines) { mutableStateOf(resolvedMaxFontSize.value) }
 
     Text(
         text = text,
