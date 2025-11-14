@@ -276,7 +276,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // Get root node
         val rootNode = rootInActiveWindow
         if (rootNode == null) {
-            Timber.v("No root node available, skipping event")
+            if (isProcessingBlockedContent) {
+                Timber.w("Root node missing while processing content, treating as exit")
+                onBlockedContentExited()
+            } else {
+                Timber.v("No root node available, skipping event")
+            }
             return
         }
 
@@ -287,7 +292,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         // Only trigger changes if detection state actually changed
         if (onBrainRotApp != null) {
-            Timber.v("Detected brain rot app running: %s", onBrainRotApp)
+            // Avoid this log as its spammy
+            // Timber.v("Detected brain rot app running: %s", onBrainRotApp)
             detectedApp = onBrainRotApp
             onBlockedContentEntered()
         } else if (isProcessingBlockedContent) {
@@ -370,7 +376,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         // If the currentOnVideos boolean is set to true, we already dealt with the event
         if (isProcessingBlockedContent) {
-            Timber.v("Already processing blocked content, ignoring duplicate enter event")
+            // Avoid this log as its spamming
+            // Timber.v("Already processing blocked content, ignoring duplicate enter event")
             return
         }
 
