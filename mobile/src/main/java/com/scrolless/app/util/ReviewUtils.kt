@@ -28,7 +28,7 @@ fun requestAppReview(activity: Activity) {
 
     if (BuildConfig.DEBUG) {
         // Skip in-app review in debug builds
-        openPlayStore(activity, activity.packageName)
+        openPlayStore(activity, activity.packageName.removeSuffix(".debug"))
         return
     }
 
