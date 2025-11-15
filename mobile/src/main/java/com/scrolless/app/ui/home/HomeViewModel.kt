@@ -66,7 +66,8 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         userSettingsStore.getPauseUntil(),
         _showComingSoonSnackBar,
         _requestReview,
-    ) { usage, timerEnabled, pauseUntil, showComingSoonSnackBar, requestReview ->
+        userSettingsStore.getHasSeenAccessibilityExplainer(),
+    ) { usage, timerEnabled, pauseUntil, showComingSoonSnackBar, requestReview, hasSeenAccessibilityExplainer ->
 
         val progress = calculateProgress(
             blockOption = usage.blockOption,
@@ -87,6 +88,8 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
             pauseUntilMillis = pauseUntil,
             showComingSoonSnackBar = showComingSoonSnackBar,
             requestReview = requestReview,
+            hasSeenAccessibilityExplainer = hasSeenAccessibilityExplainer,
+            hasLoadedSettings = true,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -194,6 +197,13 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         }
     }
 
+    fun onAccessibilityExplainerShown() {
+        Timber.d("Accessibility explainer shown")
+        viewModelScope.launch {
+            userSettingsStore.setHasSeenAccessibilityExplainer(true)
+        }
+    }
+
     companion object {
         private const val PROGRESS_MAX = 100
         private const val PAUSE_DURATION_MILLIS = 5 * 60 * 1000L
@@ -214,6 +224,15 @@ data class HomeUiState(
     val isDevMode: Boolean = false,
     val playStoreUrl: String? = null,
     val pauseUntilMillis: Long = 0L,
+    val hasSeenAccessibilityExplainer: Boolean = false,
+
+    /**
+     * True once the initial values from [UserSettingsStore] have been emitted at least once.
+     *
+     * Home screen side-effects gate on this flag to avoid running before persisted settings load
+     * (e.g., auto-showing the accessibility explainer on the very first launch).
+     */
+    val hasLoadedSettings: Boolean = false,
 )
 
 private data class UsageSnapshot(

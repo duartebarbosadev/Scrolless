@@ -80,6 +80,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -149,17 +150,48 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
 
     val activity = context as? Activity
     val lifecycleOwner = LocalLifecycleOwner.current
+    val latestUiState by rememberUpdatedState(uiState)
 
+    fun showAccessibilityExplainerPrompt(setWaitingForAccessibility: Boolean = true) {
+        if (showAccessibilityExplainer) return
+        Timber.d("Queuing accessibility explainer (setWaiting=%s)", setWaitingForAccessibility)
+        if (setWaitingForAccessibility) {
+            viewModel.setWaitingForAccessibility(true)
+        }
+        showAccessibilityExplainer = true
+        if (!uiState.hasSeenAccessibilityExplainer) {
+            viewModel.onAccessibilityExplainerShown()
+        }
+    }
+
+    /**
+     * Observe lifecycle resume events so we can react when the user returns from settings:
+     * - If accessibility is now enabled, flip the success sheet on once.
+     * - If it is still disabled while a block option is active (or first launch), re-open the explainer.
+     */
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 Timber.d("HomeScreen resumed")
-                if (context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+                val isAccessibilityEnabled = context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)
+                if (isAccessibilityEnabled) {
                     if (showAccessibilityExplainer) {
                         Timber.i("Accessibility service enabled - showing success dialog")
                         showAccessibilityExplainer = false
                         showAccessibilitySuccess = true
                         viewModel.setWaitingForAccessibility(false)
+                    }
+                } else if (latestUiState.hasLoadedSettings) {
+                    val hasBlockSelection = latestUiState.blockOption != BlockOption.NothingSelected
+                    val hasSeenExplainer = latestUiState.hasSeenAccessibilityExplainer
+                    val shouldShowFirstLaunch = !hasSeenExplainer
+                    if ((shouldShowFirstLaunch || hasBlockSelection) && !showAccessibilityExplainer) {
+                        Timber.i(
+                            "Accessibility service disabled on resume - auto showing explainer (firstLaunch=%s, hasBlock=%s)",
+                            shouldShowFirstLaunch,
+                            hasBlockSelection,
+                        )
+                        showAccessibilityExplainerPrompt()
                     }
                 }
             }
@@ -167,6 +199,30 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+
+    LaunchedEffect(uiState.hasLoadedSettings, uiState.hasSeenAccessibilityExplainer) {
+        if (
+            uiState.hasLoadedSettings &&
+            !uiState.hasSeenAccessibilityExplainer &&
+            !showAccessibilityExplainer &&
+            !context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)
+        ) {
+            Timber.i("First launch detected - showing accessibility explainer")
+            showAccessibilityExplainerPrompt(setWaitingForAccessibility = false)
+        }
+    }
+
+    LaunchedEffect(uiState.hasLoadedSettings, uiState.blockOption) {
+        if (
+            uiState.hasLoadedSettings &&
+            uiState.blockOption != BlockOption.NothingSelected &&
+            !showAccessibilityExplainer &&
+            !context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)
+        ) {
+            Timber.i("Block option selected while accessibility disabled - showing explainer")
+            showAccessibilityExplainerPrompt(setWaitingForAccessibility = false)
         }
     }
 
@@ -196,8 +252,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                     viewModel.onBlockOptionSelected(blockOption)
                 } else {
                     Timber.w("Accessibility service not enabled. Showing explainer.")
-                    viewModel.setWaitingForAccessibility(true)
-                    showAccessibilityExplainer = true
+                    showAccessibilityExplainerPrompt()
                 }
             },
             onConfigureDailyLimit = {
@@ -207,8 +262,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                     showTimeLimitDialog = true
                 } else {
                     Timber.w("Accessibility service not enabled. Showing explainer (daily limit).")
-                    viewModel.setWaitingForAccessibility(true)
-                    showAccessibilityExplainer = true
+                    showAccessibilityExplainerPrompt()
                 }
             },
             onTimerOverlayToggled = { enabled ->
@@ -236,8 +290,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                     }
                 } else {
                     Timber.w("Accessibility service not enabled. Showing explainer (interval timer).")
-                    viewModel.setWaitingForAccessibility(true)
-                    showAccessibilityExplainer = true
+                    showAccessibilityExplainerPrompt()
                 }
             },
             onIntervalTimerEdit = {
@@ -247,8 +300,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                     openIntervalConfig()
                 } else {
                     Timber.w("Accessibility service not enabled. Showing explainer (interval timer config).")
-                    viewModel.setWaitingForAccessibility(true)
-                    showAccessibilityExplainer = true
+                    showAccessibilityExplainerPrompt()
                 }
             },
             onPauseToggle = { shouldPause ->
