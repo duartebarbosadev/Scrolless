@@ -29,7 +29,7 @@ import com.scrolless.app.core.data.database.model.UserSettings
     entities = [
         UserSettings::class,
     ],
-    version = 1,
+    version = 2,
     exportSchema = false,
 )
 @TypeConverters(LocalDateTypeConverters::class)
