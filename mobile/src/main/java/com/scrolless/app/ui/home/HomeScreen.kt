@@ -184,11 +184,10 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                 } else if (latestUiState.hasLoadedSettings) {
                     val hasBlockSelection = latestUiState.blockOption != BlockOption.NothingSelected
                     val hasSeenExplainer = latestUiState.hasSeenAccessibilityExplainer
-                    val shouldShowFirstLaunch = !hasSeenExplainer
-                    if ((shouldShowFirstLaunch || hasBlockSelection) && !showAccessibilityExplainer) {
+                    if ((!hasSeenExplainer || hasBlockSelection) && !showAccessibilityExplainer) {
                         Timber.i(
                             "Accessibility service disabled on resume - auto showing explainer (firstLaunch=%s, hasBlock=%s)",
-                            shouldShowFirstLaunch,
+                            !hasSeenExplainer,
                             hasBlockSelection,
                         )
                         showAccessibilityExplainerPrompt()
@@ -202,27 +201,23 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
         }
     }
 
-    LaunchedEffect(uiState.hasLoadedSettings, uiState.hasSeenAccessibilityExplainer) {
+    LaunchedEffect(uiState.hasLoadedSettings, uiState.hasSeenAccessibilityExplainer, uiState.blockOption) {
         if (
             uiState.hasLoadedSettings &&
-            !uiState.hasSeenAccessibilityExplainer &&
             !showAccessibilityExplainer &&
             !context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)
         ) {
-            Timber.i("First launch detected - showing accessibility explainer")
-            showAccessibilityExplainerPrompt(setWaitingForAccessibility = false)
-        }
-    }
+            when {
+                !uiState.hasSeenAccessibilityExplainer -> {
+                    Timber.i("First launch detected - showing accessibility explainer")
+                    showAccessibilityExplainerPrompt(setWaitingForAccessibility = false)
+                }
 
-    LaunchedEffect(uiState.hasLoadedSettings, uiState.blockOption) {
-        if (
-            uiState.hasLoadedSettings &&
-            uiState.blockOption != BlockOption.NothingSelected &&
-            !showAccessibilityExplainer &&
-            !context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)
-        ) {
-            Timber.i("Block option selected while accessibility disabled - showing explainer")
-            showAccessibilityExplainerPrompt(setWaitingForAccessibility = false)
+                uiState.blockOption != BlockOption.NothingSelected -> {
+                    Timber.i("Block option selected while accessibility disabled - showing explainer")
+                    showAccessibilityExplainerPrompt(setWaitingForAccessibility = false)
+                }
+            }
         }
     }
 
