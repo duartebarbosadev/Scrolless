@@ -68,7 +68,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
@@ -86,6 +85,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalContext
@@ -263,7 +263,12 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
             },
             onScreenTimerToggled = { enabled ->
                 Timber.d("On-screen timer toggle from UI: %s", enabled)
-                viewModel.onScreenTimerToggled(enabled)
+                if (context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+                    viewModel.onScreenTimerToggled(enabled)
+                } else {
+                    Timber.w("Accessibility service not enabled. Showing explainer (on-screen timer).")
+                    showAccessibilityExplainerPrompt()
+                }
             },
             onHelpClicked = {
                 Timber.d("Help clicked -> show HelpDialog")
@@ -1246,51 +1251,46 @@ fun PauseButton(onTogglePause: (Boolean) -> Unit, isPaused: Boolean, remainingMi
 
 @Composable
 fun OnScreenTimerToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier) {
-    Surface(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        tonalElevation = 4.dp,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-        color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                    onClick = {
-                        Timber.d("Timer overlay row click -> toggle to %s", !checked)
-                        onCheckedChange(!checked)
-                    },
-                )
-                .padding(horizontal = 16.dp, vertical = 14.dp),
-        ) {
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                Text(
-                    text = stringResource(id = R.string.show_onscreen_timer),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                )
-                Text(
-                    text = stringResource(id = R.string.timer_overlay_description),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodySmall,
-                )
-            }
-
-            Switch(
-                checked = checked,
-                onCheckedChange = {
-                    Timber.d("Timer overlay switch toggled -> %s", it)
-                    onCheckedChange(it)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = {
+                    Timber.d("On-screen timer row click -> toggle to %s", !checked)
+                    onCheckedChange(!checked)
                 },
             )
+            .padding(horizontal = 12.dp, vertical = 10.dp),
+    ) {
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            Text(
+                text = stringResource(id = R.string.show_onscreen_timer),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+            )
+            Text(
+                text = stringResource(id = R.string.timer_overlay_description),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodySmall,
+            )
         }
+
+        Switch(
+            checked = checked,
+            onCheckedChange = {
+                Timber.d("On-screen timer switch toggled -> %s", it)
+                onCheckedChange(it)
+            },
+        )
     }
 }
 

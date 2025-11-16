@@ -30,7 +30,7 @@
 
     <string name="time_wasted">Time wasted</string>
     <string name="show_onscreen_timer">Show on-screen timer</string>
-    <string name="timer_overlay_description">Keep a floating timer visible while blocking apps.</string>
+    <string name="timer_overlay_description">Keep a floating timer visible while watching brain rot content.</string>
     <string name="rate_scrolless">Rate Scrolless on Play Store</string>
     <string name="pause">Pause</string>
     <string name="resume" translatable="false">Resume</string>
