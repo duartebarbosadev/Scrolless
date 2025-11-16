@@ -305,12 +305,19 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                 }
             },
             onPauseToggle = { shouldPause ->
-                if (shouldPause) {
-                    Timber.i("Pause clicked -> pausing blocking for 5 minutes")
+                
+                val shouldBypass = BuildConfig.DEBUG && debugBypassAccessibilityCheck
+                if (shouldBypass || context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+                    if (shouldPause) {
+                        Timber.i("Pause clicked -> pausing blocking for 5 minutes")
+                    } else {
+                        Timber.i("Pause clicked -> resuming blocking immediately")
+                    }
+                    viewModel.onPauseToggle(shouldPause)
                 } else {
-                    Timber.i("Pause clicked -> resuming blocking immediately")
+                    Timber.w("Accessibility service not enabled. Showing explainer (pause).")
+                    showAccessibilityExplainerPrompt()
                 }
-                viewModel.onPauseToggle(shouldPause)
             },
             onProgressCardClicked = {
                 if (BuildConfig.DEBUG) {
