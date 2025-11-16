@@ -112,8 +112,8 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         }
     }
 
-    fun onTimerOverlayToggled(enabled: Boolean) {
-        Timber.d("Timer overlay toggled: %s", enabled)
+    fun onScreenTimerToggled(enabled: Boolean) {
+        Timber.d("On-screen timer toggled: %s", enabled)
         viewModelScope.launch {
             userSettingsStore.setTimerOverlayToggle(enabled)
         }
