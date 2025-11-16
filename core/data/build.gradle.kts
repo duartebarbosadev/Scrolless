@@ -97,10 +97,6 @@ dependencies {
     implementation(projects.core.logging)
     implementation(libs.timber)
 
-    // Networking
-    implementation(libs.okhttp3)
-    implementation(libs.okhttp.logging)
-
     // Database
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
