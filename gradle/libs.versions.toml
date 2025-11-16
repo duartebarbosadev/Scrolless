@@ -30,7 +30,6 @@ material3 = "1.4.0"
 # @keep
 minSdk = "23"
 review = "2.0.2"
-rome = "2.1.0"
 room = "2.8.3"
 sheets = "1.3.0"
 spotless = "8.0.0"
@@ -46,7 +45,7 @@ android-review-ktx = { module = "com.google.android.play:review-ktx", version.re
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 androidx-compose-animation-core = { module = "androidx.compose.animation:animation-core", version.ref = "animationCore" }
-androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "androidx-compose-bom" }
+androidx-compose-bom = { module = "androidx.compose:compose-bom-alpha", version.ref = "androidx-compose-bom" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 androidx-compose-material3-adaptive = { module = "androidx.compose.material3.adaptive:adaptive" }
@@ -80,8 +79,6 @@ kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.re
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx_immutable" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
-rometools-modules = { module = "com.rometools:rome-modules", version.ref = "rome" }
-rometools-rome = { module = "com.rometools:rome", version.ref = "rome" }
 # Sheets Libraries
 sheets-core = { module = "com.maxkeppeler.sheets-compose-dialogs:core", version.ref = "sheets" }
 sheets-duration = { module = "com.maxkeppeler.sheets-compose-dialogs:duration", version.ref = "sheets" }
