@@ -29,10 +29,11 @@
     <string name="time_interval">Time\nInterval</string>
 
     <string name="time_wasted">Time wasted</string>
-    <string name="show_timer_overlay">Show Timer Overlay</string>
+    <string name="show_onscreen_timer">Show on-screen timer</string>
+    <string name="timer_overlay_description">Keep a floating timer visible while blocking apps.</string>
     <string name="rate_scrolless">Rate Scrolless on Play Store</string>
     <string name="pause">Pause</string>
-    <string name="resume">Resume</string>
+    <string name="resume" translatable="false">Resume</string>
     <string name="pause_duration_hint">Pauses blocking for 5 minutes</string>
     <string name="pause_resumes_in">Resumes in %1$s</string>
 

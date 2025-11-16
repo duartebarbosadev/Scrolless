@@ -74,7 +74,6 @@
     <string name="pause_resumes_in">%1$s後に再開</string>
     <string name="rate_scrolless">PlayストアでScrollessを評価</string>
     <string name="resume">再開</string>
-    <string name="show_timer_overlay">タイマーオーバーレイを表示</string>
     <string name="success_icon_description">成功チェックマークアイコン</string>
     <string name="time_limit_dialog_title">1日の制限時間を設定</string>
     <string name="visit_github">GitHubリポジトリにアクセス</string>

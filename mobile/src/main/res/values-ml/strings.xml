@@ -74,7 +74,6 @@
     <string name="pause_resumes_in">%1$s-ൽ പുനരാരംഭിക്കുന്നു</string>
     <string name="rate_scrolless">Play Store-ൽ Scrolless-ന് റേറ്റ് ചെയ്യുക</string>
     <string name="resume">പുനരാരംഭിക്കുക</string>
-    <string name="show_timer_overlay">ടൈമർ ഓവർലേ കാണിക്കുക</string>
     <string name="success_icon_description">വിജയത്തിന്റെ ചെക്ക്മാർക്ക് ഐക്കൺ</string>
     <string name="time_limit_dialog_title">ദിവസേനയുള്ള പരിധി സമയം സജ്ജമാക്കുക</string>
     <string name="visit_github">GitHub റിപ്പോസിറ്ററി സന്ദർശിക്കുക</string>

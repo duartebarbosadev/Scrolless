@@ -74,7 +74,6 @@
     <string name="pause_resumes_in">將在 %1$s 後恢復</string>
     <string name="rate_scrolless">在 Play 商店上為 Scrolless 評分</string>
     <string name="resume">恢復</string>
-    <string name="show_timer_overlay">顯示計時器疊加層</string>
     <string name="success_icon_description">成功核取標記圖示</string>
     <string name="time_limit_dialog_title">設定每日限制時間</string>
     <string name="visit_github">造訪 GitHub 儲存庫</string>

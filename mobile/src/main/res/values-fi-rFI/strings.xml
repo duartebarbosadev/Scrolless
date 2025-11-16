@@ -74,7 +74,6 @@
     <string name="pause_resumes_in">Jatkuu %1$s kuluttua</string>
     <string name="rate_scrolless">Arvioi Scrolless Play Kaupassa</string>
     <string name="resume">Jatka</string>
-    <string name="show_timer_overlay">Näytä ajastinpeittokuva</string>
     <string name="success_icon_description">Onnistumisen valintamerkkikuvake</string>
     <string name="time_limit_dialog_title">Aseta päivittäinen aikaraja</string>
     <string name="visit_github">Vieraile GitHub-arkistossa</string>

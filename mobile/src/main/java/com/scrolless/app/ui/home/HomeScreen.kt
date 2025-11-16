@@ -68,6 +68,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
@@ -430,24 +431,28 @@ private fun HomeContent(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            // Help Button with padding
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center,
             ) {
-                HelpButton(onClick = onHelpClicked)
-            }
+                ProgressCard(
+                    blockOption = uiState.blockOption,
+                    progress = uiState.progress,
+                    currentUsage = uiState.currentUsage,
+                    intervalUsage = uiState.intervalUsage,
+                    timeLimit = uiState.timeLimit,
+                    intervalLength = uiState.intervalLength,
+                    intervalWindowStart = uiState.intervalWindowStart,
+                    onProgressCardClicked = onProgressCardClicked,
+                    modifier = Modifier.padding(top = 18.dp),
+                )
 
-            ProgressCard(
-                blockOption = uiState.blockOption,
-                progress = uiState.progress,
-                currentUsage = uiState.currentUsage,
-                intervalUsage = uiState.intervalUsage,
-                timeLimit = uiState.timeLimit,
-                intervalLength = uiState.intervalLength,
-                intervalWindowStart = uiState.intervalWindowStart,
-                onProgressCardClicked = onProgressCardClicked,
-            )
+                HelpButton(
+                    onClick = onHelpClicked,
+                    modifier = Modifier.align(Alignment.TopEnd),
+                )
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -1024,6 +1029,7 @@ private fun ProgressCard(
     intervalLength: Long,
     intervalWindowStart: Long,
     onProgressCardClicked: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     val clampedProgress = progress.coerceIn(0, 100)
 
@@ -1086,7 +1092,7 @@ private fun ProgressCard(
     }
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .size(220.dp)
             .padding(16.dp)
             .clickable(onClick = onProgressCardClicked),
@@ -1240,35 +1246,51 @@ fun PauseButton(onTogglePause: (Boolean) -> Unit, isPaused: Boolean, remainingMi
 
 @Composable
 fun TimerOverlayToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = {
-                    Timber.d("Timer overlay row click -> toggle to %s", !checked)
-                    onCheckedChange(!checked)
+    Surface(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        tonalElevation = 4.dp,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            modifier = Modifier
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = {
+                        Timber.d("Timer overlay row click -> toggle to %s", !checked)
+                        onCheckedChange(!checked)
+                    },
+                )
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Text(
+                    text = stringResource(id = R.string.show_onscreen_timer),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                )
+                Text(
+                    text = stringResource(id = R.string.timer_overlay_description),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+
+            Switch(
+                checked = checked,
+                onCheckedChange = {
+                    Timber.d("Timer overlay switch toggled -> %s", it)
+                    onCheckedChange(it)
                 },
             )
-            .wrapContentWidth()
-            .padding(8.dp),
-    ) {
-        Text(
-            text = stringResource(id = R.string.show_timer_overlay),
-            color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium,
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Switch(
-            checked = checked,
-            onCheckedChange = {
-                Timber.d("Timer overlay switch toggled -> %s", it)
-                onCheckedChange(it)
-            },
-        )
+        }
     }
 }
 

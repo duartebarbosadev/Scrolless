@@ -74,7 +74,6 @@
     <string name="pause_resumes_in">Folytatás %1$s múlva</string>
     <string name="rate_scrolless">Értékelje a Scrolless-t a Play Áruházban</string>
     <string name="resume">Folytatás</string>
-    <string name="show_timer_overlay">Időzítő átfedés megjelenítése</string>
     <string name="success_icon_description">Siker jelölőnégyzet ikon</string>
     <string name="time_limit_dialog_title">Napi limit idő beállítása</string>
     <string name="visit_github">GitHub tároló megtekintése</string>

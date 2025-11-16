@@ -74,7 +74,6 @@
     <string name="pause_resumes_in">%1$s मध्ये पुन्हा सुरू होते</string>
     <string name="rate_scrolless">Play Store वर Scrolless ला रेट करा</string>
     <string name="resume">पुन्हा सुरू करा</string>
-    <string name="show_timer_overlay">टायमर आच्छादन दर्शवा</string>
     <string name="success_icon_description">यश चेक मार्क चिन्ह</string>
     <string name="time_limit_dialog_title">दैनिक मर्यादा वेळ सेट करा</string>
     <string name="visit_github">GitHub रेपॉजिटरीला भेट द्या</string>

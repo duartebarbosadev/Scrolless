@@ -74,7 +74,6 @@
     <string name="pause_resumes_in">Devam etme süresi: %1$s</string>
     <string name="rate_scrolless">Scrolless\'ı Play Store\'da oyla</string>
     <string name="resume">Devam Et</string>
-    <string name="show_timer_overlay">Zamanlayıcı Yer Paylaşımını Göster</string>
     <string name="success_icon_description">Başarı onay işareti simgesi</string>
     <string name="time_limit_dialog_title">Günlük Sınır Süresini Ayarla</string>
     <string name="visit_github">GitHub Deposunu Ziyaret Et</string>
