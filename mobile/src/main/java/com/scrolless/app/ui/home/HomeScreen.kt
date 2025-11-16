@@ -145,8 +145,8 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
     var showAccessibilitySuccess by remember { mutableStateOf(false) }
     var debugBypassAccessibilityCheck by remember { mutableStateOf(false) }
     var showIntervalTimerDialog by remember { mutableStateOf(false) }
-    var pendingIntervalBreak by remember { mutableStateOf(DEFAULT_INTERVAL_BREAK_MILLIS) }
-    var pendingIntervalAllowance by remember { mutableStateOf(DEFAULT_INTERVAL_ALLOWANCE_MILLIS) }
+    var pendingIntervalBreak by remember { mutableLongStateOf(DEFAULT_INTERVAL_BREAK_MILLIS) }
+    var pendingIntervalAllowance by remember { mutableLongStateOf(DEFAULT_INTERVAL_ALLOWANCE_MILLIS) }
 
     val activity = context as? Activity
     val lifecycleOwner = LocalLifecycleOwner.current

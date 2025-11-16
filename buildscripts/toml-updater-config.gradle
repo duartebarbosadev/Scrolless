@@ -31,7 +31,7 @@ def isNonStable = { String version ->
 tasks.named("dependencyUpdates").configure {
     resolutionStrategy {
         componentSelection {
-            all {
+            configureEach {
                 if (isNonStable(it.candidate.version) && !isNonStable(it.currentVersion)) {
                     reject('Release candidate')
                 }

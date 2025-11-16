@@ -76,7 +76,7 @@ suspend fun UserSettingsStore.setTimerOverlayPosition(positionX: Int, positionY:
 /**
  * A data repository for [UserSettingsStore] instances.
  */
-class UserSettingsStoreImpl constructor(private val userSettingsDao: UserSettingsDao) : UserSettingsStore {
+class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : UserSettingsStore {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 

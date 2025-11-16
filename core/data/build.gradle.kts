@@ -97,17 +97,10 @@ dependencies {
     implementation(projects.core.logging)
     implementation(libs.timber)
 
-    // Networking
-    implementation(libs.okhttp3)
-    implementation(libs.okhttp.logging)
-
     // Database
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
-
-    implementation(libs.rometools.rome)
-    implementation(libs.rometools.modules)
 
     coreLibraryDesugaring(libs.core.jdk.desugaring)
 
