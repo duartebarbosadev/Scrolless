@@ -79,4 +79,6 @@
     <string name="visit_github">Odwiedź repozytorium GitHub</string>
     <string name="time_interval">Interwał\nczasowy</string>
     <string name="time_wasted">Zmarnowany czas</string>
+    <string name="show_onscreen_timer">Pokaż minutnik na ekranie</string>
+    <string name="timer_overlay_description">Utrzymuj widoczny pływający minutnik podczas oglądania treści typu brain rot.</string>
 </resources>

@@ -79,4 +79,6 @@
     <string name="visit_github">GitHub-Repository besuchen</string>
     <string name="time_interval">Zeit-\nintervall</string>
     <string name="time_wasted">Verschwendete Zeit</string>
+    <string name="show_onscreen_timer">Timer auf dem Bildschirm anzeigen</string>
+    <string name="timer_overlay_description">Einen schwebenden Timer anzeigen, während brain rot-Inhalte angesehen werden.</string>
 </resources>

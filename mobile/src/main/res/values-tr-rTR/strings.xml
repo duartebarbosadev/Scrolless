@@ -79,4 +79,6 @@
     <string name="visit_github">GitHub Deposunu Ziyaret Et</string>
     <string name="time_interval">Zaman\nAralığı</string>
     <string name="time_wasted">Boşa harcanan süre</string>
+    <string name="show_onscreen_timer">Ekran üstü zamanlayıcıyı göster</string>
+    <string name="timer_overlay_description">brain rot içeriği izlerken kayan bir zamanlayıcıyı görünür tutun.</string>
 </resources>

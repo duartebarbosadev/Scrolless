@@ -79,4 +79,6 @@
     <string name="visit_github">Посетить репозиторий GitHub</string>
     <string name="time_interval">Временной\nинтервал</string>
     <string name="time_wasted">Потраченное время</string>
+    <string name="show_onscreen_timer">Показывать таймер на экране</string>
+    <string name="timer_overlay_description">Отображать плавающий таймер во время просмотра контента brainrot.</string>
 </resources>

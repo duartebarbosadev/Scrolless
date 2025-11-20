@@ -79,4 +79,6 @@
     <string name="visit_github">Posjeti GitHub repozitorij</string>
     <string name="time_interval">Vremenski\nInterval</string>
     <string name="time_wasted">Izgubljeno vrijeme</string>
+    <string name="show_onscreen_timer">Prikaži mjerač vremena na zaslonu</string>
+    <string name="timer_overlay_description">Držite plutajući mjerač vremena vidljivim dok gledate sadržaj brain rot.</string>
 </resources>

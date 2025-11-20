@@ -79,4 +79,6 @@
     <string name="visit_github">GitHub tároló megtekintése</string>
     <string name="time_interval">Idő\nintervallum</string>
     <string name="time_wasted">Eltékozolt idő</string>
+    <string name="show_onscreen_timer">Képernyőn megjelenő időzítő mutatása</string>
+    <string name="timer_overlay_description">Tartson láthatóan egy lebegő időzítőt a brain rot tartalom nézése közben.</string>
 </resources>

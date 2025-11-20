@@ -79,4 +79,6 @@
     <string name="visit_github">Vieraile GitHub-arkistossa</string>
     <string name="time_interval">Aika\nväli</string>
     <string name="time_wasted">Hukattu aika</string>
+    <string name="show_onscreen_timer">Näytä ajastin näytöllä</string>
+    <string name="timer_overlay_description">Pidä kelluva ajastin näkyvissä katsoessasi brainrot-sisältöä.</string>
 </resources>

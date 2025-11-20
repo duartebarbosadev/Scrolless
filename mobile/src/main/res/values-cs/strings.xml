@@ -79,4 +79,6 @@
     <string name="visit_github">Navštívit GitHub repozitář</string>
     <string name="time_interval">Časový\nInterval</string>
     <string name="time_wasted">Ztracený čas</string>
+    <string name="show_onscreen_timer">Zobrazit časovač na obrazovce</string>
+    <string name="timer_overlay_description">Ponechat plovoucí časovač viditelný při sledování obsahu brainrot.</string>
 </resources>
