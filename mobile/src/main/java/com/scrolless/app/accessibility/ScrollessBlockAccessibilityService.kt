@@ -22,6 +22,7 @@ import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.os.PowerManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.scrolless.app.core.blocking.BlockingManager
@@ -32,7 +33,6 @@ import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.BlockingResult
 import com.scrolless.app.ui.overlay.TimerOverlayManager
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -41,6 +41,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 /**
  * Accessibility service that monitors and blocks access to "brain rot" content based on user-configured limits.
@@ -112,6 +113,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      */
     @Inject
     lateinit var timerOverlayManager: TimerOverlayManager
+
+    private val powerManager by lazy { getSystemService(POWER_SERVICE) as PowerManager }
 
     /**
      * Flag indicating whether the user is currently in blocked content.
@@ -273,6 +276,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             return
         }
 
+        // Skip processing if screen is off
+        if (!powerManager.isInteractive) {
+            return
+        }
+
         // Get root node
         val rootNode = rootInActiveWindow
         if (rootNode == null) {
@@ -399,7 +407,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             )
         }
 
-        serviceScope.launch {
+        serviceScope.launch(Dispatchers.IO) {
 
             // Check for daily reset (If its past midnight, reset the daily usage)
             usageTracker.checkDailyReset()
@@ -440,7 +448,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         stopPeriodicCheck()
         isProcessingBlockedContent = false
 
-        serviceScope.launch {
+        serviceScope.launch(Dispatchers.IO) {
             // Add to usage in memory
             Timber.d("Recording session usage: %d ms", sessionTime)
             usageTracker.addToDailyUsage(sessionTime)
