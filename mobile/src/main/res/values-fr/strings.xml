@@ -74,7 +74,6 @@
     <string name="pause_resumes_in">Reprise dans %1$s</string>
     <string name="rate_scrolless">Évaluer Scrolless sur le Play Store</string>
     <string name="resume">Reprendre</string>
-    <string name="show_timer_overlay">Afficher la superposition de la minuterie</string>
     <string name="success_icon_description">Icône de coche de succès</string>
     <string name="time_limit_dialog_title">Définir la limite de temps quotidienne</string>
     <string name="visit_github">Visiter le dépôt GitHub</string>

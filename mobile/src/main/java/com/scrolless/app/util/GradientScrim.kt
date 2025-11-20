@@ -31,6 +31,12 @@
  */
 package com.scrolless.app.util
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
@@ -39,23 +45,88 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import kotlin.math.max
+import kotlin.math.min
 
 /**
  * Applies a radial gradient scrim in the foreground emanating from the top
  * center quarter of the element.
  */
+@Composable
 fun Modifier.radialGradientScrim(color: Color): Modifier {
+    val transition = rememberInfiniteTransition(label = "GradientScrimPulse")
+    val pulse by transition.animateFloat(
+        initialValue = 0.88f,
+        targetValue = 1.18f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 6500, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "ScrimPulse",
+    )
+    val tintShift by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 12000, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "ScrimTintShift",
+    )
+
+    val baseAlpha = max(color.alpha, 0.26f)
+    val palette = listOf(
+        color.copy(alpha = baseAlpha),
+        Color(0xFF8FD6FF).copy(alpha = baseAlpha), // soft sky
+        Color(0xFFB7A8FF).copy(alpha = baseAlpha), // lavender
+        Color(0xFFA8FFD8).copy(alpha = baseAlpha), // mint
+        color.copy(alpha = baseAlpha * 0.9f),
+    )
+    val animatedColor = lerpPalette(
+        palette = palette,
+        fraction = 0.2f + (tintShift * 0.8f),
+    )
+    val innerAlpha = (baseAlpha * (0.75f + pulse * 0.55f)).coerceAtMost(0.38f)
+    val midAlpha = (innerAlpha * 0.45f).coerceAtMost(0.22f)
+
     val radialGradient = object : ShaderBrush() {
         override fun createShader(size: Size): Shader {
             val largerDimension = max(size.height, size.width)
             return RadialGradientShader(
                 center = size.center.copy(y = size.height / 4),
-                colors = listOf(color, Color.Transparent),
-                radius = largerDimension / 2,
-                colorStops = listOf(0f, 0.9f),
+                colors = listOf(
+                    animatedColor.copy(alpha = innerAlpha),
+                    animatedColor.copy(alpha = midAlpha),
+                    Color.Transparent,
+                ),
+                radius = largerDimension * 0.55f * pulse,
+                colorStops = listOf(0f, 0.52f, 0.93f),
             )
         }
     }
     return this.background(radialGradient)
+}
+
+/**
+ * Linearly interpolates across a list of [Color] entries.
+ *
+ * The [fraction] is clamped to `[0f, 1f]` and mapped across the palette indexes, so `0f`
+ * returns the first color, `1f` the last, and intermediate values blend smoothly between
+ * adjacent entries. Returns transparent when the palette is empty, or the single entry
+ * when only one color is provided.
+ */
+private fun lerpPalette(palette: List<Color>, fraction: Float): Color {
+    if (palette.isEmpty()) return Color.Transparent
+    if (palette.size == 1) return palette.first()
+
+    val clamped = fraction.coerceIn(0f, 1f)
+    val scaled = clamped * (palette.size - 1)
+    val startIndex = scaled.toInt()
+    val endIndex = min(startIndex + 1, palette.lastIndex)
+    val blend = scaled - startIndex
+
+    return lerp(palette[startIndex], palette[endIndex], blend)
 }

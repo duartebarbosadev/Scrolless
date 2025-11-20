@@ -74,7 +74,6 @@
     <string name="pause_resumes_in">Συνέχιση σε %1$s</string>
     <string name="rate_scrolless">Βαθμολογήστε το Scrolless στο Play Store</string>
     <string name="resume">Συνέχιση</string>
-    <string name="show_timer_overlay">Εμφάνιση Επικάλυψης Χρονομέτρου</string>
     <string name="success_icon_description">Εικονίδιο επιτυχίας (τικ)</string>
     <string name="time_limit_dialog_title">Ορισμός Χρόνου Ημερήσιου Ορίου</string>
     <string name="visit_github">Επίσκεψη στο Αποθετήριο GitHub</string>

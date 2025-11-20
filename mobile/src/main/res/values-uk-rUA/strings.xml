@@ -74,7 +74,6 @@
     <string name="pause_resumes_in">Відновиться через %1$s</string>
     <string name="rate_scrolless">Оцінити Scrolless у Play Store</string>
     <string name="resume">Відновити</string>
-    <string name="show_timer_overlay">Показати накладання таймера</string>
     <string name="success_icon_description">Іконка галочки успіху</string>
     <string name="time_limit_dialog_title">Встановити час щоденного ліміту</string>
     <string name="visit_github">Відвідати репозиторій GitHub</string>

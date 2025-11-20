@@ -85,6 +85,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalContext
@@ -260,9 +261,14 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                     showAccessibilityExplainerPrompt()
                 }
             },
-            onTimerOverlayToggled = { enabled ->
-                Timber.d("Timer overlay toggle from UI: %s", enabled)
-                viewModel.onTimerOverlayToggled(enabled)
+            onScreenTimerToggled = { enabled ->
+                Timber.d("On-screen timer toggle from UI: %s", enabled)
+                if (context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+                    viewModel.onScreenTimerToggled(enabled)
+                } else {
+                    Timber.w("Accessibility service not enabled. Showing explainer (on-screen timer).")
+                    showAccessibilityExplainerPrompt()
+                }
             },
             onHelpClicked = {
                 Timber.d("Help clicked -> show HelpDialog")
@@ -299,12 +305,19 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                 }
             },
             onPauseToggle = { shouldPause ->
-                if (shouldPause) {
-                    Timber.i("Pause clicked -> pausing blocking for 5 minutes")
+
+                val shouldBypass = BuildConfig.DEBUG && debugBypassAccessibilityCheck
+                if (shouldBypass || context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
+                    if (shouldPause) {
+                        Timber.i("Pause clicked -> pausing blocking for 5 minutes")
+                    } else {
+                        Timber.i("Pause clicked -> resuming blocking immediately")
+                    }
+                    viewModel.onPauseToggle(shouldPause)
                 } else {
-                    Timber.i("Pause clicked -> resuming blocking immediately")
+                    Timber.w("Accessibility service not enabled. Showing explainer (pause).")
+                    showAccessibilityExplainerPrompt()
                 }
-                viewModel.onPauseToggle(shouldPause)
             },
             onProgressCardClicked = {
                 if (BuildConfig.DEBUG) {
@@ -402,7 +415,7 @@ private fun HomeContent(
     modifier: Modifier = Modifier,
     onBlockOptionSelected: (BlockOption) -> Unit,
     onConfigureDailyLimit: () -> Unit,
-    onTimerOverlayToggled: (Boolean) -> Unit,
+    onScreenTimerToggled: (Boolean) -> Unit,
     onHelpClicked: () -> Unit,
     onReviewClicked: () -> Unit,
     onIntervalTimerClick: () -> Unit,
@@ -430,24 +443,28 @@ private fun HomeContent(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            // Help Button with padding
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.Center,
             ) {
-                HelpButton(onClick = onHelpClicked)
-            }
+                ProgressCard(
+                    modifier = Modifier.padding(top = 18.dp),
+                    blockOption = uiState.blockOption,
+                    progress = uiState.progress,
+                    currentUsage = uiState.currentUsage,
+                    intervalUsage = uiState.intervalUsage,
+                    timeLimit = uiState.timeLimit,
+                    intervalLength = uiState.intervalLength,
+                    intervalWindowStart = uiState.intervalWindowStart,
+                    onProgressCardClicked = onProgressCardClicked,
+                )
 
-            ProgressCard(
-                blockOption = uiState.blockOption,
-                progress = uiState.progress,
-                currentUsage = uiState.currentUsage,
-                intervalUsage = uiState.intervalUsage,
-                timeLimit = uiState.timeLimit,
-                intervalLength = uiState.intervalLength,
-                intervalWindowStart = uiState.intervalWindowStart,
-                onProgressCardClicked = onProgressCardClicked,
-            )
+                HelpButton(
+                    onClick = onHelpClicked,
+                    modifier = Modifier.align(Alignment.TopEnd),
+                )
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -608,9 +625,9 @@ private fun HomeContent(
 
                 Spacer(modifier = Modifier.height(24.dp))
             }
-            TimerOverlayToggle(
+            OnScreenTimerToggle(
                 checked = uiState.timerOverlayEnabled,
-                onCheckedChange = onTimerOverlayToggled,
+                onCheckedChange = onScreenTimerToggled,
                 modifier = Modifier.padding(horizontal = 8.dp),
             )
 
@@ -1016,6 +1033,7 @@ fun FeatureButton(
 
 @Composable
 private fun ProgressCard(
+    modifier: Modifier = Modifier,
     blockOption: BlockOption,
     progress: Int,
     currentUsage: Long,
@@ -1086,7 +1104,7 @@ private fun ProgressCard(
     }
 
     Card(
-        modifier = Modifier
+        modifier = modifier
             .size(220.dp)
             .padding(16.dp)
             .clickable(onClick = onProgressCardClicked),
@@ -1239,33 +1257,44 @@ fun PauseButton(onTogglePause: (Boolean) -> Unit, isPaused: Boolean, remainingMi
 }
 
 @Composable
-fun TimerOverlayToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier) {
+fun OnScreenTimerToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
         modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f))
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
                 onClick = {
-                    Timber.d("Timer overlay row click -> toggle to %s", !checked)
+                    Timber.d("On-screen timer row click -> toggle to %s", !checked)
                     onCheckedChange(!checked)
                 },
             )
-            .wrapContentWidth()
-            .padding(8.dp),
+            .padding(horizontal = 12.dp, vertical = 10.dp),
     ) {
-        Text(
-            text = stringResource(id = R.string.show_timer_overlay),
-            color = MaterialTheme.colorScheme.onSurface,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium,
-        )
-        Spacer(modifier = Modifier.width(8.dp))
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            Text(
+                text = stringResource(id = R.string.show_onscreen_timer),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+            )
+            Text(
+                text = stringResource(id = R.string.timer_overlay_description),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+
         Switch(
             checked = checked,
             onCheckedChange = {
-                Timber.d("Timer overlay switch toggled -> %s", it)
+                Timber.d("On-screen timer switch toggled -> %s", it)
                 onCheckedChange(it)
             },
         )
@@ -1341,7 +1370,7 @@ fun HomeScreenPreview() {
             uiState = mockState,
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onTimerOverlayToggled = {},
+            onScreenTimerToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
             onIntervalTimerClick = {},
@@ -1359,7 +1388,7 @@ fun PreviewBlockAll() {
             uiState = HomeUiState(blockOption = BlockOption.BlockAll),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onTimerOverlayToggled = {},
+            onScreenTimerToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
             onIntervalTimerClick = {},
@@ -1377,7 +1406,7 @@ fun PreviewNothingSelected() {
             uiState = HomeUiState(blockOption = BlockOption.NothingSelected, currentUsage = 3590000L),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onTimerOverlayToggled = {},
+            onScreenTimerToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
             onIntervalTimerClick = {},
@@ -1402,7 +1431,7 @@ fun PreviewIntervalTimerSelected() {
             ),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onTimerOverlayToggled = {},
+            onScreenTimerToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
             onIntervalTimerClick = {},
@@ -1427,7 +1456,7 @@ fun PreviewIntervalTimer() {
             ),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onTimerOverlayToggled = {},
+            onScreenTimerToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
             onIntervalTimerClick = {},
@@ -1451,7 +1480,7 @@ fun PreviewHelpDialog() {
             uiState = HomeUiState(blockOption = BlockOption.BlockAll),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onTimerOverlayToggled = {},
+            onScreenTimerToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
             onIntervalTimerClick = {},
@@ -1470,7 +1499,7 @@ fun PreviewAccessibilityExplainer() {
             uiState = HomeUiState(blockOption = BlockOption.NothingSelected),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onTimerOverlayToggled = {},
+            onScreenTimerToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
             onIntervalTimerClick = {},
@@ -1489,7 +1518,7 @@ fun PreviewAccessibilitySuccessDialog() {
             uiState = HomeUiState(blockOption = BlockOption.NothingSelected),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onTimerOverlayToggled = {},
+            onScreenTimerToggled = {},
             onHelpClicked = {},
             onReviewClicked = {},
             onIntervalTimerClick = {},
