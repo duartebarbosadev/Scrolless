@@ -79,4 +79,6 @@
     <string name="visit_github">Visitar Repositorio de GitHub</string>
     <string name="time_interval">Intervalo\nde Tiempo</string>
     <string name="time_wasted">Tiempo perdido</string>
+    <string name="show_onscreen_timer">Mostrar temporizador en pantalla</string>
+    <string name="timer_overlay_description">Mantener un temporizador flotante visible mientras ves contenido brain rot.</string>
 </resources>

@@ -79,4 +79,6 @@
     <string name="visit_github">GitHubリポジトリにアクセス</string>
     <string name="time_interval">時間\n間隔</string>
     <string name="time_wasted">無駄にした時間</string>
+    <string name="show_onscreen_timer">画面上にタイマーを表示</string>
+    <string name="timer_overlay_description">brainrotコンテンツを視聴中にフローティングタイマーを表示します。</string>
 </resources>

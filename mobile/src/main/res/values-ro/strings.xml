@@ -79,4 +79,6 @@
     <string name="visit_github">Vizitează Depozitul GitHub</string>
     <string name="time_interval">Interval\nDe Timp</string>
     <string name="time_wasted">Timp pierdut</string>
+    <string name="show_onscreen_timer">Afișează cronometrul pe ecran</string>
+    <string name="timer_overlay_description">Menține un cronometru plutitor vizibil în timp ce urmărești conținut brainrot.</string>
 </resources>

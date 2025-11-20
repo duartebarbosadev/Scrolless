@@ -79,4 +79,6 @@
     <string name="visit_github">Besök GitHub-arkivet</string>
     <string name="time_interval">Tids\nintervall</string>
     <string name="time_wasted">Tid slösad</string>
+    <string name="show_onscreen_timer">Visa timer på skärmen</string>
+    <string name="timer_overlay_description">Håll en flytande timer synlig medan du tittar på brainrot-innehåll.</string>
 </resources>

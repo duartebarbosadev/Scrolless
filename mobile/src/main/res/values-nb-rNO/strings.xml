@@ -79,4 +79,6 @@
     <string name="visit_github">Besøk GitHub-repositoriet</string>
     <string name="time_interval">Tids\nIntervall</string>
     <string name="time_wasted">Tid bortkastet</string>
+    <string name="show_onscreen_timer">Vis tidtaker på skjermen</string>
+    <string name="timer_overlay_description">Hold en flytende tidtaker synlig mens du ser på brain rot-innhold.</string>
 </resources>

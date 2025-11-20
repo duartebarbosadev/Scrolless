@@ -79,4 +79,6 @@
     <string name="visit_github">Visita el repositori de GitHub</string>
     <string name="time_interval">Interval\nde temps</string>
     <string name="time_wasted">Temps perdut</string>
+    <string name="show_onscreen_timer">Mostra el temporitzador en pantalla</string>
+    <string name="timer_overlay_description">Mantén un temporitzador flotant visible mentre mires contingut brain rot.</string>
 </resources>
