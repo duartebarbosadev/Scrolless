@@ -29,7 +29,7 @@ jobs:
         id: translate
         uses: duartebarbosadev/AndroidResourceTranslator@main
         with:
-          project_context: "Scrolless is an Android app designed to help users reduce time spent on social media and avoid brainrot by limiting endless scrolling of Reels, Shorts, and TikToks."
+          project_context: "Scrolless is an Android app that helps users reduce time spent on social media by limiting endless scrolling of Reels, Shorts, and TikToks. Do not translate the term 'brain-rot'; keep it in English in languages where the English expression is commonly understood."
           log_trace: "true"
           
         env:
