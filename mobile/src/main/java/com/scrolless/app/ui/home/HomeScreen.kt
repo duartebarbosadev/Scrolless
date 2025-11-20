@@ -449,6 +449,7 @@ private fun HomeContent(
                 contentAlignment = Alignment.Center,
             ) {
                 ProgressCard(
+                    modifier = Modifier.padding(top = 18.dp),
                     blockOption = uiState.blockOption,
                     progress = uiState.progress,
                     currentUsage = uiState.currentUsage,
@@ -457,7 +458,6 @@ private fun HomeContent(
                     intervalLength = uiState.intervalLength,
                     intervalWindowStart = uiState.intervalWindowStart,
                     onProgressCardClicked = onProgressCardClicked,
-                    modifier = Modifier.padding(top = 18.dp),
                 )
 
                 HelpButton(
@@ -1033,6 +1033,7 @@ fun FeatureButton(
 
 @Composable
 private fun ProgressCard(
+    modifier: Modifier = Modifier,
     blockOption: BlockOption,
     progress: Int,
     currentUsage: Long,
@@ -1041,7 +1042,6 @@ private fun ProgressCard(
     intervalLength: Long,
     intervalWindowStart: Long,
     onProgressCardClicked: () -> Unit = {},
-    modifier: Modifier = Modifier,
 ) {
     val clampedProgress = progress.coerceIn(0, 100)
 
