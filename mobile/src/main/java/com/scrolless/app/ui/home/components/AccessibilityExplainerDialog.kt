@@ -246,14 +246,14 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                     .fillMaxWidth()
                     .height(42.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
                 ),
                 shape = RoundedCornerShape(12.dp),
             ) {
                 Text(
                     text = stringResource(R.string.accessibility_explainer_proceed_button),
                     fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             }
 
