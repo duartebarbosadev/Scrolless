@@ -79,4 +79,6 @@
     <string name="visit_github">Visiter le dépôt GitHub</string>
     <string name="time_interval">Intervalle\nde temps</string>
     <string name="time_wasted">Temps perdu</string>
+    <string name="show_onscreen_timer">Afficher le minuteur à l\'écran</string>
+    <string name="timer_overlay_description">Garder un minuteur flottant visible pendant que vous regardez du contenu brainrot.</string>
 </resources>

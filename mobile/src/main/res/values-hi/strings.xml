@@ -79,4 +79,6 @@
     <string name="visit_github">GitHub रिपॉजिटरी पर जाएँ</string>
     <string name="time_interval">समय\nअंतराल</string>
     <string name="time_wasted">बर्बाद हुआ समय</string>
+    <string name="show_onscreen_timer">ऑन-स्क्रीन टाइमर दिखाएं</string>
+    <string name="timer_overlay_description">brainrot सामग्री देखते समय एक फ़्लोटिंग टाइमर दृश्यमान रखें।</string>
 </resources>

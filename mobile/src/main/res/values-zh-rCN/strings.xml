@@ -79,4 +79,6 @@
     <string name="visit_github">访问 GitHub 仓库</string>
     <string name="time_interval">时间\n间隔</string>
     <string name="time_wasted">浪费的时间</string>
+    <string name="show_onscreen_timer">显示屏幕计时器</string>
+    <string name="timer_overlay_description">在观看 brain rot 内容时，保持浮动计时器可见。</string>
 </resources>

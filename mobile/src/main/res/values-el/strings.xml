@@ -79,4 +79,6 @@
     <string name="visit_github">Επίσκεψη στο Αποθετήριο GitHub</string>
     <string name="time_interval">Χρονικό\nΔιάστημα</string>
     <string name="time_wasted">Χρόνος που σπαταλήθηκε</string>
+    <string name="show_onscreen_timer">Εμφάνιση χρονομέτρου στην οθόνη</string>
+    <string name="timer_overlay_description">Διατηρήστε έναν αιωρούμενο χρονομέτρη ορατό ενώ παρακολουθείτε brain rot περιεχόμενο.</string>
 </resources>

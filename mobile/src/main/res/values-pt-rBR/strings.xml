@@ -79,4 +79,6 @@
     <string name="visit_github">Visitar Repositório do GitHub</string>
     <string name="time_interval">Intervalo\nTempo</string>
     <string name="time_wasted">Tempo desperdiçado</string>
+    <string name="show_onscreen_timer">Mostrar cronômetro na tela</string>
+    <string name="timer_overlay_description">Manter um cronômetro flutuante visível enquanto assiste a conteúdo brain rot.</string>
 </resources>

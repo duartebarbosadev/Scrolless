@@ -79,4 +79,6 @@
     <string name="visit_github">Truy cập Kho lưu trữ GitHub</string>
     <string name="time_interval">Khoảng\nThời gian</string>
     <string name="time_wasted">Thời gian lãng phí</string>
+    <string name="show_onscreen_timer">Hiển thị đồng hồ đếm giờ trên màn hình</string>
+    <string name="timer_overlay_description">Giữ đồng hồ đếm giờ nổi hiển thị trong khi xem nội dung brainrot.</string>
 </resources>

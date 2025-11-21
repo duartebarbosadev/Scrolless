@@ -79,4 +79,6 @@
     <string name="visit_github">Bezoek GitHub-repository</string>
     <string name="time_interval">Tijds\ninterval</string>
     <string name="time_wasted">Verspilde tijd</string>
+    <string name="show_onscreen_timer">Toon timer op scherm</string>
+    <string name="timer_overlay_description">Houd een zwevende timer zichtbaar tijdens het kijken naar brain rot-content.</string>
 </resources>
