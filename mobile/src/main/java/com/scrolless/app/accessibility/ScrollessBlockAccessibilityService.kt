@@ -278,6 +278,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         // Skip processing if screen is off
         if (!powerManager.isInteractive) {
+            if (isProcessingBlockedContent) {
+                Timber.d("Calling exit because screen is off")
+                onBlockedContentExited()
+            }
             return
         }
 

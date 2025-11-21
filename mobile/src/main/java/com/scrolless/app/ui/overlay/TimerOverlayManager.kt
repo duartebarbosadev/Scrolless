@@ -172,6 +172,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         dragHandler.attach()
 
         try {
+            Timber.d("Showing overlay view")
+
             // Start invisible for fade-in
             composeView?.alpha = 0f
             wm.addView(composeView, layoutParams)
@@ -192,6 +194,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     }
 
     fun hide() {
+
+        Timber.d("Hiding overlay view")
         composeView ?: return
         exitAnimationJob?.cancel()
         val sessionMillis = computeActiveSessionMillis()
@@ -325,6 +329,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         return calculated
     }
 
+    @Suppress("DEPRECATION")
     private fun calculateScreenBounds(): ScreenBounds? {
         val wm = windowManager ?: return null
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
