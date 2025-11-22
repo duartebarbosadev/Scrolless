@@ -152,6 +152,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private fun isPauseActive(now: Long = System.currentTimeMillis()): Boolean = pauseUntilMillis > now
 
     /**
+     * Timestamp of the last exit from blocked content.
+     * Used to debounce re-detection during closing animations.
+     */
+    private var lastExitTime: Long = 0L
+
+    /**
      * Runnable that performs periodic checks (every 1 second) to determine if the user
      * has exceeded their time limit while in blocked content.
      *
@@ -198,6 +204,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     override fun onServiceConnected() {
         super.onServiceConnected()
         Timber.i("Accessibility service connected")
+
+        // Start with restricted configuration to save battery
+        updateServiceConfig(false)
 
         // Check if we need to bring the app to foreground
         serviceScope.launch {
@@ -299,11 +308,30 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         val packageId = event.packageName?.toString() ?: ""
 
+        // Ignore events from our own app (e.g. Timer Overlay updates)
+        if (packageId == packageName) {
+            return
+        }
+
+        // If we are not currently processing blocked content,
+        // and the event is not from one of our target apps, ignore it immediately.
+        if (!isProcessingBlockedContent && BlockableApp.entries.none { it.packageId == packageId }) {
+            return
+        }
+
         // Detect blocked content
         val onBrainRotApp = detectAppForBlockedContent(packageId, rootNode)
 
         // Only trigger changes if detection state actually changed
         if (onBrainRotApp != null) {
+
+            // Debounce: If we recently exited, ignore this detection to prevent "bouncing"
+            // from closing animations.
+            if (System.currentTimeMillis() - lastExitTime < 1000) {
+                Timber.v("Ignoring detection due to exit cooldown")
+                return
+            }
+
             // Avoid this log as its spammy
             // Timber.v("Detected brain rot app running: %s", onBrainRotApp)
             detectedApp = onBrainRotApp
@@ -396,6 +424,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         isProcessingBlockedContent = true
         timeStartOnBrainRot = System.currentTimeMillis()
         Timber.d("Entered blocked content at %d (app=%s)", timeStartOnBrainRot, detectedApp)
+        
+        // Expand service scope to detect when user leaves the app (e.g. to launcher)
+        updateServiceConfig(true)
+        
         startPeriodicCheck()
 
         // If timer overlay is enabled and block all isn't selected, show it
@@ -440,6 +472,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      */
     private fun onBlockedContentExited() {
 
+        lastExitTime = System.currentTimeMillis()
         val sessionTime = System.currentTimeMillis() - timeStartOnBrainRot
         Timber.d("Exited blocked content. Session=%d ms (app=%s)", sessionTime, detectedApp)
 
@@ -451,6 +484,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         stopPeriodicCheck()
         isProcessingBlockedContent = false
+
+        // Restrict service scope again to save battery
+        updateServiceConfig(false)
 
         serviceScope.launch(Dispatchers.IO) {
             // Add to usage in memory
@@ -511,6 +547,24 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             val success = performGlobalAction(action)
             Timber.d("Back navigation result: success=%b", success)
         }
+    }
+
+    /**
+     * Updates the accessibility service configuration to either listen to all packages or only target packages.
+     *
+     * @param listenToAll If true, clears package filter to receive events from all apps (needed to detect exit).
+     *                    If false, restricts events to [BlockableApp] packages only (to save battery).
+     */
+    private fun updateServiceConfig(listenToAll: Boolean) {
+        val info = serviceInfo ?: return
+        if (listenToAll) {
+            info.packageNames = null // Listen to all
+            Timber.d("Expanded service configuration to listen to all packages")
+        } else {
+            info.packageNames = BlockableApp.entries.map { it.packageId }.toTypedArray()
+            Timber.d("Restricted service configuration to target packages only")
+        }
+        serviceInfo = info
     }
 
     /**
