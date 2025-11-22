@@ -424,10 +424,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         isProcessingBlockedContent = true
         timeStartOnBrainRot = System.currentTimeMillis()
         Timber.d("Entered blocked content at %d (app=%s)", timeStartOnBrainRot, detectedApp)
-        
+
         // Expand service scope to detect when user leaves the app (e.g. to launcher)
         updateServiceConfig(true)
-        
+
         startPeriodicCheck()
 
         // If timer overlay is enabled and block all isn't selected, show it
@@ -556,6 +556,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      *                    If false, restricts events to [BlockableApp] packages only (to save battery).
      */
     private fun updateServiceConfig(listenToAll: Boolean) {
+        if (true) return
         val info = serviceInfo ?: return
         if (listenToAll) {
             info.packageNames = null // Listen to all
