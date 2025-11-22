@@ -88,7 +88,7 @@ fun AccessibilitySuccessBottomSheet(onDismiss: () -> Unit) {
         ) {
             AccessibilitySuccessContent(
                 onDismiss = {
-                    Timber.i("AccessibilitySuccess: Get Started")
+                    Timber.i("AccessibilitySuccess: Get Started Dismissed")
                     onDismiss()
                 },
             )
