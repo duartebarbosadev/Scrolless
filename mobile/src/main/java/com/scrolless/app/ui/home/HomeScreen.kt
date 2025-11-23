@@ -614,7 +614,21 @@ private fun HomeContent(
                 )
             }
 
-            if (hasActiveBlockOption) {
+            if (uiState.blockOption == BlockOption.IntervalTimer) {
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+
+            AnimatedVisibility(
+                visible = hasActiveBlockOption,
+                enter = expandVertically(
+                    expandFrom = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeIn(animationSpec = tween(200)),
+                exit = shrinkVertically(
+                    shrinkTowards = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeOut(animationSpec = tween(200)),
+            ) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 PauseButton(
@@ -622,11 +636,23 @@ private fun HomeContent(
                     isPaused = isPauseActive,
                     remainingMillis = pauseRemainingMillis,
                 )
-
-                Spacer(modifier = Modifier.height(24.dp))
             }
 
-            if (uiState.blockOption != BlockOption.BlockAll) {
+            if (hasActiveBlockOption) {
+                Spacer(modifier = Modifier.height(14.dp))
+            }
+
+            AnimatedVisibility(
+                visible = uiState.blockOption != BlockOption.BlockAll,
+                enter = expandVertically(
+                    expandFrom = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeIn(animationSpec = tween(200)),
+                exit = shrinkVertically(
+                    shrinkTowards = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeOut(animationSpec = tween(200)),
+            ) {
                 OnScreenTimerToggle(
                     checked = uiState.timerOverlayEnabled,
                     onCheckedChange = onScreenTimerToggled,
