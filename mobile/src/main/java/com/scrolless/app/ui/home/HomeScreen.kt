@@ -625,11 +625,15 @@ private fun HomeContent(
 
                 Spacer(modifier = Modifier.height(24.dp))
             }
-            OnScreenTimerToggle(
-                checked = uiState.timerOverlayEnabled,
-                onCheckedChange = onScreenTimerToggled,
-                modifier = Modifier.padding(horizontal = 8.dp),
-            )
+
+            if (uiState.blockOption != BlockOption.BlockAll) {
+                OnScreenTimerToggle(
+                    checked = uiState.timerOverlayEnabled,
+                    onCheckedChange = onScreenTimerToggled,
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                )
+            }
+
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -711,7 +715,7 @@ private fun IntervalTimerSettingsCard(
         modifier = modifier,
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.40f),
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
@@ -1279,11 +1283,16 @@ fun OnScreenTimerToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, mo
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
-            Text(
+
+            AutoResizingText(
                 text = stringResource(id = R.string.show_onscreen_timer),
-                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+                maxLines = 1,
+                color = MaterialTheme.colorScheme.onSurface,
+                overflow = TextOverflow.Ellipsis,
+                minFontSize = 12.sp,
             )
+
             Text(
                 text = stringResource(id = R.string.timer_overlay_description),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
