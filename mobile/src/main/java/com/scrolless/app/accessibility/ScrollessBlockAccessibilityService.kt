@@ -363,13 +363,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // If we are processing content and we received an event
         //  make sure that the app is still visible as we can get events from other apps
         //  otherwise it means that the user has left the app
-        if ((currentBlockableApp != null) && (this.isProcessingBlockedContent)) {
-
-            if (isBlockedAppVisible(currentBlockableApp!!)) {
-
-                if (isProcessingBlockedContent) {
-                    return currentBlockableApp
-                }
+        currentBlockableApp?.takeIf { isProcessingBlockedContent }?.let { blockableApp ->
+            if (isBlockedAppVisible(blockableApp)) {
+                return blockableApp
             } else {
                 Timber.v("Blocked app is no longer visible, treating as exit")
             }

@@ -143,7 +143,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                 ),
             )
 
-            setOnTouchListener { view, event ->
+            setOnTouchListener { _, event ->
                 handleTouch(event)
             }
         }
@@ -285,7 +285,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
         val rotation = PropertyValuesHolder.ofFloat(View.ROTATION, 0f, 8f, -8f, 5f, -5f, 3f, -3f, 0f)
         ObjectAnimator.ofPropertyValuesHolder(view, rotation).apply {
-            duration = 500 // Approx 70ms * 7 steps
+            duration = 500 // ~71ms per keyframe (7 steps)
             start()
         }
     }
@@ -387,7 +387,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                     } else {
                         // No fling, snap to nearest edge
                         // Distances to edges
-                        // Remember Gravity.END: x is distance from Right edge.
+                        // Remember Gravity.END: x is distance from right edge.
                         val distRight = currentX // x=0
                         val distLeft = maxX - currentX // x=maxX
                         val distTop = currentY // y=0
@@ -430,7 +430,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                 params.y = (startY + (targetY - startY) * fraction).toInt()
                 try {
                     wm.updateViewLayout(rootView, params)
-                } catch (e: Exception) {
+                } catch (ignore: Exception) {
                     // Ignore
                 }
             }
