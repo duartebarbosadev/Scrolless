@@ -614,7 +614,21 @@ private fun HomeContent(
                 )
             }
 
-            if (hasActiveBlockOption) {
+            if (uiState.blockOption == BlockOption.IntervalTimer) {
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+
+            AnimatedVisibility(
+                visible = hasActiveBlockOption,
+                enter = expandVertically(
+                    expandFrom = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeIn(animationSpec = tween(200)),
+                exit = shrinkVertically(
+                    shrinkTowards = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeOut(animationSpec = tween(200)),
+            ) {
                 Spacer(modifier = Modifier.height(24.dp))
 
                 PauseButton(
@@ -622,14 +636,29 @@ private fun HomeContent(
                     isPaused = isPauseActive,
                     remainingMillis = pauseRemainingMillis,
                 )
-
-                Spacer(modifier = Modifier.height(24.dp))
             }
-            OnScreenTimerToggle(
-                checked = uiState.timerOverlayEnabled,
-                onCheckedChange = onScreenTimerToggled,
-                modifier = Modifier.padding(horizontal = 8.dp),
-            )
+
+            if (hasActiveBlockOption) {
+                Spacer(modifier = Modifier.height(14.dp))
+            }
+
+            AnimatedVisibility(
+                visible = uiState.blockOption != BlockOption.BlockAll,
+                enter = expandVertically(
+                    expandFrom = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeIn(animationSpec = tween(200)),
+                exit = shrinkVertically(
+                    shrinkTowards = Alignment.Top,
+                    animationSpec = tween(300),
+                ) + fadeOut(animationSpec = tween(200)),
+            ) {
+                OnScreenTimerToggle(
+                    checked = uiState.timerOverlayEnabled,
+                    onCheckedChange = onScreenTimerToggled,
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                )
+            }
 
             Spacer(modifier = Modifier.weight(1f))
 
@@ -711,7 +740,7 @@ private fun IntervalTimerSettingsCard(
         modifier = modifier,
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.40f),
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
@@ -1136,17 +1165,18 @@ private fun ProgressCard(
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onPrimary,
                     textAlign = TextAlign.Center,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     minFontSize = 16.sp,
                 )
                 Spacer(Modifier.height(8.dp))
+
                 AutoResizingText(
                     text = stringResource(R.string.time_wasted),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
                     textAlign = TextAlign.Center,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     minFontSize = 12.sp,
                 )
@@ -1279,11 +1309,16 @@ fun OnScreenTimerToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, mo
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
-            Text(
+
+            AutoResizingText(
                 text = stringResource(id = R.string.show_onscreen_timer),
-                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+                maxLines = 1,
+                color = MaterialTheme.colorScheme.onSurface,
+                overflow = TextOverflow.Ellipsis,
+                minFontSize = 12.sp,
             )
+
             Text(
                 text = stringResource(id = R.string.timer_overlay_description),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,

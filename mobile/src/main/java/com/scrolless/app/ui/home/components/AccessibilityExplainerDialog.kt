@@ -20,6 +20,8 @@ import android.content.Intent
 import android.provider.Settings
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -297,9 +299,9 @@ private fun AccessibilityStep(stepNumber: String, text: String) {
 
     AnimatedVisibility(
         visible = isVisible,
-        enter = androidx.compose.animation.fadeIn(
+        enter = fadeIn(
             animationSpec = tween(durationMillis = 500),
-        ) + androidx.compose.animation.slideInVertically(
+        ) + slideInVertically(
             animationSpec = tween(durationMillis = 500),
             initialOffsetY = { it / 2 },
         ),
