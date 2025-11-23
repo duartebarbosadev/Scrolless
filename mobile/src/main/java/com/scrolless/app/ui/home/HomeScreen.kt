@@ -1166,17 +1166,18 @@ private fun ProgressCard(
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onPrimary,
                     textAlign = TextAlign.Center,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     minFontSize = 16.sp,
                 )
                 Spacer(Modifier.height(8.dp))
+
                 AutoResizingText(
                     text = stringResource(R.string.time_wasted),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
                     textAlign = TextAlign.Center,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     minFontSize = 12.sp,
                 )
