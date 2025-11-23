@@ -18,6 +18,7 @@ package com.scrolless.app.accessibility
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Handler
@@ -151,11 +152,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     private fun isPauseActive(now: Long = System.currentTimeMillis()): Boolean = pauseUntilMillis > now
 
-    /**
-     * Timestamp of the last exit from blocked content.
-     * Used to debounce re-detection during closing animations.
-     */
-    private var lastExitTime: Long = 0L
+    private var currentBlockableApp: BlockableApp? = null
 
     /**
      * Runnable that performs periodic checks (every 1 second) to determine if the user
@@ -168,9 +165,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             val elapsed = System.currentTimeMillis() - timeStartOnBrainRot
             Timber.v("Periodic check running: elapsed=%d ms", elapsed)
             serviceScope.launch {
-                val action = blockingManager.onPeriodicCheck(elapsed)
-
-                when (action) {
+                when (val action = blockingManager.onPeriodicCheck(elapsed)) {
                     is BlockingResult.BlockNow -> {
                         Timber.i("Periodic check: limit reached (elapsed=%d). Navigating back.", elapsed)
                         performBackNavigation()
@@ -274,7 +269,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * enters or exits blocked content. Triggers [onBlockedContentEntered] or
      * [onBlockedContentExited] accordingly.
      *
-     * Implements debouncing to prevent performance issues from rapid-fire events.
+     * Note: Careful when adding logs as this can get spammed a lot
      *
      * @param event The accessibility event containing information about the UI change
      */
@@ -313,30 +308,18 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             return
         }
 
-        // If we are not currently processing blocked content,
-        // and the event is not from one of our target apps, ignore it immediately.
-        if (!isProcessingBlockedContent && BlockableApp.entries.none { it.packageId == packageId }) {
-            return
-        }
-
         // Detect blocked content
         val onBrainRotApp = detectAppForBlockedContent(packageId, rootNode)
 
         // Only trigger changes if detection state actually changed
         if (onBrainRotApp != null) {
 
-            // Debounce: If we recently exited, ignore this detection to prevent "bouncing"
-            // from closing animations.
-            if (System.currentTimeMillis() - lastExitTime < 1000) {
-                Timber.v("Ignoring detection due to exit cooldown")
-                return
-            }
-
-            // Avoid this log as its spammy
-            // Timber.v("Detected brain rot app running: %s", onBrainRotApp)
+            currentBlockableApp = onBrainRotApp
             detectedApp = onBrainRotApp
             onBlockedContentEntered()
         } else if (isProcessingBlockedContent) {
+
+            currentBlockableApp = null
             // If we were processing, but now nothing detected, we exited
             Timber.v("Brain rot content no longer detected, triggering exit")
             onBlockedContentExited()
@@ -375,8 +358,25 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * @param rootNode The root accessibility node of the current window
      * @return The detected [BlockableApp], or null if no blocked content is found
      */
-    private fun detectAppForBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): BlockableApp? =
-        BlockableApp.entries.firstOrNull { appEnum ->
+    private fun detectAppForBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): BlockableApp? {
+
+        // If we are processing content and we received an event
+        //  make sure that the app is still visible as we can get events from other apps
+        //  otherwise it means that the user has left the app
+        if ((currentBlockableApp != null) && (this.isProcessingBlockedContent)) {
+
+            if (isBlockedAppVisible(currentBlockableApp!!)) {
+
+                if (isProcessingBlockedContent) {
+                    return currentBlockableApp
+                }
+            } else {
+                Timber.v("Blocked app is no longer visible, treating as exit")
+            }
+        }
+
+        // Detect if there's a new app
+        val match = BlockableApp.entries.firstOrNull { appEnum ->
             if (appEnum.packageId != packageId) return@firstOrNull false
 
             val nodes = rootNode.findAccessibilityNodeInfosByViewId(appEnum.getViewId())
@@ -386,13 +386,41 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 val rect = android.graphics.Rect()
                 node.getBoundsInScreen(rect)
 
-                node.isVisibleToUser &&
-                    rect.width() > 0 &&
-                    rect.height() > 0
+                node.isVisibleToUser && rect.width() > 0 && rect.height() > 0
             }
 
             match
         }
+
+        return match
+    }
+
+    /**
+     * Checks if ANY blocked app has a visible window on screen AND the blocked content view is visible.
+     * This handles cases where the user interacts with SystemUI (notification shade) or keyboards,
+     * where the blocked app is still visible but not the source of the latest event.
+     */
+    private fun isBlockedAppVisible(blockableApp: BlockableApp): Boolean {
+
+        // windows returns a list of windows in z-order (top to bottom)
+        return windows.any { window ->
+            if (window.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_APPLICATION) {
+                val root = window.root
+
+                // Find if this package corresponds to a blocked app
+                // If it is a blocked app, check if the specific view ID is visible
+                val nodes = root.findAccessibilityNodeInfosByViewId(blockableApp.getViewId())
+                val isViewVisible = nodes.any { node ->
+                    val rect = android.graphics.Rect()
+                    node.getBoundsInScreen(rect)
+                    node.isVisibleToUser && rect.width() > 0 && rect.height() > 0
+                }
+                isViewVisible
+            } else {
+                false
+            }
+        }
+    }
 
     /**
      * Called when the user enters blocked content.
@@ -409,15 +437,15 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      */
     private fun onBlockedContentEntered() {
 
-        if (isPauseActive()) {
-            Timber.v("Ignoring blocked content entry because pause is active")
-            return
-        }
-
         // If the currentOnVideos boolean is set to true, we already dealt with the event
         if (isProcessingBlockedContent) {
             // Avoid this log as its spamming
             // Timber.v("Already processing blocked content, ignoring duplicate enter event")
+            return
+        }
+
+        if (isPauseActive()) {
+            Timber.v("Ignoring blocked content entry because pause is active")
             return
         }
 
@@ -472,7 +500,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      */
     private fun onBlockedContentExited() {
 
-        lastExitTime = System.currentTimeMillis()
         val sessionTime = System.currentTimeMillis() - timeStartOnBrainRot
         Timber.d("Exited blocked content. Session=%d ms (app=%s)", sessionTime, detectedApp)
 
@@ -551,20 +578,24 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /**
      * Updates the accessibility service configuration to either listen to all packages or only target packages.
+     * This is necessary to know when the user has left the application
      *
      * @param listenToAll If true, clears package filter to receive events from all apps (needed to detect exit).
      *                    If false, restricts events to [BlockableApp] packages only (to save battery).
      */
     private fun updateServiceConfig(listenToAll: Boolean) {
-        if (true) return
+
         val info = serviceInfo ?: return
         if (listenToAll) {
             info.packageNames = null // Listen to all
+            // Ensure we can always retrieve windows
+            info.flags = info.flags or AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
             Timber.d("Expanded service configuration to listen to all packages")
         } else {
             info.packageNames = BlockableApp.entries.map { it.packageId }.toTypedArray()
             Timber.d("Restricted service configuration to target packages only")
         }
+
         serviceInfo = info
     }
 
