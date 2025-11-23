@@ -660,7 +660,6 @@ private fun HomeContent(
                 )
             }
 
-
             Spacer(modifier = Modifier.weight(1f))
 
             RateButton(onClick = onReviewClicked)
