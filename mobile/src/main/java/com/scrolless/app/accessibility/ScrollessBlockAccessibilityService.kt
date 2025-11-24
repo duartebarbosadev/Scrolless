@@ -401,7 +401,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // windows returns a list of windows in z-order (top to bottom)
         return windows.any { window ->
             if (window.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_APPLICATION) {
-                val root = window.root
+                val root = window.root ?: return@any false
 
                 // Find if this package corresponds to a blocked app
                 // If it is a blocked app, check if the specific view ID is visible
