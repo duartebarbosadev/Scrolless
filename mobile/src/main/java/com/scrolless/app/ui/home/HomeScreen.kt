@@ -218,6 +218,11 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                     Timber.i("Block option selected while accessibility disabled - showing explainer")
                     showAccessibilityExplainerPrompt(setWaitingForAccessibility = false)
                 }
+
+                uiState.timerOverlayEnabled -> {
+                    Timber.i("Timer overlay ON while accessibility disabled - showing explainer")
+                    showAccessibilityExplainerPrompt(setWaitingForAccessibility = false)
+                }
             }
         }
     }
