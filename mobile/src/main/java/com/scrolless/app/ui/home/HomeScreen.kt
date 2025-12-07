@@ -648,7 +648,7 @@ private fun HomeContent(
             }
 
             AnimatedVisibility(
-                visible = uiState.blockOption != BlockOption.BlockAll,
+                visible = uiState.blockOption != BlockOption.BlockAll || isPauseActive,
                 enter = expandVertically(
                     expandFrom = Alignment.Top,
                     animationSpec = tween(300),

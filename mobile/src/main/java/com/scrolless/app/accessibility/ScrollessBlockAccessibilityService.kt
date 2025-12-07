@@ -244,12 +244,25 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 val nowPaused = isPauseActive()
                 if (nowPaused && !wasPaused) {
                     Timber.i("Pause activated until %d", pauseUntilMillis)
+                    // Stop periodic blocking checks while paused, but keep session active for usage tracking
                     if (isProcessingBlockedContent) {
-                        Timber.i("Active session detected on pause - finalizing session before pausing")
-                        onBlockedContentExited()
+                        Timber.i("Active session detected on pause - stopping blocking checks but continuing usage tracking")
+                        stopPeriodicCheck()
                     }
                 } else if (!nowPaused && wasPaused) {
                     Timber.i("Pause expired, resuming automatic blocking")
+                    // Resume blocking checks if still in blocked content
+                    if (isProcessingBlockedContent) {
+                        Timber.i("Still in blocked content after pause expired - resuming blocking checks")
+                        startPeriodicCheck()
+                        // Check if we should block immediately now that pause expired
+                        serviceScope.launch(Dispatchers.IO) {
+                            if (blockingManager.onEnterBlockedContent()) {
+                                Timber.i("Blocking immediately after pause expired")
+                                performBackNavigation()
+                            }
+                        }
+                    }
                 } else {
                     Timber.v("Pause timestamp updated to %d (no state change)", pauseUntilMillis)
                 }
@@ -269,16 +282,14 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * enters or exits blocked content. Triggers [onBlockedContentEntered] or
      * [onBlockedContentExited] accordingly.
      *
+     * Note: When pause is active, usage tracking continues but blocking rules are not applied.
      * Note: Careful when adding logs as this can get spammed a lot
      *
      * @param event The accessibility event containing information about the UI change
      */
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
 
-        if (isPauseActive()) {
-            Timber.i("Accessibility event ignored because blocking is paused")
-            return
-        }
+        val isPaused = isPauseActive()
 
         // Skip processing if screen is off
         if (!powerManager.isInteractive) {
@@ -316,7 +327,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
             currentBlockableApp = onBrainRotApp
             detectedApp = onBrainRotApp
-            onBlockedContentEntered()
+            onBlockedContentEntered(skipBlocking = isPaused)
         } else if (isProcessingBlockedContent) {
 
             currentBlockableApp = null
@@ -426,12 +437,14 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * Actions performed:
      * - Marks [isProcessingBlockedContent] as true to prevent duplicate event handling
      * - Records entry timestamp to track session duration
-     * - Starts periodic usage checks to enforce time limits
+     * - Starts periodic usage checks to enforce time limits (unless [skipBlocking] is true)
      * - Shows timer overlay (if enabled) to keep user informed of usage
      * - Checks for daily usage reset to ensure accurate daily tracking
-     * - Immediately blocks if limit already exceeded (e.g., BlockAll mode)
+     * - Immediately blocks if limit already exceeded (e.g., BlockAll mode) (unless [skipBlocking] is true)
+     *
+     * @param skipBlocking If true, usage tracking continues but blocking rules are not applied (pause mode)
      */
-    private fun onBlockedContentEntered() {
+    private fun onBlockedContentEntered(skipBlocking: Boolean = false) {
 
         // If the currentOnVideos boolean is set to true, we already dealt with the event
         if (isProcessingBlockedContent) {
@@ -440,19 +453,19 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             return
         }
 
-        if (isPauseActive()) {
-            Timber.v("Ignoring blocked content entry because pause is active")
-            return
-        }
-
         isProcessingBlockedContent = true
         timeStartOnBrainRot = System.currentTimeMillis()
-        Timber.d("Entered blocked content at %d (app=%s)", timeStartOnBrainRot, detectedApp)
+        Timber.d("Entered blocked content at %d (app=%s, skipBlocking=%b)", timeStartOnBrainRot, detectedApp, skipBlocking)
 
         // Expand service scope to detect when user leaves the app (e.g. to launcher)
         updateServiceConfig(true)
 
-        startPeriodicCheck()
+        // Only start periodic blocking checks if not in pause mode
+        if (!skipBlocking) {
+            startPeriodicCheck()
+        } else {
+            Timber.d("Skipping periodic blocking checks due to pause mode - usage tracking only")
+        }
 
         // If timer overlay is enabled and block all isn't selected, show it
         if (currentTimerOverlayEnabled && currentBlockOption != BlockOption.BlockAll) {
@@ -472,11 +485,16 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             // Check for daily reset (If its past midnight, reset the daily usage)
             usageTracker.checkDailyReset()
 
-            if (blockingManager.onEnterBlockedContent()) {
-                Timber.i("Blocking on enter")
-                performBackNavigation()
+            // Only apply blocking rules if not in pause mode
+            if (!skipBlocking) {
+                if (blockingManager.onEnterBlockedContent()) {
+                    Timber.i("Blocking on enter")
+                    performBackNavigation()
+                } else {
+                    Timber.d("Content allowed on enter, will monitor usage")
+                }
             } else {
-                Timber.d("Content allowed on enter, will monitor usage")
+                Timber.d("Pause mode active - skipping blocking check on enter")
             }
         }
     }
