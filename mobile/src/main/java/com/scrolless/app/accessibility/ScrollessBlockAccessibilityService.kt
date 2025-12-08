@@ -246,7 +246,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                     Timber.i("Pause activated until %d", pauseUntilMillis)
                     // Stop periodic blocking checks while paused, but keep session active for usage tracking
                     if (isProcessingBlockedContent) {
-                        Timber.i("Active session detected on pause - stopping blocking checks but continuing usage tracking")
+                        Timber.i("Active session detected while on pause")
                         stopPeriodicCheck()
                     }
                 } else if (!nowPaused && wasPaused) {
@@ -464,11 +464,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         if (!skipBlocking) {
             startPeriodicCheck()
         } else {
-            Timber.d("Skipping periodic blocking checks due to pause mode - usage tracking only")
+            Timber.d("Skipping periodic blocking checks due to pause mode")
         }
 
-        // If timer overlay is enabled and block all isn't selected, show it
-        if (currentTimerOverlayEnabled && currentBlockOption != BlockOption.BlockAll) {
+        // If timer overlay is enabled and block all isn't selected, or the user is currently on pause show it
+        if ((currentTimerOverlayEnabled && currentBlockOption != BlockOption.BlockAll) || isPauseActive()) {
 
             Timber.v("Showing timer overlay")
             timerOverlayManager.show()
