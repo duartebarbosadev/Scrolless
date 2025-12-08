@@ -259,6 +259,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                     // If still in blocked content, check if should block now
                     if (isProcessingBlockedContent) {
                         serviceScope.launch(Dispatchers.IO) {
+                            usageTracker.checkDailyReset()
                             if (blockingManager.onEnterBlockedContent()) {
                                 Timber.i("Blocking immediately after pause expired")
                                 performBackNavigation()
@@ -482,10 +483,15 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 }
             }
         } else {
-            // Paused - show timer overlay if enabled (user can watch content while paused)
+            // Paused - still check for daily reset and show timer overlay
+            serviceScope.launch(Dispatchers.IO) {
+                usageTracker.checkDailyReset()
+            }
             if (currentTimerOverlayEnabled) {
                 Timber.v("Showing timer overlay (paused)")
-                timerOverlayManager.show()
+                mainHandler.post {
+                    timerOverlayManager.show()
+                }
             }
             Timber.d("Pause active - skipping blocking check on enter, but tracking usage")
         }
