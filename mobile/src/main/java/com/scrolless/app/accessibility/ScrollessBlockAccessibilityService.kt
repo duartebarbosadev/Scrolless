@@ -161,8 +161,19 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * If the limit is exceeded, triggers automatic back navigation.
      */
     private val videoCheckRunnable: Runnable = Runnable {
-        if (isProcessingBlockedContent) {
-            val elapsed = System.currentTimeMillis() - timeStartOnBrainRot
+
+        if (!isProcessingBlockedContent) {
+            Timber.w("Periodic check runnable executed but no longer processing content")
+            return@Runnable
+        }
+
+        val elapsed = System.currentTimeMillis() - timeStartOnBrainRot
+
+        if (isPauseActive()) {
+            // While paused, continue scheduling to keep timer overlay updated but skip blocking checks
+            Timber.v("Periodic check (paused): elapsed=%d ms", elapsed)
+            videoCheckHandler.postDelayed(videoCheckRunnable, 1000)
+        } else {
             Timber.v("Periodic check running: elapsed=%d ms", elapsed)
             serviceScope.launch {
                 when (val action = blockingManager.onPeriodicCheck(elapsed)) {
@@ -182,8 +193,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                     }
                 }
             }
-        } else {
-            Timber.w("Periodic check runnable executed but isProcessingBlockedContent=false")
         }
     }
 
@@ -243,19 +252,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 pauseUntilMillis = newPauseUntil
                 val nowPaused = isPauseActive()
                 if (nowPaused && !wasPaused) {
-                    Timber.i("Pause activated until %d", pauseUntilMillis)
-                    // Stop periodic blocking checks while paused, but keep session active for usage tracking
-                    if (isProcessingBlockedContent) {
-                        Timber.i("Active session detected while on pause")
-                        stopPeriodicCheck()
-                    }
+                    Timber.i("Pause activated until %d - session tracking continues", pauseUntilMillis)
+                    // Session continues, usage still tracked, only blocking checks are skipped
                 } else if (!nowPaused && wasPaused) {
-                    Timber.i("Pause expired, resuming automatic blocking")
-                    // Resume blocking checks if still in blocked content
+                    Timber.i("Pause expired, resuming blocking checks")
+                    // If still in blocked content, check if should block now
                     if (isProcessingBlockedContent) {
-                        Timber.i("Still in blocked content after pause expired - resuming blocking checks")
-                        startPeriodicCheck()
-                        // Check if we should block immediately now that pause expired
                         serviceScope.launch(Dispatchers.IO) {
                             if (blockingManager.onEnterBlockedContent()) {
                                 Timber.i("Blocking immediately after pause expired")
@@ -282,15 +284,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * enters or exits blocked content. Triggers [onBlockedContentEntered] or
      * [onBlockedContentExited] accordingly.
      *
-     * Note: When pause is active, usage tracking continues but blocking rules are not applied.
      * Note: Careful when adding logs as this can get spammed a lot
      *
      * @param event The accessibility event containing information about the UI change
      */
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-
-        val isPaused = isPauseActive()
-
         // Skip processing if screen is off
         if (!powerManager.isInteractive) {
             if (isProcessingBlockedContent) {
@@ -327,7 +325,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
             currentBlockableApp = onBrainRotApp
             detectedApp = onBrainRotApp
-            onBlockedContentEntered(skipBlocking = isPaused)
+            onBlockedContentEntered()
         } else if (isProcessingBlockedContent) {
 
             currentBlockableApp = null
@@ -437,14 +435,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * Actions performed:
      * - Marks [isProcessingBlockedContent] as true to prevent duplicate event handling
      * - Records entry timestamp to track session duration
-     * - Starts periodic usage checks to enforce time limits (unless [skipBlocking] is true)
+     * - Starts periodic usage checks to enforce time limits
      * - Shows timer overlay (if enabled) to keep user informed of usage
      * - Checks for daily usage reset to ensure accurate daily tracking
-     * - Immediately blocks if limit already exceeded (e.g., BlockAll mode) (unless [skipBlocking] is true)
-     *
-     * @param skipBlocking If true, usage tracking continues but blocking rules are not applied (pause mode)
+     * - Immediately blocks if limit already exceeded (e.g., BlockAll mode)
      */
-    private fun onBlockedContentEntered(skipBlocking: Boolean = false) {
+    private fun onBlockedContentEntered() {
 
         // If the currentOnVideos boolean is set to true, we already dealt with the event
         if (isProcessingBlockedContent) {
@@ -455,47 +451,43 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         isProcessingBlockedContent = true
         timeStartOnBrainRot = System.currentTimeMillis()
-        Timber.d("Entered blocked content at %d (app=%s, skipBlocking=%b)", timeStartOnBrainRot, detectedApp, skipBlocking)
+        Timber.d("Entered blocked content at %d (app=%s, paused=%b)", timeStartOnBrainRot, detectedApp, isPauseActive())
 
         // Expand service scope to detect when user leaves the app (e.g. to launcher)
         updateServiceConfig(true)
 
-        // Only start periodic blocking checks if not in pause mode
-        if (!skipBlocking) {
-            startPeriodicCheck()
-        } else {
-            Timber.d("Skipping periodic blocking checks due to pause mode")
-        }
+        startPeriodicCheck()
 
-        // If timer overlay is enabled and block all isn't selected, or the user is currently on pause show it
-        if ((currentTimerOverlayEnabled && currentBlockOption != BlockOption.BlockAll) || isPauseActive()) {
+        // Only perform blocking checks if NOT paused
+        if (!isPauseActive()) {
+            serviceScope.launch(Dispatchers.IO) {
 
-            Timber.v("Showing timer overlay")
-            timerOverlayManager.show()
-        } else {
-            Timber.v(
-                "Timer overlay not shown (enabled=%b, blockOption=%s)",
-                currentTimerOverlayEnabled,
-                currentBlockOption,
-            )
-        }
+                // Check for daily reset (If its past midnight, reset the daily usage)
+                usageTracker.checkDailyReset()
 
-        serviceScope.launch(Dispatchers.IO) {
-
-            // Check for daily reset (If its past midnight, reset the daily usage)
-            usageTracker.checkDailyReset()
-
-            // Only apply blocking rules if not in pause mode
-            if (!skipBlocking) {
-                if (blockingManager.onEnterBlockedContent()) {
+                val shouldBlock = blockingManager.onEnterBlockedContent()
+                if (shouldBlock) {
                     Timber.i("Blocking on enter")
                     performBackNavigation()
                 } else {
+                    // Only show timer overlay if we're NOT blocking immediately
+                    // (no point showing timer if user is about to be kicked out)
+                    mainHandler.post {
+                        if (currentTimerOverlayEnabled && isProcessingBlockedContent) {
+                            Timber.v("Showing timer overlay")
+                            timerOverlayManager.show()
+                        }
+                    }
                     Timber.d("Content allowed on enter, will monitor usage")
                 }
-            } else {
-                Timber.d("Pause mode active - skipping blocking check on enter")
             }
+        } else {
+            // Paused - show timer overlay if enabled (user can watch content while paused)
+            if (currentTimerOverlayEnabled) {
+                Timber.v("Showing timer overlay (paused)")
+                timerOverlayManager.show()
+            }
+            Timber.d("Pause active - skipping blocking check on enter, but tracking usage")
         }
     }
 

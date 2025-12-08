@@ -437,6 +437,14 @@ private fun HomeContent(
     val isPauseActive = pauseRemainingMillis > 0L
     val hasActiveBlockOption = uiState.blockOption != BlockOption.NothingSelected
 
+    // Determine if blocking is currently active (user would be blocked if they tried to view content)
+    val isBlockingActive = when (uiState.blockOption) {
+        BlockOption.BlockAll -> true // Always blocking
+        BlockOption.DailyLimit -> uiState.timeLimit > 0 && uiState.currentUsage >= uiState.timeLimit
+        BlockOption.IntervalTimer -> uiState.timeLimit > 0 && uiState.intervalUsage >= uiState.timeLimit
+        BlockOption.NothingSelected -> false
+    }
+
     Box(
         modifier
             .fillMaxSize()
@@ -623,8 +631,9 @@ private fun HomeContent(
                 Spacer(modifier = Modifier.height(24.dp))
             }
 
+            // Show pause button only when blocking is active OR user is already paused (to allow resuming)
             AnimatedVisibility(
-                visible = hasActiveBlockOption,
+                visible = isBlockingActive || isPauseActive,
                 enter = expandVertically(
                     expandFrom = Alignment.Top,
                     animationSpec = tween(300),
@@ -647,6 +656,7 @@ private fun HomeContent(
                 Spacer(modifier = Modifier.height(14.dp))
             }
 
+            // Show timer overlay toggle when not BlockAll, or when paused (since user can watch content while paused)
             AnimatedVisibility(
                 visible = uiState.blockOption != BlockOption.BlockAll || isPauseActive,
                 enter = expandVertically(
