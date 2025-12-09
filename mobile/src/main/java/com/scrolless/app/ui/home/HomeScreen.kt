@@ -134,7 +134,11 @@ private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
 private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = hiltViewModel(),
+    onNavigateToStats: () -> Unit = {},
+) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -332,6 +336,10 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                     Timber.d("Progress card clicked (no action in release build)")
                 }
             },
+            onStatsClicked = {
+                Timber.i("View Stats clicked")
+                onNavigateToStats()
+            },
         )
 
         SnackbarHost(
@@ -427,6 +435,7 @@ private fun HomeContent(
     onIntervalTimerEdit: () -> Unit,
     onPauseToggle: (Boolean) -> Unit,
     onProgressCardClicked: () -> Unit = {},
+    onStatsClicked: () -> Unit = {},
 ) {
     // Define weights outside of composition flow
     val WEIGHT_BASE = 1f
@@ -677,7 +686,13 @@ private fun HomeContent(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            RateButton(onClick = onReviewClicked)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
+            ) {
+                ViewStatsButton(onClick = onStatsClicked)
+                RateButton(onClick = onReviewClicked)
+            }
         }
     }
 }
@@ -1347,6 +1362,28 @@ fun OnScreenTimerToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, mo
                 Timber.d("On-screen timer switch toggled -> %s", it)
                 onCheckedChange(it)
             },
+        )
+    }
+}
+
+@Composable
+private fun ViewStatsButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    ElevatedButton(
+        onClick = onClick,
+        modifier = modifier,
+        colors = ButtonDefaults.elevatedButtonColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+        ),
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_bar_chart),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(
+            text = stringResource(R.string.view_stats),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
     }
 }

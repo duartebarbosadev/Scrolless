@@ -29,6 +29,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.scrolless.app.ui.home.HomeScreen
+import com.scrolless.app.ui.stats.UsageStatsScreen
 
 @Composable
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -44,7 +45,18 @@ fun ScrollessApplication(appState: ScrollessAppState = rememberScrollessAppState
                 popEnterTransition = { EnterTransition.None },
             ) {
                 composable(Screen.Scrolless.route) {
-                    HomeScreen()
+                    HomeScreen(
+                        onNavigateToStats = {
+                            appState.navController.navigate(Screen.UsageStats.route)
+                        },
+                    )
+                }
+                composable(Screen.UsageStats.route) {
+                    UsageStatsScreen(
+                        onBackClick = {
+                            appState.navController.popBackStack()
+                        },
+                    )
                 }
             }
         }

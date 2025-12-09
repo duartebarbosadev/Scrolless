@@ -19,7 +19,9 @@ package com.scrolless.app.core.data.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.scrolless.app.core.data.database.dao.AppUsageDao
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
+import com.scrolless.app.core.data.database.model.AppUsage
 import com.scrolless.app.core.data.database.model.UserSettings
 
 /**
@@ -28,11 +30,13 @@ import com.scrolless.app.core.data.database.model.UserSettings
 @Database(
     entities = [
         UserSettings::class,
+        AppUsage::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = false,
 )
 @TypeConverters(LocalDateTypeConverters::class)
 abstract class ScrollessDatabase : RoomDatabase() {
     abstract fun userSettingsDao(): UserSettingsDao
+    abstract fun appUsageDao(): AppUsageDao
 }

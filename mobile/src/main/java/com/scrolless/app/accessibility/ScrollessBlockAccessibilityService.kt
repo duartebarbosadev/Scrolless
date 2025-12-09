@@ -527,16 +527,17 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // Restrict service scope again to save battery
         updateServiceConfig(false)
 
+        val exitedApp = detectedApp
         serviceScope.launch(Dispatchers.IO) {
-            // Add to usage in memory
-            Timber.d("Recording session usage: %d ms", sessionTime)
-            usageTracker.addToDailyUsage(sessionTime)
+            // Add to usage in memory with per-app tracking
+            Timber.d("Recording session usage: %d ms for app: %s", sessionTime, exitedApp?.name)
+            usageTracker.addToDailyUsage(sessionTime, exitedApp?.name)
 
             // Let blocking manager do its logic, if needed
             blockingManager.onExitBlockedContent(sessionTime)
         }
 
-        Timber.d("Exit handling completed for app: %s", detectedApp?.name)
+        Timber.d("Exit handling completed for app: %s", exitedApp?.name)
         detectedApp = null
     }
 

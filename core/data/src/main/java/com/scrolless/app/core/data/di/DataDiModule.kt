@@ -36,7 +36,10 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.scrolless.app.core.data.database.ScrollessDatabase
+import com.scrolless.app.core.data.database.dao.AppUsageDao
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
+import com.scrolless.app.core.data.repository.AppUsageRepository
+import com.scrolless.app.core.data.repository.AppUsageRepositoryImpl
 import com.scrolless.app.core.data.repository.UsageTracker
 import com.scrolless.app.core.data.repository.UsageTrackerImpl
 import com.scrolless.app.core.data.repository.UserSettingsStore
@@ -82,10 +85,20 @@ object DataDiModule {
 
     @Provides
     @Singleton
+    fun provideAppUsageDao(database: ScrollessDatabase): AppUsageDao = database.appUsageDao()
+
+    @Provides
+    @Singleton
     fun provideUserSettingsStore(userSettingsDao: UserSettingsDao): UserSettingsStore =
         UserSettingsStoreImpl(userSettingsDao = userSettingsDao)
 
     @Provides
     @Singleton
-    fun provideUsageTracker(userSettingsStore: UserSettingsStore): UsageTracker = UsageTrackerImpl(userSettingsStore = userSettingsStore)
+    fun provideUsageTracker(userSettingsStore: UserSettingsStore, appUsageDao: AppUsageDao): UsageTracker =
+        UsageTrackerImpl(userSettingsStore = userSettingsStore, appUsageDao = appUsageDao)
+
+    @Provides
+    @Singleton
+    fun provideAppUsageRepository(appUsageDao: AppUsageDao): AppUsageRepository =
+        AppUsageRepositoryImpl(appUsageDao = appUsageDao)
 }

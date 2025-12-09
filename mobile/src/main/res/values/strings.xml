@@ -99,4 +99,20 @@
     <string name="next_step_1">Select a blocking mode</string>
     <string name="next_step_2">Try the daily limit feature and activate the timer overlay</string>
 
+    <!-- Usage Stats Screen -->
+    <string name="usage_stats_title">Usage Stats</string>
+    <string name="back">Back</string>
+    <string name="usage_by_app">Usage by App</string>
+    <string name="today_total">Today\'s Total</string>
+    <string name="time_on_short_content">time on short-form content</string>
+    <string name="weekly_summary">Weekly Summary</string>
+    <string name="last_7_days">Last 7 days</string>
+    <string name="app_instagram_reels">Instagram Reels</string>
+    <string name="app_youtube_shorts">YouTube Shorts</string>
+    <string name="app_tiktok">TikTok</string>
+    <string name="app_reels_short">Reels</string>
+    <string name="app_shorts_short">Shorts</string>
+    <string name="app_tiktok_short">TikTok</string>
+    <string name="view_stats">View Stats</string>
+
 </resources>
