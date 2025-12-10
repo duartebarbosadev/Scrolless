@@ -1,10 +1,12 @@
 <h1 align="center">Scrolless</h1>
 <h3 align="center">Anti Brain Rot App</h3>
 
-<p align="center"><img src="art/applogo.png" alt="Scrolless"></p>
+<p align="center"><img src="art/app_logo.png" alt="Scrolless"></p>
 <p align="center"> 
   <br/>  
   <a href="https://opensource.org/license/gpl-3"><img src="https://img.shields.io/badge/License-GPL_3.0-blue.svg?color=3F51B5&style=for-the-badge&label=License&logoColor=000000&labelColor=ececec" alt="License: AGPLv3"></a>
+  <br/>
+  <a href="https://play.google.com/store/apps/details?id=com.scrolless.app"><img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="64"></a>
   <br/>  
   <br/>   
 </p>
