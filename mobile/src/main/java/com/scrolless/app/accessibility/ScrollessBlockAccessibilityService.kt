@@ -26,6 +26,7 @@ import android.os.Looper
 import android.os.PowerManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import com.scrolless.app.BuildConfig
 import com.scrolless.app.core.blocking.BlockingManager
 import com.scrolless.app.core.data.database.model.BlockOption
 import com.scrolless.app.core.data.repository.UsageTracker
@@ -216,10 +217,13 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         serviceScope.launch {
             val waitingForAccessibility = userSettingsStore.getWaitingForAccessibility().distinctUntilChanged()
             waitingForAccessibility.collect { waiting ->
-                if (waiting) {
-                    Timber.i("Waiting for accessibility flag is set - bringing app to foreground")
+                // If app is waiting for accessibility or we are in debug mode, bring it to foreground
+                if (waiting || BuildConfig.DEBUG) {
+                    Timber.i("Bringing app to foreground")
                     bringAppToForeground()
                     userSettingsStore.setWaitingForAccessibility(false)
+                } else {
+                    Timber.i("Skipping bringing app to foreground")
                 }
             }
         }
