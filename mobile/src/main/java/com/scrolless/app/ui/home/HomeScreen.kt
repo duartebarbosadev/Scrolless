@@ -155,7 +155,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
 
     fun showAccessibilityExplainerPrompt() {
         if (showAccessibilityExplainer) return
-        Timber.d("Set awaiting for accessibility for app auto open")
+        Timber.d("Set waiting for accessibility for app auto open")
         viewModel.setWaitingForAccessibility(true)
         showAccessibilityExplainer = true
         if (!uiState.hasSeenAccessibilityExplainer) {
