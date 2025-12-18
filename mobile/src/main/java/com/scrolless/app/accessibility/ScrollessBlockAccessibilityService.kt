@@ -217,8 +217,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         serviceScope.launch {
             val waitingForAccessibility = userSettingsStore.getWaitingForAccessibility().distinctUntilChanged()
             waitingForAccessibility.collect { waiting ->
-                // If app is waiting for accessibility or we are in debug mode, bring it to foreground
-                if (waiting || BuildConfig.DEBUG) {
+                // If app is waiting for accessibility, bring it to foreground
+                if (waiting) {
                     Timber.i("Bringing app to foreground")
                     bringAppToForeground()
                     userSettingsStore.setWaitingForAccessibility(false)
