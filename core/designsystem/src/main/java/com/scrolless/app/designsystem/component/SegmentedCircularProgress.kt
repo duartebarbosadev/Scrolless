@@ -107,7 +107,7 @@ fun SegmentedCircularProgressIndicator(
         )
         val arcSize = Size(diameter, diameter)
         val validSegmentCount = segments.count { it.usageMillis > 0L }
-        val gapCount = (validSegmentCount - 1).coerceAtLeast(0)
+        val gapCount = if (validSegmentCount <= 1) 0 else validSegmentCount
         val totalGapDegrees = (gapCount * effectiveGapDegrees).coerceAtMost(360f)
         val maxArcDegrees = (360f - totalGapDegrees).coerceAtLeast(0f)
         val animatedSegments = calculateSegments(
@@ -156,7 +156,10 @@ private fun calculateSegments(appUsageData: List<AppUsageSegment>, totalSweepDeg
     val usedDegrees = totalSweepDegrees.coerceIn(0f, 360f)
     if (usedDegrees <= 0f) return emptyList()
 
-    val gapCount = (validSegments.size - 1).coerceAtLeast(0)
+    val gapCount = when {
+        validSegments.size <= 1 -> 0
+        else -> validSegments.size
+    }
     val totalGapDegrees = (gapCount * gapDegrees).coerceAtMost(usedDegrees)
     val availableDegrees = (usedDegrees - totalGapDegrees).coerceAtLeast(0f)
     if (availableDegrees <= 0f) return emptyList()
