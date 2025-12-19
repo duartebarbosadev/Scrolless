@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">अंतराल टाइमर कॉन्फ़िगर करें</string>
     <string name="interval_timer_next_reset_in">%1$s में रीसेट होता है</string>
     <string name="interval_timer_next_reset_ready">अगला ब्रेक अनलॉक हुआ</string>
-    <string name="interval_timer_next_reset_unknown">आपका पहला ब्रेक विंडो के बाद शेड्यूल शुरू होगा।</string>
     <string name="next_step_1">एक ब्लॉकिंग मोड चुनें</string>
     <string name="next_step_2">दैनिक सीमा सुविधा आज़माएँ और टाइमर ओवरले सक्रिय करें</string>
     <string name="next_steps_title">अगले चरण</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">दैनिक सीमा समय सेट करें</string>
     <string name="visit_github">GitHub रिपॉजिटरी पर जाएँ</string>
     <string name="time_interval">समय\nअंतराल</string>
-    <string name="time_wasted">बर्बाद हुआ समय</string>
     <string name="show_onscreen_timer">ऑन-स्क्रीन टाइमर दिखाएं</string>
     <string name="timer_overlay_description">brainrot सामग्री देखते समय एक फ़्लोटिंग टाइमर दृश्यमान रखें।</string>
 </resources>

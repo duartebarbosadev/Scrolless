@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Configurează cronometrul interval</string>
     <string name="interval_timer_next_reset_in">Se resetează în %1$s</string>
     <string name="interval_timer_next_reset_ready">Următoarea pauză deblocată</string>
-    <string name="interval_timer_next_reset_unknown">Programul va începe după prima fereastră de pauză.</string>
     <string name="next_step_1">Selectează un mod de blocare</string>
     <string name="next_step_2">Încearcă funcția de limită zilnică și activează suprapunerea cronometrului</string>
     <string name="next_steps_title">Pași următori</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Setează Timpul Limită Zilnic</string>
     <string name="visit_github">Vizitează Depozitul GitHub</string>
     <string name="time_interval">Interval\nDe Timp</string>
-    <string name="time_wasted">Timp pierdut</string>
     <string name="show_onscreen_timer">Afișează cronometrul pe ecran</string>
     <string name="timer_overlay_description">Menține un cronometru plutitor vizibil în timp ce urmărești conținut brainrot.</string>
 </resources>

@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Konfiguriši intervalni tajmer</string>
     <string name="interval_timer_next_reset_in">Resetuje se za %1$s</string>
     <string name="interval_timer_next_reset_ready">Sledeća pauza otključana</string>
-    <string name="interval_timer_next_reset_unknown">Raspored će početi nakon vašeg prvog prozora pauze.</string>
     <string name="next_step_1">Izaberite režim blokiranja</string>
     <string name="next_step_2">Isprobajte funkciju dnevnog ograničenja i aktivirajte preklapanje tajmera</string>
     <string name="next_steps_title">Sledeći koraci</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Podesi vreme dnevnog ograničenja</string>
     <string name="visit_github">Poseti GitHub repozitorijum</string>
     <string name="time_interval">Vremenski\nInterval</string>
-    <string name="time_wasted">Potrošeno vreme</string>
     <string name="show_onscreen_timer">Prikaži tajmer na ekranu</string>
     <string name="timer_overlay_description">Držite plutajući tajmer vidljivim dok gledate brainrot sadržaj.</string>
 </resources>

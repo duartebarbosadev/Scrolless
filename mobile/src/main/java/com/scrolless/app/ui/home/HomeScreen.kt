@@ -31,7 +31,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -243,7 +242,29 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
         }
     }
 
-    HomeBackground(modifier = modifier.fillMaxSize()) {
+    val hasLimitTimer =
+        (uiState.blockOption == BlockOption.DailyLimit && uiState.timeLimit > 0L) ||
+            (uiState.blockOption == BlockOption.IntervalTimer && uiState.timeLimit > 0L)
+    val limitProgressFraction = if (hasLimitTimer) {
+        uiState.progress.coerceIn(0, 100) / 100f
+    } else {
+        0f
+    }
+    val limitAccentColor by animateColorAsState(
+        targetValue = when {
+            uiState.progress < 75 -> progressbar_green_use
+            uiState.progress < 100 -> progressbar_orange_use
+            else -> progressbar_red_use
+        },
+        animationSpec = tween(durationMillis = 900),
+        label = "limitAccentColor",
+    )
+
+    HomeBackground(
+        modifier = modifier.fillMaxSize(),
+        accentColor = if (hasLimitTimer) limitAccentColor else null,
+        accentStrength = if (hasLimitTimer) limitProgressFraction else 0f,
+    ) {
         fun openIntervalConfig() {
             pendingIntervalBreak = uiState.intervalLength.takeIf { it > 0L } ?: DEFAULT_INTERVAL_BREAK_MILLIS
             pendingIntervalAllowance = uiState.timeLimit.takeIf { it > 0L } ?: DEFAULT_INTERVAL_ALLOWANCE_MILLIS
@@ -1118,30 +1139,20 @@ private fun ProgressCard(
     val displayIntervalUsage = if (intervalResetReady) 0L else intervalUsage
     val displayProgress = if (intervalResetReady) 0 else clampedProgress
 
-    // Border glow color changes based on progress toward limit
-    val glowColor by animateColorAsState(
-        targetValue = when {
-            displayProgress < 75 -> progressbar_green_use
-            displayProgress < 100 -> progressbar_orange_use
-            else -> progressbar_red_use
-        },
-        animationSpec = tween(durationMillis = 500),
-        label = "glowColor",
-    )
-
     val primaryText = when {
-        isIntervalMode && intervalAllowanceConfigured ->
-            "${displayIntervalUsage.coerceAtLeast(0L).coerceAtMost(timeLimit).formatTime()} / ${timeLimit.formatTime()}"
         isIntervalMode -> displayIntervalUsage.formatTime()
-        blockOption == BlockOption.DailyLimit && timeLimit > 0L ->
-            "${currentUsage.formatTime()} / ${timeLimit.formatTime()}"
         else -> currentUsage.formatTime()
+    }
+    val limitChipText = when {
+        isIntervalMode && intervalAllowanceConfigured -> timeLimit.formatTime()
+        blockOption == BlockOption.DailyLimit && timeLimit > 0L -> timeLimit.formatTime()
+        else -> null
     }
 
     val resetText = if (isIntervalMode) {
         when {
-            !intervalAllowanceConfigured -> stringResource(R.string.interval_timer_next_reset_unknown)
-            intervalLength <= 0L || intervalWindowStart <= 0L -> stringResource(R.string.interval_timer_next_reset_unknown)
+            !intervalAllowanceConfigured -> null
+            intervalLength <= 0L || intervalWindowStart <= 0L -> null
             intervalRemainingMillis <= 1_000L -> stringResource(R.string.interval_timer_next_reset_ready)
             else -> stringResource(
                 R.string.interval_timer_next_reset_in,
@@ -1188,11 +1199,6 @@ private fun ProgressCard(
             modifier = Modifier
                 .size(220.dp)
                 .padding(16.dp)
-                .border(
-                    width = 3.dp,
-                    color = glowColor,
-                    shape = RoundedCornerShape(96.dp),
-                )
                 .clickable(
                     onClick = onProgressCardClicked,
                 ),
@@ -1228,17 +1234,23 @@ private fun ProgressCard(
                         overflow = TextOverflow.Ellipsis,
                         minFontSize = 16.sp,
                     )
+                    if (limitChipText != null) {
+                        Spacer(Modifier.height(6.dp))
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.18f))
+                                .padding(horizontal = 10.dp, vertical = 4.dp),
+                        ) {
+                            Text(
+                                text = stringResource(R.string.limit_chip, limitChipText),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f),
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                    }
                     Spacer(Modifier.height(8.dp))
-
-                    AutoResizingText(
-                        text = stringResource(R.string.time_wasted),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
-                        textAlign = TextAlign.Center,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        minFontSize = 12.sp,
-                    )
 
                     if (resetText != null) {
                         Spacer(Modifier.height(6.dp))
@@ -1249,7 +1261,7 @@ private fun ProgressCard(
                             textAlign = TextAlign.Center,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
-                            minFontSize = 11.sp,
+                            minFontSize = 10.sp,
                         )
                     }
                 }
@@ -1450,12 +1462,21 @@ fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun HomeBackground(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
+private fun HomeBackground(
+    modifier: Modifier = Modifier,
+    accentColor: Color? = null,
+    accentStrength: Float = 0f,
+    content: @Composable BoxScope.() -> Unit,
+) {
     Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .radialGradientScrim(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)),
+                .radialGradientScrim(
+                    baseColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                    accentColor = accentColor?.copy(alpha = 0.22f),
+                    accentStrength = accentStrength,
+                ),
         )
         content()
     }

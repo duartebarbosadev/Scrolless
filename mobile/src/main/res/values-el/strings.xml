@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Διαμόρφωση χρονομέτρου διαλείμματος</string>
     <string name="interval_timer_next_reset_in">Επαναφορά σε %1$s</string>
     <string name="interval_timer_next_reset_ready">Το επόμενο διάλειμμα ξεκλείδωσε</string>
-    <string name="interval_timer_next_reset_unknown">Το πρόγραμμα θα ξεκινήσει μετά το πρώτο σας παράθυρο διαλείμματος.</string>
     <string name="next_step_1">Επιλέξτε μια λειτουργία μπλοκαρίσματος</string>
     <string name="next_step_2">Δοκιμάστε τη λειτουργία ημερήσιου ορίου και ενεργοποιήστε την επικάλυψη χρονομέτρου</string>
     <string name="next_steps_title">Επόμενα Βήματα</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Ορισμός Χρόνου Ημερήσιου Ορίου</string>
     <string name="visit_github">Επίσκεψη στο Αποθετήριο GitHub</string>
     <string name="time_interval">Χρονικό\nΔιάστημα</string>
-    <string name="time_wasted">Χρόνος που σπαταλήθηκε</string>
     <string name="show_onscreen_timer">Εμφάνιση χρονομέτρου στην οθόνη</string>
     <string name="timer_overlay_description">Διατηρήστε έναν αιωρούμενο χρονομέτρη ορατό ενώ παρακολουθείτε brain rot περιεχόμενο.</string>
 </resources>

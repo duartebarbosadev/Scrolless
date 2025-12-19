@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Configurer la minuterie d\'intervalle</string>
     <string name="interval_timer_next_reset_in">Réinitialisation dans %1$s</string>
     <string name="interval_timer_next_reset_ready">Prochaine pause déverrouillée</string>
-    <string name="interval_timer_next_reset_unknown">Le programme commencera après votre première fenêtre de pause.</string>
     <string name="next_step_1">Sélectionnez un mode de blocage</string>
     <string name="next_step_2">Essayez la fonctionnalité de limite quotidienne et activez la superposition de la minuterie</string>
     <string name="next_steps_title">Prochaines étapes</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Définir la limite de temps quotidienne</string>
     <string name="visit_github">Visiter le dépôt GitHub</string>
     <string name="time_interval">Intervalle\nde temps</string>
-    <string name="time_wasted">Temps perdu</string>
     <string name="show_onscreen_timer">Afficher le minuteur à l\'écran</string>
     <string name="timer_overlay_description">Garder un minuteur flottant visible pendant que vous regardez du contenu brainrot.</string>
 </resources>

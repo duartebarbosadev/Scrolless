@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Määritä aikaväliajastin</string>
     <string name="interval_timer_next_reset_in">Nollaus %1$s kuluttua</string>
     <string name="interval_timer_next_reset_ready">Seuraava tauko avattu</string>
-    <string name="interval_timer_next_reset_unknown">Aikataulu alkaa ensimmäisen taukoikkunasi jälkeen.</string>
     <string name="next_step_1">Valitse estotila</string>
     <string name="next_step_2">Kokeile päivittäisen rajan ominaisuutta ja aktivoi ajastinpeittokuva</string>
     <string name="next_steps_title">Seuraavat vaiheet</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Aseta päivittäinen aikaraja</string>
     <string name="visit_github">Vieraile GitHub-arkistossa</string>
     <string name="time_interval">Aika\nväli</string>
-    <string name="time_wasted">Hukattu aika</string>
     <string name="show_onscreen_timer">Näytä ajastin näytöllä</string>
     <string name="timer_overlay_description">Pidä kelluva ajastin näkyvissä katsoessasi brainrot-sisältöä.</string>
 </resources>

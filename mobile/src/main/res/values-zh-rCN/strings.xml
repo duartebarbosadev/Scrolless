@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">配置间隔计时器</string>
     <string name="interval_timer_next_reset_in">将在 %1$s 后重置</string>
     <string name="interval_timer_next_reset_ready">下一个休息已解锁</string>
-    <string name="interval_timer_next_reset_unknown">日程将在您的第一个休息窗口后开始。</string>
     <string name="next_step_1">选择一个阻止模式</string>
     <string name="next_step_2">尝试每日限制功能并激活计时器叠加层</string>
     <string name="next_steps_title">后续步骤</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">设置每日限制时间</string>
     <string name="visit_github">访问 GitHub 仓库</string>
     <string name="time_interval">时间\n间隔</string>
-    <string name="time_wasted">浪费的时间</string>
     <string name="show_onscreen_timer">显示屏幕计时器</string>
     <string name="timer_overlay_description">在观看 brain rot 内容时，保持浮动计时器可见。</string>
 </resources>

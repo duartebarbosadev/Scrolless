@@ -56,7 +56,11 @@ import kotlin.math.min
  * center quarter of the element.
  */
 @Composable
-fun Modifier.radialGradientScrim(color: Color): Modifier {
+fun Modifier.radialGradientScrim(
+    baseColor: Color,
+    accentColor: Color? = null,
+    accentStrength: Float = 0f,
+): Modifier {
     val transition = rememberInfiniteTransition(label = "GradientScrimPulse")
     val pulse by transition.animateFloat(
         initialValue = 0.88f,
@@ -77,19 +81,27 @@ fun Modifier.radialGradientScrim(color: Color): Modifier {
         label = "ScrimTintShift",
     )
 
-    val baseAlpha = max(color.alpha, 0.26f)
+    val clampedAccentStrength = accentStrength.coerceIn(0f, 1f)
+    val blendedBase = if (accentColor != null) {
+        lerp(baseColor, accentColor, clampedAccentStrength)
+    } else {
+        baseColor
+    }
+    val baseAlpha = max(blendedBase.alpha, 0.32f)
+    val highlightMix = (0.48f - (clampedAccentStrength * 0.12f)).coerceIn(0.28f, 0.55f)
     val palette = listOf(
-        color.copy(alpha = baseAlpha),
-        Color(0xFF8FD6FF).copy(alpha = baseAlpha), // soft sky
-        Color(0xFFB7A8FF).copy(alpha = baseAlpha), // lavender
-        Color(0xFFA8FFD8).copy(alpha = baseAlpha), // mint
-        color.copy(alpha = baseAlpha * 0.9f),
+        blendedBase.copy(alpha = baseAlpha),
+        lerp(blendedBase, Color(0xFF58C7FF), highlightMix).copy(alpha = baseAlpha), // electric sky
+        lerp(blendedBase, Color(0xFF9C7BFF), highlightMix).copy(alpha = baseAlpha), // violet glow
+        lerp(blendedBase, Color(0xFF5DFFB3), highlightMix).copy(alpha = baseAlpha), // neon mint
+        blendedBase.copy(alpha = baseAlpha * 0.9f),
     )
     val animatedColor = lerpPalette(
         palette = palette,
         fraction = 0.2f + (tintShift * 0.8f),
     )
-    val innerAlpha = (baseAlpha * (0.75f + pulse * 0.55f)).coerceAtMost(0.38f)
+    val innerAlpha = (baseAlpha * (0.82f + pulse * 0.6f) * (0.85f + (clampedAccentStrength * 0.35f)))
+        .coerceAtMost(0.4f)
     val midAlpha = (innerAlpha * 0.45f).coerceAtMost(0.22f)
 
     val radialGradient = object : ShaderBrush() {

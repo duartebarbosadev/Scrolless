@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Configurar temporizador de intervalo</string>
     <string name="interval_timer_next_reset_in">Se restablece en %1$s</string>
     <string name="interval_timer_next_reset_ready">Próximo descanso desbloqueado</string>
-    <string name="interval_timer_next_reset_unknown">El horario comenzará después de tu primera ventana de descanso.</string>
     <string name="next_step_1">Selecciona un modo de bloqueo</string>
     <string name="next_step_2">Prueba la función de límite diario y activa la superposición del temporizador</string>
     <string name="next_steps_title">Próximos Pasos</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Establecer Tiempo Límite Diario</string>
     <string name="visit_github">Visitar Repositorio de GitHub</string>
     <string name="time_interval">Intervalo\nde Tiempo</string>
-    <string name="time_wasted">Tiempo perdido</string>
     <string name="show_onscreen_timer">Mostrar temporizador en pantalla</string>
     <string name="timer_overlay_description">Mantener un temporizador flotante visible mientras ves contenido brain rot.</string>
 </resources>

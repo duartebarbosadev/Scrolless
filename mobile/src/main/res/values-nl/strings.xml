@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Intervaltimer configureren</string>
     <string name="interval_timer_next_reset_in">Reset over %1$s</string>
     <string name="interval_timer_next_reset_ready">Volgende pauze ontgrendeld</string>
-    <string name="interval_timer_next_reset_unknown">Schema start na uw eerste pauzevenster.</string>
     <string name="next_step_1">Selecteer een blokkeermodus</string>
     <string name="next_step_2">Probeer de dagelijkse limietfunctie en activeer de timeroverlay</string>
     <string name="next_steps_title">Volgende stappen</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Stel dagelijkse limiettijd in</string>
     <string name="visit_github">Bezoek GitHub-repository</string>
     <string name="time_interval">Tijds\ninterval</string>
-    <string name="time_wasted">Verspilde tijd</string>
     <string name="show_onscreen_timer">Toon timer op scherm</string>
     <string name="timer_overlay_description">Houd een zwevende timer zichtbaar tijdens het kijken naar brain rot-content.</string>
 </resources>

@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Aralık zamanlayıcısını yapılandır</string>
     <string name="interval_timer_next_reset_in">Sıfırlanmasına kalan süre: %1$s</string>
     <string name="interval_timer_next_reset_ready">Sonraki mola kilidi açıldı</string>
-    <string name="interval_timer_next_reset_unknown">Program, ilk mola pencerenizden sonra başlayacaktır.</string>
     <string name="next_step_1">Bir engelleme modu seçin</string>
     <string name="next_step_2">Günlük sınır özelliğini deneyin ve zamanlayıcı yer paylaşımını etkinleştirin</string>
     <string name="next_steps_title">Sonraki Adımlar</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Günlük Sınır Süresini Ayarla</string>
     <string name="visit_github">GitHub Deposunu Ziyaret Et</string>
     <string name="time_interval">Zaman\nAralığı</string>
-    <string name="time_wasted">Boşa harcanan süre</string>
     <string name="show_onscreen_timer">Ekran üstü zamanlayıcıyı göster</string>
     <string name="timer_overlay_description">brain rot içeriği izlerken kayan bir zamanlayıcıyı görünür tutun.</string>
 </resources>

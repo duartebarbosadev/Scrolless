@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Konfigurovať intervalový časovač</string>
     <string name="interval_timer_next_reset_in">Resetuje sa za %1$s</string>
     <string name="interval_timer_next_reset_ready">Ďalšia prestávka odomknutá</string>
-    <string name="interval_timer_next_reset_unknown">Rozvrh sa začne po vašom prvom okne prestávky.</string>
     <string name="next_step_1">Vyberte režim blokovania</string>
     <string name="next_step_2">Vyskúšajte funkciu denného limitu a aktivujte prekrytie časovača</string>
     <string name="next_steps_title">Ďalšie kroky</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Nastaviť čas denného limitu</string>
     <string name="visit_github">Navštíviť GitHub Repozitár</string>
     <string name="time_interval">Časový\nInterval</string>
-    <string name="time_wasted">Premrhaný čas</string>
     <string name="show_onscreen_timer">Zobraziť časovač na obrazovke</string>
     <string name="timer_overlay_description">Ponechať plávajúci časovač viditeľný počas sledovania obsahu brainrot.</string>
 </resources>

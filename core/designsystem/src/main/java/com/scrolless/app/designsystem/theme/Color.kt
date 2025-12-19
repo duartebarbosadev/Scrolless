@@ -242,6 +242,6 @@ val progressbar_red_use = Color(0xFFF44336)
 // App brand colors for per-app usage segments
 val instagramReelsColor = Color(0xFFE1306C) // Pink/magenta
 val tiktokColor = Color(0xFF00F2EA) // Cyan/aqua
-val youtubeShortsColor = Color(0xFFFF0000) // Red
+val youtubeShortsColor = Color(0xFFFFB300) // Amber
 
 val timerOverlayBackgroundColor = "#B3000000".toColorInt() // ~70% alpha black

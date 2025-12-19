@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Konfigurera intervalltimer</string>
     <string name="interval_timer_next_reset_in">Återställs om %1$s</string>
     <string name="interval_timer_next_reset_ready">Nästa paus upplåst</string>
-    <string name="interval_timer_next_reset_unknown">Schemat startar efter ditt första pausfönster.</string>
     <string name="next_step_1">Välj ett blockeringsläge</string>
     <string name="next_step_2">Prova funktionen för daglig gräns och aktivera timeröverlägget</string>
     <string name="next_steps_title">Nästa steg</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Ställ in daglig gränstid</string>
     <string name="visit_github">Besök GitHub-arkivet</string>
     <string name="time_interval">Tids\nintervall</string>
-    <string name="time_wasted">Tid slösad</string>
     <string name="show_onscreen_timer">Visa timer på skärmen</string>
     <string name="timer_overlay_description">Håll en flytande timer synlig medan du tittar på brainrot-innehåll.</string>
 </resources>

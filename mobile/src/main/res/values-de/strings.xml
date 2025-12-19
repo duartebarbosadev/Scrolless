@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Intervall-Timer konfigurieren</string>
     <string name="interval_timer_next_reset_in">Setzt in %1$s zurück</string>
     <string name="interval_timer_next_reset_ready">Nächste Pause freigeschaltet</string>
-    <string name="interval_timer_next_reset_unknown">Der Zeitplan beginnt nach Ihrem ersten Pausenfenster.</string>
     <string name="next_step_1">Wählen Sie einen Blockiermodus</string>
     <string name="next_step_2">Probieren Sie die Tageslimit-Funktion aus und aktivieren Sie die Timer-Einblendung</string>
     <string name="next_steps_title">Nächste Schritte</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Tageslimit-Zeit festlegen</string>
     <string name="visit_github">GitHub-Repository besuchen</string>
     <string name="time_interval">Zeit-\nintervall</string>
-    <string name="time_wasted">Verschwendete Zeit</string>
     <string name="show_onscreen_timer">Timer auf dem Bildschirm anzeigen</string>
     <string name="timer_overlay_description">Einen schwebenden Timer anzeigen, während brain rot-Inhalte angesehen werden.</string>
 </resources>

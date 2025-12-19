@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Configurar temporizador intervalado</string>
     <string name="interval_timer_next_reset_in">Redefine em %1$s</string>
     <string name="interval_timer_next_reset_ready">Próxima pausa desbloqueada</string>
-    <string name="interval_timer_next_reset_unknown">O agendamento começará após sua primeira janela de pausa.</string>
     <string name="next_step_1">Selecione um modo de bloqueio</string>
     <string name="next_step_2">Experimente o recurso de limite diário e ative a sobreposição do temporizador</string>
     <string name="next_steps_title">Próximas Etapas</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Definir Tempo de Limite Diário</string>
     <string name="visit_github">Visitar Repositório do GitHub</string>
     <string name="time_interval">Intervalo\nTempo</string>
-    <string name="time_wasted">Tempo desperdiçado</string>
     <string name="show_onscreen_timer">Mostrar cronômetro na tela</string>
     <string name="timer_overlay_description">Manter um cronômetro flutuante visível enquanto assiste a conteúdo brain rot.</string>
 </resources>
