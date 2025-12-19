@@ -19,6 +19,7 @@ package com.scrolless.app.util
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.core.net.toUri
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.scrolless.app.BuildConfig
@@ -72,8 +73,14 @@ fun requestAppReview(activity: Activity) {
     }
 }
 
-private fun getInstallerPackageName(context: Context): String? =
-    runCatching { context.packageManager.getInstallerPackageName(context.packageName) }.getOrNull()
+private fun getInstallerPackageName(context: Context): String? = runCatching {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        context.packageManager.getInstallSourceInfo(context.packageName).installingPackageName
+    } else {
+        @Suppress("DEPRECATION")
+        context.packageManager.getInstallerPackageName(context.packageName)
+    }
+}.getOrNull()
 
 private fun openPlayStore(context: Context, packageName: String) {
     try {
@@ -84,7 +91,7 @@ private fun openPlayStore(context: Context, packageName: String) {
                 }
             }
         context.startActivity(intent)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         val intent =
             Intent(Intent.ACTION_VIEW, "https://play.google.com/store/apps/details?id=$packageName".toUri()).apply {
                 if (context !is Activity) {
