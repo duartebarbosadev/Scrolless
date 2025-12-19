@@ -278,20 +278,20 @@ private fun DebugUsageTuner(
                         },
                     )
                     DebugUsageSlider(
-                        appName = "TikTok",
-                        color = tiktokColor,
-                        minutes = tiktokMinutes,
-                        onMinutesChange = { newValue ->
-                            tiktokMinutes = newValue
-                            commitUsage()
-                        },
-                    )
-                    DebugUsageSlider(
                         appName = "Shorts",
                         color = youtubeShortsColor,
                         minutes = shortsMinutes,
                         onMinutesChange = { newValue ->
                             shortsMinutes = newValue
+                            commitUsage()
+                        },
+                    )
+                    DebugUsageSlider(
+                        appName = "TikTok",
+                        color = tiktokColor,
+                        minutes = tiktokMinutes,
+                        onMinutesChange = { newValue ->
+                            tiktokMinutes = newValue
                             commitUsage()
                         },
                     )
