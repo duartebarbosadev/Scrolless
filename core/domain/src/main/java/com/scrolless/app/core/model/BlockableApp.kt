@@ -34,7 +34,7 @@ enum class BlockableApp(val packageId: String, private val viewId: String, priva
     ),
     TIKTOK(
         "com.zhiliaoapp.musically",
-        "com.zhiliaoapp.musically:id/ulz",
+        "com.zhiliaoapp.musically:id/player_view",
         GLOBAL_ACTION_HOME,
     ),
     ;
