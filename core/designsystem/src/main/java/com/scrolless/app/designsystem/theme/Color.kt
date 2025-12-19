@@ -17,7 +17,6 @@
 package com.scrolless.app.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
-import androidx.core.graphics.toColorInt
 
 val primaryLight = Color(0xFF415F91)
 val onPrimaryLight = Color(0xFFFFFFFF)
@@ -244,4 +243,4 @@ val instagramReelsColor = Color(0xFFE1306C) // Pink/magenta
 val tiktokColor = Color(0xFF00F2EA) // Cyan/aqua
 val youtubeShortsColor = Color(0xFFFFB300) // Amber
 
-val timerOverlayBackgroundColor = "#B3000000".toColorInt() // ~70% alpha black
+val timerOverlayBackgroundColor = Color(0xB3000000) // ~70% alpha black

@@ -1163,22 +1163,33 @@ private fun ProgressCard(
         null
     }
 
+    val reelsLabel = stringResource(R.string.app_reels)
+    val tiktokLabel = stringResource(R.string.app_tiktok)
+    val shortsLabel = stringResource(R.string.app_shorts)
+
     // Per-app usage data for the segmented progress indicator
-    val appUsageSegments = remember(perAppUsage) {
+    val appUsageSegments = remember(perAppUsage, currentUsage, reelsLabel, tiktokLabel, shortsLabel) {
+        val knownUsage = perAppUsage.reelsUsage + perAppUsage.tiktokUsage + perAppUsage.shortsUsage
+        val cappedTotalUsage = currentUsage.coerceAtLeast(0L)
+        val scale = if (cappedTotalUsage in 1..<knownUsage) {
+            cappedTotalUsage.toDouble() / knownUsage.toDouble()
+        } else {
+            1.0
+        }
         listOf(
             AppUsageSegment(
-                appName = "Reels",
-                usageMillis = perAppUsage.reelsUsage,
+                appName = reelsLabel,
+                usageMillis = (perAppUsage.reelsUsage * scale).toLong(),
                 color = instagramReelsColor,
             ),
             AppUsageSegment(
-                appName = "TikTok",
-                usageMillis = perAppUsage.tiktokUsage,
+                appName = tiktokLabel,
+                usageMillis = (perAppUsage.tiktokUsage * scale).toLong(),
                 color = tiktokColor,
             ),
             AppUsageSegment(
-                appName = "Shorts",
-                usageMillis = perAppUsage.shortsUsage,
+                appName = shortsLabel,
+                usageMillis = (perAppUsage.shortsUsage * scale).toLong(),
                 color = youtubeShortsColor,
             ),
         ).filter { it.usageMillis > 0L }
@@ -1215,7 +1226,7 @@ private fun ProgressCard(
                     segments = appUsageSegments,
                     progressFraction = segmentProgressFraction,
                     strokeWidth = 8.dp,
-                    trackColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.18f),
+                    trackColor = Color.Transparent,
                 )
 
                 Column(

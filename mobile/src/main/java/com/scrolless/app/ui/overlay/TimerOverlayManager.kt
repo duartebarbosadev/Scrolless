@@ -35,6 +35,7 @@ import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowInsetsCompat
 import com.scrolless.app.R
 import com.scrolless.app.core.model.BlockOption
@@ -129,7 +130,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             setPadding(paddingH, paddingV, paddingH, paddingV)
 
             background = GradientDrawable().apply {
-                setColor(timerOverlayBackgroundColor)
+                setColor(timerOverlayBackgroundColor.toArgb())
                 cornerRadius = dpToPx(24f).toFloat()
             }
             elevation = dpToPx(8f).toFloat()
