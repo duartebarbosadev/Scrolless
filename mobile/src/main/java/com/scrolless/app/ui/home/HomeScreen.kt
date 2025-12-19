@@ -153,12 +153,10 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
     val lifecycleOwner = LocalLifecycleOwner.current
     val latestUiState by rememberUpdatedState(uiState)
 
-    fun showAccessibilityExplainerPrompt(setWaitingForAccessibility: Boolean = true) {
+    fun showAccessibilityExplainerPrompt() {
         if (showAccessibilityExplainer) return
-        Timber.d("Queuing accessibility explainer (setWaiting=%s)", setWaitingForAccessibility)
-        if (setWaitingForAccessibility) {
-            viewModel.setWaitingForAccessibility(true)
-        }
+        Timber.d("Set waiting for accessibility for app auto open")
+        viewModel.setWaitingForAccessibility(true)
         showAccessibilityExplainer = true
         if (!uiState.hasSeenAccessibilityExplainer) {
             viewModel.onAccessibilityExplainerShown()
@@ -211,17 +209,17 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
             when {
                 !uiState.hasSeenAccessibilityExplainer -> {
                     Timber.i("First launch detected - showing accessibility explainer")
-                    showAccessibilityExplainerPrompt(setWaitingForAccessibility = false)
+                    showAccessibilityExplainerPrompt()
                 }
 
                 uiState.blockOption != BlockOption.NothingSelected -> {
                     Timber.i("Block option selected while accessibility disabled - showing explainer")
-                    showAccessibilityExplainerPrompt(setWaitingForAccessibility = false)
+                    showAccessibilityExplainerPrompt()
                 }
 
                 uiState.timerOverlayEnabled -> {
                     Timber.i("Timer overlay ON while accessibility disabled - showing explainer")
-                    showAccessibilityExplainerPrompt(setWaitingForAccessibility = false)
+                    showAccessibilityExplainerPrompt()
                 }
             }
         }

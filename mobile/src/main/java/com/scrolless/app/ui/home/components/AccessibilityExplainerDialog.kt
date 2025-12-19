@@ -241,7 +241,6 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
             // Proceed Button
             Button(
                 onClick = {
-                    Timber.i("AccessibilityExplainer: Proceed -> open settings")
                     onOpenSettings()
                 },
                 modifier = Modifier
