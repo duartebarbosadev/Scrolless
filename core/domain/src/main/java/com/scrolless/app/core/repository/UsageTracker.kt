@@ -32,13 +32,13 @@ interface UsageTracker {
 
     /**
      * Add session time to daily usage and persist immediately.
-     * Also updates per-app usage if app is provided.
+     * Also updates per-app usage when app is provided.
      * Thread-safe and non-blocking.
      *
      * @param sessionTime Duration of the session in milliseconds
-     * @param app The app the session was on
+     * @param app The app the session was on, if available
      */
-    suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp)
+    suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp?)
 
     /**
      * Check if a daily reset is needed and perform it if necessary.

@@ -35,13 +35,13 @@ import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowInsetsCompat
 import com.scrolless.app.R
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.repository.UsageTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.repository.setTimerOverlayPosition
-import androidx.compose.ui.graphics.toArgb
 import com.scrolless.app.designsystem.theme.timerOverlayBackgroundColor
 import com.scrolless.app.util.formatAsTime
 import javax.inject.Inject
