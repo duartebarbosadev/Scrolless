@@ -36,9 +36,12 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.view.WindowInsetsCompat
-import com.scrolless.app.core.data.database.model.BlockOption
-import com.scrolless.app.core.data.repository.UsageTracker
-import com.scrolless.app.core.data.repository.UserSettingsStore
+import com.scrolless.app.R
+import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.repository.UsageTracker
+import com.scrolless.app.core.repository.UserSettingsStore
+import com.scrolless.app.core.repository.setTimerOverlayPosition
+import com.scrolless.app.designsystem.theme.timerOverlayBackgroundColor
 import com.scrolless.app.util.formatAsTime
 import javax.inject.Inject
 import kotlin.math.abs
@@ -116,7 +119,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
         // Create TextView with polished styling
         timerTextView = TextView(serviceContext).apply {
-            text = "00:00"
+            text = resources.getText(R.string.timer_default_value)
             textSize = 18f // sp
             typeface = Typeface.DEFAULT_BOLD
             setTextColor(Color.WHITE)
@@ -126,7 +129,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             setPadding(paddingH, paddingV, paddingH, paddingV)
 
             background = GradientDrawable().apply {
-                setColor(Color.parseColor("#B3000000")) // ~70% alpha black
+                setColor(timerOverlayBackgroundColor)
                 cornerRadius = dpToPx(24f).toFloat()
             }
             elevation = dpToPx(8f).toFloat()
@@ -269,11 +272,13 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             .alpha(0f)
             .setDuration(EXIT_ANIMATION_DURATION_MS)
             .setInterpolator(DecelerateInterpolator())
-            .setListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    cleanupView()
-                }
-            })
+            .setListener(
+                object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        cleanupView()
+                    }
+                },
+            )
             .start()
     }
 
@@ -430,23 +435,24 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                 params.y = (startY + (targetY - startY) * fraction).toInt()
                 try {
                     wm.updateViewLayout(rootView, params)
-                } catch (ignore: Exception) {
+                } catch (_: Exception) {
                     // Ignore
                 }
             }
-            addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator) {
-                    persistOverlayPosition(params.x, params.y)
-                }
-            })
+            addListener(
+                object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        persistOverlayPosition(params.x, params.y)
+                    }
+                },
+            )
             start()
         }
     }
 
     private fun persistOverlayPosition(x: Int, y: Int) {
         coroutineScope.launch {
-            userSettingsStore.setTimerOverlayPositionX(x)
-            userSettingsStore.setTimerOverlayPositionY(y)
+            userSettingsStore.setTimerOverlayPosition(x, y)
         }
     }
 

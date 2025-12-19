@@ -27,11 +27,11 @@ import android.os.PowerManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.scrolless.app.core.blocking.BlockingManager
-import com.scrolless.app.core.data.database.model.BlockOption
-import com.scrolless.app.core.data.repository.UsageTracker
-import com.scrolless.app.core.data.repository.UserSettingsStore
+import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.BlockingResult
+import com.scrolless.app.core.repository.UsageTracker
+import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.ui.overlay.TimerOverlayManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -530,16 +530,19 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // Restrict service scope again to save battery
         updateServiceConfig(false)
 
+        // Capture detectedApp before clearing it
+        val exitedApp = detectedApp
+
         serviceScope.launch(Dispatchers.IO) {
-            // Add to usage in memory
-            Timber.d("Recording session usage: %d ms", sessionTime)
-            usageTracker.addToDailyUsage(sessionTime)
+            // Add to usage in memory with per-app tracking
+            Timber.d("Recording session usage: %d ms for app: %s", sessionTime, exitedApp?.name)
+            usageTracker.addToDailyUsage(sessionTime, exitedApp)
 
             // Let blocking manager do its logic, if needed
             blockingManager.onExitBlockedContent(sessionTime)
         }
 
-        Timber.d("Exit handling completed for app: %s", detectedApp?.name)
+        Timber.d("Exit handling completed for app: %s", exitedApp?.name)
         detectedApp = null
     }
 

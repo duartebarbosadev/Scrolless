@@ -15,7 +15,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 package com.scrolless.app.designsystem.theme
+
 import androidx.compose.ui.graphics.Color
+import androidx.core.graphics.toColorInt
 
 val primaryLight = Color(0xFF415F91)
 val onPrimaryLight = Color(0xFFFFFFFF)
@@ -236,3 +238,10 @@ val surfaceContainerHighestDarkHighContrast = Color(0xFF45474C)
 val progressbar_green_use = Color(0xFF4CAF50)
 val progressbar_orange_use = Color(0xFFFF9800)
 val progressbar_red_use = Color(0xFFF44336)
+
+// App brand colors for per-app usage segments
+val instagramReelsColor = Color(0xFFE1306C) // Pink/magenta
+val tiktokColor = Color(0xFF00F2EA) // Cyan/aqua
+val youtubeShortsColor = Color(0xFFFF0000) // Red
+
+val timerOverlayBackgroundColor = "#B3000000".toColorInt() // ~70% alpha black

@@ -17,7 +17,8 @@
 package com.scrolless.app.core.data.repository
 
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.data.database.model.BlockOption
+import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.repository.UserSettingsStore
 import java.time.LocalDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,55 +27,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-interface UserSettingsStore {
-
-    fun getActiveBlockOption(): Flow<BlockOption>
-    suspend fun setActiveBlockOption(blockOption: BlockOption)
-
-    fun getTimeLimit(): Flow<Long>
-    suspend fun setTimeLimit(timeLimit: Long)
-
-    suspend fun setIntervalLength(intervalLength: Long)
-    fun getIntervalLength(): Flow<Long>
-
-    fun getIntervalWindowStart(): Flow<Long>
-    suspend fun setIntervalWindowStart(windowStart: Long)
-    fun getIntervalUsage(): Flow<Long>
-    suspend fun setIntervalUsage(usage: Long)
-    suspend fun updateIntervalState(windowStart: Long, usage: Long)
-
-    suspend fun setTimerOverlayToggle(enabled: Boolean)
-    fun getTimerOverlayEnabled(): Flow<Boolean>
-
-    fun getLastResetDay(): Flow<LocalDate> // Return today if no date is set
-    suspend fun setLastResetDay(date: LocalDate)
-
-    suspend fun updateTotalDailyUsage(totalDailyUsage: Long)
-    fun getTotalDailyUsage(): Flow<Long>
-
-    fun getTimerOverlayPositionY(): Flow<Int>
-    suspend fun setTimerOverlayPositionY(positionY: Int)
-
-    fun getTimerOverlayPositionX(): Flow<Int>
-    suspend fun setTimerOverlayPositionX(positionX: Int)
-
-    fun getWaitingForAccessibility(): Flow<Boolean>
-    suspend fun setWaitingForAccessibility(waiting: Boolean)
-
-    fun getHasSeenAccessibilityExplainer(): Flow<Boolean>
-    suspend fun setHasSeenAccessibilityExplainer(seen: Boolean)
-
-    fun getPauseUntil(): Flow<Long>
-    suspend fun setPauseUntil(pauseUntil: Long)
-}
-
-suspend fun UserSettingsStore.setTimerOverlayPosition(positionX: Int, positionY: Int) {
-    setTimerOverlayPositionX(positionX)
-    setTimerOverlayPositionY(positionY)
-}
-
 /**
- * A data repository for [UserSettingsStore] instances.
+ * A data repository implementation for [UserSettingsStore].
  */
 class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : UserSettingsStore {
 
@@ -88,6 +42,9 @@ class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : User
     private val _timerOverlayEnabled = MutableStateFlow(false)
     private val _lastResetDay = MutableStateFlow(LocalDate.now())
     private val _totalDailyUsage = MutableStateFlow(0L)
+    private val _reelsDailyUsage = MutableStateFlow(0L)
+    private val _shortsDailyUsage = MutableStateFlow(0L)
+    private val _tiktokDailyUsage = MutableStateFlow(0L)
     private val _timerOverlayPositionY = MutableStateFlow(0)
     private val _timerOverlayPositionX = MutableStateFlow(0)
     private val _waitingForAccessibility = MutableStateFlow(false)
@@ -118,6 +75,15 @@ class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : User
         }
         coroutineScope.launch {
             userSettingsDao.getTotalDailyUsage().collect { _totalDailyUsage.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getReelsDailyUsage().collect { _reelsDailyUsage.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getShortsDailyUsage().collect { _shortsDailyUsage.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getTiktokDailyUsage().collect { _tiktokDailyUsage.value = it }
         }
         coroutineScope.launch {
             userSettingsDao.getTimerOverlayPositionY().collect { _timerOverlayPositionY.value = it }
@@ -158,16 +124,20 @@ class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : User
 
     override suspend fun setIntervalWindowStart(windowStart: Long) {
         userSettingsDao.setIntervalWindowStart(windowStart)
+        _intervalWindowStart.value = windowStart
     }
 
     override fun getIntervalUsage(): Flow<Long> = _intervalUsage
 
     override suspend fun setIntervalUsage(usage: Long) {
         userSettingsDao.setIntervalUsage(usage)
+        _intervalUsage.value = usage
     }
 
     override suspend fun updateIntervalState(windowStart: Long, usage: Long) {
         userSettingsDao.updateIntervalState(windowStart, usage)
+        _intervalWindowStart.value = windowStart
+        _intervalUsage.value = usage
     }
 
     override suspend fun setTimerOverlayToggle(enabled: Boolean) {
@@ -183,10 +153,40 @@ class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : User
     }
 
     override suspend fun updateTotalDailyUsage(totalDailyUsage: Long) {
+        _totalDailyUsage.value = totalDailyUsage
         userSettingsDao.updateTotalDailyUsage(totalDailyUsage)
     }
 
     override fun getTotalDailyUsage(): Flow<Long> = _totalDailyUsage
+
+    override fun getReelsDailyUsage(): Flow<Long> = _reelsDailyUsage
+
+    override fun getShortsDailyUsage(): Flow<Long> = _shortsDailyUsage
+
+    override fun getTiktokDailyUsage(): Flow<Long> = _tiktokDailyUsage
+
+    override suspend fun updateReelsDailyUsage(usage: Long) {
+        _reelsDailyUsage.value = usage
+        userSettingsDao.updateReelsDailyUsage(usage)
+    }
+
+    override suspend fun updateShortsDailyUsage(usage: Long) {
+        _shortsDailyUsage.value = usage
+        userSettingsDao.updateShortsDailyUsage(usage)
+    }
+
+    override suspend fun updateTiktokDailyUsage(usage: Long) {
+        _tiktokDailyUsage.value = usage
+        userSettingsDao.updateTiktokDailyUsage(usage)
+    }
+
+    override suspend fun resetAllDailyUsage() {
+        userSettingsDao.resetAllDailyUsage()
+        _totalDailyUsage.value = 0L
+        _reelsDailyUsage.value = 0L
+        _shortsDailyUsage.value = 0L
+        _tiktokDailyUsage.value = 0L
+    }
 
     override fun getTimerOverlayPositionY(): Flow<Int> = _timerOverlayPositionY
 

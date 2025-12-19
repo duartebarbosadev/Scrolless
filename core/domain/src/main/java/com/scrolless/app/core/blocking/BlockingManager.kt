@@ -16,7 +16,7 @@
  */
 package com.scrolless.app.core.blocking
 
-import com.scrolless.app.core.data.database.model.BlockOption
+import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingResult
 
 /**

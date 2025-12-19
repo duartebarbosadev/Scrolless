@@ -22,10 +22,10 @@ import com.scrolless.app.core.blocking.handler.DayLimitBlockHandler
 import com.scrolless.app.core.blocking.handler.IntervalTimerBlockHandler
 import com.scrolless.app.core.blocking.handler.IntervalTimerState
 import com.scrolless.app.core.blocking.handler.NoBlockHandler
-import com.scrolless.app.core.data.database.model.BlockOption
-import com.scrolless.app.core.data.repository.UsageTracker
-import com.scrolless.app.core.data.repository.UserSettingsStore
+import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingResult
+import com.scrolless.app.core.repository.UsageTracker
+import com.scrolless.app.core.repository.UserSettingsStore
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope

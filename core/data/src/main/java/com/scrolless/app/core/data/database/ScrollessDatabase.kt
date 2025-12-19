@@ -19,6 +19,8 @@ package com.scrolless.app.core.data.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.data.database.model.UserSettings
 
@@ -29,10 +31,20 @@ import com.scrolless.app.core.data.database.model.UserSettings
     entities = [
         UserSettings::class,
     ],
-    version = 2,
+    version = 3,
     exportSchema = false,
 )
 @TypeConverters(LocalDateTypeConverters::class)
 abstract class ScrollessDatabase : RoomDatabase() {
     abstract fun userSettingsDao(): UserSettingsDao
+
+    companion object {
+        val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE user_settings ADD COLUMN reels_daily_usage INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE user_settings ADD COLUMN shorts_daily_usage INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE user_settings ADD COLUMN tiktok_daily_usage INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+    }
 }

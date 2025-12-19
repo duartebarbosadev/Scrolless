@@ -17,7 +17,6 @@
 package com.scrolless.app.ui.home.components
 
 import android.content.Intent
-import android.provider.Settings
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -59,6 +58,7 @@ import androidx.core.net.toUri
 import com.scrolless.app.R
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.tooling.DevicePreviews
+import com.scrolless.app.util.openActivityAccessibilitySettings
 import timber.log.Timber
 
 @Suppress("FunctionNaming", "LongMethod")
@@ -159,8 +159,7 @@ fun HelpDialog(onDismiss: () -> Unit) {
                     onClick = {
                         try {
                             Timber.i("HelpDialog: open accessibility settings")
-                            val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                            context.startActivity(intent)
+                            context.openActivityAccessibilitySettings()
                             onDismiss()
                         } catch (e: Exception) {
                             Timber.e(e, "HelpDialog: failed to open accessibility settings")

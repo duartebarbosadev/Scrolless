@@ -37,10 +37,10 @@ import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.scrolless.app.core.data.database.ScrollessDatabase
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.data.repository.UsageTracker
 import com.scrolless.app.core.data.repository.UsageTrackerImpl
-import com.scrolless.app.core.data.repository.UserSettingsStore
 import com.scrolless.app.core.data.repository.UserSettingsStoreImpl
+import com.scrolless.app.core.repository.UsageTracker
+import com.scrolless.app.core.repository.UserSettingsStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -56,6 +56,7 @@ object DataDiModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): ScrollessDatabase =
         Room.databaseBuilder(context, ScrollessDatabase::class.java, "data.db")
+            .addMigrations(ScrollessDatabase.MIGRATION_2_3)
             .fallbackToDestructiveMigration(true) // Not recommended but for now it shouldn't matter
             .addCallback(
                 object : RoomDatabase.Callback() {
@@ -67,9 +68,10 @@ object DataDiModule {
                         INSERT INTO user_settings (id, active_block_option, time_limit, interval_length,
                                                    interval_window_start_at, interval_usage,
                                                    timer_overlay_enabled, last_reset_day, total_daily_usage,
+                                                   reels_daily_usage, shorts_daily_usage, tiktok_daily_usage,
                                                    timer_overlay_x, timer_overlay_y, waiting_for_accessibility,
                                                    has_seen_accessibility_explainer, pause_until_at)
-                        VALUES (1, 'NothingSelected', 0, 0, 0, 0, 0, date('now'), 0, 0, 100, 0, 0, 0)
+                        VALUES (1, 'NothingSelected', 0, 0, 0, 0, 0, date('now'), 0, 0, 0, 0, 0, 100, 0, 0, 0)
                         """,
                         )
                     }

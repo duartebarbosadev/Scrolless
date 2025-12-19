@@ -14,20 +14,31 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.core.data.repository
+package com.scrolless.app.core.repository
+
+import com.scrolless.app.core.model.BlockableApp
 
 interface UsageTracker {
 
     /**
-     * Get the current daily usage in milliseconds.
+     * Get the current total daily usage in milliseconds.
      */
     fun getDailyUsage(): Long
 
     /**
-     * Add session time to daily usage and persist immediately.
-     * Thread-safe and non-blocking.
+     * Get usage for a specific app in milliseconds.
      */
-    suspend fun addToDailyUsage(sessionTime: Long)
+    fun getAppDailyUsage(app: BlockableApp): Long
+
+    /**
+     * Add session time to daily usage and persist immediately.
+     * Also updates per-app usage if app is provided.
+     * Thread-safe and non-blocking.
+     *
+     * @param sessionTime Duration of the session in milliseconds
+     * @param app The app the session was on (null for legacy/unknown)
+     */
+    suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp? = null)
 
     /**
      * Check if a daily reset is needed and perform it if necessary.
