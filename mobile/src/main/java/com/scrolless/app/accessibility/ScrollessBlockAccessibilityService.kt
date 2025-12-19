@@ -536,7 +536,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         serviceScope.launch(Dispatchers.IO) {
             // Add to usage in memory with per-app tracking
             Timber.d("Recording session usage: %d ms for app: %s", sessionTime, exitedApp?.name)
-            usageTracker.addToDailyUsage(sessionTime, exitedApp)
+            // Make sure there's always a exit app saved
+            if (exitedApp != null) {
+                usageTracker.addToDailyUsage(sessionTime, exitedApp)
+            } else {
+                Timber.w("Exited app is null")
+            }
 
             // Let blocking manager do its logic, if needed
             blockingManager.onExitBlockedContent(sessionTime)

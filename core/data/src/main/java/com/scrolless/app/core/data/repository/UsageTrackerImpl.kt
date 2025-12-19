@@ -39,14 +39,14 @@ class UsageTrackerImpl @Inject constructor(private val userSettingsStore: UserSe
         }
     }
 
-    override suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp?) {
+    override suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp) {
         // Update total usage
         val currentTotal = (userSettingsStore.getTotalDailyUsage() as StateFlow<Long>).value
         val newTotal = currentTotal + sessionTime
         userSettingsStore.updateTotalDailyUsage(newTotal)
 
         // Update per-app usage if app is known
-        app?.let {
+        app.let {
             when (it) {
                 BlockableApp.REELS -> {
                     val current = (userSettingsStore.getReelsDailyUsage() as StateFlow<Long>).value
