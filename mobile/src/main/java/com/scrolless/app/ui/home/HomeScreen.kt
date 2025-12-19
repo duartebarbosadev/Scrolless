@@ -1162,8 +1162,12 @@ private fun ProgressCard(
         null
     }
 
+    val reelsLabel = stringResource(R.string.app_reels)
+    val tiktokLabel = stringResource(R.string.app_tiktok)
+    val shortsLabel = stringResource(R.string.app_shorts)
+
     // Per-app usage data for the segmented progress indicator
-    val appUsageSegments = remember(perAppUsage, currentUsage) {
+    val appUsageSegments = remember(perAppUsage, currentUsage, reelsLabel, tiktokLabel, shortsLabel) {
         val knownUsage = perAppUsage.reelsUsage + perAppUsage.tiktokUsage + perAppUsage.shortsUsage
         val cappedTotalUsage = currentUsage.coerceAtLeast(0L)
         val scale = if (cappedTotalUsage in 1..<knownUsage) {
@@ -1173,17 +1177,17 @@ private fun ProgressCard(
         }
         listOf(
             AppUsageSegment(
-                appName = "Reels",
+                appName = reelsLabel,
                 usageMillis = (perAppUsage.reelsUsage * scale).toLong(),
                 color = instagramReelsColor,
             ),
             AppUsageSegment(
-                appName = "TikTok",
+                appName = tiktokLabel,
                 usageMillis = (perAppUsage.tiktokUsage * scale).toLong(),
                 color = tiktokColor,
             ),
             AppUsageSegment(
-                appName = "Shorts",
+                appName = shortsLabel,
                 usageMillis = (perAppUsage.shortsUsage * scale).toLong(),
                 color = youtubeShortsColor,
             ),
