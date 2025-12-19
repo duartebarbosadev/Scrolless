@@ -20,6 +20,7 @@ import android.accessibilityservice.AccessibilityService
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
+import com.scrolless.app.BuildConfig
 
 fun Context.isAccessibilityServiceEnabled(service: Class<out AccessibilityService>): Boolean {
     val expectedComponentName = "$packageName/${service.name}"
@@ -28,15 +29,21 @@ fun Context.isAccessibilityServiceEnabled(service: Class<out AccessibilityServic
         Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
     ) ?: return false
 
-    return enabledServicesSetting.split(':')
-        .any { it.equals(expectedComponentName, ignoreCase = true) }
+    return enabledServicesSetting.split(':').any { it.equals(expectedComponentName, ignoreCase = true) }
 }
 
 fun Context.openActivityAccessibilitySettings() {
-    val intent =
+
+    // If debug make it into a new task so that when we resend the app to test
+    //  it doesn't keep the settings open
+    val intent = if (BuildConfig.DEBUG) {
+
         Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
         }
+    } else {
+        Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+    }
     startActivity(intent)
 }
