@@ -28,7 +28,7 @@ import timber.log.Timber
 private const val GOOGLE_PLAY_STORE_PACKAGE = "com.android.vending"
 
 fun requestAppReview(activity: Activity) {
-    if (activity.isFinishing || activity.isDestroyed) {
+    if (!isActivityActive(activity)) {
         return
     }
 
@@ -54,13 +54,19 @@ fun requestAppReview(activity: Activity) {
     reviewManager.requestReviewFlow().addOnCompleteListener { request ->
         if (request.isSuccessful) {
             val reviewInfo = request.result
+            if (!isActivityActive(activity)) {
+                Timber.w("In-app review launch skipped: activity no longer active")
+                return@addOnCompleteListener
+            }
             reviewManager.launchReviewFlow(activity, reviewInfo).addOnCompleteListener { launch ->
                 if (!launch.isSuccessful) {
                     Timber.w(
                         launch.exception,
                         "In-app review launch failed; falling back to Play Store listing",
                     )
-                    openPlayStore(activity, BuildConfig.APPLICATION_ID)
+                    if (isActivityActive(activity)) {
+                        openPlayStore(activity, BuildConfig.APPLICATION_ID)
+                    }
                 }
             }
         } else {
@@ -68,10 +74,14 @@ fun requestAppReview(activity: Activity) {
                 request.exception,
                 "In-app review request failed; falling back to Play Store listing",
             )
-            openPlayStore(activity, BuildConfig.APPLICATION_ID)
+            if (isActivityActive(activity)) {
+                openPlayStore(activity, BuildConfig.APPLICATION_ID)
+            }
         }
     }
 }
+
+private fun isActivityActive(activity: Activity): Boolean = !activity.isFinishing && !activity.isDestroyed
 
 private fun getInstallerPackageName(context: Context): String? = runCatching {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -83,6 +93,10 @@ private fun getInstallerPackageName(context: Context): String? = runCatching {
 }.getOrNull()
 
 private fun openPlayStore(context: Context, packageName: String) {
+    if (context is Activity && !isActivityActive(context)) {
+        Timber.w("Play Store launch skipped: activity no longer active")
+        return
+    }
     try {
         val intent =
             Intent(Intent.ACTION_VIEW, "market://details?id=$packageName".toUri()).apply {
@@ -91,13 +105,21 @@ private fun openPlayStore(context: Context, packageName: String) {
                 }
             }
         context.startActivity(intent)
-    } catch (_: Exception) {
+    } catch (exception: Exception) {
+        Timber.w(exception, "Play Store app unavailable; falling back to browser")
         val intent =
-            Intent(Intent.ACTION_VIEW, "https://play.google.com/store/apps/details?id=$packageName".toUri()).apply {
+            Intent(
+                Intent.ACTION_VIEW,
+                "https://play.google.com/store/apps/details?id=$packageName".toUri(),
+            ).apply {
                 if (context !is Activity) {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
             }
-        context.startActivity(intent)
+        try {
+            context.startActivity(intent)
+        } catch (fallbackException: Exception) {
+            Timber.w(fallbackException, "Play Store listing unavailable; no handler found")
+        }
     }
 }
