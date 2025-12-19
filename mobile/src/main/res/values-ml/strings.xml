@@ -79,4 +79,5 @@
     <string name="time_interval">സമയ\nഇടവേള</string>
     <string name="show_onscreen_timer">ഓൺ-സ്ക്രീൻ ടൈമർ കാണിക്കുക</string>
     <string name="timer_overlay_description">brainrot ഉള്ളടക്കം കാണുമ്പോൾ ഒരു ഫ്ലോട്ടിംഗ് ടൈമർ ദൃശ്യമായി നിലനിർത്തുക.</string>
+    <string name="limit_chip">%1$s പരിധി</string>
 </resources>

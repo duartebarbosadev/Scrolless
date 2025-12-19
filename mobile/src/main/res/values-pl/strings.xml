@@ -79,4 +79,5 @@
     <string name="time_interval">Interwał\nczasowy</string>
     <string name="show_onscreen_timer">Pokaż minutnik na ekranie</string>
     <string name="timer_overlay_description">Utrzymuj widoczny pływający minutnik podczas oglądania treści typu brain rot.</string>
+    <string name="limit_chip">%1$s limit</string>
 </resources>

@@ -79,4 +79,5 @@
     <string name="time_interval">Tijds\ninterval</string>
     <string name="show_onscreen_timer">Toon timer op scherm</string>
     <string name="timer_overlay_description">Houd een zwevende timer zichtbaar tijdens het kijken naar brain rot-content.</string>
+    <string name="limit_chip">%1$s limiet</string>
 </resources>

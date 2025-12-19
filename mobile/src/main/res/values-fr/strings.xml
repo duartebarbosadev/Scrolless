@@ -79,4 +79,5 @@
     <string name="time_interval">Intervalle\nde temps</string>
     <string name="show_onscreen_timer">Afficher le minuteur à l\'écran</string>
     <string name="timer_overlay_description">Garder un minuteur flottant visible pendant que vous regardez du contenu brainrot.</string>
+    <string name="limit_chip">Limite de %1$s</string>
 </resources>

@@ -79,4 +79,5 @@
     <string name="time_interval">Interval\nDe Timp</string>
     <string name="show_onscreen_timer">Afișează cronometrul pe ecran</string>
     <string name="timer_overlay_description">Menține un cronometru plutitor vizibil în timp ce urmărești conținut brainrot.</string>
+    <string name="limit_chip">limită %1$s</string>
 </resources>
