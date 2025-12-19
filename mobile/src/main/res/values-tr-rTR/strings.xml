@@ -79,4 +79,5 @@
     <string name="time_interval">Zaman\nAralığı</string>
     <string name="show_onscreen_timer">Ekran üstü zamanlayıcıyı göster</string>
     <string name="timer_overlay_description">brain rot içeriği izlerken kayan bir zamanlayıcıyı görünür tutun.</string>
+    <string name="limit_chip">%1$s sınırı</string>
 </resources>

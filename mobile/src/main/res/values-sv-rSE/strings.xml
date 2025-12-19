@@ -79,4 +79,5 @@
     <string name="time_interval">Tids\nintervall</string>
     <string name="show_onscreen_timer">Visa timer på skärmen</string>
     <string name="timer_overlay_description">Håll en flytande timer synlig medan du tittar på brainrot-innehåll.</string>
+    <string name="limit_chip">%1$s gräns</string>
 </resources>

@@ -79,4 +79,5 @@
     <string name="time_interval">Idő\nintervallum</string>
     <string name="show_onscreen_timer">Képernyőn megjelenő időzítő mutatása</string>
     <string name="timer_overlay_description">Tartson láthatóan egy lebegő időzítőt a brain rot tartalom nézése közben.</string>
+    <string name="limit_chip">%1$s limit</string>
 </resources>

@@ -79,4 +79,5 @@
     <string name="time_interval">Χρονικό\nΔιάστημα</string>
     <string name="show_onscreen_timer">Εμφάνιση χρονομέτρου στην οθόνη</string>
     <string name="timer_overlay_description">Διατηρήστε έναν αιωρούμενο χρονομέτρη ορατό ενώ παρακολουθείτε brain rot περιεχόμενο.</string>
+    <string name="limit_chip">%1$s όριο</string>
 </resources>

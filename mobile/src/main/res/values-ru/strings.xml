@@ -79,4 +79,5 @@
     <string name="time_interval">Временной\nинтервал</string>
     <string name="show_onscreen_timer">Показывать таймер на экране</string>
     <string name="timer_overlay_description">Отображать плавающий таймер во время просмотра контента brainrot.</string>
+    <string name="limit_chip">%1$s лимит</string>
 </resources>

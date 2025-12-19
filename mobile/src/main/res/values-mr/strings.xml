@@ -79,4 +79,5 @@
     <string name="time_interval">वेळ\nअंतराल</string>
     <string name="show_onscreen_timer">ऑन-स्क्रीन टाइमर दाखवा</string>
     <string name="timer_overlay_description">brain rot सामग्री पाहताना फ्लोटिंग टाइमर दृश्यमान ठेवा.</string>
+    <string name="limit_chip">%1$s मर्यादा</string>
 </resources>
