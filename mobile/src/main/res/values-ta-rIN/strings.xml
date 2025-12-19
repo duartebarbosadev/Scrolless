@@ -79,4 +79,5 @@
     <string name="time_interval">நேர\nஇடைவெளி</string>
     <string name="show_onscreen_timer">திரையில் நேரத்தைக் காட்டு</string>
     <string name="timer_overlay_description">brain rot உள்ளடக்கத்தைப் பார்க்கும்போது மிதக்கும் டைமரைத் தெரியும்படி வைத்திருங்கள்.</string>
+    <string name="limit_chip">%1$s வரம்பு</string>
 </resources>

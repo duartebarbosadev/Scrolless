@@ -79,4 +79,5 @@
     <string name="time_interval">Časový\nInterval</string>
     <string name="show_onscreen_timer">Zobrazit časovač na obrazovce</string>
     <string name="timer_overlay_description">Ponechat plovoucí časovač viditelný při sledování obsahu brainrot.</string>
+    <string name="limit_chip">%1$s limit</string>
 </resources>

@@ -79,4 +79,5 @@
     <string name="time_interval">Aika\nväli</string>
     <string name="show_onscreen_timer">Näytä ajastin näytöllä</string>
     <string name="timer_overlay_description">Pidä kelluva ajastin näkyvissä katsoessasi brainrot-sisältöä.</string>
+    <string name="limit_chip">%1$s raja</string>
 </resources>

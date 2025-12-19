@@ -79,4 +79,5 @@
     <string name="time_interval">Zeit-\nintervall</string>
     <string name="show_onscreen_timer">Timer auf dem Bildschirm anzeigen</string>
     <string name="timer_overlay_description">Einen schwebenden Timer anzeigen, während brain rot-Inhalte angesehen werden.</string>
+    <string name="limit_chip">%1$s Limit</string>
 </resources>

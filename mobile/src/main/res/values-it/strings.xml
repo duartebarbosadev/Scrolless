@@ -79,4 +79,5 @@
     <string name="time_interval">Intervallo\ndi tempo</string>
     <string name="show_onscreen_timer">Mostra timer su schermo</string>
     <string name="timer_overlay_description">Mantieni un timer mobile visibile mentre guardi contenuti brainrot.</string>
+    <string name="limit_chip">Limite di %1$s</string>
 </resources>

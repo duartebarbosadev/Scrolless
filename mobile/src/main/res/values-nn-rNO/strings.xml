@@ -79,4 +79,5 @@
     <string name="time_interval">Tids\nintervall</string>
     <string name="show_onscreen_timer">Vis tidtakar på skjermen</string>
     <string name="timer_overlay_description">Hald ein flytande tidtakar synleg medan du ser på brain rot-innhald.</string>
+    <string name="limit_chip">%1$s grense</string>
 </resources>

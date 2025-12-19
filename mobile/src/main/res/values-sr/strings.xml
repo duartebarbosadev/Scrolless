@@ -79,4 +79,5 @@
     <string name="time_interval">Vremenski\nInterval</string>
     <string name="show_onscreen_timer">Prikaži tajmer na ekranu</string>
     <string name="timer_overlay_description">Držite plutajući tajmer vidljivim dok gledate brainrot sadržaj.</string>
+    <string name="limit_chip">%1$s ograničenje</string>
 </resources>

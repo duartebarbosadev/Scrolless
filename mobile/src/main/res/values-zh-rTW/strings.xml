@@ -79,4 +79,5 @@
     <string name="time_interval">時間\n間隔</string>
     <string name="show_onscreen_timer">顯示螢幕計時器</string>
     <string name="timer_overlay_description">觀看 brainrot 內容時，保持浮動計時器可見。</string>
+    <string name="limit_chip">%1$s 限制</string>
 </resources>
