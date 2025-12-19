@@ -80,6 +80,10 @@ android {
 dependencies {
     coreLibraryDesugaring(libs.core.jdk.desugaring)
     implementation(projects.core.logging)
+    val composeBom = platform(libs.androidx.compose.bom)
+    implementation(composeBom)
+    implementation(libs.androidx.compose.runtime)
+    implementation(libs.kotlinx.coroutines.android)
 
     // Dependency injection
     implementation(libs.androidx.hilt.navigation.compose)

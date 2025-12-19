@@ -121,6 +121,7 @@ import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.ui.home.components.AccessibilityExplainerBottomSheet
 import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheet
 import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheetPreview
+import com.scrolless.app.ui.home.components.FloatingDebugUsagePanel
 import com.scrolless.app.ui.home.components.HelpDialog
 import com.scrolless.app.ui.home.components.IntervalTimerDialog
 import com.scrolless.app.ui.home.components.TimeLimitDialog
@@ -351,6 +352,16 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                     showAccessibilityExplainerPrompt()
                 }
             },
+            onDebugUsageChanged = { reelsMinutes, shortsMinutes, tiktokMinutes ->
+                viewModel.onDebugUsageChanged(
+                    reelsMinutes = reelsMinutes,
+                    shortsMinutes = shortsMinutes,
+                    tiktokMinutes = tiktokMinutes,
+                )
+            },
+            onDebugUsageReset = {
+                viewModel.onDebugResetUsage()
+            },
             onProgressCardClicked = {
                 if (BuildConfig.DEBUG) {
                     debugBypassAccessibilityCheck = !debugBypassAccessibilityCheck
@@ -453,6 +464,8 @@ private fun HomeContent(
     onIntervalTimerClick: () -> Unit,
     onIntervalTimerEdit: () -> Unit,
     onPauseToggle: (Boolean) -> Unit,
+    onDebugUsageChanged: (Int, Int, Int) -> Unit = { _, _, _ -> },
+    onDebugUsageReset: () -> Unit = {},
     onProgressCardClicked: () -> Unit = {},
 ) {
     // Define weights outside of composition flow
@@ -463,6 +476,8 @@ private fun HomeContent(
     val pauseRemainingMillis = rememberPauseRemainingTime(uiState.pauseUntilMillis)
     val isPauseActive = pauseRemainingMillis > 0L
     val hasActiveBlockOption = uiState.blockOption != BlockOption.NothingSelected
+    val showDebugPanel = BuildConfig.DEBUG || LocalInspectionMode.current
+    var isDebugExpanded by remember { mutableStateOf(false) }
 
     // Determine if blocking is currently active (user would be blocked if they tried to view content)
     val isBlockingActive = when (uiState.blockOption) {
@@ -706,6 +721,19 @@ private fun HomeContent(
             Spacer(modifier = Modifier.weight(1f))
 
             RateButton(onClick = onReviewClicked)
+        }
+
+        if (showDebugPanel) {
+            FloatingDebugUsagePanel(
+                perAppUsage = uiState.perAppUsage,
+                isExpanded = isDebugExpanded,
+                onToggleExpanded = { isDebugExpanded = !isDebugExpanded },
+                onUsageChanged = onDebugUsageChanged,
+                onReset = {
+                    onDebugUsageReset()
+                },
+                modifier = Modifier.fillMaxSize(),
+            )
         }
     }
 }
