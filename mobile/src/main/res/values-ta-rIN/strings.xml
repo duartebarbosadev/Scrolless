@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">இடைவெளி நேரத்தை உள்ளமைக்கவும்</string>
     <string name="interval_timer_next_reset_in">%1$s இல் மீட்டமைக்கிறது</string>
     <string name="interval_timer_next_reset_ready">அடுத்த இடைவெளி திறக்கப்பட்டது</string>
-    <string name="interval_timer_next_reset_unknown">உங்கள் முதல் இடைவெளி சாளரத்திற்குப் பிறகு அட்டவணை தொடங்கும்.</string>
     <string name="next_step_1">தடுக்கும் பயன்முறையைத் தேர்ந்தெடுக்கவும்</string>
     <string name="next_step_2">தினசரி வரம்பு அம்சத்தை முயற்சி செய்து டைமர் மேலடுக்கை இயக்கவும்</string>
     <string name="next_steps_title">அடுத்த படிகள்</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">தினசரி வரம்பு நேரத்தை அமைக்கவும்</string>
     <string name="visit_github">GitHub களஞ்சியத்தைப் பார்வையிடவும்</string>
     <string name="time_interval">நேர\nஇடைவெளி</string>
-    <string name="time_wasted">வீணான நேரம்</string>
     <string name="show_onscreen_timer">திரையில் நேரத்தைக் காட்டு</string>
     <string name="timer_overlay_description">brain rot உள்ளடக்கத்தைப் பார்க்கும்போது மிதக்கும் டைமரைத் தெரியும்படி வைத்திருங்கள்.</string>
 </resources>

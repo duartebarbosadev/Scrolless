@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Configura timer intervallo</string>
     <string name="interval_timer_next_reset_in">Si ripristina tra %1$s</string>
     <string name="interval_timer_next_reset_ready">Prossima pausa sbloccata</string>
-    <string name="interval_timer_next_reset_unknown">Il programma inizierà dopo la tua prima finestra di pausa.</string>
     <string name="next_step_1">Seleziona una modalità di blocco</string>
     <string name="next_step_2">Prova la funzione limite giornaliero e attiva l\'overlay del timer</string>
     <string name="next_steps_title">Passaggi successivi</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Imposta Limite Giornaliero</string>
     <string name="visit_github">Visita il Repository GitHub</string>
     <string name="time_interval">Intervallo\ndi tempo</string>
-    <string name="time_wasted">Tempo sprecato</string>
     <string name="show_onscreen_timer">Mostra timer su schermo</string>
     <string name="timer_overlay_description">Mantieni un timer mobile visibile mentre guardi contenuti brainrot.</string>
 </resources>

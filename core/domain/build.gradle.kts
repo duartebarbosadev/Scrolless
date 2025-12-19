@@ -79,7 +79,6 @@ android {
 
 dependencies {
     coreLibraryDesugaring(libs.core.jdk.desugaring)
-    implementation(projects.core.data)
     implementation(projects.core.logging)
 
     // Dependency injection

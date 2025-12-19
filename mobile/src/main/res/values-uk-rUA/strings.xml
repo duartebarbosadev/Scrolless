@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Налаштувати інтервальний таймер</string>
     <string name="interval_timer_next_reset_in">Скидання через %1$s</string>
     <string name="interval_timer_next_reset_ready">Наступна перерва розблокована</string>
-    <string name="interval_timer_next_reset_unknown">Розклад почнеться після вашого першого вікна перерви.</string>
     <string name="next_step_1">Виберіть режим блокування</string>
     <string name="next_step_2">Спробуйте функцію щоденного ліміту та активуйте накладання таймера</string>
     <string name="next_steps_title">Наступні кроки</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Встановити час щоденного ліміту</string>
     <string name="visit_github">Відвідати репозиторій GitHub</string>
     <string name="time_interval">Інтервал\nчасу</string>
-    <string name="time_wasted">Витрачений час</string>
     <string name="show_onscreen_timer">Показувати екранний таймер</string>
     <string name="timer_overlay_description">Тримайте плаваючий таймер видимим під час перегляду brainrot контенту.</string>
 </resources>

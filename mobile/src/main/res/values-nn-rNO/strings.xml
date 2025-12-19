@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Konfigurer intervalltimer</string>
     <string name="interval_timer_next_reset_in">Nullstiller om %1$s</string>
     <string name="interval_timer_next_reset_ready">Neste pause er låst opp</string>
-    <string name="interval_timer_next_reset_unknown">Tidsplanen startar etter den første pausen din.</string>
     <string name="next_step_1">Vel ein blokkeringsmodus</string>
     <string name="next_step_2">Prøv funksjonen for dagleg grense og aktiver timer-overlegget</string>
     <string name="next_steps_title">Neste steg</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Set dagleg grensetid</string>
     <string name="visit_github">Gå til GitHub-lageret</string>
     <string name="time_interval">Tids\nintervall</string>
-    <string name="time_wasted">Bortkasta tid</string>
     <string name="show_onscreen_timer">Vis tidtakar på skjermen</string>
     <string name="timer_overlay_description">Hald ein flytande tidtakar synleg medan du ser på brain rot-innhald.</string>
 </resources>

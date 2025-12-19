@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Konfigurer intervalltidtaker</string>
     <string name="interval_timer_next_reset_in">Tilbakestilles om %1$s</string>
     <string name="interval_timer_next_reset_ready">Neste pause ulåst</string>
-    <string name="interval_timer_next_reset_unknown">Tidsplanen starter etter ditt første pausevindu.</string>
     <string name="next_step_1">Velg en blokkeringsmodus</string>
     <string name="next_step_2">Prøv funksjonen for daglig grense og aktiver tidtaker-overlegget</string>
     <string name="next_steps_title">Neste trinn</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Angi daglig grensetid</string>
     <string name="visit_github">Besøk GitHub-repositoriet</string>
     <string name="time_interval">Tids\nIntervall</string>
-    <string name="time_wasted">Tid bortkastet</string>
     <string name="show_onscreen_timer">Vis tidtaker på skjermen</string>
     <string name="timer_overlay_description">Hold en flytende tidtaker synlig mens du ser på brain rot-innhold.</string>
 </resources>

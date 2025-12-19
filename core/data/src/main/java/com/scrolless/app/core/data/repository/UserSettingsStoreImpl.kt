@@ -17,7 +17,8 @@
 package com.scrolless.app.core.data.repository
 
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.data.database.model.BlockOption
+import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.repository.UserSettingsStore
 import java.time.LocalDate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,55 +27,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-interface UserSettingsStore {
-
-    fun getActiveBlockOption(): Flow<BlockOption>
-    suspend fun setActiveBlockOption(blockOption: BlockOption)
-
-    fun getTimeLimit(): Flow<Long>
-    suspend fun setTimeLimit(timeLimit: Long)
-
-    suspend fun setIntervalLength(intervalLength: Long)
-    fun getIntervalLength(): Flow<Long>
-
-    fun getIntervalWindowStart(): Flow<Long>
-    suspend fun setIntervalWindowStart(windowStart: Long)
-    fun getIntervalUsage(): Flow<Long>
-    suspend fun setIntervalUsage(usage: Long)
-    suspend fun updateIntervalState(windowStart: Long, usage: Long)
-
-    suspend fun setTimerOverlayToggle(enabled: Boolean)
-    fun getTimerOverlayEnabled(): Flow<Boolean>
-
-    fun getLastResetDay(): Flow<LocalDate> // Return today if no date is set
-    suspend fun setLastResetDay(date: LocalDate)
-
-    suspend fun updateTotalDailyUsage(totalDailyUsage: Long)
-    fun getTotalDailyUsage(): Flow<Long>
-
-    fun getTimerOverlayPositionY(): Flow<Int>
-    suspend fun setTimerOverlayPositionY(positionY: Int)
-
-    fun getTimerOverlayPositionX(): Flow<Int>
-    suspend fun setTimerOverlayPositionX(positionX: Int)
-
-    fun getWaitingForAccessibility(): Flow<Boolean>
-    suspend fun setWaitingForAccessibility(waiting: Boolean)
-
-    fun getHasSeenAccessibilityExplainer(): Flow<Boolean>
-    suspend fun setHasSeenAccessibilityExplainer(seen: Boolean)
-
-    fun getPauseUntil(): Flow<Long>
-    suspend fun setPauseUntil(pauseUntil: Long)
-}
-
-suspend fun UserSettingsStore.setTimerOverlayPosition(positionX: Int, positionY: Int) {
-    setTimerOverlayPositionX(positionX)
-    setTimerOverlayPositionY(positionY)
-}
-
 /**
- * A data repository for [UserSettingsStore] instances.
+ * A data repository implementation for [UserSettingsStore].
  */
 class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : UserSettingsStore {
 
@@ -88,6 +42,9 @@ class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : User
     private val _timerOverlayEnabled = MutableStateFlow(false)
     private val _lastResetDay = MutableStateFlow(LocalDate.now())
     private val _totalDailyUsage = MutableStateFlow(0L)
+    private val _reelsDailyUsage = MutableStateFlow(0L)
+    private val _shortsDailyUsage = MutableStateFlow(0L)
+    private val _tiktokDailyUsage = MutableStateFlow(0L)
     private val _timerOverlayPositionY = MutableStateFlow(0)
     private val _timerOverlayPositionX = MutableStateFlow(0)
     private val _waitingForAccessibility = MutableStateFlow(false)
@@ -120,6 +77,15 @@ class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : User
             userSettingsDao.getTotalDailyUsage().collect { _totalDailyUsage.value = it }
         }
         coroutineScope.launch {
+            userSettingsDao.getReelsDailyUsage().collect { _reelsDailyUsage.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getShortsDailyUsage().collect { _shortsDailyUsage.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getTiktokDailyUsage().collect { _tiktokDailyUsage.value = it }
+        }
+        coroutineScope.launch {
             userSettingsDao.getTimerOverlayPositionY().collect { _timerOverlayPositionY.value = it }
         }
         coroutineScope.launch {
@@ -139,16 +105,19 @@ class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : User
     override fun getActiveBlockOption(): Flow<BlockOption> = _activeBlockOption
 
     override suspend fun setActiveBlockOption(blockOption: BlockOption) {
+        _activeBlockOption.value = blockOption
         userSettingsDao.setActiveBlockOption(blockOption)
     }
 
     override fun getTimeLimit(): Flow<Long> = _timeLimit
 
     override suspend fun setTimeLimit(timeLimit: Long) {
+        _timeLimit.value = timeLimit
         userSettingsDao.setTimeLimit(timeLimit)
     }
 
     override suspend fun setIntervalLength(intervalLength: Long) {
+        _intervalLength.value = intervalLength
         userSettingsDao.setIntervalLength(intervalLength)
     }
 
@@ -157,20 +126,25 @@ class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : User
     override fun getIntervalWindowStart(): Flow<Long> = _intervalWindowStart
 
     override suspend fun setIntervalWindowStart(windowStart: Long) {
+        _intervalWindowStart.value = windowStart
         userSettingsDao.setIntervalWindowStart(windowStart)
     }
 
     override fun getIntervalUsage(): Flow<Long> = _intervalUsage
 
     override suspend fun setIntervalUsage(usage: Long) {
+        _intervalUsage.value = usage
         userSettingsDao.setIntervalUsage(usage)
     }
 
     override suspend fun updateIntervalState(windowStart: Long, usage: Long) {
+        _intervalWindowStart.value = windowStart
+        _intervalUsage.value = usage
         userSettingsDao.updateIntervalState(windowStart, usage)
     }
 
     override suspend fun setTimerOverlayToggle(enabled: Boolean) {
+        _timerOverlayEnabled.value = enabled
         userSettingsDao.setTimerOverlayEnabled(enabled)
     }
 
@@ -179,42 +153,78 @@ class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : User
     override fun getLastResetDay(): Flow<LocalDate> = _lastResetDay
 
     override suspend fun setLastResetDay(date: LocalDate) {
+        _lastResetDay.value = date
         userSettingsDao.setLastResetDay(date)
     }
 
     override suspend fun updateTotalDailyUsage(totalDailyUsage: Long) {
+        _totalDailyUsage.value = totalDailyUsage
         userSettingsDao.updateTotalDailyUsage(totalDailyUsage)
     }
 
     override fun getTotalDailyUsage(): Flow<Long> = _totalDailyUsage
 
+    override fun getReelsDailyUsage(): Flow<Long> = _reelsDailyUsage
+
+    override fun getShortsDailyUsage(): Flow<Long> = _shortsDailyUsage
+
+    override fun getTiktokDailyUsage(): Flow<Long> = _tiktokDailyUsage
+
+    override suspend fun updateReelsDailyUsage(usage: Long) {
+        _reelsDailyUsage.value = usage
+        userSettingsDao.updateReelsDailyUsage(usage)
+    }
+
+    override suspend fun updateShortsDailyUsage(usage: Long) {
+        _shortsDailyUsage.value = usage
+        userSettingsDao.updateShortsDailyUsage(usage)
+    }
+
+    override suspend fun updateTiktokDailyUsage(usage: Long) {
+        _tiktokDailyUsage.value = usage
+        userSettingsDao.updateTiktokDailyUsage(usage)
+    }
+
+    override suspend fun resetAllDailyUsage() {
+        _totalDailyUsage.value = 0L
+        _reelsDailyUsage.value = 0L
+        _shortsDailyUsage.value = 0L
+        _tiktokDailyUsage.value = 0L
+        userSettingsDao.resetAllDailyUsage()
+    }
+
     override fun getTimerOverlayPositionY(): Flow<Int> = _timerOverlayPositionY
 
     override suspend fun setTimerOverlayPositionY(positionY: Int) {
+        _timerOverlayPositionY.value = positionY
         userSettingsDao.setTimerOverlayPositionY(positionY)
     }
 
     override fun getTimerOverlayPositionX(): Flow<Int> = _timerOverlayPositionX
 
     override suspend fun setTimerOverlayPositionX(positionX: Int) {
+        _timerOverlayPositionX.value = positionX
         userSettingsDao.setTimerOverlayPositionX(positionX)
     }
 
     override fun getWaitingForAccessibility(): Flow<Boolean> = _waitingForAccessibility
 
     override suspend fun setWaitingForAccessibility(waiting: Boolean) {
+        _waitingForAccessibility.value = waiting
         userSettingsDao.setWaitingForAccessibility(waiting)
     }
 
     override fun getHasSeenAccessibilityExplainer(): Flow<Boolean> = _hasSeenAccessibilityExplainer
 
     override suspend fun setHasSeenAccessibilityExplainer(seen: Boolean) {
+        _hasSeenAccessibilityExplainer.value = seen
         userSettingsDao.setHasSeenAccessibilityExplainer(seen)
     }
 
     override fun getPauseUntil(): Flow<Long> = _pauseUntil
 
     override suspend fun setPauseUntil(pauseUntil: Long) {
+        _pauseUntil.value = pauseUntil
         userSettingsDao.setPauseUntil(pauseUntil)
     }
 }

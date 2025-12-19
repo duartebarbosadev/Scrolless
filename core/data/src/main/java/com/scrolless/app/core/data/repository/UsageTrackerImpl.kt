@@ -16,22 +16,55 @@
  */
 package com.scrolless.app.core.data.repository
 
+import com.scrolless.app.core.model.BlockableApp
+import com.scrolless.app.core.repository.UsageTracker
+import com.scrolless.app.core.repository.UserSettingsStore
 import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 @Singleton
 class UsageTrackerImpl @Inject constructor(private val userSettingsStore: UserSettingsStore) : UsageTracker {
+
+    private val usageMutex = Mutex()
 
     override fun getDailyUsage(): Long {
         return (userSettingsStore.getTotalDailyUsage() as StateFlow<Long>).value
     }
 
-    override suspend fun addToDailyUsage(sessionTime: Long) {
-        val current = (userSettingsStore.getTotalDailyUsage() as StateFlow<Long>).value
-        val newTotal = current + sessionTime
+    override fun getAppDailyUsage(app: BlockableApp): Long {
+        return when (app) {
+            BlockableApp.REELS -> (userSettingsStore.getReelsDailyUsage() as StateFlow<Long>).value
+            BlockableApp.SHORTS -> (userSettingsStore.getShortsDailyUsage() as StateFlow<Long>).value
+            BlockableApp.TIKTOK -> (userSettingsStore.getTiktokDailyUsage() as StateFlow<Long>).value
+        }
+    }
+
+    override suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp?) = usageMutex.withLock {
+        // Update total usage
+        val currentTotal = (userSettingsStore.getTotalDailyUsage() as StateFlow<Long>).value
+        val newTotal = currentTotal + sessionTime
         userSettingsStore.updateTotalDailyUsage(newTotal)
+
+        // Update per-app usage if app is known
+        when (app) {
+            BlockableApp.REELS -> {
+                val current = (userSettingsStore.getReelsDailyUsage() as StateFlow<Long>).value
+                userSettingsStore.updateReelsDailyUsage(current + sessionTime)
+            }
+            BlockableApp.SHORTS -> {
+                val current = (userSettingsStore.getShortsDailyUsage() as StateFlow<Long>).value
+                userSettingsStore.updateShortsDailyUsage(current + sessionTime)
+            }
+            BlockableApp.TIKTOK -> {
+                val current = (userSettingsStore.getTiktokDailyUsage() as StateFlow<Long>).value
+                userSettingsStore.updateTiktokDailyUsage(current + sessionTime)
+            }
+            null -> Unit
+        }
     }
 
     override suspend fun checkDailyReset() {
@@ -39,8 +72,8 @@ class UsageTrackerImpl @Inject constructor(private val userSettingsStore: UserSe
         val lastDay = (userSettingsStore.getLastResetDay() as StateFlow<LocalDate>).value
 
         if (currentDay != lastDay) {
-            // Reset usage to 0 and update last reset day
-            userSettingsStore.updateTotalDailyUsage(0L)
+            // Reset all usage (total + per-app) and update last reset day
+            userSettingsStore.resetAllDailyUsage()
             userSettingsStore.setLastResetDay(currentDay)
         }
     }

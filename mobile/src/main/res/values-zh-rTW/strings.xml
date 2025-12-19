@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">設定間隔計時器</string>
     <string name="interval_timer_next_reset_in">將在 %1$s 後重設</string>
     <string name="interval_timer_next_reset_ready">下一次休息已解鎖</string>
-    <string name="interval_timer_next_reset_unknown">排程將在您的第一個休息視窗後開始。</string>
     <string name="next_step_1">選擇封鎖模式</string>
     <string name="next_step_2">嘗試每日限制功能並啟用計時器疊加層</string>
     <string name="next_steps_title">後續步驟</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">設定每日限制時間</string>
     <string name="visit_github">造訪 GitHub 儲存庫</string>
     <string name="time_interval">時間\n間隔</string>
-    <string name="time_wasted">浪費的時間</string>
     <string name="show_onscreen_timer">顯示螢幕計時器</string>
     <string name="timer_overlay_description">觀看 brainrot 內容時，保持浮動計時器可見。</string>
 </resources>

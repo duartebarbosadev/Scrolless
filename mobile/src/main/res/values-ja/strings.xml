@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">インターバルタイマーを設定</string>
     <string name="interval_timer_next_reset_in">%1$s後にリセット</string>
     <string name="interval_timer_next_reset_ready">次の休憩が解除されました</string>
-    <string name="interval_timer_next_reset_unknown">スケジュールは最初の休憩ウィンドウ後に開始されます。</string>
     <string name="next_step_1">ブロックモードを選択</string>
     <string name="next_step_2">1日の制限機能を試して、タイマーオーバーレイを有効にします</string>
     <string name="next_steps_title">次のステップ</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">1日の制限時間を設定</string>
     <string name="visit_github">GitHubリポジトリにアクセス</string>
     <string name="time_interval">時間\n間隔</string>
-    <string name="time_wasted">無駄にした時間</string>
     <string name="show_onscreen_timer">画面上にタイマーを表示</string>
     <string name="timer_overlay_description">brainrotコンテンツを視聴中にフローティングタイマーを表示します。</string>
 </resources>

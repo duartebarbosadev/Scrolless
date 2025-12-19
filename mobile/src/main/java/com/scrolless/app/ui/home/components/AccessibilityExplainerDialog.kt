@@ -17,7 +17,6 @@
 package com.scrolless.app.ui.home.components
 
 import android.content.Intent
-import android.provider.Settings
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -71,6 +70,7 @@ import com.scrolless.app.R
 import com.scrolless.app.designsystem.component.AnimatedIcon
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.tooling.DevicePreviews
+import com.scrolless.app.util.openActivityAccessibilitySettings
 import timber.log.Timber
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -107,8 +107,7 @@ fun AccessibilityExplainerBottomSheet(onDismiss: () -> Unit) {
                 onOpenSettings = {
                     try {
                         Timber.i("AccessibilityExplainer: Open accessibility settings")
-                        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
-                        context.startActivity(intent)
+                        context.openActivityAccessibilitySettings()
                     } catch (e: Exception) {
                         Timber.e(e, "Failed to open accessibility settings")
                     }

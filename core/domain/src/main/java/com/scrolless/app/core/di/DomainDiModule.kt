@@ -33,8 +33,8 @@ package com.scrolless.app.core.di
 
 import com.scrolless.app.core.blocking.BlockingManager
 import com.scrolless.app.core.blocking.BlockingManagerImpl
-import com.scrolless.app.core.data.repository.UsageTracker
-import com.scrolless.app.core.data.repository.UserSettingsStore
+import com.scrolless.app.core.repository.UsageTracker
+import com.scrolless.app.core.repository.UserSettingsStore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

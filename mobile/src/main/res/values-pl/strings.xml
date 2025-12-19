@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Skonfiguruj licznik interwałowy</string>
     <string name="interval_timer_next_reset_in">Resetuje się za %1$s</string>
     <string name="interval_timer_next_reset_ready">Następna przerwa odblokowana</string>
-    <string name="interval_timer_next_reset_unknown">Harmonogram rozpocznie się po pierwszym oknie przerwy.</string>
     <string name="next_step_1">Wybierz tryb blokowania</string>
     <string name="next_step_2">Wypróbuj funkcję limitu dziennego i aktywuj nakładkę licznika</string>
     <string name="next_steps_title">Następne kroki</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Ustaw dzienny limit czasu</string>
     <string name="visit_github">Odwiedź repozytorium GitHub</string>
     <string name="time_interval">Interwał\nczasowy</string>
-    <string name="time_wasted">Zmarnowany czas</string>
     <string name="show_onscreen_timer">Pokaż minutnik na ekranie</string>
     <string name="timer_overlay_description">Utrzymuj widoczny pływający minutnik podczas oglądania treści typu brain rot.</string>
 </resources>

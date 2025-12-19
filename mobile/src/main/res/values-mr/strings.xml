@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">अंतराल टायमर कॉन्फिगर करा</string>
     <string name="interval_timer_next_reset_in">%1$s मध्ये रीसेट होते</string>
     <string name="interval_timer_next_reset_ready">पुढील ब्रेक अनलॉक झाला</string>
-    <string name="interval_timer_next_reset_unknown">तुमच्या पहिल्या ब्रेक विंडो नंतर वेळापत्रक सुरू होईल.</string>
     <string name="next_step_1">ब्लॉकिंग मोड निवडा</string>
     <string name="next_step_2">दैनिक मर्यादा वैशिष्ट्य वापरून पहा आणि टायमर आच्छादन सक्रिय करा</string>
     <string name="next_steps_title">पुढील पायऱ्या</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">दैनिक मर्यादा वेळ सेट करा</string>
     <string name="visit_github">GitHub रेपॉजिटरीला भेट द्या</string>
     <string name="time_interval">वेळ\nअंतराल</string>
-    <string name="time_wasted">वाया गेलेला वेळ</string>
     <string name="show_onscreen_timer">ऑन-स्क्रीन टाइमर दाखवा</string>
     <string name="timer_overlay_description">brain rot सामग्री पाहताना फ्लोटिंग टाइमर दृश्यमान ठेवा.</string>
 </resources>

@@ -18,8 +18,8 @@ package com.scrolless.app.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.scrolless.app.core.data.database.model.BlockOption
-import com.scrolless.app.core.data.repository.UserSettingsStore
+import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -49,7 +49,10 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         userSettingsStore.getIntervalUsage(),
         userSettingsStore.getIntervalWindowStart(),
         userSettingsStore.getTotalDailyUsage(),
-    ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage ->
+        userSettingsStore.getReelsDailyUsage(),
+        userSettingsStore.getShortsDailyUsage(),
+        userSettingsStore.getTiktokDailyUsage(),
+    ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage, reelsUsage, shortsUsage, tiktokUsage ->
         UsageSnapshot(
             blockOption = blockOption,
             timeLimit = timeLimit,
@@ -57,6 +60,9 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
             intervalUsage = intervalUsage,
             intervalWindowStart = intervalWindowStart,
             currentUsage = currentUsage,
+            reelsUsage = reelsUsage,
+            shortsUsage = shortsUsage,
+            tiktokUsage = tiktokUsage,
         )
     }
 
@@ -90,6 +96,11 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
             requestReview = requestReview,
             hasSeenAccessibilityExplainer = hasSeenAccessibilityExplainer,
             hasLoadedSettings = true,
+            perAppUsage = PerAppUsage(
+                reelsUsage = usage.reelsUsage,
+                shortsUsage = usage.shortsUsage,
+                tiktokUsage = usage.tiktokUsage,
+            ),
         )
     }.stateIn(
         scope = viewModelScope,
@@ -210,6 +221,8 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
     }
 }
 
+data class PerAppUsage(val reelsUsage: Long = 0L, val shortsUsage: Long = 0L, val tiktokUsage: Long = 0L)
+
 data class HomeUiState(
     val blockOption: BlockOption = BlockOption.NothingSelected,
     val timeLimit: Long = 0L,
@@ -233,6 +246,11 @@ data class HomeUiState(
      * (e.g., auto-showing the accessibility explainer on the very first launch).
      */
     val hasLoadedSettings: Boolean = false,
+
+    /**
+     * Per-app usage breakdown for the segmented progress indicator.
+     */
+    val perAppUsage: PerAppUsage = PerAppUsage(),
 )
 
 private data class UsageSnapshot(
@@ -242,4 +260,7 @@ private data class UsageSnapshot(
     val intervalUsage: Long,
     val intervalWindowStart: Long,
     val currentUsage: Long,
+    val reelsUsage: Long,
+    val shortsUsage: Long,
+    val tiktokUsage: Long,
 )

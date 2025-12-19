@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Настроить интервальный таймер</string>
     <string name="interval_timer_next_reset_in">Сброс через %1$s</string>
     <string name="interval_timer_next_reset_ready">Следующий перерыв разблокирован</string>
-    <string name="interval_timer_next_reset_unknown">Расписание начнется после вашего первого окна перерыва.</string>
     <string name="next_step_1">Выберите режим блокировки</string>
     <string name="next_step_2">Попробуйте функцию дневного лимита и активируйте наложение таймера</string>
     <string name="next_steps_title">Следующие шаги</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Установить время дневного лимита</string>
     <string name="visit_github">Посетить репозиторий GitHub</string>
     <string name="time_interval">Временной\nинтервал</string>
-    <string name="time_wasted">Потраченное время</string>
     <string name="show_onscreen_timer">Показывать таймер на экране</string>
     <string name="timer_overlay_description">Отображать плавающий таймер во время просмотра контента brainrot.</string>
 </resources>

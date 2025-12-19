@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Cấu hình hẹn giờ khoảng thời gian</string>
     <string name="interval_timer_next_reset_in">Đặt lại sau %1$s</string>
     <string name="interval_timer_next_reset_ready">Lần nghỉ giải lao tiếp theo đã mở khóa</string>
-    <string name="interval_timer_next_reset_unknown">Lịch trình sẽ bắt đầu sau khoảng thời gian nghỉ giải lao đầu tiên của bạn.</string>
     <string name="next_step_1">Chọn chế độ chặn</string>
     <string name="next_step_2">Thử tính năng giới hạn hàng ngày và kích hoạt lớp phủ hẹn giờ</string>
     <string name="next_steps_title">Các Bước Tiếp Theo</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Đặt Thời gian Giới hạn Hàng ngày</string>
     <string name="visit_github">Truy cập Kho lưu trữ GitHub</string>
     <string name="time_interval">Khoảng\nThời gian</string>
-    <string name="time_wasted">Thời gian lãng phí</string>
     <string name="show_onscreen_timer">Hiển thị đồng hồ đếm giờ trên màn hình</string>
     <string name="timer_overlay_description">Giữ đồng hồ đếm giờ nổi hiển thị trong khi xem nội dung brainrot.</string>
 </resources>

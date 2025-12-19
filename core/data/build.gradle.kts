@@ -97,6 +97,9 @@ dependencies {
     implementation(projects.core.logging)
     implementation(libs.timber)
 
+    // Domain
+    implementation(projects.core.domain)
+
     // Database
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

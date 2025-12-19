@@ -28,6 +28,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -59,7 +60,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonGroup
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
@@ -106,11 +106,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.scrolless.app.BuildConfig
 import com.scrolless.app.R
 import com.scrolless.app.accessibility.ScrollessBlockAccessibilityService
-import com.scrolless.app.core.data.database.model.BlockOption
+import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.designsystem.component.AppUsageLegend
+import com.scrolless.app.designsystem.component.AppUsageSegment
 import com.scrolless.app.designsystem.component.AutoResizingText
+import com.scrolless.app.designsystem.component.LegendItem
+import com.scrolless.app.designsystem.component.SegmentedCircularProgressIndicator
+import com.scrolless.app.designsystem.theme.instagramReelsColor
 import com.scrolless.app.designsystem.theme.progressbar_green_use
 import com.scrolless.app.designsystem.theme.progressbar_orange_use
 import com.scrolless.app.designsystem.theme.progressbar_red_use
+import com.scrolless.app.designsystem.theme.tiktokColor
+import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.ui.home.components.AccessibilityExplainerBottomSheet
 import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheet
 import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheetPreview
@@ -234,7 +241,29 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
         }
     }
 
-    HomeBackground(modifier = modifier.fillMaxSize()) {
+    val hasLimitTimer =
+        (uiState.blockOption == BlockOption.DailyLimit && uiState.timeLimit > 0L) ||
+            (uiState.blockOption == BlockOption.IntervalTimer && uiState.timeLimit > 0L)
+    val limitProgressFraction = if (hasLimitTimer) {
+        uiState.progress.coerceIn(0, 100) / 100f
+    } else {
+        0f
+    }
+    val limitAccentColor by animateColorAsState(
+        targetValue = when {
+            uiState.progress < 75 -> progressbar_green_use
+            uiState.progress < 100 -> progressbar_orange_use
+            else -> progressbar_red_use
+        },
+        animationSpec = tween(durationMillis = 900),
+        label = "limitAccentColor",
+    )
+
+    HomeBackground(
+        modifier = modifier.fillMaxSize(),
+        accentColor = if (hasLimitTimer) limitAccentColor else null,
+        accentStrength = if (hasLimitTimer) limitProgressFraction else 0f,
+    ) {
         fun openIntervalConfig() {
             pendingIntervalBreak = uiState.intervalLength.takeIf { it > 0L } ?: DEFAULT_INTERVAL_BREAK_MILLIS
             pendingIntervalAllowance = uiState.timeLimit.takeIf { it > 0L } ?: DEFAULT_INTERVAL_ALLOWANCE_MILLIS
@@ -468,6 +497,7 @@ private fun HomeContent(
                     timeLimit = uiState.timeLimit,
                     intervalLength = uiState.intervalLength,
                     intervalWindowStart = uiState.intervalWindowStart,
+                    perAppUsage = uiState.perAppUsage,
                     onProgressCardClicked = onProgressCardClicked,
                 )
 
@@ -1074,6 +1104,7 @@ fun FeatureButton(
 }
 
 @Composable
+@OptIn(ExperimentalFoundationApi::class)
 private fun ProgressCard(
     modifier: Modifier = Modifier,
     blockOption: BlockOption,
@@ -1083,6 +1114,7 @@ private fun ProgressCard(
     timeLimit: Long,
     intervalLength: Long,
     intervalWindowStart: Long,
+    perAppUsage: PerAppUsage = PerAppUsage(),
     onProgressCardClicked: () -> Unit = {},
 ) {
     val clampedProgress = progress.coerceIn(0, 100)
@@ -1106,35 +1138,20 @@ private fun ProgressCard(
     val displayIntervalUsage = if (intervalResetReady) 0L else intervalUsage
     val displayProgress = if (intervalResetReady) 0 else clampedProgress
 
-    val animatedProgress by animateFloatAsState(
-        targetValue = displayProgress / 100f,
-        animationSpec = if (LocalInspectionMode.current) tween(durationMillis = 1000) else tween(durationMillis = 1000),
-        label = "progress",
-    )
-
-    val progressColor by animateColorAsState(
-        targetValue = when {
-            displayProgress < 75 -> progressbar_green_use // Green
-            displayProgress < 100 -> progressbar_orange_use // Orange
-            else -> progressbar_red_use // Red
-        },
-        animationSpec = tween(durationMillis = 500),
-        label = "color",
-    )
-
     val primaryText = when {
-        isIntervalMode && intervalAllowanceConfigured ->
-            "${displayIntervalUsage.coerceAtLeast(0L).coerceAtMost(timeLimit).formatTime()} / ${timeLimit.formatTime()}"
         isIntervalMode -> displayIntervalUsage.formatTime()
-        blockOption == BlockOption.DailyLimit && timeLimit > 0L ->
-            "${currentUsage.formatTime()} / ${timeLimit.formatTime()}"
         else -> currentUsage.formatTime()
+    }
+    val limitChipText = when {
+        isIntervalMode && intervalAllowanceConfigured -> timeLimit.formatTime()
+        blockOption == BlockOption.DailyLimit && timeLimit > 0L -> timeLimit.formatTime()
+        else -> null
     }
 
     val resetText = if (isIntervalMode) {
         when {
-            !intervalAllowanceConfigured -> stringResource(R.string.interval_timer_next_reset_unknown)
-            intervalLength <= 0L || intervalWindowStart <= 0L -> stringResource(R.string.interval_timer_next_reset_unknown)
+            !intervalAllowanceConfigured -> null
+            intervalLength <= 0L || intervalWindowStart <= 0L -> null
             intervalRemainingMillis <= 1_000L -> stringResource(R.string.interval_timer_next_reset_ready)
             else -> stringResource(
                 R.string.interval_timer_next_reset_in,
@@ -1145,69 +1162,133 @@ private fun ProgressCard(
         null
     }
 
-    Card(
-        modifier = modifier
-            .size(220.dp)
-            .padding(16.dp)
-            .clickable(onClick = onProgressCardClicked),
-        shape = RoundedCornerShape(96.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
-        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+    val reelsLabel = stringResource(R.string.app_reels)
+    val tiktokLabel = stringResource(R.string.app_tiktok)
+    val shortsLabel = stringResource(R.string.app_shorts)
+
+    // Per-app usage data for the segmented progress indicator
+    val appUsageSegments = remember(perAppUsage, currentUsage, reelsLabel, tiktokLabel, shortsLabel) {
+        val knownUsage = perAppUsage.reelsUsage + perAppUsage.tiktokUsage + perAppUsage.shortsUsage
+        val cappedTotalUsage = currentUsage.coerceAtLeast(0L)
+        val scale = if (cappedTotalUsage in 1..<knownUsage) {
+            cappedTotalUsage.toDouble() / knownUsage.toDouble()
+        } else {
+            1.0
+        }
+        listOf(
+            AppUsageSegment(
+                appName = reelsLabel,
+                usageMillis = (perAppUsage.reelsUsage * scale).toLong(),
+                color = instagramReelsColor,
+            ),
+            AppUsageSegment(
+                appName = tiktokLabel,
+                usageMillis = (perAppUsage.tiktokUsage * scale).toLong(),
+                color = tiktokColor,
+            ),
+            AppUsageSegment(
+                appName = shortsLabel,
+                usageMillis = (perAppUsage.shortsUsage * scale).toLong(),
+                color = youtubeShortsColor,
+            ),
+        ).filter { it.usageMillis > 0L }
+    }
+
+    val segmentProgressFraction = when {
+        blockOption == BlockOption.DailyLimit && timeLimit > 0L -> displayProgress / 100f
+        blockOption == BlockOption.IntervalTimer && intervalAllowanceConfigured -> displayProgress / 100f
+        appUsageSegments.isNotEmpty() -> 1f
+        else -> 0f
+    }
+
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
+        Card(
+            modifier = Modifier
+                .size(220.dp)
+                .padding(16.dp)
+                .clickable(
+                    onClick = onProgressCardClicked,
+                ),
+            shape = RoundedCornerShape(96.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
+            elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
         ) {
-            CircularProgressIndicator(
-                progress = { animatedProgress },
-                modifier = Modifier.size(180.dp),
-                color = progressColor,
-                strokeWidth = 8.dp,
-                trackColor = MaterialTheme.colorScheme.primary,
-            )
-
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(16.dp),
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center,
             ) {
-                AutoResizingText(
-                    text = primaryText,
-                    modifier = Modifier
-                        .padding(top = 16.dp)
-                        .fillMaxWidth(),
-                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    minFontSize = 16.sp,
-                )
-                Spacer(Modifier.height(8.dp))
-
-                AutoResizingText(
-                    text = stringResource(R.string.time_wasted),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    minFontSize = 12.sp,
+                SegmentedCircularProgressIndicator(
+                    modifier = Modifier.size(180.dp),
+                    segments = appUsageSegments,
+                    progressFraction = segmentProgressFraction,
+                    strokeWidth = 8.dp,
+                    trackColor = Color.Transparent,
                 )
 
-                if (resetText != null) {
-                    Spacer(Modifier.height(6.dp))
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(16.dp),
+                ) {
                     AutoResizingText(
-                        text = resetText,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                        text = primaryText,
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .fillMaxWidth(),
+                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onPrimary,
                         textAlign = TextAlign.Center,
-                        maxLines = 2,
+                        maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        minFontSize = 11.sp,
+                        minFontSize = 16.sp,
                     )
+                    if (limitChipText != null) {
+                        Spacer(Modifier.height(6.dp))
+                        Box(
+                            modifier = Modifier
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.18f))
+                                .padding(horizontal = 10.dp, vertical = 4.dp),
+                        ) {
+                            Text(
+                                text = stringResource(R.string.limit_chip, limitChipText),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f),
+                                textAlign = TextAlign.Center,
+                            )
+                        }
+                    }
+                    Spacer(Modifier.height(8.dp))
+
+                    if (resetText != null) {
+                        Spacer(Modifier.height(6.dp))
+                        AutoResizingText(
+                            text = resetText,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                            textAlign = TextAlign.Center,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            minFontSize = 10.sp,
+                        )
+                    }
                 }
             }
         }
+
+        // Legend showing per-app usage
+        AppUsageLegend(
+            items = appUsageSegments.map { segment ->
+                LegendItem(
+                    appName = segment.appName,
+                    formattedTime = segment.usageMillis.formatTime(),
+                    color = segment.color,
+                )
+            },
+            modifier = Modifier.padding(top = 8.dp),
+        )
     }
 }
 
@@ -1391,12 +1472,21 @@ fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun HomeBackground(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
+private fun HomeBackground(
+    modifier: Modifier = Modifier,
+    accentColor: Color? = null,
+    accentStrength: Float = 0f,
+    content: @Composable BoxScope.() -> Unit,
+) {
     Box(modifier = modifier.background(MaterialTheme.colorScheme.background)) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .radialGradientScrim(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)),
+                .radialGradientScrim(
+                    baseColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                    accentColor = accentColor?.copy(alpha = 0.22f),
+                    accentStrength = accentStrength,
+                ),
         )
         content()
     }
@@ -1407,10 +1497,15 @@ private fun HomeBackground(modifier: Modifier = Modifier, content: @Composable B
 fun HomeScreenPreview() {
     val mockState = HomeUiState(
         blockOption = BlockOption.DailyLimit,
-        timeLimit = 7200000L, // 2 hours
-        currentUsage = 5400000L, // 1.5 hours
-        progress = 75,
+        timeLimit = TimeUnit.MINUTES.toMillis(60),
+        currentUsage = TimeUnit.MINUTES.toMillis(42),
+        progress = 70,
         timerOverlayEnabled = true,
+        perAppUsage = PerAppUsage(
+            reelsUsage = TimeUnit.MINUTES.toMillis(12),
+            tiktokUsage = TimeUnit.MINUTES.toMillis(15),
+            shortsUsage = TimeUnit.MINUTES.toMillis(15),
+        ),
     )
 
     ScrollessTheme {

@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">Configura el temporitzador d\'intervals</string>
     <string name="interval_timer_next_reset_in">Es restableix en %1$s</string>
     <string name="interval_timer_next_reset_ready">Pròxima pausa desbloquejada</string>
-    <string name="interval_timer_next_reset_unknown">L\'horari començarà després de la teva primera finestra de pausa.</string>
     <string name="next_step_1">Selecciona un mode de bloqueig</string>
     <string name="next_step_2">Prova la funció de límit diari i activa la superposició del temporitzador</string>
     <string name="next_steps_title">Passos següents</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">Estableix el temps límit diari</string>
     <string name="visit_github">Visita el repositori de GitHub</string>
     <string name="time_interval">Interval\nde temps</string>
-    <string name="time_wasted">Temps perdut</string>
     <string name="show_onscreen_timer">Mostra el temporitzador en pantalla</string>
     <string name="timer_overlay_description">Mantén un temporitzador flotant visible mentre mires contingut brain rot.</string>
 </resources>

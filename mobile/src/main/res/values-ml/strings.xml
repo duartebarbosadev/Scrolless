@@ -65,7 +65,6 @@
     <string name="interval_timer_dialog_title">ഇന്റർവെൽ ടൈമർ ക്രമീകരിക്കുക</string>
     <string name="interval_timer_next_reset_in">%1$s-ൽ പുനഃസജ്ജമാക്കുന്നു</string>
     <string name="interval_timer_next_reset_ready">അടുത്ത ബ്രേക്ക് അൺലോക്ക് ചെയ്തു</string>
-    <string name="interval_timer_next_reset_unknown">നിങ്ങളുടെ ആദ്യ ബ്രേക്ക് വിൻഡോയ്ക്ക് ശേഷം ഷെഡ്യൂൾ ആരംഭിക്കും.</string>
     <string name="next_step_1">ഒരു തടയൽ മോഡ് തിരഞ്ഞെടുക്കുക</string>
     <string name="next_step_2">ദിവസേനയുള്ള പരിധി ഫീച്ചർ പരീക്ഷിക്കുകയും ടൈമർ ഓവർലേ സജീവമാക്കുകയും ചെയ്യുക</string>
     <string name="next_steps_title">അടുത്ത ഘട്ടങ്ങൾ</string>
@@ -78,7 +77,6 @@
     <string name="time_limit_dialog_title">ദിവസേനയുള്ള പരിധി സമയം സജ്ജമാക്കുക</string>
     <string name="visit_github">GitHub റിപ്പോസിറ്ററി സന്ദർശിക്കുക</string>
     <string name="time_interval">സമയ\nഇടവേള</string>
-    <string name="time_wasted">പാഴാക്കിയ സമയം</string>
     <string name="show_onscreen_timer">ഓൺ-സ്ക്രീൻ ടൈമർ കാണിക്കുക</string>
     <string name="timer_overlay_description">brainrot ഉള്ളടക്കം കാണുമ്പോൾ ഒരു ഫ്ലോട്ടിംഗ് ടൈമർ ദൃശ്യമായി നിലനിർത്തുക.</string>
 </resources>
