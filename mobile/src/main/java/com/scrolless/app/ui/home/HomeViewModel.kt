@@ -22,6 +22,7 @@ import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.min
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -212,6 +213,24 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         Timber.d("Accessibility explainer shown")
         viewModelScope.launch {
             userSettingsStore.setHasSeenAccessibilityExplainer(true)
+        }
+    }
+
+    fun onDebugUsageChanged(reelsMinutes: Int, shortsMinutes: Int, tiktokMinutes: Int) {
+        viewModelScope.launch {
+            val reelsUsage = TimeUnit.MINUTES.toMillis(reelsMinutes.coerceAtLeast(0).toLong())
+            val shortsUsage = TimeUnit.MINUTES.toMillis(shortsMinutes.coerceAtLeast(0).toLong())
+            val tiktokUsage = TimeUnit.MINUTES.toMillis(tiktokMinutes.coerceAtLeast(0).toLong())
+            userSettingsStore.updateReelsDailyUsage(reelsUsage)
+            userSettingsStore.updateShortsDailyUsage(shortsUsage)
+            userSettingsStore.updateTiktokDailyUsage(tiktokUsage)
+            userSettingsStore.updateTotalDailyUsage(reelsUsage + shortsUsage + tiktokUsage)
+        }
+    }
+
+    fun onDebugResetUsage() {
+        viewModelScope.launch {
+            userSettingsStore.resetAllDailyUsage()
         }
     }
 
