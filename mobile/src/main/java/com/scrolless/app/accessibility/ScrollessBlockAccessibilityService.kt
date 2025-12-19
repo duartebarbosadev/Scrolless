@@ -386,7 +386,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         // Detect if there's a new app
         val match = BlockableApp.entries.firstOrNull { appEnum ->
-            if (appEnum.packageId != packageId) return@firstOrNull false
+            if (!packageId.startsWith(appEnum.packageId)) return@firstOrNull false
 
             val nodes = rootNode.findAccessibilityNodeInfosByViewId(appEnum.getViewId())
 
