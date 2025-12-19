@@ -68,6 +68,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import com.scrolless.app.R
 import com.scrolless.app.designsystem.component.AnimatedIcon
+import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.tooling.DevicePreviews
 import com.scrolless.app.util.openActivityAccessibilitySettings
@@ -138,21 +139,23 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             // Title
-            Text(
+            AutoResizingText(
                 text = stringResource(R.string.accessibility_explainer_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
                 textAlign = TextAlign.Center,
+                maxLines = 1,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Text(
+            AutoResizingText(
                 text = stringResource(R.string.accessibility_explainer_subtitle),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,
+                maxLines = 2,
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -227,11 +230,12 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                     modifier = Modifier.size(20.dp),
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                Text(
+                AutoResizingText(
                     text = stringResource(R.string.accessibility_explainer_open_source),
                     style = MaterialTheme.typography.bodySmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
                 )
             }
 
@@ -241,6 +245,7 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
             Button(
                 onClick = {
                     onOpenSettings()
+                    onDismiss()
                 },
                 modifier = Modifier
                     .fillMaxWidth()

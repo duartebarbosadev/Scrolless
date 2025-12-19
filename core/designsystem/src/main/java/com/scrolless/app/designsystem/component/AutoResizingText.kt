@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
@@ -48,6 +49,7 @@ private const val DEFAULT_STEP_SP = 1f
  * @param modifier optional [Modifier] for styling/placement.
  * @param style base [TextStyle]; defaults to [TextStyle.Default].
  * @param color explicit text color. Defaults to using [style]'s color.
+ * @param fontWeight optional override for text weight.
  * @param textAlign horizontal alignment for the text.
  * @param maxLines maximum line count permitted.
  * @param overflow overflow behavior once [maxLines] is reached.
@@ -61,10 +63,11 @@ fun AutoResizingText(
     modifier: Modifier = Modifier,
     style: TextStyle = TextStyle.Default,
     color: Color = Color.Unspecified,
+    fontWeight: FontWeight? = null,
     textAlign: TextAlign? = null,
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = TextOverflow.Clip,
-    minFontSize: TextUnit = 12.sp,
+    minFontSize: TextUnit = 10.sp,
     maxFontSize: TextUnit = if (style.fontSize.isSpecified) style.fontSize else 16.sp,
     step: TextUnit = 1.sp,
 ) {
@@ -97,6 +100,7 @@ fun AutoResizingText(
         style = style.copy(
             color = resolvedColor,
             fontSize = currentFontSize.sp,
+            fontWeight = fontWeight ?: style.fontWeight,
         ),
         textAlign = textAlign,
         maxLines = maxLines,

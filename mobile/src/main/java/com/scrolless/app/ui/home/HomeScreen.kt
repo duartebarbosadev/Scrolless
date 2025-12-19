@@ -252,7 +252,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
     }
     val limitAccentColor by animateColorAsState(
         targetValue = when {
-            uiState.progress < 75 -> progressbar_green_use
+            uiState.progress < 50 -> progressbar_green_use
             uiState.progress < 100 -> progressbar_orange_use
             else -> progressbar_red_use
         },
@@ -1265,7 +1265,8 @@ private fun ProgressCard(
                         modifier = Modifier
                             .padding(top = 16.dp)
                             .fillMaxWidth(),
-                        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimary,
                         textAlign = TextAlign.Center,
                         maxLines = 1,
@@ -1434,7 +1435,8 @@ fun OnScreenTimerToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, mo
 
             AutoResizingText(
                 text = stringResource(id = R.string.show_onscreen_timer),
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.SemiBold,
                 maxLines = 1,
                 color = MaterialTheme.colorScheme.onSurface,
                 overflow = TextOverflow.Ellipsis,
