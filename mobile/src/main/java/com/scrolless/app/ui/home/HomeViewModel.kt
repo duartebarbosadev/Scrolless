@@ -113,6 +113,9 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         Timber.i("Block option selected: %s", blockOption)
         viewModelScope.launch {
             userSettingsStore.setActiveBlockOption(blockOption)
+            if (blockOption == BlockOption.NothingSelected) {
+                onPauseToggle(false)
+            }
         }
     }
 

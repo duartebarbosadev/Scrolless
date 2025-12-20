@@ -157,6 +157,8 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
     var showIntervalTimerDialog by remember { mutableStateOf(false) }
     var pendingIntervalBreak by remember { mutableLongStateOf(DEFAULT_INTERVAL_BREAK_MILLIS) }
     var pendingIntervalAllowance by remember { mutableLongStateOf(DEFAULT_INTERVAL_ALLOWANCE_MILLIS) }
+    val pauseRemainingMillis = rememberPauseRemainingTime(uiState.pauseUntilMillis)
+    val isPauseActive = pauseRemainingMillis > 0L
 
     val activity = context as? Activity
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -260,11 +262,33 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
         animationSpec = tween(durationMillis = 900),
         label = "limitAccentColor",
     )
+    val shouldShowHealthyBackground = uiState.blockOption == BlockOption.BlockAll && !isPauseActive
+    val backgroundAccentTargetColor = when {
+        isPauseActive -> progressbar_orange_use
+        shouldShowHealthyBackground -> progressbar_green_use
+        hasLimitTimer -> limitAccentColor
+        else -> Color.Transparent
+    }
+    val backgroundAccentColor by animateColorAsState(
+        targetValue = backgroundAccentTargetColor,
+        animationSpec = tween(durationMillis = 900),
+        label = "backgroundAccentColor",
+    )
+    val backgroundAccentStrength by animateFloatAsState(
+        targetValue = when {
+            isPauseActive -> 1f
+            shouldShowHealthyBackground -> 1f
+            hasLimitTimer -> limitProgressFraction
+            else -> 0f
+        },
+        animationSpec = tween(durationMillis = 900),
+        label = "backgroundAccentStrength",
+    )
 
     HomeBackground(
         modifier = modifier.fillMaxSize(),
-        accentColor = if (hasLimitTimer) limitAccentColor else null,
-        accentStrength = if (hasLimitTimer) limitProgressFraction else 0f,
+        accentColor = backgroundAccentColor,
+        accentStrength = backgroundAccentStrength,
     ) {
         fun openIntervalConfig() {
             pendingIntervalBreak = uiState.intervalLength.takeIf { it > 0L } ?: DEFAULT_INTERVAL_BREAK_MILLIS
@@ -1312,7 +1336,7 @@ private fun ProgressCard(
                         ) {
                             Text(
                                 text = stringResource(R.string.limit_chip, limitChipText),
-                                style = MaterialTheme.typography.labelMedium,
+                                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
                                 color = limitChipTextColor,
                                 textAlign = TextAlign.Center,
                             )
