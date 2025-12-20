@@ -31,6 +31,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -1229,6 +1230,39 @@ private fun ProgressCard(
         else -> 0f
     }
 
+    val isLimitReached = when (blockOption) {
+        BlockOption.DailyLimit -> timeLimit in 1..currentUsage
+        BlockOption.IntervalTimer -> timeLimit in 1..intervalUsage && !intervalResetReady
+        else -> false
+    }
+    val limitChipBackground by animateColorAsState(
+        targetValue = if (isLimitReached) {
+            progressbar_red_use.copy(alpha = 0.16f)
+        } else {
+            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.18f)
+        },
+        animationSpec = tween(durationMillis = 600),
+        label = "limitChipBackground",
+    )
+    val limitChipBorderColor by animateColorAsState(
+        targetValue = if (isLimitReached) {
+            progressbar_red_use.copy(alpha = 0.7f)
+        } else {
+            Color.Transparent
+        },
+        animationSpec = tween(durationMillis = 600),
+        label = "limitChipBorderColor",
+    )
+    val limitChipTextColor by animateColorAsState(
+        targetValue = if (isLimitReached) {
+            progressbar_red_use
+        } else {
+            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f)
+        },
+        animationSpec = tween(durationMillis = 600),
+        label = "limitChipTextColor",
+    )
+
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -1278,13 +1312,14 @@ private fun ProgressCard(
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(12.dp))
-                                .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.18f))
+                                .background(limitChipBackground)
+                                .border(1.dp, limitChipBorderColor, RoundedCornerShape(12.dp))
                                 .padding(horizontal = 10.dp, vertical = 4.dp),
                         ) {
                             Text(
                                 text = stringResource(R.string.limit_chip, limitChipText),
                                 style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f),
+                                color = limitChipTextColor,
                                 textAlign = TextAlign.Center,
                             )
                         }
