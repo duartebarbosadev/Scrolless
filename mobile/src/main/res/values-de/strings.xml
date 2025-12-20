@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">Sehzeit</string>
     <string name="interval_timer_card_break_chip">Pausenlänge</string>
     <string name="interval_timer_card_edit">Zeitplan bearbeiten</string>
-    <string name="interval_timer_card_hint">Scrolless setzt Ihre erlaubte Zeit nach jedem Pausenfenster zurück.</string>
     <string name="interval_timer_card_set_schedule">Zeitplan festlegen</string>
     <string name="interval_timer_card_summary">Bis zu %1$s alle %2$s ansehen</string>
     <string name="interval_timer_card_summary_empty">Legen Sie Ihren ersten Zeitplan fest, um mit abwechselnden Pausen zu beginnen.</string>

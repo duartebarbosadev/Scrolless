@@ -196,7 +196,7 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Light,
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(12.dp),
                 )
             }
 
@@ -319,13 +319,13 @@ private fun AccessibilityStep(stepNumber: String, text: String) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(14.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 // Step Number
                 Box(
                     modifier = Modifier
-                        .size(40.dp)
+                        .size(34.dp)
                         .background(
                             color = MaterialTheme.colorScheme.secondaryContainer,
                             shape = CircleShape,
@@ -336,7 +336,7 @@ private fun AccessibilityStep(stepNumber: String, text: String) {
                         text = stepNumber,
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
+                        fontSize = 14.sp,
                     )
                 }
 
@@ -345,7 +345,7 @@ private fun AccessibilityStep(stepNumber: String, text: String) {
                 // Step Text
                 Text(
                     text = text,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.weight(1f),
                 )

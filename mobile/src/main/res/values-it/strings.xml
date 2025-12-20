@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">Tempo di visione</string>
     <string name="interval_timer_card_break_chip">Durata della pausa</string>
     <string name="interval_timer_card_edit">Modifica programma</string>
-    <string name="interval_timer_card_hint">Scrolless reimposta il tuo tempo di visione dopo ogni finestra di pausa.</string>
     <string name="interval_timer_card_set_schedule">Imposta programma</string>
     <string name="interval_timer_card_summary">Guarda fino a %1$s ogni %2$s</string>
     <string name="interval_timer_card_summary_empty">Imposta il tuo primo programma per iniziare ad alternare le pause.</string>

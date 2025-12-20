@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">Thời gian xem</string>
     <string name="interval_timer_card_break_chip">Độ dài nghỉ giải lao</string>
     <string name="interval_timer_card_edit">Chỉnh sửa lịch trình</string>
-    <string name="interval_timer_card_hint">Scrolless đặt lại thời gian cho phép của bạn sau mỗi khoảng thời gian nghỉ giải lao.</string>
     <string name="interval_timer_card_set_schedule">Đặt lịch trình</string>
     <string name="interval_timer_card_summary">Xem tối đa %1$s sau mỗi %2$s</string>
     <string name="interval_timer_card_summary_empty">Đặt lịch trình đầu tiên của bạn để bắt đầu xen kẽ các lần nghỉ giải lao.</string>

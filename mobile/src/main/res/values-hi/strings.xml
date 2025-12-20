@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">देखने का समय</string>
     <string name="interval_timer_card_break_chip">ब्रेक की अवधि</string>
     <string name="interval_timer_card_edit">शेड्यूल संपादित करें</string>
-    <string name="interval_timer_card_hint">Scrolless प्रत्येक ब्रेक विंडो के बाद आपकी अनुमति रीसेट कर देता है।</string>
     <string name="interval_timer_card_set_schedule">शेड्यूल सेट करें</string>
     <string name="interval_timer_card_summary">हर %2$s में %1$s तक देखें</string>
     <string name="interval_timer_card_summary_empty">ब्रेक को बारी-बारी से शुरू करने के लिए अपना पहला शेड्यूल सेट करें।</string>

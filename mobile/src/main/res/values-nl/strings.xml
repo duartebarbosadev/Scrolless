@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">Kijktijd</string>
     <string name="interval_timer_card_break_chip">Pauzeduur</string>
     <string name="interval_timer_card_edit">Schema bewerken</string>
-    <string name="interval_timer_card_hint">Scrolless reset uw kijktijd na elk pauzevenster.</string>
     <string name="interval_timer_card_set_schedule">Schema instellen</string>
     <string name="interval_timer_card_summary">Kijk tot %1$s elke %2$s</string>
     <string name="interval_timer_card_summary_empty">Stel uw eerste schema in om te beginnen met het afwisselen van pauzes.</string>

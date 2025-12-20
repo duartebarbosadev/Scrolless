@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">Timp de vizionare</string>
     <string name="interval_timer_card_break_chip">Durata pauzei</string>
     <string name="interval_timer_card_edit">Editează programul</string>
-    <string name="interval_timer_card_hint">Scrolless resetează timpul alocat după fiecare fereastră de pauză.</string>
     <string name="interval_timer_card_set_schedule">Setează programul</string>
     <string name="interval_timer_card_summary">Vizionează până la %1$s la fiecare %2$s</string>
     <string name="interval_timer_card_summary_empty">Setează primul tău program pentru a începe alternarea pauzelor.</string>

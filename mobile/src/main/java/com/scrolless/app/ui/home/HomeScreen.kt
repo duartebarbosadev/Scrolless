@@ -31,6 +31,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -156,6 +157,8 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
     var showIntervalTimerDialog by remember { mutableStateOf(false) }
     var pendingIntervalBreak by remember { mutableLongStateOf(DEFAULT_INTERVAL_BREAK_MILLIS) }
     var pendingIntervalAllowance by remember { mutableLongStateOf(DEFAULT_INTERVAL_ALLOWANCE_MILLIS) }
+    val pauseRemainingMillis = rememberPauseRemainingTime(uiState.pauseUntilMillis)
+    val isPauseActive = pauseRemainingMillis > 0L
 
     val activity = context as? Activity
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -259,11 +262,33 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
         animationSpec = tween(durationMillis = 900),
         label = "limitAccentColor",
     )
+    val shouldShowHealthyBackground = uiState.blockOption == BlockOption.BlockAll && !isPauseActive
+    val backgroundAccentTargetColor = when {
+        isPauseActive -> progressbar_orange_use
+        shouldShowHealthyBackground -> progressbar_green_use
+        hasLimitTimer -> limitAccentColor
+        else -> Color.Transparent
+    }
+    val backgroundAccentColor by animateColorAsState(
+        targetValue = backgroundAccentTargetColor,
+        animationSpec = tween(durationMillis = 900),
+        label = "backgroundAccentColor",
+    )
+    val backgroundAccentStrength by animateFloatAsState(
+        targetValue = when {
+            isPauseActive -> 1f
+            shouldShowHealthyBackground -> 1f
+            hasLimitTimer -> limitProgressFraction
+            else -> 0f
+        },
+        animationSpec = tween(durationMillis = 900),
+        label = "backgroundAccentStrength",
+    )
 
     HomeBackground(
         modifier = modifier.fillMaxSize(),
-        accentColor = if (hasLimitTimer) limitAccentColor else null,
-        accentStrength = if (hasLimitTimer) limitProgressFraction else 0f,
+        accentColor = backgroundAccentColor,
+        accentStrength = backgroundAccentStrength,
     ) {
         fun openIntervalConfig() {
             pendingIntervalBreak = uiState.intervalLength.takeIf { it > 0L } ?: DEFAULT_INTERVAL_BREAK_MILLIS
@@ -853,12 +878,6 @@ private fun IntervalTimerSettingsCard(
                 )
             }
 
-            Text(
-                text = stringResource(R.string.interval_timer_card_hint),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.75f),
-            )
-
             Button(
                 onClick = onEditClick,
                 modifier = Modifier.fillMaxWidth(),
@@ -1229,6 +1248,39 @@ private fun ProgressCard(
         else -> 0f
     }
 
+    val isLimitReached = when (blockOption) {
+        BlockOption.DailyLimit -> timeLimit in 1..currentUsage
+        BlockOption.IntervalTimer -> timeLimit in 1..intervalUsage && !intervalResetReady
+        else -> false
+    }
+    val limitChipBackground by animateColorAsState(
+        targetValue = if (isLimitReached) {
+            progressbar_red_use.copy(alpha = 0.16f)
+        } else {
+            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.18f)
+        },
+        animationSpec = tween(durationMillis = 600),
+        label = "limitChipBackground",
+    )
+    val limitChipBorderColor by animateColorAsState(
+        targetValue = if (isLimitReached) {
+            progressbar_red_use.copy(alpha = 0.7f)
+        } else {
+            Color.Transparent
+        },
+        animationSpec = tween(durationMillis = 600),
+        label = "limitChipBorderColor",
+    )
+    val limitChipTextColor by animateColorAsState(
+        targetValue = if (isLimitReached) {
+            progressbar_red_use
+        } else {
+            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f)
+        },
+        animationSpec = tween(durationMillis = 600),
+        label = "limitChipTextColor",
+    )
+
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -1278,13 +1330,14 @@ private fun ProgressCard(
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(12.dp))
-                                .background(MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.18f))
+                                .background(limitChipBackground)
+                                .border(1.dp, limitChipBorderColor, RoundedCornerShape(12.dp))
                                 .padding(horizontal = 10.dp, vertical = 4.dp),
                         ) {
                             Text(
                                 text = stringResource(R.string.limit_chip, limitChipText),
-                                style = MaterialTheme.typography.labelMedium,
-                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f),
+                                style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+                                color = limitChipTextColor,
                                 textAlign = TextAlign.Center,
                             )
                         }

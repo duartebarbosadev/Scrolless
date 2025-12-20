@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">視聴時間</string>
     <string name="interval_timer_card_break_chip">休憩時間</string>
     <string name="interval_timer_card_edit">スケジュールを編集</string>
-    <string name="interval_timer_card_hint">Scrollessは、休憩ウィンドウごとに許可時間をリセットします。</string>
     <string name="interval_timer_card_set_schedule">スケジュールを設定</string>
     <string name="interval_timer_card_summary">%2$sごとに最大%1$s視聴</string>
     <string name="interval_timer_card_summary_empty">最初のスケジュールを設定して、休憩を交互に開始します。</string>

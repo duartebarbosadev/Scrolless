@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">Tiempo de visualización</string>
     <string name="interval_timer_card_break_chip">Duración del descanso</string>
     <string name="interval_timer_card_edit">Editar horario</string>
-    <string name="interval_timer_card_hint">Scrolless restablece tu tiempo permitido después de cada ventana de descanso.</string>
     <string name="interval_timer_card_set_schedule">Establecer horario</string>
     <string name="interval_timer_card_summary">Ver hasta %1$s cada %2$s</string>
     <string name="interval_timer_card_summary_empty">Establece tu primer horario para empezar a alternar descansos.</string>

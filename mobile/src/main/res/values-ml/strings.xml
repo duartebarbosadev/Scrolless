@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">കാണാനുള്ള സമയം</string>
     <string name="interval_timer_card_break_chip">ബ്രേക്ക് ദൈർഘ്യം</string>
     <string name="interval_timer_card_edit">ഷെഡ്യൂൾ എഡിറ്റ് ചെയ്യുക</string>
-    <string name="interval_timer_card_hint">ഓരോ ബ്രേക്ക് വിൻഡോയ്ക്ക് ശേഷവും Scrolless നിങ്ങളുടെ അനുവദനീയമായ സമയം പുനഃസജ്ജമാക്കുന്നു.</string>
     <string name="interval_timer_card_set_schedule">ഷെഡ്യൂൾ സജ്ജമാക്കുക</string>
     <string name="interval_timer_card_summary">ഓരോ %2$s-ലും %1$s വരെ കാണുക</string>
     <string name="interval_timer_card_summary_empty">ഇടവിട്ടുള്ള ബ്രേക്കുകൾ ആരംഭിക്കാൻ നിങ്ങളുടെ ആദ്യ ഷെഡ്യൂൾ സജ്ജമാക്കുക.</string>

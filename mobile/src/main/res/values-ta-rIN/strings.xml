@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">பார்த்த நேரம்</string>
     <string name="interval_timer_card_break_chip">இடைவெளி நீளம்</string>
     <string name="interval_timer_card_edit">அட்டவணையைத் திருத்தவும்</string>
-    <string name="interval_timer_card_hint">ஒவ்வொரு இடைவெளி சாளரத்திற்குப் பிறகும் Scrolless உங்கள் சலுகையை மீட்டமைக்கிறது.</string>
     <string name="interval_timer_card_set_schedule">அட்டவணையை அமைக்கவும்</string>
     <string name="interval_timer_card_summary">ஒவ்வொரு %2$s க்கும் %1$s வரை பார்க்கலாம்</string>
     <string name="interval_timer_card_summary_empty">மாற்று இடைவெளிகளைத் தொடங்க உங்கள் முதல் அட்டவணையை அமைக்கவும்.</string>

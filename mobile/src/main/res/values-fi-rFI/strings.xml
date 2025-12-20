@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">Katseluaika</string>
     <string name="interval_timer_card_break_chip">Tauon pituus</string>
     <string name="interval_timer_card_edit">Muokkaa aikataulua</string>
-    <string name="interval_timer_card_hint">Scrolless nollaa sallitun ajan jokaisen taukoikkunan jälkeen.</string>
     <string name="interval_timer_card_set_schedule">Aseta aikataulu</string>
     <string name="interval_timer_card_summary">Katso enintään %1$s joka %2$s</string>
     <string name="interval_timer_card_summary_empty">Aseta ensimmäinen aikataulusi aloittaaksesi taukojen vuorottelun.</string>
