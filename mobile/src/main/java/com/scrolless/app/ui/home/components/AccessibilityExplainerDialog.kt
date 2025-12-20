@@ -245,7 +245,6 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
             Button(
                 onClick = {
                     onOpenSettings()
-                    onDismiss()
                 },
                 modifier = Modifier
                     .fillMaxWidth()

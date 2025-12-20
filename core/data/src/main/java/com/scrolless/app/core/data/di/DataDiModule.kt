@@ -58,6 +58,7 @@ object DataDiModule {
         Room.databaseBuilder(context, ScrollessDatabase::class.java, "data.db")
             .addMigrations(ScrollessDatabase.MIGRATION_2_3)
             .fallbackToDestructiveMigration(true) // Not recommended but for now it shouldn't matter
+            .fallbackToDestructiveMigrationOnDowngrade(true)
             .addCallback(
                 object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
