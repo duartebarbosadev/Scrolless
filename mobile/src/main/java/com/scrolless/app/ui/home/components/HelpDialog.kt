@@ -56,6 +56,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.net.toUri
 import com.scrolless.app.R
+import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.tooling.DevicePreviews
 import com.scrolless.app.util.openActivityAccessibilitySettings
@@ -77,7 +78,7 @@ fun HelpDialog(onDismiss: () -> Unit) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp),
+                .padding(20.dp),
             shape = RoundedCornerShape(24.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.background,
@@ -87,26 +88,28 @@ fun HelpDialog(onDismiss: () -> Unit) {
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
-                    .padding(24.dp),
+                    .padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 // Header
-                Text(
+                AutoResizingText(
                     text = stringResource(R.string.help_dialog_title),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
                     textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    minFontSize = 14.sp,
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 HorizontalDivider(
                     modifier = Modifier.alpha(0.5f),
                     color = MaterialTheme.colorScheme.primary,
                 )
 
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // Step 1
                 HelpStep(
@@ -115,7 +118,7 @@ fun HelpDialog(onDismiss: () -> Unit) {
                     description = stringResource(R.string.help_step1_description),
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 // Step 2
                 HelpStep(
@@ -124,21 +127,21 @@ fun HelpDialog(onDismiss: () -> Unit) {
                     description = stringResource(R.string.help_step2_description),
                 )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 // Step 3
                 HelpStep(
                     stepNumber = "3",
-                    title = stringResource(R.string.help_step3_description),
+                    title = stringResource(R.string.help_step3_title),
                     description = stringResource(R.string.help_step3_description),
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
                 // GitHub Card
                 GitHubCard()
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 // Icons8 Attribution
                 Text(
@@ -146,11 +149,11 @@ fun HelpDialog(onDismiss: () -> Unit) {
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                     textAlign = TextAlign.Center,
-                    fontSize = 11.sp,
+                    fontSize = 10.sp,
                     modifier = Modifier.alpha(0.7f),
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 // Action Buttons
                 val context = LocalContext.current
@@ -171,6 +174,7 @@ fun HelpDialog(onDismiss: () -> Unit) {
                         text = stringResource(R.string.go_to_accessibility_settings),
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
+                        fontSize = 14.sp,
                     )
                 }
 
@@ -184,6 +188,7 @@ fun HelpDialog(onDismiss: () -> Unit) {
                     Text(
                         text = stringResource(R.string.close),
                         color = MaterialTheme.colorScheme.primary,
+                        fontSize = 14.sp,
                     )
                 }
             }
@@ -204,13 +209,13 @@ private fun HelpStep(stepNumber: String, title: String, description: String) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(12.dp),
             verticalAlignment = Alignment.Top,
         ) {
             // Step Number Circle
             Box(
                 modifier = Modifier
-                    .size(40.dp)
+                    .size(32.dp)
                     .background(
                         color = MaterialTheme.colorScheme.secondaryContainer,
                         shape = CircleShape,
@@ -221,26 +226,26 @@ private fun HelpStep(stepNumber: String, title: String, description: String) {
                     text = stepNumber,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    fontSize = 18.sp,
+                    fontSize = 16.sp,
                 )
             }
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
             // Step Content
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
                     text = description,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
             }
@@ -276,7 +281,7 @@ private fun GitHubCard() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(10.dp),
+                .padding(8.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -291,7 +296,7 @@ private fun GitHubCard() {
 
             Text(
                 text = stringResource(R.string.visit_github),
-                fontSize = 14.sp,
+                fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
