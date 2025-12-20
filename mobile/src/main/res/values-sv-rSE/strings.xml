@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">Tittid</string>
     <string name="interval_timer_card_break_chip">Pauslängd</string>
     <string name="interval_timer_card_edit">Redigera schema</string>
-    <string name="interval_timer_card_hint">Scrolless återställer din tillåtna tid efter varje pausfönster.</string>
     <string name="interval_timer_card_set_schedule">Ställ in schema</string>
     <string name="interval_timer_card_summary">Titta upp till %1$s var %2$s</string>
     <string name="interval_timer_card_summary_empty">Ställ in ditt första schema för att börja växla pauser.</string>

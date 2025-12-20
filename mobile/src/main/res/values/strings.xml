@@ -44,7 +44,6 @@
     <string name="interval_timer_card_summary_empty">Set your first schedule to start alternating breaks.</string>
     <string name="interval_timer_card_allowance_chip">Watch time</string>
     <string name="interval_timer_card_break_chip">Break length</string>
-    <string name="interval_timer_card_hint">Scrolless resets your allowance after each break window.</string>
     <string name="interval_timer_card_edit">Edit schedule</string>
     <string name="interval_timer_card_set_schedule">Set schedule</string>
     <string name="interval_timer_dialog_title">Configure interval timer</string>

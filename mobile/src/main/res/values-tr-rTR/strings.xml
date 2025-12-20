@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">İzleme süresi</string>
     <string name="interval_timer_card_break_chip">Mola süresi</string>
     <string name="interval_timer_card_edit">Programı düzenle</string>
-    <string name="interval_timer_card_hint">Scrolless, her mola penceresinden sonra izleme sürenizi sıfırlar.</string>
     <string name="interval_timer_card_set_schedule">Programı ayarla</string>
     <string name="interval_timer_card_summary">Her %2$s sürede %1$s kadar izle</string>
     <string name="interval_timer_card_summary_empty">Molaları dönüşümlü olarak başlatmak için ilk programınızı ayarlayın.</string>

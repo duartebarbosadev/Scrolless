@@ -854,12 +854,6 @@ private fun IntervalTimerSettingsCard(
                 )
             }
 
-            Text(
-                text = stringResource(R.string.interval_timer_card_hint),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.75f),
-            )
-
             Button(
                 onClick = onEditClick,
                 modifier = Modifier.fillMaxWidth(),

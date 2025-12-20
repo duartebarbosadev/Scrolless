@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">Час перегляду</string>
     <string name="interval_timer_card_break_chip">Тривалість перерви</string>
     <string name="interval_timer_card_edit">Редагувати розклад</string>
-    <string name="interval_timer_card_hint">Scrolless скидає ваш ліміт після кожного вікна перерви.</string>
     <string name="interval_timer_card_set_schedule">Встановити розклад</string>
     <string name="interval_timer_card_summary">Дивіться до %1$s кожні %2$s</string>
     <string name="interval_timer_card_summary_empty">Встановіть свій перший розклад, щоб почати чергувати перерви.</string>

@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">Se-tid</string>
     <string name="interval_timer_card_break_chip">Pause-lengde</string>
     <string name="interval_timer_card_edit">Rediger tidsplan</string>
-    <string name="interval_timer_card_hint">Scrolless tilbakestiller tillatelsen din etter hvert pausevindu.</string>
     <string name="interval_timer_card_set_schedule">Angi tidsplan</string>
     <string name="interval_timer_card_summary">Se opptil %1$s hver %2$s</string>
     <string name="interval_timer_card_summary_empty">Angi din første tidsplan for å starte vekslende pauser.</string>

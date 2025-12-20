@@ -49,7 +49,6 @@
     <string name="interval_timer_card_allowance_chip">Doba sledování</string>
     <string name="interval_timer_card_break_chip">Délka přestávky</string>
     <string name="interval_timer_card_edit">Upravit rozvrh</string>
-    <string name="interval_timer_card_hint">Scrolless resetuje váš povolený čas po každém okně přestávky.</string>
     <string name="interval_timer_card_set_schedule">Nastavit rozvrh</string>
     <string name="interval_timer_card_summary">Sledujte až %1$s každých %2$s</string>
     <string name="interval_timer_card_summary_empty">Nastavte si svůj první rozvrh pro střídání přestávek.</string>
