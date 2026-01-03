@@ -48,4 +48,6 @@ data class UserSettings(
     @ColumnInfo(name = "waiting_for_accessibility") val waitingForAccessibility: Boolean = false,
     @ColumnInfo(name = "has_seen_accessibility_explainer") val hasSeenAccessibilityExplainer: Boolean = false,
     @ColumnInfo(name = "pause_until_at") val pauseUntilAt: Long = 0L,
+    @ColumnInfo(name = "first_launch_at", defaultValue = "0") val firstLaunchAt: Long = 0L,
+    @ColumnInfo(name = "has_seen_review_prompt", defaultValue = "0") val hasSeenReviewPrompt: Boolean = false,
 )

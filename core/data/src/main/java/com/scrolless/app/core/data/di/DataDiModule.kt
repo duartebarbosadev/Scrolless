@@ -56,7 +56,7 @@ object DataDiModule {
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): ScrollessDatabase =
         Room.databaseBuilder(context, ScrollessDatabase::class.java, "data.db")
-            .addMigrations(ScrollessDatabase.MIGRATION_2_3)
+            .addMigrations(ScrollessDatabase.MIGRATION_2_3, ScrollessDatabase.MIGRATION_3_4)
             .fallbackToDestructiveMigration(true) // Not recommended but for now it shouldn't matter
             .fallbackToDestructiveMigrationOnDowngrade(true)
             .addCallback(
@@ -71,8 +71,10 @@ object DataDiModule {
                                                    timer_overlay_enabled, last_reset_day, total_daily_usage,
                                                    reels_daily_usage, shorts_daily_usage, tiktok_daily_usage,
                                                    timer_overlay_x, timer_overlay_y, waiting_for_accessibility,
-                                                   has_seen_accessibility_explainer, pause_until_at)
-                        VALUES (1, 'NothingSelected', 0, 0, 0, 0, 0, date('now'), 0, 0, 0, 0, 0, 100, 0, 0, 0)
+                                                   has_seen_accessibility_explainer, pause_until_at,
+                                                   first_launch_at, has_seen_review_prompt)
+                        VALUES (1, 'NothingSelected', 0, 0, 0, 0, 0, date('now'), 0, 0, 0, 0, 0, 100, 0, 0, 0,
+                                CAST(strftime('%s','now') AS INTEGER) * 1000, false)
                         """,
                         )
                     }

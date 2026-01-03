@@ -69,6 +69,12 @@ interface UserSettingsStore {
 
     fun getPauseUntil(): Flow<Long>
     suspend fun setPauseUntil(pauseUntil: Long)
+
+    fun getFirstLaunchAt(): Flow<Long>
+    suspend fun setFirstLaunchAt(firstLaunchAt: Long)
+
+    fun getHasSeenReviewPrompt(): Flow<Boolean>
+    suspend fun setHasSeenReviewPrompt(seen: Boolean)
 }
 
 suspend fun UserSettingsStore.setTimerOverlayPosition(positionX: Int, positionY: Int) {

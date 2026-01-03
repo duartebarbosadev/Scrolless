@@ -31,7 +31,7 @@ import com.scrolless.app.core.data.database.model.UserSettings
     entities = [
         UserSettings::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = false,
 )
 @TypeConverters(LocalDateTypeConverters::class)
@@ -44,6 +44,12 @@ abstract class ScrollessDatabase : RoomDatabase() {
                 db.execSQL("ALTER TABLE user_settings ADD COLUMN reels_daily_usage INTEGER NOT NULL DEFAULT 0")
                 db.execSQL("ALTER TABLE user_settings ADD COLUMN shorts_daily_usage INTEGER NOT NULL DEFAULT 0")
                 db.execSQL("ALTER TABLE user_settings ADD COLUMN tiktok_daily_usage INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+        val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE user_settings ADD COLUMN first_launch_at INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE user_settings ADD COLUMN has_seen_review_prompt BOOLEAN NOT NULL DEFAULT false")
             }
         }
     }

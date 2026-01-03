@@ -43,6 +43,39 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
     private val _showComingSoonSnackBar = MutableStateFlow(false)
     private val _requestReview = MutableStateFlow(false)
 
+    companion object {
+        private const val PROGRESS_MAX = 100
+        private const val PAUSE_DURATION_MILLIS = 5 * 60 * 1000L
+        private val REVIEW_PROMPT_DELAY_MILLIS = TimeUnit.DAYS.toMillis(1) // Show review popup after 1 day
+    }
+
+    init {
+        viewModelScope.launch {
+            combine(
+                userSettingsStore.getFirstLaunchAt(),
+                userSettingsStore.getHasSeenReviewPrompt(),
+            ) { firstLaunchAt, hasSeenReviewPrompt ->
+                firstLaunchAt to hasSeenReviewPrompt
+            }.collect { (firstLaunchAt, hasSeenReviewPrompt) ->
+                val now = System.currentTimeMillis()
+                val resolvedFirstLaunch = if (firstLaunchAt == 0L) {
+                    userSettingsStore.setFirstLaunchAt(now)
+                    now
+                } else {
+                    firstLaunchAt
+                }
+
+                val shouldPrompt = !hasSeenReviewPrompt &&
+                        now - resolvedFirstLaunch >= REVIEW_PROMPT_DELAY_MILLIS
+
+                if (shouldPrompt && !_requestReview.value) {
+                    _requestReview.value = true
+                    userSettingsStore.setHasSeenReviewPrompt(true)
+                }
+            }
+        }
+    }
+
     private val usageSnapshot = combine(
         userSettingsStore.getActiveBlockOption(),
         userSettingsStore.getTimeLimit(),
@@ -195,11 +228,6 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         _showComingSoonSnackBar.value = false
     }
 
-    fun onReviewRequested() {
-        Timber.i("Review requested")
-        _requestReview.value = true
-    }
-
     fun onReviewRequestHandled() {
         Timber.v("Review request handled")
         _requestReview.value = false
@@ -235,11 +263,6 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         viewModelScope.launch {
             userSettingsStore.resetAllDailyUsage()
         }
-    }
-
-    companion object {
-        private const val PROGRESS_MAX = 100
-        private const val PAUSE_DURATION_MILLIS = 5 * 60 * 1000L
     }
 }
 
