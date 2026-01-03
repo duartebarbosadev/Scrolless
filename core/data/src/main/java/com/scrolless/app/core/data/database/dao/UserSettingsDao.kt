@@ -142,4 +142,16 @@ abstract class UserSettingsDao : BaseDao<UserSettings> {
 
     @Query("UPDATE user_settings SET pause_until_at = :pauseUntil WHERE id = 1")
     abstract suspend fun setPauseUntil(pauseUntil: Long)
+
+    @Query("SELECT first_launch_at FROM user_settings WHERE id = 1")
+    abstract fun getFirstLaunchAt(): Flow<Long>
+
+    @Query("UPDATE user_settings SET first_launch_at = :firstLaunchAt WHERE id = 1")
+    abstract suspend fun setFirstLaunchAt(firstLaunchAt: Long)
+
+    @Query("SELECT has_seen_review_prompt FROM user_settings WHERE id = 1")
+    abstract fun getHasSeenReviewPrompt(): Flow<Boolean>
+
+    @Query("UPDATE user_settings SET has_seen_review_prompt = :seen WHERE id = 1")
+    abstract suspend fun setHasSeenReviewPrompt(seen: Boolean)
 }

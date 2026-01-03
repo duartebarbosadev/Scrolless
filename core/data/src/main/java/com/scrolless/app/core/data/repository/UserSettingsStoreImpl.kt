@@ -49,7 +49,9 @@ class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : User
     private val _timerOverlayPositionX = MutableStateFlow(0)
     private val _waitingForAccessibility = MutableStateFlow(false)
     private val _hasSeenAccessibilityExplainer = MutableStateFlow(false)
+    private val _hasSeenReviewPrompt = MutableStateFlow(false)
     private val _pauseUntil = MutableStateFlow(0L)
+    private val _firstLaunchAt = MutableStateFlow(0L)
 
     init {
         coroutineScope.launch {
@@ -63,6 +65,12 @@ class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : User
         }
         coroutineScope.launch {
             userSettingsDao.getIntervalWindowStart().collect { _intervalWindowStart.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getFirstLaunchAt().collect { _firstLaunchAt.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getHasSeenReviewPrompt().collect { _hasSeenReviewPrompt.value = it }
         }
         coroutineScope.launch {
             userSettingsDao.getIntervalUsage().collect { _intervalUsage.value = it }
@@ -226,5 +234,19 @@ class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : User
     override suspend fun setPauseUntil(pauseUntil: Long) {
         _pauseUntil.value = pauseUntil
         userSettingsDao.setPauseUntil(pauseUntil)
+    }
+
+    override fun getFirstLaunchAt(): Flow<Long> = _firstLaunchAt
+
+    override suspend fun setFirstLaunchAt(firstLaunchAt: Long) {
+        _firstLaunchAt.value = firstLaunchAt
+        userSettingsDao.setFirstLaunchAt(firstLaunchAt)
+    }
+
+    override fun getHasSeenReviewPrompt(): Flow<Boolean> = _hasSeenReviewPrompt
+
+    override suspend fun setHasSeenReviewPrompt(seen: Boolean) {
+        _hasSeenReviewPrompt.value = seen
+        userSettingsDao.setHasSeenReviewPrompt(seen)
     }
 }

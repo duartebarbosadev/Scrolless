@@ -332,10 +332,6 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                 Timber.d("Help clicked -> show HelpDialog")
                 showHelpDialog = true
             },
-            onReviewClicked = {
-                Timber.i("Review button clicked")
-                viewModel.onReviewRequested()
-            },
             onIntervalTimerClick = {
                 val shouldBypass = BuildConfig.DEBUG && debugBypassAccessibilityCheck
                 if (shouldBypass || context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
@@ -485,7 +481,6 @@ private fun HomeContent(
     onConfigureDailyLimit: () -> Unit,
     onScreenTimerToggled: (Boolean) -> Unit,
     onHelpClicked: () -> Unit,
-    onReviewClicked: () -> Unit,
     onIntervalTimerClick: () -> Unit,
     onIntervalTimerEdit: () -> Unit,
     onPauseToggle: (Boolean) -> Unit,
@@ -742,10 +737,6 @@ private fun HomeContent(
                     modifier = Modifier.padding(horizontal = 8.dp),
                 )
             }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            RateButton(onClick = onReviewClicked)
         }
 
         if (showDebugPanel) {
@@ -1514,28 +1505,6 @@ fun OnScreenTimerToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, mo
 }
 
 @Composable
-private fun RateButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
-    ElevatedButton(
-        onClick = onClick,
-        modifier = modifier,
-        colors = ButtonDefaults.elevatedButtonColors(
-            containerColor = MaterialTheme.colorScheme.secondary,
-        ),
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.baseline_rate_review),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSecondary,
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = stringResource(R.string.rate_scrolless),
-            color = MaterialTheme.colorScheme.onSecondary,
-        )
-    }
-}
-
-@Composable
 fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     ElevatedButton(onClick = onClick, modifier = modifier) {
         Icon(
@@ -1598,7 +1567,6 @@ fun HomeScreenPreview() {
             onConfigureDailyLimit = {},
             onScreenTimerToggled = {},
             onHelpClicked = {},
-            onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
             onPauseToggle = { _ -> },
@@ -1616,7 +1584,6 @@ fun PreviewBlockAll() {
             onConfigureDailyLimit = {},
             onScreenTimerToggled = {},
             onHelpClicked = {},
-            onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
             onPauseToggle = { _ -> },
@@ -1634,7 +1601,6 @@ fun PreviewNothingSelected() {
             onConfigureDailyLimit = {},
             onScreenTimerToggled = {},
             onHelpClicked = {},
-            onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
             onPauseToggle = { _ -> },
@@ -1659,7 +1625,6 @@ fun PreviewIntervalTimerSelected() {
             onConfigureDailyLimit = {},
             onScreenTimerToggled = {},
             onHelpClicked = {},
-            onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
             onPauseToggle = { _ -> },
@@ -1684,7 +1649,6 @@ fun PreviewIntervalTimer() {
             onConfigureDailyLimit = {},
             onScreenTimerToggled = {},
             onHelpClicked = {},
-            onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
             onPauseToggle = { _ -> },
@@ -1708,7 +1672,6 @@ fun PreviewHelpDialog() {
             onConfigureDailyLimit = {},
             onScreenTimerToggled = {},
             onHelpClicked = {},
-            onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
             onPauseToggle = { _ -> },
@@ -1727,7 +1690,6 @@ fun PreviewAccessibilityExplainer() {
             onConfigureDailyLimit = {},
             onScreenTimerToggled = {},
             onHelpClicked = {},
-            onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
             onPauseToggle = { _ -> },
@@ -1746,7 +1708,6 @@ fun PreviewAccessibilitySuccessDialog() {
             onConfigureDailyLimit = {},
             onScreenTimerToggled = {},
             onHelpClicked = {},
-            onReviewClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
             onPauseToggle = { _ -> },
