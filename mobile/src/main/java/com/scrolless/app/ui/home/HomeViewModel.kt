@@ -66,11 +66,10 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
                 }
 
                 val shouldPrompt = !hasSeenReviewPrompt &&
-                        now - resolvedFirstLaunch >= REVIEW_PROMPT_DELAY_MILLIS
+                    now - resolvedFirstLaunch >= REVIEW_PROMPT_DELAY_MILLIS
 
                 if (shouldPrompt && !_requestReview.value) {
                     _requestReview.value = true
-                    userSettingsStore.setHasSeenReviewPrompt(true)
                 }
             }
         }
@@ -231,6 +230,18 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
     fun onReviewRequestHandled() {
         Timber.v("Review request handled")
         _requestReview.value = false
+    }
+
+    fun onReviewPromptResult(shown: Boolean) {
+        if (!shown) {
+            Timber.d("Review prompt was not shown; leaving eligible for future prompts.")
+            return
+        }
+
+        viewModelScope.launch {
+            Timber.d("Review prompt shown; marking as seen.")
+            userSettingsStore.setHasSeenReviewPrompt(true)
+        }
     }
 
     fun setWaitingForAccessibility(waiting: Boolean) {

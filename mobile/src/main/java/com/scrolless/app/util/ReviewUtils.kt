@@ -28,14 +28,16 @@ private const val GOOGLE_PLAY_STORE_PACKAGE = "com.android.vending"
 /**
  * Requests an in-app review using the Google Play In-App Review API.
  */
-fun requestAppReview(activity: Activity) {
+fun requestAppReview(activity: Activity, onResult: (Boolean) -> Unit) {
 
     if (!isActivityActive(activity)) {
+        onResult(false)
         return
     }
 
     if (BuildConfig.DEBUG) {
         // Skip in-app review in debug builds
+        onResult(false)
         return
     }
 
@@ -46,6 +48,7 @@ fun requestAppReview(activity: Activity) {
             installerPackageName ?: "unknown",
             GOOGLE_PLAY_STORE_PACKAGE,
         )
+        onResult(false)
         return
     }
 
@@ -55,6 +58,7 @@ fun requestAppReview(activity: Activity) {
             val reviewInfo = request.result
             if (!isActivityActive(activity)) {
                 Timber.w("In-app review launch skipped: activity no longer active")
+                onResult(false)
                 return@addOnCompleteListener
             }
             reviewManager.launchReviewFlow(activity, reviewInfo).addOnCompleteListener { launch ->
@@ -64,12 +68,14 @@ fun requestAppReview(activity: Activity) {
                         "In-app review launch failed",
                     )
                 }
+                onResult(launch.isSuccessful)
             }
         } else {
             Timber.w(
                 request.exception,
                 "In-app review request failed",
             )
+            onResult(false)
         }
     }
 }
