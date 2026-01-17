@@ -50,4 +50,6 @@ data class UserSettings(
     @ColumnInfo(name = "pause_until_at") val pauseUntilAt: Long = 0L,
     @ColumnInfo(name = "first_launch_at", defaultValue = "0") val firstLaunchAt: Long = 0L,
     @ColumnInfo(name = "has_seen_review_prompt", defaultValue = "0") val hasSeenReviewPrompt: Boolean = false,
+    @ColumnInfo(name = "review_prompt_attempt_count", defaultValue = "0") val reviewPromptAttemptCount: Int = 0,
+    @ColumnInfo(name = "review_prompt_last_attempt_at", defaultValue = "0") val reviewPromptLastAttemptAt: Long = 0L,
 )

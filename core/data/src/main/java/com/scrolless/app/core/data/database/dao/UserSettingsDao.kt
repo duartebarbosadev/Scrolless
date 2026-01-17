@@ -154,4 +154,16 @@ abstract class UserSettingsDao : BaseDao<UserSettings> {
 
     @Query("UPDATE user_settings SET has_seen_review_prompt = :seen WHERE id = 1")
     abstract suspend fun setHasSeenReviewPrompt(seen: Boolean)
+
+    @Query("SELECT review_prompt_attempt_count FROM user_settings WHERE id = 1")
+    abstract fun getReviewPromptAttemptCount(): Flow<Int>
+
+    @Query("UPDATE user_settings SET review_prompt_attempt_count = :count WHERE id = 1")
+    abstract suspend fun setReviewPromptAttemptCount(count: Int)
+
+    @Query("SELECT review_prompt_last_attempt_at FROM user_settings WHERE id = 1")
+    abstract fun getReviewPromptLastAttemptAt(): Flow<Long>
+
+    @Query("UPDATE user_settings SET review_prompt_last_attempt_at = :timestamp WHERE id = 1")
+    abstract suspend fun setReviewPromptLastAttemptAt(timestamp: Long)
 }

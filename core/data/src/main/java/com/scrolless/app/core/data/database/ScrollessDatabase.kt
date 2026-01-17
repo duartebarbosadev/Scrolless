@@ -50,6 +50,15 @@ abstract class ScrollessDatabase : RoomDatabase() {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE user_settings ADD COLUMN first_launch_at INTEGER NOT NULL DEFAULT 0")
                 db.execSQL("ALTER TABLE user_settings ADD COLUMN has_seen_review_prompt INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE user_settings ADD COLUMN review_prompt_attempt_count INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE user_settings ADD COLUMN review_prompt_last_attempt_at INTEGER NOT NULL DEFAULT 0")
+                db.execSQL(
+                    """
+                    UPDATE user_settings
+                    SET first_launch_at = CAST(strftime('%s','now') AS INTEGER) * 1000
+                    WHERE first_launch_at = 0
+                    """.trimIndent(),
+                )
             }
         }
     }

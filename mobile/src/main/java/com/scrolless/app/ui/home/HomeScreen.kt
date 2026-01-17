@@ -466,10 +466,11 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
     LaunchedEffect(uiState.requestReview) {
         if (uiState.requestReview && activity != null) {
             Timber.i("Requesting in-app review")
-            requestAppReview(activity) { shown ->
-                viewModel.onReviewPromptResult(shown)
+            viewModel.onReviewRequestStarted()
+            requestAppReview(activity) { result ->
+                viewModel.onReviewPromptResult(result)
+                viewModel.onReviewRequestHandled()
             }
-            viewModel.onReviewRequestHandled()
         }
     }
 }
