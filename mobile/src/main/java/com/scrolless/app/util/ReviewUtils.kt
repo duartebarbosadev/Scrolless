@@ -40,10 +40,7 @@ enum class ReviewPromptResult {
  *
  * Debug builds use the Play Core [FakeReviewManager] for testing.
  */
-fun requestAppReview(
-    activity: Activity,
-    onResult: (ReviewPromptResult) -> Unit,
-) {
+fun requestAppReview(activity: Activity, onResult: (ReviewPromptResult) -> Unit) {
 
     if (!isActivityActive(activity)) {
         onResult(ReviewPromptResult.SkippedTemporary)

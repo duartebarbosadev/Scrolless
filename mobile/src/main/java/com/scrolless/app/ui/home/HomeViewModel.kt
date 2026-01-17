@@ -86,10 +86,12 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
                 if (shouldPrompt && !_requestReview.value) {
                     _requestReview.value = true
                 } else {
-                    Timber.d("Review prompt not eligible: hasSeen=%s, attempts=%d, lastAttemptAt=%d",
+                    Timber.d(
+                        "Review prompt not eligible: hasSeen=%s, attempts=%d, lastAttemptAt=%d",
                         snapshot.hasSeenReviewPrompt,
                         snapshot.attemptCount,
-                        snapshot.lastAttemptAt)
+                        snapshot.lastAttemptAt,
+                    )
                 }
             }
         }
