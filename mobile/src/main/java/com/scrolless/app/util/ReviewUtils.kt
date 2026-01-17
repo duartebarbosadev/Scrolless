@@ -18,65 +18,101 @@ package com.scrolless.app.util
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Build
-import androidx.core.net.toUri
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.testing.FakeReviewManager
 import com.scrolless.app.BuildConfig
 import timber.log.Timber
 
 private const val GOOGLE_PLAY_STORE_PACKAGE = "com.android.vending"
 
-fun requestAppReview(activity: Activity) {
+enum class ReviewPromptResult {
+    // Review flow launched successfully (Play will decide if UI appears).
+    Shown,
+    // Retry later (temporary failure or activity went away).
+    SkippedTemporary,
+    // Don't retry (not installed from Play).
+    SkippedPermanent,
+}
+
+/**
+ * Requests an in-app review using the Google Play In-App Review API.
+ *
+ * Debug builds use the Play Core [FakeReviewManager] for testing.
+ */
+fun requestAppReview(activity: Activity, onResult: (ReviewPromptResult) -> Unit) {
+
     if (!isActivityActive(activity)) {
+        onResult(ReviewPromptResult.SkippedTemporary)
         return
     }
 
-    val reviewManager = ReviewManagerFactory.create(activity)
-
     if (BuildConfig.DEBUG) {
-        // Skip in-app review in debug builds
-        openPlayStore(activity, BuildConfig.APPLICATION_ID.removeSuffix(".debug"))
+        // FakeReviewManager avoids Play Store dependency for debug builds and can be used in debug
+        val reviewManager = FakeReviewManager(activity)
+        reviewManager.requestReviewFlow().addOnCompleteListener { request ->
+            if (request.isSuccessful) {
+                val reviewInfo = request.result
+                if (!isActivityActive(activity)) {
+                    Timber.w("In-app review launch skipped: activity no longer active")
+                    onResult(ReviewPromptResult.SkippedTemporary)
+                    return@addOnCompleteListener
+                }
+                reviewManager.launchReviewFlow(activity, reviewInfo).addOnCompleteListener { launch ->
+                    if (!launch.isSuccessful) {
+                        Timber.w(
+                            launch.exception,
+                            "In-app review launch failed",
+                        )
+                    }
+                    onResult(if (launch.isSuccessful) ReviewPromptResult.Shown else ReviewPromptResult.SkippedTemporary)
+                }
+            } else {
+                Timber.w(
+                    request.exception,
+                    "In-app review request failed",
+                )
+                onResult(ReviewPromptResult.SkippedTemporary)
+            }
+        }
         return
     }
 
     val installerPackageName = getInstallerPackageName(activity)
     if (installerPackageName != GOOGLE_PLAY_STORE_PACKAGE) {
         Timber.w(
-            "In-app review unavailable: installed by %s (expected %s); falling back to Play Store listing",
+            "In-app review unavailable: installed by %s (expected %s);",
             installerPackageName ?: "unknown",
             GOOGLE_PLAY_STORE_PACKAGE,
         )
-        openPlayStore(activity, BuildConfig.APPLICATION_ID)
+        onResult(ReviewPromptResult.SkippedPermanent)
         return
     }
 
+    val reviewManager = ReviewManagerFactory.create(activity)
     reviewManager.requestReviewFlow().addOnCompleteListener { request ->
         if (request.isSuccessful) {
             val reviewInfo = request.result
             if (!isActivityActive(activity)) {
                 Timber.w("In-app review launch skipped: activity no longer active")
+                onResult(ReviewPromptResult.SkippedTemporary)
                 return@addOnCompleteListener
             }
             reviewManager.launchReviewFlow(activity, reviewInfo).addOnCompleteListener { launch ->
                 if (!launch.isSuccessful) {
                     Timber.w(
                         launch.exception,
-                        "In-app review launch failed; falling back to Play Store listing",
+                        "In-app review launch failed",
                     )
-                    if (isActivityActive(activity)) {
-                        openPlayStore(activity, BuildConfig.APPLICATION_ID)
-                    }
                 }
+                onResult(if (launch.isSuccessful) ReviewPromptResult.Shown else ReviewPromptResult.SkippedTemporary)
             }
         } else {
             Timber.w(
                 request.exception,
-                "In-app review request failed; falling back to Play Store listing",
+                "In-app review request failed",
             )
-            if (isActivityActive(activity)) {
-                openPlayStore(activity, BuildConfig.APPLICATION_ID)
-            }
+            onResult(ReviewPromptResult.SkippedTemporary)
         }
     }
 }
@@ -91,35 +127,3 @@ private fun getInstallerPackageName(context: Context): String? = runCatching {
         context.packageManager.getInstallerPackageName(context.packageName)
     }
 }.getOrNull()
-
-private fun openPlayStore(context: Context, packageName: String) {
-    if (context is Activity && !isActivityActive(context)) {
-        Timber.w("Play Store launch skipped: activity no longer active")
-        return
-    }
-    try {
-        val intent =
-            Intent(Intent.ACTION_VIEW, "market://details?id=$packageName".toUri()).apply {
-                if (context !is Activity) {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
-            }
-        context.startActivity(intent)
-    } catch (exception: Exception) {
-        Timber.w(exception, "Play Store app unavailable; falling back to browser")
-        val intent =
-            Intent(
-                Intent.ACTION_VIEW,
-                "https://play.google.com/store/apps/details?id=$packageName".toUri(),
-            ).apply {
-                if (context !is Activity) {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
-            }
-        try {
-            context.startActivity(intent)
-        } catch (fallbackException: Exception) {
-            Timber.w(fallbackException, "Play Store listing unavailable; no handler found")
-        }
-    }
-}

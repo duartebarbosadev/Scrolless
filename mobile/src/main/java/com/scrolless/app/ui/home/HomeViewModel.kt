@@ -21,6 +21,7 @@ import androidx.lifecycle.viewModelScope
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
+import com.scrolless.app.util.ReviewPromptResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -42,6 +43,59 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
 
     private val _showComingSoonSnackBar = MutableStateFlow(false)
     private val _requestReview = MutableStateFlow(false)
+    // Keep latest persisted attempt metadata so we can update without re-collecting.
+    private var latestReviewAttemptCount = 0
+    private var latestReviewAttemptAt = 0L
+
+    companion object {
+        private const val PROGRESS_MAX = 100
+        private const val PAUSE_DURATION_MILLIS = 5 * 60 * 1000L
+        private val REVIEW_PROMPT_DELAY_MILLIS = TimeUnit.DAYS.toMillis(1) // Show review popup after 1 day
+        private const val REVIEW_PROMPT_MAX_ATTEMPTS = 3
+        private val REVIEW_PROMPT_RETRY_DELAY_MILLIS = TimeUnit.DAYS.toMillis(2)
+    }
+
+    init {
+        viewModelScope.launch {
+            // Gate review prompts by first launch, attempt count, and retry delay
+            kotlinx.coroutines.flow.combine(
+                userSettingsStore.getFirstLaunchAt(),
+                userSettingsStore.getHasSeenReviewPrompt(),
+                userSettingsStore.getReviewPromptAttemptCount(),
+                userSettingsStore.getReviewPromptLastAttemptAt(),
+            ) { firstLaunchAt, hasSeenReviewPrompt, attemptCount, lastAttemptAt ->
+                ReviewPromptSnapshot(firstLaunchAt, hasSeenReviewPrompt, attemptCount, lastAttemptAt)
+            }.collect { snapshot ->
+                val now = System.currentTimeMillis()
+                latestReviewAttemptCount = snapshot.attemptCount
+                latestReviewAttemptAt = snapshot.lastAttemptAt
+                val resolvedFirstLaunch = if (snapshot.firstLaunchAt == 0L) {
+                    userSettingsStore.setFirstLaunchAt(now)
+                    now
+                } else {
+                    snapshot.firstLaunchAt
+                }
+
+                // Avoid spamming
+                // Require a initial delay, a retry cooldown, and a max attempt cap.
+                val shouldPrompt = !snapshot.hasSeenReviewPrompt &&
+                    snapshot.attemptCount < REVIEW_PROMPT_MAX_ATTEMPTS &&
+                    (snapshot.lastAttemptAt == 0L || now - snapshot.lastAttemptAt >= REVIEW_PROMPT_RETRY_DELAY_MILLIS) &&
+                    now - resolvedFirstLaunch >= REVIEW_PROMPT_DELAY_MILLIS
+
+                if (shouldPrompt && !_requestReview.value) {
+                    _requestReview.value = true
+                } else {
+                    Timber.d(
+                        "Review prompt not eligible: hasSeen=%s, attempts=%d, lastAttemptAt=%d",
+                        snapshot.hasSeenReviewPrompt,
+                        snapshot.attemptCount,
+                        snapshot.lastAttemptAt,
+                    )
+                }
+            }
+        }
+    }
 
     private val usageSnapshot = combine(
         userSettingsStore.getActiveBlockOption(),
@@ -195,14 +249,40 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         _showComingSoonSnackBar.value = false
     }
 
-    fun onReviewRequested() {
-        Timber.i("Review requested")
-        _requestReview.value = true
-    }
-
     fun onReviewRequestHandled() {
         Timber.v("Review request handled")
         _requestReview.value = false
+    }
+
+    fun onReviewRequestStarted() {
+        val now = System.currentTimeMillis()
+        val nextAttemptCount = latestReviewAttemptCount + 1
+        latestReviewAttemptCount = nextAttemptCount
+        latestReviewAttemptAt = now
+
+        viewModelScope.launch {
+            userSettingsStore.setReviewPromptAttemptCount(nextAttemptCount)
+            userSettingsStore.setReviewPromptLastAttemptAt(now)
+        }
+    }
+
+    fun onReviewPromptResult(result: ReviewPromptResult) {
+        // Treat permanent failures and max retry exhaustion as terminal.
+        val shouldMarkSeen = when (result) {
+            ReviewPromptResult.Shown -> true
+            ReviewPromptResult.SkippedPermanent -> true
+            ReviewPromptResult.SkippedTemporary -> false
+        } || latestReviewAttemptCount >= REVIEW_PROMPT_MAX_ATTEMPTS
+
+        if (!shouldMarkSeen) {
+            Timber.d("Review prompt was not shown; leaving eligible for future prompts.")
+            return
+        }
+
+        viewModelScope.launch {
+            Timber.d("Review prompt resolved; marking as seen.")
+            userSettingsStore.setHasSeenReviewPrompt(true)
+        }
     }
 
     fun setWaitingForAccessibility(waiting: Boolean) {
@@ -235,11 +315,6 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         viewModelScope.launch {
             userSettingsStore.resetAllDailyUsage()
         }
-    }
-
-    companion object {
-        private const val PROGRESS_MAX = 100
-        private const val PAUSE_DURATION_MILLIS = 5 * 60 * 1000L
     }
 }
 
@@ -285,4 +360,11 @@ private data class UsageSnapshot(
     val reelsUsage: Long,
     val shortsUsage: Long,
     val tiktokUsage: Long,
+)
+
+private data class ReviewPromptSnapshot(
+    val firstLaunchAt: Long,
+    val hasSeenReviewPrompt: Boolean,
+    val attemptCount: Int,
+    val lastAttemptAt: Long,
 )
