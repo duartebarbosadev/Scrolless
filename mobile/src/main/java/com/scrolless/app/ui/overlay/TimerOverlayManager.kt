@@ -105,7 +105,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     }
 
-    fun show() {
+    fun show(sessionStartAt: Long = System.currentTimeMillis()) {
         if (rootView != null) {
             cleanupView()
         }
@@ -115,8 +115,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         }
         val wm = windowManager ?: return
 
-        // Subtract 1 second to account for initial delay
-        sessionStartTime = System.currentTimeMillis() - 1000L
+        sessionStartTime = sessionStartAt
 
         // Create TextView with polished styling
         timerTextView = TextView(serviceContext).apply {
@@ -240,7 +239,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         timerJob?.cancel()
         timerJob = coroutineScope.launch {
             while (true) {
-                val elapsed = System.currentTimeMillis() - sessionStartTime
+                val elapsed = (System.currentTimeMillis() - sessionStartTime).coerceAtLeast(0L)
                 timerTextView?.text = elapsed.formatAsTime()
                 delay(1000)
             }

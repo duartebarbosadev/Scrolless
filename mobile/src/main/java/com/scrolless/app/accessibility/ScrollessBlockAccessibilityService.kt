@@ -479,7 +479,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                     mainHandler.post {
                         if (currentTimerOverlayEnabled && isProcessingBlockedContent) {
                             Timber.v("Showing timer overlay")
-                            timerOverlayManager.show()
+                            timerOverlayManager.show(timeStartOnBrainRot)
                         }
                     }
                     Timber.d("Content allowed on enter, will monitor usage")
@@ -493,7 +493,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             if (currentTimerOverlayEnabled) {
                 Timber.v("Showing timer overlay (paused)")
                 mainHandler.post {
-                    timerOverlayManager.show()
+                    timerOverlayManager.show(timeStartOnBrainRot)
                 }
             }
             Timber.d("Pause active - skipping blocking check on enter, but tracking usage")
