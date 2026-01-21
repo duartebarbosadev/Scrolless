@@ -21,6 +21,7 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PixelFormat
@@ -105,6 +106,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     fun show(sessionStartAt: Long = System.currentTimeMillis()) {
         if (rootView != null) {
             cleanupView()
