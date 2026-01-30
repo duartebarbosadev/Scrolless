@@ -108,6 +108,8 @@ import com.scrolless.app.BuildConfig
 import com.scrolless.app.R
 import com.scrolless.app.accessibility.ScrollessBlockAccessibilityService
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockableApp
+import com.scrolless.app.core.model.UsageSegment
 import com.scrolless.app.designsystem.component.AppUsageLegend
 import com.scrolless.app.designsystem.component.AppUsageSegment
 import com.scrolless.app.designsystem.component.AutoResizingText
@@ -117,8 +119,6 @@ import com.scrolless.app.designsystem.theme.instagramReelsColor
 import com.scrolless.app.designsystem.theme.progressbar_green_use
 import com.scrolless.app.designsystem.theme.progressbar_orange_use
 import com.scrolless.app.designsystem.theme.progressbar_red_use
-import com.scrolless.app.designsystem.theme.tiktokColor
-import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.ui.home.components.AccessibilityExplainerBottomSheet
 import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheet
 import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheetPreview
@@ -133,6 +133,7 @@ import com.scrolless.app.util.formatTime
 import com.scrolless.app.util.isAccessibilityServiceEnabled
 import com.scrolless.app.util.radialGradientScrim
 import com.scrolless.app.util.requestAppReview
+import java.time.LocalDateTime
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.delay
@@ -535,7 +536,7 @@ private fun HomeContent(
                     timeLimit = uiState.timeLimit,
                     intervalLength = uiState.intervalLength,
                     intervalWindowStart = uiState.intervalWindowStart,
-                    perAppUsage = uiState.perAppUsage,
+                    listUsageSegments = uiState.listUsageSegments,
                     onProgressCardClicked = onProgressCardClicked,
                 )
 
@@ -744,7 +745,7 @@ private fun HomeContent(
 
         if (showDebugPanel) {
             FloatingDebugUsagePanel(
-                perAppUsage = uiState.perAppUsage,
+                perAppUsage = uiState.listUsageSegments,
                 isExpanded = isDebugExpanded,
                 onToggleExpanded = { isDebugExpanded = !isDebugExpanded },
                 onUsageChanged = onDebugUsageChanged,
@@ -1155,7 +1156,7 @@ private fun ProgressCard(
     timeLimit: Long,
     intervalLength: Long,
     intervalWindowStart: Long,
-    perAppUsage: PerAppUsage = PerAppUsage(),
+    listUsageSegments: List<UsageSegment> = emptyList(),
     onProgressCardClicked: () -> Unit = {},
 ) {
     val clampedProgress = progress.coerceIn(0, 100)
@@ -1208,31 +1209,39 @@ private fun ProgressCard(
     val shortsLabel = stringResource(R.string.app_shorts)
 
     // Per-app usage data for the segmented progress indicator
-    val appUsageSegments = remember(perAppUsage, currentUsage, reelsLabel, tiktokLabel, shortsLabel) {
-        val knownUsage = perAppUsage.reelsUsage + perAppUsage.tiktokUsage + perAppUsage.shortsUsage
+    val appUsageSegments = remember(listUsageSegments, currentUsage, reelsLabel, tiktokLabel, shortsLabel) {
+        // val knownUsage = perAppUsage.reelsUsage + perAppUsage.tiktokUsage + perAppUsage.shortsUsage
+        var totalVideoView = 0L
+        for (usageSegment in listUsageSegments) {
+
+            totalVideoView += usageSegment.durationMillis
+        }
         val cappedTotalUsage = currentUsage.coerceAtLeast(0L)
-        val scale = if (cappedTotalUsage in 1..<knownUsage) {
-            cappedTotalUsage.toDouble() / knownUsage.toDouble()
+        val scale = if (cappedTotalUsage in 1..<totalVideoView) {
+            cappedTotalUsage.toDouble() / totalVideoView.toDouble()
         } else {
             1.0
         }
-        listOf(
-            AppUsageSegment(
-                appName = reelsLabel,
-                usageMillis = (perAppUsage.reelsUsage * scale).toLong(),
-                color = instagramReelsColor,
-            ),
-            AppUsageSegment(
-                appName = tiktokLabel,
-                usageMillis = (perAppUsage.tiktokUsage * scale).toLong(),
-                color = tiktokColor,
-            ),
-            AppUsageSegment(
-                appName = shortsLabel,
-                usageMillis = (perAppUsage.shortsUsage * scale).toLong(),
-                color = youtubeShortsColor,
-            ),
-        ).filter { it.usageMillis > 0L }
+        listUsageSegments.map { entity ->
+            AppUsageSegment(entity.app.name, ((entity.durationMillis * scale).toLong()), instagramReelsColor)
+        }
+//        listOf(
+//            AppUsageSegment(
+//                appName = reelsLabel,
+//                usageMillis = (perAppUsage.reelsUsage * scale).toLong(),
+//                color = instagramReelsColor,
+//            ),
+//            AppUsageSegment(
+//                appName = tiktokLabel,
+//                usageMillis = (perAppUsage.tiktokUsage * scale).toLong(),
+//                color = tiktokColor,
+//            ),
+//            AppUsageSegment(
+//                appName = shortsLabel,
+//                usageMillis = (perAppUsage.shortsUsage * scale).toLong(),
+//                color = youtubeShortsColor,
+//            ),
+//        ).filter { it.usageMillis > 0L }
     }
 
     val segmentProgressFraction = when {
@@ -1556,10 +1565,9 @@ fun HomeScreenPreview() {
         currentUsage = TimeUnit.MINUTES.toMillis(42),
         progress = 70,
         timerOverlayEnabled = true,
-        perAppUsage = PerAppUsage(
-            reelsUsage = TimeUnit.MINUTES.toMillis(12),
-            tiktokUsage = TimeUnit.MINUTES.toMillis(15),
-            shortsUsage = TimeUnit.MINUTES.toMillis(15),
+        listUsageSegments = listOf<UsageSegment>(
+            UsageSegment(BlockableApp.REELS, 200, LocalDateTime.of(20, 10, 2, 1, 2)),
+            UsageSegment(BlockableApp.REELS, 200, LocalDateTime.of(20, 10, 2, 1, 2)),
         ),
     )
 

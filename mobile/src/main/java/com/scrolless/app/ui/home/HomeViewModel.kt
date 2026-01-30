@@ -19,10 +19,13 @@ package com.scrolless.app.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.UsageSegment
+import com.scrolless.app.core.repository.UsageSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
 import com.scrolless.app.util.ReviewPromptResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.min
@@ -39,7 +42,10 @@ import timber.log.Timber
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val userSettingsStore: UserSettingsStore) : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val userSettingsStore: UserSettingsStore,
+    private val usageSegmentStore: UsageSegmentStore,
+) : ViewModel() {
 
     private val _showComingSoonSnackBar = MutableStateFlow(false)
     private val _requestReview = MutableStateFlow(false)
@@ -104,10 +110,8 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         userSettingsStore.getIntervalUsage(),
         userSettingsStore.getIntervalWindowStart(),
         userSettingsStore.getTotalDailyUsage(),
-        userSettingsStore.getReelsDailyUsage(),
-        userSettingsStore.getShortsDailyUsage(),
-        userSettingsStore.getTiktokDailyUsage(),
-    ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage, reelsUsage, shortsUsage, tiktokUsage ->
+        usageSegmentStore.getUsageSegment(LocalDate.now()),
+    ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage, usageSegment ->
         UsageSnapshot(
             blockOption = blockOption,
             timeLimit = timeLimit,
@@ -115,9 +119,7 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
             intervalUsage = intervalUsage,
             intervalWindowStart = intervalWindowStart,
             currentUsage = currentUsage,
-            reelsUsage = reelsUsage,
-            shortsUsage = shortsUsage,
-            tiktokUsage = tiktokUsage,
+            usageSegment = usageSegment,
         )
     }
 
@@ -151,11 +153,7 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
             requestReview = requestReview,
             hasSeenAccessibilityExplainer = hasSeenAccessibilityExplainer,
             hasLoadedSettings = true,
-            perAppUsage = PerAppUsage(
-                reelsUsage = usage.reelsUsage,
-                shortsUsage = usage.shortsUsage,
-                tiktokUsage = usage.tiktokUsage,
-            ),
+            listUsageSegments = usage.usageSegment,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -318,8 +316,6 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
     }
 }
 
-data class PerAppUsage(val reelsUsage: Long = 0L, val shortsUsage: Long = 0L, val tiktokUsage: Long = 0L)
-
 data class HomeUiState(
     val blockOption: BlockOption = BlockOption.NothingSelected,
     val timeLimit: Long = 0L,
@@ -347,7 +343,7 @@ data class HomeUiState(
     /**
      * Per-app usage breakdown for the segmented progress indicator.
      */
-    val perAppUsage: PerAppUsage = PerAppUsage(),
+    val listUsageSegments: List<UsageSegment> = emptyList(),
 )
 
 private data class UsageSnapshot(
@@ -357,9 +353,7 @@ private data class UsageSnapshot(
     val intervalUsage: Long,
     val intervalWindowStart: Long,
     val currentUsage: Long,
-    val reelsUsage: Long,
-    val shortsUsage: Long,
-    val tiktokUsage: Long,
+    val usageSegment: List<UsageSegment>,
 )
 
 private data class ReviewPromptSnapshot(

@@ -71,7 +71,6 @@ import androidx.compose.ui.unit.dp
 import com.scrolless.app.designsystem.theme.instagramReelsColor
 import com.scrolless.app.designsystem.theme.tiktokColor
 import com.scrolless.app.designsystem.theme.youtubeShortsColor
-import com.scrolless.app.ui.home.PerAppUsage
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.utils.formatMinutes
 import java.util.concurrent.TimeUnit

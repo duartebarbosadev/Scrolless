@@ -21,22 +21,27 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.scrolless.app.core.data.database.dao.UsageSegmentDao
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.data.database.model.UserSettings
+import com.scrolless.app.core.data.database.model.UsageSegmentEntity
+import com.scrolless.app.core.data.database.model.UserSettingsEntity
 
 /**
  * The [RoomDatabase]
  */
 @Database(
     entities = [
-        UserSettings::class,
+        UserSettingsEntity::class,
+        UsageSegmentEntity::class,
     ],
     version = 4,
     exportSchema = false,
 )
-@TypeConverters(LocalDateTypeConverters::class)
+@TypeConverters(LocalDateTypeConverters::class, BlockableAppTypeConverters::class, LocalDateTimeTypeConverters::class)
 abstract class ScrollessDatabase : RoomDatabase() {
     abstract fun userSettingsDao(): UserSettingsDao
+
+    abstract fun usageSegmentDao(): UsageSegmentDao
 
     companion object {
         val MIGRATION_2_3 = object : Migration(2, 3) {

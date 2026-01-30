@@ -18,16 +18,16 @@ package com.scrolless.app.core.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.scrolless.app.core.data.database.model.UserSettings
+import com.scrolless.app.core.data.database.model.UserSettingsEntity
 import com.scrolless.app.core.model.BlockOption
 import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
 
 /**
- * [androidx.room.Room] DAO for [UserSettings] related operations.
+ * [androidx.room.Room] DAO for [UserSettingsEntity] related operations.
  */
 @Dao
-abstract class UserSettingsDao : BaseDao<UserSettings> {
+abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
 
     @Query("SELECT active_block_option FROM user_settings WHERE id = 1")
     abstract fun getActiveBlockOption(): Flow<BlockOption>
