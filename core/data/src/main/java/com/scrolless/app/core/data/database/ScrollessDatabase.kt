@@ -21,9 +21,9 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.scrolless.app.core.data.database.dao.UsageSegmentDao
+import com.scrolless.app.core.data.database.dao.SessionSegmentDao
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.data.database.model.UsageSegmentEntity
+import com.scrolless.app.core.data.database.model.SessionSegmentEntity
 import com.scrolless.app.core.data.database.model.UserSettingsEntity
 
 /**
@@ -32,7 +32,7 @@ import com.scrolless.app.core.data.database.model.UserSettingsEntity
 @Database(
     entities = [
         UserSettingsEntity::class,
-        UsageSegmentEntity::class,
+        SessionSegmentEntity::class,
     ],
     version = 4,
     exportSchema = false,
@@ -41,7 +41,7 @@ import com.scrolless.app.core.data.database.model.UserSettingsEntity
 abstract class ScrollessDatabase : RoomDatabase() {
     abstract fun userSettingsDao(): UserSettingsDao
 
-    abstract fun usageSegmentDao(): UsageSegmentDao
+    abstract fun sessionSegmentDao(): SessionSegmentDao
 
     companion object {
         val MIGRATION_2_3 = object : Migration(2, 3) {

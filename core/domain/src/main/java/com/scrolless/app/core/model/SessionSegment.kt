@@ -14,31 +14,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.core.data.database.model
+package com.scrolless.app.core.model
 
 import androidx.compose.runtime.Immutable
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.scrolless.app.core.model.BlockableApp
-import com.scrolless.app.core.model.UsageSegment
 import java.time.LocalDateTime
 
-@Entity(
-    tableName = "usage_segments",
-)
 @Immutable
-data class UsageSegmentEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0L,
-    val app: BlockableApp,
-    val durationMillis: Long,
-    val startDateTime: LocalDateTime,
-)
-
-fun UsageSegmentEntity.toUsageSegment(): UsageSegment {
-    return UsageSegment(
-        app = this.app,
-        durationMillis = this.durationMillis,
-        startDateTime = this.startDateTime,
-    )
-}
+data class SessionSegment(val app: BlockableApp, val durationMillis: Long, val startDateTime: LocalDateTime)

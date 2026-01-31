@@ -14,10 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.core.model
+package com.scrolless.app.core.repository
 
-import androidx.compose.runtime.Immutable
-import java.time.LocalDateTime
+import com.scrolless.app.core.model.SessionSegment
+import java.time.LocalDate
+import kotlinx.coroutines.flow.Flow
 
-@Immutable
-data class UsageSegment(val app: BlockableApp, val durationMillis: Long, val startDateTime: LocalDateTime)
+interface SessionSegmentStore {
+    fun getUsageSegment(date: LocalDate): Flow<List<SessionSegment>>
+
+    fun addUsageSegment(sessionSegment: SessionSegment)
+}

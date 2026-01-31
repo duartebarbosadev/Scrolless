@@ -28,18 +28,20 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -49,10 +51,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -68,22 +71,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.scrolless.app.core.model.BlockableApp
+import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.theme.instagramReelsColor
 import com.scrolless.app.designsystem.theme.tiktokColor
 import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.utils.formatMinutes
+import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
 private const val DEBUG_USAGE_MAX_MINUTES = 180
+private const val DEBUG_USAGE_MAX_SEGMENTS_PER_APP = 6
+private val DEBUG_PANEL_MAX_WIDTH = 320.dp
 
 @Composable
 internal fun FloatingDebugUsagePanel(
-    perAppUsage: PerAppUsage,
+    sessionSegments: List<SessionSegment>,
     isExpanded: Boolean,
     onToggleExpanded: () -> Unit,
-    onUsageChanged: (Int, Int, Int) -> Unit,
+    onUsageChanged: (List<SessionSegment>) -> Unit,
     onReset: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -138,9 +146,9 @@ internal fun FloatingDebugUsagePanel(
                         offsetPx = clampOffset(nextOffset)
                     }
                 }
-                .widthIn(max = 360.dp),
+                .widthIn(max = DEBUG_PANEL_MAX_WIDTH),
             horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             AnimatedVisibility(
                 visible = isExpanded,
@@ -154,7 +162,7 @@ internal fun FloatingDebugUsagePanel(
                 ) + fadeOut(animationSpec = tween(160)),
             ) {
                 DebugUsageTuner(
-                    perAppUsage = perAppUsage,
+                    sessionSegments = sessionSegments,
                     isExpanded = isExpanded,
                     onUsageChanged = onUsageChanged,
                     onReset = onReset,
@@ -174,19 +182,19 @@ internal fun FloatingDebugUsagePanel(
                 tonalElevation = 6.dp,
             ) {
                 Row(
-                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp),
+                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(8.dp)
+                            .size(6.dp)
                             .clip(RoundedCornerShape(percent = 50))
                             .background(MaterialTheme.colorScheme.primary),
                     )
                     Text(
                         text = if (isExpanded) "Hide" else "Debug Window",
-                        style = MaterialTheme.typography.labelLarge,
+                        style = MaterialTheme.typography.labelMedium,
                         fontWeight = FontWeight.SemiBold,
                     )
                 }
@@ -197,20 +205,20 @@ internal fun FloatingDebugUsagePanel(
 
 @Composable
 private fun DebugUsageTuner(
-    perAppUsage: PerAppUsage,
+    sessionSegments: List<SessionSegment>,
     isExpanded: Boolean,
-    onUsageChanged: (Int, Int, Int) -> Unit,
+    onUsageChanged: (List<SessionSegment>) -> Unit,
     onReset: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var reelsMinutes by remember(perAppUsage.reelsUsage) {
-        mutableIntStateOf(perAppUsage.reelsUsage.toWholeMinutes())
+    val reelsSegments = remember(sessionSegments) {
+        sessionSegments.segmentMinutesFor(BlockableApp.REELS).ifEmpty { listOf(0) }.toStateList()
     }
-    var shortsMinutes by remember(perAppUsage.shortsUsage) {
-        mutableIntStateOf(perAppUsage.shortsUsage.toWholeMinutes())
+    val shortsSegments = remember(sessionSegments) {
+        sessionSegments.segmentMinutesFor(BlockableApp.SHORTS).ifEmpty { listOf(0) }.toStateList()
     }
-    var tiktokMinutes by remember(perAppUsage.tiktokUsage) {
-        mutableIntStateOf(perAppUsage.tiktokUsage.toWholeMinutes())
+    val tiktokSegments = remember(sessionSegments) {
+        sessionSegments.segmentMinutesFor(BlockableApp.TIKTOK).ifEmpty { listOf(0) }.toStateList()
     }
     val headerBrush = Brush.linearGradient(
         listOf(
@@ -219,9 +227,17 @@ private fun DebugUsageTuner(
             MaterialTheme.colorScheme.tertiary.copy(alpha = 0.05f),
         ),
     )
+    val baseTime = remember { LocalDateTime.now() }
 
     fun commitUsage() {
-        onUsageChanged(reelsMinutes, shortsMinutes, tiktokMinutes)
+        onUsageChanged(
+            buildUsageSegments(
+                reelsSegments = reelsSegments,
+                shortsSegments = shortsSegments,
+                tiktokSegments = tiktokSegments,
+                baseTime = baseTime,
+            ),
+        )
     }
 
     Card(
@@ -236,22 +252,32 @@ private fun DebugUsageTuner(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(headerBrush)
-                .padding(horizontal = 18.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+                .padding(horizontal = 12.dp, vertical = 12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End,
             ) {
                 TextButton(
+                    modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+                    colors = ButtonDefaults.textButtonColors(
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    ),
                     onClick = {
-                        reelsMinutes = 0
-                        shortsMinutes = 0
-                        tiktokMinutes = 0
+                        reelsSegments.clear()
+                        shortsSegments.clear()
+                        tiktokSegments.clear()
+                        reelsSegments.add(0)
+                        shortsSegments.add(0)
+                        tiktokSegments.add(0)
+                        commitUsage()
                         onReset()
                     },
                 ) {
-                    Text(text = "Reset")
+                    Text(text = "Reset", style = MaterialTheme.typography.labelSmall)
                 }
             }
 
@@ -266,33 +292,24 @@ private fun DebugUsageTuner(
                     animationSpec = tween(200),
                 ) + fadeOut(animationSpec = tween(150)),
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                    DebugUsageSlider(
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    DebugUsageSegmentGroup(
                         appName = "Reels",
                         color = instagramReelsColor,
-                        minutes = reelsMinutes,
-                        onMinutesChange = { newValue ->
-                            reelsMinutes = newValue
-                            commitUsage()
-                        },
+                        segments = reelsSegments,
+                        onSegmentsChange = { commitUsage() },
                     )
-                    DebugUsageSlider(
+                    DebugUsageSegmentGroup(
                         appName = "Shorts",
                         color = youtubeShortsColor,
-                        minutes = shortsMinutes,
-                        onMinutesChange = { newValue ->
-                            shortsMinutes = newValue
-                            commitUsage()
-                        },
+                        segments = shortsSegments,
+                        onSegmentsChange = { commitUsage() },
                     )
-                    DebugUsageSlider(
+                    DebugUsageSegmentGroup(
                         appName = "TikTok",
                         color = tiktokColor,
-                        minutes = tiktokMinutes,
-                        onMinutesChange = { newValue ->
-                            tiktokMinutes = newValue
-                            commitUsage()
-                        },
+                        segments = tiktokSegments,
+                        onSegmentsChange = { commitUsage() },
                     )
                 }
             }
@@ -301,29 +318,94 @@ private fun DebugUsageTuner(
 }
 
 @Composable
-private fun DebugUsageSlider(appName: String, color: Color, minutes: Int, onMinutesChange: (Int) -> Unit, modifier: Modifier = Modifier) {
-    val clampedMinutes = minutes.coerceIn(0, DEBUG_USAGE_MAX_MINUTES)
+private fun DebugUsageSegmentGroup(
+    appName: String,
+    color: Color,
+    segments: SnapshotStateList<Int>,
+    onSegmentsChange: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val totalMinutes = segments.sum()
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             Box(
                 modifier = Modifier
-                    .size(10.dp)
+                    .size(8.dp)
                     .clip(RoundedCornerShape(percent = 50))
                     .background(color),
             )
-            Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = appName,
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = totalMinutes.formatMinutes(),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            TextButton(
+                enabled = segments.size < DEBUG_USAGE_MAX_SEGMENTS_PER_APP,
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+                onClick = {
+                    if (segments.size < DEBUG_USAGE_MAX_SEGMENTS_PER_APP) {
+                        segments.add(0)
+                        onSegmentsChange()
+                    }
+                },
+            ) {
+                Text(text = "Add", style = MaterialTheme.typography.labelMedium)
+            }
+            TextButton(
+                enabled = segments.size > 1,
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+                onClick = {
+                    if (segments.size > 1) {
+                        segments.removeAt(segments.lastIndex)
+                        onSegmentsChange()
+                    }
+                },
+            ) {
+                Text(text = "Remove", style = MaterialTheme.typography.labelMedium)
+            }
+        }
+
+        segments.forEachIndexed { index, minutes ->
+            DebugUsageSlider(
+                label = "Segment ${index + 1}",
+                color = color,
+                minutes = minutes,
+                onMinutesChange = { newValue ->
+                    segments[index] = newValue
+                    onSegmentsChange()
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun DebugUsageSlider(label: String, color: Color, minutes: Int, onMinutesChange: (Int) -> Unit, modifier: Modifier = Modifier) {
+    val clampedMinutes = minutes.coerceIn(0, DEBUG_USAGE_MAX_MINUTES)
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = clampedMinutes.formatMinutes(),
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
@@ -345,20 +427,55 @@ private fun DebugUsageSlider(appName: String, color: Color, minutes: Int, onMinu
 
 private fun Long.toWholeMinutes(): Int = TimeUnit.MILLISECONDS.toMinutes(this).toInt()
 
+private fun List<SessionSegment>.segmentMinutesFor(app: BlockableApp): List<Int> =
+    this.filter { it.app == app }
+        .sortedBy { it.startDateTime }
+        .map { it.durationMillis.toWholeMinutes().coerceAtLeast(0) }
+
+private fun List<Int>.toStateList(): SnapshotStateList<Int> =
+    mutableStateListOf<Int>().also { list -> list.addAll(this) }
+
+private fun buildUsageSegments(
+    reelsSegments: List<Int>,
+    shortsSegments: List<Int>,
+    tiktokSegments: List<Int>,
+    baseTime: LocalDateTime,
+): List<SessionSegment> {
+    val result = mutableListOf<SessionSegment>()
+    result += buildUsageSegmentsForApp(BlockableApp.REELS, reelsSegments, baseTime)
+    result += buildUsageSegmentsForApp(BlockableApp.SHORTS, shortsSegments, baseTime.minusHours(1))
+    result += buildUsageSegmentsForApp(BlockableApp.TIKTOK, tiktokSegments, baseTime.minusHours(2))
+    return result
+}
+
+private fun buildUsageSegmentsForApp(
+    app: BlockableApp,
+    minutesSegments: List<Int>,
+    baseTime: LocalDateTime,
+): List<SessionSegment> =
+    minutesSegments.mapIndexed { index, minutes ->
+        val offsetMinutes = (minutesSegments.size - 1 - index).coerceAtLeast(0)
+        SessionSegment(
+            app = app,
+            durationMillis = TimeUnit.MINUTES.toMillis(minutes.coerceAtLeast(0).toLong()),
+            startDateTime = baseTime.minusMinutes(offsetMinutes.toLong()),
+        )
+    }
+
 @Preview(name = "Debug Usage Panel")
 @Composable
 private fun PreviewDebugUsagePanel() {
     ScrollessTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             FloatingDebugUsagePanel(
-                perAppUsage = PerAppUsage(
-                    reelsUsage = TimeUnit.MINUTES.toMillis(42),
-                    shortsUsage = TimeUnit.MINUTES.toMillis(18),
-                    tiktokUsage = TimeUnit.MINUTES.toMillis(65),
+                sessionSegments = listOf(
+                    SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(42), LocalDateTime.now()),
+                    SessionSegment(BlockableApp.SHORTS, TimeUnit.MINUTES.toMillis(18), LocalDateTime.now()),
+                    SessionSegment(BlockableApp.TIKTOK, TimeUnit.MINUTES.toMillis(65), LocalDateTime.now()),
                 ),
                 isExpanded = true,
                 onToggleExpanded = {},
-                onUsageChanged = { _, _, _ -> },
+                onUsageChanged = {},
                 onReset = {},
                 modifier = Modifier.fillMaxSize(),
             )

@@ -17,8 +17,8 @@
 package com.scrolless.app.core.data.repository
 
 import com.scrolless.app.core.model.BlockableApp
-import com.scrolless.app.core.model.UsageSegment
-import com.scrolless.app.core.repository.UsageSegmentStore
+import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UsageTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import java.time.LocalDate
@@ -30,9 +30,9 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 @Singleton
-class UsageTrackerImpl @Inject constructor(
+class SessionTrackerImpl @Inject constructor(
     private val userSettingsStore: UserSettingsStore,
-    private val usageSegmentStore: UsageSegmentStore,
+    private val sessionSegmentStore: SessionSegmentStore,
 ) : UsageTracker {
 
     private val usageMutex = Mutex()
@@ -60,17 +60,17 @@ class UsageTrackerImpl @Inject constructor(
             BlockableApp.REELS -> {
                 val current = (userSettingsStore.getReelsDailyUsage() as StateFlow<Long>).value
                 userSettingsStore.updateReelsDailyUsage(current + sessionTime)
-                usageSegmentStore.addUsageSegment(UsageSegment(app, sessionTime, LocalDateTime.now()))
+                sessionSegmentStore.addUsageSegment(SessionSegment(app, sessionTime, LocalDateTime.now()))
             }
             BlockableApp.SHORTS -> {
                 val current = (userSettingsStore.getShortsDailyUsage() as StateFlow<Long>).value
                 userSettingsStore.updateShortsDailyUsage(current + sessionTime)
-                usageSegmentStore.addUsageSegment(UsageSegment(app, sessionTime, LocalDateTime.now()))
+                sessionSegmentStore.addUsageSegment(SessionSegment(app, sessionTime, LocalDateTime.now()))
             }
             BlockableApp.TIKTOK -> {
                 val current = (userSettingsStore.getTiktokDailyUsage() as StateFlow<Long>).value
                 userSettingsStore.updateTiktokDailyUsage(current + sessionTime)
-                usageSegmentStore.addUsageSegment(UsageSegment(app, sessionTime, LocalDateTime.now()))
+                sessionSegmentStore.addUsageSegment(SessionSegment(app, sessionTime, LocalDateTime.now()))
             }
             null -> Unit
         }

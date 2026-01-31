@@ -18,16 +18,16 @@ package com.scrolless.app.core.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.scrolless.app.core.data.database.model.UsageSegmentEntity
+import com.scrolless.app.core.data.database.model.SessionSegmentEntity
 import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
 
 /**
- * [androidx.room.Room] DAO for [UsageSegmentEntity] related operations.
+ * [androidx.room.Room] DAO for [SessionSegmentEntity] related operations.
  */
 @Dao
-abstract class UsageSegmentDao : BaseDao<UsageSegmentEntity> {
+abstract class SessionSegmentDao : BaseDao<SessionSegmentEntity> {
 
-    @Query("SELECT * FROM usage_segments WHERE startDateTime = :date")
-    abstract fun getUsageSegment(date: LocalDate): Flow<List<UsageSegmentEntity>>
+    @Query("SELECT * FROM session_segments WHERE startDateTime = :date")
+    abstract fun getUsageSegment(date: LocalDate): Flow<List<SessionSegmentEntity>>
 }

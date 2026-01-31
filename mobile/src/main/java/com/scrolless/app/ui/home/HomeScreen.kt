@@ -109,7 +109,7 @@ import com.scrolless.app.R
 import com.scrolless.app.accessibility.ScrollessBlockAccessibilityService
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
-import com.scrolless.app.core.model.UsageSegment
+import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.component.AppUsageLegend
 import com.scrolless.app.designsystem.component.AppUsageSegment
 import com.scrolless.app.designsystem.component.AutoResizingText
@@ -374,12 +374,8 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
                     showAccessibilityExplainerPrompt()
                 }
             },
-            onDebugUsageChanged = { reelsMinutes, shortsMinutes, tiktokMinutes ->
-                viewModel.onDebugUsageChanged(
-                    reelsMinutes = reelsMinutes,
-                    shortsMinutes = shortsMinutes,
-                    tiktokMinutes = tiktokMinutes,
-                )
+            onDebugUsageChanged = { usageSegments ->
+                viewModel.onDebugUsageSegmentsChanged(usageSegments)
             },
             onDebugUsageReset = {
                 viewModel.onDebugResetUsage()
@@ -488,7 +484,7 @@ private fun HomeContent(
     onIntervalTimerClick: () -> Unit,
     onIntervalTimerEdit: () -> Unit,
     onPauseToggle: (Boolean) -> Unit,
-    onDebugUsageChanged: (Int, Int, Int) -> Unit = { _, _, _ -> },
+    onDebugUsageChanged: (List<SessionSegment>) -> Unit = {},
     onDebugUsageReset: () -> Unit = {},
     onProgressCardClicked: () -> Unit = {},
 ) {
@@ -536,7 +532,7 @@ private fun HomeContent(
                     timeLimit = uiState.timeLimit,
                     intervalLength = uiState.intervalLength,
                     intervalWindowStart = uiState.intervalWindowStart,
-                    listUsageSegments = uiState.listUsageSegments,
+                    listSessionSegments = uiState.listSessionSegments,
                     onProgressCardClicked = onProgressCardClicked,
                 )
 
@@ -745,7 +741,7 @@ private fun HomeContent(
 
         if (showDebugPanel) {
             FloatingDebugUsagePanel(
-                perAppUsage = uiState.listUsageSegments,
+                sessionSegments = uiState.listSessionSegments,
                 isExpanded = isDebugExpanded,
                 onToggleExpanded = { isDebugExpanded = !isDebugExpanded },
                 onUsageChanged = onDebugUsageChanged,
@@ -988,12 +984,14 @@ private fun rememberPauseRemainingTime(pauseUntilMillis: Long): Long {
     return remaining
 }
 
+// Todo refactor this out
 private fun Long.toIntervalLabel(): String {
     if (this <= 0L) return "--"
     val totalMinutes = (this / 60_000L).toInt()
     return totalMinutes.formatMinutes()
 }
 
+// Todo refactor this out
 private fun Long.toCountdownLabel(): String {
     if (this <= 0L) return "0:00"
     val totalSeconds = (this / 1000L).coerceAtLeast(0L)
@@ -1156,7 +1154,7 @@ private fun ProgressCard(
     timeLimit: Long,
     intervalLength: Long,
     intervalWindowStart: Long,
-    listUsageSegments: List<UsageSegment> = emptyList(),
+    listSessionSegments: List<SessionSegment> = emptyList(),
     onProgressCardClicked: () -> Unit = {},
 ) {
     val clampedProgress = progress.coerceIn(0, 100)
@@ -1209,10 +1207,10 @@ private fun ProgressCard(
     val shortsLabel = stringResource(R.string.app_shorts)
 
     // Per-app usage data for the segmented progress indicator
-    val appUsageSegments = remember(listUsageSegments, currentUsage, reelsLabel, tiktokLabel, shortsLabel) {
+val appUsageSegments = remember(listSessionSegments, currentUsage, reelsLabel, tiktokLabel, shortsLabel) {
         // val knownUsage = perAppUsage.reelsUsage + perAppUsage.tiktokUsage + perAppUsage.shortsUsage
         var totalVideoView = 0L
-        for (usageSegment in listUsageSegments) {
+        for (usageSegment in listSessionSegments) {
 
             totalVideoView += usageSegment.durationMillis
         }
@@ -1222,7 +1220,8 @@ private fun ProgressCard(
         } else {
             1.0
         }
-        listUsageSegments.map { entity ->
+        // Todo create an extension out of this before merge
+        listSessionSegments.map { entity ->
             AppUsageSegment(entity.app.name, ((entity.durationMillis * scale).toLong()), instagramReelsColor)
         }
 //        listOf(
@@ -1365,11 +1364,13 @@ private fun ProgressCard(
 
         // Legend showing per-app usage
         AppUsageLegend(
-            items = appUsageSegments.map { segment ->
+            items = appUsageSegments.groupBy { it.appName }.map { (appName, segments) ->
+                val totalMillis = segments.sumOf { it.usageMillis }
+                val color = segments.first().color
                 LegendItem(
-                    appName = segment.appName,
-                    formattedTime = segment.usageMillis.formatTime(),
-                    color = segment.color,
+                    appName = appName,
+                    totalMillis.formatTime(),
+                    color
                 )
             },
             modifier = Modifier.padding(top = 8.dp),
@@ -1565,9 +1566,9 @@ fun HomeScreenPreview() {
         currentUsage = TimeUnit.MINUTES.toMillis(42),
         progress = 70,
         timerOverlayEnabled = true,
-        listUsageSegments = listOf<UsageSegment>(
-            UsageSegment(BlockableApp.REELS, 200, LocalDateTime.of(20, 10, 2, 1, 2)),
-            UsageSegment(BlockableApp.REELS, 200, LocalDateTime.of(20, 10, 2, 1, 2)),
+        listSessionSegments = listOf<SessionSegment>(
+            SessionSegment(BlockableApp.REELS, 200, LocalDateTime.of(20, 10, 2, 1, 2)),
+            SessionSegment(BlockableApp.REELS, 200, LocalDateTime.of(20, 10, 2, 1, 2)),
         ),
     )
 

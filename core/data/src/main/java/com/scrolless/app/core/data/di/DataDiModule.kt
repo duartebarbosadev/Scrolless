@@ -35,12 +35,12 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.scrolless.app.core.data.database.ScrollessDatabase
-import com.scrolless.app.core.data.database.dao.UsageSegmentDao
+import com.scrolless.app.core.data.database.dao.SessionSegmentDao
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.data.repository.UsageSegmentStoreImpl
-import com.scrolless.app.core.data.repository.UsageTrackerImpl
+import com.scrolless.app.core.data.repository.SessionSegmentStoreImpl
+import com.scrolless.app.core.data.repository.SessionTrackerImpl
 import com.scrolless.app.core.data.repository.UserSettingsStoreImpl
-import com.scrolless.app.core.repository.UsageSegmentStore
+import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UsageTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import dagger.Module
@@ -95,17 +95,17 @@ object DataDiModule {
 
     @Provides
     @Singleton
-    fun provideUsageSegmentDao(database: ScrollessDatabase): UsageSegmentDao = database.usageSegmentDao()
+    fun provideUsageSegmentDao(database: ScrollessDatabase): SessionSegmentDao = database.sessionSegmentDao()
 
     @Provides
     @Singleton
-    fun provideUsageSegmentStore(usageSegmentDao: UsageSegmentDao): UsageSegmentStore =
-        UsageSegmentStoreImpl(usageSegmentDao = usageSegmentDao)
+    fun provideUsageSegmentStore(sessionSegmentDao: SessionSegmentDao): SessionSegmentStore =
+        SessionSegmentStoreImpl(sessionSegmentDao = sessionSegmentDao)
 
     @Provides
     @Singleton
-    fun provideUsageTracker(userSettingsStore: UserSettingsStore, usageSegmentStore : UsageSegmentStore): UsageTracker = UsageTrackerImpl(
+    fun provideUsageTracker(userSettingsStore: UserSettingsStore, sessionSegmentStore : SessionSegmentStore): UsageTracker = SessionTrackerImpl(
         userSettingsStore = userSettingsStore,
-        usageSegmentStore = usageSegmentStore
+        sessionSegmentStore = sessionSegmentStore
     )
 }

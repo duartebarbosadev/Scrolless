@@ -16,11 +16,11 @@
  */
 package com.scrolless.app.core.data.repository
 
-import com.scrolless.app.core.data.database.dao.UsageSegmentDao
-import com.scrolless.app.core.data.database.model.UsageSegmentEntity
+import com.scrolless.app.core.data.database.dao.SessionSegmentDao
+import com.scrolless.app.core.data.database.model.SessionSegmentEntity
 import com.scrolless.app.core.data.database.model.toUsageSegment
-import com.scrolless.app.core.model.UsageSegment
-import com.scrolless.app.core.repository.UsageSegmentStore
+import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.core.repository.SessionSegmentStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -29,31 +29,31 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-class UsageSegmentStoreImpl(private val usageSegmentDao: UsageSegmentDao) : UsageSegmentStore {
+class SessionSegmentStoreImpl(private val sessionSegmentDao: SessionSegmentDao) : SessionSegmentStore {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-    private val _usageSegmentEntityToday = MutableStateFlow<List<UsageSegment>>(emptyList())
+    private val _sessionSegmentEntityToday = MutableStateFlow<List<SessionSegment>>(emptyList())
 
     init {
 
         coroutineScope.launch {
-            usageSegmentDao.getUsageSegment(LocalDate.now()).collect { usageSegment ->
-                _usageSegmentEntityToday.value = usageSegment.map { it.toUsageSegment() }
+            sessionSegmentDao.getUsageSegment(LocalDate.now()).collect { usageSegment ->
+                _sessionSegmentEntityToday.value = usageSegment.map { it.toUsageSegment() }
             }
         }
     }
-    override fun getUsageSegment(date: LocalDate): Flow<List<UsageSegment>> {
-        return _usageSegmentEntityToday
+    override fun getUsageSegment(date: LocalDate): Flow<List<SessionSegment>> {
+        return _sessionSegmentEntityToday
     }
 
-    override fun addUsageSegment(usageSegment: UsageSegment) {
+    override fun addUsageSegment(sessionSegment: SessionSegment) {
         coroutineScope.launch {
-            val entity = UsageSegmentEntity(
-                app = usageSegment.app,
-                durationMillis = usageSegment.durationMillis,
-                startDateTime = usageSegment.startDateTime,
+            val entity = SessionSegmentEntity(
+                app = sessionSegment.app,
+                durationMillis = sessionSegment.durationMillis,
+                startDateTime = sessionSegment.startDateTime,
             )
-            usageSegmentDao.insert(entity)
+            sessionSegmentDao.insert(entity)
         }
     }
 }
