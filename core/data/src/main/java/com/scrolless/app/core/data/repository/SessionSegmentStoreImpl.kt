@@ -18,7 +18,7 @@ package com.scrolless.app.core.data.repository
 
 import com.scrolless.app.core.data.database.dao.SessionSegmentDao
 import com.scrolless.app.core.data.database.model.SessionSegmentEntity
-import com.scrolless.app.core.data.database.model.toUsageSegment
+import com.scrolless.app.core.data.database.model.toSessionSegment
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.repository.SessionSegmentStore
 import kotlinx.coroutines.CoroutineScope
@@ -37,8 +37,8 @@ class SessionSegmentStoreImpl(private val sessionSegmentDao: SessionSegmentDao) 
     init {
 
         coroutineScope.launch {
-            sessionSegmentDao.getUsageSegment(LocalDate.now(), LocalDate.now().plusDays(1)).collect { usageSegment ->
-                _sessionSegmentEntityToday.value = usageSegment.map { it.toUsageSegment() }
+            sessionSegmentDao.getSessionSegment(LocalDate.now(), LocalDate.now().plusDays(1)).collect { usageSegment ->
+                _sessionSegmentEntityToday.value = usageSegment.map { it.toSessionSegment() }
             }
         }
     }

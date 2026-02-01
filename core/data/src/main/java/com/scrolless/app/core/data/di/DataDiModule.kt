@@ -104,7 +104,7 @@ object DataDiModule {
 
     @Provides
     @Singleton
-    fun provideUsageTracker(userSettingsStore: UserSettingsStore, sessionSegmentStore : SessionSegmentStore): UsageTracker = SessionTrackerImpl(
+    fun provideSessionTracker(userSettingsStore: UserSettingsStore, sessionSegmentStore : SessionSegmentStore): UsageTracker = SessionTrackerImpl(
         userSettingsStore = userSettingsStore,
         sessionSegmentStore = sessionSegmentStore
     )
