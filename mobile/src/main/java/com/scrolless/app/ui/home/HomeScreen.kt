@@ -111,7 +111,7 @@ import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.component.AppUsageLegend
-import com.scrolless.app.designsystem.component.AppUsageSegment
+import com.scrolless.app.designsystem.component.ProgressBarSegment
 import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.component.LegendItem
 import com.scrolless.app.designsystem.component.SegmentedCircularProgressIndicator
@@ -119,6 +119,8 @@ import com.scrolless.app.designsystem.theme.instagramReelsColor
 import com.scrolless.app.designsystem.theme.progressbar_green_use
 import com.scrolless.app.designsystem.theme.progressbar_orange_use
 import com.scrolless.app.designsystem.theme.progressbar_red_use
+import com.scrolless.app.designsystem.theme.tiktokColor
+import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.ui.home.components.AccessibilityExplainerBottomSheet
 import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheet
 import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheetPreview
@@ -1207,7 +1209,7 @@ private fun ProgressCard(
     val shortsLabel = stringResource(R.string.app_shorts)
 
     // Per-app usage data for the segmented progress indicator
-val appUsageSegments = remember(listSessionSegments, currentUsage, reelsLabel, tiktokLabel, shortsLabel) {
+    val progressBarSegments = remember(listSessionSegments, currentUsage, reelsLabel, tiktokLabel, shortsLabel) {
         // val knownUsage = perAppUsage.reelsUsage + perAppUsage.tiktokUsage + perAppUsage.shortsUsage
         var totalVideoView = 0L
         for (usageSegment in listSessionSegments) {
@@ -1220,33 +1222,28 @@ val appUsageSegments = remember(listSessionSegments, currentUsage, reelsLabel, t
         } else {
             1.0
         }
+
         // Todo create an extension out of this before merge
         listSessionSegments.map { entity ->
-            AppUsageSegment(entity.app.name, ((entity.durationMillis * scale).toLong()), instagramReelsColor)
+            val color = when (entity.app) {
+                BlockableApp.REELS -> instagramReelsColor
+                BlockableApp.SHORTS -> youtubeShortsColor
+                BlockableApp.TIKTOK -> tiktokColor
+            }
+
+            val appName = when (entity.app) {
+                BlockableApp.REELS -> reelsLabel
+                BlockableApp.SHORTS -> shortsLabel
+                BlockableApp.TIKTOK -> tiktokLabel
+            }
+            ProgressBarSegment(appName, ((entity.durationMillis * scale).toLong()), color)
         }
-//        listOf(
-//            AppUsageSegment(
-//                appName = reelsLabel,
-//                usageMillis = (perAppUsage.reelsUsage * scale).toLong(),
-//                color = instagramReelsColor,
-//            ),
-//            AppUsageSegment(
-//                appName = tiktokLabel,
-//                usageMillis = (perAppUsage.tiktokUsage * scale).toLong(),
-//                color = tiktokColor,
-//            ),
-//            AppUsageSegment(
-//                appName = shortsLabel,
-//                usageMillis = (perAppUsage.shortsUsage * scale).toLong(),
-//                color = youtubeShortsColor,
-//            ),
-//        ).filter { it.usageMillis > 0L }
-    }
+   }
 
     val segmentProgressFraction = when {
         blockOption == BlockOption.DailyLimit && timeLimit > 0L -> displayProgress / 100f
         blockOption == BlockOption.IntervalTimer && intervalAllowanceConfigured -> displayProgress / 100f
-        appUsageSegments.isNotEmpty() -> 1f
+        progressBarSegments.isNotEmpty() -> 1f
         else -> 0f
     }
 
@@ -1304,7 +1301,7 @@ val appUsageSegments = remember(listSessionSegments, currentUsage, reelsLabel, t
             ) {
                 SegmentedCircularProgressIndicator(
                     modifier = Modifier.size(180.dp),
-                    segments = appUsageSegments,
+                    segments = progressBarSegments,
                     progressFraction = segmentProgressFraction,
                     strokeWidth = 8.dp,
                     trackColor = Color.Transparent,
@@ -1364,14 +1361,17 @@ val appUsageSegments = remember(listSessionSegments, currentUsage, reelsLabel, t
 
         // Legend showing per-app usage
         AppUsageLegend(
-            items = appUsageSegments.groupBy { it.appName }.map { (appName, segments) ->
+            items = progressBarSegments.groupBy { it.segmentName }.map { (appName, segments) ->
                 val totalMillis = segments.sumOf { it.usageMillis }
                 val color = segments.first().color
+
                 LegendItem(
-                    appName = appName,
+                    legendName = appName,
                     totalMillis.formatTime(),
                     color
                 )
+            }.filter {
+                it.formattedTime != "0s"
             },
             modifier = Modifier.padding(top = 8.dp),
         )
@@ -1566,23 +1566,26 @@ fun HomeScreenPreview() {
         currentUsage = TimeUnit.MINUTES.toMillis(42),
         progress = 70,
         timerOverlayEnabled = true,
-        listSessionSegments = listOf<SessionSegment>(
-            SessionSegment(BlockableApp.REELS, 200, LocalDateTime.of(20, 10, 2, 1, 2)),
-            SessionSegment(BlockableApp.REELS, 200, LocalDateTime.of(20, 10, 2, 1, 2)),
+        listSessionSegments = listOf(
+            SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(10), LocalDateTime.of(20, 10, 2, 1, 2)),
+            SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(3), LocalDateTime.of(20, 10, 2, 1, 2)),
+            SessionSegment(BlockableApp.SHORTS, TimeUnit.MINUTES.toMillis(3), LocalDateTime.of(20, 10, 2, 1, 2)),
         ),
     )
 
     ScrollessTheme {
-        HomeContent(
-            uiState = mockState,
-            onBlockOptionSelected = {},
-            onConfigureDailyLimit = {},
-            onScreenTimerToggled = {},
-            onHelpClicked = {},
-            onIntervalTimerClick = {},
-            onIntervalTimerEdit = {},
-            onPauseToggle = { _ -> },
-        )
+        HomeBackground(modifier = Modifier.fillMaxSize()) {
+            HomeContent(
+                uiState = mockState,
+                onBlockOptionSelected = {},
+                onConfigureDailyLimit = {},
+                onScreenTimerToggled = {},
+                onHelpClicked = {},
+                onIntervalTimerClick = {},
+                onIntervalTimerEdit = {},
+                onPauseToggle = { _ -> },
+            )
+        }
     }
 }
 

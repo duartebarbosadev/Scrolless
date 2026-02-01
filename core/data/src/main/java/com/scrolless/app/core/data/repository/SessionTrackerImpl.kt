@@ -60,17 +60,17 @@ class SessionTrackerImpl @Inject constructor(
             BlockableApp.REELS -> {
                 val current = (userSettingsStore.getReelsDailyUsage() as StateFlow<Long>).value
                 userSettingsStore.updateReelsDailyUsage(current + sessionTime)
-                sessionSegmentStore.addUsageSegment(SessionSegment(app, sessionTime, LocalDateTime.now()))
+                sessionSegmentStore.addSessionSegment(SessionSegment(app, sessionTime, LocalDateTime.now()))
             }
             BlockableApp.SHORTS -> {
                 val current = (userSettingsStore.getShortsDailyUsage() as StateFlow<Long>).value
                 userSettingsStore.updateShortsDailyUsage(current + sessionTime)
-                sessionSegmentStore.addUsageSegment(SessionSegment(app, sessionTime, LocalDateTime.now()))
+                sessionSegmentStore.addSessionSegment(SessionSegment(app, sessionTime, LocalDateTime.now()))
             }
             BlockableApp.TIKTOK -> {
                 val current = (userSettingsStore.getTiktokDailyUsage() as StateFlow<Long>).value
                 userSettingsStore.updateTiktokDailyUsage(current + sessionTime)
-                sessionSegmentStore.addUsageSegment(SessionSegment(app, sessionTime, LocalDateTime.now()))
+                sessionSegmentStore.addSessionSegment(SessionSegment(app, sessionTime, LocalDateTime.now()))
             }
             null -> Unit
         }

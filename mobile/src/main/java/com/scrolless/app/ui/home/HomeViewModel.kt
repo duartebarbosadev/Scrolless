@@ -112,7 +112,7 @@ class HomeViewModel @Inject constructor(
         userSettingsStore.getIntervalUsage(),
         userSettingsStore.getIntervalWindowStart(),
         userSettingsStore.getTotalDailyUsage(),
-        sessionSegmentStore.getUsageSegment(LocalDate.now()),
+        sessionSegmentStore.getSessionSegment(LocalDate.now()),
     ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage, usageSegment ->
         UsageSnapshot(
             blockOption = blockOption,

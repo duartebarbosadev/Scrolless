@@ -253,7 +253,6 @@ private fun DebugUsageTuner(
                 .fillMaxWidth()
                 .background(headerBrush)
                 .padding(horizontal = 12.dp, vertical = 12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -261,10 +260,9 @@ private fun DebugUsageTuner(
                 horizontalArrangement = Arrangement.End,
             ) {
                 TextButton(
-                    modifier = Modifier.defaultMinSize(minWidth = 1.dp, minHeight = 1.dp),
-                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+                    contentPadding = PaddingValues(horizontal = 8.dp),
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurface,
                     ),
                     onClick = {
                         reelsSegments.clear()
@@ -347,11 +345,14 @@ private fun DebugUsageSegmentGroup(
             Text(
                 text = totalMinutes.formatMinutes(),
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurface,
             )
             TextButton(
                 enabled = segments.size < DEBUG_USAGE_MAX_SEGMENTS_PER_APP,
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                ),
                 onClick = {
                     if (segments.size < DEBUG_USAGE_MAX_SEGMENTS_PER_APP) {
                         segments.add(0)
@@ -364,6 +365,9 @@ private fun DebugUsageSegmentGroup(
             TextButton(
                 enabled = segments.size > 1,
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 2.dp),
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                ),
                 onClick = {
                     if (segments.size > 1) {
                         segments.removeAt(segments.lastIndex)
@@ -406,7 +410,7 @@ private fun DebugUsageSlider(label: String, color: Color, minutes: Int, onMinute
             Text(
                 text = clampedMinutes.formatMinutes(),
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
         Slider(

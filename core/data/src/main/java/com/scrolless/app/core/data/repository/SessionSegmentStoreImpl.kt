@@ -37,16 +37,16 @@ class SessionSegmentStoreImpl(private val sessionSegmentDao: SessionSegmentDao) 
     init {
 
         coroutineScope.launch {
-            sessionSegmentDao.getUsageSegment(LocalDate.now()).collect { usageSegment ->
+            sessionSegmentDao.getUsageSegment(LocalDate.now(), LocalDate.now().plusDays(1)).collect { usageSegment ->
                 _sessionSegmentEntityToday.value = usageSegment.map { it.toUsageSegment() }
             }
         }
     }
-    override fun getUsageSegment(date: LocalDate): Flow<List<SessionSegment>> {
+    override fun getSessionSegment(date: LocalDate): Flow<List<SessionSegment>> {
         return _sessionSegmentEntityToday
     }
 
-    override fun addUsageSegment(sessionSegment: SessionSegment) {
+    override fun addSessionSegment(sessionSegment: SessionSegment) {
         coroutineScope.launch {
             val entity = SessionSegmentEntity(
                 app = sessionSegment.app,

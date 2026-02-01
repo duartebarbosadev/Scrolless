@@ -28,6 +28,6 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class SessionSegmentDao : BaseDao<SessionSegmentEntity> {
 
-    @Query("SELECT * FROM session_segments WHERE startDateTime = :date")
-    abstract fun getUsageSegment(date: LocalDate): Flow<List<SessionSegmentEntity>>
+    @Query("SELECT * FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
+    abstract fun getUsageSegment(date: LocalDate, datePlusOneDay : LocalDate?): Flow<List<SessionSegmentEntity>>
 }

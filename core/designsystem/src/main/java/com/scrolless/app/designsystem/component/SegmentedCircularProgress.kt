@@ -46,12 +46,12 @@ import kotlin.math.min
 /**
  * Represents usage data for a single app segment.
  *
- * @param appName Display name for the app (e.g., "Reels", "TikTok", "Shorts")
+ * @param segmentName Display name for the app (e.g., "Reels", "TikTok", "Shorts")
  * @param usageMillis Usage time in milliseconds
  * @param color Primary color for this segment
  */
 @Immutable
-data class AppUsageSegment(val appName: String, val usageMillis: Long, val color: Color)
+data class ProgressBarSegment(val segmentName: String, val usageMillis: Long, val color: Color)
 
 /**
  * Internal representation for animated segment drawing.
@@ -63,7 +63,7 @@ private data class AnimatedSegment(val startAngle: Float, val sweepAngle: Float,
  * Data for legend display items.
  */
 @Immutable
-data class LegendItem(val appName: String, val formattedTime: String, val color: Color)
+data class LegendItem(val legendName: String, val formattedTime: String, val color: Color)
 
 private const val VISIBLE_GAP_DEGREES = 3f
 private const val MIN_VISIBLE_SWEEP = 5f
@@ -81,7 +81,7 @@ private const val START_ANGLE = -90f
 @Composable
 fun SegmentedCircularProgressIndicator(
     modifier: Modifier = Modifier,
-    segments: List<AppUsageSegment>,
+    segments: List<ProgressBarSegment>,
     progressFraction: Float = 1f,
     strokeWidth: Dp = 8.dp,
     trackColor: Color = MaterialTheme.colorScheme.primary,
@@ -148,7 +148,7 @@ fun SegmentedCircularProgressIndicator(
  * Converts app usage data to animated segments with proper angles.
  * Starts from -90 degrees (top of circle) and proceeds clockwise.
  */
-private fun calculateSegments(appUsageData: List<AppUsageSegment>, totalSweepDegrees: Float, gapDegrees: Float): List<AnimatedSegment> {
+private fun calculateSegments(appUsageData: List<ProgressBarSegment>, totalSweepDegrees: Float, gapDegrees: Float): List<AnimatedSegment> {
     val totalUsage = appUsageData.sumOf { it.usageMillis }
     if (totalUsage == 0L) return emptyList()
 
@@ -249,7 +249,7 @@ private fun LegendEntry(item: LegendItem) {
 
         // App name and time
         Text(
-            text = "${item.appName} (${item.formattedTime})",
+            text = "${item.legendName} (${item.formattedTime})",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
         )

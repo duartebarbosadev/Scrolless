@@ -35,7 +35,7 @@ data class SessionSegmentEntity(
     val startDateTime: LocalDateTime,
 )
 
-fun SessionSegmentEntity.toUsageSegment(): SessionSegment {
+fun SessionSegmentEntity.toUsageSegment(): SessionSegment { // TODO rename all usageSegment to SessionSegment
     return SessionSegment(
         app = this.app,
         durationMillis = this.durationMillis,
