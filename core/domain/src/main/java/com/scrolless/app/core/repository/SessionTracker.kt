@@ -18,7 +18,7 @@ package com.scrolless.app.core.repository
 
 import com.scrolless.app.core.model.BlockableApp
 
-interface UsageTracker {
+interface SessionTracker {
 
     /**
      * Get the current total daily usage in milliseconds.
@@ -38,11 +38,21 @@ interface UsageTracker {
      * @param sessionTime Duration of the session in milliseconds
      * @param app The app the session was on, if available
      */
-    suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp?)
+    suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp)
 
     /**
      * Check if a daily reset is needed and perform it if necessary.
      * Safe to call multiple times - only resets once per day.
      */
     suspend fun checkDailyReset()
+
+    /**
+     * Called when a tracked app comes to the foreground.
+     */
+    fun onAppOpen(app: BlockableApp)
+
+    /**
+     * Called when a tracked app closes or leaves to foreground.
+     */
+    fun onAppClose()
 }

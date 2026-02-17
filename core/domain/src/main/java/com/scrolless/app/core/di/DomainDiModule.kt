@@ -33,7 +33,7 @@ package com.scrolless.app.core.di
 
 import com.scrolless.app.core.blocking.BlockingManager
 import com.scrolless.app.core.blocking.BlockingManagerImpl
-import com.scrolless.app.core.repository.UsageTracker
+import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import dagger.Module
 import dagger.Provides
@@ -46,6 +46,6 @@ import javax.inject.Singleton
 object DomainDiModule {
     @Provides
     @Singleton
-    fun provideBlockingManager(usageTracker: UsageTracker, userSettingsStore: UserSettingsStore): BlockingManager =
-        BlockingManagerImpl(usageTracker, userSettingsStore)
+    fun provideBlockingManager(sessionTracker: SessionTracker, userSettingsStore: UserSettingsStore): BlockingManager =
+        BlockingManagerImpl(sessionTracker, userSettingsStore)
 }

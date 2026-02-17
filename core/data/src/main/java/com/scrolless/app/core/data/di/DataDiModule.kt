@@ -41,7 +41,7 @@ import com.scrolless.app.core.data.repository.SessionSegmentStoreImpl
 import com.scrolless.app.core.data.repository.SessionTrackerImpl
 import com.scrolless.app.core.data.repository.UserSettingsStoreImpl
 import com.scrolless.app.core.repository.SessionSegmentStore
-import com.scrolless.app.core.repository.UsageTracker
+import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import dagger.Module
 import dagger.Provides
@@ -104,7 +104,7 @@ object DataDiModule {
 
     @Provides
     @Singleton
-    fun provideSessionTracker(userSettingsStore: UserSettingsStore, sessionSegmentStore : SessionSegmentStore): UsageTracker = SessionTrackerImpl(
+    fun provideSessionTracker(userSettingsStore: UserSettingsStore, sessionSegmentStore : SessionSegmentStore): SessionTracker = SessionTrackerImpl(
         userSettingsStore = userSettingsStore,
         sessionSegmentStore = sessionSegmentStore
     )

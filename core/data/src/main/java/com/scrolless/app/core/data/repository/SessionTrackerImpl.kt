@@ -19,7 +19,7 @@ package com.scrolless.app.core.data.repository
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.repository.SessionSegmentStore
-import com.scrolless.app.core.repository.UsageTracker
+import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -28,14 +28,22 @@ import javax.inject.Singleton
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import timber.log.Timber
 
 @Singleton
 class SessionTrackerImpl @Inject constructor(
     private val userSettingsStore: UserSettingsStore,
     private val sessionSegmentStore: SessionSegmentStore,
-) : UsageTracker {
+) : SessionTracker {
 
     private val usageMutex = Mutex()
+
+    private var lastSegmentApp : BlockableApp? = null
+
+    private var hasAppBeenClosed = true
+    private var lastSessionId = 0L
+    private var lastSessionCreationTimestamp : Long = -1
+    private var currentSessionTotalTime = 0L
 
     override fun getDailyUsage(): Long {
         return (userSettingsStore.getTotalDailyUsage() as StateFlow<Long>).value
@@ -49,30 +57,60 @@ class SessionTrackerImpl @Inject constructor(
         }
     }
 
-    override suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp?) = usageMutex.withLock {
-        // Update total usage
-        val currentTotal = (userSettingsStore.getTotalDailyUsage() as StateFlow<Long>).value
-        val newTotal = currentTotal + sessionTime
-        userSettingsStore.updateTotalDailyUsage(newTotal)
+    override suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp) {
+        usageMutex.withLock {
 
-        // Update per-app usage if app is known
-        when (app) {
-            BlockableApp.REELS -> {
-                val current = (userSettingsStore.getReelsDailyUsage() as StateFlow<Long>).value
-                userSettingsStore.updateReelsDailyUsage(current + sessionTime)
-                sessionSegmentStore.addSessionSegment(SessionSegment(app, sessionTime, LocalDateTime.now()))
+            lastSegmentApp = app
+
+            // Update total usage
+            val currentTotal = (userSettingsStore.getTotalDailyUsage() as StateFlow<Long>).value
+            val newTotal = currentTotal + sessionTime
+            userSettingsStore.updateTotalDailyUsage(newTotal)
+
+            val timeDiffNowAndLastSession = (System.currentTimeMillis() - lastSessionCreationTimestamp)
+            // Create a new session if there's no last session or a last app saved, or app was closed and wasn't reopen in more than 30 seconds
+            val shouldCreateNewSession = if (lastSegmentApp == null || lastSessionId == 0L) {
+                true
             }
-            BlockableApp.SHORTS -> {
-                val current = (userSettingsStore.getShortsDailyUsage() as StateFlow<Long>).value
-                userSettingsStore.updateShortsDailyUsage(current + sessionTime)
-                sessionSegmentStore.addSessionSegment(SessionSegment(app, sessionTime, LocalDateTime.now()))
+            else if (hasAppBeenClosed && timeDiffNowAndLastSession > 30_000) {
+                true
+            } else {
+                false
             }
-            BlockableApp.TIKTOK -> {
-                val current = (userSettingsStore.getTiktokDailyUsage() as StateFlow<Long>).value
-                userSettingsStore.updateTiktokDailyUsage(current + sessionTime)
-                sessionSegmentStore.addSessionSegment(SessionSegment(app, sessionTime, LocalDateTime.now()))
+
+            if (shouldCreateNewSession) {
+                // Start a new session segment
+                lastSessionCreationTimestamp = System.currentTimeMillis()
+                currentSessionTotalTime = 0L
+                val newSegment = SessionSegment(app, sessionTime, LocalDateTime.now())
+                Timber.i("Creation a session segment with session time of %s", sessionTime)
+                lastSessionId = sessionSegmentStore.addSessionSegment(newSegment)
+                hasAppBeenClosed = false
+            } else {
+                // Update existing session segment
+                currentSessionTotalTime += sessionTime
+                Timber.i("Updating current session with session time of %s", currentSessionTotalTime)
+                sessionSegmentStore.updateSessionSegmentDuration(lastSessionId, currentSessionTotalTime)
             }
-            null -> Unit
+
+            // Todo remove in future: brainrot usage in userSettings
+            // Update per-app usage if app is known
+            when (app) {
+                BlockableApp.REELS -> {
+                    val current = (userSettingsStore.getReelsDailyUsage() as StateFlow<Long>).value
+                    userSettingsStore.updateReelsDailyUsage(current + sessionTime)
+                }
+
+                BlockableApp.SHORTS -> {
+                    val current = (userSettingsStore.getShortsDailyUsage() as StateFlow<Long>).value
+                    userSettingsStore.updateShortsDailyUsage(current + sessionTime)
+                }
+
+                BlockableApp.TIKTOK -> {
+                    val current = (userSettingsStore.getTiktokDailyUsage() as StateFlow<Long>).value
+                    userSettingsStore.updateTiktokDailyUsage(current + sessionTime)
+                }
+            }
         }
     }
 
@@ -86,4 +124,16 @@ class SessionTrackerImpl @Inject constructor(
             userSettingsStore.setLastResetDay(currentDay)
         }
     }
+
+    override fun onAppOpen(app: BlockableApp) {
+    }
+
+    override fun onAppClose() {
+        // TODO make a buffer to make sure that if the app closes or opens quickly we don't start a new session
+        // TODO Make it so that if the screen is off we start a new session (after a buffer time)
+        // Marking to start a new session on next usage
+        Timber.d("App closed, marking to start new session")
+        hasAppBeenClosed = true
+    }
+
 }

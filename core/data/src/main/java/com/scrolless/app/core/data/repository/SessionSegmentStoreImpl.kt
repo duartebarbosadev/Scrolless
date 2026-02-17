@@ -32,28 +32,32 @@ import java.time.LocalDate
 class SessionSegmentStoreImpl(private val sessionSegmentDao: SessionSegmentDao) : SessionSegmentStore {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-    private val _sessionSegmentEntityToday = MutableStateFlow<List<SessionSegment>>(emptyList())
+    private val _sessionSegmentsToday = MutableStateFlow<List<SessionSegment>>(emptyList())
 
     init {
 
         coroutineScope.launch {
             sessionSegmentDao.getSessionSegment(LocalDate.now(), LocalDate.now().plusDays(1)).collect { usageSegment ->
-                _sessionSegmentEntityToday.value = usageSegment.map { it.toSessionSegment() }
+                _sessionSegmentsToday.value = usageSegment.map { it.toSessionSegment() }
             }
         }
     }
     override fun getSessionSegment(date: LocalDate): Flow<List<SessionSegment>> {
-        return _sessionSegmentEntityToday
+        return _sessionSegmentsToday
     }
 
-    override fun addSessionSegment(sessionSegment: SessionSegment) {
+    override suspend fun addSessionSegment(sessionSegment: SessionSegment): Long {
+        val entity = SessionSegmentEntity(
+            app = sessionSegment.app,
+            durationMillis = sessionSegment.durationMillis,
+            startDateTime = sessionSegment.startDateTime,
+        )
+        return sessionSegmentDao.insert(entity)
+    }
+
+    override fun updateSessionSegmentDuration(lastSessionId: Long, sessionTime: Long) {
         coroutineScope.launch {
-            val entity = SessionSegmentEntity(
-                app = sessionSegment.app,
-                durationMillis = sessionSegment.durationMillis,
-                startDateTime = sessionSegment.startDateTime,
-            )
-            sessionSegmentDao.insert(entity)
+            sessionSegmentDao.updateDuration(lastSessionId, sessionTime)
         }
     }
 }

@@ -23,5 +23,7 @@ import kotlinx.coroutines.flow.Flow
 interface SessionSegmentStore {
     fun getSessionSegment(date: LocalDate): Flow<List<SessionSegment>>
 
-    fun addSessionSegment(sessionSegment: SessionSegment)
+    suspend fun addSessionSegment(sessionSegment: SessionSegment): Long
+
+    fun updateSessionSegmentDuration(lastSessionId: Long, sessionTime: Long)
 }
