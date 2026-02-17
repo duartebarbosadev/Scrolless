@@ -20,6 +20,7 @@ import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.repository.UserSettingsStore
 import java.time.LocalDate
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -30,7 +31,7 @@ import kotlinx.coroutines.launch
 /**
  * A data repository implementation for [UserSettingsStore].
  */
-class UserSettingsStoreImpl(private val userSettingsDao: UserSettingsDao) : UserSettingsStore {
+class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: UserSettingsDao) : UserSettingsStore {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 

@@ -22,10 +22,13 @@ import com.scrolless.app.core.data.database.model.toSessionSegment
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.repository.SessionSegmentStore
 import java.time.LocalDate
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class SessionSegmentStoreImpl(private val sessionSegmentDao: SessionSegmentDao) : SessionSegmentStore {
+@Singleton
+class SessionSegmentStoreImpl @Inject constructor(private val sessionSegmentDao: SessionSegmentDao) : SessionSegmentStore {
 
     override fun getSessionSegment(date: LocalDate): Flow<List<SessionSegment>> {
         val nextDate = date.plusDays(1)
