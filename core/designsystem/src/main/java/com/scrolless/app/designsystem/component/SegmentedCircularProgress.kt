@@ -41,14 +41,17 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlin.math.PI
+import kotlin.math.max
 import kotlin.math.min
 
 /**
- * Represents usage data for a single app segment.
+ * Immutable UI model for a single usage segment in the circular indicator.
  *
- * @param segmentName Display name for the app (e.g., "Reels", "TikTok", "Shorts")
- * @param usageMillis Usage time in milliseconds
- * @param color Primary color for this segment
+ * Each entry maps to one arc fragment rendered in [SegmentedCircularProgressIndicator].
+ *
+ * @param segmentName Segment label shown in the legend (for example "Reels")
+ * @param usageMillis Segment duration in milliseconds
+ * @param color Segment color in the ring and legend
  */
 @Immutable
 data class ProgressBarSegment(val segmentName: String, val usageMillis: Long, val color: Color)
@@ -66,17 +69,27 @@ private data class AnimatedSegment(val startAngle: Float, val sweepAngle: Float,
 data class LegendItem(val legendName: String, val formattedTime: String, val color: Color)
 
 private const val VISIBLE_GAP_DEGREES = 3f
-private const val MIN_VISIBLE_SWEEP = 5f
+private const val MIN_VISIBLE_SWEEP = 1.2f
+private const val MIN_TOTAL_SWEEP_DEGREES = 1f
+private const val GAP_SHRINK_START_SEGMENT_COUNT = 36
+private const val GAP_SHRINK_FULL_SEGMENT_COUNT = 72
+private const val GAP_SHRINK_START_AVERAGE_SWEEP_DEGREES = 5f
+private const val GAP_SHRINK_FULL_AVERAGE_SWEEP_DEGREES = 2.2f
+private const val DENSE_GAP_DEGREES = 1.2f
 private const val START_ANGLE = -90f
 
 /**
- * A circular progress indicator with multiple colored segments representing per-app usage.
+ * Circular progress indicator that renders one colored arc per usage segment.
+ *
+ * The total painted sweep is derived from [progressFraction], so the ring only appears full at 1f.
+ * Segment spacing uses adaptive gap compression: it starts with the base visual gap and shrinks
+ * progressively as segment density increases.
  *
  * @param modifier Modifier for the canvas
- * @param segments List of app usage segments to display
- * @param progressFraction Total progress to render, from 0f..1f
- * @param strokeWidth Width of the progress arc stroke
- * @param trackColor Color of the background track
+ * @param segments Segment list to render
+ * @param progressFraction Total progress in [0f, 1f]
+ * @param strokeWidth Width of segment and track strokes
+ * @param trackColor Color used for the background track ring
  */
 @Composable
 fun SegmentedCircularProgressIndicator(
@@ -100,20 +113,36 @@ fun SegmentedCircularProgressIndicator(
         val diameter = (min(size.width, size.height) - strokeWidthPx).coerceAtLeast(0f)
         val radius = (diameter / 2f).coerceAtLeast(0.001f)
         val capAngleDegrees = ((strokeWidthPx / 2f) / radius) * (180f / PI.toFloat())
-        val effectiveGapDegrees = (VISIBLE_GAP_DEGREES + (2f * capAngleDegrees)).coerceAtMost(24f)
         val topLeft = Offset(
             x = (size.width - diameter) / 2,
             y = (size.height - diameter) / 2,
         )
         val arcSize = Size(diameter, diameter)
+        val totalSweepDegrees = 360f * animatedProgressFraction
         val validSegmentCount = segments.count { it.usageMillis > 0L }
-        val gapCount = if (validSegmentCount <= 1) 0 else validSegmentCount
-        val totalGapDegrees = (gapCount * effectiveGapDegrees).coerceAtMost(360f)
-        val maxArcDegrees = (360f - totalGapDegrees).coerceAtLeast(0f)
+        val averageSweepDegrees = if (validSegmentCount > 0) {
+            totalSweepDegrees / validSegmentCount
+        } else {
+            totalSweepDegrees
+        }
+        val initialGapDegrees = (VISIBLE_GAP_DEGREES + (2f * capAngleDegrees)).coerceAtMost(24f)
+        val countCrowdingFactor = normalizedRange(
+            value = validSegmentCount.toFloat(),
+            start = GAP_SHRINK_START_SEGMENT_COUNT.toFloat(),
+            end = GAP_SHRINK_FULL_SEGMENT_COUNT.toFloat(),
+        )
+        val sweepCrowdingFactor = normalizedRange(
+            value = averageSweepDegrees,
+            start = GAP_SHRINK_START_AVERAGE_SWEEP_DEGREES,
+            end = GAP_SHRINK_FULL_AVERAGE_SWEEP_DEGREES,
+            descending = true,
+        )
+        val crowdingFactor = max(countCrowdingFactor, sweepCrowdingFactor)
+        val preferredGapDegrees = lerp(initialGapDegrees, DENSE_GAP_DEGREES, crowdingFactor)
         val animatedSegments = calculateSegments(
             appUsageData = segments,
-            totalSweepDegrees = totalGapDegrees + (maxArcDegrees * animatedProgressFraction),
-            gapDegrees = effectiveGapDegrees,
+            totalSweepDegrees = totalSweepDegrees,
+            gapDegrees = preferredGapDegrees,
         )
 
         // Draw track (background circle)
@@ -145,6 +174,24 @@ fun SegmentedCircularProgressIndicator(
 }
 
 /**
+ * Normalizes [value] to the [0f, 1f] range between [start] and [end].
+ *
+ * If [descending] is true, normalization is inverted so lower values map to higher factors.
+ */
+private fun normalizedRange(value: Float, start: Float, end: Float, descending: Boolean = false): Float {
+    if (start == end) return 0f
+    val normalized = if (!descending) {
+        (value - start) / (end - start)
+    } else {
+        (start - value) / (start - end)
+    }
+    return normalized.coerceIn(0f, 1f)
+}
+
+/** Linear interpolation helper for scalar float values. */
+private fun lerp(start: Float, end: Float, fraction: Float): Float = start + (end - start) * fraction
+
+/**
  * Converts app usage data to animated segments with proper angles.
  * Starts from -90 degrees (top of circle) and proceeds clockwise.
  */
@@ -156,11 +203,13 @@ private fun calculateSegments(appUsageData: List<ProgressBarSegment>, totalSweep
     val usedDegrees = totalSweepDegrees.coerceIn(0f, 360f)
     if (usedDegrees <= 0f) return emptyList()
 
-    val gapCount = when {
-        validSegments.size <= 1 -> 0
-        else -> validSegments.size
+    val gapCount = (validSegments.size - 1).coerceAtLeast(0)
+    val effectiveGapDegrees = if (gapCount > 0) {
+        min(gapDegrees, ((usedDegrees - MIN_TOTAL_SWEEP_DEGREES).coerceAtLeast(0f)) / gapCount)
+    } else {
+        0f
     }
-    val totalGapDegrees = (gapCount * gapDegrees).coerceAtMost(usedDegrees)
+    val totalGapDegrees = (gapCount * effectiveGapDegrees).coerceAtMost(usedDegrees)
     val availableDegrees = (usedDegrees - totalGapDegrees).coerceAtLeast(0f)
     if (availableDegrees <= 0f) return emptyList()
 
@@ -209,7 +258,7 @@ private fun calculateSegments(appUsageData: List<ProgressBarSegment>, totalSweep
         )
 
         val shouldAddGapAfter = index < validSegments.lastIndex
-        currentAngle += sweepAngle + (if (shouldAddGapAfter) gapDegrees else 0f)
+        currentAngle += sweepAngle + (if (shouldAddGapAfter) effectiveGapDegrees else 0f)
 
         segment
     }

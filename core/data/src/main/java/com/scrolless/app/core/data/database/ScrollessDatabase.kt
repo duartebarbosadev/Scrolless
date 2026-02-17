@@ -78,6 +78,18 @@ abstract class ScrollessDatabase : RoomDatabase() {
                     )
                     """.trimIndent(),
                 )
+                db.execSQL(
+                    """
+                    CREATE INDEX IF NOT EXISTS index_session_segments_startDateTime 
+                    ON session_segments (startDateTime)
+                    """.trimIndent(),
+                )
+                db.execSQL(
+                    """
+                    CREATE INDEX IF NOT EXISTS index_session_segments_app_startDateTime 
+                    ON session_segments (app, startDateTime)
+                    """.trimIndent(),
+                )
             }
         }
     }

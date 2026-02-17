@@ -32,5 +32,5 @@ abstract class SessionSegmentDao : BaseDao<SessionSegmentEntity> {
     abstract fun getSessionSegment(date: LocalDate, datePlusOneDay: LocalDate?): Flow<List<SessionSegmentEntity>>
 
     @Query("UPDATE session_segments SET durationMillis = :sessionTime WHERE id = :lastSessionId")
-    abstract fun updateDuration(lastSessionId: Long, sessionTime: Long)
+    abstract suspend fun updateDuration(lastSessionId: Long, sessionTime: Long)
 }

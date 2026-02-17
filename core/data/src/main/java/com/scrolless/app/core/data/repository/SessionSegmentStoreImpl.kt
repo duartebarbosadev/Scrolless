@@ -43,7 +43,7 @@ class SessionSegmentStoreImpl(private val sessionSegmentDao: SessionSegmentDao) 
         return sessionSegmentDao.insert(entity)
     }
 
-    override fun updateSessionSegmentDuration(lastSessionId: Long, sessionTime: Long) {
+    override suspend fun updateSessionSegmentDuration(lastSessionId: Long, sessionTime: Long) {
         sessionSegmentDao.updateDuration(lastSessionId, sessionTime)
     }
 }

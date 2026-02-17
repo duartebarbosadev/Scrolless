@@ -111,9 +111,9 @@ import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.component.AppUsageLegend
-import com.scrolless.app.designsystem.component.ProgressBarSegment
 import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.component.LegendItem
+import com.scrolless.app.designsystem.component.ProgressBarSegment
 import com.scrolless.app.designsystem.component.SegmentedCircularProgressIndicator
 import com.scrolless.app.designsystem.theme.instagramReelsColor
 import com.scrolless.app.designsystem.theme.progressbar_green_use
@@ -444,7 +444,6 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
     }
 
     if (showAccessibilityExplainer) {
-        Timber.d("Showing AccessibilityExplainerBottomSheet")
         AccessibilityExplainerBottomSheet(
             onDismiss = {
                 Timber.d("AccessibilityExplainer: Dismiss from home screen")
@@ -1210,35 +1209,15 @@ private fun ProgressCard(
 
     // Per-app usage data for the segmented progress indicator
     val progressBarSegments = remember(listSessionSegments, currentUsage, reelsLabel, tiktokLabel, shortsLabel) {
-        // val knownUsage = perAppUsage.reelsUsage + perAppUsage.tiktokUsage + perAppUsage.shortsUsage
-        var totalVideoView = 0L
-        for (usageSegment in listSessionSegments) {
-
-            totalVideoView += usageSegment.durationMillis
-        }
-        val cappedTotalUsage = currentUsage.coerceAtLeast(0L)
-        val scale = if (cappedTotalUsage in 1..<totalVideoView) {
-            cappedTotalUsage.toDouble() / totalVideoView.toDouble()
-        } else {
-            1.0
-        }
-
-        // Todo create an extension out of this before merge
-        listSessionSegments.map { entity ->
-            val color = when (entity.app) {
-                BlockableApp.REELS -> instagramReelsColor
-                BlockableApp.SHORTS -> youtubeShortsColor
-                BlockableApp.TIKTOK -> tiktokColor
-            }
-
-            val appName = when (entity.app) {
-                BlockableApp.REELS -> reelsLabel
-                BlockableApp.SHORTS -> shortsLabel
-                BlockableApp.TIKTOK -> tiktokLabel
-            }
-            ProgressBarSegment(appName, ((entity.durationMillis * scale).toLong()), color)
-        }
-   }
+        buildProgressBarSegments(
+            sessionSegments = listSessionSegments,
+            currentUsage = currentUsage,
+            reelsLabel = reelsLabel,
+            tiktokLabel = tiktokLabel,
+            shortsLabel = shortsLabel,
+        )
+    }
+    val legendItems = remember(progressBarSegments) { buildLegendItems(progressBarSegments) }
 
     val segmentProgressFraction = when {
         blockOption == BlockOption.DailyLimit && timeLimit > 0L -> displayProgress / 100f
@@ -1361,22 +1340,62 @@ private fun ProgressCard(
 
         // Legend showing per-app usage
         AppUsageLegend(
-            items = progressBarSegments.groupBy { it.segmentName }.map { (appName, segments) ->
-                val totalMillis = segments.sumOf { it.usageMillis }
-                val color = segments.first().color
-
-                LegendItem(
-                    legendName = appName,
-                    totalMillis.formatTime(),
-                    color
-                )
-            }.filter {
-                it.formattedTime != "0s"
-            },
+            items = legendItems,
             modifier = Modifier.padding(top = 8.dp),
         )
     }
 }
+
+private fun buildProgressBarSegments(
+    sessionSegments: List<SessionSegment>,
+    currentUsage: Long,
+    reelsLabel: String,
+    tiktokLabel: String,
+    shortsLabel: String,
+): List<ProgressBarSegment> {
+    val totalSegmentMillis = sessionSegments.sumOf { it.durationMillis.coerceAtLeast(0L) }
+    val cappedTotalUsage = currentUsage.coerceAtLeast(0L)
+    val scale = if (totalSegmentMillis > 0L && cappedTotalUsage in 1..<totalSegmentMillis) {
+        cappedTotalUsage.toDouble() / totalSegmentMillis.toDouble()
+    } else {
+        1.0
+    }
+
+    return sessionSegments.mapNotNull { segment ->
+        val rawUsageMillis = segment.durationMillis.coerceAtLeast(0L)
+        if (rawUsageMillis <= 0L) {
+            return@mapNotNull null
+        }
+        val usageMillis = (rawUsageMillis * scale).toLong().coerceAtLeast(1L)
+
+        val color = when (segment.app) {
+            BlockableApp.REELS -> instagramReelsColor
+            BlockableApp.SHORTS -> youtubeShortsColor
+            BlockableApp.TIKTOK -> tiktokColor
+        }
+        val appName = when (segment.app) {
+            BlockableApp.REELS -> reelsLabel
+            BlockableApp.SHORTS -> shortsLabel
+            BlockableApp.TIKTOK -> tiktokLabel
+        }
+
+        ProgressBarSegment(segmentName = appName, usageMillis = usageMillis, color = color)
+    }
+}
+
+private fun buildLegendItems(progressBarSegments: List<ProgressBarSegment>): List<LegendItem> =
+    progressBarSegments.groupBy { it.segmentName }.mapNotNull { (segmentName, segments) ->
+        val totalMillis = segments.sumOf { it.usageMillis.coerceAtLeast(0L) }
+        if (totalMillis <= 0L) {
+            return@mapNotNull null
+        }
+
+        LegendItem(
+            legendName = segmentName,
+            formattedTime = totalMillis.formatTime(),
+            color = segments.first().color,
+        )
+    }
 
 @Composable
 fun PauseButton(onTogglePause: (Boolean) -> Unit, isPaused: Boolean, remainingMillis: Long, modifier: Modifier = Modifier) {

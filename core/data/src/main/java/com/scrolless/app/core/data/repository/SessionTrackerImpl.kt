@@ -72,7 +72,7 @@ class SessionTrackerImpl @Inject constructor(
             if (shouldCreateNewSession) {
                 // Start a new session segment
                 val newSegment = SessionSegment(app, sessionTime, LocalDateTime.now())
-                Timber.i("Creation a session segment with session time of %s", sessionTime)
+                Timber.i("Creating a session segment with session time of %s", sessionTime)
                 val newSessionId = sessionSegmentStore.addSessionSegment(newSegment)
                 sessionState.updateAndGet {
                     it.copy(
@@ -125,6 +125,9 @@ class SessionTrackerImpl @Inject constructor(
             // Reset all usage (total + per-app) and update last reset day
             userSettingsStore.resetAllDailyUsage()
             userSettingsStore.setLastResetDay(currentDay)
+
+            // Clear session state so that new day's usage starts fresh
+            sessionState.set(SessionState())
         }
     }
 

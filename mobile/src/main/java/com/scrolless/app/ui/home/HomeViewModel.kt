@@ -26,6 +26,11 @@ import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
 import com.scrolless.app.util.ReviewPromptResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.Duration
+import java.time.ZonedDateTime
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import kotlin.math.min
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,14 +42,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.time.Duration
-import java.time.ZonedDateTime
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import kotlin.math.min
 
 /**
- * ViewModel that handles the business logic and screen state of the Podcast details screen.
+ * ViewModel that handles the business logic and screen state of the HomeScreen.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
@@ -228,31 +228,43 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Computes progress percentage for the active blocking mode.
+     *
+     * Daily mode uses [currentUsage] against [timeLimit].
+     * Interval mode uses [intervalUsage] against [timeLimit].
+     *
+     * @param blockOption Active blocking strategy.
+     * @param currentUsage Total usage accumulated for the current day.
+     * @param timeLimit Configured limit in milliseconds.
+     * @param intervalUsage Usage accumulated in the current interval window.
+     * @return Progress in integer percent, clamped to the [0, 100] range.
+     */
     private fun calculateProgress(blockOption: BlockOption, currentUsage: Long, timeLimit: Long, intervalUsage: Long): Int =
         when (blockOption) {
-            BlockOption.DailyLimit -> {
-                if (timeLimit > 0) {
-                    val remainingTime = timeLimit - currentUsage
-                    if (remainingTime > 0) {
-                        min(PROGRESS_MAX, ((currentUsage.toDouble() / timeLimit.toDouble()) * PROGRESS_MAX).toInt())
-                    } else {
-                        PROGRESS_MAX
-                    }
-                } else {
-                    0
-                }
-            }
-
-            BlockOption.IntervalTimer -> {
-                if (timeLimit > 0) {
-                    min(PROGRESS_MAX, ((intervalUsage.toDouble() / timeLimit.toDouble()) * PROGRESS_MAX).toInt())
-                } else {
-                    0
-                }
-            }
-
+            BlockOption.DailyLimit -> usageToProgress(usage = currentUsage, limit = timeLimit)
+            BlockOption.IntervalTimer -> usageToProgress(usage = intervalUsage, limit = timeLimit)
             else -> 0
         }
+
+    /**
+     * Converts a usage/limit pair to an integer percentage.
+     *
+     * For non-zero usage below the limit, returns at least `1` so tiny progress
+     * remains visible in the UI.
+     *
+     * @param usage Elapsed usage in milliseconds.
+     * @param limit Allowed usage in milliseconds.
+     * @return Progress in integer percent, clamped to the [0, 100] range.
+     */
+    private fun usageToProgress(usage: Long, limit: Long): Int {
+        if (limit <= 0L) return 0
+        if (usage <= 0L) return 0
+        if (usage >= limit) return PROGRESS_MAX
+
+        val rawProgress = ((usage.toDouble() / limit.toDouble()) * PROGRESS_MAX).toInt()
+        return min(PROGRESS_MAX - 1, rawProgress.coerceAtLeast(1))
+    }
 
     fun onSnackbarShown() {
         Timber.v("Snackbar dismissed")

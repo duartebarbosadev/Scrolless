@@ -25,5 +25,5 @@ interface SessionSegmentStore {
 
     suspend fun addSessionSegment(sessionSegment: SessionSegment): Long
 
-    fun updateSessionSegmentDuration(lastSessionId: Long, sessionTime: Long)
+    suspend fun updateSessionSegmentDuration(lastSessionId: Long, sessionTime: Long)
 }
