@@ -729,13 +729,13 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         if (listenToAll) {
             info.packageNames = null // Listen to all
             Timber.d("Expanded service configuration to listen to all packages")
+
+            // Ensure windows are available for visibility-based exit checks.
+            info.flags = info.flags or AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
         } else {
             info.packageNames = BlockableApp.entries.map { it.packageId }.toTypedArray()
             Timber.d("Restricted service configuration to target packages only")
         }
-        // Ensure windows are available for visibility-based exit checks.
-        info.flags = info.flags or AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
-
         serviceInfo = info
     }
 
