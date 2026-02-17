@@ -18,6 +18,7 @@ package com.scrolless.app.core.data.database.model
 
 import androidx.compose.runtime.Immutable
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
@@ -25,6 +26,10 @@ import java.time.LocalDateTime
 
 @Entity(
     tableName = "session_segments",
+    indices = [
+        Index(value = ["startDateTime"]),
+        Index(value = ["app", "startDateTime"]),
+    ],
 )
 @Immutable
 data class SessionSegmentEntity(

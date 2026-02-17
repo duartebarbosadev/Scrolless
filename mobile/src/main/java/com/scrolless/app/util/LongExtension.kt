@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.util
 
+import com.scrolless.app.ui.utils.formatMinutes
 import java.util.Locale
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.milliseconds
@@ -77,4 +78,18 @@ fun Long.formatAsTime(): String {
     } else {
         String.format(Locale.US, "%02d:%02d", minutes, seconds)
     }
+}
+
+fun Long.toIntervalLabel(): String {
+    if (this <= 0L) return "--"
+    val totalMinutes = (this / 60_000L).toInt()
+    return totalMinutes.formatMinutes()
+}
+
+fun Long.toCountdownLabel(): String {
+    if (this <= 0L) return "0:00"
+    val totalSeconds = (this / 1000L).coerceAtLeast(0L)
+    val minutes = totalSeconds / 60
+    val seconds = totalSeconds % 60
+    return String.format(Locale.getDefault(), "%d:%02d", minutes, seconds)
 }

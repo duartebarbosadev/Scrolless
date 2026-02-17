@@ -130,13 +130,13 @@ import com.scrolless.app.ui.home.components.IntervalTimerDialog
 import com.scrolless.app.ui.home.components.TimeLimitDialog
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.tooling.DevicePreviews
-import com.scrolless.app.ui.utils.formatMinutes
 import com.scrolless.app.util.formatTime
 import com.scrolless.app.util.isAccessibilityServiceEnabled
 import com.scrolless.app.util.radialGradientScrim
 import com.scrolless.app.util.requestAppReview
+import com.scrolless.app.util.toCountdownLabel
+import com.scrolless.app.util.toIntervalLabel
 import java.time.LocalDateTime
-import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -983,22 +983,6 @@ private fun rememberPauseRemainingTime(pauseUntilMillis: Long): Long {
     }
 
     return remaining
-}
-
-// Todo refactor this out
-private fun Long.toIntervalLabel(): String {
-    if (this <= 0L) return "--"
-    val totalMinutes = (this / 60_000L).toInt()
-    return totalMinutes.formatMinutes()
-}
-
-// Todo refactor this out
-private fun Long.toCountdownLabel(): String {
-    if (this <= 0L) return "0:00"
-    val totalSeconds = (this / 1000L).coerceAtLeast(0L)
-    val minutes = totalSeconds / 60
-    val seconds = totalSeconds % 60
-    return String.format(Locale.getDefault(), "%d:%02d", minutes, seconds)
 }
 
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
