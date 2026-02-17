@@ -96,11 +96,11 @@ object DataDiModule {
 
     @Provides
     @Singleton
-    fun provideUsageSegmentDao(database: ScrollessDatabase): SessionSegmentDao = database.sessionSegmentDao()
+    fun provideSessionSegmentDao(database: ScrollessDatabase): SessionSegmentDao = database.sessionSegmentDao()
 
     @Provides
     @Singleton
-    fun provideUsageSegmentStore(sessionSegmentDao: SessionSegmentDao): SessionSegmentStore =
+    fun provideSessionSegmentStore(sessionSegmentDao: SessionSegmentDao): SessionSegmentStore =
         SessionSegmentStoreImpl(sessionSegmentDao = sessionSegmentDao)
 
     @Provides
