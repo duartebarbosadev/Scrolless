@@ -60,8 +60,6 @@ class SessionTrackerImpl @Inject constructor(
     override suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp) {
         usageMutex.withLock {
 
-            lastSegmentApp = app
-
             // Update total usage
             val currentTotal = (userSettingsStore.getTotalDailyUsage() as StateFlow<Long>).value
             val newTotal = currentTotal + sessionTime
@@ -69,7 +67,7 @@ class SessionTrackerImpl @Inject constructor(
 
             val timeDiffNowAndLastSession = (System.currentTimeMillis() - lastSessionCreationTimestamp)
             // Create a new session if there's no last session or a last app saved, or app was closed and wasn't reopen in more than 30 seconds
-            val shouldCreateNewSession = if (lastSegmentApp == null || lastSessionId == 0L) {
+            val shouldCreateNewSession = if (lastSegmentApp == null || lastSessionId == 0L || lastSegmentApp != app) {
                 true
             }
             else if (hasAppBeenClosed && timeDiffNowAndLastSession > 30_000) {
@@ -81,7 +79,8 @@ class SessionTrackerImpl @Inject constructor(
             if (shouldCreateNewSession) {
                 // Start a new session segment
                 lastSessionCreationTimestamp = System.currentTimeMillis()
-                currentSessionTotalTime = 0L
+                // Reset current session total time for the new session
+                currentSessionTotalTime = sessionTime
                 val newSegment = SessionSegment(app, sessionTime, LocalDateTime.now())
                 Timber.i("Creation a session segment with session time of %s", sessionTime)
                 lastSessionId = sessionSegmentStore.addSessionSegment(newSegment)
@@ -92,6 +91,8 @@ class SessionTrackerImpl @Inject constructor(
                 Timber.i("Updating current session with session time of %s", currentSessionTotalTime)
                 sessionSegmentStore.updateSessionSegmentDuration(lastSessionId, currentSessionTotalTime)
             }
+
+            lastSegmentApp = app
 
             // Todo remove in future: brainrot usage in userSettings
             // Update per-app usage if app is known

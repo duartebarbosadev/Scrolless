@@ -34,7 +34,7 @@ import com.scrolless.app.core.data.database.model.UserSettingsEntity
         UserSettingsEntity::class,
         SessionSegmentEntity::class,
     ],
-    version = 4,
+    version = 5,
     exportSchema = false,
 )
 @TypeConverters(LocalDateTypeConverters::class, BlockableAppTypeConverters::class, LocalDateTimeTypeConverters::class)
@@ -62,6 +62,20 @@ abstract class ScrollessDatabase : RoomDatabase() {
                     UPDATE user_settings
                     SET first_launch_at = CAST(strftime('%s','now') AS INTEGER) * 1000
                     WHERE first_launch_at = 0
+                    """.trimIndent(),
+                )
+            }
+        }
+        val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS session_segments (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        app TEXT NOT NULL,
+                        durationMillis INTEGER NOT NULL,
+                        startDateTime TEXT NOT NULL
+                    )
                     """.trimIndent(),
                 )
             }

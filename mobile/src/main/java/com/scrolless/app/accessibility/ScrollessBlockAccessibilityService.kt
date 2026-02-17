@@ -154,7 +154,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     private var currentBlockableApp: BlockableApp? = null
 
-    private var isUserOnBrainRotApp: Boolean = false
+    private var currentForegroundBrainRotApp: BlockableApp? = null
 
     /**
      * Runnable that performs periodic checks (every 1 second) to determine if the user
@@ -300,8 +300,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             if (isProcessingBlockedContent) {
                 Timber.d("Calling exit because screen is off")
                 onBlockedContentExited()
-                sessionTracker.onAppClose()
             }
+            updateForegroundAppState(null)
             return
         }
 
@@ -319,25 +319,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         val packageId = event.packageName?.toString() ?: ""
 
-        // Ignore events from our own app (e.g. Timer Overlay updates)
-        if (packageId == packageName) {
-            return
-        }
+        val userActiveApp = resolveForegroundBrainRotApp(packageId)
+        updateForegroundAppState(userActiveApp)
 
-        val userActiveApp = isUserOnBrainRotApp(packageId)
-        if (userActiveApp != null && !this.isUserOnBrainRotApp) {
-            this.isUserOnBrainRotApp = true
-            currentBlockableApp = userActiveApp
-            Timber.v("**** User appears to have entered a brain rot app: %s", userActiveApp.name)
-            sessionTracker.onAppOpen(userActiveApp)
-            // If user was on brainrot app and no longer is, treat as app close to make sure we end the session if they left the app without triggering an exit event
-        } else if (this.isUserOnBrainRotApp && userActiveApp == null) {
-            Timber.v("*** User appears to have left the brain rot app, treating as exit")
-
-            this.isUserOnBrainRotApp = false
-            sessionTracker.onAppClose()
-            currentBlockableApp = null
-        }
         // Detect blocked content
         val onBrainRotApp = detectAppForBlockedContent(packageId, rootNode)
 
@@ -355,7 +339,25 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    private fun isUserOnBrainRotApp(packageId: String): BlockableApp? {
+    private fun updateForegroundAppState(nextApp: BlockableApp?) {
+        val previousApp = currentForegroundBrainRotApp
+        if (previousApp == nextApp) return
+
+        if (previousApp != null) {
+            Timber.v("*** User appears to have left a brain rot app: %s", previousApp.name)
+            sessionTracker.onAppClose()
+        }
+
+        if (nextApp != null) {
+            Timber.v("**** User appears to have entered a brain rot app: %s", nextApp.name)
+            sessionTracker.onAppOpen(nextApp)
+        }
+
+        currentForegroundBrainRotApp = nextApp
+        currentBlockableApp = nextApp
+    }
+
+    private fun resolveForegroundBrainRotApp(packageId: String): BlockableApp? {
 
         val brainRotApp = BlockableApp.entries.firstOrNull { appEnum ->
             packageId.startsWith(appEnum.packageId)
@@ -366,7 +368,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // If we are processing content and we received an event
         //  make sure that the app is still visible as we can get events from other apps
         //  otherwise it means that the user has left the app
-        currentBlockableApp?.let { blockableApp ->
+        currentForegroundBrainRotApp?.let { blockableApp ->
             if (isBlockedAppVisible(blockableApp)) {
                 return blockableApp
             } else {
@@ -567,24 +569,20 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // Restrict service scope again to save battery
         updateServiceConfig(false)
 
-        // Capture detectedApp before clearing it
-        val exitedApp = detectedApp
+        val exitedApp = checkNotNull(detectedApp) {
+            "Invariant violated: detectedApp must be set while processing blocked content"
+        }
 
         serviceScope.launch(Dispatchers.IO) {
             // Add to usage in memory with per-app tracking
-            Timber.d("Recording session usage: %d ms for app: %s", sessionTime, exitedApp?.name)
-            if (exitedApp == null) {
-                Timber.w("Exited app is null; recording total usage only")
-            }
-            exitedApp?.let {
-                sessionTracker.addToDailyUsage(sessionTime, exitedApp)
-            }
+            Timber.d("Recording session usage: %d ms for app: %s", sessionTime, exitedApp.name)
+            sessionTracker.addToDailyUsage(sessionTime, exitedApp)
 
             // Let blocking manager do its logic, if needed
             blockingManager.onExitBlockedContent(sessionTime)
         }
 
-        Timber.d("Exit handling completed for app: %s", exitedApp?.name)
+        Timber.d("Exit handling completed for app: %s", exitedApp.name)
         detectedApp = null
     }
 

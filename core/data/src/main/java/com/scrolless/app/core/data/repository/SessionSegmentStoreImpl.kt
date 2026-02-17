@@ -21,29 +21,17 @@ import com.scrolless.app.core.data.database.model.SessionSegmentEntity
 import com.scrolless.app.core.data.database.model.toSessionSegment
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.repository.SessionSegmentStore
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.map
 import java.time.LocalDate
 
 class SessionSegmentStoreImpl(private val sessionSegmentDao: SessionSegmentDao) : SessionSegmentStore {
 
-    private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-    private val _sessionSegmentsToday = MutableStateFlow<List<SessionSegment>>(emptyList())
-
-    init {
-
-        coroutineScope.launch {
-            sessionSegmentDao.getSessionSegment(LocalDate.now(), LocalDate.now().plusDays(1)).collect { usageSegment ->
-                _sessionSegmentsToday.value = usageSegment.map { it.toSessionSegment() }
-            }
-        }
-    }
     override fun getSessionSegment(date: LocalDate): Flow<List<SessionSegment>> {
-        return _sessionSegmentsToday
+        val nextDate = date.plusDays(1)
+        return sessionSegmentDao.getSessionSegment(date, nextDate).map { entities ->
+            entities.map { it.toSessionSegment() }
+        }
     }
 
     override suspend fun addSessionSegment(sessionSegment: SessionSegment): Long {
@@ -56,8 +44,6 @@ class SessionSegmentStoreImpl(private val sessionSegmentDao: SessionSegmentDao) 
     }
 
     override fun updateSessionSegmentDuration(lastSessionId: Long, sessionTime: Long) {
-        coroutineScope.launch {
-            sessionSegmentDao.updateDuration(lastSessionId, sessionTime)
-        }
+        sessionSegmentDao.updateDuration(lastSessionId, sessionTime)
     }
 }
