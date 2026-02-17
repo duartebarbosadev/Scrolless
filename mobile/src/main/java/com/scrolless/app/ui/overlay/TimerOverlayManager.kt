@@ -61,7 +61,10 @@ import timber.log.Timber
  * A View-based implementation of TimerOverlayManager.
  * Replaces the Compose-based version to resolve drag lag issues.
  */
-class TimerOverlayManager @Inject constructor(private val userSettingsStore: UserSettingsStore, private val sessionTracker: SessionTracker) {
+class TimerOverlayManager @Inject constructor(
+    private val userSettingsStore: UserSettingsStore,
+    private val sessionTracker: SessionTracker,
+) {
 
     private var rootView: DragInterceptFrameLayout? = null
     private var timerTextView: TextView? = null

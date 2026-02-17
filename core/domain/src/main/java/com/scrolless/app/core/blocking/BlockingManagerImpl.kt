@@ -42,8 +42,10 @@ import timber.log.Timber
  * based on the active block configuration.
  */
 @Singleton
-class BlockingManagerImpl @Inject constructor(private val sessionTracker: SessionTracker, private val userSettingsStore: UserSettingsStore) :
-    BlockingManager {
+class BlockingManagerImpl @Inject constructor(
+    private val sessionTracker: SessionTracker,
+    private val userSettingsStore: UserSettingsStore,
+) : BlockingManager {
 
     private lateinit var handler: BlockOptionHandler
     private val persistenceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())

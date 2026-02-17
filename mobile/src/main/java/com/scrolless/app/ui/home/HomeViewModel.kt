@@ -26,17 +26,22 @@ import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
 import com.scrolless.app.util.ReviewPromptResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDate
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import kotlin.math.min
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.Duration
+import java.time.ZonedDateTime
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import kotlin.math.min
 
 /**
  * ViewModel that handles the business logic and screen state of the Podcast details screen.
@@ -105,6 +110,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    private val sessionSegmentsForCurrentDay = currentDayFlow().flatMapLatest { currentDate ->
+        sessionSegmentStore.getSessionSegment(currentDate)
+    }
+
     private val usageSnapshot = combine(
         userSettingsStore.getActiveBlockOption(),
         userSettingsStore.getTimeLimit(),
@@ -112,7 +121,7 @@ class HomeViewModel @Inject constructor(
         userSettingsStore.getIntervalUsage(),
         userSettingsStore.getIntervalWindowStart(),
         userSettingsStore.getTotalDailyUsage(),
-        sessionSegmentStore.getSessionSegment(LocalDate.now()),
+        sessionSegmentsForCurrentDay,
     ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage, usageSegment ->
         UsageSnapshot(
             blockOption = blockOption,
@@ -327,6 +336,16 @@ class HomeViewModel @Inject constructor(
             userSettingsStore.resetAllDailyUsage()
         }
     }
+
+    private fun currentDayFlow() = flow {
+        while (true) {
+            val now = ZonedDateTime.now()
+            emit(now.toLocalDate())
+            val nextMidnight = now.toLocalDate().plusDays(1).atStartOfDay(now.zone)
+            val delayMillis = Duration.between(now, nextMidnight).toMillis().coerceAtLeast(1L)
+            delay(delayMillis)
+        }
+    }.distinctUntilChanged()
 }
 
 data class HomeUiState(

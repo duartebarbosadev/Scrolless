@@ -429,13 +429,11 @@ private fun DebugUsageSlider(label: String, color: Color, minutes: Int, onMinute
 
 private fun Long.toWholeMinutes(): Int = TimeUnit.MILLISECONDS.toMinutes(this).toInt()
 
-private fun List<SessionSegment>.segmentMinutesFor(app: BlockableApp): List<Int> =
-    this.filter { it.app == app }
-        .sortedBy { it.startDateTime }
-        .map { it.durationMillis.toWholeMinutes().coerceAtLeast(0) }
+private fun List<SessionSegment>.segmentMinutesFor(app: BlockableApp): List<Int> = this.filter { it.app == app }
+    .sortedBy { it.startDateTime }
+    .map { it.durationMillis.toWholeMinutes().coerceAtLeast(0) }
 
-private fun List<Int>.toStateList(): SnapshotStateList<Int> =
-    mutableStateListOf<Int>().also { list -> list.addAll(this) }
+private fun List<Int>.toStateList(): SnapshotStateList<Int> = mutableStateListOf<Int>().also { list -> list.addAll(this) }
 
 private fun buildUsageSegments(
     reelsSegments: List<Int>,
@@ -450,11 +448,7 @@ private fun buildUsageSegments(
     return result
 }
 
-private fun buildUsageSegmentsForApp(
-    app: BlockableApp,
-    minutesSegments: List<Int>,
-    baseTime: LocalDateTime,
-): List<SessionSegment> =
+private fun buildUsageSegmentsForApp(app: BlockableApp, minutesSegments: List<Int>, baseTime: LocalDateTime): List<SessionSegment> =
     minutesSegments.mapIndexed { index, minutes ->
         val offsetMinutes = (minutesSegments.size - 1 - index).coerceAtLeast(0)
         SessionSegment(
