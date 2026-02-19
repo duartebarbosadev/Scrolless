@@ -61,6 +61,40 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    val releaseKeystorePath =
+        project.providers.environmentVariable("ANDROID_RELEASE_KEYSTORE_PATH")
+            .orElse(project.providers.gradleProperty("androidReleaseKeystorePath"))
+            .orElse(project.providers.environmentVariable("compose_store_file"))
+            .orElse("${System.getProperty("user.home")}/.android/debug.keystore")
+            .get()
+    val releaseStorePassword =
+        project.providers.environmentVariable("ANDROID_RELEASE_STORE_PASSWORD")
+            .orElse(project.providers.gradleProperty("androidReleaseStorePassword"))
+            .orElse(project.providers.environmentVariable("compose_store_password"))
+            .orElse("android")
+            .get()
+    val releaseKeyAlias =
+        project.providers.environmentVariable("ANDROID_RELEASE_KEY_ALIAS")
+            .orElse(project.providers.gradleProperty("androidReleaseKeyAlias"))
+            .orElse(project.providers.environmentVariable("compose_key_alias"))
+            .orElse("androiddebugkey")
+            .get()
+    val releaseKeyPassword =
+        project.providers.environmentVariable("ANDROID_RELEASE_KEY_PASSWORD")
+            .orElse(project.providers.gradleProperty("androidReleaseKeyPassword"))
+            .orElse(project.providers.environmentVariable("compose_key_password"))
+            .orElse("android")
+            .get()
+
+    signingConfigs {
+        create("release") {
+            storeFile = file(releaseKeystorePath)
+            storePassword = releaseStorePassword
+            keyAlias = releaseKeyAlias
+            keyPassword = releaseKeyPassword
+        }
+    }
+
 
     buildTypes {
         getByName("debug") {
@@ -68,6 +102,7 @@ android {
         }
 
         getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
