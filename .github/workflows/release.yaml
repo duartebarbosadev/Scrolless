@@ -9,8 +9,8 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: "${{ github.workflow }}-${{ github.ref }}"
-  cancel-in-progress: false
+  group: "${{ github.workflow }}-global"
+  cancel-in-progress: true
 
 jobs:
   build_and_release:
