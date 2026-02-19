@@ -42,9 +42,23 @@ jobs:
             grep -E 'versionName\s*=\s*"[^"]+"' "$1" | head -n1 | sed -E 's/.*=\s*"([^"]+)".*/\1/'
           }
 
+          extract_application_id() {
+            grep -E 'applicationId\s*=\s*"[^"]+"' "$1" | head -n1 | sed -E 's/.*=\s*"([^"]+)".*/\1/'
+          }
+
           current_file="mobile/build.gradle.kts"
           current_version_code="$(extract_version_code "$current_file")"
           current_version_name="$(extract_version_name "$current_file")"
+          current_application_id="$(extract_application_id "$current_file")"
+          if [[ -z "$current_version_code" || -z "$current_version_name" ]]; then
+            echo "Failed to extract versionCode/versionName from $current_file."
+            echo "current_version_code='$current_version_code' current_version_name='$current_version_name'"
+            exit 1
+          fi
+          if [[ -z "$current_application_id" ]]; then
+            echo "Failed to extract applicationId from $current_file."
+            exit 1
+          fi
 
           previous_version_code=""
           previous_version_name=""
@@ -74,6 +88,7 @@ jobs:
           echo "should_release=$should_release" >> "$GITHUB_OUTPUT"
           echo "version_code=$current_version_code" >> "$GITHUB_OUTPUT"
           echo "version_name=$current_version_name" >> "$GITHUB_OUTPUT"
+          echo "application_id=$current_application_id" >> "$GITHUB_OUTPUT"
           echo "tag_name=$tag_name" >> "$GITHUB_OUTPUT"
 
       - name: Copy CI gradle.properties
@@ -178,7 +193,7 @@ jobs:
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-          packageName: com.scrolless.app
+          packageName: ${{ steps.version.outputs.application_id }}
           releaseFiles: mobile/build/outputs/bundle/release/*.aab
           track: internal
           status: completed
