@@ -46,13 +46,18 @@ jobs:
           current_version_code="$(extract_version_code "$current_file")"
           current_version_name="$(extract_version_name "$current_file")"
 
-          previous_file="$(mktemp)"
-          if git show "${{ github.event.before }}:$current_file" > "$previous_file" 2>/dev/null; then
-            previous_version_code="$(extract_version_code "$previous_file" || true)"
-            previous_version_name="$(extract_version_name "$previous_file" || true)"
+          previous_version_code=""
+          previous_version_name=""
+          if [[ "${{ github.event_name }}" == "push" && -n "${{ github.event.before }}" ]]; then
+            previous_file="$(mktemp)"
+            if git show "${{ github.event.before }}:$current_file" > "$previous_file" 2>/dev/null; then
+              previous_version_code="$(extract_version_code "$previous_file" || true)"
+              previous_version_name="$(extract_version_name "$previous_file" || true)"
+            else
+              echo "Could not read previous version from commit ${{ github.event.before }}."
+            fi
           else
-            previous_version_code=""
-            previous_version_name=""
+            echo "No previous commit SHA available for event '${{ github.event_name }}'."
           fi
 
           should_release="true"
@@ -94,25 +99,31 @@ jobs:
       - name: Validate release secrets
         if: steps.version.outputs.should_release == 'true'
         shell: bash
+        env:
+          ANDROID_RELEASE_KEYSTORE_B64: ${{ secrets.ANDROID_RELEASE_KEYSTORE_B64 }}
+          ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+          ANDROID_RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
+          ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
         run: |
           set -euo pipefail
-          if [ -z "${{ secrets.ANDROID_RELEASE_KEYSTORE_B64 }}" ]; then
+          if [ -z "$ANDROID_RELEASE_KEYSTORE_B64" ]; then
             echo "ANDROID_RELEASE_KEYSTORE_B64 is required for releases."
             exit 1
           fi
-          if [ -z "${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}" ]; then
+          if [ -z "$ANDROID_RELEASE_STORE_PASSWORD" ]; then
             echo "ANDROID_RELEASE_STORE_PASSWORD is required for releases."
             exit 1
           fi
-          if [ -z "${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}" ]; then
+          if [ -z "$ANDROID_RELEASE_KEY_ALIAS" ]; then
             echo "ANDROID_RELEASE_KEY_ALIAS is required for releases."
             exit 1
           fi
-          if [ -z "${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}" ]; then
+          if [ -z "$ANDROID_RELEASE_KEY_PASSWORD" ]; then
             echo "ANDROID_RELEASE_KEY_PASSWORD is required for releases."
             exit 1
           fi
-          if [ -z "${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}" ]; then
+          if [ -z "$PLAY_SERVICE_ACCOUNT_JSON" ]; then
             echo "PLAY_SERVICE_ACCOUNT_JSON is required for releases."
             exit 1
           fi
@@ -120,10 +131,15 @@ jobs:
       - name: Prepare release keystore
         if: steps.version.outputs.should_release == 'true'
         shell: bash
+        env:
+          ANDROID_RELEASE_KEYSTORE_B64: ${{ secrets.ANDROID_RELEASE_KEYSTORE_B64 }}
         run: |
           set -euo pipefail
           keystore_path="$RUNNER_TEMP/release-signing.jks"
-          echo "${{ secrets.ANDROID_RELEASE_KEYSTORE_B64 }}" | base64 --decode > "$keystore_path"
+          if ! printf '%s' "$ANDROID_RELEASE_KEYSTORE_B64" | base64 --decode > "$keystore_path" 2>/dev/null; then
+            echo "Failed to decode ANDROID_RELEASE_KEYSTORE_B64. Ensure it is valid base64 keystore data."
+            exit 1
+          fi
           chmod 600 "$keystore_path"
           echo "ANDROID_RELEASE_KEYSTORE_PATH=$keystore_path" >> "$GITHUB_ENV"
 
@@ -135,11 +151,23 @@ jobs:
           ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
         run: ./gradlew :mobile:assembleRelease :mobile:bundleRelease
 
-      - name: Validate release APK is signed
+      - name: Validate release outputs
         if: steps.version.outputs.should_release == 'true'
         shell: bash
         run: |
           set -euo pipefail
+          shopt -s nullglob
+          apks=(mobile/build/outputs/apk/release/*.apk)
+          if [ "${#apks[@]}" -eq 0 ]; then
+            echo "No release APK files found."
+            exit 1
+          fi
+          aabs=(mobile/build/outputs/bundle/release/*.aab)
+          shopt -u nullglob
+          if [ "${#aabs[@]}" -eq 0 ]; then
+            echo "No AAB files found."
+            exit 1
+          fi
           if ls mobile/build/outputs/apk/release/*-unsigned.apk >/dev/null 2>&1; then
             echo "Found unsigned release APK. Configure release signing before publishing."
             exit 1

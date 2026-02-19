@@ -63,35 +63,31 @@ android {
 
     val releaseKeystorePath =
         project.providers.environmentVariable("ANDROID_RELEASE_KEYSTORE_PATH")
-            .orElse(project.providers.gradleProperty("androidReleaseKeystorePath"))
-            .orElse(project.providers.environmentVariable("compose_store_file"))
-            .orElse("${System.getProperty("user.home")}/.android/debug.keystore")
-            .get()
+            .orNull
     val releaseStorePassword =
         project.providers.environmentVariable("ANDROID_RELEASE_STORE_PASSWORD")
-            .orElse(project.providers.gradleProperty("androidReleaseStorePassword"))
-            .orElse(project.providers.environmentVariable("compose_store_password"))
-            .orElse("android")
-            .get()
+            .orNull
     val releaseKeyAlias =
         project.providers.environmentVariable("ANDROID_RELEASE_KEY_ALIAS")
-            .orElse(project.providers.gradleProperty("androidReleaseKeyAlias"))
-            .orElse(project.providers.environmentVariable("compose_key_alias"))
-            .orElse("androiddebugkey")
-            .get()
+            .orNull
     val releaseKeyPassword =
         project.providers.environmentVariable("ANDROID_RELEASE_KEY_PASSWORD")
-            .orElse(project.providers.gradleProperty("androidReleaseKeyPassword"))
-            .orElse(project.providers.environmentVariable("compose_key_password"))
-            .orElse("android")
-            .get()
+            .orNull
 
     signingConfigs {
         create("release") {
-            storeFile = file(releaseKeystorePath)
-            storePassword = releaseStorePassword
-            keyAlias = releaseKeyAlias
-            keyPassword = releaseKeyPassword
+            if (!releaseKeystorePath.isNullOrBlank()) {
+                storeFile = file(releaseKeystorePath)
+            }
+            if (!releaseStorePassword.isNullOrBlank()) {
+                storePassword = releaseStorePassword
+            }
+            if (!releaseKeyAlias.isNullOrBlank()) {
+                keyAlias = releaseKeyAlias
+            }
+            if (!releaseKeyPassword.isNullOrBlank()) {
+                keyPassword = releaseKeyPassword
+            }
         }
     }
 
