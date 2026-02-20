@@ -21,22 +21,27 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.scrolless.app.core.data.database.dao.SessionSegmentDao
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.data.database.model.UserSettings
+import com.scrolless.app.core.data.database.model.SessionSegmentEntity
+import com.scrolless.app.core.data.database.model.UserSettingsEntity
 
 /**
  * The [RoomDatabase]
  */
 @Database(
     entities = [
-        UserSettings::class,
+        UserSettingsEntity::class,
+        SessionSegmentEntity::class,
     ],
-    version = 4,
+    version = 5,
     exportSchema = false,
 )
-@TypeConverters(LocalDateTypeConverters::class)
+@TypeConverters(LocalDateTypeConverters::class, BlockableAppTypeConverters::class, LocalDateTimeTypeConverters::class)
 abstract class ScrollessDatabase : RoomDatabase() {
     abstract fun userSettingsDao(): UserSettingsDao
+
+    abstract fun sessionSegmentDao(): SessionSegmentDao
 
     companion object {
         val MIGRATION_2_3 = object : Migration(2, 3) {
@@ -57,6 +62,32 @@ abstract class ScrollessDatabase : RoomDatabase() {
                     UPDATE user_settings
                     SET first_launch_at = CAST(strftime('%s','now') AS INTEGER) * 1000
                     WHERE first_launch_at = 0
+                    """.trimIndent(),
+                )
+            }
+        }
+        val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS session_segments (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        app TEXT NOT NULL,
+                        durationMillis INTEGER NOT NULL,
+                        startDateTime TEXT NOT NULL
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL(
+                    """
+                    CREATE INDEX IF NOT EXISTS index_session_segments_startDateTime 
+                    ON session_segments (startDateTime)
+                    """.trimIndent(),
+                )
+                db.execSQL(
+                    """
+                    CREATE INDEX IF NOT EXISTS index_session_segments_app_startDateTime 
+                    ON session_segments (app, startDateTime)
                     """.trimIndent(),
                 )
             }

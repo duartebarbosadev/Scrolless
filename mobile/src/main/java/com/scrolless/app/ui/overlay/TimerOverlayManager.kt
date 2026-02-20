@@ -40,7 +40,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowInsetsCompat
 import com.scrolless.app.R
 import com.scrolless.app.core.model.BlockOption
-import com.scrolless.app.core.repository.UsageTracker
+import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.repository.setTimerOverlayPosition
 import com.scrolless.app.designsystem.theme.timerOverlayBackgroundColor
@@ -61,7 +61,10 @@ import timber.log.Timber
  * A View-based implementation of TimerOverlayManager.
  * Replaces the Compose-based version to resolve drag lag issues.
  */
-class TimerOverlayManager @Inject constructor(private val userSettingsStore: UserSettingsStore, private val usageTracker: UsageTracker) {
+class TimerOverlayManager @Inject constructor(
+    private val userSettingsStore: UserSettingsStore,
+    private val sessionTracker: SessionTracker,
+) {
 
     private var rootView: DragInterceptFrameLayout? = null
     private var timerTextView: TextView? = null
@@ -194,7 +197,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         val totalMillis = if (activeBlockOption == BlockOption.IntervalTimer) {
             intervalUsageMillis + sessionMillis
         } else {
-            usageTracker.getDailyUsage() + sessionMillis
+            sessionTracker.getDailyUsage() + sessionMillis
         }
 
         timerTextView?.text = totalMillis.formatAsTime()

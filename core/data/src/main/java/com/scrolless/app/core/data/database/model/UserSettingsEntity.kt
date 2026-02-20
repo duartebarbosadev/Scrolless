@@ -30,7 +30,7 @@ import com.scrolless.app.core.model.BlockOption
     ],
 )
 @Immutable
-data class UserSettings(
+data class UserSettingsEntity(
     @PrimaryKey @ColumnInfo(name = "id") val id: Int = 1, // Single row for settings
     @ColumnInfo(name = "active_block_option") val activeBlockOption: BlockOption,
     @ColumnInfo(name = "time_limit") val timeLimit: Long,

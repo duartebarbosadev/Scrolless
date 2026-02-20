@@ -12,8 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-/*
+ * 
  * Copyright (C) 2025 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,10 +35,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.scrolless.app.core.data.database.ScrollessDatabase
+import com.scrolless.app.core.data.database.dao.SessionSegmentDao
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.data.repository.UsageTrackerImpl
+import com.scrolless.app.core.data.repository.SessionSegmentStoreImpl
+import com.scrolless.app.core.data.repository.SessionTrackerImpl
 import com.scrolless.app.core.data.repository.UserSettingsStoreImpl
-import com.scrolless.app.core.repository.UsageTracker
+import com.scrolless.app.core.repository.SessionSegmentStore
+import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import dagger.Module
 import dagger.Provides
@@ -55,14 +57,12 @@ object DataDiModule {
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): ScrollessDatabase =
-        Room.databaseBuilder(context, ScrollessDatabase::class.java, "data.db")
-            .addMigrations(
+        Room.databaseBuilder(context, ScrollessDatabase::class.java, "data.db").addMigrations(
                 ScrollessDatabase.MIGRATION_2_3,
                 ScrollessDatabase.MIGRATION_3_4,
-            )
-            .fallbackToDestructiveMigration(true) // Not recommended but for now it shouldn't matter
-            .fallbackToDestructiveMigrationOnDowngrade(true)
-            .addCallback(
+                ScrollessDatabase.MIGRATION_4_5,
+            ).fallbackToDestructiveMigration(true) // Not recommended but for now it shouldn't matter
+            .fallbackToDestructiveMigrationOnDowngrade(true).addCallback(
                 object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
@@ -96,5 +96,17 @@ object DataDiModule {
 
     @Provides
     @Singleton
-    fun provideUsageTracker(userSettingsStore: UserSettingsStore): UsageTracker = UsageTrackerImpl(userSettingsStore = userSettingsStore)
+    fun provideSessionSegmentDao(database: ScrollessDatabase): SessionSegmentDao = database.sessionSegmentDao()
+
+    @Provides
+    @Singleton
+    fun provideSessionSegmentStore(sessionSegmentDao: SessionSegmentDao): SessionSegmentStore =
+        SessionSegmentStoreImpl(sessionSegmentDao = sessionSegmentDao)
+
+    @Provides
+    @Singleton
+    fun provideSessionTracker(userSettingsStore: UserSettingsStore, sessionSegmentStore : SessionSegmentStore): SessionTracker = SessionTrackerImpl(
+        userSettingsStore = userSettingsStore,
+        sessionSegmentStore = sessionSegmentStore
+    )
 }

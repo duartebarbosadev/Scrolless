@@ -19,30 +19,43 @@ package com.scrolless.app.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockableApp
+import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
 import com.scrolless.app.util.ReviewPromptResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.Duration
+import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.min
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
- * ViewModel that handles the business logic and screen state of the Podcast details screen.
+ * ViewModel that handles the business logic and screen state of the HomeScreen.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val userSettingsStore: UserSettingsStore) : ViewModel() {
+class HomeViewModel @Inject constructor(
+    private val userSettingsStore: UserSettingsStore,
+    private val sessionSegmentStore: SessionSegmentStore,
+) : ViewModel() {
 
     private val _showComingSoonSnackBar = MutableStateFlow(false)
     private val _requestReview = MutableStateFlow(false)
+    private val _debugSessionSegments = MutableStateFlow<List<SessionSegment>?>(null)
     // Keep latest persisted attempt metadata so we can update without re-collecting.
     private var latestReviewAttemptCount = 0
     private var latestReviewAttemptAt = 0L
@@ -97,6 +110,10 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         }
     }
 
+    private val sessionSegmentsForCurrentDay = currentDayFlow().flatMapLatest { currentDate ->
+        sessionSegmentStore.getSessionSegment(currentDate)
+    }
+
     private val usageSnapshot = combine(
         userSettingsStore.getActiveBlockOption(),
         userSettingsStore.getTimeLimit(),
@@ -104,10 +121,8 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         userSettingsStore.getIntervalUsage(),
         userSettingsStore.getIntervalWindowStart(),
         userSettingsStore.getTotalDailyUsage(),
-        userSettingsStore.getReelsDailyUsage(),
-        userSettingsStore.getShortsDailyUsage(),
-        userSettingsStore.getTiktokDailyUsage(),
-    ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage, reelsUsage, shortsUsage, tiktokUsage ->
+        sessionSegmentsForCurrentDay,
+    ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage, usageSegment ->
         UsageSnapshot(
             blockOption = blockOption,
             timeLimit = timeLimit,
@@ -115,9 +130,7 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
             intervalUsage = intervalUsage,
             intervalWindowStart = intervalWindowStart,
             currentUsage = currentUsage,
-            reelsUsage = reelsUsage,
-            shortsUsage = shortsUsage,
-            tiktokUsage = tiktokUsage,
+            sessionSegment = usageSegment,
         )
     }
 
@@ -128,7 +141,8 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         _showComingSoonSnackBar,
         _requestReview,
         userSettingsStore.getHasSeenAccessibilityExplainer(),
-    ) { usage, timerEnabled, pauseUntil, showComingSoonSnackBar, requestReview, hasSeenAccessibilityExplainer ->
+        _debugSessionSegments,
+    ) { usage, timerEnabled, pauseUntil, showComingSoonSnackBar, requestReview, hasSeenAccessibilityExplainer, debugUsageSegments ->
 
         val progress = calculateProgress(
             blockOption = usage.blockOption,
@@ -151,11 +165,7 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
             requestReview = requestReview,
             hasSeenAccessibilityExplainer = hasSeenAccessibilityExplainer,
             hasLoadedSettings = true,
-            perAppUsage = PerAppUsage(
-                reelsUsage = usage.reelsUsage,
-                shortsUsage = usage.shortsUsage,
-                tiktokUsage = usage.tiktokUsage,
-            ),
+            listSessionSegments = debugUsageSegments ?: usage.sessionSegment,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -218,31 +228,43 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         }
     }
 
+    /**
+     * Computes progress percentage for the active blocking mode.
+     *
+     * Daily mode uses [currentUsage] against [timeLimit].
+     * Interval mode uses [intervalUsage] against [timeLimit].
+     *
+     * @param blockOption Active blocking strategy.
+     * @param currentUsage Total usage accumulated for the current day.
+     * @param timeLimit Configured limit in milliseconds.
+     * @param intervalUsage Usage accumulated in the current interval window.
+     * @return Progress in integer percent, clamped to the [0, 100] range.
+     */
     private fun calculateProgress(blockOption: BlockOption, currentUsage: Long, timeLimit: Long, intervalUsage: Long): Int =
         when (blockOption) {
-            BlockOption.DailyLimit -> {
-                if (timeLimit > 0) {
-                    val remainingTime = timeLimit - currentUsage
-                    if (remainingTime > 0) {
-                        min(PROGRESS_MAX, ((currentUsage.toDouble() / timeLimit.toDouble()) * PROGRESS_MAX).toInt())
-                    } else {
-                        PROGRESS_MAX
-                    }
-                } else {
-                    0
-                }
-            }
-
-            BlockOption.IntervalTimer -> {
-                if (timeLimit > 0) {
-                    min(PROGRESS_MAX, ((intervalUsage.toDouble() / timeLimit.toDouble()) * PROGRESS_MAX).toInt())
-                } else {
-                    0
-                }
-            }
-
+            BlockOption.DailyLimit -> usageToProgress(usage = currentUsage, limit = timeLimit)
+            BlockOption.IntervalTimer -> usageToProgress(usage = intervalUsage, limit = timeLimit)
             else -> 0
         }
+
+    /**
+     * Converts a usage/limit pair to an integer percentage.
+     *
+     * For non-zero usage below the limit, returns at least `1` so tiny progress
+     * remains visible in the UI.
+     *
+     * @param usage Elapsed usage in milliseconds.
+     * @param limit Allowed usage in milliseconds.
+     * @return Progress in integer percent, clamped to the [0, 100] range.
+     */
+    private fun usageToProgress(usage: Long, limit: Long): Int {
+        if (limit <= 0L) return 0
+        if (usage <= 0L) return 0
+        if (usage >= limit) return PROGRESS_MAX
+
+        val rawProgress = ((usage.toDouble() / limit.toDouble()) * PROGRESS_MAX).toInt()
+        return min(PROGRESS_MAX - 1, rawProgress.coerceAtLeast(1))
+    }
 
     fun onSnackbarShown() {
         Timber.v("Snackbar dismissed")
@@ -299,11 +321,20 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
         }
     }
 
-    fun onDebugUsageChanged(reelsMinutes: Int, shortsMinutes: Int, tiktokMinutes: Int) {
+    fun onDebugUsageSegmentsChanged(sessionSegments: List<SessionSegment>) {
+        _debugSessionSegments.value = sessionSegments
         viewModelScope.launch {
-            val reelsUsage = TimeUnit.MINUTES.toMillis(reelsMinutes.coerceAtLeast(0).toLong())
-            val shortsUsage = TimeUnit.MINUTES.toMillis(shortsMinutes.coerceAtLeast(0).toLong())
-            val tiktokUsage = TimeUnit.MINUTES.toMillis(tiktokMinutes.coerceAtLeast(0).toLong())
+            var reelsUsage = 0L
+            var shortsUsage = 0L
+            var tiktokUsage = 0L
+            sessionSegments.forEach { segment ->
+                val duration = segment.durationMillis.coerceAtLeast(0L)
+                when (segment.app) {
+                    BlockableApp.REELS -> reelsUsage += duration
+                    BlockableApp.SHORTS -> shortsUsage += duration
+                    BlockableApp.TIKTOK -> tiktokUsage += duration
+                }
+            }
             userSettingsStore.updateReelsDailyUsage(reelsUsage)
             userSettingsStore.updateShortsDailyUsage(shortsUsage)
             userSettingsStore.updateTiktokDailyUsage(tiktokUsage)
@@ -312,13 +343,22 @@ class HomeViewModel @Inject constructor(private val userSettingsStore: UserSetti
     }
 
     fun onDebugResetUsage() {
+        _debugSessionSegments.value = emptyList()
         viewModelScope.launch {
             userSettingsStore.resetAllDailyUsage()
         }
     }
-}
 
-data class PerAppUsage(val reelsUsage: Long = 0L, val shortsUsage: Long = 0L, val tiktokUsage: Long = 0L)
+    private fun currentDayFlow() = flow {
+        while (true) {
+            val now = ZonedDateTime.now()
+            emit(now.toLocalDate())
+            val nextMidnight = now.toLocalDate().plusDays(1).atStartOfDay(now.zone)
+            val delayMillis = Duration.between(now, nextMidnight).toMillis().coerceAtLeast(1L)
+            delay(delayMillis)
+        }
+    }.distinctUntilChanged()
+}
 
 data class HomeUiState(
     val blockOption: BlockOption = BlockOption.NothingSelected,
@@ -347,7 +387,7 @@ data class HomeUiState(
     /**
      * Per-app usage breakdown for the segmented progress indicator.
      */
-    val perAppUsage: PerAppUsage = PerAppUsage(),
+    val listSessionSegments: List<SessionSegment> = emptyList(),
 )
 
 private data class UsageSnapshot(
@@ -357,9 +397,7 @@ private data class UsageSnapshot(
     val intervalUsage: Long,
     val intervalWindowStart: Long,
     val currentUsage: Long,
-    val reelsUsage: Long,
-    val shortsUsage: Long,
-    val tiktokUsage: Long,
+    val sessionSegment: List<SessionSegment>,
 )
 
 private data class ReviewPromptSnapshot(
