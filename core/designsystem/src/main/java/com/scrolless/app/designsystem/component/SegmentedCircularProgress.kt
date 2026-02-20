@@ -196,70 +196,71 @@ private fun lerp(start: Float, end: Float, fraction: Float): Float = start + (en
  * Starts from -90 degrees (top of circle) and proceeds clockwise.
  */
 private fun calculateSegments(appUsageData: List<ProgressBarSegment>, totalSweepDegrees: Float, gapDegrees: Float): List<AnimatedSegment> {
-    val totalUsage = appUsageData.sumOf { it.usageMillis }
-    if (totalUsage == 0L) return emptyList()
-
     val validSegments = appUsageData.filter { it.usageMillis > 0L }
-    val usedDegrees = totalSweepDegrees.coerceIn(0f, 360f)
-    if (usedDegrees <= 0f) return emptyList()
+    if (validSegments.isEmpty() || totalSweepDegrees <= 0f) return emptyList()
+
+    val totalUsage = validSegments.sumOf { it.usageMillis }.toDouble()
+
+    // Smoothly scale the used degrees so that at 100% progress, it leaves exactly one gap
+    // empty between the end of the last segment and the start of the first.
+    val progress = (totalSweepDegrees / 360f).coerceIn(0f, 1f)
+    val maxVisualSweep = if (validSegments.size > 1) 360f - gapDegrees else 360f
+    val usedDegrees = maxVisualSweep * progress
 
     val gapCount = (validSegments.size - 1).coerceAtLeast(0)
+
     val effectiveGapDegrees = if (gapCount > 0) {
         min(gapDegrees, ((usedDegrees - MIN_TOTAL_SWEEP_DEGREES).coerceAtLeast(0f)) / gapCount)
     } else {
         0f
     }
+    
     val totalGapDegrees = (gapCount * effectiveGapDegrees).coerceAtMost(usedDegrees)
     val availableDegrees = (usedDegrees - totalGapDegrees).coerceAtLeast(0f)
     if (availableDegrees <= 0f) return emptyList()
 
-    var currentAngle = START_ANGLE
-    val minVisibleSweep = min(MIN_VISIBLE_SWEEP, availableDegrees / validSegments.size)
-
-    val weights = validSegments.map { it.usageMillis.toDouble() / totalUsage.toDouble() }
-    val sweeps = DoubleArray(validSegments.size)
+    val minVisibleSweep = min(MIN_VISIBLE_SWEEP.toDouble(), availableDegrees.toDouble() / validSegments.size)
+    val sweeps = FloatArray(validSegments.size)
     var remainingDegrees = availableDegrees.toDouble()
-    var remainingWeightSum = weights.sum()
-    val remainingIndices = validSegments.indices.toMutableSet()
+    var remainingUsage = totalUsage
 
-    while (remainingIndices.isNotEmpty()) {
-        var anyPinnedToMinimum = false
-        val indicesSnapshot = remainingIndices.toList()
-        indicesSnapshot.forEach { index ->
-            val weight = weights[index]
-            val proposed = if (remainingWeightSum > 0.0) remainingDegrees * (weight / remainingWeightSum) else 0.0
-            if (proposed < minVisibleSweep.toDouble()) {
-                sweeps[index] = minVisibleSweep.toDouble()
-                remainingDegrees -= minVisibleSweep.toDouble()
-                remainingWeightSum -= weight
-                remainingIndices.remove(index)
-                anyPinnedToMinimum = true
+    val unassigned = validSegments.indices.toMutableList()
+    var changed = true
+
+    while (changed && unassigned.isNotEmpty()) {
+        changed = false
+        val iterator = unassigned.iterator()
+        while (iterator.hasNext()) {
+            val i = iterator.next()
+            val usage = validSegments[i].usageMillis.toDouble()
+            val proposed = if (remainingUsage > 0.0) remainingDegrees * (usage / remainingUsage) else 0.0
+            if (proposed < minVisibleSweep) {
+                sweeps[i] = minVisibleSweep.toFloat()
+                remainingDegrees -= minVisibleSweep
+                remainingUsage -= usage
+                iterator.remove()
+                changed = true
             }
         }
-
-        if (!anyPinnedToMinimum) break
-        if (remainingDegrees <= 0.0) break
-        if (remainingWeightSum <= 0.0) break
     }
 
-    remainingDegrees = remainingDegrees.coerceAtLeast(0.0)
-    remainingIndices.forEach { index ->
-        val weight = weights[index]
-        sweeps[index] = if (remainingWeightSum > 0.0) remainingDegrees * (weight / remainingWeightSum) else 0.0
+    for (i in unassigned) {
+        val usage = validSegments[i].usageMillis.toDouble()
+        sweeps[i] = (if (remainingUsage > 0.0) remainingDegrees * (usage / remainingUsage) else 0.0).toFloat()
     }
 
+    var currentAngle = START_ANGLE
     return validSegments.mapIndexed { index, data ->
-        val sweepAngle = sweeps[index].toFloat().coerceAtLeast(0f)
-
+        val sweepAngle = sweeps[index].coerceAtLeast(0f)
         val segment = AnimatedSegment(
             startAngle = currentAngle,
             sweepAngle = sweepAngle,
             color = data.color,
         )
-
+        
         val shouldAddGapAfter = index < validSegments.lastIndex
         currentAngle += sweepAngle + (if (shouldAddGapAfter) effectiveGapDegrees else 0f)
-
+        
         segment
     }
 }

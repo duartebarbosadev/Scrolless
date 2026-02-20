@@ -25,9 +25,12 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -83,6 +86,7 @@ import kotlin.math.roundToInt
 
 private const val DEBUG_USAGE_MAX_MINUTES = 180
 private const val DEBUG_USAGE_MAX_SEGMENTS_PER_APP = 6
+private const val DEBUG_USAGE_NEW_SEGMENT_MINUTES = 10
 private val DEBUG_PANEL_MAX_WIDTH = 320.dp
 
 @Composable
@@ -240,17 +244,19 @@ private fun DebugUsageTuner(
     }
 
     Card(
-        modifier = modifier,
+        modifier = modifier.heightIn(max = 420.dp),
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
     ) {
+        val scrollState = rememberScrollState()
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(headerBrush)
+                .verticalScroll(scrollState)
                 .padding(horizontal = 12.dp, vertical = 12.dp),
         ) {
             Row(
@@ -353,7 +359,7 @@ private fun DebugUsageSegmentGroup(
                 ),
                 onClick = {
                     if (segments.size < DEBUG_USAGE_MAX_SEGMENTS_PER_APP) {
-                        segments.add(0)
+                        segments.add(DEBUG_USAGE_NEW_SEGMENT_MINUTES)
                         onSegmentsChange()
                     }
                 },
