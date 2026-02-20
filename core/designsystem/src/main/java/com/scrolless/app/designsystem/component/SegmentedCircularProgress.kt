@@ -214,7 +214,7 @@ private fun calculateSegments(appUsageData: List<ProgressBarSegment>, totalSweep
     } else {
         0f
     }
-    
+
     val totalGapDegrees = (gapCount * effectiveGapDegrees).coerceAtMost(usedDegrees)
     val availableDegrees = (usedDegrees - totalGapDegrees).coerceAtLeast(0f)
     if (availableDegrees <= 0f) return emptyList()
@@ -257,10 +257,10 @@ private fun calculateSegments(appUsageData: List<ProgressBarSegment>, totalSweep
             sweepAngle = sweepAngle,
             color = data.color,
         )
-        
+
         val shouldAddGapAfter = index < validSegments.lastIndex
         currentAngle += sweepAngle + (if (shouldAddGapAfter) effectiveGapDegrees else 0f)
-        
+
         segment
     }
 }
