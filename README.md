@@ -35,7 +35,7 @@ Since the app requires accessibility permissions, which can have sketchy uses, S
 - **Interval Timer**  
   Set intervals for usage and breaks, allowing controlled social media access throughout the day.
 
-- **Usage Tracking**
+- **Usage Tracking**   
   Keep track of how much time you’ve spent on Instagram Reels, TikTok, YouTube Shorts, and Facebook Reels.
 
 ## Screenshots
