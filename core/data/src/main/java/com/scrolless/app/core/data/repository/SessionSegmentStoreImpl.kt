@@ -68,4 +68,16 @@ class SessionSegmentStoreImpl @Inject constructor(private val sessionSegmentDao:
     override suspend fun updateSessionSegmentDuration(lastSessionId: Long, sessionTime: Long) {
         sessionSegmentDao.updateDuration(lastSessionId, sessionTime)
     }
+
+    override suspend fun replaceSessionSegmentsForDate(date: LocalDate, sessionSegments: List<SessionSegment>) {
+        val nextDate = date.plusDays(1)
+        val entities = sessionSegments.map { sessionSegment ->
+            SessionSegmentEntity(
+                app = sessionSegment.app,
+                durationMillis = sessionSegment.durationMillis.coerceAtLeast(0L),
+                startDateTime = sessionSegment.startDateTime,
+            )
+        }
+        sessionSegmentDao.replaceSessionSegments(date = date, datePlusOneDay = nextDate, entities = entities)
+    }
 }
