@@ -111,7 +111,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private val sessionSegmentsForCurrentDay = currentDayFlow().flatMapLatest { currentDate ->
-        sessionSegmentStore.getSessionSegment(currentDate)
+        sessionSegmentStore.getListSessionSegments(currentDate)
     }
 
     private val usageSnapshot = combine(
@@ -120,7 +120,7 @@ class HomeViewModel @Inject constructor(
         userSettingsStore.getIntervalLength(),
         userSettingsStore.getIntervalUsage(),
         userSettingsStore.getIntervalWindowStart(),
-        userSettingsStore.getTotalDailyUsage(),
+        sessionSegmentStore.getTotalDurationForToday(),
         sessionSegmentsForCurrentDay,
     ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage, usageSegment ->
         UsageSnapshot(
@@ -335,17 +335,16 @@ class HomeViewModel @Inject constructor(
                     BlockableApp.TIKTOK -> tiktokUsage += duration
                 }
             }
-            userSettingsStore.updateReelsDailyUsage(reelsUsage)
-            userSettingsStore.updateShortsDailyUsage(shortsUsage)
-            userSettingsStore.updateTiktokDailyUsage(tiktokUsage)
-            userSettingsStore.updateTotalDailyUsage(reelsUsage + shortsUsage + tiktokUsage)
+            // userSettingsStore.updateReelsDailyUsage(reelsUsage) TODO
+            // userSettingsStore.updateShortsDailyUsage(shortsUsage)
+            // userSettingsStore.updateTiktokDailyUsage(tiktokUsage)
         }
     }
 
     fun onDebugResetUsage() {
         _debugSessionSegments.value = emptyList()
         viewModelScope.launch {
-            userSettingsStore.resetAllDailyUsage()
+//            userSettingsStore.resetAllDailyUsage()
         }
     }
 

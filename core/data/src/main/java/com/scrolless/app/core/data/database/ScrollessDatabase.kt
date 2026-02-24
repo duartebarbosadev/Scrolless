@@ -34,7 +34,7 @@ import com.scrolless.app.core.data.database.model.UserSettingsEntity
         UserSettingsEntity::class,
         SessionSegmentEntity::class,
     ],
-    version = 5,
+    version = 6,
     exportSchema = false,
 )
 @TypeConverters(LocalDateTypeConverters::class, BlockableAppTypeConverters::class, LocalDateTimeTypeConverters::class)
@@ -90,6 +90,15 @@ abstract class ScrollessDatabase : RoomDatabase() {
                     ON session_segments (app, startDateTime)
                     """.trimIndent(),
                 )
+            }
+        }
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE user_settings DROP COLUMN total_daily_usage".trimIndent())
+                db.execSQL("ALTER TABLE user_settings DROP COLUMN last_reset_day".trimIndent())
+                db.execSQL("ALTER TABLE user_settings DROP COLUMN tiktok_daily_usage".trimIndent())
+                db.execSQL("ALTER TABLE user_settings DROP COLUMN shorts_daily_usage".trimIndent())
+                db.execSQL("ALTER TABLE user_settings DROP COLUMN reels_daily_usage".trimIndent())
             }
         }
     }
