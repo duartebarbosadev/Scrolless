@@ -24,13 +24,32 @@ import com.scrolless.app.core.repository.SessionSegmentStore
 import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 @Singleton
 class SessionSegmentStoreImpl @Inject constructor(private val sessionSegmentDao: SessionSegmentDao) : SessionSegmentStore {
 
-    override fun getSessionSegment(date: LocalDate): Flow<List<SessionSegment>> {
+    private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private val _totalDurationForToday = MutableStateFlow(0L)
+
+    init {
+        coroutineScope.launch {
+            sessionSegmentDao.getTotalDuration(LocalDate.now(), LocalDate.now().plusDays(1)).collect { duration ->
+                _totalDurationForToday.value = duration
+            }
+        }
+    }
+    override fun getTotalDurationForToday(): Flow<Long> {
+        return _totalDurationForToday
+    }
+
+    override fun getListSessionSegments(date: LocalDate): Flow<List<SessionSegment>> {
         val nextDate = date.plusDays(1)
         return sessionSegmentDao.getSessionSegment(date, nextDate).map { entities ->
             entities.map { it.toSessionSegment() }

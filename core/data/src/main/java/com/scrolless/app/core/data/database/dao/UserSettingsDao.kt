@@ -20,7 +20,6 @@ import androidx.room.Dao
 import androidx.room.Query
 import com.scrolless.app.core.data.database.model.UserSettingsEntity
 import com.scrolless.app.core.model.BlockOption
-import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -67,51 +66,6 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
 
     @Query("UPDATE user_settings SET timer_overlay_enabled = :enabled WHERE id = 1")
     abstract suspend fun setTimerOverlayEnabled(enabled: Boolean)
-
-    @Query("SELECT last_reset_day FROM user_settings WHERE id = 1")
-    abstract fun getLastResetDay(): Flow<LocalDate>
-
-    @Query("UPDATE user_settings SET last_reset_day = :date WHERE id = 1")
-    abstract suspend fun setLastResetDay(date: LocalDate)
-
-    @Query("SELECT total_daily_usage FROM user_settings WHERE id = 1")
-    abstract fun getTotalDailyUsage(): Flow<Long>
-
-    @Query("UPDATE user_settings SET total_daily_usage = :usage WHERE id = 1")
-    abstract suspend fun updateTotalDailyUsage(usage: Long)
-
-    // Per-app usage getters
-    @Query("SELECT reels_daily_usage FROM user_settings WHERE id = 1")
-    abstract fun getReelsDailyUsage(): Flow<Long>
-
-    @Query("SELECT shorts_daily_usage FROM user_settings WHERE id = 1")
-    abstract fun getShortsDailyUsage(): Flow<Long>
-
-    @Query("SELECT tiktok_daily_usage FROM user_settings WHERE id = 1")
-    abstract fun getTiktokDailyUsage(): Flow<Long>
-
-    // Per-app usage setters
-    @Query("UPDATE user_settings SET reels_daily_usage = :usage WHERE id = 1")
-    abstract suspend fun updateReelsDailyUsage(usage: Long)
-
-    @Query("UPDATE user_settings SET shorts_daily_usage = :usage WHERE id = 1")
-    abstract suspend fun updateShortsDailyUsage(usage: Long)
-
-    @Query("UPDATE user_settings SET tiktok_daily_usage = :usage WHERE id = 1")
-    abstract suspend fun updateTiktokDailyUsage(usage: Long)
-
-    // Reset all daily usage (for daily reset)
-    @Query(
-        """
-        UPDATE user_settings SET
-            total_daily_usage = 0,
-            reels_daily_usage = 0,
-            shorts_daily_usage = 0,
-            tiktok_daily_usage = 0
-        WHERE id = 1
-        """,
-    )
-    abstract suspend fun resetAllDailyUsage()
 
     @Query("SELECT timer_overlay_x FROM user_settings WHERE id = 1")
     abstract fun getTimerOverlayPositionX(): Flow<Int>

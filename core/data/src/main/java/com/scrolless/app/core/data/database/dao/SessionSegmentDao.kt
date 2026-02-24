@@ -29,8 +29,11 @@ import kotlinx.coroutines.flow.Flow
 abstract class SessionSegmentDao : BaseDao<SessionSegmentEntity> {
 
     @Query("SELECT * FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
-    abstract fun getSessionSegment(date: LocalDate, datePlusOneDay: LocalDate?): Flow<List<SessionSegmentEntity>>
+    abstract fun getSessionSegment(date: LocalDate, datePlusOneDay: LocalDate): Flow<List<SessionSegmentEntity>>
 
     @Query("UPDATE session_segments SET durationMillis = :sessionTime WHERE id = :lastSessionId")
     abstract suspend fun updateDuration(lastSessionId: Long, sessionTime: Long)
+
+    @Query("SELECT SUM(durationMillis) FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
+    abstract fun getTotalDuration(date: LocalDate, datePlusOneDay: LocalDate): Flow<Long>
 }

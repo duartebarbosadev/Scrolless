@@ -61,6 +61,7 @@ object DataDiModule {
                 ScrollessDatabase.MIGRATION_2_3,
                 ScrollessDatabase.MIGRATION_3_4,
                 ScrollessDatabase.MIGRATION_4_5,
+                ScrollessDatabase.MIGRATION_5_6,
             ).fallbackToDestructiveMigration(true) // Not recommended but for now it shouldn't matter
             .fallbackToDestructiveMigrationOnDowngrade(true).addCallback(
                 object : RoomDatabase.Callback() {
@@ -71,8 +72,7 @@ object DataDiModule {
                             """
                         INSERT INTO user_settings (id, active_block_option, time_limit, interval_length,
                                                    interval_window_start_at, interval_usage,
-                                                   timer_overlay_enabled, last_reset_day, total_daily_usage,
-                                                   reels_daily_usage, shorts_daily_usage, tiktok_daily_usage,
+                                                   timer_overlay_enabled,
                                                    timer_overlay_x, timer_overlay_y, waiting_for_accessibility,
                                                    has_seen_accessibility_explainer, pause_until_at,
                                                    first_launch_at, has_seen_review_prompt,
@@ -105,8 +105,7 @@ object DataDiModule {
 
     @Provides
     @Singleton
-    fun provideSessionTracker(userSettingsStore: UserSettingsStore, sessionSegmentStore : SessionSegmentStore): SessionTracker = SessionTrackerImpl(
-        userSettingsStore = userSettingsStore,
+    fun provideSessionTracker(sessionSegmentStore : SessionSegmentStore): SessionTracker = SessionTrackerImpl(
         sessionSegmentStore = sessionSegmentStore
     )
 }

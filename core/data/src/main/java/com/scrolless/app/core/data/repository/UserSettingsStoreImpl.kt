@@ -19,14 +19,13 @@ package com.scrolless.app.core.data.repository
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.repository.UserSettingsStore
-import java.time.LocalDate
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * A data repository implementation for [UserSettingsStore].
@@ -41,11 +40,6 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     private val _intervalWindowStart = MutableStateFlow(0L)
     private val _intervalUsage = MutableStateFlow(0L)
     private val _timerOverlayEnabled = MutableStateFlow(false)
-    private val _lastResetDay = MutableStateFlow(LocalDate.now())
-    private val _totalDailyUsage = MutableStateFlow(0L)
-    private val _reelsDailyUsage = MutableStateFlow(0L)
-    private val _shortsDailyUsage = MutableStateFlow(0L)
-    private val _tiktokDailyUsage = MutableStateFlow(0L)
     private val _timerOverlayPositionY = MutableStateFlow(0)
     private val _timerOverlayPositionX = MutableStateFlow(0)
     private val _waitingForAccessibility = MutableStateFlow(false)
@@ -86,21 +80,6 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
         }
         coroutineScope.launch {
             userSettingsDao.getTimerOverlayEnabled().collect { _timerOverlayEnabled.value = it }
-        }
-        coroutineScope.launch {
-            userSettingsDao.getLastResetDay().collect { _lastResetDay.value = it }
-        }
-        coroutineScope.launch {
-            userSettingsDao.getTotalDailyUsage().collect { _totalDailyUsage.value = it }
-        }
-        coroutineScope.launch {
-            userSettingsDao.getReelsDailyUsage().collect { _reelsDailyUsage.value = it }
-        }
-        coroutineScope.launch {
-            userSettingsDao.getShortsDailyUsage().collect { _shortsDailyUsage.value = it }
-        }
-        coroutineScope.launch {
-            userSettingsDao.getTiktokDailyUsage().collect { _tiktokDailyUsage.value = it }
         }
         coroutineScope.launch {
             userSettingsDao.getTimerOverlayPositionY().collect { _timerOverlayPositionY.value = it }
@@ -166,49 +145,6 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     }
 
     override fun getTimerOverlayEnabled(): Flow<Boolean> = _timerOverlayEnabled
-
-    override fun getLastResetDay(): Flow<LocalDate> = _lastResetDay
-
-    override suspend fun setLastResetDay(date: LocalDate) {
-        _lastResetDay.value = date
-        userSettingsDao.setLastResetDay(date)
-    }
-
-    override suspend fun updateTotalDailyUsage(totalDailyUsage: Long) {
-        _totalDailyUsage.value = totalDailyUsage
-        userSettingsDao.updateTotalDailyUsage(totalDailyUsage)
-    }
-
-    override fun getTotalDailyUsage(): Flow<Long> = _totalDailyUsage
-
-    override fun getReelsDailyUsage(): Flow<Long> = _reelsDailyUsage
-
-    override fun getShortsDailyUsage(): Flow<Long> = _shortsDailyUsage
-
-    override fun getTiktokDailyUsage(): Flow<Long> = _tiktokDailyUsage
-
-    override suspend fun updateReelsDailyUsage(usage: Long) {
-        _reelsDailyUsage.value = usage
-        userSettingsDao.updateReelsDailyUsage(usage)
-    }
-
-    override suspend fun updateShortsDailyUsage(usage: Long) {
-        _shortsDailyUsage.value = usage
-        userSettingsDao.updateShortsDailyUsage(usage)
-    }
-
-    override suspend fun updateTiktokDailyUsage(usage: Long) {
-        _tiktokDailyUsage.value = usage
-        userSettingsDao.updateTiktokDailyUsage(usage)
-    }
-
-    override suspend fun resetAllDailyUsage() {
-        _totalDailyUsage.value = 0L
-        _reelsDailyUsage.value = 0L
-        _shortsDailyUsage.value = 0L
-        _tiktokDailyUsage.value = 0L
-        userSettingsDao.resetAllDailyUsage()
-    }
 
     override fun getTimerOverlayPositionY(): Flow<Int> = _timerOverlayPositionY
 

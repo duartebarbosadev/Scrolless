@@ -26,11 +26,6 @@ interface SessionTracker {
     fun getDailyUsage(): Long
 
     /**
-     * Get usage for a specific app in milliseconds.
-     */
-    fun getAppDailyUsage(app: BlockableApp): Long
-
-    /**
      * Add session time to daily usage and persist immediately.
      * Also updates per-app usage when app is provided.
      * Thread-safe and non-blocking.
@@ -39,12 +34,6 @@ interface SessionTracker {
      * @param app The app the session was on, if available
      */
     suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp)
-
-    /**
-     * Check if a daily reset is needed and perform it if necessary.
-     * Safe to call multiple times - only resets once per day.
-     */
-    suspend fun checkDailyReset()
 
     /**
      * Called when a tracked app comes to the foreground.
