@@ -62,10 +62,12 @@ class SessionTrackerImpl @Inject constructor(private val sessionSegmentStore: Se
                 sessionState.updateAndGet {
                     it.copy(
                         segmentApp = app,
+                        sessionStartLocalDate = LocalDate.now(),
                         sessionId = newSessionId,
                         currentSessionTotalTime = sessionTime,
                     )
                 }
+                shouldStartNewSessionOnNextUsage = false
             } else {
                 // Update existing session segment
                 val updatedSessionTotal = currentSessionState.currentSessionTotalTime + sessionTime
