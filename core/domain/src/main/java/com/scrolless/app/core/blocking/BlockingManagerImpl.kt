@@ -72,7 +72,6 @@ class BlockingManagerImpl @Inject constructor(
             intervalState,
         )
         handler = createHandlerForConfig(blockOption, timeLimit, intervalLength, intervalState)
-        sessionTracker.checkDailyReset()
     }
 
     /**
@@ -113,7 +112,6 @@ class BlockingManagerImpl @Inject constructor(
      * @return `true` if blocking is required immediately.
      */
     override suspend fun onEnterBlockedContent(): Boolean {
-        sessionTracker.checkDailyReset()
         val currentDailyUsage = sessionTracker.getDailyUsage()
         val shouldBlock = handler.onEnterContent(currentDailyUsage)
         Timber.d("onEnterBlockedContent: daily=%d -> shouldBlock=%s", currentDailyUsage, shouldBlock)

@@ -17,7 +17,6 @@
 package com.scrolless.app.core.repository
 
 import com.scrolless.app.core.model.BlockOption
-import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
 
 interface UserSettingsStore {
@@ -39,21 +38,6 @@ interface UserSettingsStore {
 
     suspend fun setTimerOverlayToggle(enabled: Boolean)
     fun getTimerOverlayEnabled(): Flow<Boolean>
-
-    fun getLastResetDay(): Flow<LocalDate>
-    suspend fun setLastResetDay(date: LocalDate)
-
-    suspend fun updateTotalDailyUsage(totalDailyUsage: Long)
-    fun getTotalDailyUsage(): Flow<Long>
-
-    // Per-app usage
-    fun getReelsDailyUsage(): Flow<Long>
-    fun getShortsDailyUsage(): Flow<Long>
-    fun getTiktokDailyUsage(): Flow<Long>
-    suspend fun updateReelsDailyUsage(usage: Long)
-    suspend fun updateShortsDailyUsage(usage: Long)
-    suspend fun updateTiktokDailyUsage(usage: Long)
-    suspend fun resetAllDailyUsage()
 
     fun getTimerOverlayPositionY(): Flow<Int>
     suspend fun setTimerOverlayPositionY(positionY: Int)

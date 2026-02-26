@@ -21,9 +21,13 @@ import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
 
 interface SessionSegmentStore {
-    fun getSessionSegment(date: LocalDate): Flow<List<SessionSegment>>
+    fun getTotalDurationForToday(): Flow<Long>
+
+    fun getListSessionSegments(date: LocalDate): Flow<List<SessionSegment>>
 
     suspend fun addSessionSegment(sessionSegment: SessionSegment): Long
 
     suspend fun updateSessionSegmentDuration(lastSessionId: Long, sessionTime: Long)
+
+    suspend fun replaceSessionSegmentsForDate(date: LocalDate, sessionSegments: List<SessionSegment>)
 }

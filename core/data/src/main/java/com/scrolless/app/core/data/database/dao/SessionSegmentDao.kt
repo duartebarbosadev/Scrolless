@@ -18,6 +18,7 @@ package com.scrolless.app.core.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import com.scrolless.app.core.data.database.model.SessionSegmentEntity
 import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
@@ -29,8 +30,22 @@ import kotlinx.coroutines.flow.Flow
 abstract class SessionSegmentDao : BaseDao<SessionSegmentEntity> {
 
     @Query("SELECT * FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
-    abstract fun getSessionSegment(date: LocalDate, datePlusOneDay: LocalDate?): Flow<List<SessionSegmentEntity>>
+    abstract fun getSessionSegment(date: LocalDate, datePlusOneDay: LocalDate): Flow<List<SessionSegmentEntity>>
 
     @Query("UPDATE session_segments SET durationMillis = :sessionTime WHERE id = :lastSessionId")
     abstract suspend fun updateDuration(lastSessionId: Long, sessionTime: Long)
+
+    @Query("SELECT SUM(durationMillis) FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
+    abstract fun getTotalDuration(date: LocalDate, datePlusOneDay: LocalDate): Flow<Long>
+
+    @Query("DELETE FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
+    abstract suspend fun deleteSessionSegment(date: LocalDate, datePlusOneDay: LocalDate): Int
+
+    @Transaction
+    open suspend fun replaceSessionSegments(date: LocalDate, datePlusOneDay: LocalDate, entities: List<SessionSegmentEntity>) {
+        deleteSessionSegment(date = date, datePlusOneDay = datePlusOneDay)
+        if (entities.isNotEmpty()) {
+            insertAll(entities = entities)
+        }
+    }
 }
