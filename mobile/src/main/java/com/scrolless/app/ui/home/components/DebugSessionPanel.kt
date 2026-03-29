@@ -233,9 +233,7 @@ private fun DebugDayTimelinePanel(
     var centerRequestToken by remember { mutableIntStateOf(1) }
     val today = LocalDate.now()
     val todaySegments = remember(sessionSegments, today) {
-        sessionSegments
-            .filter { it.startDateTime.toLocalDate() == today }
-            .sortedBy { it.startDateTime }
+        sessionSegments.filter { it.startDateTime.toLocalDate() == today }.sortedBy { it.startDateTime }
     }
     val totalMinutes = todaySegments.sumOf { it.durationMillis.toWholeMinutes().coerceAtLeast(0) }
 
@@ -491,9 +489,8 @@ private fun DayTimeline(
         if (viewportWidthPx <= 0 || timelineWidthPx <= 0) return@LaunchedEffect
         snapshotFlow { scrollState.value }.collect { scrollValue ->
             val centerX = (scrollValue + (viewportWidthPx / 2f)).coerceIn(0f, timelineWidthPx.toFloat())
-            val centeredMinutes = ((centerX / timelineWidthPx.toFloat()) * DAY_TOTAL_MINUTES)
-                .roundToInt()
-                .coerceIn(0, DAY_TOTAL_MINUTES - 1)
+            val centeredMinutes =
+                ((centerX / timelineWidthPx.toFloat()) * DAY_TOTAL_MINUTES).roundToInt().coerceIn(0, DAY_TOTAL_MINUTES - 1)
             if (centeredMinutes != selectedStartMinutes) {
                 onSelectedStartMinutesChange(centeredMinutes)
             }
@@ -562,7 +559,8 @@ private fun DayTimeline(
                     .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.75f)),
             )
 
-            val selectedOffset = TIMELINE_TRACK_WIDTH * (selectedStartMinutes.coerceIn(0, DAY_TOTAL_MINUTES - 1) / DAY_TOTAL_MINUTES.toFloat())
+            val selectedOffset =
+                TIMELINE_TRACK_WIDTH * (selectedStartMinutes.coerceIn(0, DAY_TOTAL_MINUTES - 1) / DAY_TOTAL_MINUTES.toFloat())
             Box(
                 modifier = Modifier
                     .offset(x = selectedOffset)
@@ -623,7 +621,9 @@ private fun LocalDateTime.minutesSince(start: LocalDateTime): Int = java.time.Du
 private fun SessionSegment.timelineLabel(durationMinutes: Int): String {
     val start = startDateTime
     val end = start.plusMinutes(durationMinutes.toLong())
-    return "${start.toLocalTime().format(TIMELINE_TIME_FORMATTER)}-${end.toLocalTime().format(TIMELINE_TIME_FORMATTER)} • ${durationMinutes.formatMinutes()}"
+    return "${start.toLocalTime().format(TIMELINE_TIME_FORMATTER)}-${
+        end.toLocalTime().format(TIMELINE_TIME_FORMATTER)
+    } • ${durationMinutes.formatMinutes()}"
 }
 
 private fun Int.toTimeLabel(): String {
