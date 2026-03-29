@@ -19,13 +19,13 @@ package com.scrolless.app.core.data.repository
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.repository.UserSettingsStore
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 /**
  * A data repository implementation for [UserSettingsStore].

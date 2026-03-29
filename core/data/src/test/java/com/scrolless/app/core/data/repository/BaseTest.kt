@@ -14,19 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.core.blocking.time
+package com.scrolless.app.core.data.repository
 
-import java.time.LocalDate
-import java.time.LocalDateTime
+import org.junit.Before
+import timber.log.Timber
 
-interface TimeProvider {
-    fun currentTimeInMillis(): Long
-    fun localDateNow(): LocalDate
-    fun localDateTimeNow(): LocalDateTime
-}
+open class BaseTest {
 
-object SystemTimeProvider : TimeProvider {
-    override fun currentTimeInMillis(): Long = System.currentTimeMillis()
-    override fun localDateNow(): LocalDate = LocalDate.now()
-    override fun localDateTimeNow(): LocalDateTime = LocalDateTime.now()
+    @Before
+    open fun setUp() {
+        Timber.plant(object : Timber.DebugTree() {
+            override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+                println("$tag: $message")
+            }
+        })
+    }
 }
