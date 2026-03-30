@@ -34,6 +34,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.scrolless.app.core.blocking.time.SystemTimeProvider
 import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.ScrollessDatabase
 import com.scrolless.app.core.data.database.dao.SessionSegmentDao
@@ -110,4 +111,8 @@ object DataDiModule {
         sessionSegmentStore = sessionSegmentStore,
         timeProvider = timeProvider,
     )
+
+    @Provides
+    @Singleton
+    fun provideTimeProvider(): TimeProvider = SystemTimeProvider
 }

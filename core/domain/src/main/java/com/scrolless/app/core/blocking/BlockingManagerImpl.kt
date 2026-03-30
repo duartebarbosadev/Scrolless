@@ -22,6 +22,7 @@ import com.scrolless.app.core.blocking.handler.DayLimitBlockHandler
 import com.scrolless.app.core.blocking.handler.IntervalTimerBlockHandler
 import com.scrolless.app.core.blocking.handler.IntervalTimerState
 import com.scrolless.app.core.blocking.handler.NoBlockHandler
+import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingResult
 import com.scrolless.app.core.repository.SessionTracker
@@ -45,6 +46,7 @@ import timber.log.Timber
 class BlockingManagerImpl @Inject constructor(
     private val sessionTracker: SessionTracker,
     private val userSettingsStore: UserSettingsStore,
+    private val timeProvider: TimeProvider,
 ) : BlockingManager {
 
     private lateinit var handler: BlockOptionHandler
@@ -88,7 +90,7 @@ class BlockingManagerImpl @Inject constructor(
         intervalLength: Long,
         intervalState: IntervalTimerState,
     ): BlockOptionHandler = when (blockOption) {
-        BlockOption.BlockAll -> BlockAllBlockHandler().also { Timber.d("Using BlockAll handler") }
+        BlockOption.BlockAll -> BlockAllBlockHandler(timeProvider).also { Timber.d("Using BlockAll handler") }
         BlockOption.DailyLimit -> DayLimitBlockHandler(timeLimit).also { Timber.d("Using DayLimit handler (limit=%d)", timeLimit) }
         BlockOption.IntervalTimer ->
             IntervalTimerBlockHandler(
