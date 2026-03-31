@@ -17,12 +17,12 @@
 package com.scrolless.app.core.domain.utils
 
 import com.scrolless.app.core.blocking.time.TimeProvider
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.TestCoroutineScheduler
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.TestCoroutineScheduler
 
 // Same as com.scrolless.app.core.TestSchedulerTimeProvider
 @OptIn(ExperimentalCoroutinesApi::class)

@@ -23,6 +23,7 @@ import com.scrolless.app.core.repository.SessionSegmentStore
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import java.time.Duration
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -31,7 +32,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.time.Duration
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(JUnit4::class)
@@ -183,7 +183,7 @@ class SessionTrackerTest : BaseTest() {
             store.updateSessionSegmentDuration(any(), any())
         }
         assertEquals(exampleSessionTimeApp1, capturedSegments[0].durationMillis)
-        assertEquals(exampleSessionTimeApp2,capturedSegments[1].durationMillis)
+        assertEquals(exampleSessionTimeApp2, capturedSegments[1].durationMillis)
     }
 
     @Test
@@ -213,11 +213,11 @@ class SessionTrackerTest : BaseTest() {
         }
 
         assertEquals(2, capturedSegments.size)
-        
+
         // The first segment should be the duration of 5 minutes (the time remaining until midnight)
         val fiveMinutesInMillis = 5 * 60 * 1000L
         assertEquals(fiveMinutesInMillis, capturedSegments[0].durationMillis)
-        
+
         // The second segment should be the remaining 6 minutes after midnight
         val sixMinutesInMillis = 6 * 60 * 1000L
         assertEquals(sixMinutesInMillis, capturedSegments[1].durationMillis)
@@ -243,7 +243,7 @@ class SessionTrackerTest : BaseTest() {
 
         // 20-minute session that will WON'T go past midnight
         val firstSessionDuration = 20 * 60 * 1000L
-        delay(20* 60 * 1000L)
+        delay(20 * 60 * 1000L)
         sessionTracker.addToDailyUsage(firstSessionDuration, app)
         sessionTracker.onAppClose()
 
