@@ -102,6 +102,8 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
             it.copy(
                 sessionId = newSessionId,
                 currentSessionTotalTime = sessionTime,
+                // Make sure to update the session start date as the day could have changed since we created the sessionState
+                sessionStartLocalDate = timeProvider.localDateNow(),
             )
         }
         shouldStartNewSessionOnNextUsage = false
@@ -127,7 +129,7 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
         //  or if the last app close was long enough ago
         //  or if the session started on a different day
         shouldStartNewSessionOnNextUsage = when {
-            state.sessionId == 0L || state.segmentApp == null -> true
+            state.sessionId == -1L || state.segmentApp == null -> true
             state.segmentApp != app -> true
             state.lastAppCloseTimestamp <= 0L -> false
             state.sessionStartLocalDate != timeProvider.localDateNow() -> true
@@ -138,7 +140,7 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
         //  Otherwise, we will continue the existing session segment.
         if (shouldStartNewSessionOnNextUsage) {
             Timber.d("Starting a new session segment for app %s", app)
-            sessionState.updateAndGet() {
+            sessionState.updateAndGet {
                 it.copy(
                     segmentApp = app,
                     sessionStartLocalDate = timeProvider.localDateNow(),
@@ -147,7 +149,6 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
         } else {
             Timber.d("Continuing existing session segment on app %s", app)
         }
-
     }
 
     override fun onAppClose() {
@@ -170,7 +171,7 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
      */
     private data class SessionState(
         val segmentApp: BlockableApp? = null,
-        val sessionId: Long = 0L,
+        val sessionId: Long = -1L,
         val sessionStartLocalDate: LocalDate,
         val lastAppCloseTimestamp: Long = -1L,
         val currentSessionTotalTime: Long = 0L,
