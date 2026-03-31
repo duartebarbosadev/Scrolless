@@ -53,15 +53,14 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
         usageMutex.withLock {
             val currentSessionState = sessionState.get()
 
-            val firstSession = currentSessionState.sessionId == 0L
-            val shouldCreateNewSession =
-                shouldStartNewSessionOnNextUsage || firstSession || currentSessionState.segmentApp != app
-
             // If day changed we need to calculate what was yesterday session and what was today's session
             val dayChanged = currentSessionState.sessionStartLocalDate != timeProvider.localDateNow()
             if (dayChanged) {
 
-                Timber.i("Day has changed since last session segment. Finishing yesterday session and creating a new one for today for app %s", app)
+                Timber.i(
+                    "Day has changed since last session segment. Finishing yesterday session and creating a new one for today for app %s",
+                    app,
+                )
 
                 val timeDiffNowAndMidnight = Duration.between(
                     timeProvider.localDateTimeNow().withHour(0).withMinute(0).withSecond(0).withNano(0),
@@ -69,20 +68,21 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
                 )
                 val sessionTimeYesterday = sessionTime - timeDiffNowAndMidnight.toMillis()
                 val sessionTimeToday = sessionTime - sessionTimeYesterday
-                Timber.d("Session time of %s spans across two days. Allocating %s to yesterday and %s to today",
+                Timber.d(
+                    "Session time of %s spans across two days. Allocating %s to yesterday and %s to today",
                     sessionTime,
                     sessionTimeYesterday,
                     sessionTimeToday,
                 )
 
                 // create session for yesterday
-                createSegment(shouldCreateNewSession, app, sessionTimeYesterday, currentSessionState)
+                createSegment(shouldStartNewSessionOnNextUsage, app, sessionTimeYesterday, currentSessionState)
                 // create session for today
                 createSegment(true, app, sessionTimeToday, currentSessionState)
                 return
             }
 
-            createSegment(shouldCreateNewSession, app, sessionTime, currentSessionState)
+            createSegment(shouldStartNewSessionOnNextUsage, app, sessionTime, currentSessionState)
         }
     }
 
@@ -100,8 +100,6 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
         val newSessionId = sessionSegmentStore.addSessionSegment(newSegment)
         sessionState.updateAndGet {
             it.copy(
-                segmentApp = app,
-                sessionStartLocalDate = timeProvider.localDateNow(),
                 sessionId = newSessionId,
                 currentSessionTotalTime = sessionTime,
             )
@@ -135,6 +133,21 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
             state.sessionStartLocalDate != timeProvider.localDateNow() -> true
             else -> (now - state.lastAppCloseTimestamp) > SESSION_MERGE_WINDOW_MILLIS
         }
+
+        // If we are starting a new session, create a session state with the new app and start time.
+        //  Otherwise, we will continue the existing session segment.
+        if (shouldStartNewSessionOnNextUsage) {
+            Timber.d("Starting a new session segment for app %s", app)
+            sessionState.updateAndGet() {
+                it.copy(
+                    segmentApp = app,
+                    sessionStartLocalDate = timeProvider.localDateNow(),
+                )
+            }
+        } else {
+            Timber.d("Continuing existing session segment on app %s", app)
+        }
+
     }
 
     override fun onAppClose() {
