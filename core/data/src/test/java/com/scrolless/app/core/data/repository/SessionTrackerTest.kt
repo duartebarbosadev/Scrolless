@@ -22,11 +22,13 @@ import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.repository.SessionSegmentStore
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import java.time.Duration
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -38,10 +40,16 @@ import org.junit.runners.JUnit4
 class SessionTrackerTest : BaseTest() {
 
     private val testDispatcher = StandardTestDispatcher()
+    private val totalDurationForToday = MutableStateFlow(0L)
 
-    private val store = mockk<SessionSegmentStore>()
+    private val store = mockk<SessionSegmentStore>(relaxed = true)
     private var timeProvider = TestSchedulerTimeProvider(testDispatcher.scheduler)
     private var sessionTracker = SessionTrackerImpl(timeProvider = timeProvider, store)
+
+    init {
+        every { store.getTotalDurationForToday() } returns totalDurationForToday
+        every { store.getCurrentTotalDurationForToday() } answers { totalDurationForToday.value }
+    }
 
     @Test
     fun `first app open starts new session segment`() = runTest(testDispatcher) {

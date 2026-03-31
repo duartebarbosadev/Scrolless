@@ -74,6 +74,8 @@ class SessionSegmentStoreImpl @Inject constructor(
         return _totalDurationForToday
     }
 
+    override fun getCurrentTotalDurationForToday(): Long = _totalDurationForToday.value
+
     override fun getListSessionSegments(date: LocalDate): Flow<List<SessionSegment>> {
         val nextDate = date.plusDays(1)
         return sessionSegmentDao.getSessionSegment(date, nextDate).map { entities ->
@@ -87,10 +89,34 @@ class SessionSegmentStoreImpl @Inject constructor(
             durationMillis = sessionSegment.durationMillis,
             startDateTime = sessionSegment.startDateTime,
         )
-        return sessionSegmentDao.insert(entity)
+        val insertedId = sessionSegmentDao.insert(entity)
+        if (sessionSegment.startDateTime.toLocalDate() == currentDay.value) {
+            _totalDurationForToday.value += sessionSegment.durationMillis
+        }
+        return insertedId
     }
 
     override suspend fun updateSessionSegmentDuration(lastSessionId: Long, sessionTime: Long) {
+        val existingSegment = sessionSegmentDao.getSessionSegmentById(lastSessionId)
         sessionSegmentDao.updateDuration(lastSessionId, sessionTime)
+        if (existingSegment?.startDateTime?.toLocalDate() == currentDay.value) {
+            val durationDelta = sessionTime - existingSegment.durationMillis
+            _totalDurationForToday.value += durationDelta
+        }
+    }
+
+    override suspend fun replaceSessionSegmentsForDate(date: LocalDate, sessionSegments: List<SessionSegment>) {
+        val nextDate = date.plusDays(1)
+        val entities = sessionSegments.map { sessionSegment ->
+            SessionSegmentEntity(
+                app = sessionSegment.app,
+                durationMillis = sessionSegment.durationMillis.coerceAtLeast(0L),
+                startDateTime = sessionSegment.startDateTime,
+            )
+        }
+        sessionSegmentDao.replaceSessionSegments(date = date, datePlusOneDay = nextDate, entities = entities)
+        if (date == currentDay.value) {
+            _totalDurationForToday.value = entities.sumOf { it.durationMillis }
+        }
     }
 }
