@@ -217,10 +217,39 @@ class SessionTrackerTest : BaseTest() {
         // The first segment should be the duration of 5 minutes (the time remaining until midnight)
         val fiveMinutesInMillis = 5 * 60 * 1000L
         assertEquals(fiveMinutesInMillis, capturedSegments[0].durationMillis)
+        assertEquals(fiveMinutesBeforeMidnight, capturedSegments[0].startDateTime)
 
         // The second segment should be the remaining 6 minutes after midnight
         val sixMinutesInMillis = 6 * 60 * 1000L
         assertEquals(sixMinutesInMillis, capturedSegments[1].durationMillis)
+        assertEquals(fiveMinutesBeforeMidnight.toLocalDate().plusDays(1).atStartOfDay(), capturedSegments[1].startDateTime)
+    }
+
+    @Test
+    fun `open app before midnight but just watch reels after midnight should not fabricate a previous day segment`() = runTest(testDispatcher) {
+        val capturedSegments = mutableListOf<SessionSegment>()
+        coEvery { store.addSessionSegment(capture(capturedSegments)) } returns 1L
+
+        val initialNow = timeProvider.localDateTimeNow()
+        val tenMinutesBeforeMidnight = initialNow.toLocalDate().atTime(23, 50)
+        delay(Duration.between(initialNow, tenMinutesBeforeMidnight).toMillis())
+
+        val app = BlockableApp.REELS
+        sessionTracker.onAppOpen(app)
+
+        val blockedContentStart = tenMinutesBeforeMidnight.plusMinutes(15)
+        delay(Duration.between(timeProvider.localDateTimeNow(), blockedContentStart).toMillis())
+
+        val sessionDuration = 5 * 60 * 1000L
+        delay(sessionDuration)
+        sessionTracker.addToDailyUsage(sessionDuration, app)
+
+        coVerify(exactly = 1) {
+            store.addSessionSegment(any())
+        }
+        assertEquals(1, capturedSegments.size)
+        assertEquals(sessionDuration, capturedSegments[0].durationMillis)
+        assertEquals(blockedContentStart, capturedSegments[0].startDateTime)
     }
 
     @Test

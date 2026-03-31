@@ -102,8 +102,8 @@ object DataDiModule {
 
     @Provides
     @Singleton
-    fun provideSessionSegmentStore(sessionSegmentDao: SessionSegmentDao): SessionSegmentStore =
-        SessionSegmentStoreImpl(sessionSegmentDao = sessionSegmentDao)
+    fun provideSessionSegmentStore(timeProvider: TimeProvider, sessionSegmentDao: SessionSegmentDao): SessionSegmentStore =
+        SessionSegmentStoreImpl(timeProvider = timeProvider, sessionSegmentDao = sessionSegmentDao)
 
     @Provides
     @Singleton

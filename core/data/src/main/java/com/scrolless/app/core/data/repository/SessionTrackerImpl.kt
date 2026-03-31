@@ -23,6 +23,7 @@ import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.SessionTracker
 import java.time.Duration
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -52,9 +53,12 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
 
         usageMutex.withLock {
             val currentSessionState = sessionState.get()
+            val usageEnd = timeProvider.localDateTimeNow()
+            val usageStart = usageEnd.minus(Duration.ofMillis(sessionTime))
 
-            // If day changed we need to calculate what was yesterday session and what was today's session
-            val dayChanged = currentSessionState.sessionStartLocalDate != timeProvider.localDateNow()
+            // If the start date and end date is different
+            //  create a segment for the yesterday part and a segment for today's
+            val dayChanged = usageStart.toLocalDate() != usageEnd.toLocalDate()
             if (dayChanged) {
 
                 Timber.i(
@@ -62,12 +66,9 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
                     app,
                 )
 
-                val timeDiffNowAndMidnight = Duration.between(
-                    timeProvider.localDateTimeNow().withHour(0).withMinute(0).withSecond(0).withNano(0),
-                    timeProvider.localDateTimeNow(),
-                )
-                val sessionTimeYesterday = sessionTime - timeDiffNowAndMidnight.toMillis()
-                val sessionTimeToday = sessionTime - sessionTimeYesterday
+                val midnight = usageEnd.toLocalDate().atStartOfDay()
+                val sessionTimeYesterday = Duration.between(usageStart, midnight).toMillis()
+                val sessionTimeToday = Duration.between(midnight, usageEnd).toMillis()
                 Timber.d(
                     "Session time of %s spans across two days. Allocating %s to yesterday and %s to today",
                     sessionTime,
@@ -76,13 +77,31 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
                 )
 
                 // create session for yesterday
-                createSegment(shouldStartNewSessionOnNextUsage, app, sessionTimeYesterday, currentSessionState)
+                createSegment(
+                    shouldCreateNewSession = shouldStartNewSessionOnNextUsage,
+                    app = app,
+                    sessionTime = sessionTimeYesterday,
+                    currentSessionState = currentSessionState,
+                    sessionStartDateTime = usageStart,
+                )
                 // create session for today
-                createSegment(true, app, sessionTimeToday, currentSessionState)
+                createSegment(
+                    shouldCreateNewSession = true,
+                    app = app,
+                    sessionTime = sessionTimeToday,
+                    currentSessionState = currentSessionState,
+                    sessionStartDateTime = midnight,
+                )
                 return
             }
 
-            createSegment(shouldStartNewSessionOnNextUsage, app, sessionTime, currentSessionState)
+            createSegment(
+                shouldCreateNewSession = shouldStartNewSessionOnNextUsage,
+                app = app,
+                sessionTime = sessionTime,
+                currentSessionState = currentSessionState,
+                sessionStartDateTime = usageStart,
+            )
         }
     }
 
@@ -91,10 +110,10 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
         app: BlockableApp,
         sessionTime: Long,
         currentSessionState: SessionState,
+        sessionStartDateTime: LocalDateTime,
     ): Any? = if (shouldCreateNewSession) {
 
         // Start a new session segment
-        val sessionStartDateTime = timeProvider.localDateTimeNow().minus(Duration.ofMillis(sessionTime))
         val newSegment = SessionSegment(app, sessionTime, sessionStartDateTime)
         Timber.i("Creating a session segment with session time of %s", sessionTime)
         val newSessionId = sessionSegmentStore.addSessionSegment(newSegment)
@@ -102,8 +121,7 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
             it.copy(
                 sessionId = newSessionId,
                 currentSessionTotalTime = sessionTime,
-                // Make sure to update the session start date as the day could have changed since we created the sessionState
-                sessionStartLocalDate = timeProvider.localDateNow(),
+                sessionStartLocalDate = sessionStartDateTime.toLocalDate(),
             )
         }
         shouldStartNewSessionOnNextUsage = false
