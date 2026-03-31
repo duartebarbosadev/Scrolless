@@ -27,7 +27,6 @@ import java.time.LocalDateTime
 import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import timber.log.Timber
@@ -46,7 +45,7 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
     private var shouldStartNewSessionOnNextUsage = true
 
     override fun getDailyUsage(): Long {
-        return (sessionSegmentStore.getTotalDurationForToday() as StateFlow<Long>).value
+        return sessionSegmentStore.getCurrentTotalDurationForToday()
     }
 
     override suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp) {

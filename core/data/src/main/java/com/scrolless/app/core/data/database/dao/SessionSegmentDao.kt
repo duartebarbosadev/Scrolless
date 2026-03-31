@@ -35,6 +35,9 @@ abstract class SessionSegmentDao : BaseDao<SessionSegmentEntity> {
     @Query("UPDATE session_segments SET durationMillis = :sessionTime WHERE id = :lastSessionId")
     abstract suspend fun updateDuration(lastSessionId: Long, sessionTime: Long)
 
+    @Query("SELECT * FROM session_segments WHERE id = :sessionId LIMIT 1")
+    abstract suspend fun getSessionSegmentById(sessionId: Long): SessionSegmentEntity?
+
     @Query("SELECT COALESCE(SUM(durationMillis), 0) FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
     abstract fun getTotalDuration(date: LocalDate, datePlusOneDay: LocalDate): Flow<Long>
 

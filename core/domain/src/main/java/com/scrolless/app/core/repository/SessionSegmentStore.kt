@@ -23,6 +23,8 @@ import kotlinx.coroutines.flow.Flow
 interface SessionSegmentStore {
     fun getTotalDurationForToday(): Flow<Long>
 
+    fun getCurrentTotalDurationForToday(): Long
+
     fun getListSessionSegments(date: LocalDate): Flow<List<SessionSegment>>
 
     suspend fun addSessionSegment(sessionSegment: SessionSegment): Long
