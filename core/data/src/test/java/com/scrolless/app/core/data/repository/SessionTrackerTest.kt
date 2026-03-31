@@ -222,4 +222,54 @@ class SessionTrackerTest : BaseTest() {
         val sixMinutesInMillis = 6 * 60 * 1000L
         assertEquals(sixMinutesInMillis, capturedSegments[1].durationMillis)
     }
+
+    @Test
+    fun `watching reels, then 26 hours later watching reels changes segment at midnight`() = runTest(testDispatcher) {
+
+        val capturedSegments = mutableListOf<SessionSegment>()
+        coEvery { store.addSessionSegment(capture(capturedSegments)) } returns 1L
+        coEvery { store.updateSessionSegmentDuration(any(), any()) } returns Unit
+
+        // Set first session
+
+        // Set the time to today at 22:00 (2 hours before midnight) (Random time)
+        var now = timeProvider.localDateTimeNow()
+        val firstTimeToSet = now.toLocalDate().atTime(22, 0)
+        val millisUntilTimeToSet = Duration.between(now, firstTimeToSet).toMillis()
+        delay(millisUntilTimeToSet)
+
+        val app = BlockableApp.REELS
+        sessionTracker.onAppOpen(app)
+
+        // 20-minute session that will WON'T go past midnight
+        val firstSessionDuration = 20 * 60 * 1000L
+        delay(20* 60 * 1000L)
+        sessionTracker.addToDailyUsage(firstSessionDuration, app)
+        sessionTracker.onAppClose()
+
+        // Set second session after 26 hours
+        now = timeProvider.localDateTimeNow()
+        val secondTimeToSet = now.plusHours(26)
+        val millisUntilSecondTimeToSet = Duration.between(now, secondTimeToSet).toMillis()
+        delay(millisUntilSecondTimeToSet)
+
+        sessionTracker.onAppOpen(app)
+
+        val secondSessionDuration = 10 * 60 * 1000L
+        delay(secondSessionDuration)
+        sessionTracker.addToDailyUsage(secondSessionDuration, app)
+
+        // Verify that two segments were created (splitting at midnight)
+        coVerify(exactly = 2) {
+            store.addSessionSegment(any())
+        }
+
+        assertEquals(2, capturedSegments.size)
+
+        // The first segment should be the duration of the firstSessionDuration
+        assertEquals(firstSessionDuration, capturedSegments[0].durationMillis)
+
+        // The second segment should be the duration of secondSessionDuration
+        assertEquals(secondSessionDuration, capturedSegments[1].durationMillis)
+    }
 }
