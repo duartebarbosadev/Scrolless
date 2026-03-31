@@ -22,6 +22,10 @@ import com.scrolless.app.core.data.database.model.SessionSegmentEntity
 import com.scrolless.app.core.data.database.model.toSessionSegment
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.repository.SessionSegmentStore
+import java.time.LocalDate
+import java.time.ZoneId
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -32,10 +36,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.ZoneId
-import javax.inject.Inject
-import javax.inject.Singleton
 
 @Singleton
 class SessionSegmentStoreImpl @Inject constructor(
