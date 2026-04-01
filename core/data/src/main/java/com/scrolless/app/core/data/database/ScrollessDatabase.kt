@@ -140,6 +140,8 @@ abstract class ScrollessDatabase : RoomDatabase() {
                     """.trimIndent(),
                 )
 
+                // Rebuild user_settings without the removed daily-usage columns, then copy forward
+                //  the settings we still keep in v6 before swapping the new table into place.
                 db.execSQL(
                     """
                     CREATE TABLE IF NOT EXISTS user_settings_new (
