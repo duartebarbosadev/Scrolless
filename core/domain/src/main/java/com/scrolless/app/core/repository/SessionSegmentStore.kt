@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Scrolless
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +21,9 @@ import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
 
 interface SessionSegmentStore {
-    fun getSessionSegment(date: LocalDate): Flow<List<SessionSegment>>
+    fun getTotalDurationForToday(): Flow<Long>
+
+    fun getListSessionSegments(date: LocalDate): Flow<List<SessionSegment>>
 
     suspend fun addSessionSegment(sessionSegment: SessionSegment): Long
 

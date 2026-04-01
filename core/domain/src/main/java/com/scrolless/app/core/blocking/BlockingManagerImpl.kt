@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Scrolless
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,7 +72,6 @@ class BlockingManagerImpl @Inject constructor(
             intervalState,
         )
         handler = createHandlerForConfig(blockOption, timeLimit, intervalLength, intervalState)
-        sessionTracker.checkDailyReset()
     }
 
     /**
@@ -113,7 +112,6 @@ class BlockingManagerImpl @Inject constructor(
      * @return `true` if blocking is required immediately.
      */
     override suspend fun onEnterBlockedContent(): Boolean {
-        sessionTracker.checkDailyReset()
         val currentDailyUsage = sessionTracker.getDailyUsage()
         val shouldBlock = handler.onEnterContent(currentDailyUsage)
         Timber.d("onEnterBlockedContent: daily=%d -> shouldBlock=%s", currentDailyUsage, shouldBlock)
