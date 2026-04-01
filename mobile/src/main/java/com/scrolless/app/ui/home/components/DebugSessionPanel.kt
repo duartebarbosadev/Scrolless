@@ -88,6 +88,7 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -480,7 +481,14 @@ private fun DayTimeline(
     val density = LocalDensity.current
     val timelineWidthPx = with(density) { TIMELINE_TRACK_WIDTH.roundToPx() }
     val dayStart = LocalDate.now().atStartOfDay()
-    val nowMinutes = remember(dayStart) { LocalDateTime.now().minutesSince(dayStart).coerceIn(0, DAY_TOTAL_MINUTES) }
+    var nowMinutes by remember(dayStart) { mutableIntStateOf(LocalDateTime.now().minutesSince(dayStart).coerceIn(0, DAY_TOTAL_MINUTES)) }
+
+    LaunchedEffect(dayStart) {
+        while (true) {
+            nowMinutes = LocalDateTime.now().minutesSince(dayStart).coerceIn(0, DAY_TOTAL_MINUTES)
+            delay(30_000)
+        }
+    }
 
     LaunchedEffect(centerRequestToken, viewportWidthPx, timelineWidthPx, scrollState.maxValue) {
         if (viewportWidthPx <= 0) return@LaunchedEffect
@@ -512,8 +520,8 @@ private fun DayTimeline(
             .clip(RoundedCornerShape(16.dp))
             .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.25f), RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.92f))
-            .horizontalScroll(scrollState)
-            .padding(8.dp),
+            .padding(8.dp)
+            .horizontalScroll(scrollState),
         verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         Row(modifier = Modifier.width(TIMELINE_TRACK_WIDTH)) {
