@@ -268,7 +268,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                     // If still in blocked content, check if should block now
                     if (isProcessingBlockedContent) {
                         serviceScope.launch(Dispatchers.IO) {
-                            sessionTracker.checkDailyReset()
                             if (blockingManager.onEnterBlockedContent()) {
                                 Timber.i("Blocking immediately after pause expired")
                                 performBackNavigation()
@@ -279,11 +278,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                     Timber.v("Pause timestamp updated to %d (no state change)", pauseUntilMillis)
                 }
             }
-        }
-
-        // Check daily reset on service start
-        serviceScope.launch {
-            sessionTracker.checkDailyReset()
         }
     }
 
@@ -582,9 +576,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         if (!isPauseActive()) {
             serviceScope.launch(Dispatchers.IO) {
 
-                // Check for daily reset (If its past midnight, reset the daily usage)
-                sessionTracker.checkDailyReset()
-
                 val shouldBlock = blockingManager.onEnterBlockedContent()
                 if (shouldBlock) {
                     Timber.i("Blocking on enter")
@@ -602,10 +593,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 }
             }
         } else {
-            // Paused - still check for daily reset and show timer overlay
-            serviceScope.launch(Dispatchers.IO) {
-                sessionTracker.checkDailyReset()
-            }
+            // Paused - show timer overlay
             if (currentTimerOverlayEnabled) {
                 Timber.v("Showing timer overlay (paused)")
                 mainHandler.post {
@@ -659,7 +647,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         serviceScope.launch(Dispatchers.IO) {
             // Add to usage in memory with per-app tracking
             Timber.d("Recording session usage: %d ms for app: %s", sessionTime, exitedApp.name)
-            sessionTracker.checkDailyReset()
             sessionTracker.addToDailyUsage(sessionTime, exitedApp)
 
             // Let blocking manager do its logic, if needed
