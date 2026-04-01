@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.core.domain.utils
+package com.scrolless.app.core.data.repository.utils
 
 import com.scrolless.app.core.blocking.time.TimeProvider
 import java.time.Instant
@@ -24,7 +24,7 @@ import java.time.ZoneId
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScheduler
 
-// Same as com.scrolless.app.core.TestSchedulerTimeProvider
+// Same as com.scrolless.app.core.domain.utils.TestSchedulerTimeProvider
 @OptIn(ExperimentalCoroutinesApi::class)
 class TestSchedulerTimeProvider(private val scheduler: TestCoroutineScheduler) : TimeProvider {
     override fun currentTimeInMillis() = scheduler.currentTime

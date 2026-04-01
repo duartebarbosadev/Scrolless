@@ -16,10 +16,17 @@
  */
 package com.scrolless.app.core.blocking.time
 
+import java.time.LocalDate
+import java.time.LocalDateTime
+
 interface TimeProvider {
     fun currentTimeInMillis(): Long
+    fun localDateNow(): LocalDate
+    fun localDateTimeNow(): LocalDateTime
 }
 
 object SystemTimeProvider : TimeProvider {
     override fun currentTimeInMillis(): Long = System.currentTimeMillis()
+    override fun localDateNow(): LocalDate = LocalDate.now()
+    override fun localDateTimeNow(): LocalDateTime = LocalDateTime.now()
 }

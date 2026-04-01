@@ -105,6 +105,9 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
+    androidTestImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.android)
+
     coreLibraryDesugaring(libs.core.jdk.desugaring)
 
     // Testing

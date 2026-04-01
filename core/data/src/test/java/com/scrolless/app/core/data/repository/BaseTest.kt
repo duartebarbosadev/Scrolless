@@ -14,22 +14,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.core.repository
+package com.scrolless.app.core.data.repository
 
-import com.scrolless.app.core.model.SessionSegment
-import java.time.LocalDate
-import kotlinx.coroutines.flow.Flow
+import org.junit.Before
+import timber.log.Timber
 
-interface SessionSegmentStore {
-    fun getTotalDurationForToday(): Flow<Long>
+open class BaseTest {
 
-    fun getCurrentTotalDurationForToday(): Long
-
-    fun getListSessionSegments(date: LocalDate): Flow<List<SessionSegment>>
-
-    suspend fun addSessionSegment(sessionSegment: SessionSegment): Long
-
-    suspend fun updateSessionSegmentDuration(lastSessionId: Long, sessionTime: Long)
-
-    suspend fun replaceSessionSegmentsForDate(date: LocalDate, sessionSegments: List<SessionSegment>)
+    @Before
+    open fun setUp() {
+        Timber.plant(object : Timber.DebugTree() {
+            override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+                println("$tag: $message")
+            }
+        })
+    }
 }

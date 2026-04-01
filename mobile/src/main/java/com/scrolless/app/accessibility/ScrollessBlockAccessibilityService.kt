@@ -61,9 +61,12 @@ import timber.log.Timber
  * Permissions Required:
  * - Accessibility service permission must be granted by the user
  *
+ * TODO: Move the session time tracking logic to the SessionTrackerImpl
+ *
  * @see com.scrolless.app.core.blocking.BlockingManager for blocking logic
  * @see BlockOption for available blocking strategies
  * @see BlockableApp for supported apps
+ * @see com.scrolless.app.core.data.repository.SessionTrackerImpl for usage tracking implementation
  */
 @SuppressLint("AccessibilityPolicy") // Accessibility APIs are required to enforce user-configured blocking policies.
 @AndroidEntryPoint

@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.core.data.repository
 
+import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.dao.SessionSegmentDao
 import com.scrolless.app.core.data.database.model.SessionSegmentEntity
 import com.scrolless.app.core.data.database.model.toSessionSegment
@@ -37,28 +38,32 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 @Singleton
-class SessionSegmentStoreImpl @Inject constructor(private val sessionSegmentDao: SessionSegmentDao) : SessionSegmentStore {
+class SessionSegmentStoreImpl @Inject constructor(
+    private val timeProvider: TimeProvider,
+    private val sessionSegmentDao: SessionSegmentDao,
+) : SessionSegmentStore {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
     private val _totalDurationForToday = MutableStateFlow(0L)
-    private val currentDay = MutableStateFlow(LocalDate.now())
+    private val currentDay = MutableStateFlow(timeProvider.localDateNow())
 
     init {
         coroutineScope.launch {
             while (isActive) {
-                val today = LocalDate.now()
+                val zoneId = ZoneId.systemDefault()
+                val today = timeProvider.localDateNow()
                 if (today != currentDay.value) {
                     currentDay.value = today
                 }
-                val zoneId = ZoneId.systemDefault()
                 val nextMidnight = today.plusDays(1).atStartOfDay(zoneId).toInstant().toEpochMilli()
-                val delayMillis = (nextMidnight - System.currentTimeMillis()).coerceAtLeast(1L)
+                val delayMillis = (nextMidnight - timeProvider.currentTimeInMillis()).coerceAtLeast(1L)
                 delay(delayMillis)
             }
         }
 
         coroutineScope.launch {
             currentDay.collectLatest { date ->
+                // Cancel the previous day subscription and switch to the new day window.
                 sessionSegmentDao.getTotalDuration(date, date.plusDays(1)).collect { duration ->
                     _totalDurationForToday.value = duration
                 }
@@ -68,6 +73,8 @@ class SessionSegmentStoreImpl @Inject constructor(private val sessionSegmentDao:
     override fun getTotalDurationForToday(): Flow<Long> {
         return _totalDurationForToday
     }
+
+    override fun getCurrentTotalDurationForToday(): Long = _totalDurationForToday.value
 
     override fun getListSessionSegments(date: LocalDate): Flow<List<SessionSegment>> {
         val nextDate = date.plusDays(1)
