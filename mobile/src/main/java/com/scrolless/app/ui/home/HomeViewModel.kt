@@ -19,7 +19,6 @@ package com.scrolless.app.ui.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.scrolless.app.core.model.BlockOption
-import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
@@ -55,7 +54,6 @@ class HomeViewModel @Inject constructor(
 
     private val _showComingSoonSnackBar = MutableStateFlow(false)
     private val _requestReview = MutableStateFlow(false)
-    private val _debugSessionSegments = MutableStateFlow<List<SessionSegment>?>(null)
     // Keep latest persisted attempt metadata so we can update without re-collecting.
     private var latestReviewAttemptCount = 0
     private var latestReviewAttemptAt = 0L
@@ -141,8 +139,7 @@ class HomeViewModel @Inject constructor(
         _showComingSoonSnackBar,
         _requestReview,
         userSettingsStore.getHasSeenAccessibilityExplainer(),
-        _debugSessionSegments,
-    ) { usage, timerEnabled, pauseUntil, showComingSoonSnackBar, requestReview, hasSeenAccessibilityExplainer, debugUsageSegments ->
+    ) { usage, timerEnabled, pauseUntil, showComingSoonSnackBar, requestReview, hasSeenAccessibilityExplainer ->
 
         val progress = calculateProgress(
             blockOption = usage.blockOption,
@@ -165,7 +162,7 @@ class HomeViewModel @Inject constructor(
             requestReview = requestReview,
             hasSeenAccessibilityExplainer = hasSeenAccessibilityExplainer,
             hasLoadedSettings = true,
-            listSessionSegments = debugUsageSegments ?: usage.sessionSegment,
+            listSessionSegments = usage.sessionSegment,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -322,29 +319,27 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onDebugUsageSegmentsChanged(sessionSegments: List<SessionSegment>) {
-        _debugSessionSegments.value = sessionSegments
         viewModelScope.launch {
-            var reelsUsage = 0L
-            var shortsUsage = 0L
-            var tiktokUsage = 0L
-            sessionSegments.forEach { segment ->
-                val duration = segment.durationMillis.coerceAtLeast(0L)
-                when (segment.app) {
-                    BlockableApp.REELS -> reelsUsage += duration
-                    BlockableApp.SHORTS -> shortsUsage += duration
-                    BlockableApp.TIKTOK -> tiktokUsage += duration
-                }
+            val today = ZonedDateTime.now().toLocalDate()
+            val normalizedSegments = sessionSegments.map { segment ->
+                segment.copy(
+                    durationMillis = segment.durationMillis.coerceAtLeast(0L),
+                    startDateTime = segment.startDateTime.withSecond(0).withNano(0),
+                )
             }
-            // userSettingsStore.updateReelsDailyUsage(reelsUsage) TODO
-            // userSettingsStore.updateShortsDailyUsage(shortsUsage)
-            // userSettingsStore.updateTiktokDailyUsage(tiktokUsage)
+            sessionSegmentStore.replaceSessionSegmentsForDate(
+                date = today,
+                sessionSegments = normalizedSegments,
+            )
         }
     }
 
     fun onDebugResetUsage() {
-        _debugSessionSegments.value = emptyList()
         viewModelScope.launch {
-//            userSettingsStore.resetAllDailyUsage()
+            sessionSegmentStore.replaceSessionSegmentsForDate(
+                date = ZonedDateTime.now().toLocalDate(),
+                sessionSegments = emptyList(),
+            )
         }
     }
 

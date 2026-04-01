@@ -28,4 +28,6 @@ interface SessionSegmentStore {
     suspend fun addSessionSegment(sessionSegment: SessionSegment): Long
 
     suspend fun updateSessionSegmentDuration(lastSessionId: Long, sessionTime: Long)
+
+    suspend fun replaceSessionSegmentsForDate(date: LocalDate, sessionSegments: List<SessionSegment>)
 }
