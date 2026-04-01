@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Scrolless
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,7 +102,7 @@ abstract class ScrollessDatabase : RoomDatabase() {
                         INSERT INTO session_segments (app, durationMillis, startDateTime)
                         SELECT 'REELS', reels_daily_usage, last_reset_day || 'T00:00:00'
                         FROM user_settings
-                        WHERE reels_daily_usage > 0
+                        WHERE reels_daily_usage > 0 AND last_reset_day IS NOT NULL
                     """.trimIndent(),
                 )
                 db.execSQL(
@@ -110,7 +110,7 @@ abstract class ScrollessDatabase : RoomDatabase() {
                         INSERT INTO session_segments (app, durationMillis, startDateTime)
                         SELECT 'SHORTS', shorts_daily_usage, last_reset_day || 'T00:00:00'
                         FROM user_settings
-                        WHERE shorts_daily_usage > 0
+                        WHERE shorts_daily_usage > 0 AND last_reset_day IS NOT NULL
                     """.trimIndent(),
                 )
                 db.execSQL(
@@ -118,7 +118,7 @@ abstract class ScrollessDatabase : RoomDatabase() {
                         INSERT INTO session_segments (app, durationMillis, startDateTime)
                         SELECT 'TIKTOK', tiktok_daily_usage, last_reset_day || 'T00:00:00'
                         FROM user_settings
-                        WHERE tiktok_daily_usage > 0
+                        WHERE tiktok_daily_usage > 0 AND last_reset_day IS NOT NULL
                     """.trimIndent(),
                 )
 
@@ -136,11 +136,10 @@ abstract class ScrollessDatabase : RoomDatabase() {
                             last_reset_day || 'T00:00:00'
                         FROM user_settings
                         WHERE total_daily_usage - (reels_daily_usage + shorts_daily_usage + tiktok_daily_usage) > 0
+                            AND last_reset_day IS NOT NULL
                     """.trimIndent(),
                 )
 
-                // Rebuild user_settings without the removed daily-usage columns, then copy forward
-                // the settings we still keep in v6 before swapping the new table into place.
                 db.execSQL(
                     """
                     CREATE TABLE IF NOT EXISTS user_settings_new (

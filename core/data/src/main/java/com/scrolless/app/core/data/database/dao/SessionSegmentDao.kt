@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Scrolless
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@ package com.scrolless.app.core.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import com.scrolless.app.core.data.database.model.SessionSegmentEntity
 import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
@@ -34,9 +35,17 @@ abstract class SessionSegmentDao : BaseDao<SessionSegmentEntity> {
     @Query("UPDATE session_segments SET durationMillis = :sessionTime WHERE id = :lastSessionId")
     abstract suspend fun updateDuration(lastSessionId: Long, sessionTime: Long)
 
-    @Query("SELECT * FROM session_segments WHERE id = :sessionId LIMIT 1")
-    abstract suspend fun getSessionSegmentById(sessionId: Long): SessionSegmentEntity?
-
     @Query("SELECT COALESCE(SUM(durationMillis), 0) FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
     abstract fun getTotalDuration(date: LocalDate, datePlusOneDay: LocalDate): Flow<Long>
+
+    @Query("DELETE FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
+    abstract suspend fun deleteSessionSegment(date: LocalDate, datePlusOneDay: LocalDate): Int
+
+    @Transaction
+    open suspend fun replaceSessionSegments(date: LocalDate, datePlusOneDay: LocalDate, entities: List<SessionSegmentEntity>) {
+        deleteSessionSegment(date = date, datePlusOneDay = datePlusOneDay)
+        if (entities.isNotEmpty()) {
+            insertAll(entities = entities)
+        }
+    }
 }

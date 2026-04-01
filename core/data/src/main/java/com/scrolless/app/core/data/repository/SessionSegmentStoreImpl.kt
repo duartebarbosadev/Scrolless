@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Scrolless
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -118,5 +118,17 @@ class SessionSegmentStoreImpl @Inject constructor(
         if (date == currentDay.value) {
             _totalDurationForToday.value = entities.sumOf { it.durationMillis }
         }
+    }
+
+    override suspend fun replaceSessionSegmentsForDate(date: LocalDate, sessionSegments: List<SessionSegment>) {
+        val nextDate = date.plusDays(1)
+        val entities = sessionSegments.map { sessionSegment ->
+            SessionSegmentEntity(
+                app = sessionSegment.app,
+                durationMillis = sessionSegment.durationMillis.coerceAtLeast(0L),
+                startDateTime = sessionSegment.startDateTime,
+            )
+        }
+        sessionSegmentDao.replaceSessionSegments(date = date, datePlusOneDay = nextDate, entities = entities)
     }
 }

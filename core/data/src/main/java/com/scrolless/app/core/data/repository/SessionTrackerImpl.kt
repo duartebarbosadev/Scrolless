@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Scrolless
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,12 +40,10 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
     }
 
     private val usageMutex = Mutex()
-    private val sessionState = AtomicReference(SessionState(sessionStartLocalDate = timeProvider.localDateNow()))
-
-    private var shouldStartNewSessionOnNextUsage = true
+    private val sessionState = AtomicReference(SessionState())
 
     override fun getDailyUsage(): Long {
-        return sessionSegmentStore.getCurrentTotalDurationForToday()
+        return (sessionSegmentStore.getTotalDurationForToday() as StateFlow<Long>).value
     }
 
     override suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp) {
@@ -104,6 +102,16 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
         }
     }
 
+            createSegment(
+                shouldCreateNewSession = shouldStartNewSessionOnNextUsage,
+                app = app,
+                sessionTime = sessionTime,
+                currentSessionState = currentSessionState,
+                sessionStartDateTime = usageStart,
+            )
+        }
+    }
+
     private suspend fun createSegment(
         shouldCreateNewSession: Boolean,
         app: BlockableApp,
@@ -138,6 +146,23 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
     }
 
     override fun onAppOpen(app: BlockableApp) {
+        val now = System.currentTimeMillis()
+        val state = sessionState.get()
+
+        // Get if we should start a new session
+        //  based on whether the app has changed
+        //  or if the last app close was long enough ago
+        //  or if the session started on a different day
+        val shouldStartNewSession = when {
+            state.sessionId == 0L || state.segmentApp == null -> true
+            state.segmentApp != app -> true
+            state.lastAppCloseTimestamp <= 0L -> false
+            state.sessionStartLocalDate != LocalDate.now() -> true
+            else -> (now - state.lastAppCloseTimestamp) > SESSION_MERGE_WINDOW_MILLIS
+        }
+
+        sessionState.updateAndGet {
+            it.copy(shouldStartNewSessionOnNextUsage = shouldStartNewSession)
         val now = timeProvider.currentTimeInMillis()
         val state = sessionState.get()
 
@@ -181,6 +206,21 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
      * user activity, such as switching apps or brief pauses in usage.
      *
      * @param segmentApp The last app that was tracked. Used to detect app switches.
+     *      * @param shouldStartNewSessionOnNextUsage A flag to indicate if a new session should be started.
+     *
+     * @param sessionId The ID of the last session segment, for updating existing segments.
+     * @param sessionStartLocalDate The local date when the current session started.
+     * @param lastAppCloseTimestamp The timestamp when the last app was closed, for session merging.
+     * @param currentSessionTotalTime The total time of the current session, accumulated across usage reports.
+     */
+    /**
+     * Represents the internal state for session tracking logic within [SessionTrackerImpl].
+     *
+     * This data class allows the tracker to make decisions about
+     * whether to create a new session segment or append time to an existing one based on
+     * user activity, such as switching apps or brief pauses in usage.
+     *
+     * @param segmentApp The last app that was tracked. Used to detect app switches.
      * @param shouldStartNewSessionOnNextUsage A flag to indicate if a new session should be started.
      * @param sessionId The ID of the last session segment, for updating existing segments.
      * @param lastAppCloseTimestamp The timestamp when the last app was closed, for session merging.
@@ -189,7 +229,8 @@ class SessionTrackerImpl @Inject constructor(private val timeProvider: TimeProvi
     private data class SessionState(
         val segmentApp: BlockableApp? = null,
         val sessionId: Long = -1L,
-        val sessionStartLocalDate: LocalDate,
+        val shouldStartNewSessionOnNextUsage: Boolean = true,
+        val sessionStartLocalDate: LocalDate = LocalDate.now(),
         val lastAppCloseTimestamp: Long = -1L,
         val currentSessionTotalTime: Long = 0L,
     )

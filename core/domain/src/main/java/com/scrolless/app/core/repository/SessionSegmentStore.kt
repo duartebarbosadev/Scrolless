@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Scrolless
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,4 +30,6 @@ interface SessionSegmentStore {
     suspend fun addSessionSegment(sessionSegment: SessionSegment): Long
 
     suspend fun updateSessionSegmentDuration(lastSessionId: Long, sessionTime: Long)
+
+    suspend fun replaceSessionSegmentsForDate(date: LocalDate, sessionSegments: List<SessionSegment>)
 }
