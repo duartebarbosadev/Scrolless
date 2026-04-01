@@ -119,16 +119,4 @@ class SessionSegmentStoreImpl @Inject constructor(
             _totalDurationForToday.value = entities.sumOf { it.durationMillis }
         }
     }
-
-    override suspend fun replaceSessionSegmentsForDate(date: LocalDate, sessionSegments: List<SessionSegment>) {
-        val nextDate = date.plusDays(1)
-        val entities = sessionSegments.map { sessionSegment ->
-            SessionSegmentEntity(
-                app = sessionSegment.app,
-                durationMillis = sessionSegment.durationMillis.coerceAtLeast(0L),
-                startDateTime = sessionSegment.startDateTime,
-            )
-        }
-        sessionSegmentDao.replaceSessionSegments(date = date, datePlusOneDay = nextDate, entities = entities)
-    }
 }
