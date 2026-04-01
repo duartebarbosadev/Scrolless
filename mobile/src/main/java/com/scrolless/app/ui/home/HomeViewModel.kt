@@ -109,7 +109,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private val sessionSegmentsForCurrentDay = currentDayFlow().flatMapLatest { currentDate ->
-        sessionSegmentStore.getListSessionSegments(currentDate)
+        sessionSegmentStore.getSessionSegment(currentDate)
     }
 
     private val usageSnapshot = combine(
@@ -118,9 +118,9 @@ class HomeViewModel @Inject constructor(
         userSettingsStore.getIntervalLength(),
         userSettingsStore.getIntervalUsage(),
         userSettingsStore.getIntervalWindowStart(),
-        sessionSegmentStore.getTotalDurationForToday(),
         sessionSegmentsForCurrentDay,
-    ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage, usageSegment ->
+    ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, usageSegment ->
+        val currentUsage = usageSegment.sumOf { it.durationMillis }
         UsageSnapshot(
             blockOption = blockOption,
             timeLimit = timeLimit,

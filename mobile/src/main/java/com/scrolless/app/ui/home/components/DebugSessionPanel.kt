@@ -88,6 +88,8 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 
 private const val DAY_TOTAL_MINUTES = 24 * 60
 private const val DEFAULT_NEW_SESSION_MINUTES = 10
@@ -247,9 +249,10 @@ private fun DebugDayTimelinePanel(
     }
 
     fun addSession() {
+        val maxDurationMinutes = (DAY_TOTAL_MINUTES - selectedStartMinutes).coerceAtLeast(0)
         val newSegment = SessionSegment(
             app = selectedApp,
-            durationMillis = TimeUnit.MINUTES.toMillis(newSessionDurationMinutes.toLong()),
+            durationMillis = TimeUnit.MINUTES.toMillis(minOf(newSessionDurationMinutes, maxDurationMinutes).toLong()),
             startDateTime = today.atStartOfDay().plusMinutes(selectedStartMinutes.toLong()),
         )
         onUsageChanged((todaySegments + newSegment).sortedBy { it.startDateTime })
@@ -489,15 +492,17 @@ private fun DayTimeline(
 
     LaunchedEffect(scrollState, viewportWidthPx, timelineWidthPx) {
         if (viewportWidthPx <= 0 || timelineWidthPx <= 0) return@LaunchedEffect
-        snapshotFlow { scrollState.value }.collect { scrollValue ->
-            val centerX = (scrollValue + (viewportWidthPx / 2f)).coerceIn(0f, timelineWidthPx.toFloat())
-            val centeredMinutes = ((centerX / timelineWidthPx.toFloat()) * DAY_TOTAL_MINUTES)
-                .roundToInt()
-                .coerceIn(0, DAY_TOTAL_MINUTES - 1)
-            if (centeredMinutes != selectedStartMinutes) {
+        snapshotFlow { scrollState.value }
+            .map { scrollValue ->
+                val centerX = (scrollValue + (viewportWidthPx / 2f)).coerceIn(0f, timelineWidthPx.toFloat())
+                ((centerX / timelineWidthPx.toFloat()) * DAY_TOTAL_MINUTES)
+                    .roundToInt()
+                    .coerceIn(0, DAY_TOTAL_MINUTES - 1)
+            }
+            .distinctUntilChanged()
+            .collect { centeredMinutes ->
                 onSelectedStartMinutesChange(centeredMinutes)
             }
-        }
     }
 
     Column(
@@ -562,7 +567,8 @@ private fun DayTimeline(
                     .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.75f)),
             )
 
-            val selectedOffset = TIMELINE_TRACK_WIDTH * (selectedStartMinutes.coerceIn(0, DAY_TOTAL_MINUTES - 1) / DAY_TOTAL_MINUTES.toFloat())
+            val selectedOffset =
+                TIMELINE_TRACK_WIDTH * (selectedStartMinutes.coerceIn(0, DAY_TOTAL_MINUTES - 1) / DAY_TOTAL_MINUTES.toFloat())
             Box(
                 modifier = Modifier
                     .offset(x = selectedOffset)
@@ -623,7 +629,9 @@ private fun LocalDateTime.minutesSince(start: LocalDateTime): Int = java.time.Du
 private fun SessionSegment.timelineLabel(durationMinutes: Int): String {
     val start = startDateTime
     val end = start.plusMinutes(durationMinutes.toLong())
-    return "${start.toLocalTime().format(TIMELINE_TIME_FORMATTER)}-${end.toLocalTime().format(TIMELINE_TIME_FORMATTER)} • ${durationMinutes.formatMinutes()}"
+    return "${start.toLocalTime().format(TIMELINE_TIME_FORMATTER)}-${
+        end.toLocalTime().format(TIMELINE_TIME_FORMATTER)
+    } • ${durationMinutes.formatMinutes()}"
 }
 
 private fun Int.toTimeLabel(): String {
