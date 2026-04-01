@@ -14,6 +14,7 @@ gradle.xml
 # Android
 local.properties
 *.apk
+*.aab
 output.json
 captures/
 .externalNativeBuild/
@@ -34,3 +35,9 @@ gen/
 # ProGuard
 proguard/
 proguard-project.txt
+
+# Release credentials
+play-account.json
+*service-account*.json
+*.jks
+*.keystore

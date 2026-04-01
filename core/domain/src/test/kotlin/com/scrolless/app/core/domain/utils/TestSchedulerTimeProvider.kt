@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Scrolless
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,10 +17,22 @@
 package com.scrolless.app.core.domain.utils
 
 import com.scrolless.app.core.blocking.time.TimeProvider
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScheduler
 
+// Same as com.scrolless.app.core.TestSchedulerTimeProvider
 @OptIn(ExperimentalCoroutinesApi::class)
 class TestSchedulerTimeProvider(private val scheduler: TestCoroutineScheduler) : TimeProvider {
     override fun currentTimeInMillis() = scheduler.currentTime
+    override fun localDateNow(): LocalDate {
+        return Instant.ofEpochMilli(scheduler.currentTime).atZone(ZoneId.systemDefault()).toLocalDate()
+    }
+
+    override fun localDateTimeNow(): LocalDateTime {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(scheduler.currentTime), ZoneId.systemDefault())
+    }
 }

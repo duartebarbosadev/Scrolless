@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Scrolless
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,9 +22,10 @@ import com.scrolless.app.core.blocking.handler.DayLimitBlockHandler
 import com.scrolless.app.core.blocking.handler.IntervalTimerBlockHandler
 import com.scrolless.app.core.blocking.handler.IntervalTimerState
 import com.scrolless.app.core.blocking.handler.NoBlockHandler
+import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingResult
-import com.scrolless.app.core.repository.UsageTracker
+import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -42,8 +43,11 @@ import timber.log.Timber
  * based on the active block configuration.
  */
 @Singleton
-class BlockingManagerImpl @Inject constructor(private val usageTracker: UsageTracker, private val userSettingsStore: UserSettingsStore) :
-    BlockingManager {
+class BlockingManagerImpl @Inject constructor(
+    private val sessionTracker: SessionTracker,
+    private val userSettingsStore: UserSettingsStore,
+    private val timeProvider: TimeProvider,
+) : BlockingManager {
 
     private lateinit var handler: BlockOptionHandler
     private val persistenceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
@@ -70,7 +74,6 @@ class BlockingManagerImpl @Inject constructor(private val usageTracker: UsageTra
             intervalState,
         )
         handler = createHandlerForConfig(blockOption, timeLimit, intervalLength, intervalState)
-        usageTracker.checkDailyReset()
     }
 
     /**
@@ -87,7 +90,7 @@ class BlockingManagerImpl @Inject constructor(private val usageTracker: UsageTra
         intervalLength: Long,
         intervalState: IntervalTimerState,
     ): BlockOptionHandler = when (blockOption) {
-        BlockOption.BlockAll -> BlockAllBlockHandler().also { Timber.d("Using BlockAll handler") }
+        BlockOption.BlockAll -> BlockAllBlockHandler(timeProvider).also { Timber.d("Using BlockAll handler") }
         BlockOption.DailyLimit -> DayLimitBlockHandler(timeLimit).also { Timber.d("Using DayLimit handler (limit=%d)", timeLimit) }
         BlockOption.IntervalTimer ->
             IntervalTimerBlockHandler(
@@ -111,8 +114,7 @@ class BlockingManagerImpl @Inject constructor(private val usageTracker: UsageTra
      * @return `true` if blocking is required immediately.
      */
     override suspend fun onEnterBlockedContent(): Boolean {
-        usageTracker.checkDailyReset()
-        val currentDailyUsage = usageTracker.getDailyUsage()
+        val currentDailyUsage = sessionTracker.getDailyUsage()
         val shouldBlock = handler.onEnterContent(currentDailyUsage)
         Timber.d("onEnterBlockedContent: daily=%d -> shouldBlock=%s", currentDailyUsage, shouldBlock)
         return shouldBlock
@@ -126,7 +128,7 @@ class BlockingManagerImpl @Inject constructor(private val usageTracker: UsageTra
      * @return [com.scrolless.app.core.model.BlockingResult] indicating whether to block, continue, or check later.
      */
     override suspend fun onPeriodicCheck(elapsedTime: Long): BlockingResult {
-        val currentDailyUsage = usageTracker.getDailyUsage()
+        val currentDailyUsage = sessionTracker.getDailyUsage()
         val result = handler.onPeriodicCheck(currentDailyUsage, elapsedTime)
         Timber.v("onPeriodicCheck: daily=%d, elapsed=%d -> result=%s", currentDailyUsage, elapsedTime, result)
         return result

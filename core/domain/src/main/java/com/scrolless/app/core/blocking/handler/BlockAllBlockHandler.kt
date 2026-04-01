@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Scrolless
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,6 @@
  */
 package com.scrolless.app.core.blocking.handler
 
-import com.scrolless.app.core.blocking.time.SystemTimeProvider
 import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.model.BlockingResult
 import timber.log.Timber
@@ -24,7 +23,7 @@ import timber.log.Timber
 /**
  * Immediately blocks any blocked content without considering time limits.
  */
-class BlockAllBlockHandler(private val timeProvider: TimeProvider = SystemTimeProvider) : BlockOptionHandler {
+class BlockAllBlockHandler(private val timeProvider: TimeProvider) : BlockOptionHandler {
 
     private var lastBlockTime = 0L
     private var blockAttempts = 0

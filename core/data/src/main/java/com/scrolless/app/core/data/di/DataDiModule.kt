@@ -12,9 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-/*
- * Copyright (C) 2025 Scrolless
+ * 
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -35,11 +34,16 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.scrolless.app.core.blocking.time.SystemTimeProvider
+import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.ScrollessDatabase
+import com.scrolless.app.core.data.database.dao.SessionSegmentDao
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.data.repository.UsageTrackerImpl
+import com.scrolless.app.core.data.repository.SessionSegmentStoreImpl
+import com.scrolless.app.core.data.repository.SessionTrackerImpl
 import com.scrolless.app.core.data.repository.UserSettingsStoreImpl
-import com.scrolless.app.core.repository.UsageTracker
+import com.scrolless.app.core.repository.SessionSegmentStore
+import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import dagger.Module
 import dagger.Provides
@@ -55,14 +59,13 @@ object DataDiModule {
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): ScrollessDatabase =
-        Room.databaseBuilder(context, ScrollessDatabase::class.java, "data.db")
-            .addMigrations(
+        Room.databaseBuilder(context, ScrollessDatabase::class.java, "data.db").addMigrations(
                 ScrollessDatabase.MIGRATION_2_3,
                 ScrollessDatabase.MIGRATION_3_4,
-            )
-            .fallbackToDestructiveMigration(true) // Not recommended but for now it shouldn't matter
-            .fallbackToDestructiveMigrationOnDowngrade(true)
-            .addCallback(
+                ScrollessDatabase.MIGRATION_4_5,
+                ScrollessDatabase.MIGRATION_5_6,
+            ).fallbackToDestructiveMigration(true) // Not recommended but for now it shouldn't matter
+            .fallbackToDestructiveMigrationOnDowngrade(true).addCallback(
                 object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
@@ -71,13 +74,12 @@ object DataDiModule {
                             """
                         INSERT INTO user_settings (id, active_block_option, time_limit, interval_length,
                                                    interval_window_start_at, interval_usage,
-                                                   timer_overlay_enabled, last_reset_day, total_daily_usage,
-                                                   reels_daily_usage, shorts_daily_usage, tiktok_daily_usage,
+                                                   timer_overlay_enabled,
                                                    timer_overlay_x, timer_overlay_y, waiting_for_accessibility,
                                                    has_seen_accessibility_explainer, pause_until_at,
                                                    first_launch_at, has_seen_review_prompt,
                                                    review_prompt_attempt_count, review_prompt_last_attempt_at)
-                        VALUES (1, 'NothingSelected', 0, 0, 0, 0, 0, date('now'), 0, 0, 0, 0, 0, 100, 0, 0, 0,
+                        VALUES (1, 'NothingSelected', 0, 0, 0, 0, 0, 0, 100, 0, 0, 0,
                                 CAST(strftime('%s','now') AS INTEGER) * 1000, 0, 0, 0)
                         """,
                         )
@@ -96,5 +98,21 @@ object DataDiModule {
 
     @Provides
     @Singleton
-    fun provideUsageTracker(userSettingsStore: UserSettingsStore): UsageTracker = UsageTrackerImpl(userSettingsStore = userSettingsStore)
+    fun provideSessionSegmentDao(database: ScrollessDatabase): SessionSegmentDao = database.sessionSegmentDao()
+
+    @Provides
+    @Singleton
+    fun provideSessionSegmentStore(timeProvider: TimeProvider, sessionSegmentDao: SessionSegmentDao): SessionSegmentStore =
+        SessionSegmentStoreImpl(timeProvider = timeProvider, sessionSegmentDao = sessionSegmentDao)
+
+    @Provides
+    @Singleton
+    fun provideSessionTracker(timeProvider: TimeProvider, sessionSegmentStore : SessionSegmentStore): SessionTracker = SessionTrackerImpl(
+        sessionSegmentStore = sessionSegmentStore,
+        timeProvider = timeProvider,
+    )
+
+    @Provides
+    @Singleton
+    fun provideTimeProvider(): TimeProvider = SystemTimeProvider
 }

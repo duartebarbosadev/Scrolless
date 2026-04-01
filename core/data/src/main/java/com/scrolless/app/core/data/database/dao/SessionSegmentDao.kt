@@ -1,0 +1,51 @@
+/*
+ * Copyright (C) 2026 Scrolless
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+package com.scrolless.app.core.data.database.dao
+
+import androidx.room.Dao
+import androidx.room.Query
+import androidx.room.Transaction
+import com.scrolless.app.core.data.database.model.SessionSegmentEntity
+import java.time.LocalDate
+import kotlinx.coroutines.flow.Flow
+
+/**
+ * [androidx.room.Room] DAO for [SessionSegmentEntity] related operations.
+ */
+@Dao
+abstract class SessionSegmentDao : BaseDao<SessionSegmentEntity> {
+
+    @Query("SELECT * FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
+    abstract fun getSessionSegment(date: LocalDate, datePlusOneDay: LocalDate): Flow<List<SessionSegmentEntity>>
+
+    @Query("UPDATE session_segments SET durationMillis = :sessionTime WHERE id = :lastSessionId")
+    abstract suspend fun updateDuration(lastSessionId: Long, sessionTime: Long)
+
+    @Query("SELECT COALESCE(SUM(durationMillis), 0) FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
+    abstract fun getTotalDuration(date: LocalDate, datePlusOneDay: LocalDate): Flow<Long>
+
+    @Query("DELETE FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
+    abstract suspend fun deleteSessionSegment(date: LocalDate, datePlusOneDay: LocalDate): Int
+
+    @Transaction
+    open suspend fun replaceSessionSegments(date: LocalDate, datePlusOneDay: LocalDate, entities: List<SessionSegmentEntity>) {
+        deleteSessionSegment(date = date, datePlusOneDay = datePlusOneDay)
+        if (entities.isNotEmpty()) {
+            insertAll(entities = entities)
+        }
+    }
+}

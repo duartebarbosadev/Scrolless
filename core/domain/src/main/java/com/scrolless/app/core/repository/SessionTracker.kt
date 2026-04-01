@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Scrolless
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,17 +18,12 @@ package com.scrolless.app.core.repository
 
 import com.scrolless.app.core.model.BlockableApp
 
-interface UsageTracker {
+interface SessionTracker {
 
     /**
      * Get the current total daily usage in milliseconds.
      */
     fun getDailyUsage(): Long
-
-    /**
-     * Get usage for a specific app in milliseconds.
-     */
-    fun getAppDailyUsage(app: BlockableApp): Long
 
     /**
      * Add session time to daily usage and persist immediately.
@@ -38,11 +33,15 @@ interface UsageTracker {
      * @param sessionTime Duration of the session in milliseconds
      * @param app The app the session was on, if available
      */
-    suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp?)
+    suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp)
 
     /**
-     * Check if a daily reset is needed and perform it if necessary.
-     * Safe to call multiple times - only resets once per day.
+     * Called when a tracked app comes to the foreground.
      */
-    suspend fun checkDailyReset()
+    fun onAppOpen(app: BlockableApp)
+
+    /**
+     * Called when a tracked app closes or leaves to foreground.
+     */
+    fun onAppClose()
 }

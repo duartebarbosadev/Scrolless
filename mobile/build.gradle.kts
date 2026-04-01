@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /*
- * Copyright (C) 2025 Scrolless
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,9 +56,39 @@ android {
             libs.versions.targetSdk
                 .get()
                 .toInt()
-        versionCode = 14
-        versionName = "1.1.2"
+        versionCode = 15
+        versionName = "1.1.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    val releaseKeystorePath =
+        project.providers.environmentVariable("ANDROID_RELEASE_KEYSTORE_PATH")
+            .orNull
+    val releaseStorePassword =
+        project.providers.environmentVariable("ANDROID_RELEASE_STORE_PASSWORD")
+            .orNull
+    val releaseKeyAlias =
+        project.providers.environmentVariable("ANDROID_RELEASE_KEY_ALIAS")
+            .orNull
+    val releaseKeyPassword =
+        project.providers.environmentVariable("ANDROID_RELEASE_KEY_PASSWORD")
+            .orNull
+
+    signingConfigs {
+        create("release") {
+            if (!releaseKeystorePath.isNullOrBlank()) {
+                storeFile = file(releaseKeystorePath)
+            }
+            if (!releaseStorePassword.isNullOrBlank()) {
+                storePassword = releaseStorePassword
+            }
+            if (!releaseKeyAlias.isNullOrBlank()) {
+                keyAlias = releaseKeyAlias
+            }
+            if (!releaseKeyPassword.isNullOrBlank()) {
+                keyPassword = releaseKeyPassword
+            }
+        }
     }
 
 
@@ -68,6 +98,7 @@ android {
         }
 
         getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
