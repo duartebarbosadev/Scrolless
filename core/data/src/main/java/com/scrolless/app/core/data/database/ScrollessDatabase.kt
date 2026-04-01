@@ -100,25 +100,25 @@ abstract class ScrollessDatabase : RoomDatabase() {
                 db.execSQL(
                     """
                         INSERT INTO session_segments (app, durationMillis, startDateTime)
-                        SELECT 'REELS', reels_daily_usage, strftime('%Y-%m-%dT%H:%M:%S', 'now', 'localtime')
+                        SELECT 'REELS', reels_daily_usage, last_reset_day || 'T00:00:00'
                         FROM user_settings
-                        WHERE reels_daily_usage > 0
+                        WHERE reels_daily_usage > 0 AND last_reset_day IS NOT NULL
                     """.trimIndent(),
                 )
                 db.execSQL(
                     """
                         INSERT INTO session_segments (app, durationMillis, startDateTime)
-                        SELECT 'SHORTS', shorts_daily_usage, strftime('%Y-%m-%dT%H:%M:%S', 'now', 'localtime')
+                        SELECT 'SHORTS', shorts_daily_usage, last_reset_day || 'T00:00:00'
                         FROM user_settings
-                        WHERE shorts_daily_usage > 0
+                        WHERE shorts_daily_usage > 0 AND last_reset_day IS NOT NULL
                     """.trimIndent(),
                 )
                 db.execSQL(
                     """
                         INSERT INTO session_segments (app, durationMillis, startDateTime)
-                        SELECT 'TIKTOK', tiktok_daily_usage, strftime('%Y-%m-%dT%H:%M:%S', 'now', 'localtime')
+                        SELECT 'TIKTOK', tiktok_daily_usage, last_reset_day || 'T00:00:00'
                         FROM user_settings
-                        WHERE tiktok_daily_usage > 0
+                        WHERE tiktok_daily_usage > 0 AND last_reset_day IS NOT NULL
                     """.trimIndent(),
                 )
 
@@ -133,9 +133,10 @@ abstract class ScrollessDatabase : RoomDatabase() {
                                     THEN total_daily_usage - (reels_daily_usage + shorts_daily_usage + tiktok_daily_usage)
                                 ELSE 0
                             END,
-                            strftime('%Y-%m-%dT%H:%M:%S', 'now', 'localtime')
+                            last_reset_day || 'T00:00:00'
                         FROM user_settings
                         WHERE total_daily_usage - (reels_daily_usage + shorts_daily_usage + tiktok_daily_usage) > 0
+                            AND last_reset_day IS NOT NULL
                     """.trimIndent(),
                 )
 

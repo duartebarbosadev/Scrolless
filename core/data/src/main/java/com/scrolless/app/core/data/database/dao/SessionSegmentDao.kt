@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 Scrolless
+ * Copyright (C) 2026 Scrolless
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,6 @@ abstract class SessionSegmentDao : BaseDao<SessionSegmentEntity> {
     @Query("UPDATE session_segments SET durationMillis = :sessionTime WHERE id = :lastSessionId")
     abstract suspend fun updateDuration(lastSessionId: Long, sessionTime: Long)
 
-    @Query("SELECT SUM(durationMillis) FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
+    @Query("SELECT COALESCE(SUM(durationMillis), 0) FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
     abstract fun getTotalDuration(date: LocalDate, datePlusOneDay: LocalDate): Flow<Long>
 }
