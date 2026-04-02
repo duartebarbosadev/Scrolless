@@ -33,7 +33,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.compose)
@@ -113,12 +112,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlin {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_17
-        }
-    }
-
     buildFeatures {
         compose = true
         buildConfig = true
@@ -134,11 +127,11 @@ android {
         excludes += "/META-INF/AL2.0"
         excludes += "/META-INF/LGPL2.1"
     }
+}
 
-    composeCompiler {
-        reportsDestination = layout.buildDirectory.dir("compose_compiler")
-        metricsDestination = layout.buildDirectory.dir("compose_compiler")
-        stabilityConfigurationFiles = listOf(rootProject.layout.projectDirectory.file("stability_config.conf"))
+kotlin {
+    compilerOptions {
+        jvmTarget = JvmTarget.JVM_17
     }
 }
 
