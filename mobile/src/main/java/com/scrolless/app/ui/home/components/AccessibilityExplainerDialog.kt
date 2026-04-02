@@ -281,7 +281,7 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
         // Floating Icon at the top
         AnimatedIcon(
             modifier = Modifier.align(Alignment.TopCenter),
-            iconRes = R.drawable.ic_logo_outline,
+            iconRes = R.drawable.ic_launcher_monochrome,
             contentDescription = stringResource(R.string.accessibility_explainer_icon_description),
         )
     }
