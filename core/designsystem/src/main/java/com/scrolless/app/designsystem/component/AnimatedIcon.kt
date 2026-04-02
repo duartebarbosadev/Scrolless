@@ -68,7 +68,7 @@ fun AnimatedIcon(modifier: Modifier = Modifier, @DrawableRes iconRes: Int, conte
             painter = painterResource(id = iconRes),
             contentDescription = contentDescription,
             tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(48.dp),
+            modifier = Modifier.size(120.dp),
         )
     }
 }
