@@ -484,6 +484,7 @@ fun ScrollessTheme(
         }
 
         darkTheme -> darkScheme
+
         else -> lightScheme
     }
 
