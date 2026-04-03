@@ -3,41 +3,41 @@
 # Do not add a dependency to an individual sample, edit the global version instead.
 #####
 [versions]
-androidGradlePlugin = "8.13.1"
-androidx-activity-compose = "1.11.0"
+androidGradlePlugin = "9.1.0"
+androidx-activity-compose = "1.13.0"
 androidx-appcompat = "1.7.1"
-androidx-compose-bom = "2025.11.00"
-androidx-corektx = "1.17.0"
-androidx-lifecycle-compose = "2.9.4"
-androidx-lifecycle-runtime-compose = "2.9.4"
-androidx-navigation = "2.9.6"
+androidx-compose-bom = "2026.03.01"
+androidx-corektx = "1.18.0"
+androidx-lifecycle-compose = "2.10.0"
+androidx-lifecycle-runtime-compose = "2.10.0"
+androidx-navigation = "2.9.7"
 androidx-palette = "1.0.0"
-androidx-window = "1.5.0"
+androidx-window = "1.5.1"
 androidxHiltNavigationCompose = "1.3.0"
-animationCore = "1.9.4"
+animationCore = "1.10.6"
 coil = "2.7.0"
 mockk = "1.14.9"
 # @keep
 compileSdk = "36"
 coroutines = "1.10.2"
 gradle-versions = "0.53.0"
-hilt = "2.57.2"
+hilt = "2.59.2"
 jdkDesugar = "2.1.5"
 junit = "4.13.2"
-kotlin = "2.2.21"
+kotlin = "2.3.20"
 kotlinx_immutable = "0.4.0"
-ksp = "2.3.2"
+ksp = "2.3.6"
 material3 = "1.4.0"
 # @keep
 minSdk = "23"
 review = "2.0.2"
-room = "2.8.3"
+room = "2.8.4"
 sheets = "1.3.0"
-spotless = "8.0.0"
+spotless = "8.4.0"
 # @keep
 targetSdk = "36"
 timber = "5.0.1"
-version-catalog-update = "1.0.1"
+version-catalog-update = "1.1.0"
 
 [libraries]
 # Review Library
@@ -84,7 +84,6 @@ kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 sheets-core = { module = "com.maxkeppeler.sheets-compose-dialogs:core", version.ref = "sheets" }
 sheets-duration = { module = "com.maxkeppeler.sheets-compose-dialogs:duration", version.ref = "sheets" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 
 [plugins]

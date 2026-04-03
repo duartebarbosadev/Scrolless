@@ -91,7 +91,9 @@ class BlockingManagerImpl @Inject constructor(
         intervalState: IntervalTimerState,
     ): BlockOptionHandler = when (blockOption) {
         BlockOption.BlockAll -> BlockAllBlockHandler(timeProvider).also { Timber.d("Using BlockAll handler") }
+
         BlockOption.DailyLimit -> DayLimitBlockHandler(timeLimit).also { Timber.d("Using DayLimit handler (limit=%d)", timeLimit) }
+
         BlockOption.IntervalTimer ->
             IntervalTimerBlockHandler(
                 allowanceMillis = timeLimit,

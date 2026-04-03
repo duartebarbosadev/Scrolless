@@ -177,11 +177,9 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
         }
     }
 
-    /**
-     * Observe lifecycle resume events so we can react when the user returns from settings:
-     * - If accessibility is now enabled, flip the success sheet on once.
-     * - If it is still disabled while a block option is active (or first launch), re-open the explainer.
-     */
+    // Observe lifecycle resume events so we can react when the user returns from settings:
+    // - If accessibility is now enabled, flip the success sheet on once.
+    // - If it is still disabled while a block option is active (or first launch), re-open the explainer.
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
@@ -396,6 +394,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
             hostState = snackbarHostState,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+                .windowInsetsPadding(WindowInsets.safeDrawing)
                 .padding(16.dp),
         )
     }
@@ -502,9 +501,13 @@ private fun HomeContent(
 
     // Determine if blocking is currently active (user would be blocked if they tried to view content)
     val isBlockingActive = when (uiState.blockOption) {
-        BlockOption.BlockAll -> true // Always blocking
+        // Always blocking
+        BlockOption.BlockAll -> true
+
         BlockOption.DailyLimit -> uiState.timeLimit > 0 && uiState.currentUsage >= uiState.timeLimit
+
         BlockOption.IntervalTimer -> uiState.timeLimit > 0 && uiState.intervalUsage >= uiState.timeLimit
+
         BlockOption.NothingSelected -> false
     }
 
@@ -1176,8 +1179,11 @@ private fun ProgressCard(
     val resetText = if (isIntervalMode) {
         when {
             !intervalAllowanceConfigured -> null
+
             intervalLength <= 0L || intervalWindowStart <= 0L -> null
+
             intervalRemainingMillis <= 1_000L -> stringResource(R.string.interval_timer_next_reset_ready)
+
             else -> stringResource(
                 R.string.interval_timer_next_reset_in,
                 intervalRemainingMillis.formatTime(),

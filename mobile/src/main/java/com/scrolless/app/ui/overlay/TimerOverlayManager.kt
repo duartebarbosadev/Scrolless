@@ -319,6 +319,7 @@ class TimerOverlayManager @Inject constructor(
                 isDragging = false
                 return true
             }
+
             MotionEvent.ACTION_MOVE -> {
                 velocityTracker?.addMovement(event)
                 val deltaX = (event.rawX - initialTouchX).toInt()
@@ -335,6 +336,7 @@ class TimerOverlayManager @Inject constructor(
                 isDragging = true
                 return true
             }
+
             MotionEvent.ACTION_UP -> {
                 velocityTracker?.addMovement(event)
                 velocityTracker?.computeCurrentVelocity(1000)
