@@ -21,25 +21,32 @@ import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_HOME
 import androidx.compose.runtime.Immutable
 
 @Immutable
-enum class BlockableApp(val packageId: String, private val viewId: String, private val exitStrategy: Int) {
+enum class BlockableApp(private val packageIds: List<String>, private val viewId: String, private val exitStrategy: Int, private var activePackageId) {
     REELS(
-        "com.instagram.android",
-        "com.instagram.android:id/clips_viewer_view_pager",
+        listOf("com.instagram.android"),
+        "clips_viewer_view_pager",
         GLOBAL_ACTION_BACK,
+        null,
     ),
     SHORTS(
-        "com.google.android.youtube",
-        "com.google.android.youtube:id/reel_player_page_container",
+        listOf("com.google.android.youtube"),
+        "reel_player_page_container",
         GLOBAL_ACTION_BACK,
+        null,
     ),
     TIKTOK(
-        "com.zhiliaoapp.musically",
-        "com.zhiliaoapp.musically:id/player_view",
+        listOf("com.zhiliaoapp.musically", "com.ss.android.ugc.trill", "com.ss.android.ugc.aweme", "com.zhiliaoapp.musically.go"),
+        "player_view",
         GLOBAL_ACTION_HOME,
+        null,
     ),
     ;
 
-    fun getViewId(): String = viewId
+    fun getViewId(): String = "$packageIds:id/$viewId"
 
     fun getExitStrategy(): Int = exitStrategy
+
+    fun getPackageIds(): List<String> = packageIds
+
+    fun matchesPackage(packageName: String): Boolean = packageIds.any { packageName.startsWith(it) }
 }

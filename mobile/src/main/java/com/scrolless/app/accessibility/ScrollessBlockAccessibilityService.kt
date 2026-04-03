@@ -412,7 +412,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private fun resolveForegroundBrainRotApp(packageId: String): BlockableApp? {
 
         val brainRotApp = BlockableApp.entries.firstOrNull { appEnum ->
-            packageId.startsWith(appEnum.packageId)
+            appEnum.matchesPackage(packageId)
         }
 
         if (brainRotApp != null) {
@@ -471,7 +471,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      */
     private fun detectAppForBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): BlockableApp? {
 
-        // If we are processing content and we received an event
+        // If we are processing content, and we received an event
         //  make sure that the app is still visible as we can get events from other apps
         //  otherwise it means that the user has left the app
         currentBlockableApp?.takeIf { isProcessingBlockedContent }?.let { blockableApp ->
@@ -483,8 +483,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
 
         // Detect if there's a new app
-        val match = BlockableApp.entries.firstOrNull { appEnum ->
-            if (!packageId.startsWith(appEnum.packageId)) return@firstOrNull false
+        val userInAppAndWatchingBrainRot = BlockableApp.entries.firstOrNull { appEnum ->
+
+            val packageFound = appEnum.matchesPackage(packageId)
+            if (!packageFound) return@firstOrNull false
 
             val nodes = rootNode.findAccessibilityNodeInfosByViewId(appEnum.getViewId())
 
@@ -499,7 +501,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             match
         }
 
-        return match
+        return userInAppAndWatchingBrainRot
     }
 
     /**
@@ -540,7 +542,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             }
             val root = window.root ?: return@any false
             val windowPackage = root.packageName?.toString() ?: return@any false
-            windowPackage.startsWith(blockableApp.packageId)
+            blockableApp.matchesPackage(windowPackage)
         }
     }
 
@@ -724,7 +726,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             // Ensure windows are available for visibility-based exit checks.
             info.flags = info.flags or AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
         } else {
-            info.packageNames = BlockableApp.entries.map { it.packageId }.toTypedArray()
+            info.packageNames = BlockableApp.entries.flatMap { it.getPackageIds() }.toTypedArray()
             Timber.d("Restricted service configuration to target packages only")
         }
         serviceInfo = info
