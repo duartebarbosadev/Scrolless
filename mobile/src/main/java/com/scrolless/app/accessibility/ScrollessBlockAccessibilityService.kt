@@ -30,6 +30,7 @@ import com.scrolless.app.core.blocking.BlockingManager
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.BlockingResult
+import com.scrolless.app.core.model.ResolvedBlockableApp
 import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.ui.overlay.TimerOverlayManager
@@ -135,7 +136,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     /**
      * The currently detected blocked app, or null if no blocked content is active.
      */
-    private var detectedApp: BlockableApp? = null
+    private var detectedApp: ResolvedBlockableApp? = null
 
     /**
      * Current timer overlay enabled state, updated reactively.
@@ -155,9 +156,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     private fun isPauseActive(now: Long = System.currentTimeMillis()): Boolean = pauseUntilMillis > now
 
-    private var currentBlockableApp: BlockableApp? = null
+    private var currentBlockableApp: ResolvedBlockableApp? = null
 
-    private var currentForegroundBrainRotApp: BlockableApp? = null
+    private var currentForegroundBrainRotApp: ResolvedBlockableApp? = null
 
     /**
      * Runnable that performs periodic checks (every 1 second) to determine if the user
@@ -390,18 +391,18 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    private fun updateForegroundAppState(nextApp: BlockableApp?) {
+    private fun updateForegroundAppState(nextApp: ResolvedBlockableApp?) {
         val previousApp = currentForegroundBrainRotApp
         if (previousApp == nextApp) return
 
         if (previousApp != null) {
-            Timber.v("*** User appears to have left a brain rot app: %s", previousApp.name)
+            Timber.v("*** User appears to have left a brain rot app: %s (%s)", previousApp.app.name, previousApp.packageId)
             sessionTracker.onAppClose()
         }
 
         if (nextApp != null) {
-            Timber.v("**** User appears to have entered a brain rot app: %s", nextApp.name)
-            sessionTracker.onAppOpen(nextApp)
+            Timber.v("**** User appears to have entered a brain rot app: %s (%s)", nextApp.app.name, nextApp.packageId)
+            sessionTracker.onAppOpen(nextApp.app)
         }
 
         currentForegroundBrainRotApp = nextApp
@@ -409,10 +410,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         refreshServiceConfig()
     }
 
-    private fun resolveForegroundBrainRotApp(packageId: String): BlockableApp? {
+    private fun resolveForegroundBrainRotApp(packageId: String): ResolvedBlockableApp? {
 
-        val brainRotApp = BlockableApp.entries.firstOrNull { appEnum ->
-            appEnum.matchesPackage(packageId)
+        val brainRotApp = BlockableApp.entries.firstNotNullOfOrNull { appEnum ->
+            appEnum.resolvePackage(packageId)?.let { matchedPackage ->
+                ResolvedBlockableApp(appEnum, matchedPackage)
+            }
         }
 
         if (brainRotApp != null) {
@@ -420,7 +423,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 return brainRotApp
             }
             if (currentForegroundBrainRotApp == brainRotApp) {
-                Timber.v("Event came from %s but package is not visible in interactive windows, ignoring", brainRotApp.name)
+                Timber.v(
+                    "Event came from %s (%s) but package is not visible in interactive windows, ignoring",
+                    brainRotApp.app.name,
+                    brainRotApp.packageId,
+                )
             }
         }
 
@@ -469,7 +476,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * @param rootNode The root accessibility node of the current window
      * @return The detected [BlockableApp], or null if no blocked content is found
      */
-    private fun detectAppForBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): BlockableApp? {
+    private fun detectAppForBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): ResolvedBlockableApp? {
 
         // If we are processing content, and we received an event
         //  make sure that the app is still visible as we can get events from other apps
@@ -483,12 +490,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
 
         // Detect if there's a new app
-        val userInAppAndWatchingBrainRot = BlockableApp.entries.firstOrNull { appEnum ->
-
-            val packageFound = appEnum.matchesPackage(packageId)
-            if (!packageFound) return@firstOrNull false
-
-            val nodes = rootNode.findAccessibilityNodeInfosByViewId(appEnum.getViewId())
+        val userInAppAndWatchingBrainRot = BlockableApp.entries.firstNotNullOfOrNull { appEnum ->
+            val matchedPackage = appEnum.resolvePackage(packageId) ?: return@firstNotNullOfOrNull null
+            val resolvedApp = ResolvedBlockableApp(appEnum, matchedPackage)
+            val nodes = rootNode.findAccessibilityNodeInfosByViewId(resolvedApp.getViewId())
 
             // Make sure if we found nodes, they are visible to the user
             val match = nodes.any { node ->
@@ -498,7 +503,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 node.isVisibleToUser && rect.width() > 0 && rect.height() > 0
             }
 
-            match
+            resolvedApp.takeIf { match }
         }
 
         return userInAppAndWatchingBrainRot
@@ -509,7 +514,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * This handles cases where the user interacts with SystemUI (notification shade) or keyboards,
      * where the blocked app is still visible but not the source of the latest event.
      */
-    private fun isBlockedAppVisible(blockableApp: BlockableApp): Boolean {
+    private fun isBlockedAppVisible(blockableApp: ResolvedBlockableApp): Boolean {
 
         // windows returns a list of windows in z-order (top to bottom)
         return windows.any { window ->
@@ -535,14 +540,14 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * Checks if the blocked app package is still visible in any interactive application window.
      * This is used for foreground app open/close state and should not depend on specific content view IDs.
      */
-    private fun isBlockedAppPackageVisible(blockableApp: BlockableApp): Boolean {
+    private fun isBlockedAppPackageVisible(blockableApp: ResolvedBlockableApp): Boolean {
         return windows.any { window ->
             if (window.type != android.view.accessibility.AccessibilityWindowInfo.TYPE_APPLICATION) {
                 return@any false
             }
             val root = window.root ?: return@any false
             val windowPackage = root.packageName?.toString() ?: return@any false
-            blockableApp.matchesPackage(windowPackage)
+            windowPackage.startsWith(blockableApp.packageId)
         }
     }
 
@@ -651,14 +656,14 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         serviceScope.launch(Dispatchers.IO) {
             // Add to usage in memory with per-app tracking
-            Timber.d("Recording session usage: %d ms for app: %s", sessionTime, exitedApp.name)
-            sessionTracker.addToDailyUsage(sessionTime, exitedApp)
+            Timber.d("Recording session usage: %d ms for app: %s (%s)", sessionTime, exitedApp.app.name, exitedApp.packageId)
+            sessionTracker.addToDailyUsage(sessionTime, exitedApp.app)
 
             // Let blocking manager do its logic, if needed
             blockingManager.onExitBlockedContent(sessionTime)
         }
 
-        Timber.d("Exit handling completed for app: %s", exitedApp.name)
+        Timber.d("Exit handling completed for app: %s (%s)", exitedApp.app.name, exitedApp.packageId)
         detectedApp = null
     }
 
