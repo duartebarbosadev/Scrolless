@@ -394,6 +394,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
             hostState = snackbarHostState,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
+                .windowInsetsPadding(WindowInsets.safeDrawing)
                 .padding(16.dp),
         )
     }
@@ -500,9 +501,9 @@ private fun HomeContent(
 
     // Determine if blocking is currently active (user would be blocked if they tried to view content)
     val isBlockingActive = when (uiState.blockOption) {
+        // Always blocking
         BlockOption.BlockAll -> true
 
-        // Always blocking
         BlockOption.DailyLimit -> uiState.timeLimit > 0 && uiState.currentUsage >= uiState.timeLimit
 
         BlockOption.IntervalTimer -> uiState.timeLimit > 0 && uiState.intervalUsage >= uiState.timeLimit
