@@ -474,7 +474,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * Optimized to exit early once a match is found.
      *
      * @param rootNode The root accessibility node of the current window
-     * @return The detected [BlockableApp], or null if no blocked content is found
+     * @return The detected [ResolvedBlockableApp], or null if no blocked content is found
      */
     private fun detectAppForBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): ResolvedBlockableApp? {
 

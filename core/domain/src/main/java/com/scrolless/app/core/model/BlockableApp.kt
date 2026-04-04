@@ -43,7 +43,14 @@ enum class BlockableApp(private val packageIds: List<String>, private val viewId
 
     fun getPackageIds(): List<String> = packageIds
 
-    fun resolvePackage(packageName: String): String? = packageIds.firstOrNull { packageName.startsWith(it) }
+    fun resolvePackage(packageName: String): String? =
+        when {
+            packageIds.contains(packageName) -> packageName
+            else -> packageIds
+                .asSequence()
+                .filter { packageName.startsWith(it) }
+                .maxByOrNull { it.length }
+        }
 
     fun viewIdFor(packageId: String): String = "$packageId:id/$viewIdSuffix"
 }
