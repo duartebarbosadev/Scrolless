@@ -21,25 +21,44 @@ import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_HOME
 import androidx.compose.runtime.Immutable
 
 @Immutable
-enum class BlockableApp(val packageId: String, private val viewId: String, private val exitStrategy: Int) {
+enum class BlockableApp(private val packageIds: List<String>, private val viewIdSuffix: String, private val exitStrategy: Int) {
     REELS(
-        "com.instagram.android",
-        "com.instagram.android:id/clips_viewer_view_pager",
+        listOf("com.instagram.android"),
+        "clips_viewer_view_pager",
         GLOBAL_ACTION_BACK,
     ),
     SHORTS(
-        "com.google.android.youtube",
-        "com.google.android.youtube:id/reel_player_page_container",
+        listOf("com.google.android.youtube"),
+        "reel_player_page_container",
         GLOBAL_ACTION_BACK,
     ),
     TIKTOK(
-        "com.zhiliaoapp.musically",
-        "com.zhiliaoapp.musically:id/player_view",
+        listOf("com.zhiliaoapp.musically", "com.ss.android.ugc.trill", "com.ss.android.ugc.aweme", "com.zhiliaoapp.musically.go"),
+        "player_view",
         GLOBAL_ACTION_HOME,
     ),
     ;
 
-    fun getViewId(): String = viewId
-
     fun getExitStrategy(): Int = exitStrategy
+
+    fun getPackageIds(): List<String> = packageIds
+
+    fun resolvePackage(packageName: String): String? = when {
+        packageIds.contains(packageName) -> packageName
+
+        else ->
+            packageIds
+                .asSequence()
+                .filter { packageName.startsWith(it) }
+                .maxByOrNull { it.length }
+    }
+
+    fun viewIdFor(packageId: String): String = "$packageId:id/$viewIdSuffix"
+}
+
+@Immutable
+data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
+    fun getViewId(): String = app.viewIdFor(packageId)
+
+    fun getExitStrategy(): Int = app.getExitStrategy()
 }
