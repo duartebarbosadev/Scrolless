@@ -77,6 +77,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.designsystem.theme.facebookColor
 import com.scrolless.app.designsystem.theme.instagramReelsColor
 import com.scrolless.app.designsystem.theme.tiktokColor
 import com.scrolless.app.designsystem.theme.youtubeShortsColor
@@ -653,12 +654,14 @@ private fun Int.addMinutesOfDay(delta: Int): Int {
 }
 
 private fun BlockableApp.displayName(): String = when (this) {
+    BlockableApp.FACEBOOK -> "Facebook"
     BlockableApp.REELS -> "Reels"
     BlockableApp.SHORTS -> "Shorts"
     BlockableApp.TIKTOK -> "TikTok"
 }
 
 private fun BlockableApp.timelineColor(): Color = when (this) {
+    BlockableApp.FACEBOOK -> facebookColor
     BlockableApp.REELS -> instagramReelsColor
     BlockableApp.SHORTS -> youtubeShortsColor
     BlockableApp.TIKTOK -> tiktokColor
@@ -673,6 +676,11 @@ private fun PreviewDebugUsagePanel() {
         Surface(modifier = Modifier.fillMaxSize()) {
             FloatingDebugUsagePanel(
                 sessionSegments = listOf(
+                    SessionSegment(
+                        BlockableApp.FACEBOOK,
+                        TimeUnit.MINUTES.toMillis(12),
+                        LocalDate.now().atTime(8, 5),
+                    ),
                     SessionSegment(
                         BlockableApp.REELS,
                         TimeUnit.MINUTES.toMillis(18),

@@ -20,28 +20,60 @@ import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
 import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_HOME
 import androidx.compose.runtime.Immutable
 
+// DetectionMethod holds the technique to find out if blocked content is visible
+// Most of the apps work by just checking if the view id is present
+//  but facebook (thanks) needs to be different and only works via content descriptions which is a nice hammer
+sealed class DetectionMethod {
+    data class ViewId(val viewId: String) : DetectionMethod()
+    data class ContentDescriptions(val contentDescriptions: List<String>) : DetectionMethod()
+}
+
+// Declares each supported app together with the package names we match, the detection signal to look for,
+//  and the exit action to use once blocked content is found.
 @Immutable
-enum class BlockableApp(private val packageIds: List<String>, private val viewIdSuffix: String, private val exitStrategy: Int) {
+enum class BlockableApp(
+    private val packageIds: List<String>,
+    private val detectionMethod: DetectionMethod,
+    private val exitStrategy: Int,
+) {
     REELS(
-        listOf("com.instagram.android"),
-        "clips_viewer_view_pager",
-        GLOBAL_ACTION_BACK,
+        packageIds = listOf("com.instagram.android"),
+        detectionMethod = DetectionMethod.ViewId("clips_viewer_view_pager"),
+        exitStrategy = GLOBAL_ACTION_BACK,
     ),
     SHORTS(
-        listOf("com.google.android.youtube"),
-        "reel_player_page_container",
-        GLOBAL_ACTION_BACK,
+        packageIds = listOf("com.google.android.youtube"),
+        detectionMethod = DetectionMethod.ViewId("reel_player_page_container"),
+        exitStrategy = GLOBAL_ACTION_BACK,
     ),
     TIKTOK(
-        listOf("com.zhiliaoapp.musically", "com.ss.android.ugc.trill", "com.ss.android.ugc.aweme", "com.zhiliaoapp.musically.go"),
-        "player_view",
-        GLOBAL_ACTION_HOME,
+        packageIds = listOf(
+            "com.zhiliaoapp.musically",
+            "com.ss.android.ugc.trill",
+            "com.ss.android.ugc.aweme",
+            "com.zhiliaoapp.musically.go",
+        ),
+        detectionMethod = DetectionMethod.ViewId("player_view"),
+        exitStrategy = GLOBAL_ACTION_HOME,
+    ),
+    FACEBOOK(
+        packageIds = listOf("com.facebook.katana"),
+        detectionMethod = DetectionMethod.ContentDescriptions(
+            listOf(
+                "FbShortsComposerAttachmentComponentSpec_STICKER",
+                "FbShortsComposerAttachmentComponentSpec_GIF",
+                "Reels",
+            ),
+        ),
+        exitStrategy = GLOBAL_ACTION_BACK,
     ),
     ;
 
     fun getExitStrategy(): Int = exitStrategy
 
     fun getPackageIds(): List<String> = packageIds
+
+    fun getDetectionMethod(): DetectionMethod = detectionMethod
 
     fun resolvePackage(packageName: String): String? = when {
         packageIds.contains(packageName) -> packageName
@@ -52,13 +84,21 @@ enum class BlockableApp(private val packageIds: List<String>, private val viewId
                 .filter { packageName.startsWith(it) }
                 .maxByOrNull { it.length }
     }
-
-    fun viewIdFor(packageId: String): String = "$packageId:id/$viewIdSuffix"
 }
 
+// Represents the specific package variant
 @Immutable
 data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
-    fun getViewId(): String = app.viewIdFor(packageId)
+    fun getDetectionMethod(): DetectionMethod = app.getDetectionMethod()
 
     fun getExitStrategy(): Int = app.getExitStrategy()
+
+    // Method to obtain view id
+    // The app detection method must be confirmed to be view id
+    fun getViewId() : String {
+
+        assert(app.getDetectionMethod() is DetectionMethod.ViewId)
+        val viewId = (app.getDetectionMethod() as DetectionMethod.ViewId).viewId
+        return "$packageId:id/${viewId}"
+    }
 }
