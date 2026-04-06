@@ -1201,7 +1201,7 @@ private fun ProgressCard(
 
     // Per-app usage data for the segmented progress indicator
     val progressBarSegments =
-        remember(listSessionSegments, currentUsage, facebookLabel,  reelsLabel, tiktokLabel, shortsLabel) {
+        remember(listSessionSegments, currentUsage, facebookLabel, reelsLabel, tiktokLabel, shortsLabel) {
             buildProgressBarSegments(
                 sessionSegments = listSessionSegments,
                 currentUsage = currentUsage,
