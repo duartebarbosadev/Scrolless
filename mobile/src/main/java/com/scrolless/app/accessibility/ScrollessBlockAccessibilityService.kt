@@ -703,6 +703,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * Updates the accessibility service configuration to either listen to all packages or only target packages.
      * This is necessary to know when the user has left the application
      *
+     * Keeping the restricted package list dynamic also helps minimize unnecessary accessibility events (and battery).
+     *
      * @param listenToAll If true, clears package filter to receive events from all apps (needed to detect exit).
      *                    If false, restricts events to [BlockableApp] packages only (to save battery).
      */
