@@ -1338,7 +1338,9 @@ private fun ProgressCard(
         // Legend showing per-app usage
         AppUsageLegend(
             items = legendItems,
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
         )
     }
 }
