@@ -242,6 +242,7 @@ val progressbar_red_use = Color(0xFFF44336)
 val facebookColor = Color(0xFF1877F2) // Blue
 val facebookLiteColor = Color(0xFF4FC3F7) // Light blue
 val instagramReelsColor = Color(0xFFE1306C) // Pink/magenta
+val snapchatColor = Color(0xFFFFFC00) // Snapchat yellow
 val tiktokColor = Color(0xFF00F2EA) // Cyan/aqua
 val youtubeShortsColor = Color(0xFFFFB300) // Amber
 

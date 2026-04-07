@@ -121,6 +121,7 @@ import com.scrolless.app.designsystem.theme.instagramReelsColor
 import com.scrolless.app.designsystem.theme.progressbar_green_use
 import com.scrolless.app.designsystem.theme.progressbar_orange_use
 import com.scrolless.app.designsystem.theme.progressbar_red_use
+import com.scrolless.app.designsystem.theme.snapchatColor
 import com.scrolless.app.designsystem.theme.tiktokColor
 import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.ui.home.components.AccessibilityExplainerBottomSheet
@@ -1198,18 +1199,20 @@ private fun ProgressCard(
     val facebookLabel = stringResource(R.string.app_facebook)
     val facebookLiteLabel = stringResource(R.string.app_facebook_lite)
     val reelsLabel = stringResource(R.string.app_reels)
+    val snapchatLabel = stringResource(R.string.app_snapchat)
     val tiktokLabel = stringResource(R.string.app_tiktok)
     val shortsLabel = stringResource(R.string.app_shorts)
 
     // Per-app usage data for the segmented progress indicator
     val progressBarSegments =
-        remember(listSessionSegments, currentUsage, facebookLabel, facebookLiteLabel, reelsLabel, tiktokLabel, shortsLabel) {
+        remember(listSessionSegments, currentUsage, facebookLabel, facebookLiteLabel, reelsLabel, snapchatLabel, tiktokLabel, shortsLabel) {
             buildProgressBarSegments(
                 sessionSegments = listSessionSegments,
                 currentUsage = currentUsage,
                 facebookLabel = facebookLabel,
                 facebookLiteLabel = facebookLiteLabel,
                 reelsLabel = reelsLabel,
+                snapchatLabel = snapchatLabel,
                 tiktokLabel = tiktokLabel,
                 shortsLabel = shortsLabel,
             )
@@ -1338,7 +1341,9 @@ private fun ProgressCard(
         // Legend showing per-app usage
         AppUsageLegend(
             items = legendItems,
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
         )
     }
 }
@@ -1349,6 +1354,7 @@ private fun buildProgressBarSegments(
     facebookLabel: String,
     facebookLiteLabel: String,
     reelsLabel: String,
+    snapchatLabel: String,
     tiktokLabel: String,
     shortsLabel: String,
 ): List<ProgressBarSegment> {
@@ -1371,6 +1377,7 @@ private fun buildProgressBarSegments(
             BlockableApp.FACEBOOK -> facebookColor
             BlockableApp.FACEBOOK_LITE -> facebookLiteColor
             BlockableApp.REELS -> instagramReelsColor
+            BlockableApp.SNAPCHAT -> snapchatColor
             BlockableApp.SHORTS -> youtubeShortsColor
             BlockableApp.TIKTOK -> tiktokColor
         }
@@ -1378,6 +1385,7 @@ private fun buildProgressBarSegments(
             BlockableApp.FACEBOOK -> facebookLabel
             BlockableApp.FACEBOOK_LITE -> facebookLiteLabel
             BlockableApp.REELS -> reelsLabel
+            BlockableApp.SNAPCHAT -> snapchatLabel
             BlockableApp.SHORTS -> shortsLabel
             BlockableApp.TIKTOK -> tiktokLabel
         }

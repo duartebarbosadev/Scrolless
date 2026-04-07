@@ -72,6 +72,11 @@ enum class BlockableApp(
         detectionMethod = DetectionMethod.ViewId("video_view"),
         exitStrategy = GLOBAL_ACTION_BACK,
     ),
+    SNAPCHAT(
+        packageIds = listOf("com.snapchat.android"),
+        detectionMethod = DetectionMethod.ViewId("spotlight_container"),
+        exitStrategy = GLOBAL_ACTION_BACK,
+    ),
     ;
 
     fun getExitStrategy(): Int = exitStrategy

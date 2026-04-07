@@ -80,6 +80,7 @@ import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.theme.facebookColor
 import com.scrolless.app.designsystem.theme.facebookLiteColor
 import com.scrolless.app.designsystem.theme.instagramReelsColor
+import com.scrolless.app.designsystem.theme.snapchatColor
 import com.scrolless.app.designsystem.theme.tiktokColor
 import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.ui.theme.ScrollessTheme
@@ -658,6 +659,7 @@ private fun BlockableApp.displayName(): String = when (this) {
     BlockableApp.FACEBOOK -> "Facebook"
     BlockableApp.FACEBOOK_LITE -> "Facebook Lite"
     BlockableApp.REELS -> "Reels"
+    BlockableApp.SNAPCHAT -> "Snapchat"
     BlockableApp.SHORTS -> "Shorts"
     BlockableApp.TIKTOK -> "TikTok"
 }
@@ -666,6 +668,7 @@ private fun BlockableApp.timelineColor(): Color = when (this) {
     BlockableApp.FACEBOOK -> facebookColor
     BlockableApp.FACEBOOK_LITE -> facebookLiteColor
     BlockableApp.REELS -> instagramReelsColor
+    BlockableApp.SNAPCHAT -> snapchatColor
     BlockableApp.SHORTS -> youtubeShortsColor
     BlockableApp.TIKTOK -> tiktokColor
 }

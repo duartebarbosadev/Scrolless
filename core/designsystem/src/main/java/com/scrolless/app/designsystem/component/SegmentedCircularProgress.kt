@@ -24,7 +24,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -276,7 +275,7 @@ private fun calculateSegments(appUsageData: List<ProgressBarSegment>, totalSweep
 @Composable
 fun AppUsageLegend(items: List<LegendItem>, modifier: Modifier = Modifier) {
     FlowRow(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
