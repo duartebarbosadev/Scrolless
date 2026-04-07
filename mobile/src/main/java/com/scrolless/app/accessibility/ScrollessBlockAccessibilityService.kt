@@ -750,7 +750,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         return when (val detectionMethod = blockableApp.getDetectionMethod()) {
             is DetectionMethod.ViewId ->
-                findAccessibilityNodeInfosByViewId(blockableApp.getViewId()).any(::isNodeVisibleToTheUser)
+                findAccessibilityNodeInfosByViewId(blockableApp.getViewId(detectionMethod)).any(::isNodeVisibleToTheUser)
 
             is DetectionMethod.ContentDescriptions ->
                 hasVisibleContentDescription(detectionMethod.contentDescriptions)
@@ -761,7 +761,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * Content descriptions are not indexed like view IDs, so we have to walk the visible accessibility tree
      * and look for a matching node
      */
-    private fun AccessibilityNodeInfo.hasVisibleContentDescription(contentDescriptions: Collection<String>): Boolean {
+    private fun AccessibilityNodeInfo.hasVisibleContentDescription(contentDescriptions: Set<String>): Boolean {
         val nodesToVisit = ArrayDeque<AccessibilityNodeInfo>()
         nodesToVisit.add(this)
 

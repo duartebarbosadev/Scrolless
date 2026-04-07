@@ -98,7 +98,6 @@
     <string name="next_step_2">Try the daily limit feature and activate the timer overlay</string>
     <string name="timer_default_value" translatable="false">00:00</string>
     <string name="app_facebook" translatable="false">Facebook</string>
-    <string name="app_facebook_lite" translatable="false">Facebook Lite</string>
     <string name="app_reels" translatable="false">Reels</string>
     <string name="app_tiktok" translatable="false">TikTok</string>
     <string name="app_shorts" translatable="false">Shorts</string>

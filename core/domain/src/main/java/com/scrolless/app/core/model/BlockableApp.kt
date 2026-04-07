@@ -25,7 +25,7 @@ import androidx.compose.runtime.Immutable
 //  but facebook (thanks) needs to be different and only works via content descriptions which is a nice hammer
 sealed class DetectionMethod {
     data class ViewId(val viewId: String) : DetectionMethod()
-    data class ContentDescriptions(val contentDescriptions: List<String>) : DetectionMethod()
+    data class ContentDescriptions(val contentDescriptions: Set<String>) : DetectionMethod()
 }
 
 // Declares each supported app together with the package names we match, the detection signal to look for,
@@ -59,7 +59,7 @@ enum class BlockableApp(
     FACEBOOK(
         packageIds = listOf("com.facebook.katana"),
         detectionMethod = DetectionMethod.ContentDescriptions(
-            listOf(
+            setOf(
                 "FbShortsComposerAttachmentComponentSpec_STICKER",
                 "FbShortsComposerAttachmentComponentSpec_GIF",
                 "Reels",
@@ -95,10 +95,6 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
 
     // Method to obtain view id
     // The app detection method must be confirmed to be view id
-    fun getViewId(): String {
-
-        assert(app.getDetectionMethod() is DetectionMethod.ViewId)
-        val viewId = (app.getDetectionMethod() as DetectionMethod.ViewId).viewId
-        return "$packageId:id/$viewId"
-    }
+    fun getViewId(detectionMethod: DetectionMethod.ViewId): String =
+        "$packageId:id/${detectionMethod.viewId}"
 }
