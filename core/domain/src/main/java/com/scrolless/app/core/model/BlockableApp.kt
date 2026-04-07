@@ -95,6 +95,5 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
 
     // Method to obtain view id
     // The app detection method must be confirmed to be view id
-    fun getViewId(detectionMethod: DetectionMethod.ViewId): String =
-        "$packageId:id/${detectionMethod.viewId}"
+    fun getViewId(detectionMethod: DetectionMethod.ViewId): String = "$packageId:id/${detectionMethod.viewId}"
 }
