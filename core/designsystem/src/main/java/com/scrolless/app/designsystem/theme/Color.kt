@@ -240,6 +240,7 @@ val progressbar_red_use = Color(0xFFF44336)
 
 // App brand colors for per-app usage segments
 val facebookColor = Color(0xFF1877F2) // Blue
+val facebookLiteColor = Color(0xFF4FC3F7) // Light blue
 val instagramReelsColor = Color(0xFFE1306C) // Pink/magenta
 val tiktokColor = Color(0xFF00F2EA) // Cyan/aqua
 val youtubeShortsColor = Color(0xFFFFB300) // Amber

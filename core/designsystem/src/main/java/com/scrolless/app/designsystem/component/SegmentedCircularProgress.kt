@@ -22,7 +22,9 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -266,17 +268,17 @@ private fun calculateSegments(appUsageData: List<ProgressBarSegment>, totalSweep
 }
 
 /**
- * A horizontal legend showing app usage items with colored dots.
+ * A wrapping legend showing app usage items with colored dots.
  *
  * @param items List of legend items to display
- * @param modifier Modifier for the row
+ * @param modifier Modifier for the legend
  */
 @Composable
 fun AppUsageLegend(items: List<LegendItem>, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
+    FlowRow(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items.forEach { item ->
             LegendEntry(item = item)
