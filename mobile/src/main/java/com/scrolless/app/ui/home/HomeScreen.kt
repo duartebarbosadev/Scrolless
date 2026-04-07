@@ -116,6 +116,7 @@ import com.scrolless.app.designsystem.component.LegendItem
 import com.scrolless.app.designsystem.component.ProgressBarSegment
 import com.scrolless.app.designsystem.component.SegmentedCircularProgressIndicator
 import com.scrolless.app.designsystem.theme.facebookColor
+import com.scrolless.app.designsystem.theme.facebookLiteColor
 import com.scrolless.app.designsystem.theme.instagramReelsColor
 import com.scrolless.app.designsystem.theme.progressbar_green_use
 import com.scrolless.app.designsystem.theme.progressbar_orange_use
@@ -1195,17 +1196,19 @@ private fun ProgressCard(
     }
 
     val facebookLabel = stringResource(R.string.app_facebook)
+    val facebookLiteLabel = stringResource(R.string.app_facebook_lite)
     val reelsLabel = stringResource(R.string.app_reels)
     val tiktokLabel = stringResource(R.string.app_tiktok)
     val shortsLabel = stringResource(R.string.app_shorts)
 
     // Per-app usage data for the segmented progress indicator
     val progressBarSegments =
-        remember(listSessionSegments, currentUsage, facebookLabel, reelsLabel, tiktokLabel, shortsLabel) {
+        remember(listSessionSegments, currentUsage, facebookLabel, facebookLiteLabel, reelsLabel, tiktokLabel, shortsLabel) {
             buildProgressBarSegments(
                 sessionSegments = listSessionSegments,
                 currentUsage = currentUsage,
                 facebookLabel = facebookLabel,
+                facebookLiteLabel = facebookLiteLabel,
                 reelsLabel = reelsLabel,
                 tiktokLabel = tiktokLabel,
                 shortsLabel = shortsLabel,
@@ -1335,7 +1338,9 @@ private fun ProgressCard(
         // Legend showing per-app usage
         AppUsageLegend(
             items = legendItems,
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
         )
     }
 }
@@ -1344,6 +1349,7 @@ private fun buildProgressBarSegments(
     sessionSegments: List<SessionSegment>,
     currentUsage: Long,
     facebookLabel: String,
+    facebookLiteLabel: String,
     reelsLabel: String,
     tiktokLabel: String,
     shortsLabel: String,
@@ -1365,12 +1371,14 @@ private fun buildProgressBarSegments(
 
         val color = when (segment.app) {
             BlockableApp.FACEBOOK -> facebookColor
+            BlockableApp.FACEBOOK_LITE -> facebookLiteColor
             BlockableApp.REELS -> instagramReelsColor
             BlockableApp.SHORTS -> youtubeShortsColor
             BlockableApp.TIKTOK -> tiktokColor
         }
         val appName = when (segment.app) {
             BlockableApp.FACEBOOK -> facebookLabel
+            BlockableApp.FACEBOOK_LITE -> facebookLiteLabel
             BlockableApp.REELS -> reelsLabel
             BlockableApp.SHORTS -> shortsLabel
             BlockableApp.TIKTOK -> tiktokLabel
@@ -1584,6 +1592,7 @@ fun HomeScreenPreview() {
         timerOverlayEnabled = true,
         listSessionSegments = listOf(
             SessionSegment(BlockableApp.FACEBOOK, TimeUnit.MINUTES.toMillis(8), LocalDateTime.of(2026, 10, 2, 0, 55)),
+            SessionSegment(BlockableApp.FACEBOOK_LITE, TimeUnit.MINUTES.toMillis(5), LocalDateTime.of(2026, 10, 2, 1, 0)),
             SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(10), LocalDateTime.of(2026, 10, 2, 1, 2)),
             SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(3), LocalDateTime.of(2026, 10, 2, 1, 2)),
             SessionSegment(BlockableApp.SHORTS, TimeUnit.MINUTES.toMillis(3), LocalDateTime.of(2026, 10, 2, 1, 2)),

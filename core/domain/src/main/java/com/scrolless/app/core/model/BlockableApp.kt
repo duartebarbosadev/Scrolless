@@ -67,6 +67,11 @@ enum class BlockableApp(
         ),
         exitStrategy = GLOBAL_ACTION_BACK,
     ),
+    FACEBOOK_LITE(
+        packageIds = listOf("com.facebook.lite"),
+        detectionMethod = DetectionMethod.ViewId("video_view"),
+        exitStrategy = GLOBAL_ACTION_BACK,
+    ),
     ;
 
     fun getExitStrategy(): Int = exitStrategy
