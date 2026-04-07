@@ -30,6 +30,7 @@ import com.scrolless.app.core.blocking.BlockingManager
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.BlockingResult
+import com.scrolless.app.core.model.DetectionMethod
 import com.scrolless.app.core.model.ResolvedBlockableApp
 import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
@@ -485,28 +486,20 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             if (isBlockedAppVisible(blockableApp)) {
                 return blockableApp
             } else {
-                Timber.v("Blocked app is no longer visible, treating as exit")
+                Timber.v("Blocked app is no longer visible, checking if there's any other open")
             }
         }
 
-        // Detect if there's a new app
-        val userInAppAndWatchingBrainRot = BlockableApp.entries.firstNotNullOfOrNull { appEnum ->
+        // Detect if the user is inside a blockable app and watching content
+        val userBlockableApp = BlockableApp.entries.firstNotNullOfOrNull { appEnum ->
             val matchedPackage = appEnum.resolvePackage(packageId) ?: return@firstNotNullOfOrNull null
             val resolvedApp = ResolvedBlockableApp(appEnum, matchedPackage)
-            val nodes = rootNode.findAccessibilityNodeInfosByViewId(resolvedApp.getViewId())
-
-            // Make sure if we found nodes, they are visible to the user
-            val match = nodes.any { node ->
-                val rect = android.graphics.Rect()
-                node.getBoundsInScreen(rect)
-
-                node.isVisibleToUser && rect.width() > 0 && rect.height() > 0
-            }
+            val match = rootNode.matchesBlockedContent(resolvedApp)
 
             resolvedApp.takeIf { match }
         }
 
-        return userInAppAndWatchingBrainRot
+        return userBlockableApp
     }
 
     /**
@@ -520,16 +513,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         return windows.any { window ->
             if (window.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_APPLICATION) {
                 val root = window.root ?: return@any false
-
-                // Find if this package corresponds to a blocked app
-                // If it is a blocked app, check if the specific view ID is visible
-                val nodes = root.findAccessibilityNodeInfosByViewId(blockableApp.getViewId())
-                val isViewVisible = nodes.any { node ->
-                    val rect = android.graphics.Rect()
-                    node.getBoundsInScreen(rect)
-                    node.isVisibleToUser && rect.width() > 0 && rect.height() > 0
-                }
-                isViewVisible
+                // Check if the root is blocked content (reels etc.)
+                root.matchesBlockedContent(blockableApp)
             } else {
                 false
             }
@@ -753,5 +738,54 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         } catch (e: Exception) {
             Timber.e(e, "Failed to bring app to foreground")
         }
+    }
+
+    /**
+     * Accessibility detection has to match against the app's actual rendered tree, not just the package.
+     *
+     * Some apps expose stable view IDs, while others (facebook) only expose accessibility labels, so we need
+     * to support both signals here.
+     */
+    private fun AccessibilityNodeInfo.matchesBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
+
+        return when (val detectionMethod = blockableApp.getDetectionMethod()) {
+            is DetectionMethod.ViewId ->
+                findAccessibilityNodeInfosByViewId(blockableApp.getViewId(detectionMethod)).any(::isNodeVisibleToTheUser)
+
+            is DetectionMethod.ContentDescriptions ->
+                hasVisibleContentDescription(detectionMethod.contentDescriptions)
+        }
+    }
+
+    /**
+     * Content descriptions are not indexed like view IDs, so we have to walk the visible accessibility tree
+     * and look for a matching node
+     */
+    private fun AccessibilityNodeInfo.hasVisibleContentDescription(contentDescriptions: Set<String>): Boolean {
+        val nodesToVisit = ArrayDeque<AccessibilityNodeInfo>()
+        nodesToVisit.add(this)
+
+        while (nodesToVisit.isNotEmpty()) {
+            val node = nodesToVisit.removeFirst()
+            if (isNodeVisibleToTheUser(node) && node.contentDescription?.toString() in contentDescriptions) {
+                return true
+            }
+
+            for (index in 0 until node.childCount) {
+                node.getChild(index)?.let(nodesToVisit::addLast)
+            }
+        }
+
+        return false
+    }
+
+    /**
+     * Accessibility can return nodes that exist in the tree but are not actually visible on screen.
+     * We filter those out so detection only reacts to content the user can currently see.
+     */
+    private fun isNodeVisibleToTheUser(node: AccessibilityNodeInfo): Boolean {
+        val rect = android.graphics.Rect()
+        node.getBoundsInScreen(rect)
+        return node.isVisibleToUser && rect.width() > 0 && rect.height() > 0
     }
 }
