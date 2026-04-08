@@ -22,7 +22,7 @@ import timber.log.Timber
 /**
  * F-Droid builds intentionally exclude the Play Review SDK.
  */
-fun requestAppReview(activity: Activity, onResult: (ReviewPromptResult) -> Unit) {
+fun requestAppReview(_: Activity, onResult: (ReviewPromptResult) -> Unit) {
     Timber.i("In-app review skipped for F-Droid variant")
     onResult(ReviewPromptResult.SkippedPermanent)
 }
