@@ -1,7 +1,6 @@
-Scrolless helps you reduce short-form video consuption.
+Scrolless helps you reduce short-form video consumption.
 
-Scrolless needs the Accessibility permission to detect supported content and
-  apply blocking rules
+Scrolless needs the Accessibility permission to detect supported content and apply blocking rules
 
 Current features:
 
