@@ -1,0 +1,23 @@
+Scrolless helps you reduce short-form video consuption.
+
+Scrolless needs the Accessibility permission to detect supported content and
+  apply blocking rules
+
+Current features:
+
+- Block All to immediately lock supported short-form feeds
+- Daily Limit to cap how long you can spend on them each day
+- Interval Timer to alternate watch time and breaks
+- On-screen timer overlay to keep your current session visible
+- Usage tracking so you can see where your time went
+
+Supported apps currently include:
+
+- Instagram Reels
+- YouTube Shorts
+- TikTok
+- Facebook Reels
+- Facebook Lite
+- Snapchat
+
+Scrolless is fully open source and does not require an account.
