@@ -210,7 +210,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * Called when the accessibility service is successfully connected and ready to use.
      *
      * Performs initialization:
-     * - Configures accessibility service info (event types, flags)
      * - Attaches service context to [TimerOverlayManager]
      * - Starts observing user settings for block option changes
      * - Performs initial daily usage reset check
@@ -354,8 +353,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         updateForegroundAppState(userActiveApp)
 
         // For unrelated apps, avoid touching the accessibility tree unless we're already tracking
-        // blocked content or a blockable app window is still visible on screen.
-        if (userActiveApp == null && !isProcessingBlockedContent && currentForegroundBrainRotApp == null) {
+        // blocked content.
+        if (userActiveApp == null && !isProcessingBlockedContent) {
             return
         }
 
