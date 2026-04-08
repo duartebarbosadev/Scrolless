@@ -158,13 +158,13 @@ jobs:
           chmod 600 "$keystore_path"
           echo "ANDROID_RELEASE_KEYSTORE_PATH=$keystore_path" >> "$GITHUB_ENV"
 
-      - name: Build release artifacts (APK + AAB)
+      - name: Build Play and OSS release artifacts
         if: steps.version.outputs.should_release == 'true'
         env:
           ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
           ANDROID_RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
           ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
-        run: ./gradlew :mobile:assembleRelease :mobile:bundleRelease
+        run: ./gradlew :mobile:assemblePlayRelease :mobile:bundlePlayRelease :mobile:assembleOssRelease
 
       - name: Validate release outputs
         if: steps.version.outputs.should_release == 'true'
@@ -172,19 +172,28 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
-          apks=(mobile/build/outputs/apk/release/*.apk)
-          if [ "${#apks[@]}" -eq 0 ]; then
-            echo "No release APK files found."
+          play_apks=(mobile/build/outputs/apk/play/release/*.apk)
+          if [ "${#play_apks[@]}" -eq 0 ]; then
+            echo "No Play release APK files found."
             exit 1
           fi
-          aabs=(mobile/build/outputs/bundle/release/*.aab)
+          oss_apks=(mobile/build/outputs/apk/oss/release/*.apk)
+          if [ "${#oss_apks[@]}" -eq 0 ]; then
+            echo "No OSS release APK files found."
+            exit 1
+          fi
+          aabs=(mobile/build/outputs/bundle/playRelease/*.aab)
           shopt -u nullglob
           if [ "${#aabs[@]}" -eq 0 ]; then
-            echo "No AAB files found."
+            echo "No Play release AAB files found."
             exit 1
           fi
-          if ls mobile/build/outputs/apk/release/*-unsigned.apk >/dev/null 2>&1; then
-            echo "Found unsigned release APK. Configure release signing before publishing."
+          if ls mobile/build/outputs/apk/play/release/*-unsigned.apk >/dev/null 2>&1; then
+            echo "Found unsigned Play release APK. Configure release signing before publishing."
+            exit 1
+          fi
+          if ls mobile/build/outputs/apk/oss/release/*-unsigned.apk >/dev/null 2>&1; then
+            echo "Found unsigned OSS release APK. Configure release signing before publishing."
             exit 1
           fi
 
@@ -194,11 +203,11 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: ${{ steps.version.outputs.application_id }}
-          releaseFiles: mobile/build/outputs/bundle/release/*.aab
+          releaseFiles: mobile/build/outputs/bundle/playRelease/*.aab
           track: internal
           status: completed
 
-      - name: Create GitHub Release and upload APK
+      - name: Create GitHub Release and upload APKs
         if: steps.version.outputs.should_release == 'true'
         uses: softprops/action-gh-release@v2
         with:
@@ -207,4 +216,5 @@ jobs:
           name: ${{ steps.version.outputs.tag_name }}
           generate_release_notes: true
           files: |
-            mobile/build/outputs/apk/release/*.apk
+            mobile/build/outputs/apk/play/release/*.apk
+            mobile/build/outputs/apk/oss/release/*.apk

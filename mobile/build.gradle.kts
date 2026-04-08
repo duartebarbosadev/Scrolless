@@ -60,6 +60,18 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    flavorDimensions += "store"
+
+    productFlavors {
+        create("play") {
+            dimension = "store"
+        }
+
+        create("oss") {
+            dimension = "store"
+        }
+    }
+
     val releaseKeystorePath =
         project.providers.environmentVariable("ANDROID_RELEASE_KEYSTORE_PATH")
             .orNull
@@ -178,8 +190,8 @@ dependencies {
 
     implementation(libs.coil.kt.compose)
 
-    implementation(libs.android.review)
-    implementation(libs.android.review.ktx)
+    add("playImplementation", libs.android.review)
+    add("playImplementation", libs.android.review.ktx)
 
     implementation(projects.core.data)
     implementation(projects.core.designsystem)

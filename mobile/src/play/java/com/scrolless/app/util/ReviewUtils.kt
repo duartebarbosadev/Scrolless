@@ -26,29 +26,19 @@ import timber.log.Timber
 
 private const val GOOGLE_PLAY_STORE_PACKAGE = "com.android.vending"
 
-enum class ReviewPromptResult {
-    // Review flow launched successfully (Play will decide if UI appears).
-    Shown,
-    // Retry later (temporary failure or activity went away).
-    SkippedTemporary,
-    // Don't retry (not installed from Play).
-    SkippedPermanent,
-}
-
 /**
  * Requests an in-app review using the Google Play In-App Review API.
  *
  * Debug builds use the Play Core [FakeReviewManager] for testing.
  */
 fun requestAppReview(activity: Activity, onResult: (ReviewPromptResult) -> Unit) {
-
     if (!isActivityActive(activity)) {
         onResult(ReviewPromptResult.SkippedTemporary)
         return
     }
 
     if (BuildConfig.DEBUG) {
-        // FakeReviewManager avoids Play Store dependency for debug builds and can be used in debug
+        // FakeReviewManager avoids Play Store dependency for debug builds and can be used in debug.
         val reviewManager = FakeReviewManager(activity)
         reviewManager.requestReviewFlow().addOnCompleteListener { request ->
             if (request.isSuccessful) {
@@ -60,18 +50,12 @@ fun requestAppReview(activity: Activity, onResult: (ReviewPromptResult) -> Unit)
                 }
                 reviewManager.launchReviewFlow(activity, reviewInfo).addOnCompleteListener { launch ->
                     if (!launch.isSuccessful) {
-                        Timber.w(
-                            launch.exception,
-                            "In-app review launch failed",
-                        )
+                        Timber.w(launch.exception, "In-app review launch failed")
                     }
                     onResult(if (launch.isSuccessful) ReviewPromptResult.Shown else ReviewPromptResult.SkippedTemporary)
                 }
             } else {
-                Timber.w(
-                    request.exception,
-                    "In-app review request failed",
-                )
+                Timber.w(request.exception, "In-app review request failed")
                 onResult(ReviewPromptResult.SkippedTemporary)
             }
         }
@@ -81,7 +65,7 @@ fun requestAppReview(activity: Activity, onResult: (ReviewPromptResult) -> Unit)
     val installerPackageName = getInstallerPackageName(activity)
     if (installerPackageName != GOOGLE_PLAY_STORE_PACKAGE) {
         Timber.w(
-            "In-app review unavailable: installed by %s (expected %s);",
+            "In-app review unavailable: installed by %s (expected %s)",
             installerPackageName ?: "unknown",
             GOOGLE_PLAY_STORE_PACKAGE,
         )
@@ -100,18 +84,12 @@ fun requestAppReview(activity: Activity, onResult: (ReviewPromptResult) -> Unit)
             }
             reviewManager.launchReviewFlow(activity, reviewInfo).addOnCompleteListener { launch ->
                 if (!launch.isSuccessful) {
-                    Timber.w(
-                        launch.exception,
-                        "In-app review launch failed",
-                    )
+                    Timber.w(launch.exception, "In-app review launch failed")
                 }
                 onResult(if (launch.isSuccessful) ReviewPromptResult.Shown else ReviewPromptResult.SkippedTemporary)
             }
         } else {
-            Timber.w(
-                request.exception,
-                "In-app review request failed",
-            )
+            Timber.w(request.exception, "In-app review request failed")
             onResult(ReviewPromptResult.SkippedTemporary)
         }
     }
