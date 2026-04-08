@@ -64,6 +64,7 @@ enum class BlockableApp(
     SHORTS(
         packageMatchers = listOf(
             PackageMatcher.Prefix("com.google.android.youtube"), // should match YouTube kids and other variants
+            PackageMatcher.Exact("com.google.android.apps.youtube.kids"),
             PackageMatcher.Suffix(".android.youtube"),
         ),
         detectionMethod = DetectionMethod.ViewId("reel_player_page_container"),
