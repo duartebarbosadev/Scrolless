@@ -34,9 +34,9 @@ package com.scrolless.app.ui.tooling
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 
-@Preview(name = "small-phone", device = Devices.PIXEL_4A)
-@Preview(name = "phone", device = Devices.PHONE)
-@Preview(name = "landscape", device = "spec:shape=Normal,width=640,height=360,unit=dp,dpi=480")
-@Preview(name = "foldable", device = Devices.FOLDABLE)
-@Preview(name = "tablet", device = Devices.TABLET)
+@Preview(name = "small-phone", device = Devices.PIXEL_3)
+@Preview(name = "phone", device = Devices.PHONE, showBackground = true)
+@Preview(name = "phone_in_landscape", widthDp = 891, heightDp = 411, showBackground = true)
+@Preview(name = "foldable", device = Devices.FOLDABLE, showBackground = true)
+@Preview(name = "tablet", device = Devices.TABLET, showBackground = true)
 annotation class DevicePreviews
