@@ -51,8 +51,8 @@ jobs:
       - name: Run local tests
         run: ./gradlew test
 
-      - name: Build debug APK
-        run: ./gradlew :mobile:assembleDebug
+      - name: Build debug APKs
+        run: ./gradlew :mobile:assembleOssDebug :mobile:assemblePlayDebug
 
       - name: Upload build outputs (APKs)
         uses: actions/upload-artifact@v4
@@ -68,7 +68,7 @@ jobs:
           path: '**/build/test-results/test*UnitTest/**.xml'
 
       - name: Check lint
-        run: ./gradlew :mobile:lintDebug
+        run: ./gradlew :mobile:lintOssDebug :mobile:lintPlayDebug
 
       - name: Upload lint reports (HTML)
         if: ${{ !cancelled() }}
