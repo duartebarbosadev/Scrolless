@@ -19,7 +19,6 @@ Since the app requires accessibility permissions, which can have sketchy uses, S
 
 ## Features
 
-### Implemented Features
 - **Block All**  
   Instantly block access to all supported platforms, including Instagram Reels, TikTok, YouTube Shorts, and Facebook Reels.
 

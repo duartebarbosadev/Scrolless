@@ -20,7 +20,7 @@ import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
 import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_HOME
 import androidx.compose.runtime.Immutable
 
-// DetectionMethod holds the technique to find out if blocked content is visible
+// DetectionMethod holds the information to find out if blocked content is visible
 // Most of the apps work by just checking if the view id is present
 //  but facebook (thanks) needs to be different and only works via content descriptions which is a nice hammer
 sealed class DetectionMethod {
@@ -28,36 +28,60 @@ sealed class DetectionMethod {
     data class ContentDescriptions(val contentDescriptions: Set<String>) : DetectionMethod()
 }
 
+// PackageMatcher the information to recognize supported app package variants
+// Most of the apps work by just checking the exact package name
+//  but patched variants need prefix/suffix matching because the package can be renamed or have different variants
+//  while still being the same app family
+private sealed class PackageMatcher {
+    abstract fun matches(packageName: String): Boolean
+
+    data class Exact(private val packageId: String) : PackageMatcher() {
+        override fun matches(packageName: String): Boolean = packageName == packageId
+    }
+
+    data class Prefix(private val packagePrefix: String) : PackageMatcher() {
+        override fun matches(packageName: String): Boolean = packageName.startsWith(packagePrefix)
+    }
+
+    data class Suffix(private val packageSuffix: String) : PackageMatcher() {
+        override fun matches(packageName: String): Boolean = packageName.endsWith(packageSuffix)
+    }
+}
+
 // Declares each supported app together with the package names we match, the detection signal to look for,
 //  and the exit action to use once blocked content is found.
 @Immutable
 enum class BlockableApp(
-    private val packageIds: List<String>,
+    private val packageMatchers: List<PackageMatcher>,
     private val detectionMethod: DetectionMethod,
     private val exitStrategy: Int,
 ) {
     REELS(
-        packageIds = listOf("com.instagram.android"),
+        packageMatchers = listOf(PackageMatcher.Exact("com.instagram.android")),
         detectionMethod = DetectionMethod.ViewId("clips_viewer_view_pager"),
         exitStrategy = GLOBAL_ACTION_BACK,
     ),
     SHORTS(
-        packageIds = listOf("com.google.android.youtube"),
+        packageMatchers = listOf(
+            PackageMatcher.Prefix("com.google.android.youtube"), // should match YouTube kids and other variants
+            PackageMatcher.Exact("com.google.android.apps.youtube.kids"),
+            PackageMatcher.Suffix(".android.youtube"),
+        ),
         detectionMethod = DetectionMethod.ViewId("reel_player_page_container"),
         exitStrategy = GLOBAL_ACTION_BACK,
     ),
     TIKTOK(
-        packageIds = listOf(
-            "com.zhiliaoapp.musically",
-            "com.ss.android.ugc.trill",
-            "com.ss.android.ugc.aweme",
-            "com.zhiliaoapp.musically.go",
+        packageMatchers = listOf(
+            PackageMatcher.Exact("com.zhiliaoapp.musically"),
+            PackageMatcher.Exact("com.ss.android.ugc.trill"),
+            PackageMatcher.Exact("com.ss.android.ugc.aweme"),
+            PackageMatcher.Exact("com.zhiliaoapp.musically.go"),
         ),
         detectionMethod = DetectionMethod.ViewId("player_view"),
         exitStrategy = GLOBAL_ACTION_HOME,
     ),
     FACEBOOK(
-        packageIds = listOf("com.facebook.katana"),
+        packageMatchers = listOf(PackageMatcher.Exact("com.facebook.katana")),
         detectionMethod = DetectionMethod.ContentDescriptions(
             setOf(
                 "FbShortsComposerAttachmentComponentSpec_STICKER",
@@ -68,12 +92,12 @@ enum class BlockableApp(
         exitStrategy = GLOBAL_ACTION_BACK,
     ),
     FACEBOOK_LITE(
-        packageIds = listOf("com.facebook.lite"),
+        packageMatchers = listOf(PackageMatcher.Exact("com.facebook.lite")),
         detectionMethod = DetectionMethod.ViewId("video_view"),
         exitStrategy = GLOBAL_ACTION_BACK,
     ),
     SNAPCHAT(
-        packageIds = listOf("com.snapchat.android"),
+        packageMatchers = listOf(PackageMatcher.Exact("com.snapchat.android")),
         detectionMethod = DetectionMethod.ViewId("spotlight_container"),
         exitStrategy = GLOBAL_ACTION_BACK,
     ),
@@ -81,19 +105,11 @@ enum class BlockableApp(
 
     fun getExitStrategy(): Int = exitStrategy
 
-    fun getPackageIds(): List<String> = packageIds
-
     fun getDetectionMethod(): DetectionMethod = detectionMethod
 
-    fun resolvePackage(packageName: String): String? = when {
-        packageIds.contains(packageName) -> packageName
+    fun resolvePackage(packageName: String): String? = packageName.takeIf(::matchesPackage)
 
-        else ->
-            packageIds
-                .asSequence()
-                .filter { packageName.startsWith(it) }
-                .maxByOrNull { it.length }
-    }
+    private fun matchesPackage(packageName: String): Boolean = packageMatchers.any { it.matches(packageName) }
 }
 
 // Represents the specific package variant
@@ -103,7 +119,5 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
 
     fun getExitStrategy(): Int = app.getExitStrategy()
 
-    // Method to obtain view id
-    // The app detection method must be confirmed to be view id
     fun getViewId(detectionMethod: DetectionMethod.ViewId): String = "$packageId:id/${detectionMethod.viewId}"
 }
