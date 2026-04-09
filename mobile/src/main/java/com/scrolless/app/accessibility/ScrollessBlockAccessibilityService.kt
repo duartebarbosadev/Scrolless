@@ -708,13 +708,25 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * to support both signals here.
      */
     private fun AccessibilityNodeInfo.matchesBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
+        return matchesDetectionMethod(blockableApp, blockableApp.getDetectionMethod())
+    }
 
-        return when (val detectionMethod = blockableApp.getDetectionMethod()) {
+    private fun AccessibilityNodeInfo.matchesDetectionMethod(
+        blockableApp: ResolvedBlockableApp,
+        detectionMethod: DetectionMethod,
+    ): Boolean {
+        return when (detectionMethod) {
             is DetectionMethod.ViewId ->
                 findAccessibilityNodeInfosByViewId(blockableApp.getViewId(detectionMethod)).any(::isNodeVisibleToTheUser)
 
             is DetectionMethod.ContentDescriptions ->
                 hasVisibleContentDescription(detectionMethod.contentDescriptions)
+
+            is DetectionMethod.ContentDescriptionPrefix ->
+                hasVisibleContentDescriptionPrefix(detectionMethod)
+
+            is DetectionMethod.AnyOf ->
+                detectionMethod.detectionMethods.any { matchesDetectionMethod(blockableApp, it) }
         }
     }
 
@@ -730,6 +742,42 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             val node = nodesToVisit.removeFirst()
             if (isNodeVisibleToTheUser(node) && node.contentDescription?.toString() in contentDescriptions) {
                 return true
+            }
+
+            for (index in 0 until node.childCount) {
+                node.getChild(index)?.let(nodesToVisit::addLast)
+            }
+        }
+
+        return false
+    }
+
+    /**
+     * Prefix matching for content descriptions lets us target stable navigation labels such as
+     * "Reels, tab 2 of 6" without treating every visible "Reels" label in the feed as a block trigger.
+     */
+    private fun AccessibilityNodeInfo.hasVisibleContentDescriptionPrefix(
+        detectionMethod: DetectionMethod.ContentDescriptionPrefix,
+    ): Boolean {
+        val rootBounds = android.graphics.Rect().also(::getBoundsInScreen)
+        val maxTop = detectionMethod.maxTopScreenFraction?.let { fraction ->
+            rootBounds.top + (rootBounds.height() * fraction).toInt()
+        }
+        val nodesToVisit = ArrayDeque<AccessibilityNodeInfo>()
+        nodesToVisit.add(this)
+
+        while (nodesToVisit.isNotEmpty()) {
+            val node = nodesToVisit.removeFirst()
+            val contentDescription = node.contentDescription?.toString()
+            val matchesPrefix = contentDescription != null &&
+                detectionMethod.prefixes.any(contentDescription::startsWith)
+            if (matchesPrefix && isNodeVisibleToTheUser(node)) {
+                val nodeBounds = android.graphics.Rect().also(node::getBoundsInScreen)
+                val matchesSelectedState = !detectionMethod.requireSelected || node.isSelected
+                val matchesTopConstraint = maxTop == null || nodeBounds.bottom <= maxTop
+                if (matchesSelectedState && matchesTopConstraint) {
+                    return true
+                }
             }
 
             for (index in 0 until node.childCount) {
