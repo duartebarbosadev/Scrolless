@@ -22,13 +22,13 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
-import androidx.compose.animation.scaleOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.scrolless.app.ui.home.HomeScreen
+import com.scrolless.app.ui.settings.SettingsScreen
 
 @Composable
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -40,11 +40,13 @@ fun ScrollessApplication(appState: ScrollessAppState = rememberScrollessAppState
             NavHost(
                 navController = appState.navController,
                 startDestination = Screen.Scrolless.route,
-                popExitTransition = { scaleOut(targetScale = 0.9f) },
                 popEnterTransition = { EnterTransition.None },
             ) {
                 composable(Screen.Scrolless.route) {
-                    HomeScreen()
+                    HomeScreen(onNavigateToSettings = { appState.navController.navigate(Screen.Settings.route) })
+                }
+                composable(Screen.Settings.route) {
+                    SettingsScreen(onNavigateBack = { appState.navController.popBackStack() })
                 }
             }
         }

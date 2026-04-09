@@ -60,7 +60,6 @@ class HomeViewModel @Inject constructor(
 
     companion object {
         private const val PROGRESS_MAX = 100
-        private const val PAUSE_DURATION_MILLIS = 5 * 60 * 1000L
         private val REVIEW_PROMPT_DELAY_MILLIS = TimeUnit.DAYS.toMillis(1) // Show review popup after 1 day
         private const val REVIEW_PROMPT_MAX_ATTEMPTS = 3
         private val REVIEW_PROMPT_RETRY_DELAY_MILLIS = TimeUnit.DAYS.toMillis(2)
@@ -139,7 +138,8 @@ class HomeViewModel @Inject constructor(
         _showComingSoonSnackBar,
         _requestReview,
         userSettingsStore.getHasSeenAccessibilityExplainer(),
-    ) { usage, timerEnabled, pauseUntil, showComingSoonSnackBar, requestReview, hasSeenAccessibilityExplainer ->
+        userSettingsStore.getPauseDuration(),
+    ) { usage, timerEnabled, pauseUntil, showComingSoonSnackBar, requestReview, hasSeenAccessibilityExplainer, pauseDuration ->
 
         val progress = calculateProgress(
             blockOption = usage.blockOption,
@@ -158,6 +158,7 @@ class HomeViewModel @Inject constructor(
             progress = progress,
             timerOverlayEnabled = timerEnabled,
             pauseUntilMillis = pauseUntil,
+            pauseDurationMillis = pauseDuration,
             showComingSoonSnackBar = showComingSoonSnackBar,
             requestReview = requestReview,
             hasSeenAccessibilityExplainer = hasSeenAccessibilityExplainer,
@@ -196,8 +197,9 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onPauseToggle(shouldPause: Boolean) {
+        val pauseDuration = uiState.value.pauseDurationMillis.takeIf { it > 0 } ?: (5 * 60 * 1000L)
         val targetTimestamp = if (shouldPause) {
-            System.currentTimeMillis() + PAUSE_DURATION_MILLIS
+            System.currentTimeMillis() + pauseDuration
         } else {
             0L
         }
@@ -368,6 +370,7 @@ data class HomeUiState(
     val isDevMode: Boolean = false,
     val playStoreUrl: String? = null,
     val pauseUntilMillis: Long = 0L,
+    val pauseDurationMillis: Long = 5 * 60 * 1000L,
     val hasSeenAccessibilityExplainer: Boolean = false,
 
     /**

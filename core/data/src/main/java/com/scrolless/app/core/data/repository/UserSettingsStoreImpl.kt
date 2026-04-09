@@ -49,6 +49,7 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     private val _reviewPromptLastAttemptAt = MutableStateFlow(0L)
     private val _pauseUntil = MutableStateFlow(0L)
     private val _firstLaunchAt = MutableStateFlow(0L)
+    private val _pauseDuration = MutableStateFlow(5 * 60 * 1000L)
 
     init {
         coroutineScope.launch {
@@ -95,6 +96,9 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
         }
         coroutineScope.launch {
             userSettingsDao.getPauseUntil().collect { _pauseUntil.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getPauseDuration().collect { _pauseDuration.value = it }
         }
     }
 
@@ -179,6 +183,13 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     override suspend fun setPauseUntil(pauseUntil: Long) {
         _pauseUntil.value = pauseUntil
         userSettingsDao.setPauseUntil(pauseUntil)
+    }
+
+    override fun getPauseDuration(): Flow<Long> = _pauseDuration
+
+    override suspend fun setPauseDuration(durationMillis: Long) {
+        _pauseDuration.value = durationMillis
+        userSettingsDao.setPauseDuration(durationMillis)
     }
 
     override fun getFirstLaunchAt(): Flow<Long> = _firstLaunchAt

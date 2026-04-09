@@ -34,8 +34,14 @@
     <string name="rate_scrolless">Rate Scrolless on Play Store</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
-    <string name="pause_duration_hint">Pauses blocking for 5 minutes</string>
+    <string name="pause_duration_hint">Pauses blocking for %1$d min</string>
     <string name="pause_resumes_in">Resumes in %1$s</string>
+
+    <string name="settings">Settings</string>
+    <string name="settings_section_blocking">Blocking</string>
+    <string name="settings_pause_duration_title">Pause Duration</string>
+    <string name="settings_pause_duration_description">How long blocking is paused when you tap Pause.</string>
+    <string name="settings_pause_duration_value">%1$d minutes</string>
 
     <string name="feature_coming_soon">Feature coming soon</string>
     <string name="time_limit_dialog_title">Set Daily Limit Time</string>

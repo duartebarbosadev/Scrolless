@@ -61,8 +61,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonGroup
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
+import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -149,7 +149,7 @@ private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
 private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltViewModel()) {
+fun HomeScreen(modifier: Modifier = Modifier, onNavigateToSettings: () -> Unit = {}, viewModel: HomeViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -303,6 +303,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
         HomeContent(
             modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing),
             uiState = uiState,
+            onNavigateToSettings = onNavigateToSettings,
             onBlockOptionSelected = { blockOption ->
                 val shouldBypass = BuildConfig.DEBUG && debugBypassAccessibilityCheck
                 if (shouldBypass || context.isAccessibilityServiceEnabled(ScrollessBlockAccessibilityService::class.java)) {
@@ -480,6 +481,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel = hiltVie
 private fun HomeContent(
     uiState: HomeUiState,
     modifier: Modifier = Modifier,
+    onNavigateToSettings: () -> Unit = {},
     onBlockOptionSelected: (BlockOption) -> Unit,
     onConfigureDailyLimit: () -> Unit,
     onScreenTimerToggled: (Boolean) -> Unit,
@@ -543,10 +545,20 @@ private fun HomeContent(
                     onProgressCardClicked = onProgressCardClicked,
                 )
 
-                HelpButton(
-                    onClick = onHelpClicked,
-                    modifier = Modifier.align(Alignment.TopEnd),
-                )
+                Row(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(8.dp, 8.dp, 0.dp, 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    HelpButton(
+                        onClick = onHelpClicked,
+                    )
+
+                    SettingsButton(
+                        onClick = onNavigateToSettings,
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -719,6 +731,7 @@ private fun HomeContent(
                     onTogglePause = onPauseToggle,
                     isPaused = isPauseActive,
                     remainingMillis = pauseRemainingMillis,
+                    pauseDurationMinutes = (uiState.pauseDurationMillis / 60_000L).toInt().coerceAtLeast(1),
                 )
             }
 
@@ -1409,7 +1422,13 @@ private fun buildLegendItems(progressBarSegments: List<ProgressBarSegment>): Lis
     }
 
 @Composable
-fun PauseButton(onTogglePause: (Boolean) -> Unit, isPaused: Boolean, remainingMillis: Long, modifier: Modifier = Modifier) {
+fun PauseButton(
+    modifier: Modifier = Modifier,
+    onTogglePause: (Boolean) -> Unit,
+    isPaused: Boolean,
+    remainingMillis: Long,
+    pauseDurationMinutes: Int = 5,
+) {
     val buttonShape = RoundedCornerShape(20.dp)
     val containerColor by animateColorAsState(
         targetValue = if (isPaused) {
@@ -1480,7 +1499,7 @@ fun PauseButton(onTogglePause: (Boolean) -> Unit, isPaused: Boolean, remainingMi
             val text = if (paused) {
                 stringResource(id = R.string.pause_resumes_in, remainingMillis.toCountdownLabel())
             } else {
-                stringResource(id = R.string.pause_duration_hint)
+                stringResource(id = R.string.pause_duration_hint, pauseDurationMinutes)
             }
             Text(
                 text = text,
@@ -1549,19 +1568,25 @@ fun OnScreenTimerToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, mo
 
 @Composable
 fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
-    ElevatedButton(onClick = onClick, modifier = modifier) {
+    FilledTonalIconButton(onClick = onClick, modifier = modifier) {
         Icon(
             painter = painterResource(id = R.drawable.baseline_help_outline_24),
             contentDescription = stringResource(R.string.cd_add),
             tint = MaterialTheme.colorScheme.onSurface,
         )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = stringResource(id = R.string.help),
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
-            ),
+    }
+}
+
+@Composable
+fun SettingsButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    FilledTonalIconButton(
+        onClick = onClick,
+        modifier = modifier,
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_settings),
+            contentDescription = stringResource(R.string.settings),
+            tint = MaterialTheme.colorScheme.onSurface,
         )
     }
 }
