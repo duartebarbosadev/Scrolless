@@ -735,21 +735,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * and look for a matching node
      */
     private fun AccessibilityNodeInfo.hasVisibleContentDescription(contentDescriptions: Set<String>): Boolean {
-        val nodesToVisit = ArrayDeque<AccessibilityNodeInfo>()
-        nodesToVisit.add(this)
-
-        while (nodesToVisit.isNotEmpty()) {
-            val node = nodesToVisit.removeFirst()
-            if (isNodeVisibleToTheUser(node) && node.contentDescription?.toString() in contentDescriptions) {
-                return true
-            }
-
-            for (index in 0 until node.childCount) {
-                node.getChild(index)?.let(nodesToVisit::addLast)
-            }
+        return hasVisibleNodeMatching { node ->
+            node.contentDescription?.toString() in contentDescriptions
         }
-
-        return false
     }
 
     /**
@@ -761,23 +749,32 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     ): Boolean {
         val rootBounds = android.graphics.Rect().also(::getBoundsInScreen)
         val maxTop = detectionMethod.maxTopScreenFraction?.let { fraction ->
-            rootBounds.top + (rootBounds.height() * fraction).toInt()
+            val clampedFraction = fraction.coerceIn(0f, 1f)
+            rootBounds.top + (rootBounds.height() * clampedFraction).toInt()
         }
+
+        return hasVisibleNodeMatching { node ->
+            val contentDescription = node.contentDescription?.toString() ?: return@hasVisibleNodeMatching false
+            val matchesPrefix = detectionMethod.prefixes.any(contentDescription::startsWith)
+            if (!matchesPrefix) {
+                return@hasVisibleNodeMatching false
+            }
+
+            val nodeBounds = android.graphics.Rect().also(node::getBoundsInScreen)
+            val matchesSelectedState = !detectionMethod.requireSelected || node.isSelected
+            val matchesTopConstraint = maxTop == null || nodeBounds.bottom <= maxTop
+            matchesSelectedState && matchesTopConstraint
+        }
+    }
+
+    private fun AccessibilityNodeInfo.hasVisibleNodeMatching(matchesNode: (AccessibilityNodeInfo) -> Boolean): Boolean {
         val nodesToVisit = ArrayDeque<AccessibilityNodeInfo>()
         nodesToVisit.add(this)
 
         while (nodesToVisit.isNotEmpty()) {
             val node = nodesToVisit.removeFirst()
-            val contentDescription = node.contentDescription?.toString()
-            val matchesPrefix = contentDescription != null &&
-                detectionMethod.prefixes.any(contentDescription::startsWith)
-            if (matchesPrefix && isNodeVisibleToTheUser(node)) {
-                val nodeBounds = android.graphics.Rect().also(node::getBoundsInScreen)
-                val matchesSelectedState = !detectionMethod.requireSelected || node.isSelected
-                val matchesTopConstraint = maxTop == null || nodeBounds.bottom <= maxTop
-                if (matchesSelectedState && matchesTopConstraint) {
-                    return true
-                }
+            if (isNodeVisibleToTheUser(node) && matchesNode(node)) {
+                return true
             }
 
             for (index in 0 until node.childCount) {

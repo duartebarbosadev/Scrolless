@@ -88,12 +88,12 @@ enum class BlockableApp(
     ),
     FACEBOOK(
         packageMatchers = listOf(PackageMatcher.Exact("com.facebook.katana")),
-        // Facebook needs several detection methods as there's different ways of watching reels
+        // Facebook needs several detection methods because there's different ways of watching reels
         // 1. By pressing on a reel in the main feed
-        //      - Easy detection by the content description Sticker & GIF
-        // 2- By pressing the Reels tab
-        //      - We need to see if there's "Reels" and "Tab" in the content description
-        //      - The reason for not just "reels" we need to discard any text that just says Reels that can appear on the feed
+        //      - Easy detection by the content descriptions Sticker & GIF
+        // 2. By pressing the Reels tab
+        //      - Here we expect the selected top navigation accessibility label to start with "Reels, tab"
+        //      - The reason for not just matching "Reels" is that this text can also appear in the user feed
         detectionMethod = DetectionMethod.AnyOf(
             listOf(
                 DetectionMethod.ContentDescriptions(
