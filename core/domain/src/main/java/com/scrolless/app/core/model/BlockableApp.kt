@@ -26,6 +26,12 @@ import androidx.compose.runtime.Immutable
 sealed class DetectionMethod {
     data class ViewId(val viewId: String) : DetectionMethod()
     data class ContentDescriptions(val contentDescriptions: Set<String>) : DetectionMethod()
+    data class ContentDescriptionPrefix(
+        val prefixes: Set<String>,
+        val requireSelected: Boolean = false,
+        val maxTopScreenFraction: Float? = null,
+    ) : DetectionMethod()
+    data class AnyOf(val detectionMethods: List<DetectionMethod>) : DetectionMethod()
 }
 
 // PackageMatcher the information to recognize supported app package variants
@@ -63,9 +69,9 @@ enum class BlockableApp(
     ),
     SHORTS(
         packageMatchers = listOf(
-            PackageMatcher.Prefix("com.google.android.youtube"), // should match YouTube kids and other variants
+            PackageMatcher.Prefix("com.google.android.youtube"),
             PackageMatcher.Exact("com.google.android.apps.youtube.kids"),
-            PackageMatcher.Suffix(".android.youtube"),
+            PackageMatcher.Suffix(".android.youtube"), // should match YouTube and other variants
         ),
         detectionMethod = DetectionMethod.ViewId("reel_player_page_container"),
         exitStrategy = GLOBAL_ACTION_BACK,
@@ -82,11 +88,27 @@ enum class BlockableApp(
     ),
     FACEBOOK(
         packageMatchers = listOf(PackageMatcher.Exact("com.facebook.katana")),
-        detectionMethod = DetectionMethod.ContentDescriptions(
-            setOf(
-                "FbShortsComposerAttachmentComponentSpec_STICKER",
-                "FbShortsComposerAttachmentComponentSpec_GIF",
-                "Reels",
+        // Facebook needs several detection methods because there's different ways of watching reels
+        // 1. By pressing on a reel in the main feed
+        //      - Easy detection by the content descriptions Sticker & GIF
+        // 2. By pressing the Reels tab
+        //      - Here we expect the selected top navigation accessibility label to start with "Reels, tab"
+        //      - The reason for not just matching "Reels" is that this text can also appear in the user feed
+        detectionMethod = DetectionMethod.AnyOf(
+            listOf(
+                DetectionMethod.ContentDescriptions(
+                    setOf(
+                        "FbShortsComposerAttachmentComponentSpec_STICKER",
+                        "FbShortsComposerAttachmentComponentSpec_GIF",
+                    ),
+                ),
+                // Facebook also shows feed shelves labeled just "Reels", which should not trigger blocking.
+                // so we search for the accessibility label to start with "Reels, tab" (for example "Reels, tab 2 of 6").
+                DetectionMethod.ContentDescriptionPrefix(
+                    prefixes = setOf("Reels, tab"),
+                    requireSelected = true,
+                    maxTopScreenFraction = 0.2f,
+                ),
             ),
         ),
         exitStrategy = GLOBAL_ACTION_BACK,

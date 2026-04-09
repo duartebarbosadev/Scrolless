@@ -708,13 +708,25 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * to support both signals here.
      */
     private fun AccessibilityNodeInfo.matchesBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
+        return matchesDetectionMethod(blockableApp, blockableApp.getDetectionMethod())
+    }
 
-        return when (val detectionMethod = blockableApp.getDetectionMethod()) {
+    private fun AccessibilityNodeInfo.matchesDetectionMethod(
+        blockableApp: ResolvedBlockableApp,
+        detectionMethod: DetectionMethod,
+    ): Boolean {
+        return when (detectionMethod) {
             is DetectionMethod.ViewId ->
                 findAccessibilityNodeInfosByViewId(blockableApp.getViewId(detectionMethod)).any(::isNodeVisibleToTheUser)
 
             is DetectionMethod.ContentDescriptions ->
                 hasVisibleContentDescription(detectionMethod.contentDescriptions)
+
+            is DetectionMethod.ContentDescriptionPrefix ->
+                hasVisibleContentDescriptionPrefix(detectionMethod)
+
+            is DetectionMethod.AnyOf ->
+                detectionMethod.detectionMethods.any { matchesDetectionMethod(blockableApp, it) }
         }
     }
 
@@ -723,12 +735,45 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * and look for a matching node
      */
     private fun AccessibilityNodeInfo.hasVisibleContentDescription(contentDescriptions: Set<String>): Boolean {
+        return hasVisibleNodeMatching { node ->
+            node.contentDescription?.toString() in contentDescriptions
+        }
+    }
+
+    /**
+     * Prefix matching for content descriptions lets us target stable navigation labels such as
+     * "Reels, tab 2 of 6" without treating every visible "Reels" label in the feed as a block trigger.
+     */
+    private fun AccessibilityNodeInfo.hasVisibleContentDescriptionPrefix(
+        detectionMethod: DetectionMethod.ContentDescriptionPrefix,
+    ): Boolean {
+        val rootBounds = android.graphics.Rect().also(::getBoundsInScreen)
+        val maxTop = detectionMethod.maxTopScreenFraction?.let { fraction ->
+            val clampedFraction = fraction.coerceIn(0f, 1f)
+            rootBounds.top + (rootBounds.height() * clampedFraction).toInt()
+        }
+
+        return hasVisibleNodeMatching { node ->
+            val contentDescription = node.contentDescription?.toString() ?: return@hasVisibleNodeMatching false
+            val matchesPrefix = detectionMethod.prefixes.any(contentDescription::startsWith)
+            if (!matchesPrefix) {
+                return@hasVisibleNodeMatching false
+            }
+
+            val nodeBounds = android.graphics.Rect().also(node::getBoundsInScreen)
+            val matchesSelectedState = !detectionMethod.requireSelected || node.isSelected
+            val matchesTopConstraint = maxTop == null || nodeBounds.bottom <= maxTop
+            matchesSelectedState && matchesTopConstraint
+        }
+    }
+
+    private fun AccessibilityNodeInfo.hasVisibleNodeMatching(matchesNode: (AccessibilityNodeInfo) -> Boolean): Boolean {
         val nodesToVisit = ArrayDeque<AccessibilityNodeInfo>()
         nodesToVisit.add(this)
 
         while (nodesToVisit.isNotEmpty()) {
             val node = nodesToVisit.removeFirst()
-            if (isNodeVisibleToTheUser(node) && node.contentDescription?.toString() in contentDescriptions) {
+            if (isNodeVisibleToTheUser(node) && matchesNode(node)) {
                 return true
             }
 
