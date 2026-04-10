@@ -41,8 +41,11 @@
     <string name="settings_section_blocking">Blocking</string>
     <string name="settings_pause_duration_title">Pause Duration</string>
     <string name="settings_pause_duration_description">How long blocking is paused when you tap Pause.</string>
-    <string name="settings_pause_duration_value">%1$d minutes</string>
-
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d minute</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
+    <string name="back">Back</string>
     <string name="feature_coming_soon">Feature coming soon</string>
     <string name="time_limit_dialog_title">Set Daily Limit Time</string>
     <string name="interval_timer_card_title">Interval timer schedule</string>

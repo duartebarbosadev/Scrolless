@@ -1571,7 +1571,7 @@ fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     FilledTonalIconButton(onClick = onClick, modifier = modifier) {
         Icon(
             painter = painterResource(id = R.drawable.baseline_help_outline_24),
-            contentDescription = stringResource(R.string.cd_add),
+            contentDescription = stringResource(R.string.help),
             tint = MaterialTheme.colorScheme.onSurface,
         )
     }

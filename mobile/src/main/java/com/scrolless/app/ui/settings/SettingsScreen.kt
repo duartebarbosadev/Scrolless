@@ -40,19 +40,37 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.scrolless.app.R
+import com.scrolless.app.ui.theme.ScrollessTheme
 import kotlin.math.roundToInt
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifier, viewModel: SettingsViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    SettingsScreenContent(
+        uiState = uiState,
+        onPauseDurationChange = viewModel::onPauseDurationChange,
+        onNavigateBack = onNavigateBack,
+        modifier = modifier,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SettingsScreenContent(
+    uiState: SettingsUiState,
+    onPauseDurationChange: (Int) -> Unit,
+    onNavigateBack: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -62,7 +80,7 @@ fun SettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifier, vi
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             painter = painterResource(R.drawable.ic_arrow_back),
-                            contentDescription = null,
+                            contentDescription = stringResource(R.string.back),
                         )
                     }
                 },
@@ -81,7 +99,7 @@ fun SettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifier, vi
             SettingsGroup {
                 PauseDurationItem(
                     pauseDurationMinutes = uiState.pauseDurationMinutes,
-                    onPauseDurationChange = viewModel::onPauseDurationChange,
+                    onPauseDurationChange = onPauseDurationChange,
                 )
             }
         }
@@ -129,7 +147,7 @@ private fun PauseDurationItem(pauseDurationMinutes: Int, onPauseDurationChange: 
                 modifier = Modifier.weight(1f),
             )
             Text(
-                text = stringResource(R.string.settings_pause_duration_value, pauseDurationMinutes),
+                text = pluralStringResource(R.plurals.settings_pause_duration_value, pauseDurationMinutes, pauseDurationMinutes),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                 color = MaterialTheme.colorScheme.primary,
             )
@@ -141,9 +159,23 @@ private fun PauseDurationItem(pauseDurationMinutes: Int, onPauseDurationChange: 
         )
         Slider(
             value = pauseDurationMinutes.toFloat(),
-            onValueChange = { onPauseDurationChange(it.roundToInt()) },
-            valueRange = 1f..30f,
+            onValueChange = {
+                onPauseDurationChange(it.roundToInt())
+            },
+            valueRange = 1f..15f,
             modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun SettingsScreenPreview() {
+    ScrollessTheme {
+        SettingsScreenContent(
+            uiState = SettingsUiState(pauseDurationMinutes = 5),
+            onPauseDurationChange = {},
+            onNavigateBack = {},
         )
     }
 }
