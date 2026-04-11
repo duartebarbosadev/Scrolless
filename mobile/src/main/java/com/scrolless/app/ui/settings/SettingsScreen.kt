@@ -36,6 +36,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -132,6 +135,10 @@ private fun SettingsGroup(modifier: Modifier = Modifier, content: @Composable ()
 
 @Composable
 private fun PauseDurationItem(pauseDurationMinutes: Int, onPauseDurationChange: (Int) -> Unit, modifier: Modifier = Modifier) {
+    var sliderValue by remember(pauseDurationMinutes) {
+        mutableIntStateOf(pauseDurationMinutes)
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -147,7 +154,7 @@ private fun PauseDurationItem(pauseDurationMinutes: Int, onPauseDurationChange: 
                 modifier = Modifier.weight(1f),
             )
             Text(
-                text = pluralStringResource(R.plurals.settings_pause_duration_value, pauseDurationMinutes, pauseDurationMinutes),
+                text = pluralStringResource(R.plurals.settings_pause_duration_value, sliderValue, sliderValue),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
                 color = MaterialTheme.colorScheme.primary,
             )
@@ -158,9 +165,14 @@ private fun PauseDurationItem(pauseDurationMinutes: Int, onPauseDurationChange: 
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Slider(
-            value = pauseDurationMinutes.toFloat(),
+            value = sliderValue.toFloat(),
             onValueChange = {
-                onPauseDurationChange(it.roundToInt())
+                sliderValue = it.roundToInt()
+            },
+            onValueChangeFinished = {
+                if (sliderValue != pauseDurationMinutes) {
+                    onPauseDurationChange(sliderValue)
+                }
             },
             valueRange = 1f..15f,
             modifier = Modifier.fillMaxWidth(),
