@@ -79,4 +79,13 @@
     <string name="show_onscreen_timer">Visa timer på skärmen</string>
     <string name="timer_overlay_description">Håll en flytande timer synlig medan du tittar på brainrot-innehåll.</string>
     <string name="limit_chip">%1$s gräns</string>
+    <string name="back">Tillbaka</string>
+    <string name="settings">Inställningar</string>
+    <string name="settings_pause_duration_description">Hur länge blockeringen pausas när du trycker på Pausa.</string>
+    <string name="settings_pause_duration_title">Pauslängd</string>
+    <string name="settings_section_blocking">Blockering</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="other">%1$d minuter</item>
+        <item quantity="one">%1$d minut</item>
+    </plurals>
 </resources>

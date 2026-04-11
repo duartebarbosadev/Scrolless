@@ -79,4 +79,14 @@
     <string name="show_onscreen_timer">Prikaži tajmer na ekranu</string>
     <string name="timer_overlay_description">Držite plutajući tajmer vidljivim dok gledate brainrot sadržaj.</string>
     <string name="limit_chip">%1$s ograničenje</string>
+    <string name="back">Nazad</string>
+    <string name="settings">Podešavanja</string>
+    <string name="settings_pause_duration_description">Koliko dugo je blokiranje pauzirano kada dodirnete Pauziraj.</string>
+    <string name="settings_pause_duration_title">Trajanje pauze</string>
+    <string name="settings_section_blocking">Blokiranje</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="other">%1$d minuta</item>
+        <item quantity="one">%1$d minut</item>
+        <item quantity="few">%1$d minuta</item>
+    </plurals>
 </resources>

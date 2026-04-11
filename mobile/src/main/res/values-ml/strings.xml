@@ -79,4 +79,13 @@
     <string name="show_onscreen_timer">ഓൺ-സ്ക്രീൻ ടൈമർ കാണിക്കുക</string>
     <string name="timer_overlay_description">brainrot ഉള്ളടക്കം കാണുമ്പോൾ ഒരു ഫ്ലോട്ടിംഗ് ടൈമർ ദൃശ്യമായി നിലനിർത്തുക.</string>
     <string name="limit_chip">%1$s പരിധി</string>
+    <string name="back">തിരികെ</string>
+    <string name="settings">ക്രമീകരണങ്ങൾ</string>
+    <string name="settings_pause_duration_description">നിങ്ങൾ താൽക്കാലികമായി നിർത്തുക ടാപ്പുചെയ്യുമ്പോൾ എത്രനേരം തടയുന്നത് താൽക്കാലികമായി നിർത്തുന്നു.</string>
+    <string name="settings_pause_duration_title">താൽക്കാലികമായി നിർത്തുന്ന സമയം</string>
+    <string name="settings_section_blocking">തടയുന്നു</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="other">%1$d മിനിറ്റ്</item>
+        <item quantity="one">%1$d മിനിറ്റ്</item>
+    </plurals>
 </resources>

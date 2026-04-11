@@ -79,4 +79,13 @@
     <string name="show_onscreen_timer">திரையில் நேரத்தைக் காட்டு</string>
     <string name="timer_overlay_description">brain rot உள்ளடக்கத்தைப் பார்க்கும்போது மிதக்கும் டைமரைத் தெரியும்படி வைத்திருங்கள்.</string>
     <string name="limit_chip">%1$s வரம்பு</string>
+    <string name="back">பின்செல்க</string>
+    <string name="settings">அமைப்புகள்</string>
+    <string name="settings_pause_duration_description">நீங்கள் இடைநிறுத்து என்பதைத் தட்டும்போது எவ்வளவு நேரம் தடுப்பது இடைநிறுத்தப்படும்.</string>
+    <string name="settings_pause_duration_title">இடைநிறுத்த கால அளவு</string>
+    <string name="settings_section_blocking">தடுப்பது</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d நிமிடம்</item>
+        <item quantity="other">%1$d நிமிடங்கள்</item>
+    </plurals>
 </resources>

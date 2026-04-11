@@ -79,4 +79,13 @@
     <string name="show_onscreen_timer">ऑन-स्क्रीन टाइमर दिखाएं</string>
     <string name="timer_overlay_description">brainrot सामग्री देखते समय एक फ़्लोटिंग टाइमर दृश्यमान रखें।</string>
     <string name="limit_chip">%1$s सीमा</string>
+    <string name="back">वापस</string>
+    <string name="settings">सेटिंग्स</string>
+    <string name="settings_pause_duration_description">जब आप रोकें पर टैप करते हैं तो ब्लॉकिंग कितनी देर के लिए रोकी जाती है।</string>
+    <string name="settings_pause_duration_title">रोकने की अवधि</string>
+    <string name="settings_section_blocking">ब्लॉकिंग</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="other">%1$d मिनट</item>
+        <item quantity="one">%1$d मिनट</item>
+    </plurals>
 </resources>

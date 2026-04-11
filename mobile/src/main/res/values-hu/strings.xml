@@ -79,4 +79,13 @@
     <string name="show_onscreen_timer">Képernyőn megjelenő időzítő mutatása</string>
     <string name="timer_overlay_description">Tartson láthatóan egy lebegő időzítőt a brain rot tartalom nézése közben.</string>
     <string name="limit_chip">%1$s limit</string>
+    <string name="back">Vissza</string>
+    <string name="settings">Beállítások</string>
+    <string name="settings_pause_duration_description">Mennyi ideig szünetel a blokkolás, amikor megérinti a Szünet gombot.</string>
+    <string name="settings_pause_duration_title">Szünet időtartama</string>
+    <string name="settings_section_blocking">Blokkolás</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="other">%1$d perc</item>
+        <item quantity="one">%1$d perc</item>
+    </plurals>
 </resources>

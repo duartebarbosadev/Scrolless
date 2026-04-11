@@ -79,4 +79,13 @@
     <string name="show_onscreen_timer">Mostrar cronômetro na tela</string>
     <string name="timer_overlay_description">Manter um cronômetro flutuante visível enquanto assiste a conteúdo brain rot.</string>
     <string name="limit_chip">Limite de %1$s</string>
+    <string name="back">Voltar</string>
+    <string name="settings">Configurações</string>
+    <string name="settings_pause_duration_description">Por quanto tempo o bloqueio é pausado quando você toca em Pausar.</string>
+    <string name="settings_pause_duration_title">Duração da Pausa</string>
+    <string name="settings_section_blocking">Bloqueio</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="other">%1$d minutos</item>
+        <item quantity="one">%1$d minuto</item>
+    </plurals>
 </resources>

@@ -79,4 +79,13 @@
     <string name="show_onscreen_timer">顯示螢幕計時器</string>
     <string name="timer_overlay_description">觀看 brainrot 內容時，保持浮動計時器可見。</string>
     <string name="limit_chip">%1$s 限制</string>
+    <string name="back">返回</string>
+    <string name="settings">設定</string>
+    <string name="settings_pause_duration_description">點擊「暫停」時，封鎖會暫停多久。</string>
+    <string name="settings_pause_duration_title">暫停持續時間</string>
+    <string name="settings_section_blocking">封鎖</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d 分鐘</item>
+        <item quantity="other">%1$d 分鐘</item>
+    </plurals>
 </resources>

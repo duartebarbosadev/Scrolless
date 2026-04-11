@@ -79,4 +79,14 @@
     <string name="show_onscreen_timer">Zobraziť časovač na obrazovke</string>
     <string name="timer_overlay_description">Ponechať plávajúci časovač viditeľný počas sledovania obsahu brainrot.</string>
     <string name="limit_chip">%1$s limit</string>
+    <string name="back">Späť</string>
+    <string name="settings">Nastavenia</string>
+    <string name="settings_pause_duration_description">Ako dlho je blokovanie pozastavené, keď ťuknete na Pozastaviť.</string>
+    <string name="settings_pause_duration_title">Trvanie pozastavenia</string>
+    <string name="settings_section_blocking">Blokovanie</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="other">%1$d minút</item>
+        <item quantity="few">%1$d minúty</item>
+        <item quantity="one">%1$d minúta</item>
+    </plurals>
 </resources>

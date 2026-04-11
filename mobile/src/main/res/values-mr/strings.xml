@@ -79,4 +79,13 @@
     <string name="show_onscreen_timer">ऑन-स्क्रीन टाइमर दाखवा</string>
     <string name="timer_overlay_description">brain rot सामग्री पाहताना फ्लोटिंग टाइमर दृश्यमान ठेवा.</string>
     <string name="limit_chip">%1$s मर्यादा</string>
+    <string name="back">मागे</string>
+    <string name="settings">सेटिंग्ज</string>
+    <string name="settings_pause_duration_description">तुम्ही विराम टॅप करता तेव्हा ब्लॉकिंग किती काळ थांबवले जाते.</string>
+    <string name="settings_pause_duration_title">विरामाचा कालावधी</string>
+    <string name="settings_section_blocking">ब्लॉकिंग</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="other">%1$d मिनिटे</item>
+        <item quantity="one">%1$d मिनिट</item>
+    </plurals>
 </resources>

@@ -79,4 +79,13 @@
     <string name="show_onscreen_timer">显示屏幕计时器</string>
     <string name="timer_overlay_description">在观看 brain rot 内容时，保持浮动计时器可见。</string>
     <string name="limit_chip">%1$s 限制</string>
+    <string name="back">返回</string>
+    <string name="settings">设置</string>
+    <string name="settings_pause_duration_description">点击“暂停”时，阻止功能暂停的时长。</string>
+    <string name="settings_pause_duration_title">暂停时长</string>
+    <string name="settings_section_blocking">阻止</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d 分钟</item>
+        <item quantity="other">%1$d 分钟</item>
+    </plurals>
 </resources>

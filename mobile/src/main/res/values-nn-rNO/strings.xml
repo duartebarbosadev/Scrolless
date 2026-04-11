@@ -79,4 +79,13 @@
     <string name="show_onscreen_timer">Vis tidtakar på skjermen</string>
     <string name="timer_overlay_description">Hald ein flytande tidtakar synleg medan du ser på brain rot-innhald.</string>
     <string name="limit_chip">%1$s grense</string>
+    <string name="back">Tilbake</string>
+    <string name="settings">Innstillingar</string>
+    <string name="settings_pause_duration_description">Kor lenge blokkeringa blir sett på pause når du trykkjer Pause.</string>
+    <string name="settings_pause_duration_title">Pauselengd</string>
+    <string name="settings_section_blocking">Blokkering</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="other">%1$d minutt</item>
+        <item quantity="one">%1$d minutt</item>
+    </plurals>
 </resources>

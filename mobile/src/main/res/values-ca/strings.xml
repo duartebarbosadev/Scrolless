@@ -79,4 +79,13 @@
     <string name="show_onscreen_timer">Mostra el temporitzador en pantalla</string>
     <string name="timer_overlay_description">Mantén un temporitzador flotant visible mentre mires contingut brain rot.</string>
     <string name="limit_chip">%1$s de límit</string>
+    <string name="back">Enrere</string>
+    <string name="settings">Configuració</string>
+    <string name="settings_pause_duration_description">Quant de temps es pausa el bloqueig quan toques Pausa.</string>
+    <string name="settings_pause_duration_title">Durada de la pausa</string>
+    <string name="settings_section_blocking">Bloqueig</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d minut</item>
+        <item quantity="other">%1$d minuts</item>
+    </plurals>
 </resources>
