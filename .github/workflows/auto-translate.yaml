@@ -31,7 +31,7 @@ jobs:
         with:
           project_context: "Scrolless is an Android app that helps users reduce time spent on social media by limiting endless scrolling of Reels, Shorts, and TikToks. Do not translate the term 'brainrot'; keep it in English in languages where the English expression is commonly understood."
           log_trace: "true"
-          model: google/gemma-4-31b-it:free
+          model: google/gemini-3.1-flash-lite-preview
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
 
