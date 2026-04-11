@@ -79,4 +79,14 @@
     <string name="show_onscreen_timer">Afficher le minuteur à l\'écran</string>
     <string name="timer_overlay_description">Garder un minuteur flottant visible pendant que vous regardez du contenu brainrot.</string>
     <string name="limit_chip">Limite de %1$s</string>
+    <string name="back">Retour</string>
+    <string name="settings">Paramètres</string>
+    <string name="settings_pause_duration_description">Durée de la pause du blocage lorsque vous appuyez sur Pause.</string>
+    <string name="settings_pause_duration_title">Durée de la pause</string>
+    <string name="settings_section_blocking">Blocage</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d minute</item>
+        <item quantity="many">%1$d minutes</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
 </resources>

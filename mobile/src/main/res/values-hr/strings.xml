@@ -79,4 +79,14 @@
     <string name="show_onscreen_timer">Prikaži mjerač vremena na zaslonu</string>
     <string name="timer_overlay_description">Držite plutajući mjerač vremena vidljivim dok gledate sadržaj brain rot.</string>
     <string name="limit_chip">%1$s ograničenje</string>
+    <string name="back">Natrag</string>
+    <string name="settings">Postavke</string>
+    <string name="settings_pause_duration_description">Koliko dugo je blokiranje pauzirano kada dodirnete „Pauziraj”.</string>
+    <string name="settings_pause_duration_title">Trajanje pauze</string>
+    <string name="settings_section_blocking">Blokiranje</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d minuta</item>
+        <item quantity="other">%1$d minuta</item>
+        <item quantity="few">%1$d minute</item>
+    </plurals>
 </resources>

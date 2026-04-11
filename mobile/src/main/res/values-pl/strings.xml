@@ -79,4 +79,15 @@
     <string name="show_onscreen_timer">Pokaż minutnik na ekranie</string>
     <string name="timer_overlay_description">Utrzymuj widoczny pływający minutnik podczas oglądania treści typu brain rot.</string>
     <string name="limit_chip">%1$s limit</string>
+    <string name="back">Wstecz</string>
+    <string name="settings">Ustawienia</string>
+    <string name="settings_pause_duration_description">Jak długo blokowanie jest wstrzymane po dotknięciu przycisku Pauza.</string>
+    <string name="settings_pause_duration_title">Czas trwania pauzy</string>
+    <string name="settings_section_blocking">Blokowanie</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d minuta</item>
+        <item quantity="few">%1$d minuty</item>
+        <item quantity="many">%1$d minut</item>
+        <item quantity="other">%1$d minuty</item>
+    </plurals>
 </resources>

@@ -79,4 +79,14 @@
     <string name="show_onscreen_timer">Mostrar temporizador en pantalla</string>
     <string name="timer_overlay_description">Mantener un temporizador flotante visible mientras ves contenido brain rot.</string>
     <string name="limit_chip">Límite de %1$s</string>
+    <string name="back">Atrás</string>
+    <string name="settings">Ajustes</string>
+    <string name="settings_pause_duration_description">Cuánto tiempo se pausa el bloqueo cuando tocas Pausar.</string>
+    <string name="settings_pause_duration_title">Duración de la pausa</string>
+    <string name="settings_section_blocking">Bloqueo</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d minuto</item>
+        <item quantity="many">%1$d minutos</item>
+        <item quantity="other">%1$d minutos</item>
+    </plurals>
 </resources>

@@ -79,4 +79,14 @@
     <string name="show_onscreen_timer">Mostra timer su schermo</string>
     <string name="timer_overlay_description">Mantieni un timer mobile visibile mentre guardi contenuti brainrot.</string>
     <string name="limit_chip">Limite di %1$s</string>
+    <string name="back">Indietro</string>
+    <string name="settings">Impostazioni</string>
+    <string name="settings_pause_duration_description">Per quanto tempo il blocco viene messo in pausa quando tocchi Pausa.</string>
+    <string name="settings_pause_duration_title">Durata della pausa</string>
+    <string name="settings_section_blocking">Blocco</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d minuto</item>
+        <item quantity="many">%1$d minuti</item>
+        <item quantity="other">%1$d minuti</item>
+    </plurals>
 </resources>

@@ -79,4 +79,15 @@
     <string name="show_onscreen_timer">Показывать таймер на экране</string>
     <string name="timer_overlay_description">Отображать плавающий таймер во время просмотра контента brainrot.</string>
     <string name="limit_chip">%1$s лимит</string>
+    <string name="back">Назад</string>
+    <string name="settings">Настройки</string>
+    <string name="settings_pause_duration_description">Как долго блокировка будет приостановлена после нажатия «Пауза».</string>
+    <string name="settings_pause_duration_title">Длительность паузы</string>
+    <string name="settings_section_blocking">Блокировка</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d минута</item>
+        <item quantity="few">%1$d минуты</item>
+        <item quantity="many">%1$d минут</item>
+        <item quantity="other">%1$d минут</item>
+    </plurals>
 </resources>

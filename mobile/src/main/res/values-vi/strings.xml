@@ -79,4 +79,12 @@
     <string name="show_onscreen_timer">Hiển thị đồng hồ đếm giờ trên màn hình</string>
     <string name="timer_overlay_description">Giữ đồng hồ đếm giờ nổi hiển thị trong khi xem nội dung brainrot.</string>
     <string name="limit_chip">Giới hạn %1$s</string>
+    <string name="back">Quay lại</string>
+    <string name="settings">Cài đặt</string>
+    <string name="settings_pause_duration_description">Thời gian tạm dừng chặn khi bạn chạm vào Tạm dừng.</string>
+    <string name="settings_pause_duration_title">Thời lượng tạm dừng</string>
+    <string name="settings_section_blocking">Chặn</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="other">%1$d phút</item>
+    </plurals>
 </resources>

@@ -79,4 +79,13 @@
     <string name="show_onscreen_timer">Näytä ajastin näytöllä</string>
     <string name="timer_overlay_description">Pidä kelluva ajastin näkyvissä katsoessasi brainrot-sisältöä.</string>
     <string name="limit_chip">%1$s raja</string>
+    <string name="back">Takaisin</string>
+    <string name="settings">Asetukset</string>
+    <string name="settings_pause_duration_description">Kuinka pitkäksi aikaa esto keskeytetään, kun napautat Keskeytä.</string>
+    <string name="settings_pause_duration_title">Keskeytyksen kesto</string>
+    <string name="settings_section_blocking">Esto</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="other">%1$d minuuttia</item>
+        <item quantity="one">%1$d minuutti</item>
+    </plurals>
 </resources>

@@ -79,4 +79,14 @@
     <string name="show_onscreen_timer">Afișează cronometrul pe ecran</string>
     <string name="timer_overlay_description">Menține un cronometru plutitor vizibil în timp ce urmărești conținut brainrot.</string>
     <string name="limit_chip">limită %1$s</string>
+    <string name="back">Înapoi</string>
+    <string name="settings">Setări</string>
+    <string name="settings_pause_duration_description">Cât timp este pusă pe pauză blocarea când atingeți „Pauză”.</string>
+    <string name="settings_pause_duration_title">Durata pauzei</string>
+    <string name="settings_section_blocking">Blocare</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="other">%1$d minute</item>
+        <item quantity="one">%1$d minut</item>
+        <item quantity="few">%1$d minute</item>
+    </plurals>
 </resources>

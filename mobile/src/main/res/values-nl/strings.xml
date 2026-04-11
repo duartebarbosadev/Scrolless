@@ -79,4 +79,13 @@
     <string name="show_onscreen_timer">Toon timer op scherm</string>
     <string name="timer_overlay_description">Houd een zwevende timer zichtbaar tijdens het kijken naar brain rot-content.</string>
     <string name="limit_chip">%1$s limiet</string>
+    <string name="back">Terug</string>
+    <string name="settings">Instellingen</string>
+    <string name="settings_pause_duration_description">Hoe lang het blokkeren wordt gepauzeerd wanneer u op Pauzeren tikt.</string>
+    <string name="settings_pause_duration_title">Pauzeduur</string>
+    <string name="settings_section_blocking">Blokkeren</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d minuut</item>
+        <item quantity="other">%1$d minuten</item>
+    </plurals>
 </resources>
