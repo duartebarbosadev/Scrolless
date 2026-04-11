@@ -43,6 +43,7 @@ import androidx.navigation.compose.rememberNavController
  */
 sealed class Screen(val route: String) {
     object Scrolless : Screen("scrolless")
+    object Settings : Screen("settings")
 }
 
 @Composable

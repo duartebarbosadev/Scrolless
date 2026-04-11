@@ -54,6 +54,9 @@ interface UserSettingsStore {
     fun getPauseUntil(): Flow<Long>
     suspend fun setPauseUntil(pauseUntil: Long)
 
+    fun getPauseDuration(): Flow<Long>
+    suspend fun setPauseDuration(durationMillis: Long)
+
     fun getFirstLaunchAt(): Flow<Long>
     suspend fun setFirstLaunchAt(firstLaunchAt: Long)
 

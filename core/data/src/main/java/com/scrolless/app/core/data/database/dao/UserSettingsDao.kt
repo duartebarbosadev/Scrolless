@@ -120,4 +120,10 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
 
     @Query("UPDATE user_settings SET review_prompt_last_attempt_at = :timestamp WHERE id = 1")
     abstract suspend fun setReviewPromptLastAttemptAt(timestamp: Long)
+
+    @Query("SELECT pause_duration_millis FROM user_settings WHERE id = 1")
+    abstract fun getPauseDuration(): Flow<Long>
+
+    @Query("UPDATE user_settings SET pause_duration_millis = :durationMillis WHERE id = 1")
+    abstract suspend fun setPauseDuration(durationMillis: Long)
 }
