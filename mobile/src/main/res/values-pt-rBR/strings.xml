@@ -82,10 +82,11 @@
     <string name="back">Voltar</string>
     <string name="settings">Configurações</string>
     <string name="settings_pause_duration_description">Por quanto tempo o bloqueio é pausado quando você toca em Pausar.</string>
-    <string name="settings_pause_duration_title">Duração da Pausa</string>
+    <string name="settings_pause_duration_title">Duração da pausa</string>
     <string name="settings_section_blocking">Bloqueio</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d minutos</item>
+        <item quantity="many">%1$d minutos</item>
         <item quantity="one">%1$d minuto</item>
     </plurals>
 </resources>

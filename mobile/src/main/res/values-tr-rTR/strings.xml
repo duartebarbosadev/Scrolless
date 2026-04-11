@@ -81,8 +81,8 @@
     <string name="limit_chip">%1$s sınırı</string>
     <string name="back">Geri</string>
     <string name="settings">Ayarlar</string>
-    <string name="settings_pause_duration_description">Duraklat\'a dokunduğunuzda engellemenin ne kadar süre duraklatılacağı.</string>
-    <string name="settings_pause_duration_title">Duraklatma Süresi</string>
+    <string name="settings_pause_duration_description">Duraklat’a dokunduğunuzda engellemenin ne kadar süre duraklatılacağı.</string>
+    <string name="settings_pause_duration_title">Duraklatma süresi</string>
     <string name="settings_section_blocking">Engelleme</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d dakika</item>

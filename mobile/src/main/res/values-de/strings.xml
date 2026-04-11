@@ -81,9 +81,9 @@
     <string name="limit_chip">%1$s Limit</string>
     <string name="back">Zurück</string>
     <string name="settings">Einstellungen</string>
-    <string name="settings_pause_duration_description">Wie lange die Blockierung pausiert wird, wenn Sie auf „Pause“ tippen.</string>
+    <string name="settings_pause_duration_description">Wie lange das Blockieren pausiert wird, wenn Sie auf „Pause“ tippen.</string>
     <string name="settings_pause_duration_title">Pausendauer</string>
-    <string name="settings_section_blocking">Blockierung</string>
+    <string name="settings_section_blocking">Blockieren</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d Minuten</item>
         <item quantity="one">%1$d Minute</item>

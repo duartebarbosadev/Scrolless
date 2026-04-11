@@ -81,9 +81,9 @@
     <string name="limit_chip">%1$s raja</string>
     <string name="back">Takaisin</string>
     <string name="settings">Asetukset</string>
-    <string name="settings_pause_duration_description">Kuinka kauan esto on keskeytettynä, kun napautat Keskeytä.</string>
+    <string name="settings_pause_duration_description">Kuinka pitkäksi aikaa esto keskeytetään, kun napautat Keskeytä.</string>
     <string name="settings_pause_duration_title">Keskeytyksen kesto</string>
-    <string name="settings_section_blocking">Estäminen</string>
+    <string name="settings_section_blocking">Esto</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d minuuttia</item>
         <item quantity="one">%1$d minuutti</item>

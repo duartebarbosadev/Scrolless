@@ -81,9 +81,9 @@
     <string name="limit_chip">%1$s வரம்பு</string>
     <string name="back">பின்செல்க</string>
     <string name="settings">அமைப்புகள்</string>
-    <string name="settings_pause_duration_description">நீங்கள் இடைநிறுத்து என்பதைத் தட்டும்போது எவ்வளவு நேரம் தடுப்பது இடைநிறுத்தப்படும்.</string>
+    <string name="settings_pause_duration_description">நீங்கள் இடைநிறுத்து என்பதைத் தட்டும்போது, தடுப்பு எவ்வளவு நேரம் நிறுத்தி வைக்கப்படும்.</string>
     <string name="settings_pause_duration_title">இடைநிறுத்த கால அளவு</string>
-    <string name="settings_section_blocking">தடுப்பது</string>
+    <string name="settings_section_blocking">தடுப்பு</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="one">%1$d நிமிடம்</item>
         <item quantity="other">%1$d நிமிடங்கள்</item>

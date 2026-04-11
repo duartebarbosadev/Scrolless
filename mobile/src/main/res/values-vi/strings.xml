@@ -82,10 +82,9 @@
     <string name="back">Quay lại</string>
     <string name="settings">Cài đặt</string>
     <string name="settings_pause_duration_description">Thời gian tạm dừng chặn khi bạn chạm vào Tạm dừng.</string>
-    <string name="settings_pause_duration_title">Thời lượng Tạm dừng</string>
+    <string name="settings_pause_duration_title">Thời lượng tạm dừng</string>
     <string name="settings_section_blocking">Chặn</string>
     <plurals name="settings_pause_duration_value">
-        <item quantity="one">%1$d phút</item>
         <item quantity="other">%1$d phút</item>
     </plurals>
 </resources>

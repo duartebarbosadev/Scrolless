@@ -86,6 +86,7 @@
     <string name="settings_section_blocking">Bloqueig</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="one">%1$d minut</item>
+        <item quantity="many">%1$d minuts</item>
         <item quantity="other">%1$d minuts</item>
     </plurals>
 </resources>

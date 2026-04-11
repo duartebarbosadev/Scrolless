@@ -85,9 +85,9 @@
     <string name="settings_pause_duration_title">Czas trwania pauzy</string>
     <string name="settings_section_blocking">Blokowanie</string>
     <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d minuta</item>
         <item quantity="few">%1$d minuty</item>
         <item quantity="many">%1$d minut</item>
         <item quantity="other">%1$d minuty</item>
-        <item quantity="one">%1$d minuta</item>
     </plurals>
 </resources>

@@ -81,8 +81,8 @@
     <string name="limit_chip">limită %1$s</string>
     <string name="back">Înapoi</string>
     <string name="settings">Setări</string>
-    <string name="settings_pause_duration_description">Cât timp este întreruptă blocarea când atingeți Pauză.</string>
-    <string name="settings_pause_duration_title">Durată pauză</string>
+    <string name="settings_pause_duration_description">Cât timp este pusă pe pauză blocarea când atingeți „Pauză”.</string>
+    <string name="settings_pause_duration_title">Durata pauzei</string>
     <string name="settings_section_blocking">Blocare</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d minute</item>

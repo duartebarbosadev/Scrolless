@@ -85,7 +85,7 @@
     <string name="settings_pause_duration_title">Pauselengd</string>
     <string name="settings_section_blocking">Blokkering</string>
     <plurals name="settings_pause_duration_value">
-        <item quantity="other">%1$d minutt</item>
         <item quantity="one">%1$d minutt</item>
+        <item quantity="other">%1$d minuttar</item>
     </plurals>
 </resources>

@@ -81,11 +81,10 @@
     <string name="limit_chip">%1$sの制限</string>
     <string name="back">戻る</string>
     <string name="settings">設定</string>
-    <string name="settings_pause_duration_description">一時停止をタップしたときにブロックが一時停止する時間です。</string>
-    <string name="settings_pause_duration_title">一時停止時間</string>
+    <string name="settings_pause_duration_description">「一時停止」をタップしたときにブロックを停止する時間です。</string>
+    <string name="settings_pause_duration_title">一時停止の長さ</string>
     <string name="settings_section_blocking">ブロック</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d分</item>
-        <item quantity="one">%1$d分</item>
     </plurals>
 </resources>

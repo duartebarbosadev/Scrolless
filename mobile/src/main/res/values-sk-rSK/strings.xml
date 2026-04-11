@@ -81,12 +81,13 @@
     <string name="limit_chip">%1$s limit</string>
     <string name="back">Späť</string>
     <string name="settings">Nastavenia</string>
-    <string name="settings_pause_duration_description">Ako dlho je blokovanie pozastavené, keď ťuknete na Pozastaviť.</string>
+    <string name="settings_pause_duration_description">Ako dlho bude blokovanie pozastavené, keď ťuknete na „Pozastaviť”.</string>
     <string name="settings_pause_duration_title">Trvanie pozastavenia</string>
     <string name="settings_section_blocking">Blokovanie</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d minút</item>
         <item quantity="few">%1$d minúty</item>
+        <item quantity="many">%1$d minúty</item>
         <item quantity="one">%1$d minúta</item>
     </plurals>
 </resources>

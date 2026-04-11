@@ -81,8 +81,8 @@
     <string name="limit_chip">%1$s मर्यादा</string>
     <string name="back">मागे</string>
     <string name="settings">सेटिंग्ज</string>
-    <string name="settings_pause_duration_description">तुम्ही विराम टॅप करता तेव्हा ब्लॉकिंग किती काळ थांबवले जाते.</string>
-    <string name="settings_pause_duration_title">विरामाचा कालावधी</string>
+    <string name="settings_pause_duration_description">तुम्ही पॉज टॅप करता तेव्हा ब्लॉकिंग किती वेळ थांबवायचे.</string>
+    <string name="settings_pause_duration_title">पॉज कालावधी</string>
     <string name="settings_section_blocking">ब्लॉकिंग</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d मिनिटे</item>

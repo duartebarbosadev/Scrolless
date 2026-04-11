@@ -81,7 +81,7 @@
     <string name="limit_chip">%1$s лимит</string>
     <string name="back">Назад</string>
     <string name="settings">Настройки</string>
-    <string name="settings_pause_duration_description">Как долго блокировка приостанавливается при нажатии кнопки «Пауза».</string>
+    <string name="settings_pause_duration_description">Как долго блокировка будет приостановлена после нажатия «Пауза».</string>
     <string name="settings_pause_duration_title">Длительность паузы</string>
     <string name="settings_section_blocking">Блокировка</string>
     <plurals name="settings_pause_duration_value">

@@ -81,9 +81,9 @@
     <string name="limit_chip">%1$s όριο</string>
     <string name="back">Πίσω</string>
     <string name="settings">Ρυθμίσεις</string>
-    <string name="settings_pause_duration_description">Πόσο χρόνο διακόπτεται το μπλοκάρισμα όταν πατάτε Παύση.</string>
+    <string name="settings_pause_duration_description">Για πόσο χρόνο τίθεται σε παύση ο αποκλεισμός όταν πατάτε «Παύση».</string>
     <string name="settings_pause_duration_title">Διάρκεια Παύσης</string>
-    <string name="settings_section_blocking">Μπλοκάρισμα</string>
+    <string name="settings_section_blocking">Αποκλεισμός</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d λεπτά</item>
         <item quantity="one">%1$d λεπτό</item>

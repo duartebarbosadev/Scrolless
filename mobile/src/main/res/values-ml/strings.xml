@@ -81,9 +81,9 @@
     <string name="limit_chip">%1$s പരിധി</string>
     <string name="back">തിരികെ</string>
     <string name="settings">ക്രമീകരണങ്ങൾ</string>
-    <string name="settings_pause_duration_description">നിങ്ങൾ താൽക്കാലികമായി നിർത്തുക ടാപ്പുചെയ്യുമ്പോൾ എത്രനേരം തടയുന്നത് താൽക്കാലികമായി നിർത്തുന്നു.</string>
-    <string name="settings_pause_duration_title">താൽക്കാലികമായി നിർത്തുന്ന സമയം</string>
-    <string name="settings_section_blocking">തടയുന്നു</string>
+    <string name="settings_pause_duration_description">നിങ്ങൾ പോസ് ടാപ്പ് ചെയ്യുമ്പോൾ ബ്ലോക്കിംഗ് എത്ര നേരം നിർത്തിവെക്കണമെന്ന്.</string>
+    <string name="settings_pause_duration_title">പോസ് ദൈർഘ്യം</string>
+    <string name="settings_section_blocking">ബ്ലോക്കിംഗ്</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d മിനിറ്റ്</item>
         <item quantity="one">%1$d മിനിറ്റ്</item>

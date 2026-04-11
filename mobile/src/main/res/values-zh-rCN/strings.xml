@@ -81,11 +81,10 @@
     <string name="limit_chip">%1$s 限制</string>
     <string name="back">返回</string>
     <string name="settings">设置</string>
-    <string name="settings_pause_duration_description">点击“暂停”时，阻止功能暂停的时长。</string>
+    <string name="settings_pause_duration_description">点击“暂停”后，拦截功能会暂停多长时间。</string>
     <string name="settings_pause_duration_title">暂停时长</string>
-    <string name="settings_section_blocking">阻止</string>
+    <string name="settings_section_blocking">拦截</string>
     <plurals name="settings_pause_duration_value">
-        <item quantity="one">%1$d 分钟</item>
         <item quantity="other">%1$d 分钟</item>
     </plurals>
 </resources>

@@ -86,6 +86,7 @@
     <string name="settings_section_blocking">Blocage</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="one">%1$d minute</item>
+        <item quantity="many">%1$d minutes</item>
         <item quantity="other">%1$d minutes</item>
     </plurals>
 </resources>
