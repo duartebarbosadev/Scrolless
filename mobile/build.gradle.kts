@@ -72,6 +72,12 @@ android {
         }
     }
 
+    dependenciesInfo {
+        // Disables dependency metadata when building APKs (for IzzyOnDroid/F-Droid)
+        includeInApk = false
+    }
+
+
     val releaseKeystorePath =
         project.providers.environmentVariable("ANDROID_RELEASE_KEYSTORE_PATH")
             .orNull
