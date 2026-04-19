@@ -47,6 +47,4 @@ Scrolless app architecture is inspired by the Google open source project [Jetcas
 
 Some icons used in this app are obtained from [Icons8](https://icons8.com).
 
-## Star History
-
 [![Star History Chart](https://api.star-history.com/svg?repos=DuarteBarbosaDev/Scrolless&type=Date)](https://star-history.com/#DuarteBarbosaPT/Scrolless&Date)
