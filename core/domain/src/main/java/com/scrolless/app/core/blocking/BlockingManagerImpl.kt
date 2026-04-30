@@ -52,41 +52,43 @@ class BlockingManagerImpl @Inject constructor(
 
     @Volatile
     private var handler: BlockOptionHandler = NoBlockHandler()
-    private val persistenceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private val serviceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     /**
      * Initializes the manager with a block option configuration.
      * Sets up the appropriate handler and ensures usage data is current.
      */
-    override suspend fun init() {
-        combine(
-            userSettingsStore.getActiveBlockOption().distinctUntilChanged(),
-            userSettingsStore.getTimeLimit().distinctUntilChanged(),
-            userSettingsStore.getIntervalLength().distinctUntilChanged(),
-            userSettingsStore.getIntervalWindowStart().distinctUntilChanged(),
-            userSettingsStore.getIntervalUsage().distinctUntilChanged(),
-        ) { blockOption, timeLimit, intervalLength, intervalWindowStart, intervalUsage ->
-            val intervalState = IntervalTimerState(
-                windowStartMillis = intervalWindowStart,
-                usageMillis = intervalUsage,
-            )
-            Timber.i(
-                "Initializing blocking manager with: option=%s, timeLimit=%d, intervalLength=%d, intervalState=%s",
-                blockOption,
-                timeLimit,
-                intervalLength,
-                intervalState,
-            )
-            createHandlerForConfig(
-                blockOption,
-                timeLimit,
-                intervalLength,
-                intervalState,
-            )
-        }
-            .collect { newHandler ->
-                handler = newHandler
+    override fun init() {
+        serviceScope.launch {
+            combine(
+                userSettingsStore.getActiveBlockOption().distinctUntilChanged(),
+                userSettingsStore.getTimeLimit().distinctUntilChanged(),
+                userSettingsStore.getIntervalLength().distinctUntilChanged(),
+                userSettingsStore.getIntervalWindowStart().distinctUntilChanged(),
+                userSettingsStore.getIntervalUsage().distinctUntilChanged(),
+            ) { blockOption, timeLimit, intervalLength, intervalWindowStart, intervalUsage ->
+                val intervalState = IntervalTimerState(
+                    windowStartMillis = intervalWindowStart,
+                    usageMillis = intervalUsage,
+                )
+                Timber.i(
+                    "Initializing blocking manager with: option=%s, timeLimit=%d, intervalLength=%d, intervalState=%s",
+                    blockOption,
+                    timeLimit,
+                    intervalLength,
+                    intervalState,
+                )
+                createHandlerForConfig(
+                    blockOption,
+                    timeLimit,
+                    intervalLength,
+                    intervalState,
+                )
             }
+                .collect { newHandler ->
+                    handler = newHandler
+                }
+        }
     }
 
     /**
@@ -113,7 +115,7 @@ class BlockingManagerImpl @Inject constructor(
                 intervalLengthMillis = intervalLength,
                 initialState = intervalState,
                 onStateChanged = { state ->
-                    persistenceScope.launch {
+                    serviceScope.launch {
                         userSettingsStore.updateIntervalState(state.windowStartMillis, state.usageMillis)
                     }
                 },

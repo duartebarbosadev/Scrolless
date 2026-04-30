@@ -230,9 +230,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             }
         }
 
-        serviceScope.launch {
-            blockingManager.init()
-        }
+        // Initialize blocking manager
+        blockingManager.init()
 
         // Observe timer overlay enabled changes
         serviceScope.launch {

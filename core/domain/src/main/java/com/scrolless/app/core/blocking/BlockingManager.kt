@@ -26,7 +26,7 @@ interface BlockingManager {
     /**
      * Initializes the manager and starts observing blocking configuration changes.
      */
-    suspend fun init()
+    fun init()
 
     /**
      * Called when entering blocked content.
