@@ -110,7 +110,7 @@ enum class BlockableApp(
     fun getDetectionMethod(): DetectionMethod = detectionMethod
 
     fun getPackageIds(): List<String> = packageIds
-    
+
     fun resolvePackage(packageName: String): String? = packageName.takeIf(::matchesPackage)
 
     private fun matchesPackage(packageName: String): Boolean = packageIds.any { it == packageName }
