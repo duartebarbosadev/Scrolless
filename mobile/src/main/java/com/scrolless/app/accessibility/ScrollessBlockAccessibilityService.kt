@@ -18,6 +18,7 @@ package com.scrolless.app.accessibility
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Handler
@@ -210,6 +211,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * Called when the accessibility service is successfully connected and ready to use.
      *
      * Performs initialization:
+     * - Configures accessibility service info (event types, flags)
      * - Attaches service context to [TimerOverlayManager]
      * - Starts observing user settings for block option changes
      * - Performs initial daily usage reset check
@@ -217,6 +219,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     override fun onServiceConnected() {
         super.onServiceConnected()
         Timber.i("Accessibility service connected")
+
+        // Start with restricted configuration to save battery
+        refreshServiceConfig()
 
         // Check if we need to bring the app to foreground
         serviceScope.launch {
@@ -331,6 +336,16 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     /**
+     * Syncs package filtering with current tracking state.
+     *
+     * If the user has one of the BlockableApps open we need listen to all packages (so that we accurately detect minimises etc)
+     * Otherwise restrict back the service to only listen to restricted packages
+     */
+    private fun refreshServiceConfig() {
+        updateServiceConfig(isProcessingBlockedContent || currentForegroundBrainRotApp != null)
+    }
+
+    /**
      * Called when an accessibility event is received from the system.
      *
      * Monitors window state changes and window content changes to detect when the user
@@ -399,6 +414,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         currentForegroundBrainRotApp = nextApp
         currentBlockableApp = nextApp
+        refreshServiceConfig()
     }
 
     private fun resolveForegroundBrainRotApp(packageId: String): ResolvedBlockableApp? {
@@ -522,7 +538,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             }
             val root = window.root ?: return@any false
             val windowPackage = root.packageName?.toString() ?: return@any false
-            windowPackage.startsWith(blockableApp.packageId)
+            windowPackage == blockableApp.packageId
         }
     }
 
@@ -551,6 +567,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         isProcessingBlockedContent = true
         timeStartOnBrainRot = System.currentTimeMillis()
         Timber.d("Entered blocked content at %d (app=%s, paused=%b)", timeStartOnBrainRot, detectedApp, isPauseActive())
+
+        // Expand service scope to detect when user leaves the app (e.g. to launcher)
+        refreshServiceConfig()
 
         startPeriodicCheck()
 
@@ -617,6 +636,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         stopPeriodicCheck()
         isProcessingBlockedContent = false
 
+        // Restrict service scope again to save battery
+        refreshServiceConfig()
+
         val exitedApp = detectedApp
         if (exitedApp == null) {
             Timber.w("Blocked content exited but detectedApp is null, skipping usage recording")
@@ -681,6 +703,29 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             val success = performGlobalAction(action)
             Timber.d("Back navigation result: success=%b", success)
         }
+    }
+
+    /**
+     * Updates the accessibility service configuration to either listen to all packages or only target packages.
+     * This is necessary to know when the user has left the application
+     *
+     * @param listenToAll If true, clears package filter to receive events from all apps (needed to detect exit).
+     *                    If false, restricts events to [BlockableApp] packages only (to save battery).
+     */
+    private fun updateServiceConfig(listenToAll: Boolean) {
+        val info = serviceInfo ?: return
+
+        if (listenToAll) {
+            info.packageNames = null // Listen to all
+            Timber.d("Expanded service configuration to listen to all packages")
+
+            // Ensure windows are available for visibility-based exit checks.
+            info.flags = info.flags or AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
+        } else {
+            info.packageNames = BlockableApp.entries.flatMap { it.getPackageIds() }.toTypedArray()
+            Timber.d("Restricted service configuration to target packages only")
+        }
+        serviceInfo = info
     }
 
     /**

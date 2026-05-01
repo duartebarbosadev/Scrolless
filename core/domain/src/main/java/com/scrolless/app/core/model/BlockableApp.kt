@@ -34,60 +34,40 @@ sealed class DetectionMethod {
     data class AnyOf(val detectionMethods: List<DetectionMethod>) : DetectionMethod()
 }
 
-// PackageMatcher the information to recognize supported app package variants
-// Most of the apps work by just checking the exact package name
-//  but patched variants need prefix/suffix matching because the package can be renamed or have different variants
-//  while still being the same app family
-private sealed class PackageMatcher {
-    abstract fun matches(packageName: String): Boolean
-
-    data class Exact(private val packageId: String) : PackageMatcher() {
-        override fun matches(packageName: String): Boolean = packageName == packageId
-    }
-
-    data class Prefix(private val packagePrefix: String) : PackageMatcher() {
-        override fun matches(packageName: String): Boolean = packageName.startsWith(packagePrefix)
-    }
-
-    data class Suffix(private val packageSuffix: String) : PackageMatcher() {
-        override fun matches(packageName: String): Boolean = packageName.endsWith(packageSuffix)
-    }
-}
-
 // Declares each supported app together with the package names we match, the detection signal to look for,
 //  and the exit action to use once blocked content is found.
 @Immutable
 enum class BlockableApp(
-    private val packageMatchers: List<PackageMatcher>,
+    private val packageIds: List<String>,
     private val detectionMethod: DetectionMethod,
     private val exitStrategy: Int,
 ) {
     REELS(
-        packageMatchers = listOf(PackageMatcher.Exact("com.instagram.android")),
+        packageIds = listOf("com.instagram.android"),
         detectionMethod = DetectionMethod.ViewId("clips_viewer_view_pager"),
         exitStrategy = GLOBAL_ACTION_BACK,
     ),
     SHORTS(
-        packageMatchers = listOf(
-            PackageMatcher.Prefix("com.google.android.youtube"),
-            PackageMatcher.Exact("com.google.android.apps.youtube.kids"),
-            PackageMatcher.Suffix(".android.youtube"), // should match YouTube and other variants
+        packageIds = listOf(
+            "com.google.android.youtube",
+            "com.google.android.apps.youtube.kids",
+            "app.revanced.android.youtube",
         ),
         detectionMethod = DetectionMethod.ViewId("reel_player_page_container"),
         exitStrategy = GLOBAL_ACTION_BACK,
     ),
     TIKTOK(
-        packageMatchers = listOf(
-            PackageMatcher.Exact("com.zhiliaoapp.musically"),
-            PackageMatcher.Exact("com.ss.android.ugc.trill"),
-            PackageMatcher.Exact("com.ss.android.ugc.aweme"),
-            PackageMatcher.Exact("com.zhiliaoapp.musically.go"),
+        packageIds = listOf(
+            "com.zhiliaoapp.musically",
+            "com.ss.android.ugc.trill",
+            "com.ss.android.ugc.aweme",
+            "com.zhiliaoapp.musically.go",
         ),
         detectionMethod = DetectionMethod.ViewId("player_view"),
         exitStrategy = GLOBAL_ACTION_HOME,
     ),
     FACEBOOK(
-        packageMatchers = listOf(PackageMatcher.Exact("com.facebook.katana")),
+        packageIds = listOf("com.facebook.katana"),
         // Facebook needs several detection methods because there's different ways of watching reels
         // 1. By pressing on a reel in the main feed
         //      - Easy detection by the content descriptions Sticker & GIF
@@ -114,12 +94,12 @@ enum class BlockableApp(
         exitStrategy = GLOBAL_ACTION_BACK,
     ),
     FACEBOOK_LITE(
-        packageMatchers = listOf(PackageMatcher.Exact("com.facebook.lite")),
+        packageIds = listOf("com.facebook.lite"),
         detectionMethod = DetectionMethod.ViewId("video_view"),
         exitStrategy = GLOBAL_ACTION_BACK,
     ),
     SNAPCHAT(
-        packageMatchers = listOf(PackageMatcher.Exact("com.snapchat.android")),
+        packageIds = listOf("com.snapchat.android"),
         detectionMethod = DetectionMethod.ViewId("spotlight_container"),
         exitStrategy = GLOBAL_ACTION_BACK,
     ),
@@ -129,9 +109,11 @@ enum class BlockableApp(
 
     fun getDetectionMethod(): DetectionMethod = detectionMethod
 
+    fun getPackageIds(): List<String> = packageIds
+
     fun resolvePackage(packageName: String): String? = packageName.takeIf(::matchesPackage)
 
-    private fun matchesPackage(packageName: String): Boolean = packageMatchers.any { it.matches(packageName) }
+    private fun matchesPackage(packageName: String): Boolean = packageIds.any { it == packageName }
 }
 
 // Represents the specific package variant
