@@ -538,7 +538,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             }
             val root = window.root ?: return@any false
             val windowPackage = root.packageName?.toString() ?: return@any false
-            windowPackage.startsWith(blockableApp.packageId)
+            windowPackage == blockableApp.packageId
         }
     }
 
