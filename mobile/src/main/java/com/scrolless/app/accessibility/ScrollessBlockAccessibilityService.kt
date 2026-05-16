@@ -41,7 +41,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -145,11 +144,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private var currentTimerOverlayEnabled: Boolean = false
 
     /**
-     * Current active block option, updated reactively.
-     */
-    private var currentBlockOption: BlockOption = BlockOption.NothingSelected
-
-    /**
      * Epoch millis until which blocking logic should remain paused.
      */
     @Volatile
@@ -224,6 +218,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         refreshServiceConfig()
 
         // Check if we need to bring the app to foreground
+        // When a user first opens the app, we show the accessibility permission dialog,
+        //  we set a flag to bring the app to foreground once the permission is granted and the service is connected.
+        // (Just to improve user UX)
         serviceScope.launch {
             val waitingForAccessibility = userSettingsStore.getWaitingForAccessibility().distinctUntilChanged()
             waitingForAccessibility.collect { waiting ->
@@ -238,25 +235,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             }
         }
 
-        // Observe changes to the block config
-        serviceScope.launch {
-            val timeLimitFlow = userSettingsStore.getTimeLimit().distinctUntilChanged()
-            val intervalLengthFlow = userSettingsStore.getIntervalLength().distinctUntilChanged()
-            val blockOptionFlow = userSettingsStore.getActiveBlockOption().distinctUntilChanged()
-            combine(timeLimitFlow, intervalLengthFlow, blockOptionFlow) { _, _, blockOption -> blockOption }.collect { blockOption ->
-                Timber.d("Settings changed, re-initializing blocking manager with %s", blockOption)
-                blockingManager.init(blockOption)
-            }
-        }
+        // Initialize blocking manager
+        blockingManager.init()
 
         // Observe timer overlay enabled changes
         serviceScope.launch {
             userSettingsStore.getTimerOverlayEnabled().collect { currentTimerOverlayEnabled = it }
-        }
-
-        // Observe active block option changes
-        serviceScope.launch {
-            userSettingsStore.getActiveBlockOption().collect { currentBlockOption = it }
         }
 
         // Observe pause toggle

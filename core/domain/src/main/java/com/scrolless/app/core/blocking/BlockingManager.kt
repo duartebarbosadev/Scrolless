@@ -16,7 +16,6 @@
  */
 package com.scrolless.app.core.blocking
 
-import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingResult
 
 /**
@@ -25,11 +24,9 @@ import com.scrolless.app.core.model.BlockingResult
 interface BlockingManager {
 
     /**
-     * Initializes the manager with a block option configuration.
-     *
-     * @param blockOption The blocking option to apply.
+     * Initializes the manager and starts observing blocking configuration changes.
      */
-    suspend fun init(blockOption: BlockOption)
+    fun init()
 
     /**
      * Called when entering blocked content.
