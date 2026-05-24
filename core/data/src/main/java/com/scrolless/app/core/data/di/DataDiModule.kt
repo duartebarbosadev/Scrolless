@@ -65,6 +65,7 @@ object DataDiModule {
                 ScrollessDatabase.MIGRATION_4_5,
                 ScrollessDatabase.MIGRATION_5_6,
                 ScrollessDatabase.MIGRATION_6_7,
+                ScrollessDatabase.MIGRATION_7_8,
             ).fallbackToDestructiveMigration(true) // Not recommended but for now it shouldn't matter
             .fallbackToDestructiveMigrationOnDowngrade(true).addCallback(
                 object : RoomDatabase.Callback() {
@@ -80,9 +81,9 @@ object DataDiModule {
                                                    has_seen_accessibility_explainer, pause_until_at,
                                                    first_launch_at, has_seen_review_prompt,
                                                    review_prompt_attempt_count, review_prompt_last_attempt_at,
-                                                   pause_duration_millis)
+                                                   pause_duration_millis, except_reels_sent_by_dm)
                         VALUES (1, 'NothingSelected', 0, 0, 0, 0, 0, 0, 100, 0, 0, 0,
-                                CAST(strftime('%s','now') AS INTEGER) * 1000, 0, 0, 0, 300000)
+                                CAST(strftime('%s','now') AS INTEGER) * 1000, 0, 0, 0, 300000, 0)
                         """,
                         )
                     }

@@ -50,6 +50,7 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     private val _pauseUntil = MutableStateFlow(0L)
     private val _firstLaunchAt = MutableStateFlow(0L)
     private val _pauseDuration = MutableStateFlow(5 * 60 * 1000L)
+    private val _exceptReelsSentByDm = MutableStateFlow(false)
 
     init {
         coroutineScope.launch {
@@ -99,6 +100,9 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
         }
         coroutineScope.launch {
             userSettingsDao.getPauseDuration().collect { _pauseDuration.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getExceptReelsSentByDm().collect { _exceptReelsSentByDm.value = it }
         }
     }
 
@@ -190,6 +194,13 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     override suspend fun setPauseDuration(durationMillis: Long) {
         _pauseDuration.value = durationMillis
         userSettingsDao.setPauseDuration(durationMillis)
+    }
+
+    override fun getExceptReelsSentByDm(): Flow<Boolean> = _exceptReelsSentByDm
+
+    override suspend fun setExceptReelsSentByDm(checked: Boolean) {
+        _exceptReelsSentByDm.value = checked
+        userSettingsDao.setExceptReelsSentByDm(checked)
     }
 
     override fun getFirstLaunchAt(): Flow<Long> = _firstLaunchAt
