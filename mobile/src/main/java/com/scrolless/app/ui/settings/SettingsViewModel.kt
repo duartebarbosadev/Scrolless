@@ -58,7 +58,4 @@ class SettingsViewModel @Inject constructor(private val userSettingsStore: UserS
     }
 }
 
-data class SettingsUiState(
-    val pauseDurationMinutes: Int = 5,
-    val exceptReelsSentByDm: Boolean = false,
-)
+data class SettingsUiState(val pauseDurationMinutes: Int = 5, val exceptReelsSentByDm: Boolean = false)
