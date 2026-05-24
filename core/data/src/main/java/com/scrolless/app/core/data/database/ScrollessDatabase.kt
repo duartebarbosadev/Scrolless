@@ -34,7 +34,7 @@ import com.scrolless.app.core.data.database.model.UserSettingsEntity
         UserSettingsEntity::class,
         SessionSegmentEntity::class,
     ],
-    version = 7,
+    version = 8,
     exportSchema = false,
 )
 @TypeConverters(LocalDateTypeConverters::class, BlockableAppTypeConverters::class, LocalDateTimeTypeConverters::class)
@@ -213,6 +213,11 @@ abstract class ScrollessDatabase : RoomDatabase() {
         val MIGRATION_6_7 = object : Migration(6, 7) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE user_settings ADD COLUMN pause_duration_millis INTEGER NOT NULL DEFAULT 300000")
+            }
+        }
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE user_settings ADD COLUMN except_reels_sent_by_dm INTEGER NOT NULL DEFAULT 0")
             }
         }
     }

@@ -150,6 +150,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private var currentBlockOption: BlockOption = BlockOption.NothingSelected
 
     /**
+     * Whether Instagram Reels opened from a DM thread should be ignored by blocking detection.
+     */
+    private var currentExceptReelsSentByDm: Boolean = false
+
+    /**
      * Epoch millis until which blocking logic should remain paused.
      */
     @Volatile
@@ -257,6 +262,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // Observe active block option changes
         serviceScope.launch {
             userSettingsStore.getActiveBlockOption().collect { currentBlockOption = it }
+        }
+
+        // Observe DM-sent reels exception changes
+        serviceScope.launch {
+            userSettingsStore.getExceptReelsSentByDm().collect { currentExceptReelsSentByDm = it }
         }
 
         // Observe pause toggle
@@ -753,6 +763,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * to support both signals here.
      */
     private fun AccessibilityNodeInfo.matchesBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
+        if (blockableApp.app == BlockableApp.REELS && currentExceptReelsSentByDm && isInstagramReelSentInDm(blockableApp)) {
+            // Ignoring Instagram Reel because it has the DM sender header
+            return false
+        }
+
         return matchesDetectionMethod(blockableApp, blockableApp.getDetectionMethod())
     }
 
@@ -773,6 +788,22 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             is DetectionMethod.AnyOf ->
                 detectionMethod.detectionMethods.any { matchesDetectionMethod(blockableApp, it) }
         }
+    }
+
+    private fun AccessibilityNodeInfo.isInstagramReelSentInDm(blockableApp: ResolvedBlockableApp): Boolean {
+        val senderUsernameId = blockableApp.getViewId(DetectionMethod.ViewId(INSTAGRAM_DM_SENDER_USERNAME_VIEW_ID))
+        val senderTimestampId = blockableApp.getViewId(DetectionMethod.ViewId(INSTAGRAM_DM_SENDER_TIMESTAMP_VIEW_ID))
+        val replyBarId = blockableApp.getViewId(DetectionMethod.ViewId(INSTAGRAM_DM_REPLY_BAR_VIEW_ID))
+        val suggestedTitleId = blockableApp.getViewId(DetectionMethod.ViewId(INSTAGRAM_SUGGESTED_TITLE_VIEW_ID))
+
+        return hasVisibleViewId(senderUsernameId) &&
+            hasVisibleViewId(senderTimestampId) &&
+            hasVisibleViewId(replyBarId) &&
+            !hasVisibleViewId(suggestedTitleId)
+    }
+
+    private fun AccessibilityNodeInfo.hasVisibleViewId(viewId: String): Boolean {
+        return findAccessibilityNodeInfosByViewId(viewId).any(::isNodeVisibleToTheUser)
     }
 
     /**
@@ -838,5 +869,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         val rect = android.graphics.Rect()
         node.getBoundsInScreen(rect)
         return node.isVisibleToUser && rect.width() > 0 && rect.height() > 0
+    }
+
+    private companion object {
+        const val INSTAGRAM_DM_SENDER_USERNAME_VIEW_ID = "sender_username_or_fullname"
+        const val INSTAGRAM_DM_SENDER_TIMESTAMP_VIEW_ID = "sender_timestamp"
+        const val INSTAGRAM_DM_REPLY_BAR_VIEW_ID = "reply_bar_edittext"
+        const val INSTAGRAM_SUGGESTED_TITLE_VIEW_ID = "suggested_title"
     }
 }
