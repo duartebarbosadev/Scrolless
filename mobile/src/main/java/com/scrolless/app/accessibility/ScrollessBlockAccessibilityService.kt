@@ -797,7 +797,16 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * to support both signals here.
      */
     private fun AccessibilityNodeInfo.matchesBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
-        return matchesDetectionMethod(blockableApp, blockableApp.getDetectionMethod())
+        if (!matchesDetectionMethod(blockableApp, blockableApp.getDetectionMethod())) {
+            return false
+        }
+
+        if (blockableApp.app == BlockableApp.REELS && currentExceptReelsSentByDm && isInstagramReelSentInDm(blockableApp)) {
+            // Ignoring Instagram Reel because it has the DM sender header
+            return false
+        }
+
+        return true
     }
 
     private fun AccessibilityNodeInfo.shouldSuppressBlocking(blockableApp: ResolvedBlockableApp): Boolean {
