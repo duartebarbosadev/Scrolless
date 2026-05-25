@@ -31,25 +31,39 @@
  */
 package com.scrolless.app.ui
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.rememberNavBackStack
+import kotlinx.serialization.Serializable
 
 /**
  * List of screens for [ScrollessApplication]
  */
-sealed class Screen(val route: String) {
-    object Scrolless : Screen("scrolless")
-    object Settings : Screen("settings")
+@Serializable
+sealed interface ScrollessRoute : NavKey {
+    @Serializable
+    data object Home : ScrollessRoute
+
+    @Serializable
+    data object Settings : ScrollessRoute
 }
 
 @Composable
-fun rememberScrollessAppState(navController: NavHostController = rememberNavController(), context: Context = LocalContext.current) =
-    remember(navController, context) {
-        ScrollessAppState(navController)
+fun rememberScrollessAppState(backStack: NavBackStack<NavKey> = rememberNavBackStack(ScrollessRoute.Home)) =
+    remember(backStack) {
+        ScrollessAppState(backStack)
     }
 
-class ScrollessAppState(val navController: NavHostController)
+class ScrollessAppState(val backStack: NavBackStack<NavKey>) {
+    fun navigateToSettings() {
+        if (backStack.lastOrNull() != ScrollessRoute.Settings) {
+            backStack.add(ScrollessRoute.Settings)
+        }
+    }
+
+    fun navigateBack() {
+        backStack.removeLastOrNull()
+    }
+}

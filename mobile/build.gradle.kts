@@ -36,6 +36,7 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -163,6 +164,7 @@ dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.kotlinx.serialization.core)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.palette)
@@ -189,7 +191,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.navigation3.runtime)
+    implementation(libs.androidx.navigation3.ui)
 
     implementation(libs.androidx.window)
     implementation(libs.androidx.window.core)
