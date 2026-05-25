@@ -467,7 +467,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     override fun onDestroy() {
         super.onDestroy()
         Timber.d(
-            "Service state at destroy: isProcessingBlockedContent=%b, detectedApp=%s",
+            "Service state at destroy: isProcessingBlockedContent=%b, sessionApp=%s",
             isProcessingBlockedContent, blockedContentSession?.app,
         )
         stopPeriodicCheck()
@@ -481,6 +481,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * Searches for view IDs that match known blocked apps (e.g., YouTube Shorts, Instagram Reels).
      * Optimized to exit early once a match is found.
      *
+     * @param packageId The package that emitted the current accessibility event
      * @param rootNode The root accessibility node of the current window
      * @return The detected blocked content, or null if no blocked content is found
      */
