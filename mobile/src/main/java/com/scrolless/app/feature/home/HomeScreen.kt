@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.ui.home
+package com.scrolless.app.feature.home
 
 import android.app.Activity
 import androidx.compose.animation.AnimatedContent
@@ -124,13 +124,13 @@ import com.scrolless.app.designsystem.theme.progressbar_red_use
 import com.scrolless.app.designsystem.theme.snapchatColor
 import com.scrolless.app.designsystem.theme.tiktokColor
 import com.scrolless.app.designsystem.theme.youtubeShortsColor
-import com.scrolless.app.ui.home.components.AccessibilityExplainerBottomSheet
-import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheet
-import com.scrolless.app.ui.home.components.AccessibilitySuccessBottomSheetPreview
-import com.scrolless.app.ui.home.components.FloatingDebugUsagePanel
-import com.scrolless.app.ui.home.components.HelpDialog
-import com.scrolless.app.ui.home.components.IntervalTimerDialog
-import com.scrolless.app.ui.home.components.TimeLimitDialog
+import com.scrolless.app.feature.home.components.AccessibilityExplainerBottomSheet
+import com.scrolless.app.feature.home.components.AccessibilitySuccessBottomSheet
+import com.scrolless.app.feature.home.components.AccessibilitySuccessBottomSheetPreview
+import com.scrolless.app.feature.home.components.FloatingDebugUsagePanel
+import com.scrolless.app.feature.home.components.HelpDialog
+import com.scrolless.app.feature.home.components.IntervalTimerDialog
+import com.scrolless.app.feature.home.components.TimeLimitDialog
 import com.scrolless.app.ui.theme.ScrollessTheme
 import com.scrolless.app.ui.tooling.DevicePreviews
 import com.scrolless.app.util.formatTime

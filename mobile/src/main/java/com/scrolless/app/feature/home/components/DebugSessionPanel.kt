@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.ui.home.components
+package com.scrolless.app.feature.home.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween

@@ -27,8 +27,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.scrolless.app.ui.home.HomeScreen
-import com.scrolless.app.ui.settings.SettingsScreen
+import com.scrolless.app.feature.home.HomeScreen
+import com.scrolless.app.feature.settings.SettingsScreen
 
 @Composable
 @OptIn(ExperimentalSharedTransitionApi::class)
