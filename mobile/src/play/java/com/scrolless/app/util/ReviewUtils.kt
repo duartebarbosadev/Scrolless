@@ -22,6 +22,7 @@ import android.os.Build
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.google.android.play.core.review.testing.FakeReviewManager
 import com.scrolless.app.BuildConfig
+import com.scrolless.app.feature.home.ReviewPromptResult
 import timber.log.Timber
 
 private const val GOOGLE_PLAY_STORE_PACKAGE = "com.android.vending"

@@ -14,17 +14,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.util
+package com.scrolless.app.designsystem.tooling
 
-import android.app.Activity
-import com.scrolless.app.feature.home.ReviewPromptResult
-import timber.log.Timber
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 
-/**
- * F-Droid builds intentionally exclude the Play Review SDK.
- */
-@Suppress("unused")
-fun requestAppReview(activity: Activity, onResult: (ReviewPromptResult) -> Unit) {
-    Timber.i("In-app review skipped for F-Droid variant")
-    onResult(ReviewPromptResult.SkippedPermanent)
-}
+@Preview(name = "small-phone", device = Devices.PIXEL_3)
+@Preview(name = "phone", device = Devices.PHONE, showBackground = true)
+@Preview(name = "phone_in_landscape", widthDp = 891, heightDp = 411, showBackground = true)
+@Preview(name = "foldable", device = Devices.FOLDABLE, showBackground = true)
+@Preview(name = "tablet", device = Devices.TABLET, showBackground = true)
+annotation class DevicePreviews

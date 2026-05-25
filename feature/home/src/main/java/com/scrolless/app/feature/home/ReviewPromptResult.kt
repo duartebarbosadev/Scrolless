@@ -14,17 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.util
+package com.scrolless.app.feature.home
 
-import android.app.Activity
-import com.scrolless.app.feature.home.ReviewPromptResult
-import timber.log.Timber
-
-/**
- * F-Droid builds intentionally exclude the Play Review SDK.
- */
-@Suppress("unused")
-fun requestAppReview(activity: Activity, onResult: (ReviewPromptResult) -> Unit) {
-    Timber.i("In-app review skipped for F-Droid variant")
-    onResult(ReviewPromptResult.SkippedPermanent)
+enum class ReviewPromptResult {
+    // Review flow launched successfully (Play will decide if UI appears).
+    Shown,
+    // Retry later (temporary failure or activity went away).
+    SkippedTemporary,
+    // Don't retry (not installed from Play or unsupported variant).
+    SkippedPermanent,
 }

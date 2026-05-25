@@ -44,7 +44,7 @@ import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.repository.setTimerOverlayPosition
 import com.scrolless.app.designsystem.theme.timerOverlayBackgroundColor
-import com.scrolless.app.util.formatAsTime
+import com.scrolless.app.designsystem.util.formatAsTime
 import javax.inject.Inject
 import kotlin.math.abs
 import kotlinx.coroutines.CoroutineScope

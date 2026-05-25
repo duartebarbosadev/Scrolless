@@ -50,5 +50,7 @@ include(
     ":core:domain",
     ":core:designsystem",
     ":core:logging",
+    ":feature:home",
+    ":feature:settings",
 )
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

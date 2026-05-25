@@ -19,7 +19,7 @@ package com.scrolless.app.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.scrolless.app.ui.theme.ScrollessTheme
+import com.scrolless.app.designsystem.theme.ScrollessTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
