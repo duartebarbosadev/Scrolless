@@ -19,12 +19,16 @@ package com.scrolless.app.feature.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.core.model.usage.DailyUsageTotal
+import com.scrolless.app.core.model.usage.WeekdayUsageAverage
 import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Duration
+import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -53,6 +57,12 @@ class HomeViewModel @Inject constructor(
 
     private val _showComingSoonSnackBar = MutableStateFlow(false)
     private val _requestReview = MutableStateFlow(false)
+    private val selectedAnalyticsDate = MutableStateFlow(ZonedDateTime.now().toLocalDate())
+    private val currentDate = currentDayFlow().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = ZonedDateTime.now().toLocalDate(),
+    )
     // Keep latest persisted attempt metadata so we can update without re-collecting.
     private var latestReviewAttemptCount = 0
     private var latestReviewAttemptAt = 0L
@@ -65,6 +75,14 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
+        viewModelScope.launch {
+            currentDate.collect { today ->
+                if (selectedAnalyticsDate.value.isAfter(today)) {
+                    selectedAnalyticsDate.value = today
+                }
+            }
+        }
+
         viewModelScope.launch {
             // Gate review prompts by first launch, attempt count, and retry delay
             kotlinx.coroutines.flow.combine(
@@ -106,8 +124,44 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private val sessionSegmentsForCurrentDay = currentDayFlow().flatMapLatest { currentDate ->
+    private val sessionSegmentsForCurrentDay = currentDate.flatMapLatest { currentDate ->
         sessionSegmentStore.getListSessionSegments(currentDate)
+    }
+
+    private val selectedAnalyticsSegments = combine(selectedAnalyticsDate, currentDate) { selectedDate, today ->
+        selectedDate.coerceAtMost(today)
+    }.distinctUntilChanged().flatMapLatest { date ->
+        sessionSegmentStore.getListSessionSegments(date)
+    }
+
+    private val analyticsDailyTotals = currentDate.flatMapLatest { today ->
+        sessionSegmentStore.getDailyUsageTotals(
+            startDate = today.minusWeeks(ANALYTICS_AVERAGE_WINDOW_WEEKS).plusDays(1),
+            endDateInclusive = today,
+        )
+    }
+
+    private val analyticsWeekdayAverages = currentDate.flatMapLatest { today ->
+        sessionSegmentStore.getWeekdayAverageUsage(
+            startDate = today.minusWeeks(ANALYTICS_AVERAGE_WINDOW_WEEKS).plusDays(1),
+            endDateInclusive = today,
+        )
+    }
+
+    private val analyticsSnapshot = combine(
+        selectedAnalyticsDate,
+        currentDate,
+        selectedAnalyticsSegments,
+        analyticsDailyTotals,
+        analyticsWeekdayAverages,
+    ) { selectedDate, today, selectedSegments, dailyTotals, weekdayAverages ->
+        buildUsageAnalyticsUiState(
+            selectedDate = selectedDate.coerceAtMost(today),
+            today = today,
+            selectedSegments = selectedSegments,
+            dailyTotals = dailyTotals,
+            weekdayAverages = weekdayAverages,
+        )
     }
 
     private val usageSnapshot = combine(
@@ -138,7 +192,8 @@ class HomeViewModel @Inject constructor(
         _requestReview,
         userSettingsStore.getHasSeenAccessibilityExplainer(),
         userSettingsStore.getPauseDuration(),
-    ) { usage, timerEnabled, pauseUntil, showComingSoonSnackBar, requestReview, hasSeenAccessibilityExplainer, pauseDuration ->
+        analyticsSnapshot,
+    ) { usage, timerEnabled, pauseUntil, showComingSoonSnackBar, requestReview, hasSeenAccessibilityExplainer, pauseDuration, analytics ->
 
         val progress = calculateProgress(
             blockOption = usage.blockOption,
@@ -163,6 +218,7 @@ class HomeViewModel @Inject constructor(
             hasSeenAccessibilityExplainer = hasSeenAccessibilityExplainer,
             hasLoadedSettings = true,
             listSessionSegments = usage.sessionSegment,
+            usageAnalytics = analytics,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -185,13 +241,6 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             userSettingsStore.setActiveBlockOption(BlockOption.DailyLimit)
             userSettingsStore.setTimeLimit(durationMillis)
-        }
-    }
-
-    fun onScreenTimerToggled(enabled: Boolean) {
-        Timber.d("On-screen timer toggled: %s", enabled)
-        viewModelScope.launch {
-            userSettingsStore.setTimerOverlayToggle(enabled)
         }
     }
 
@@ -286,6 +335,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun onUsageAnalyticsDateSelected(date: LocalDate) {
+        selectedAnalyticsDate.value = date.coerceAtMost(currentDate.value)
+    }
+
+    fun onUsageAnalyticsTodaySelected() {
+        selectedAnalyticsDate.value = currentDate.value
+    }
+
     fun onReviewPromptResult(result: ReviewPromptResult) {
         // Treat permanent failures and max retry exhaustion as terminal.
         val shouldMarkSeen = when (result) {
@@ -355,6 +412,39 @@ class HomeViewModel @Inject constructor(
     }.distinctUntilChanged()
 }
 
+private const val ANALYTICS_AVERAGE_WINDOW_WEEKS = 4L
+
+private fun buildUsageAnalyticsUiState(
+    selectedDate: LocalDate,
+    today: LocalDate,
+    selectedSegments: List<SessionSegment>,
+    dailyTotals: List<DailyUsageTotal>,
+    weekdayAverages: List<WeekdayUsageAverage>,
+): UsageAnalyticsUiState {
+    val selectedTotal = dailyTotals.firstOrNull { it.date == selectedDate }?.totalMillis
+        ?: selectedSegments.sumOf { it.durationMillis.coerceAtLeast(0L) }
+    val appTotals = selectedSegments
+        .groupBy { it.app }
+        .map { (app, segments) ->
+            AppUsageTotal(
+                app = app,
+                totalMillis = segments.sumOf { it.durationMillis.coerceAtLeast(0L) },
+            )
+        }
+        .filter { it.totalMillis > 0L }
+        .sortedByDescending { it.totalMillis }
+
+    return UsageAnalyticsUiState(
+        selectedDate = selectedDate,
+        today = today,
+        dailyTotalMillis = selectedTotal.coerceAtLeast(0L),
+        sessionSegments = selectedSegments.sortedBy { it.startDateTime },
+        appTotals = appTotals,
+        weekdayAverages = weekdayAverages,
+        canNavigateNext = selectedDate.isBefore(today),
+    )
+}
+
 data class HomeUiState(
     val blockOption: BlockOption = BlockOption.NothingSelected,
     val timeLimit: Long = 0L,
@@ -384,7 +474,20 @@ data class HomeUiState(
      * Per-app usage breakdown for the segmented progress indicator.
      */
     val listSessionSegments: List<SessionSegment> = emptyList(),
+    val usageAnalytics: UsageAnalyticsUiState = UsageAnalyticsUiState(),
 )
+
+data class UsageAnalyticsUiState(
+    val selectedDate: LocalDate = ZonedDateTime.now().toLocalDate(),
+    val today: LocalDate = ZonedDateTime.now().toLocalDate(),
+    val dailyTotalMillis: Long = 0L,
+    val sessionSegments: List<SessionSegment> = emptyList(),
+    val appTotals: List<AppUsageTotal> = emptyList(),
+    val weekdayAverages: List<WeekdayUsageAverage> = emptyList(),
+    val canNavigateNext: Boolean = false,
+)
+
+data class AppUsageTotal(val app: BlockableApp, val totalMillis: Long)
 
 private data class UsageSnapshot(
     val blockOption: BlockOption,

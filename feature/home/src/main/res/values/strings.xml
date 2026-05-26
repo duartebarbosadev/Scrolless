@@ -145,8 +145,6 @@
     
     <string name="settings">Settings</string>
     
-    <string name="show_onscreen_timer">Show on-screen timer</string>
-    
     <string name="step_one" translatable="false">1</string>
     
     <string name="step_three" translatable="false">3</string>
@@ -162,8 +160,19 @@
     
     <string name="time_limit_dialog_title">Set Daily Limit Time</string>
     
-    <string name="timer_overlay_description">Keep a floating timer visible while watching brain rot content.</string>
-    
+    <string name="usage_analytics_title">Usage details</string>
+    <string name="usage_analytics_previous_day">Previous day</string>
+    <string name="usage_analytics_next_day">Next day</string>
+    <string name="usage_analytics_today">Today</string>
+    <string name="usage_analytics_go_today">Go to today</string>
+    <string name="usage_analytics_empty_day">No tracked usage for this day.</string>
+    <string name="usage_analytics_timeline_title">Day timeline</string>
+    <string name="usage_analytics_sessions_title">Session chunks</string>
+    <string name="usage_analytics_app_totals_title">App totals</string>
+    <string name="usage_analytics_weekday_average_title">Average by weekday</string>
+    <string name="usage_analytics_weekday_average_subtitle">Last month</string>
+    <string name="usage_analytics_session_count">%1$d sessions</string>
+    <string name="usage_analytics_time_range">%1$s-%2$s</string>
     <string name="visit_github">Visit GitHub Repository</string>
     
 </resources>

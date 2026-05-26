@@ -21,6 +21,8 @@ import com.scrolless.app.core.data.database.dao.SessionSegmentDao
 import com.scrolless.app.core.data.database.model.SessionSegmentEntity
 import com.scrolless.app.core.data.database.model.toSessionSegment
 import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.core.model.usage.DailyUsageTotal
+import com.scrolless.app.core.model.usage.WeekdayUsageAverage
 import com.scrolless.app.core.repository.SessionSegmentStore
 import java.time.LocalDate
 import java.time.ZoneId
@@ -82,6 +84,31 @@ class SessionSegmentStoreImpl @Inject constructor(
             entities.map { it.toSessionSegment() }
         }
     }
+
+    override fun getListSessionSegments(startDate: LocalDate, endDateInclusive: LocalDate): Flow<List<SessionSegment>> {
+        val endDateExclusive = endDateInclusive.plusDays(1)
+        return sessionSegmentDao.getSessionSegments(startDate, endDateExclusive).map { entities ->
+            entities.map { it.toSessionSegment() }
+        }
+    }
+
+    override fun getDailyUsageTotals(startDate: LocalDate, endDateInclusive: LocalDate): Flow<List<DailyUsageTotal>> =
+        getListSessionSegments(startDate, endDateInclusive).map { sessionSegments ->
+            SessionUsageAnalytics.dailyTotals(
+                sessionSegments = sessionSegments,
+                startDate = startDate,
+                endDateInclusive = endDateInclusive,
+            )
+        }
+
+    override fun getWeekdayAverageUsage(startDate: LocalDate, endDateInclusive: LocalDate): Flow<List<WeekdayUsageAverage>> =
+        getListSessionSegments(startDate, endDateInclusive).map { sessionSegments ->
+            SessionUsageAnalytics.weekdayAverages(
+                sessionSegments = sessionSegments,
+                startDate = startDate,
+                endDateInclusive = endDateInclusive,
+            )
+        }
 
     override suspend fun addSessionSegment(sessionSegment: SessionSegment): Long {
         val entity = SessionSegmentEntity(

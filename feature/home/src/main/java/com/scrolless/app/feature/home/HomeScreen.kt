@@ -20,13 +20,18 @@ import android.accessibilityservice.AccessibilityService
 import android.app.Activity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -54,6 +59,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -70,7 +77,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonColors
@@ -88,6 +94,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalContext
@@ -108,6 +117,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.core.model.usage.WeekdayUsageAverage
 import com.scrolless.app.designsystem.component.AppUsageLegend
 import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.component.LegendItem
@@ -135,7 +145,11 @@ import com.scrolless.app.feature.home.components.FloatingDebugUsagePanel
 import com.scrolless.app.feature.home.components.HelpDialog
 import com.scrolless.app.feature.home.components.IntervalTimerDialog
 import com.scrolless.app.feature.home.components.TimeLimitDialog
+import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -143,6 +157,9 @@ import timber.log.Timber
 
 private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
 private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)
+private const val ANALYTICS_PAGER_DAY_COUNT = 3650
+private val ANALYTICS_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE, MMM d")
+private val ANALYTICS_TIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
 @Composable
 fun HomeScreen(
@@ -328,15 +345,6 @@ fun HomeScreen(
                     showAccessibilityExplainerPrompt()
                 }
             },
-            onScreenTimerToggled = { enabled ->
-                Timber.d("On-screen timer toggle from UI: %s", enabled)
-                if (context.isAccessibilityServiceEnabled(accessibilityServiceClass)) {
-                    viewModel.onScreenTimerToggled(enabled)
-                } else {
-                    Timber.w("Accessibility service not enabled. Showing explainer (on-screen timer).")
-                    showAccessibilityExplainerPrompt()
-                }
-            },
             onHelpClicked = {
                 Timber.d("Help clicked -> show HelpDialog")
                 showHelpDialog = true
@@ -388,14 +396,8 @@ fun HomeScreen(
             onDebugUsageReset = {
                 viewModel.onDebugResetUsage()
             },
-            onProgressCardClicked = {
-                if (BuildConfig.DEBUG) {
-                    debugBypassAccessibilityCheck = !debugBypassAccessibilityCheck
-                    Timber.i("Progress card clicked - Debug bypass mode: %s", debugBypassAccessibilityCheck)
-                } else {
-                    Timber.d("Progress card clicked (no action in release build)")
-                }
-            },
+            onUsageAnalyticsDateSelected = viewModel::onUsageAnalyticsDateSelected,
+            onUsageAnalyticsTodaySelected = viewModel::onUsageAnalyticsTodaySelected,
         )
 
         SnackbarHost(
@@ -488,14 +490,14 @@ private fun HomeContent(
     onNavigateToSettings: () -> Unit = {},
     onBlockOptionSelected: (BlockOption) -> Unit,
     onConfigureDailyLimit: () -> Unit,
-    onScreenTimerToggled: (Boolean) -> Unit,
     onHelpClicked: () -> Unit,
     onIntervalTimerClick: () -> Unit,
     onIntervalTimerEdit: () -> Unit,
     onPauseToggle: (Boolean) -> Unit,
     onDebugUsageChanged: (List<SessionSegment>) -> Unit = {},
     onDebugUsageReset: () -> Unit = {},
-    onProgressCardClicked: () -> Unit = {},
+    onUsageAnalyticsDateSelected: (LocalDate) -> Unit = {},
+    onUsageAnalyticsTodaySelected: () -> Unit = {},
 ) {
     // Define weights outside of composition flow
     val WEIGHT_BASE = 1f
@@ -507,6 +509,8 @@ private fun HomeContent(
     val hasActiveBlockOption = uiState.blockOption != BlockOption.NothingSelected
     val showDebugPanel = BuildConfig.DEBUG || LocalInspectionMode.current
     var isDebugExpanded by remember { mutableStateOf(false) }
+    var sessionChunksExpanded by remember(uiState.usageAnalytics.selectedDate) { mutableStateOf(false) }
+    val isViewingToday = uiState.usageAnalytics.selectedDate == uiState.usageAnalytics.today
 
     // Determine if blocking is currently active (user would be blocked if they tried to view content)
     val isBlockingActive = when (uiState.blockOption) {
@@ -536,18 +540,31 @@ private fun HomeContent(
                     .fillMaxWidth(),
                 contentAlignment = Alignment.Center,
             ) {
-                ProgressCard(
+                SwipeableProgressCard(
+                    uiState = uiState,
+                    onDateSelected = onUsageAnalyticsDateSelected,
+                    onProgressCardClicked = onUsageAnalyticsTodaySelected,
                     modifier = Modifier.padding(top = 18.dp),
-                    blockOption = uiState.blockOption,
-                    progress = uiState.progress,
-                    currentUsage = uiState.currentUsage,
-                    intervalUsage = uiState.intervalUsage,
-                    timeLimit = uiState.timeLimit,
-                    intervalLength = uiState.intervalLength,
-                    intervalWindowStart = uiState.intervalWindowStart,
-                    listSessionSegments = uiState.listSessionSegments,
-                    onProgressCardClicked = onProgressCardClicked,
                 )
+
+                androidx.compose.animation.AnimatedVisibility(
+                    visible = !isViewingToday,
+                    enter = fadeIn(animationSpec = tween(180)) + expandVertically(animationSpec = tween(240)),
+                    exit = fadeOut(animationSpec = tween(140)) + shrinkVertically(animationSpec = tween(180)),
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(8.dp, 8.dp, 0.dp, 8.dp),
+                ) {
+                    OutlinedButton(
+                        onClick = onUsageAnalyticsTodaySelected,
+                        shape = RoundedCornerShape(18.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.usage_analytics_go_today),
+                            style = MaterialTheme.typography.labelMedium,
+                        )
+                    }
+                }
 
                 Row(
                     modifier = Modifier
@@ -567,199 +584,44 @@ private fun HomeContent(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // 1. Define interaction sources for ALL buttons
-            val blockAllInteractionSource = remember { MutableInteractionSource() }
-            val dailyLimitInteractionSource = remember { MutableInteractionSource() }
-            val intervalInteractionSource = remember { MutableInteractionSource() }
-
-            val isBlockAllPressed by blockAllInteractionSource.collectIsPressedAsState()
-            val isDailyLimitPressed by dailyLimitInteractionSource.collectIsPressedAsState()
-            val isIntervalPressed by intervalInteractionSource.collectIsPressedAsState()
-
-            // 2. Calculate Animated Weights (Float) based on interaction states
-            val blockAllWeight by animateFloatAsState(
-                targetValue = when {
-                    isBlockAllPressed -> WEIGHT_EXPANDED
-                    isDailyLimitPressed || isIntervalPressed -> WEIGHT_SHRUNK
-                    else -> WEIGHT_BASE
+            AnimatedContent(
+                targetState = isViewingToday,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateContentSize(animationSpec = tween(durationMillis = 360)),
+                transitionSpec = {
+                    val enter = fadeIn(animationSpec = tween(260)) +
+                        slideInVertically(animationSpec = tween(360)) { fullHeight -> fullHeight / 5 } +
+                        expandVertically(animationSpec = tween(360), expandFrom = Alignment.Top)
+                    val exit = fadeOut(animationSpec = tween(160)) +
+                        slideOutVertically(animationSpec = tween(260)) { fullHeight -> -fullHeight / 8 } +
+                        shrinkVertically(animationSpec = tween(260), shrinkTowards = Alignment.Top)
+                    enter togetherWith exit using SizeTransform(clip = false)
                 },
-                animationSpec = tween(100), label = "blockAllWeight",
-            )
-
-            val dailyLimitWeight by animateFloatAsState(
-                targetValue = when {
-                    isDailyLimitPressed -> WEIGHT_EXPANDED
-                    isBlockAllPressed || isIntervalPressed -> WEIGHT_SHRUNK
-                    else -> WEIGHT_BASE
-                },
-                animationSpec = tween(100), label = "dailyLimitWeight",
-            )
-
-            val intervalWeight by animateFloatAsState(
-                targetValue = when {
-                    isIntervalPressed -> WEIGHT_EXPANDED
-                    isBlockAllPressed || isDailyLimitPressed -> WEIGHT_SHRUNK
-                    else -> WEIGHT_BASE
-                },
-                animationSpec = tween(100), label = "intervalWeight",
-            )
-
-            FeatureButtonsRow(
-                selectedOption = uiState.blockOption,
-                onBlockAllClick = {
-                    val newOption = if (uiState.blockOption == BlockOption.BlockAll) {
-                        BlockOption.NothingSelected
-                    } else {
-                        BlockOption.BlockAll
-                    }
-                    Timber.i("BlockAll clicked -> newOption=%s (prev=%s)", newOption, uiState.blockOption)
-                    onBlockOptionSelected(newOption)
-                },
-                onDailyLimitClick = {
-                    if (uiState.timeLimit == 0L && uiState.blockOption != BlockOption.DailyLimit) {
-                        Timber.d("DailyLimit clicked -> open TimeLimitDialog (no limit set)")
-                        // If no time limit set, open the picker
-                        onConfigureDailyLimit()
-                    } else {
-                        val newOption = if (uiState.blockOption == BlockOption.DailyLimit) {
-                            BlockOption.NothingSelected
-                        } else {
-                            BlockOption.DailyLimit
-                        }
-                        Timber.i("DailyLimit clicked -> newOption=%s (prev=%s)", newOption, uiState.blockOption)
-                        onBlockOptionSelected(newOption)
-                    }
-                },
-                onIntervalTimerClick = {
-                    Timber.i("IntervalTimer clicked from feature row")
-                    onIntervalTimerClick()
-                },
-                // Pass sources
-                blockAllInteractionSource = blockAllInteractionSource,
-                dailyLimitInteractionSource = dailyLimitInteractionSource,
-                intervalInteractionSource = intervalInteractionSource,
-                // Pass animated weights to sync top row
-                blockAllAnimatedWeight = blockAllWeight,
-                dailyLimitAnimatedWeight = dailyLimitWeight,
-                intervalAnimatedWeight = intervalWeight,
-            )
-
-            // 3. Smooth appearance for ConfigButton
-            AnimatedVisibility(
-                visible = uiState.blockOption == BlockOption.DailyLimit,
-                enter = expandVertically(
-                    expandFrom = Alignment.Top,
-                    animationSpec = tween(300),
-                ) + fadeIn(animationSpec = tween(200)),
-                exit = shrinkVertically(
-                    shrinkTowards = Alignment.Top,
-                    animationSpec = tween(300),
-                ) + fadeOut(animationSpec = tween(200)),
-            ) {
-                // Mimic ButtonGroup layout to sync width exactly using animated weights
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    // Invisible spacer mirroring "Block All" width behavior
-                    Spacer(modifier = Modifier.weight(blockAllWeight))
-                    Box(
-                        modifier = Modifier
-                            .weight(dailyLimitWeight)
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.TopCenter,
-                    ) {
-                        ConfigButton(
-                            onClick = {
-                                Timber.d("Open DailyLimit config button clicked")
-                                onConfigureDailyLimit()
-                            },
-                            dailyLimitInteractionSource = dailyLimitInteractionSource,
-                            blockAllInteractionSource = blockAllInteractionSource,
-                            // Set fixed width to approximately half of the feature button width
-                            modifier = Modifier
-                                .fillMaxWidth(0.6f) // Occupy 60% of the Box's (Daily Limit Slot's) width
-                                .align(Alignment.Center), // Center horizontally within the Box
-                        )
-                    }
-
-                    // Invisible spacer mirroring "Interval Timer" width behavior
-                    Spacer(
-                        modifier = Modifier
-                            .weight(intervalWeight),
+                label = "homeLowerContent",
+            ) { viewingToday ->
+                if (!viewingToday) {
+                    InlineUsageAnalyticsPanel(
+                        analytics = uiState.usageAnalytics,
+                        sessionChunksExpanded = sessionChunksExpanded,
+                        onToggleSessionChunks = { sessionChunksExpanded = !sessionChunksExpanded },
+                    )
+                } else {
+                    TodayHomeControls(
+                        uiState = uiState,
+                        isBlockingActive = isBlockingActive,
+                        isPauseActive = isPauseActive,
+                        pauseRemainingMillis = pauseRemainingMillis,
+                        hasActiveBlockOption = hasActiveBlockOption,
+                        onBlockOptionSelected = onBlockOptionSelected,
+                        onConfigureDailyLimit = onConfigureDailyLimit,
+                        onIntervalTimerClick = onIntervalTimerClick,
+                        onIntervalTimerEdit = onIntervalTimerEdit,
+                        onPauseToggle = onPauseToggle,
+                        sessionChunksExpanded = sessionChunksExpanded,
+                        onToggleSessionChunks = { sessionChunksExpanded = !sessionChunksExpanded },
                     )
                 }
-            }
-
-            Spacer(
-                modifier = Modifier.height(
-                    if (uiState.blockOption == BlockOption.IntervalTimer) 12.dp else 24.dp,
-                ),
-            )
-
-            AnimatedVisibility(
-                visible = uiState.blockOption == BlockOption.IntervalTimer,
-                enter = expandVertically(
-                    expandFrom = Alignment.Top,
-                    animationSpec = tween(300),
-                ) + fadeIn(animationSpec = tween(200)),
-                exit = shrinkVertically(
-                    shrinkTowards = Alignment.Top,
-                    animationSpec = tween(300),
-                ) + fadeOut(animationSpec = tween(200)),
-            ) {
-                IntervalTimerSettingsCard(
-                    intervalLengthMillis = uiState.intervalLength,
-                    allowanceMillis = uiState.timeLimit,
-                    onEditClick = onIntervalTimerEdit,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-
-            if (uiState.blockOption == BlockOption.IntervalTimer) {
-                Spacer(modifier = Modifier.height(24.dp))
-            }
-
-            // Show pause button only when blocking is active OR user is already paused (to allow resuming)
-            AnimatedVisibility(
-                visible = isBlockingActive || isPauseActive,
-                enter = expandVertically(
-                    expandFrom = Alignment.Top,
-                    animationSpec = tween(300),
-                ) + fadeIn(animationSpec = tween(200)),
-                exit = shrinkVertically(
-                    shrinkTowards = Alignment.Top,
-                    animationSpec = tween(300),
-                ) + fadeOut(animationSpec = tween(200)),
-            ) {
-                Spacer(modifier = Modifier.height(24.dp))
-
-                PauseButton(
-                    onTogglePause = onPauseToggle,
-                    isPaused = isPauseActive,
-                    remainingMillis = pauseRemainingMillis,
-                    pauseDurationMinutes = (uiState.pauseDurationMillis / 60_000L).toInt().coerceAtLeast(1),
-                )
-            }
-
-            if (hasActiveBlockOption) {
-                Spacer(modifier = Modifier.height(14.dp))
-            }
-
-            // Show timer overlay toggle when not BlockAll, or when paused (since user can watch content while paused)
-            AnimatedVisibility(
-                visible = uiState.blockOption != BlockOption.BlockAll || isPauseActive,
-                enter = expandVertically(
-                    expandFrom = Alignment.Top,
-                    animationSpec = tween(300),
-                ) + fadeIn(animationSpec = tween(200)),
-                exit = shrinkVertically(
-                    shrinkTowards = Alignment.Top,
-                    animationSpec = tween(300),
-                ) + fadeOut(animationSpec = tween(200)),
-            ) {
-                OnScreenTimerToggle(
-                    checked = uiState.timerOverlayEnabled,
-                    onCheckedChange = onScreenTimerToggled,
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                )
             }
         }
 
@@ -775,6 +637,204 @@ private fun HomeContent(
                 modifier = Modifier.fillMaxSize(),
             )
         }
+    }
+}
+
+@Composable
+private fun TodayHomeControls(
+    uiState: HomeUiState,
+    isBlockingActive: Boolean,
+    isPauseActive: Boolean,
+    pauseRemainingMillis: Long,
+    hasActiveBlockOption: Boolean,
+    onBlockOptionSelected: (BlockOption) -> Unit,
+    onConfigureDailyLimit: () -> Unit,
+    onIntervalTimerClick: () -> Unit,
+    onIntervalTimerEdit: () -> Unit,
+    onPauseToggle: (Boolean) -> Unit,
+    sessionChunksExpanded: Boolean,
+    onToggleSessionChunks: () -> Unit,
+) {
+    val weightBase = 1f
+    val weightExpanded = 1.2f
+    val weightShrunk = 0.9f
+
+    // 1. Define interaction sources for ALL buttons
+    val blockAllInteractionSource = remember { MutableInteractionSource() }
+    val dailyLimitInteractionSource = remember { MutableInteractionSource() }
+    val intervalInteractionSource = remember { MutableInteractionSource() }
+
+    val isBlockAllPressed by blockAllInteractionSource.collectIsPressedAsState()
+    val isDailyLimitPressed by dailyLimitInteractionSource.collectIsPressedAsState()
+    val isIntervalPressed by intervalInteractionSource.collectIsPressedAsState()
+
+    // 2. Calculate Animated Weights (Float) based on interaction states
+    val blockAllWeight by animateFloatAsState(
+        targetValue = when {
+            isBlockAllPressed -> weightExpanded
+            isDailyLimitPressed || isIntervalPressed -> weightShrunk
+            else -> weightBase
+        },
+        animationSpec = tween(100), label = "blockAllWeight",
+    )
+
+    val dailyLimitWeight by animateFloatAsState(
+        targetValue = when {
+            isDailyLimitPressed -> weightExpanded
+            isBlockAllPressed || isIntervalPressed -> weightShrunk
+            else -> weightBase
+        },
+        animationSpec = tween(100), label = "dailyLimitWeight",
+    )
+
+    val intervalWeight by animateFloatAsState(
+        targetValue = when {
+            isIntervalPressed -> weightExpanded
+            isBlockAllPressed || isDailyLimitPressed -> weightShrunk
+            else -> weightBase
+        },
+        animationSpec = tween(100), label = "intervalWeight",
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateContentSize(animationSpec = tween(durationMillis = 320)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        FeatureButtonsRow(
+            selectedOption = uiState.blockOption,
+            onBlockAllClick = {
+                val newOption = if (uiState.blockOption == BlockOption.BlockAll) {
+                    BlockOption.NothingSelected
+                } else {
+                    BlockOption.BlockAll
+                }
+                Timber.i("BlockAll clicked -> newOption=%s (prev=%s)", newOption, uiState.blockOption)
+                onBlockOptionSelected(newOption)
+            },
+            onDailyLimitClick = {
+                if (uiState.timeLimit == 0L && uiState.blockOption != BlockOption.DailyLimit) {
+                    Timber.d("DailyLimit clicked -> open TimeLimitDialog (no limit set)")
+                    onConfigureDailyLimit()
+                } else {
+                    val newOption = if (uiState.blockOption == BlockOption.DailyLimit) {
+                        BlockOption.NothingSelected
+                    } else {
+                        BlockOption.DailyLimit
+                    }
+                    Timber.i("DailyLimit clicked -> newOption=%s (prev=%s)", newOption, uiState.blockOption)
+                    onBlockOptionSelected(newOption)
+                }
+            },
+            onIntervalTimerClick = {
+                Timber.i("IntervalTimer clicked from feature row")
+                onIntervalTimerClick()
+            },
+            blockAllInteractionSource = blockAllInteractionSource,
+            dailyLimitInteractionSource = dailyLimitInteractionSource,
+            intervalInteractionSource = intervalInteractionSource,
+            blockAllAnimatedWeight = blockAllWeight,
+            dailyLimitAnimatedWeight = dailyLimitWeight,
+            intervalAnimatedWeight = intervalWeight,
+        )
+
+        AnimatedVisibility(
+            visible = uiState.blockOption == BlockOption.DailyLimit,
+            enter = expandVertically(
+                expandFrom = Alignment.Top,
+                animationSpec = tween(300),
+            ) + fadeIn(animationSpec = tween(200)),
+            exit = shrinkVertically(
+                shrinkTowards = Alignment.Top,
+                animationSpec = tween(300),
+            ) + fadeOut(animationSpec = tween(200)),
+        ) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Spacer(modifier = Modifier.weight(blockAllWeight))
+                Box(
+                    modifier = Modifier
+                        .weight(dailyLimitWeight)
+                        .fillMaxWidth(),
+                    contentAlignment = Alignment.TopCenter,
+                ) {
+                    ConfigButton(
+                        onClick = {
+                            Timber.d("Open DailyLimit config button clicked")
+                            onConfigureDailyLimit()
+                        },
+                        dailyLimitInteractionSource = dailyLimitInteractionSource,
+                        blockAllInteractionSource = blockAllInteractionSource,
+                        modifier = Modifier
+                            .fillMaxWidth(0.6f)
+                            .align(Alignment.Center),
+                    )
+                }
+                Spacer(modifier = Modifier.weight(intervalWeight))
+            }
+        }
+
+        if (uiState.blockOption == BlockOption.IntervalTimer) {
+            Spacer(
+                modifier = Modifier.height(8.dp),
+            )
+        }
+
+        AnimatedVisibility(
+            visible = uiState.blockOption == BlockOption.IntervalTimer,
+            enter = expandVertically(
+                expandFrom = Alignment.Top,
+                animationSpec = tween(300),
+            ) + fadeIn(animationSpec = tween(200)),
+            exit = shrinkVertically(
+                shrinkTowards = Alignment.Top,
+                animationSpec = tween(300),
+            ) + fadeOut(animationSpec = tween(200)),
+        ) {
+            IntervalTimerSettingsCard(
+                intervalLengthMillis = uiState.intervalLength,
+                allowanceMillis = uiState.timeLimit,
+                onEditClick = onIntervalTimerEdit,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+
+        if (uiState.blockOption == BlockOption.IntervalTimer) {
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+
+        AnimatedVisibility(
+            visible = isBlockingActive || isPauseActive,
+            enter = expandVertically(
+                expandFrom = Alignment.Top,
+                animationSpec = tween(300),
+            ) + fadeIn(animationSpec = tween(200)),
+            exit = shrinkVertically(
+                shrinkTowards = Alignment.Top,
+                animationSpec = tween(300),
+            ) + fadeOut(animationSpec = tween(200)),
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Spacer(modifier = Modifier.height(24.dp))
+
+                PauseButton(
+                    onTogglePause = onPauseToggle,
+                    isPaused = isPauseActive,
+                    remainingMillis = pauseRemainingMillis,
+                    pauseDurationMinutes = (uiState.pauseDurationMillis / 60_000L).toInt().coerceAtLeast(1),
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+        InlineUsageAnalyticsPanel(
+            analytics = uiState.usageAnalytics,
+            sessionChunksExpanded = sessionChunksExpanded,
+            onToggleSessionChunks = onToggleSessionChunks,
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+        WeekdayAverageSection(weekdayAverages = uiState.usageAnalytics.weekdayAverages)
     }
 }
 
@@ -1153,6 +1213,60 @@ fun FeatureButton(
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
+private fun SwipeableProgressCard(
+    uiState: HomeUiState,
+    onDateSelected: (LocalDate) -> Unit,
+    onProgressCardClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val analytics = uiState.usageAnalytics
+    val todayPage = ANALYTICS_PAGER_DAY_COUNT - 1
+    val selectedPage = (
+        todayPage - ChronoUnit.DAYS.between(analytics.selectedDate, analytics.today).toInt()
+        ).coerceIn(0, todayPage)
+    val pagerState = rememberPagerState(initialPage = selectedPage, pageCount = { ANALYTICS_PAGER_DAY_COUNT })
+
+    LaunchedEffect(selectedPage) {
+        if (pagerState.currentPage != selectedPage) {
+            pagerState.animateScrollToPage(selectedPage)
+        }
+    }
+
+    LaunchedEffect(pagerState.currentPage, analytics.today) {
+        val daysBack = todayPage - pagerState.currentPage
+        val pageDate = analytics.today.minusDays(daysBack.toLong())
+        if (pageDate != analytics.selectedDate) {
+            onDateSelected(pageDate)
+        }
+    }
+
+    HorizontalPager(
+        state = pagerState,
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        val isViewingToday = analytics.selectedDate == analytics.today
+        val dateLabel = if (isViewingToday) {
+            stringResource(R.string.usage_analytics_today)
+        } else {
+            analytics.selectedDate.format(ANALYTICS_DATE_FORMATTER)
+        }
+        ProgressCard(
+            blockOption = if (isViewingToday) uiState.blockOption else BlockOption.NothingSelected,
+            progress = if (isViewingToday) uiState.progress else 0,
+            currentUsage = if (isViewingToday) uiState.currentUsage else analytics.dailyTotalMillis,
+            intervalUsage = if (isViewingToday) uiState.intervalUsage else 0L,
+            timeLimit = if (isViewingToday) uiState.timeLimit else 0L,
+            intervalLength = if (isViewingToday) uiState.intervalLength else 0L,
+            intervalWindowStart = if (isViewingToday) uiState.intervalWindowStart else 0L,
+            listSessionSegments = if (isViewingToday) uiState.listSessionSegments else analytics.sessionSegments,
+            dateLabel = dateLabel,
+            onClick = onProgressCardClicked,
+        )
+    }
+}
+
+@Composable
+@OptIn(ExperimentalFoundationApi::class)
 private fun ProgressCard(
     modifier: Modifier = Modifier,
     blockOption: BlockOption,
@@ -1163,7 +1277,8 @@ private fun ProgressCard(
     intervalLength: Long,
     intervalWindowStart: Long,
     listSessionSegments: List<SessionSegment> = emptyList(),
-    onProgressCardClicked: () -> Unit = {},
+    dateLabel: String? = null,
+    onClick: () -> Unit = {},
 ) {
     val clampedProgress = progress.coerceIn(0, 100)
 
@@ -1284,9 +1399,7 @@ private fun ProgressCard(
             modifier = Modifier
                 .size(220.dp)
                 .padding(16.dp)
-                .clickable(
-                    onClick = onProgressCardClicked,
-                ),
+                .clickable(onClick = onClick),
             shape = RoundedCornerShape(96.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
             elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
@@ -1362,6 +1475,27 @@ private fun ProgressCard(
                 .fillMaxWidth()
                 .padding(top = 8.dp),
         )
+
+        if (dateLabel != null) {
+            Surface(
+                modifier = Modifier.padding(top = 6.dp),
+                shape = RoundedCornerShape(14.dp),
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
+            ) {
+                AnimatedContent(
+                    targetState = dateLabel,
+                    label = "progressDateLabel",
+                ) { label ->
+                    Text(
+                        text = label,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -1424,6 +1558,390 @@ private fun buildLegendItems(progressBarSegments: List<ProgressBarSegment>): Lis
             color = segments.first().color,
         )
     }
+
+@Composable
+private fun InlineUsageAnalyticsPanel(
+    analytics: UsageAnalyticsUiState,
+    sessionChunksExpanded: Boolean,
+    onToggleSessionChunks: () -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(18.dp),
+    ) {
+        UsageAnalyticsDayPage(
+            analytics = analytics,
+            sessionChunksExpanded = sessionChunksExpanded,
+            onToggleSessionChunks = onToggleSessionChunks,
+        )
+    }
+}
+
+@Composable
+private fun UsageAnalyticsDayPage(
+    analytics: UsageAnalyticsUiState,
+    sessionChunksExpanded: Boolean = false,
+    onToggleSessionChunks: () -> Unit = {},
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(18.dp),
+    ) {
+        UsageTimelineSection(
+            analytics = analytics,
+            sessionChunksExpanded = sessionChunksExpanded,
+            onToggleSessionChunks = onToggleSessionChunks,
+        )
+    }
+}
+
+@Composable
+private fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded: Boolean, onToggleSessionChunks: () -> Unit) {
+    val sessionSegments = analytics.sessionSegments
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text(
+            text = stringResource(R.string.usage_analytics_timeline_title),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .animateContentSize(animationSpec = tween(durationMillis = 320)),
+            shape = RoundedCornerShape(18.dp),
+            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.40f),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
+        ) {
+            Column(
+                modifier = Modifier.padding(14.dp),
+                verticalArrangement = Arrangement.spacedBy(14.dp),
+            ) {
+                UsageTimelineCanvas(sessionSegments = sessionSegments)
+                if (sessionSegments.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.usage_analytics_empty_day),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                } else {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(12.dp))
+                            .clickable(onClick = onToggleSessionChunks)
+                            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.42f))
+                            .padding(horizontal = 12.dp, vertical = 10.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Column {
+                            Text(
+                                text = stringResource(R.string.usage_analytics_sessions_title),
+                                style = MaterialTheme.typography.labelLarge,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            )
+                            Text(
+                                text = stringResource(R.string.usage_analytics_session_count, sessionSegments.size),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        Text(
+                            text = if (sessionChunksExpanded) "-" else "+",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                    AnimatedVisibility(
+                        visible = sessionChunksExpanded,
+                        enter = fadeIn(animationSpec = tween(180)) + expandVertically(animationSpec = tween(260)),
+                        exit = fadeOut(animationSpec = tween(120)) + shrinkVertically(animationSpec = tween(200)),
+                    ) {
+                        Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                            sessionSegments.forEach { segment ->
+                                SessionChunkRow(segment = segment)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun UsageTimelineCanvas(sessionSegments: List<SessionSegment>) {
+    val outline = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
+    val trackColor = MaterialTheme.colorScheme.surfaceContainerHighest
+
+    Canvas(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(68.dp),
+    ) {
+        val trackTop = size.height * 0.35f
+        val trackHeight = size.height * 0.3f
+        drawRoundRect(
+            color = trackColor,
+            topLeft = Offset(0f, trackTop),
+            size = Size(size.width, trackHeight),
+            cornerRadius = CornerRadius(trackHeight / 2f, trackHeight / 2f),
+        )
+
+        for (hour in 0..24 step 6) {
+            val x = size.width * (hour / 24f)
+            drawLine(
+                color = outline,
+                start = Offset(x, 0f),
+                end = Offset(x, size.height),
+                strokeWidth = 1.dp.toPx(),
+            )
+        }
+
+        sessionSegments.forEach { segment ->
+            val startMinutes = segment.startDateTime.toLocalTime().toSecondOfDay() / 60f
+            val durationMinutes = TimeUnit.MILLISECONDS.toMinutes(segment.durationMillis).coerceAtLeast(1).toFloat()
+            val startX = size.width * (startMinutes / 1440f)
+            val width = (size.width * (durationMinutes / 1440f)).coerceAtLeast(4.dp.toPx())
+            drawRoundRect(
+                color = segment.app.analyticsColor(),
+                topLeft = Offset(startX, trackTop),
+                size = Size(width.coerceAtMost(size.width - startX), trackHeight),
+                cornerRadius = CornerRadius(trackHeight / 2f, trackHeight / 2f),
+            )
+        }
+    }
+}
+
+@Composable
+private fun SessionChunkRow(segment: SessionSegment) {
+    val startTime = segment.startDateTime.toLocalTime()
+    val endTime = segment.startDateTime.plusNanos(TimeUnit.MILLISECONDS.toNanos(segment.durationMillis)).toLocalTime()
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(14.dp),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.48f),
+        border = BorderStroke(1.dp, segment.app.analyticsColor().copy(alpha = 0.18f)),
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(10.dp)
+                    .background(segment.app.analyticsColor(), RoundedCornerShape(5.dp)),
+            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = segment.app.analyticsDisplayName(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    text = stringResource(
+                        R.string.usage_analytics_time_range,
+                        startTime.format(ANALYTICS_TIME_FORMATTER),
+                        endTime.format(ANALYTICS_TIME_FORMATTER),
+                    ),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Text(
+                text = segment.durationMillis.formatTime(),
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+    }
+}
+
+@Composable
+private fun WeekdayAverageSection(weekdayAverages: List<WeekdayUsageAverage>) {
+    val maxValue = weekdayAverages.maxOfOrNull { it.averageMillis } ?: 0L
+
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = stringResource(R.string.usage_analytics_weekday_average_title),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Text(
+                text = stringResource(R.string.usage_analytics_weekday_average_subtitle),
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(18.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
+                    .padding(horizontal = 12.dp, vertical = 16.dp),
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                weekdayAverages.forEach { average ->
+                    WeekdayAverageBar(
+                        average = average,
+                        maxValue = maxValue,
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun WeekdayAverageBar(average: WeekdayUsageAverage, maxValue: Long, modifier: Modifier = Modifier) {
+    val fraction = if (maxValue > 0L) {
+        average.averageMillis.toFloat() / maxValue.toFloat()
+    } else {
+        0f
+    }
+    val animatedFraction by animateFloatAsState(
+        targetValue = if (average.averageMillis > 0L) fraction.coerceIn(0.08f, 1f) else 0.04f,
+        animationSpec = tween(durationMillis = 720),
+        label = "weekdayAverageFraction",
+    )
+    val barColor by animateColorAsState(
+        targetValue = if (average.averageMillis == maxValue && maxValue > 0L) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.colorScheme.secondary.copy(alpha = 0.72f)
+        },
+        animationSpec = tween(durationMillis = 420),
+        label = "weekdayAverageColor",
+    )
+    Column(
+        modifier = modifier.fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Bottom,
+    ) {
+        Text(
+            text = average.averageMillis.formatTime(),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Spacer(Modifier.height(6.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(82.dp),
+            contentAlignment = Alignment.BottomCenter,
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(animatedFraction)
+                    .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+                    .background(barColor),
+            )
+        }
+        Spacer(Modifier.height(6.dp))
+        Text(
+            text = average.dayOfWeek.shortLabel(),
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+    }
+}
+
+@Composable
+private fun UsageMetricBar(label: String, value: Long, maxValue: Long, color: Color) {
+    val fraction = if (maxValue > 0L) value.toFloat() / maxValue.toFloat() else 0f
+    val animatedFraction by animateFloatAsState(
+        targetValue = fraction.coerceIn(0f, 1f),
+        animationSpec = tween(durationMillis = 650),
+        label = "usageMetricFraction",
+    )
+    val trackColor by animateColorAsState(
+        targetValue = color.copy(alpha = 0.16f),
+        animationSpec = tween(durationMillis = 420),
+        label = "usageMetricTrackColor",
+    )
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Text(
+                text = value.formatTime(),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp)
+                .clip(RoundedCornerShape(4.dp))
+                .background(trackColor),
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth(animatedFraction)
+                    .fillMaxHeight()
+                    .background(color),
+            )
+        }
+    }
+}
+
+@Composable
+private fun BlockableApp.analyticsDisplayName(): String = when (this) {
+    BlockableApp.FACEBOOK -> stringResource(R.string.app_facebook)
+    BlockableApp.FACEBOOK_LITE -> stringResource(R.string.app_facebook_lite)
+    BlockableApp.REELS -> stringResource(R.string.app_reels)
+    BlockableApp.SNAPCHAT -> stringResource(R.string.app_snapchat)
+    BlockableApp.SHORTS -> stringResource(R.string.app_shorts)
+    BlockableApp.TIKTOK -> stringResource(R.string.app_tiktok)
+}
+
+private fun BlockableApp.analyticsColor(): Color = when (this) {
+    BlockableApp.FACEBOOK -> facebookColor
+    BlockableApp.FACEBOOK_LITE -> facebookLiteColor
+    BlockableApp.REELS -> instagramReelsColor
+    BlockableApp.SNAPCHAT -> snapchatColor
+    BlockableApp.SHORTS -> youtubeShortsColor
+    BlockableApp.TIKTOK -> tiktokColor
+}
+
+private fun DayOfWeek.shortLabel(): String = when (this) {
+    DayOfWeek.MONDAY -> "Mon"
+    DayOfWeek.TUESDAY -> "Tue"
+    DayOfWeek.WEDNESDAY -> "Wed"
+    DayOfWeek.THURSDAY -> "Thu"
+    DayOfWeek.FRIDAY -> "Fri"
+    DayOfWeek.SATURDAY -> "Sat"
+    DayOfWeek.SUNDAY -> "Sun"
+}
 
 @Composable
 fun PauseButton(
@@ -1520,57 +2038,6 @@ fun PauseButton(
 }
 
 @Composable
-fun OnScreenTimerToggle(checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f))
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = {
-                    Timber.d("On-screen timer row click -> toggle to %s", !checked)
-                    onCheckedChange(!checked)
-                },
-            )
-            .padding(horizontal = 12.dp, vertical = 10.dp),
-    ) {
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(2.dp),
-        ) {
-
-            AutoResizingText(
-                text = stringResource(id = R.string.show_onscreen_timer),
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-                color = MaterialTheme.colorScheme.onSurface,
-                overflow = TextOverflow.Ellipsis,
-                minFontSize = 12.sp,
-            )
-
-            Text(
-                text = stringResource(id = R.string.timer_overlay_description),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.bodySmall,
-            )
-        }
-
-        Switch(
-            checked = checked,
-            onCheckedChange = {
-                Timber.d("On-screen timer switch toggled -> %s", it)
-                onCheckedChange(it)
-            },
-        )
-    }
-}
-
-@Composable
 fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     FilledTonalIconButton(onClick = onClick, modifier = modifier) {
         Icon(
@@ -1640,7 +2107,6 @@ fun HomeScreenPreview() {
                 uiState = mockState,
                 onBlockOptionSelected = {},
                 onConfigureDailyLimit = {},
-                onScreenTimerToggled = {},
                 onHelpClicked = {},
                 onIntervalTimerClick = {},
                 onIntervalTimerEdit = {},
@@ -1648,6 +2114,84 @@ fun HomeScreenPreview() {
             )
         }
     }
+}
+
+@Preview(name = "Usage Analytics Previous Day")
+@Composable
+private fun PreviewUsageAnalyticsPreviousDay() {
+    ScrollessTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                InlineUsageAnalyticsPanel(
+                    analytics = previewUsageAnalytics(populated = true, highUsage = false),
+                    sessionChunksExpanded = false,
+                    onToggleSessionChunks = {},
+                )
+            }
+        }
+    }
+}
+
+@Preview(name = "Usage Analytics Expanded")
+@Composable
+private fun PreviewUsageAnalyticsExpanded() {
+    ScrollessTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                InlineUsageAnalyticsPanel(
+                    analytics = previewUsageAnalytics(populated = true, highUsage = false),
+                    sessionChunksExpanded = true,
+                    onToggleSessionChunks = {},
+                )
+            }
+        }
+    }
+}
+
+@Preview(name = "Usage Analytics Empty")
+@Composable
+private fun PreviewUsageAnalyticsEmpty() {
+    ScrollessTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                InlineUsageAnalyticsPanel(
+                    analytics = previewUsageAnalytics(populated = false, highUsage = false),
+                    sessionChunksExpanded = false,
+                    onToggleSessionChunks = {},
+                )
+            }
+        }
+    }
+}
+
+private fun previewUsageAnalytics(populated: Boolean, highUsage: Boolean): UsageAnalyticsUiState {
+    val date = LocalDate.of(2026, 5, 26)
+    val segments = if (!populated) {
+        emptyList()
+    } else {
+        listOf(
+            SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(18), date.atTime(8, 10)),
+            SessionSegment(BlockableApp.SHORTS, TimeUnit.MINUTES.toMillis(12), date.atTime(12, 35)),
+            SessionSegment(BlockableApp.TIKTOK, TimeUnit.MINUTES.toMillis(22), date.atTime(19, 20)),
+            SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(if (highUsage) 48 else 9), date.atTime(22, 5)),
+        )
+    }
+    val appTotals = segments.groupBy { it.app }.map { (app, appSegments) ->
+        AppUsageTotal(app = app, totalMillis = appSegments.sumOf { it.durationMillis })
+    }.sortedByDescending { it.totalMillis }
+    return UsageAnalyticsUiState(
+        selectedDate = date,
+        today = date,
+        dailyTotalMillis = segments.sumOf { it.durationMillis },
+        sessionSegments = segments,
+        appTotals = appTotals,
+        weekdayAverages = DayOfWeek.entries.mapIndexed { index, dayOfWeek ->
+            WeekdayUsageAverage(
+                dayOfWeek = dayOfWeek,
+                averageMillis = TimeUnit.MINUTES.toMillis(((index + 1) * if (highUsage) 12 else 5).toLong()),
+            )
+        },
+    )
 }
 
 @Preview(name = "Block All Active")
@@ -1658,7 +2202,6 @@ fun PreviewBlockAll() {
             uiState = HomeUiState(blockOption = BlockOption.BlockAll),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onScreenTimerToggled = {},
             onHelpClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
@@ -1675,7 +2218,6 @@ fun PreviewNothingSelected() {
             uiState = HomeUiState(blockOption = BlockOption.NothingSelected, currentUsage = 3590000L),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onScreenTimerToggled = {},
             onHelpClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
@@ -1699,7 +2241,6 @@ fun PreviewIntervalTimerSelected() {
             ),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onScreenTimerToggled = {},
             onHelpClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
@@ -1723,7 +2264,6 @@ fun PreviewIntervalTimer() {
             ),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onScreenTimerToggled = {},
             onHelpClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
@@ -1746,7 +2286,6 @@ fun PreviewHelpDialog() {
             uiState = HomeUiState(blockOption = BlockOption.BlockAll),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onScreenTimerToggled = {},
             onHelpClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
@@ -1764,7 +2303,6 @@ fun PreviewAccessibilityExplainer() {
             uiState = HomeUiState(blockOption = BlockOption.NothingSelected),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onScreenTimerToggled = {},
             onHelpClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},
@@ -1782,7 +2320,6 @@ fun PreviewAccessibilitySuccessDialog() {
             uiState = HomeUiState(blockOption = BlockOption.NothingSelected),
             onBlockOptionSelected = {},
             onConfigureDailyLimit = {},
-            onScreenTimerToggled = {},
             onHelpClicked = {},
             onIntervalTimerClick = {},
             onIntervalTimerEdit = {},

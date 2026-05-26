@@ -53,7 +53,7 @@ fun ScrollessApplication(appState: ScrollessAppState = rememberScrollessAppState
                     entry<ScrollessRoute.Settings> {
                         SettingsScreen(onNavigateBack = appState::navigateBack)
                     }
-                }
+                },
             )
         }
     }
