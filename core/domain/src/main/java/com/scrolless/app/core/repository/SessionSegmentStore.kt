@@ -17,6 +17,8 @@
 package com.scrolless.app.core.repository
 
 import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.core.model.usage.DailyUsageTotal
+import com.scrolless.app.core.model.usage.WeekdayUsageAverage
 import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
 
@@ -26,6 +28,12 @@ interface SessionSegmentStore {
     fun getCurrentTotalDurationForToday(): Long
 
     fun getListSessionSegments(date: LocalDate): Flow<List<SessionSegment>>
+
+    fun getListSessionSegments(startDate: LocalDate, endDateInclusive: LocalDate): Flow<List<SessionSegment>>
+
+    fun getDailyUsageTotals(startDate: LocalDate, endDateInclusive: LocalDate): Flow<List<DailyUsageTotal>>
+
+    fun getWeekdayAverageUsage(startDate: LocalDate, endDateInclusive: LocalDate): Flow<List<WeekdayUsageAverage>>
 
     suspend fun addSessionSegment(sessionSegment: SessionSegment): Long
 

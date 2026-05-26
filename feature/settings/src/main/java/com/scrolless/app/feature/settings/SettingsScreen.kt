@@ -75,6 +75,7 @@ fun SettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifier, vi
         uiState = uiState,
         onPauseDurationChange = viewModel::onPauseDurationChange,
         onExceptReelsSentByDmChange = viewModel::onExceptReelsSentByDmChange,
+        onTimerOverlayEnabledChange = viewModel::onTimerOverlayEnabledChange,
         onNavigateBack = onNavigateBack,
         modifier = modifier,
     )
@@ -86,6 +87,7 @@ private fun SettingsScreenContent(
     uiState: SettingsUiState,
     onPauseDurationChange: (Int) -> Unit,
     onExceptReelsSentByDmChange: (Boolean) -> Unit,
+    onTimerOverlayEnabledChange: (Boolean) -> Unit,
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -147,6 +149,13 @@ private fun SettingsScreenContent(
                 ExceptReelsSentByDmItem(
                     checked = uiState.exceptReelsSentByDm,
                     onCheckedChange = onExceptReelsSentByDmChange,
+                )
+
+                SettingsDivider()
+
+                TimerOverlayItem(
+                    checked = uiState.timerOverlayEnabled,
+                    onCheckedChange = onTimerOverlayEnabledChange,
                 )
             }
         }
@@ -264,6 +273,34 @@ private fun SettingsValuePill(text: String, modifier: Modifier = Modifier) {
 
 @Composable
 private fun ExceptReelsSentByDmItem(checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+    SettingsSwitchItem(
+        title = stringResource(R.string.settings_except_reels_sent_by_dms_title),
+        description = stringResource(R.string.settings_except_reels_sent_by_dms_description),
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun TimerOverlayItem(checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+    SettingsSwitchItem(
+        title = stringResource(R.string.settings_show_onscreen_timer_title),
+        description = stringResource(R.string.settings_show_onscreen_timer_description),
+        checked = checked,
+        onCheckedChange = onCheckedChange,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun SettingsSwitchItem(
+    title: String,
+    description: String,
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -276,12 +313,12 @@ private fun ExceptReelsSentByDmItem(checked: Boolean, onCheckedChange: (Boolean)
             verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             Text(
-                text = stringResource(R.string.settings_except_reels_sent_by_dms_title),
+                text = title,
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
-                text = stringResource(R.string.settings_except_reels_sent_by_dms_description),
+                text = description,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -307,10 +344,11 @@ private fun ExceptReelsSentByDmItem(checked: Boolean, onCheckedChange: (Boolean)
 private fun SettingsScreenPreview() {
     ScrollessTheme {
         SettingsScreenContent(
-            uiState = SettingsUiState(pauseDurationMinutes = 5),
+            uiState = SettingsUiState(pauseDurationMinutes = 5, timerOverlayEnabled = true),
             onPauseDurationChange = {},
             onNavigateBack = {},
             onExceptReelsSentByDmChange = {},
+            onTimerOverlayEnabledChange = {},
         )
     }
 }
