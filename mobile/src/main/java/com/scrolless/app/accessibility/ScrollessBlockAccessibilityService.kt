@@ -122,32 +122,22 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     private val powerManager by lazy { getSystemService(POWER_SERVICE) as PowerManager }
 
-    /**
-     * Flag indicating whether the user is currently in blocked content.
-     * Prevents duplicate processing of accessibility events.
-     */
-    private var isProcessingBlockedContent = false
+    private data class DetectedBlockedContent(val app: ResolvedBlockableApp, val blockingSuppressed: Boolean)
+
+    private data class BlockedContentSession(val app: ResolvedBlockableApp, val startedAtMillis: Long, val blockingSuppressed: Boolean)
+
+    private var blockedContentSession: BlockedContentSession? = null
 
     /**
-     * Timestamp (in milliseconds) when the user entered blocked content.
-     * Used to calculate session duration.
+     * Whether the user is currently in blocked content.
      */
-    private var timeStartOnBrainRot: Long = 0L
-
-    /**
-     * The currently detected blocked app, or null if no blocked content is active.
-     */
-    private var detectedApp: ResolvedBlockableApp? = null
+    private val isProcessingBlockedContent: Boolean
+        get() = blockedContentSession != null
 
     /**
      * Current timer overlay enabled state, updated reactively.
      */
     private var currentTimerOverlayEnabled: Boolean = false
-
-    /**
-     * Current active block option, updated reactively.
-     */
-    private var currentBlockOption: BlockOption = BlockOption.NothingSelected
 
     /**
      * Whether Instagram Reels opened from a DM thread should be ignored by blocking detection.
@@ -162,7 +152,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     private fun isPauseActive(now: Long = System.currentTimeMillis()): Boolean = pauseUntilMillis > now
 
-    private var currentBlockableApp: ResolvedBlockableApp? = null
+    private val isBlockingSuppressed: Boolean
+        get() = isPauseActive() || isBlockingSuppressedForCurrentContent
+
+    private val isBlockingSuppressedForCurrentContent: Boolean
+        get() = blockedContentSession?.blockingSuppressed == true
 
     private var currentForegroundBrainRotApp: ResolvedBlockableApp? = null
 
@@ -183,11 +177,17 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             return@Runnable
         }
 
-        val elapsed = System.currentTimeMillis() - timeStartOnBrainRot
+        val session = blockedContentSession ?: return@Runnable
+        val elapsed = System.currentTimeMillis() - session.startedAtMillis
 
-        if (isPauseActive()) {
-            // While paused, continue scheduling to keep timer overlay updated but skip blocking checks
-            Timber.v("Periodic check (paused): elapsed=%d ms", elapsed)
+        if (isBlockingSuppressed) {
+            // While paused or suppressed, continue scheduling so usage and timer overlay stay current.
+            Timber.v(
+                "Periodic check skipped: elapsed=%d ms, paused=%b, suppressed=%b",
+                elapsed,
+                isPauseActive(),
+                isBlockingSuppressedForCurrentContent,
+            )
             videoCheckHandler.postDelayed(videoCheckRunnable, 1000)
         } else {
             Timber.v("Periodic check running: elapsed=%d ms", elapsed)
@@ -259,11 +259,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             userSettingsStore.getTimerOverlayEnabled().collect { currentTimerOverlayEnabled = it }
         }
 
-        // Observe active block option changes
-        serviceScope.launch {
-            userSettingsStore.getActiveBlockOption().collect { currentBlockOption = it }
-        }
-
         // Observe DM-sent reels exception changes
         serviceScope.launch {
             userSettingsStore.getExceptReelsSentByDm().collect { currentExceptReelsSentByDm = it }
@@ -281,7 +276,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 } else if (!nowPaused && wasPaused) {
                     Timber.i("Pause expired, resuming blocking checks")
                     // If still in blocked content, check if should block now
-                    if (isProcessingBlockedContent) {
+                    if (isProcessingBlockedContent && !isBlockingSuppressed) {
                         serviceScope.launch(Dispatchers.IO) {
                             if (blockingManager.onEnterBlockedContent()) {
                                 Timber.i("Blocking immediately after pause expired")
@@ -392,14 +387,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
 
         // Detect blocked content
-        val onBrainRotApp = detectAppForBlockedContent(packageId, rootNode)
+        val detectedContent = detectBlockedContent(packageId, rootNode)
 
         // Only trigger changes if detection state actually changed
-        if (onBrainRotApp != null) {
-
-            currentBlockableApp = onBrainRotApp
-            detectedApp = onBrainRotApp
-            onBlockedContentEntered()
+        if (detectedContent != null) {
+            onBlockedContentDetected(detectedContent)
         } else if (isProcessingBlockedContent) {
 
             // If we were processing, but now nothing detected, we exited
@@ -423,7 +415,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
 
         currentForegroundBrainRotApp = nextApp
-        currentBlockableApp = nextApp
         refreshServiceConfig()
     }
 
@@ -476,8 +467,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     override fun onDestroy() {
         super.onDestroy()
         Timber.d(
-            "Service state at destroy: isProcessingBlockedContent=%b, detectedApp=%s",
-            isProcessingBlockedContent, detectedApp,
+            "Service state at destroy: isProcessingBlockedContent=%b, sessionApp=%s",
+            isProcessingBlockedContent, blockedContentSession?.app,
         )
         stopPeriodicCheck()
         timerOverlayManager.cleanup()
@@ -490,49 +481,64 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * Searches for view IDs that match known blocked apps (e.g., YouTube Shorts, Instagram Reels).
      * Optimized to exit early once a match is found.
      *
+     * @param packageId The package that emitted the current accessibility event
      * @param rootNode The root accessibility node of the current window
-     * @return The detected [ResolvedBlockableApp], or null if no blocked content is found
+     * @return The detected blocked content, or null if no blocked content is found
      */
-    private fun detectAppForBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): ResolvedBlockableApp? {
+    private fun detectBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): DetectedBlockedContent? {
 
         // If we are processing content, and we received an event
         //  make sure that the app is still visible as we can get events from other apps
         //  otherwise it means that the user has left the app
-        currentBlockableApp?.takeIf { isProcessingBlockedContent }?.let { blockableApp ->
-            if (isBlockedAppVisible(blockableApp)) {
-                return blockableApp
+        blockedContentSession?.app?.let { blockableApp ->
+            if (rootNode.matchesBlockedContent(blockableApp)) {
+                return rootNode.toDetectedBlockedContent(blockableApp)
             } else {
+                val visibleBlockedContentRoot = findVisibleBlockedContentRoot(blockableApp)
+                if (visibleBlockedContentRoot != null) {
+                    return visibleBlockedContentRoot.toDetectedBlockedContent(blockableApp)
+                }
                 Timber.v("Blocked app is no longer visible, checking if there's any other open")
             }
         }
 
         // Detect if the user is inside a blockable app and watching content
-        val userBlockableApp = BlockableApp.entries.firstNotNullOfOrNull { appEnum ->
+        return BlockableApp.entries.firstNotNullOfOrNull { appEnum ->
             val matchedPackage = appEnum.resolvePackage(packageId) ?: return@firstNotNullOfOrNull null
             val resolvedApp = ResolvedBlockableApp(appEnum, matchedPackage)
             val match = rootNode.matchesBlockedContent(resolvedApp)
 
-            resolvedApp.takeIf { match }
+            if (match) {
+                rootNode.toDetectedBlockedContent(resolvedApp)
+            } else {
+                null
+            }
         }
+    }
 
-        return userBlockableApp
+    private fun AccessibilityNodeInfo.toDetectedBlockedContent(blockableApp: ResolvedBlockableApp): DetectedBlockedContent {
+        return DetectedBlockedContent(
+            app = blockableApp,
+            blockingSuppressed = shouldSuppressBlocking(blockableApp),
+        )
     }
 
     /**
-     * Checks if ANY blocked app has a visible window on screen AND the blocked content view is visible.
+     * Finds a visible blocked-app window whose root still contains blocked content.
+     *
      * This handles cases where the user interacts with SystemUI (notification shade) or keyboards,
      * where the blocked app is still visible but not the source of the latest event.
      */
-    private fun isBlockedAppVisible(blockableApp: ResolvedBlockableApp): Boolean {
+    private fun findVisibleBlockedContentRoot(blockableApp: ResolvedBlockableApp): AccessibilityNodeInfo? {
 
         // windows returns a list of windows in z-order (top to bottom)
-        return windows.any { window ->
+        return windows.firstNotNullOfOrNull { window ->
             if (window.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_APPLICATION) {
-                val root = window.root ?: return@any false
+                val root = window.root ?: return@firstNotNullOfOrNull null
                 // Check if the root is blocked content (reels etc.)
-                root.matchesBlockedContent(blockableApp)
+                root.takeIf { it.matchesBlockedContent(blockableApp) }
             } else {
-                false
+                null
             }
         }
     }
@@ -553,38 +559,48 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     /**
+     * Called when blocked content is detected in the active or visible window.
+     */
+    private fun onBlockedContentDetected(detectedContent: DetectedBlockedContent) {
+        val activeSession = blockedContentSession
+        if (activeSession != null) {
+            blockedContentSession = activeSession.copy(
+                app = detectedContent.app,
+                blockingSuppressed = detectedContent.blockingSuppressed,
+            )
+            return
+        }
+
+        blockedContentSession = BlockedContentSession(
+            app = detectedContent.app,
+            startedAtMillis = System.currentTimeMillis(),
+            blockingSuppressed = detectedContent.blockingSuppressed,
+        )
+        onBlockedContentEntered()
+    }
+
+    /**
      * Called when the user enters blocked content.
      *
-     * If already processing blocked content, this call is ignored to prevent duplicate handling.
+     * Requires [blockedContentSession] to be initialized before it is called.
      *
      * Actions performed:
-     * - Marks [isProcessingBlockedContent] as true to prevent duplicate event handling
-     * - Records entry timestamp to track session duration
      * - Starts periodic usage checks to enforce time limits
      * - Shows timer overlay (if enabled) to keep user informed of usage
      * - Checks for daily usage reset to ensure accurate daily tracking
      * - Immediately blocks if limit already exceeded (e.g., BlockAll mode)
      */
     private fun onBlockedContentEntered() {
-
-        // If the currentOnVideos boolean is set to true, we already dealt with the event
-        if (isProcessingBlockedContent) {
-            // Avoid this log as its spamming
-            // Timber.v("Already processing blocked content, ignoring duplicate enter event")
-            return
-        }
-
-        isProcessingBlockedContent = true
-        timeStartOnBrainRot = System.currentTimeMillis()
-        Timber.d("Entered blocked content at %d (app=%s, paused=%b)", timeStartOnBrainRot, detectedApp, isPauseActive())
+        val session = blockedContentSession ?: return
+        Timber.d("Entered blocked content at %d (app=%s, paused=%b)", session.startedAtMillis, session.app, isPauseActive())
 
         // Expand service scope to detect when user leaves the app (e.g. to launcher)
         refreshServiceConfig()
 
         startPeriodicCheck()
 
-        // Only perform blocking checks if NOT paused
-        if (!isPauseActive()) {
+        // Only enforce blocking when neither pause nor a content-specific exception is active.
+        if (!isBlockingSuppressed) {
             serviceScope.launch(Dispatchers.IO) {
 
                 val shouldBlock = blockingManager.onEnterBlockedContent()
@@ -597,21 +613,25 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                     mainHandler.post {
                         if (currentTimerOverlayEnabled && isProcessingBlockedContent) {
                             Timber.v("Showing timer overlay")
-                            timerOverlayManager.show(timeStartOnBrainRot)
+                            timerOverlayManager.show(session.startedAtMillis)
                         }
                     }
                     Timber.d("Content allowed on enter, will monitor usage")
                 }
             }
         } else {
-            // Paused - show timer overlay
+            // Paused or blocking-suppressed content still counts as watched time.
             if (currentTimerOverlayEnabled) {
-                Timber.v("Showing timer overlay (paused)")
+                Timber.v("Showing timer overlay (blocking skipped)")
                 mainHandler.post {
-                    timerOverlayManager.show(timeStartOnBrainRot)
+                    timerOverlayManager.show(session.startedAtMillis)
                 }
             }
-            Timber.d("Pause active - skipping blocking check on enter, but tracking usage")
+            Timber.d(
+                "Skipping blocking check on enter, but tracking usage (paused=%b, suppressed=%b)",
+                isPauseActive(),
+                isBlockingSuppressedForCurrentContent,
+            )
         }
     }
 
@@ -629,13 +649,14 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * - Hides timer overlay (if enabled)
      */
     private fun onBlockedContentExited() {
-        if (!isProcessingBlockedContent) {
+        val session = blockedContentSession
+        if (session == null) {
             Timber.v("Ignoring blocked content exit because no session is active")
             return
         }
 
-        val sessionTime = System.currentTimeMillis() - timeStartOnBrainRot
-        Timber.d("Exited blocked content. Session=%d ms (app=%s)", sessionTime, detectedApp)
+        val sessionTime = System.currentTimeMillis() - session.startedAtMillis
+        Timber.d("Exited blocked content. Session=%d ms (app=%s)", sessionTime, session.app)
 
         // Hide timer overlay if enabled
         if (currentTimerOverlayEnabled) {
@@ -644,16 +665,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
 
         stopPeriodicCheck()
-        isProcessingBlockedContent = false
+        blockedContentSession = null
 
         // Restrict service scope again to save battery
         refreshServiceConfig()
 
-        val exitedApp = detectedApp
-        if (exitedApp == null) {
-            Timber.w("Blocked content exited but detectedApp is null, skipping usage recording")
-            return
-        }
+        val exitedApp = session.app
 
         serviceScope.launch(Dispatchers.IO) {
             // Add to usage in memory with per-app tracking
@@ -665,7 +682,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
 
         Timber.d("Exit handling completed for app: %s (%s)", exitedApp.app.name, exitedApp.packageId)
-        detectedApp = null
     }
 
     /**
@@ -708,7 +724,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      */
     private fun performBackNavigation() {
         mainHandler.post {
-            val action = detectedApp?.getExitStrategy() ?: GLOBAL_ACTION_BACK
+            val action = blockedContentSession?.app?.getExitStrategy() ?: GLOBAL_ACTION_BACK
             Timber.d("Performing back navigation with action=%d", action)
             val success = performGlobalAction(action)
             Timber.d("Back navigation result: success=%b", success)
@@ -763,16 +779,13 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * to support both signals here.
      */
     private fun AccessibilityNodeInfo.matchesBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
-        if (!matchesDetectionMethod(blockableApp, blockableApp.getDetectionMethod())) {
-            return false
-        }
+        return matchesDetectionMethod(blockableApp, blockableApp.getDetectionMethod())
+    }
 
-        if (blockableApp.app == BlockableApp.REELS && currentExceptReelsSentByDm && isInstagramReelSentInDm(blockableApp)) {
-            // Ignoring Instagram Reel because it has the DM sender header
-            return false
-        }
-
-        return true
+    private fun AccessibilityNodeInfo.shouldSuppressBlocking(blockableApp: ResolvedBlockableApp): Boolean {
+        return blockableApp.app == BlockableApp.REELS &&
+            currentExceptReelsSentByDm &&
+            isInstagramReelSentInDm(blockableApp)
     }
 
     private fun AccessibilityNodeInfo.matchesDetectionMethod(
