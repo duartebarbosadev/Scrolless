@@ -14,17 +14,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.util
-
-import android.app.Activity
-import com.scrolless.app.feature.home.ReviewPromptResult
-import timber.log.Timber
+package com.scrolless.app.designsystem.util
 
 /**
- * F-Droid builds intentionally exclude the Play Review SDK.
+ * Formats this number of minutes into a compact hour/minute label like "1h 5m" or "45m".
+ * Negative values are coerced to 0.
  */
-@Suppress("unused")
-fun requestAppReview(activity: Activity, onResult: (ReviewPromptResult) -> Unit) {
-    Timber.i("In-app review skipped for F-Droid variant")
-    onResult(ReviewPromptResult.SkippedPermanent)
+fun Int.formatMinutes(): String {
+    val total = this.coerceAtLeast(0)
+    val hours = total / 60
+    val remainingMinutes = total % 60
+    return buildString {
+        if (hours > 0) {
+            append(hours)
+            append("h")
+        }
+        if (remainingMinutes > 0 || hours == 0) {
+            if (isNotEmpty()) append(" ")
+            append(remainingMinutes)
+            append("m")
+        }
+    }
 }

@@ -27,8 +27,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.scrolless.app.ui.home.HomeScreen
-import com.scrolless.app.ui.settings.SettingsScreen
+import com.scrolless.app.accessibility.ScrollessBlockAccessibilityService
+import com.scrolless.app.feature.home.HomeScreen
+import com.scrolless.app.feature.settings.SettingsScreen
+import com.scrolless.app.util.requestAppReview
 
 @Composable
 @OptIn(ExperimentalSharedTransitionApi::class)
@@ -43,7 +45,11 @@ fun ScrollessApplication(appState: ScrollessAppState = rememberScrollessAppState
                 popEnterTransition = { EnterTransition.None },
             ) {
                 composable(Screen.Scrolless.route) {
-                    HomeScreen(onNavigateToSettings = { appState.navController.navigate(Screen.Settings.route) })
+                    HomeScreen(
+                        onNavigateToSettings = { appState.navController.navigate(Screen.Settings.route) },
+                        accessibilityServiceClass = ScrollessBlockAccessibilityService::class.java,
+                        onRequestAppReview = ::requestAppReview,
+                    )
                 }
                 composable(Screen.Settings.route) {
                     SettingsScreen(onNavigateBack = { appState.navController.popBackStack() })
