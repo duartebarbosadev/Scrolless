@@ -14,8 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-@file:OptIn(ExperimentalSharedTransitionApi::class)
-
 package com.scrolless.app.ui
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -24,8 +22,9 @@ import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
-import androidx.navigation3.runtime.NavKey
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.scrolless.app.accessibility.ScrollessBlockAccessibilityService
 import com.scrolless.app.feature.home.HomeScreen
@@ -42,7 +41,11 @@ fun ScrollessApplication(appState: ScrollessAppState = rememberScrollessAppState
             NavDisplay(
                 appState.backStack,
                 onBack = { appState.navigateBack() },
-                entryProvider = entryProvider<NavKey> {
+                entryDecorators = listOf(
+                    rememberSaveableStateHolderNavEntryDecorator(),
+                    rememberViewModelStoreNavEntryDecorator(),
+                ),
+                entryProvider = entryProvider {
                     entry<ScrollessRoute.Home> {
                         HomeScreen(
                             onNavigateToSettings = appState::navigateToSettings,

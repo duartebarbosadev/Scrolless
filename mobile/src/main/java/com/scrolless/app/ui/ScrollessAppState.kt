@@ -64,6 +64,8 @@ class ScrollessAppState(val backStack: NavBackStack<NavKey>) {
     }
 
     fun navigateBack() {
-        backStack.removeLastOrNull()
+        if (backStack.size > 1) {
+            backStack.removeLastOrNull()
+        }
     }
 }
