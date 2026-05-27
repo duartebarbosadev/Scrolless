@@ -499,14 +499,9 @@ private fun HomeContent(
     onUsageAnalyticsDateSelected: (LocalDate) -> Unit = {},
     onUsageAnalyticsTodaySelected: () -> Unit = {},
 ) {
-    // Define weights outside of composition flow
-    val WEIGHT_BASE = 1f
-    val WEIGHT_EXPANDED = 1.2f
-    val WEIGHT_SHRUNK = 0.9f
 
     val pauseRemainingMillis = rememberPauseRemainingTime(uiState.pauseUntilMillis)
     val isPauseActive = pauseRemainingMillis > 0L
-    val hasActiveBlockOption = uiState.blockOption != BlockOption.NothingSelected
     val showDebugPanel = BuildConfig.DEBUG || LocalInspectionMode.current
     var isDebugExpanded by remember { mutableStateOf(false) }
     var sessionChunksExpanded by remember(uiState.usageAnalytics.selectedDate) { mutableStateOf(false) }
@@ -544,7 +539,7 @@ private fun HomeContent(
                     uiState = uiState,
                     onDateSelected = onUsageAnalyticsDateSelected,
                     onProgressCardClicked = onUsageAnalyticsTodaySelected,
-                    modifier = Modifier.padding(top = 18.dp),
+                    modifier = Modifier.padding(top = 54.dp),
                 )
 
                 androidx.compose.animation.AnimatedVisibility(
@@ -555,15 +550,7 @@ private fun HomeContent(
                         .align(Alignment.TopStart)
                         .padding(8.dp, 8.dp, 0.dp, 8.dp),
                 ) {
-                    OutlinedButton(
-                        onClick = onUsageAnalyticsTodaySelected,
-                        shape = RoundedCornerShape(18.dp),
-                    ) {
-                        Text(
-                            text = stringResource(R.string.usage_analytics_go_today),
-                            style = MaterialTheme.typography.labelMedium,
-                        )
-                    }
+                    TodayShortcutButton(onClick = onUsageAnalyticsTodaySelected)
                 }
 
                 Row(
@@ -612,7 +599,6 @@ private fun HomeContent(
                         isBlockingActive = isBlockingActive,
                         isPauseActive = isPauseActive,
                         pauseRemainingMillis = pauseRemainingMillis,
-                        hasActiveBlockOption = hasActiveBlockOption,
                         onBlockOptionSelected = onBlockOptionSelected,
                         onConfigureDailyLimit = onConfigureDailyLimit,
                         onIntervalTimerClick = onIntervalTimerClick,
@@ -646,7 +632,6 @@ private fun TodayHomeControls(
     isBlockingActive: Boolean,
     isPauseActive: Boolean,
     pauseRemainingMillis: Long,
-    hasActiveBlockOption: Boolean,
     onBlockOptionSelected: (BlockOption) -> Unit,
     onConfigureDailyLimit: () -> Unit,
     onIntervalTimerClick: () -> Unit,
@@ -1225,6 +1210,7 @@ private fun SwipeableProgressCard(
         todayPage - ChronoUnit.DAYS.between(analytics.selectedDate, analytics.today).toInt()
         ).coerceIn(0, todayPage)
     val pagerState = rememberPagerState(initialPage = selectedPage, pageCount = { ANALYTICS_PAGER_DAY_COUNT })
+    val settledPage = pagerState.settledPage
 
     LaunchedEffect(selectedPage) {
         if (pagerState.currentPage != selectedPage) {
@@ -1232,8 +1218,8 @@ private fun SwipeableProgressCard(
         }
     }
 
-    LaunchedEffect(pagerState.currentPage, analytics.today) {
-        val daysBack = todayPage - pagerState.currentPage
+    LaunchedEffect(settledPage, analytics.today) {
+        val daysBack = todayPage - settledPage
         val pageDate = analytics.today.minusDays(daysBack.toLong())
         if (pageDate != analytics.selectedDate) {
             onDateSelected(pageDate)
@@ -1243,25 +1229,61 @@ private fun SwipeableProgressCard(
     HorizontalPager(
         state = pagerState,
         modifier = modifier.fillMaxWidth(),
-    ) {
-        val isViewingToday = analytics.selectedDate == analytics.today
-        val dateLabel = if (isViewingToday) {
+        beyondViewportPageCount = 1,
+    ) { page ->
+        val pageDate = remember(page, analytics.today) {
+            val daysBack = todayPage - page
+            analytics.today.minusDays(daysBack.toLong())
+        }
+        val isTodayPage = pageDate == analytics.today
+        val pageAnalytics = remember(pageDate, analytics.daySummaries) {
+            analytics.daySummaries[pageDate] ?: UsageAnalyticsDayUiState(date = pageDate)
+        }
+        val dateLabel = if (isTodayPage) {
             stringResource(R.string.usage_analytics_today)
         } else {
-            analytics.selectedDate.format(ANALYTICS_DATE_FORMATTER)
+            pageDate.format(ANALYTICS_DATE_FORMATTER)
         }
         ProgressCard(
-            blockOption = if (isViewingToday) uiState.blockOption else BlockOption.NothingSelected,
-            progress = if (isViewingToday) uiState.progress else 0,
-            currentUsage = if (isViewingToday) uiState.currentUsage else analytics.dailyTotalMillis,
-            intervalUsage = if (isViewingToday) uiState.intervalUsage else 0L,
-            timeLimit = if (isViewingToday) uiState.timeLimit else 0L,
-            intervalLength = if (isViewingToday) uiState.intervalLength else 0L,
-            intervalWindowStart = if (isViewingToday) uiState.intervalWindowStart else 0L,
-            listSessionSegments = if (isViewingToday) uiState.listSessionSegments else analytics.sessionSegments,
+            blockOption = if (isTodayPage) uiState.blockOption else BlockOption.NothingSelected,
+            progress = if (isTodayPage) uiState.progress else 0,
+            currentUsage = if (isTodayPage) uiState.currentUsage else pageAnalytics.dailyTotalMillis,
+            intervalUsage = if (isTodayPage) uiState.intervalUsage else 0L,
+            timeLimit = if (isTodayPage) uiState.timeLimit else 0L,
+            intervalLength = if (isTodayPage) uiState.intervalLength else 0L,
+            intervalWindowStart = if (isTodayPage) uiState.intervalWindowStart else 0L,
+            listSessionSegments = if (isTodayPage) uiState.listSessionSegments else pageAnalytics.sessionSegments,
             dateLabel = dateLabel,
             onClick = onProgressCardClicked,
         )
+    }
+}
+
+@Composable
+private fun TodayShortcutButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Surface(
+        modifier = modifier
+            .height(36.dp)
+            .clip(RoundedCornerShape(18.dp))
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(18.dp),
+        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.72f),
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
+        tonalElevation = 2.dp,
+    ) {
+        Row(
+            modifier = Modifier.padding(horizontal = 14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.usage_analytics_today),
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.SemiBold,
+                maxLines = 1,
+            )
+        }
     }
 }
 
@@ -1868,53 +1890,6 @@ private fun WeekdayAverageBar(average: WeekdayUsageAverage, maxValue: Long, modi
 }
 
 @Composable
-private fun UsageMetricBar(label: String, value: Long, maxValue: Long, color: Color) {
-    val fraction = if (maxValue > 0L) value.toFloat() / maxValue.toFloat() else 0f
-    val animatedFraction by animateFloatAsState(
-        targetValue = fraction.coerceIn(0f, 1f),
-        animationSpec = tween(durationMillis = 650),
-        label = "usageMetricFraction",
-    )
-    val trackColor by animateColorAsState(
-        targetValue = color.copy(alpha = 0.16f),
-        animationSpec = tween(durationMillis = 420),
-        label = "usageMetricTrackColor",
-    )
-    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Text(
-                text = value.formatTime(),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(8.dp)
-                .clip(RoundedCornerShape(4.dp))
-                .background(trackColor),
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(animatedFraction)
-                    .fillMaxHeight()
-                    .background(color),
-            )
-        }
-    }
-}
-
-@Composable
 private fun BlockableApp.analyticsDisplayName(): String = when (this) {
     BlockableApp.FACEBOOK -> stringResource(R.string.app_facebook)
     BlockableApp.FACEBOOK_LITE -> stringResource(R.string.app_facebook_lite)
@@ -2123,7 +2098,7 @@ private fun PreviewUsageAnalyticsPreviousDay() {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.padding(16.dp)) {
                 InlineUsageAnalyticsPanel(
-                    analytics = previewUsageAnalytics(populated = true, highUsage = false),
+                    analytics = previewUsageAnalytics(populated = true),
                     sessionChunksExpanded = false,
                     onToggleSessionChunks = {},
                 )
@@ -2139,7 +2114,7 @@ private fun PreviewUsageAnalyticsExpanded() {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.padding(16.dp)) {
                 InlineUsageAnalyticsPanel(
-                    analytics = previewUsageAnalytics(populated = true, highUsage = false),
+                    analytics = previewUsageAnalytics(populated = true),
                     sessionChunksExpanded = true,
                     onToggleSessionChunks = {},
                 )
@@ -2155,7 +2130,7 @@ private fun PreviewUsageAnalyticsEmpty() {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.padding(16.dp)) {
                 InlineUsageAnalyticsPanel(
-                    analytics = previewUsageAnalytics(populated = false, highUsage = false),
+                    analytics = previewUsageAnalytics(populated = false),
                     sessionChunksExpanded = false,
                     onToggleSessionChunks = {},
                 )
@@ -2164,7 +2139,7 @@ private fun PreviewUsageAnalyticsEmpty() {
     }
 }
 
-private fun previewUsageAnalytics(populated: Boolean, highUsage: Boolean): UsageAnalyticsUiState {
+private fun previewUsageAnalytics(populated: Boolean): UsageAnalyticsUiState {
     val date = LocalDate.of(2026, 5, 26)
     val segments = if (!populated) {
         emptyList()
@@ -2173,7 +2148,7 @@ private fun previewUsageAnalytics(populated: Boolean, highUsage: Boolean): Usage
             SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(18), date.atTime(8, 10)),
             SessionSegment(BlockableApp.SHORTS, TimeUnit.MINUTES.toMillis(12), date.atTime(12, 35)),
             SessionSegment(BlockableApp.TIKTOK, TimeUnit.MINUTES.toMillis(22), date.atTime(19, 20)),
-            SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(if (highUsage) 48 else 9), date.atTime(22, 5)),
+            SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(9), date.atTime(22, 5)),
         )
     }
     val appTotals = segments.groupBy { it.app }.map { (app, appSegments) ->
@@ -2188,7 +2163,7 @@ private fun previewUsageAnalytics(populated: Boolean, highUsage: Boolean): Usage
         weekdayAverages = DayOfWeek.entries.mapIndexed { index, dayOfWeek ->
             WeekdayUsageAverage(
                 dayOfWeek = dayOfWeek,
-                averageMillis = TimeUnit.MINUTES.toMillis(((index + 1) * if (highUsage) 12 else 5).toLong()),
+                averageMillis = TimeUnit.MINUTES.toMillis(((index + 1) * 5).toLong()),
             )
         },
     )

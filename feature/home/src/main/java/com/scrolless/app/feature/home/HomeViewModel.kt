@@ -16,20 +16,22 @@
  */
 package com.scrolless.app.feature.home
 
+import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
-import com.scrolless.app.core.model.usage.DailyUsageTotal
 import com.scrolless.app.core.model.usage.WeekdayUsageAverage
 import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.DayOfWeek
 import java.time.Duration
 import java.time.LocalDate
 import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.min
@@ -41,6 +43,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -129,38 +132,34 @@ class HomeViewModel @Inject constructor(
     }
 
     private val selectedAnalyticsSegments = combine(selectedAnalyticsDate, currentDate) { selectedDate, today ->
-        selectedDate.coerceAtMost(today)
-    }.distinctUntilChanged().flatMapLatest { date ->
-        sessionSegmentStore.getListSessionSegments(date)
+        selectedDate.coerceAtMost(today) to today
+    }.distinctUntilChanged().flatMapLatest { (date, today) ->
+        val windowStart = today.minusWeeks(ANALYTICS_AVERAGE_WINDOW_WEEKS).plusDays(1)
+        if (date in windowStart..today) {
+            flowOf(emptyList())
+        } else {
+            sessionSegmentStore.getListSessionSegments(date)
+        }
     }
 
-    private val analyticsDailyTotals = currentDate.flatMapLatest { today ->
-        sessionSegmentStore.getDailyUsageTotals(
+    private val analyticsWindowSegments = currentDate.flatMapLatest { today ->
+        sessionSegmentStore.getListSessionSegments(
             startDate = today.minusWeeks(ANALYTICS_AVERAGE_WINDOW_WEEKS).plusDays(1),
             endDateInclusive = today,
         )
     }
 
-    private val analyticsWeekdayAverages = currentDate.flatMapLatest { today ->
-        sessionSegmentStore.getWeekdayAverageUsage(
-            startDate = today.minusWeeks(ANALYTICS_AVERAGE_WINDOW_WEEKS).plusDays(1),
-            endDateInclusive = today,
-        )
-    }
-
-    private val analyticsSnapshot = combine(
+    private val analyticsSnapshot = kotlinx.coroutines.flow.combine(
         selectedAnalyticsDate,
         currentDate,
         selectedAnalyticsSegments,
-        analyticsDailyTotals,
-        analyticsWeekdayAverages,
-    ) { selectedDate, today, selectedSegments, dailyTotals, weekdayAverages ->
+        analyticsWindowSegments,
+    ) { selectedDate, today, selectedSegments, windowSegments ->
         buildUsageAnalyticsUiState(
             selectedDate = selectedDate.coerceAtMost(today),
             today = today,
             selectedSegments = selectedSegments,
-            dailyTotals = dailyTotals,
-            weekdayAverages = weekdayAverages,
+            windowSegments = windowSegments,
         )
     }
 
@@ -418,33 +417,88 @@ private fun buildUsageAnalyticsUiState(
     selectedDate: LocalDate,
     today: LocalDate,
     selectedSegments: List<SessionSegment>,
-    dailyTotals: List<DailyUsageTotal>,
-    weekdayAverages: List<WeekdayUsageAverage>,
+    windowSegments: List<SessionSegment>,
 ): UsageAnalyticsUiState {
-    val selectedTotal = dailyTotals.firstOrNull { it.date == selectedDate }?.totalMillis
-        ?: selectedSegments.sumOf { it.durationMillis.coerceAtLeast(0L) }
-    val appTotals = selectedSegments
+    val windowStart = today.minusWeeks(ANALYTICS_AVERAGE_WINDOW_WEEKS).plusDays(1)
+    val segmentsByDate = windowSegments.groupBy { it.startDateTime.toLocalDate() }
+    val daySummaries = buildMap {
+        datesBetween(windowStart, today).forEach { date ->
+            put(date, buildUsageAnalyticsDayUiState(date = date, segments = segmentsByDate[date].orEmpty()))
+        }
+
+        if (selectedDate !in windowStart..today) {
+            put(selectedDate, buildUsageAnalyticsDayUiState(date = selectedDate, segments = selectedSegments))
+        }
+    }
+
+    val selectedDay = daySummaries[selectedDate]
+        ?: buildUsageAnalyticsDayUiState(date = selectedDate, segments = selectedSegments)
+
+    return UsageAnalyticsUiState(
+        selectedDate = selectedDate,
+        today = today,
+        dailyTotalMillis = selectedDay.dailyTotalMillis,
+        sessionSegments = selectedDay.sessionSegments,
+        appTotals = selectedDay.appTotals,
+        daySummaries = daySummaries,
+        weekdayAverages = buildWeekdayAverages(
+            startDate = windowStart,
+            endDateInclusive = today,
+            daySummaries = daySummaries,
+        ),
+        canNavigateNext = selectedDate.isBefore(today),
+    )
+}
+
+private fun buildUsageAnalyticsDayUiState(date: LocalDate, segments: List<SessionSegment>): UsageAnalyticsDayUiState {
+    val sortedSegments = segments.sortedBy { it.startDateTime }
+    val appTotals = sortedSegments
         .groupBy { it.app }
-        .map { (app, segments) ->
+        .map { (app, appSegments) ->
             AppUsageTotal(
                 app = app,
-                totalMillis = segments.sumOf { it.durationMillis.coerceAtLeast(0L) },
+                totalMillis = appSegments.sumOf { it.durationMillis.coerceAtLeast(0L) },
             )
         }
         .filter { it.totalMillis > 0L }
         .sortedByDescending { it.totalMillis }
 
-    return UsageAnalyticsUiState(
-        selectedDate = selectedDate,
-        today = today,
-        dailyTotalMillis = selectedTotal.coerceAtLeast(0L),
-        sessionSegments = selectedSegments.sortedBy { it.startDateTime },
+    return UsageAnalyticsDayUiState(
+        date = date,
+        dailyTotalMillis = sortedSegments.sumOf { it.durationMillis.coerceAtLeast(0L) },
+        sessionSegments = sortedSegments,
         appTotals = appTotals,
-        weekdayAverages = weekdayAverages,
-        canNavigateNext = selectedDate.isBefore(today),
     )
 }
 
+private fun buildWeekdayAverages(
+    startDate: LocalDate,
+    endDateInclusive: LocalDate,
+    daySummaries: Map<LocalDate, UsageAnalyticsDayUiState>,
+): List<WeekdayUsageAverage> {
+    val totalsByWeekday = datesBetween(startDate, endDateInclusive)
+        .groupBy { it.dayOfWeek }
+        .mapValues { (_, dates) ->
+            dates.map { date -> daySummaries[date]?.dailyTotalMillis ?: 0L }
+        }
+
+    return DayOfWeek.entries.map { dayOfWeek ->
+        val totals = totalsByWeekday[dayOfWeek].orEmpty()
+        WeekdayUsageAverage(
+            dayOfWeek = dayOfWeek,
+            averageMillis = if (totals.isEmpty()) 0L else totals.sum() / totals.size,
+        )
+    }
+}
+
+private fun datesBetween(startDate: LocalDate, endDateInclusive: LocalDate): List<LocalDate> {
+    if (endDateInclusive.isBefore(startDate)) return emptyList()
+
+    val dayCount = ChronoUnit.DAYS.between(startDate, endDateInclusive).toInt()
+    return (0..dayCount).map { offset -> startDate.plusDays(offset.toLong()) }
+}
+
+@Immutable
 data class HomeUiState(
     val blockOption: BlockOption = BlockOption.NothingSelected,
     val timeLimit: Long = 0L,
@@ -477,16 +531,27 @@ data class HomeUiState(
     val usageAnalytics: UsageAnalyticsUiState = UsageAnalyticsUiState(),
 )
 
+@Immutable
 data class UsageAnalyticsUiState(
     val selectedDate: LocalDate = ZonedDateTime.now().toLocalDate(),
     val today: LocalDate = ZonedDateTime.now().toLocalDate(),
     val dailyTotalMillis: Long = 0L,
     val sessionSegments: List<SessionSegment> = emptyList(),
     val appTotals: List<AppUsageTotal> = emptyList(),
+    val daySummaries: Map<LocalDate, UsageAnalyticsDayUiState> = emptyMap(),
     val weekdayAverages: List<WeekdayUsageAverage> = emptyList(),
     val canNavigateNext: Boolean = false,
 )
 
+@Immutable
+data class UsageAnalyticsDayUiState(
+    val date: LocalDate,
+    val dailyTotalMillis: Long = 0L,
+    val sessionSegments: List<SessionSegment> = emptyList(),
+    val appTotals: List<AppUsageTotal> = emptyList(),
+)
+
+@Immutable
 data class AppUsageTotal(val app: BlockableApp, val totalMillis: Long)
 
 private data class UsageSnapshot(
