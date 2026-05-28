@@ -512,14 +512,15 @@ fun BlockableApp.analyticsColor(): Color = when (this) {
     BlockableApp.TIKTOK -> tiktokColor
 }
 
+@Composable
 fun DayOfWeek.shortLabel(): String = when (this) {
-    DayOfWeek.MONDAY -> "Mon"
-    DayOfWeek.TUESDAY -> "Tue"
-    DayOfWeek.WEDNESDAY -> "Wed"
-    DayOfWeek.THURSDAY -> "Thu"
-    DayOfWeek.FRIDAY -> "Fri"
-    DayOfWeek.SATURDAY -> "Sat"
-    DayOfWeek.SUNDAY -> "Sun"
+    DayOfWeek.MONDAY -> stringResource(R.string.usage_analytics_day_mon)
+    DayOfWeek.TUESDAY -> stringResource(R.string.usage_analytics_day_tue)
+    DayOfWeek.WEDNESDAY -> stringResource(R.string.usage_analytics_day_wed)
+    DayOfWeek.THURSDAY -> stringResource(R.string.usage_analytics_day_thu)
+    DayOfWeek.FRIDAY -> stringResource(R.string.usage_analytics_day_fri)
+    DayOfWeek.SATURDAY -> stringResource(R.string.usage_analytics_day_sat)
+    DayOfWeek.SUNDAY -> stringResource(R.string.usage_analytics_day_sun)
 }
 
 // --- Analytics previews ---
