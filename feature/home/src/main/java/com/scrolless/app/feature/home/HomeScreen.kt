@@ -54,7 +54,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
@@ -95,9 +94,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.input.pointer.pointerInput
@@ -120,7 +116,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
-import com.scrolless.app.core.model.usage.WeekdayUsageAverage
 import com.scrolless.app.designsystem.component.AppUsageLegend
 import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.component.LegendItem
@@ -141,30 +136,30 @@ import com.scrolless.app.designsystem.util.formatTime
 import com.scrolless.app.designsystem.util.radialGradientScrim
 import com.scrolless.app.designsystem.util.toCountdownLabel
 import com.scrolless.app.designsystem.util.toIntervalLabel
+import com.scrolless.app.feature.home.components.ANALYTICS_DATE_FORMATTER
+import com.scrolless.app.feature.home.components.ANALYTICS_PAGER_DAY_COUNT
 import com.scrolless.app.feature.home.components.AccessibilityExplainerBottomSheet
 import com.scrolless.app.feature.home.components.AccessibilitySuccessBottomSheet
 import com.scrolless.app.feature.home.components.AccessibilitySuccessBottomSheetPreview
 import com.scrolless.app.feature.home.components.FloatingDebugUsagePanel
 import com.scrolless.app.feature.home.components.HelpDialog
+import com.scrolless.app.feature.home.components.InlineUsageAnalyticsPanel
 import com.scrolless.app.feature.home.components.IntervalTimerDialog
 import com.scrolless.app.feature.home.components.TimeLimitDialog
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
-import java.util.concurrent.TimeUnit
+import com.scrolless.app.feature.home.components.WeekdayAverageSection
+import com.scrolless.app.feature.home.components.analyticsForDate
+import com.scrolless.app.feature.home.components.pageDateForPage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
+import java.util.concurrent.TimeUnit
 
 private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
 private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)
-private const val ANALYTICS_PAGER_DAY_COUNT = 3650
-private val ANALYTICS_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE, MMM d")
-private val ANALYTICS_TIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
-
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -1644,411 +1639,6 @@ private fun buildLegendItems(progressBarSegments: List<ProgressBarSegment>): Lis
     }
 
 @Composable
-private fun InlineUsageAnalyticsPanel(
-    analytics: UsageAnalyticsUiState,
-    sessionChunksExpanded: Boolean,
-    onToggleSessionChunks: () -> Unit,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(18.dp),
-    ) {
-        UsageAnalyticsDayPage(
-            analytics = analytics,
-            sessionChunksExpanded = sessionChunksExpanded,
-            onToggleSessionChunks = onToggleSessionChunks,
-        )
-    }
-}
-
-@Composable
-private fun UsageAnalyticsDayPage(
-    analytics: UsageAnalyticsUiState,
-    sessionChunksExpanded: Boolean = false,
-    onToggleSessionChunks: () -> Unit = {},
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(18.dp),
-    ) {
-        UsageTimelineSection(
-            analytics = analytics,
-            sessionChunksExpanded = sessionChunksExpanded,
-            onToggleSessionChunks = onToggleSessionChunks,
-        )
-    }
-}
-
-@Composable
-private fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded: Boolean, onToggleSessionChunks: () -> Unit) {
-    val sessionSegments = analytics.sessionSegments
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        SectionTitleRow(
-            title = stringResource(R.string.usage_analytics_timeline_title),
-            trailing = analytics.dailyTotalMillis.formatAnalyticsDuration(),
-        )
-        Surface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .animateContentSize(animationSpec = tween(durationMillis = 320)),
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0f),
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(14.dp),
-            ) {
-                UsageTimelineCanvas(sessionSegments = sessionSegments)
-                if (!sessionSegments.isEmpty()) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(14.dp))
-                            .clickable(onClick = onToggleSessionChunks)
-                            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.4f))
-                            .border(
-                                1.dp,
-                                MaterialTheme.colorScheme.outline.copy(alpha = 0.10f),
-                                RoundedCornerShape(14.dp),
-                            )
-                            .padding(horizontal = 14.dp, vertical = 12.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Text(
-                            text = stringResource(R.string.usage_analytics_session_count, sessionSegments.size),
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Text(
-                            text = if (sessionChunksExpanded) "Hide" else "Show",
-                            style = MaterialTheme.typography.labelLarge,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
-                        )
-                    }
-                    AnimatedVisibility(
-                        visible = sessionChunksExpanded,
-                        enter = fadeIn(animationSpec = tween(180)) + expandVertically(animationSpec = tween(260)),
-                        exit = fadeOut(animationSpec = tween(120)) + shrinkVertically(animationSpec = tween(200)),
-                    ) {
-                        Surface(
-                            modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp),
-                            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
-                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.10f)),
-                        ) {
-                        Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-
-                                sessionSegments.forEach { segment ->
-                                    SessionChunkRow(segment = segment)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun UsageTimelineCanvas(sessionSegments: List<SessionSegment>) {
-    val outline = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
-    val trackColor = MaterialTheme.colorScheme.surface
-
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Canvas(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-        ) {
-            val trackTop = size.height * 0.28f
-            val trackHeight = size.height * 0.44f
-            drawRoundRect(
-                color = trackColor,
-                topLeft = Offset(0f, trackTop),
-                size = Size(size.width, trackHeight),
-                cornerRadius = CornerRadius(trackHeight / 2f, trackHeight / 2f),
-            )
-
-            for (hour in 0..24 step 6) {
-                val x = size.width * (hour / 24f)
-                drawLine(
-                    color = outline,
-                    start = Offset(x, 0f),
-                    end = Offset(x, size.height),
-                    strokeWidth = 1.dp.toPx(),
-                )
-            }
-
-            sessionSegments.forEach { segment ->
-                val startMinutes = segment.startDateTime.toLocalTime().toSecondOfDay() / 60f
-                val durationMinutes = TimeUnit.MILLISECONDS.toMinutes(segment.durationMillis).coerceAtLeast(1).toFloat()
-                val startX = size.width * (startMinutes / 1440f)
-                val width = (size.width * (durationMinutes / 1440f)).coerceAtLeast(4.dp.toPx())
-                drawRoundRect(
-                    color = segment.app.analyticsColor(),
-                    topLeft = Offset(startX, trackTop),
-                    size = Size(width.coerceAtMost(size.width - startX), trackHeight),
-                    cornerRadius = CornerRadius(trackHeight / 2f, trackHeight / 2f),
-                )
-            }
-        }
-        TimelineTickLabels()
-    }
-}
-
-@Composable
-private fun TimelineTickLabels() {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        listOf("00:00", "06:00", "12:00", "18:00", "24:00").forEach { label ->
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-            )
-        }
-    }
-}
-
-@Composable
-private fun SessionChunkRow(segment: SessionSegment) {
-    val startTime = segment.startDateTime.toLocalTime()
-    val endTime = segment.startDateTime.plusNanos(TimeUnit.MILLISECONDS.toNanos(segment.durationMillis)).toLocalTime()
-    Row(
-        modifier = Modifier.padding(start = 10.dp, top = 10.dp, end = 10.dp, bottom = 10.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        Box(
-            modifier = Modifier
-                .width(4.dp)
-                .height(42.dp)
-                .background(segment.app.analyticsColor(), RoundedCornerShape(4.dp)),
-        )
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = segment.app.analyticsDisplayName(),
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Text(
-                text = stringResource(
-                    R.string.usage_analytics_time_range,
-                    startTime.format(ANALYTICS_TIME_FORMATTER),
-                    endTime.format(ANALYTICS_TIME_FORMATTER),
-                ),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-        Surface(
-            shape = RoundedCornerShape(12.dp),
-            color = segment.app.analyticsColor().copy(alpha = 0.12f),
-            contentColor = MaterialTheme.colorScheme.onSurface,
-        ) {
-            AutoResizingText(
-                text = segment.durationMillis.formatAnalyticsDuration(),
-                modifier = Modifier
-                    .widthIn(min = 54.dp, max = 92.dp)
-                    .padding(horizontal = 8.dp, vertical = 5.dp),
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.SemiBold,
-                textAlign = TextAlign.Center,
-                maxLines = 2,
-                minFontSize = 10.sp,
-            )
-        }
-    }
-}
-
-@Composable
-private fun WeekdayAverageSection(weekdayAverages: List<WeekdayUsageAverage>) {
-    val maxValue = weekdayAverages.maxOfOrNull { it.averageMillis } ?: 0L
-
-    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        SectionTitleRow(
-            title = stringResource(R.string.usage_analytics_average_title),
-            trailing = stringResource(R.string.usage_analytics_average_subtitle),
-        )
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.2f),
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(148.dp)
-                    .padding(horizontal = 14.dp, vertical = 14.dp),
-                verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                weekdayAverages.forEach { average ->
-                    WeekdayAverageBar(
-                        average = average,
-                        maxValue = maxValue,
-                        modifier = Modifier.weight(1f),
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun WeekdayAverageBar(average: WeekdayUsageAverage, maxValue: Long, modifier: Modifier = Modifier) {
-    val fraction = if (maxValue > 0L) {
-        average.averageMillis.toFloat() / maxValue.toFloat()
-    } else {
-        0f
-    }
-    val animatedFraction by animateFloatAsState(
-        targetValue = if (average.averageMillis > 0L) fraction.coerceIn(0.08f, 1f) else 0.04f,
-        animationSpec = tween(durationMillis = 720),
-        label = "weekdayAverageFraction",
-    )
-    val barColor by animateColorAsState(
-        targetValue = usageIntensityColor(fraction),
-        animationSpec = tween(durationMillis = 420),
-        label = "weekdayAverageColor",
-    )
-    Column(
-        modifier = modifier.fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom,
-    ) {
-        AutoResizingText(
-            text = average.averageMillis.formatAnalyticsDuration(),
-            modifier = Modifier.fillMaxWidth(),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-            maxLines = 1,
-            minFontSize = 8.sp,
-        )
-        Spacer(Modifier.height(6.dp))
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(76.dp)
-                .clip(RoundedCornerShape(9.dp))
-                .background(MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.72f)),
-            contentAlignment = Alignment.BottomCenter,
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(animatedFraction)
-                    .clip(RoundedCornerShape(9.dp))
-                    .background(barColor),
-            )
-        }
-        Spacer(Modifier.height(6.dp))
-        Text(
-            text = average.dayOfWeek.shortLabel(),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-    }
-}
-
-@Composable
-private fun SectionTitleRow(title: String, trailing: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-        Text(
-            text = trailing,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-        )
-    }
-}
-
-private fun Long.formatAnalyticsDuration(): String {
-    val totalSeconds = (this / 1_000L).coerceAtLeast(0L)
-    val totalMinutes = totalSeconds / 60L
-    val hours = totalMinutes / 60L
-    val minutes = totalMinutes % 60L
-    val seconds = totalSeconds % 60L
-
-    return when {
-        hours > 0L && minutes > 0L -> "${hours}h ${minutes}m"
-        hours > 0L -> "${hours}h"
-        minutes > 0L -> "${minutes}m"
-        else -> "${seconds}s"
-    }
-}
-
-private fun usageIntensityColor(fraction: Float): Color = when {
-    fraction >= 0.72f -> progressbar_red_use.copy(alpha = 0.82f)
-    fraction >= 0.38f -> progressbar_orange_use.copy(alpha = 0.82f)
-    else -> progressbar_green_use.copy(alpha = 0.82f)
-}
-
-private fun pageDateForPage(page: Int, today: LocalDate, todayPage: Int): LocalDate {
-    val daysBack = todayPage - page
-    return today.minusDays(daysBack.toLong())
-}
-
-private fun analyticsForDate(analytics: UsageAnalyticsUiState, date: LocalDate): UsageAnalyticsUiState {
-    val dayAnalytics = analytics.daySummaries[date] ?: UsageAnalyticsDayUiState(date = date)
-    return analytics.copy(
-        selectedDate = date,
-        dailyTotalMillis = dayAnalytics.dailyTotalMillis,
-        sessionSegments = dayAnalytics.sessionSegments,
-        appTotals = dayAnalytics.appTotals,
-        canNavigateNext = date.isBefore(analytics.today),
-    )
-}
-
-@Composable
-private fun BlockableApp.analyticsDisplayName(): String = when (this) {
-    BlockableApp.FACEBOOK -> stringResource(R.string.app_facebook)
-    BlockableApp.FACEBOOK_LITE -> stringResource(R.string.app_facebook_lite)
-    BlockableApp.REELS -> stringResource(R.string.app_reels)
-    BlockableApp.SNAPCHAT -> stringResource(R.string.app_snapchat)
-    BlockableApp.SHORTS -> stringResource(R.string.app_shorts)
-    BlockableApp.TIKTOK -> stringResource(R.string.app_tiktok)
-}
-
-private fun BlockableApp.analyticsColor(): Color = when (this) {
-    BlockableApp.FACEBOOK -> facebookColor
-    BlockableApp.FACEBOOK_LITE -> facebookLiteColor
-    BlockableApp.REELS -> instagramReelsColor
-    BlockableApp.SNAPCHAT -> snapchatColor
-    BlockableApp.SHORTS -> youtubeShortsColor
-    BlockableApp.TIKTOK -> tiktokColor
-}
-
-private fun DayOfWeek.shortLabel(): String = when (this) {
-    DayOfWeek.MONDAY -> "Mon"
-    DayOfWeek.TUESDAY -> "Tue"
-    DayOfWeek.WEDNESDAY -> "Wed"
-    DayOfWeek.THURSDAY -> "Thu"
-    DayOfWeek.FRIDAY -> "Fri"
-    DayOfWeek.SATURDAY -> "Sat"
-    DayOfWeek.SUNDAY -> "Sun"
-}
-
-@Composable
 fun PauseButton(
     modifier: Modifier = Modifier,
     onTogglePause: (Boolean) -> Unit,
@@ -2219,84 +1809,6 @@ fun HomeScreenPreview() {
             )
         }
     }
-}
-
-@Preview(name = "Usage Analytics Previous Day")
-@Composable
-private fun PreviewUsageAnalyticsPreviousDay() {
-    ScrollessTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                InlineUsageAnalyticsPanel(
-                    analytics = previewUsageAnalytics(populated = true),
-                    sessionChunksExpanded = false,
-                    onToggleSessionChunks = {},
-                )
-            }
-        }
-    }
-}
-
-@Preview(name = "Usage Analytics Expanded")
-@Composable
-private fun PreviewUsageAnalyticsExpanded() {
-    ScrollessTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                InlineUsageAnalyticsPanel(
-                    analytics = previewUsageAnalytics(populated = true),
-                    sessionChunksExpanded = true,
-                    onToggleSessionChunks = {},
-                )
-            }
-        }
-    }
-}
-
-@Preview(name = "Usage Analytics Empty")
-@Composable
-private fun PreviewUsageAnalyticsEmpty() {
-    ScrollessTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                InlineUsageAnalyticsPanel(
-                    analytics = previewUsageAnalytics(populated = false),
-                    sessionChunksExpanded = false,
-                    onToggleSessionChunks = {},
-                )
-            }
-        }
-    }
-}
-
-private fun previewUsageAnalytics(populated: Boolean): UsageAnalyticsUiState {
-    val date = LocalDate.of(2026, 5, 26)
-    val segments = if (!populated) {
-        emptyList()
-    } else {
-        listOf(
-            SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(18), date.atTime(8, 10)),
-            SessionSegment(BlockableApp.SHORTS, TimeUnit.MINUTES.toMillis(12), date.atTime(12, 35)),
-            SessionSegment(BlockableApp.TIKTOK, TimeUnit.MINUTES.toMillis(22), date.atTime(19, 20)),
-            SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(9), date.atTime(22, 5)),
-        )
-    }
-    val appTotals = segments.groupBy { it.app }.map { (app, appSegments) ->
-        AppUsageTotal(app = app, totalMillis = appSegments.sumOf { it.durationMillis })
-    }.sortedByDescending { it.totalMillis }
-    return UsageAnalyticsUiState(
-        selectedDate = date,
-        today = date,
-        dailyTotalMillis = segments.sumOf { it.durationMillis },
-        sessionSegments = segments,
-        appTotals = appTotals,
-        weekdayAverages = DayOfWeek.entries.mapIndexed { index, dayOfWeek ->
-            WeekdayUsageAverage(
-                dayOfWeek = dayOfWeek,
-                averageMillis = TimeUnit.MINUTES.toMillis(((index + 1) * 5).toLong()),
-            )
-        },
-    )
 }
 
 @Preview(name = "Block All Active")

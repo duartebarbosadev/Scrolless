@@ -20,21 +20,12 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.scrolless.app.core.model.BlockOption
-import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.model.usage.WeekdayUsageAverage
 import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.DayOfWeek
-import java.time.Duration
-import java.time.LocalDate
-import java.time.ZonedDateTime
-import java.time.temporal.ChronoUnit
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
-import kotlin.math.min
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,6 +38,14 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.DayOfWeek
+import java.time.Duration
+import java.time.LocalDate
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
+import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import kotlin.math.min
 
 /**
  * ViewModel that handles the business logic and screen state of the HomeScreen.
@@ -530,29 +529,6 @@ data class HomeUiState(
     val listSessionSegments: List<SessionSegment> = emptyList(),
     val usageAnalytics: UsageAnalyticsUiState = UsageAnalyticsUiState(),
 )
-
-@Immutable
-data class UsageAnalyticsUiState(
-    val selectedDate: LocalDate = ZonedDateTime.now().toLocalDate(),
-    val today: LocalDate = ZonedDateTime.now().toLocalDate(),
-    val dailyTotalMillis: Long = 0L,
-    val sessionSegments: List<SessionSegment> = emptyList(),
-    val appTotals: List<AppUsageTotal> = emptyList(),
-    val daySummaries: Map<LocalDate, UsageAnalyticsDayUiState> = emptyMap(),
-    val weekdayAverages: List<WeekdayUsageAverage> = emptyList(),
-    val canNavigateNext: Boolean = false,
-)
-
-@Immutable
-data class UsageAnalyticsDayUiState(
-    val date: LocalDate,
-    val dailyTotalMillis: Long = 0L,
-    val sessionSegments: List<SessionSegment> = emptyList(),
-    val appTotals: List<AppUsageTotal> = emptyList(),
-)
-
-@Immutable
-data class AppUsageTotal(val app: BlockableApp, val totalMillis: Long)
 
 private data class UsageSnapshot(
     val blockOption: BlockOption,
