@@ -165,6 +165,7 @@
     <string name="usage_analytics_next_day">Next day</string>
     <string name="usage_analytics_today">Today</string>
     <string name="usage_analytics_go_today">Go to today</string>
+    <string name="usage_analytics_swipe_hint">&lt; Swipe to view days &gt;</string>
     <string name="usage_analytics_empty_day">No tracked usage for this day.</string>
     <string name="usage_analytics_timeline_title">Day timeline</string>
     <string name="usage_analytics_sessions_title">Session chunks</string>

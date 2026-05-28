@@ -20,7 +20,6 @@ import android.accessibilityservice.AccessibilityService
 import android.app.Activity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.SizeTransform
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
@@ -29,9 +28,6 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -57,6 +53,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
@@ -89,7 +86,9 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -152,6 +151,7 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.isActive
 import timber.log.Timber
 
@@ -530,71 +530,33 @@ private fun HomeContent(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.Center,
-            ) {
-                SwipeableProgressCard(
-                    uiState = uiState,
-                    onDateSelected = onUsageAnalyticsDateSelected,
-                    onProgressCardClicked = onUsageAnalyticsTodaySelected,
-                    modifier = Modifier.padding(top = 54.dp),
-                )
-
-                androidx.compose.animation.AnimatedVisibility(
-                    visible = !isViewingToday,
-                    enter = fadeIn(animationSpec = tween(180)) + expandVertically(animationSpec = tween(240)),
-                    exit = fadeOut(animationSpec = tween(140)) + shrinkVertically(animationSpec = tween(180)),
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(8.dp, 8.dp, 0.dp, 8.dp),
-                ) {
-                    TodayShortcutButton(onClick = onUsageAnalyticsTodaySelected)
-                }
-
-                Row(
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(8.dp, 8.dp, 0.dp, 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    HelpButton(
-                        onClick = onHelpClicked,
-                    )
-
-                    SettingsButton(
-                        onClick = onNavigateToSettings,
-                    )
-                }
-            }
+            UsageOverviewHeader(
+                uiState = uiState,
+                isViewingToday = isViewingToday,
+                onUsageAnalyticsDateSelected = onUsageAnalyticsDateSelected,
+                onUsageAnalyticsTodaySelected = onUsageAnalyticsTodaySelected,
+                onHelpClicked = onHelpClicked,
+                onNavigateToSettings = onNavigateToSettings,
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            AnimatedContent(
-                targetState = isViewingToday,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .animateContentSize(animationSpec = tween(durationMillis = 360)),
-                transitionSpec = {
-                    val enter = fadeIn(animationSpec = tween(260)) +
-                        slideInVertically(animationSpec = tween(360)) { fullHeight -> fullHeight / 5 } +
-                        expandVertically(animationSpec = tween(360), expandFrom = Alignment.Top)
-                    val exit = fadeOut(animationSpec = tween(160)) +
-                        slideOutVertically(animationSpec = tween(260)) { fullHeight -> -fullHeight / 8 } +
-                        shrinkVertically(animationSpec = tween(260), shrinkTowards = Alignment.Top)
-                    enter togetherWith exit using SizeTransform(clip = false)
-                },
-                label = "homeLowerContent",
-            ) { viewingToday ->
-                if (!viewingToday) {
-                    InlineUsageAnalyticsPanel(
-                        analytics = uiState.usageAnalytics,
-                        sessionChunksExpanded = sessionChunksExpanded,
-                        onToggleSessionChunks = { sessionChunksExpanded = !sessionChunksExpanded },
-                    )
-                } else {
-                    TodayHomeControls(
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                AnimatedVisibility(
+                    visible = isViewingToday,
+                    enter = expandVertically(
+                        expandFrom = Alignment.Top,
+                        animationSpec = tween(220),
+                    ) + fadeIn(animationSpec = tween(140)),
+                    exit = shrinkVertically(
+                        shrinkTowards = Alignment.Top,
+                        animationSpec = tween(180),
+                    ) + fadeOut(animationSpec = tween(100)),
+                ) {
+                    TodayBlockingControls(
                         uiState = uiState,
                         isBlockingActive = isBlockingActive,
                         isPauseActive = isPauseActive,
@@ -604,9 +566,18 @@ private fun HomeContent(
                         onIntervalTimerClick = onIntervalTimerClick,
                         onIntervalTimerEdit = onIntervalTimerEdit,
                         onPauseToggle = onPauseToggle,
-                        sessionChunksExpanded = sessionChunksExpanded,
-                        onToggleSessionChunks = { sessionChunksExpanded = !sessionChunksExpanded },
                     )
+                }
+
+                InlineUsageAnalyticsPanel(
+                    analytics = uiState.usageAnalytics,
+                    sessionChunksExpanded = sessionChunksExpanded,
+                    onToggleSessionChunks = { sessionChunksExpanded = !sessionChunksExpanded },
+                )
+
+                if (isViewingToday) {
+                    Spacer(modifier = Modifier.height(24.dp))
+                    WeekdayAverageSection(weekdayAverages = uiState.usageAnalytics.weekdayAverages)
                 }
             }
         }
@@ -627,7 +598,56 @@ private fun HomeContent(
 }
 
 @Composable
-private fun TodayHomeControls(
+private fun UsageOverviewHeader(
+    uiState: HomeUiState,
+    isViewingToday: Boolean,
+    onUsageAnalyticsDateSelected: (LocalDate) -> Unit,
+    onUsageAnalyticsTodaySelected: () -> Unit,
+    onHelpClicked: () -> Unit,
+    onNavigateToSettings: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center,
+    ) {
+        SwipeableProgressCard(
+            uiState = uiState,
+            onDateSelected = onUsageAnalyticsDateSelected,
+            onProgressCardClicked = onUsageAnalyticsTodaySelected,
+            modifier = Modifier.padding(top = 54.dp),
+        )
+
+        AnimatedVisibility(
+            visible = !isViewingToday,
+            enter = fadeIn(animationSpec = tween(180)) + expandVertically(animationSpec = tween(240)),
+            exit = fadeOut(animationSpec = tween(140)) + shrinkVertically(animationSpec = tween(180)),
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .padding(8.dp, 8.dp, 0.dp, 8.dp),
+        ) {
+            TodayShortcutButton(onClick = onUsageAnalyticsTodaySelected)
+        }
+
+        Row(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp, 8.dp, 0.dp, 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            HelpButton(
+                onClick = onHelpClicked,
+            )
+
+            SettingsButton(
+                onClick = onNavigateToSettings,
+            )
+        }
+    }
+}
+
+@Composable
+private fun TodayBlockingControls(
     uiState: HomeUiState,
     isBlockingActive: Boolean,
     isPauseActive: Boolean,
@@ -637,8 +657,6 @@ private fun TodayHomeControls(
     onIntervalTimerClick: () -> Unit,
     onIntervalTimerEdit: () -> Unit,
     onPauseToggle: (Boolean) -> Unit,
-    sessionChunksExpanded: Boolean,
-    onToggleSessionChunks: () -> Unit,
 ) {
     val weightBase = 1f
     val weightExpanded = 1.2f
@@ -812,14 +830,6 @@ private fun TodayHomeControls(
         }
 
         Spacer(modifier = Modifier.height(24.dp))
-        InlineUsageAnalyticsPanel(
-            analytics = uiState.usageAnalytics,
-            sessionChunksExpanded = sessionChunksExpanded,
-            onToggleSessionChunks = onToggleSessionChunks,
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-        WeekdayAverageSection(weekdayAverages = uiState.usageAnalytics.weekdayAverages)
     }
 }
 
@@ -1210,20 +1220,27 @@ private fun SwipeableProgressCard(
         todayPage - ChronoUnit.DAYS.between(analytics.selectedDate, analytics.today).toInt()
         ).coerceIn(0, todayPage)
     val pagerState = rememberPagerState(initialPage = selectedPage, pageCount = { ANALYTICS_PAGER_DAY_COUNT })
-    val settledPage = pagerState.settledPage
+    var hasDismissedSwipeHint by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(selectedPage) {
-        if (pagerState.currentPage != selectedPage) {
+        if (!pagerState.isScrollInProgress && pagerState.currentPage != selectedPage) {
             pagerState.animateScrollToPage(selectedPage)
         }
     }
 
-    LaunchedEffect(settledPage, analytics.today) {
-        val daysBack = todayPage - settledPage
-        val pageDate = analytics.today.minusDays(daysBack.toLong())
-        if (pageDate != analytics.selectedDate) {
-            onDateSelected(pageDate)
-        }
+    LaunchedEffect(pagerState, analytics.today, analytics.selectedDate) {
+        snapshotFlow { pagerState.targetPage }
+            .distinctUntilChanged()
+            .collect { targetPage ->
+                val daysBack = todayPage - targetPage
+                val pageDate = analytics.today.minusDays(daysBack.toLong())
+                if (pageDate != analytics.selectedDate) {
+                    if (targetPage != selectedPage) {
+                        hasDismissedSwipeHint = true
+                    }
+                    onDateSelected(pageDate)
+                }
+            }
     }
 
     HorizontalPager(
@@ -1254,6 +1271,7 @@ private fun SwipeableProgressCard(
             intervalWindowStart = if (isTodayPage) uiState.intervalWindowStart else 0L,
             listSessionSegments = if (isTodayPage) uiState.listSessionSegments else pageAnalytics.sessionSegments,
             dateLabel = dateLabel,
+            showDateSwipeHint = !hasDismissedSwipeHint,
             onClick = onProgressCardClicked,
         )
     }
@@ -1300,6 +1318,7 @@ private fun ProgressCard(
     intervalWindowStart: Long,
     listSessionSegments: List<SessionSegment> = emptyList(),
     dateLabel: String? = null,
+    showDateSwipeHint: Boolean = false,
     onClick: () -> Unit = {},
 ) {
     val clampedProgress = progress.coerceIn(0, 100)
@@ -1499,21 +1518,38 @@ private fun ProgressCard(
         )
 
         if (dateLabel != null) {
-            Surface(
+            Column(
                 modifier = Modifier.padding(top = 6.dp),
-                shape = RoundedCornerShape(14.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                AnimatedContent(
-                    targetState = dateLabel,
-                    label = "progressDateLabel",
-                ) { label ->
+                Surface(
+                    shape = RoundedCornerShape(14.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
+                ) {
+                    AnimatedContent(
+                        targetState = dateLabel,
+                        label = "progressDateLabel",
+                    ) { label ->
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        )
+                    }
+                }
+                AnimatedVisibility(
+                    visible = showDateSwipeHint,
+                    enter = fadeIn(animationSpec = tween(180)) + expandVertically(animationSpec = tween(180)),
+                    exit = fadeOut(animationSpec = tween(140)) + shrinkVertically(animationSpec = tween(160)),
+                ) {
                     Text(
-                        text = label,
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                        text = stringResource(R.string.usage_analytics_swipe_hint),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f),
+                        modifier = Modifier.padding(top = 4.dp),
+                        maxLines = 1,
                     )
                 }
             }
@@ -1622,22 +1658,20 @@ private fun UsageAnalyticsDayPage(
 private fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded: Boolean, onToggleSessionChunks: () -> Unit) {
     val sessionSegments = analytics.sessionSegments
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Text(
-            text = stringResource(R.string.usage_analytics_timeline_title),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
+        SectionTitleRow(
+            title = stringResource(R.string.usage_analytics_timeline_title),
+            trailing = analytics.dailyTotalMillis.formatAnalyticsDuration(),
         )
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
                 .animateContentSize(animationSpec = tween(durationMillis = 320)),
-            shape = RoundedCornerShape(18.dp),
-            color = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.40f),
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
         ) {
             Column(
-                modifier = Modifier.padding(14.dp),
+                modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
                 UsageTimelineCanvas(sessionSegments = sessionSegments)
@@ -1651,10 +1685,15 @@ private fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunks
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(RoundedCornerShape(12.dp))
+                            .clip(RoundedCornerShape(14.dp))
                             .clickable(onClick = onToggleSessionChunks)
-                            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.42f))
-                            .padding(horizontal = 12.dp, vertical = 10.dp),
+                            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.74f))
+                            .border(
+                                1.dp,
+                                MaterialTheme.colorScheme.outline.copy(alpha = 0.10f),
+                                RoundedCornerShape(14.dp),
+                            )
+                            .padding(horizontal = 14.dp, vertical = 12.dp),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
@@ -1671,8 +1710,9 @@ private fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunks
                             )
                         }
                         Text(
-                            text = if (sessionChunksExpanded) "-" else "+",
-                            style = MaterialTheme.typography.titleLarge,
+                            text = if (sessionChunksExpanded) "Hide" else "Show",
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.primary,
                         )
                     }
@@ -1696,42 +1736,62 @@ private fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunks
 @Composable
 private fun UsageTimelineCanvas(sessionSegments: List<SessionSegment>) {
     val outline = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
-    val trackColor = MaterialTheme.colorScheme.surfaceContainerHighest
+    val trackColor = MaterialTheme.colorScheme.surface
 
-    Canvas(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(68.dp),
-    ) {
-        val trackTop = size.height * 0.35f
-        val trackHeight = size.height * 0.3f
-        drawRoundRect(
-            color = trackColor,
-            topLeft = Offset(0f, trackTop),
-            size = Size(size.width, trackHeight),
-            cornerRadius = CornerRadius(trackHeight / 2f, trackHeight / 2f),
-        )
-
-        for (hour in 0..24 step 6) {
-            val x = size.width * (hour / 24f)
-            drawLine(
-                color = outline,
-                start = Offset(x, 0f),
-                end = Offset(x, size.height),
-                strokeWidth = 1.dp.toPx(),
-            )
-        }
-
-        sessionSegments.forEach { segment ->
-            val startMinutes = segment.startDateTime.toLocalTime().toSecondOfDay() / 60f
-            val durationMinutes = TimeUnit.MILLISECONDS.toMinutes(segment.durationMillis).coerceAtLeast(1).toFloat()
-            val startX = size.width * (startMinutes / 1440f)
-            val width = (size.width * (durationMinutes / 1440f)).coerceAtLeast(4.dp.toPx())
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Canvas(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+        ) {
+            val trackTop = size.height * 0.28f
+            val trackHeight = size.height * 0.44f
             drawRoundRect(
-                color = segment.app.analyticsColor(),
-                topLeft = Offset(startX, trackTop),
-                size = Size(width.coerceAtMost(size.width - startX), trackHeight),
+                color = trackColor,
+                topLeft = Offset(0f, trackTop),
+                size = Size(size.width, trackHeight),
                 cornerRadius = CornerRadius(trackHeight / 2f, trackHeight / 2f),
+            )
+
+            for (hour in 0..24 step 6) {
+                val x = size.width * (hour / 24f)
+                drawLine(
+                    color = outline,
+                    start = Offset(x, 0f),
+                    end = Offset(x, size.height),
+                    strokeWidth = 1.dp.toPx(),
+                )
+            }
+
+            sessionSegments.forEach { segment ->
+                val startMinutes = segment.startDateTime.toLocalTime().toSecondOfDay() / 60f
+                val durationMinutes = TimeUnit.MILLISECONDS.toMinutes(segment.durationMillis).coerceAtLeast(1).toFloat()
+                val startX = size.width * (startMinutes / 1440f)
+                val width = (size.width * (durationMinutes / 1440f)).coerceAtLeast(4.dp.toPx())
+                drawRoundRect(
+                    color = segment.app.analyticsColor(),
+                    topLeft = Offset(startX, trackTop),
+                    size = Size(width.coerceAtMost(size.width - startX), trackHeight),
+                    cornerRadius = CornerRadius(trackHeight / 2f, trackHeight / 2f),
+                )
+            }
+        }
+        TimelineTickLabels()
+    }
+}
+
+@Composable
+private fun TimelineTickLabels() {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        listOf("00:00", "06:00", "12:00", "18:00", "24:00").forEach { label ->
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
             )
         }
     }
@@ -1743,19 +1803,20 @@ private fun SessionChunkRow(segment: SessionSegment) {
     val endTime = segment.startDateTime.plusNanos(TimeUnit.MILLISECONDS.toNanos(segment.durationMillis)).toLocalTime()
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(14.dp),
-        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.48f),
-        border = BorderStroke(1.dp, segment.app.analyticsColor().copy(alpha = 0.18f)),
+        shape = RoundedCornerShape(12.dp),
+        color = MaterialTheme.colorScheme.surface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.10f)),
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 10.dp),
+            modifier = Modifier.padding(start = 10.dp, top = 10.dp, end = 10.dp, bottom = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Box(
                 modifier = Modifier
-                    .size(10.dp)
-                    .background(segment.app.analyticsColor(), RoundedCornerShape(5.dp)),
+                    .width(4.dp)
+                    .height(42.dp)
+                    .background(segment.app.analyticsColor(), RoundedCornerShape(4.dp)),
             )
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -1774,12 +1835,23 @@ private fun SessionChunkRow(segment: SessionSegment) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Text(
-                text = segment.durationMillis.formatTime(),
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = segment.app.analyticsColor().copy(alpha = 0.12f),
+                contentColor = MaterialTheme.colorScheme.onSurface,
+            ) {
+                AutoResizingText(
+                    text = segment.durationMillis.formatAnalyticsDuration(),
+                    modifier = Modifier
+                        .widthIn(min = 54.dp, max = 92.dp)
+                        .padding(horizontal = 8.dp, vertical = 5.dp),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    textAlign = TextAlign.Center,
+                    maxLines = 2,
+                    minFontSize = 10.sp,
+                )
+            }
         }
     }
 }
@@ -1789,36 +1861,23 @@ private fun WeekdayAverageSection(weekdayAverages: List<WeekdayUsageAverage>) {
     val maxValue = weekdayAverages.maxOfOrNull { it.averageMillis } ?: 0L
 
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.Bottom,
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Text(
-                text = stringResource(R.string.usage_analytics_weekday_average_title),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Text(
-                text = stringResource(R.string.usage_analytics_weekday_average_subtitle),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
+        SectionTitleRow(
+            title = stringResource(R.string.usage_analytics_weekday_average_title),
+            trailing = stringResource(R.string.usage_analytics_weekday_average_subtitle),
+        )
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(18.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surface,
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(160.dp)
-                    .padding(horizontal = 12.dp, vertical = 16.dp),
+                    .height(148.dp)
+                    .padding(horizontal = 14.dp, vertical = 14.dp),
                 verticalAlignment = Alignment.Bottom,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 weekdayAverages.forEach { average ->
                     WeekdayAverageBar(
@@ -1845,11 +1904,7 @@ private fun WeekdayAverageBar(average: WeekdayUsageAverage, maxValue: Long, modi
         label = "weekdayAverageFraction",
     )
     val barColor by animateColorAsState(
-        targetValue = if (average.averageMillis == maxValue && maxValue > 0L) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.secondary.copy(alpha = 0.72f)
-        },
+        targetValue = usageIntensityColor(fraction),
         animationSpec = tween(durationMillis = 420),
         label = "weekdayAverageColor",
     )
@@ -1858,25 +1913,29 @@ private fun WeekdayAverageBar(average: WeekdayUsageAverage, maxValue: Long, modi
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom,
     ) {
-        Text(
-            text = average.averageMillis.formatTime(),
+        AutoResizingText(
+            text = average.averageMillis.formatAnalyticsDuration(),
+            modifier = Modifier.fillMaxWidth(),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
+            minFontSize = 8.sp,
         )
         Spacer(Modifier.height(6.dp))
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(82.dp),
+                .height(76.dp)
+                .clip(RoundedCornerShape(9.dp))
+                .background(MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.72f)),
             contentAlignment = Alignment.BottomCenter,
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(animatedFraction)
-                    .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
+                    .clip(RoundedCornerShape(9.dp))
                     .background(barColor),
             )
         }
@@ -1887,6 +1946,49 @@ private fun WeekdayAverageBar(average: WeekdayUsageAverage, maxValue: Long, modi
             color = MaterialTheme.colorScheme.onSurface,
         )
     }
+}
+
+@Composable
+private fun SectionTitleRow(title: String, trailing: String) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Text(
+            text = trailing,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            maxLines = 1,
+        )
+    }
+}
+
+private fun Long.formatAnalyticsDuration(): String {
+    val totalSeconds = (this / 1_000L).coerceAtLeast(0L)
+    val totalMinutes = totalSeconds / 60L
+    val hours = totalMinutes / 60L
+    val minutes = totalMinutes % 60L
+    val seconds = totalSeconds % 60L
+
+    return when {
+        hours > 0L && minutes > 0L -> "${hours}h ${minutes}m"
+        hours > 0L -> "${hours}h"
+        minutes > 0L -> "${minutes}m"
+        else -> "${seconds}s"
+    }
+}
+
+private fun usageIntensityColor(fraction: Float): Color = when {
+    fraction >= 0.72f -> progressbar_red_use.copy(alpha = 0.82f)
+    fraction >= 0.38f -> progressbar_orange_use.copy(alpha = 0.82f)
+    else -> progressbar_green_use.copy(alpha = 0.82f)
 }
 
 @Composable
