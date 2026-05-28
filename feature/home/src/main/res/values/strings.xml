@@ -173,6 +173,8 @@
     <string name="usage_analytics_average_subtitle">Last month</string>
     <string name="usage_analytics_session_count">%1$d sessions</string>
     <string name="usage_analytics_time_range">%1$s-%2$s</string>
+    <string name="usage_analytics_expand">Expand</string>
+    <string name="usage_analytics_collapse">Collapse</string>
     <string name="visit_github">Visit GitHub Repository</string>
     
 </resources>

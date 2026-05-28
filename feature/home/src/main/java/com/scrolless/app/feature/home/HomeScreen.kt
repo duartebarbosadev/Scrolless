@@ -149,14 +149,14 @@ import com.scrolless.app.feature.home.components.TimeLimitDialog
 import com.scrolless.app.feature.home.components.WeekdayAverageSection
 import com.scrolless.app.feature.home.components.analyticsForDate
 import com.scrolless.app.feature.home.components.pageDateForPage
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
 private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
 private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)

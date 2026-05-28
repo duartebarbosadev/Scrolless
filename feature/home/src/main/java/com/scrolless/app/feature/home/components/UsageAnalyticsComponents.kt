@@ -91,11 +91,7 @@ val ANALYTICS_TIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("H
 // --- Analytics composables ---
 
 @Composable
-fun InlineUsageAnalyticsPanel(
-    analytics: UsageAnalyticsUiState,
-    sessionChunksExpanded: Boolean,
-    onToggleSessionChunks: () -> Unit,
-) {
+fun InlineUsageAnalyticsPanel(analytics: UsageAnalyticsUiState, sessionChunksExpanded: Boolean, onToggleSessionChunks: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(18.dp),
@@ -130,60 +126,99 @@ fun UsageAnalyticsDayPage(
 fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded: Boolean, onToggleSessionChunks: () -> Unit) {
     val sessionSegments = analytics.sessionSegments
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        SectionTitleRow(
-            title = stringResource(R.string.usage_analytics_timeline_title),
-            trailing = analytics.dailyTotalMillis.formatAnalyticsDuration(),
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(8.dp))
+                .clickable(
+                    enabled = sessionSegments.isNotEmpty(),
+                    onClick = onToggleSessionChunks,
+                )
+                .padding(vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.usage_analytics_timeline_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                if (sessionSegments.isNotEmpty()) {
+                    Surface(
+                        shape = RoundedCornerShape(100.dp),
+                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.usage_analytics_session_count, sessionSegments.size),
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Text(
+                    text = analytics.dailyTotalMillis.formatAnalyticsDuration(),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                )
+                if (sessionSegments.isNotEmpty()) {
+                    Text(
+                        text = "•",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    )
+                    Text(
+                        text = if (sessionChunksExpanded) {
+                            stringResource(R.string.usage_analytics_collapse)
+                        } else {
+                            stringResource(R.string.usage_analytics_expand)
+                        },
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            }
+        }
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
                 .animateContentSize(animationSpec = tween(durationMillis = 320)),
             shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0f),
+            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.2f),
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
                 UsageTimelineCanvas(sessionSegments = sessionSegments)
-                if (!sessionSegments.isEmpty()) {
-                    Column(
-                        modifier = Modifier
-                   ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(14.dp))
-                                .clickable(onClick = onToggleSessionChunks)
-                                .padding(horizontal = 14.dp, vertical = 12.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
+                if (sessionSegments.isNotEmpty()) {
+                    AnimatedVisibility(
+                        visible = sessionChunksExpanded,
+                        enter = fadeIn(animationSpec = tween(180)) + expandVertically(animationSpec = tween(260)),
+                        exit = fadeOut(animationSpec = tween(120)) + shrinkVertically(animationSpec = tween(200)),
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(top = 8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
-                            Text(
-                                text = stringResource(R.string.usage_analytics_session_count, sessionSegments.size),
-                                style = MaterialTheme.typography.labelLarge,
-                                color = MaterialTheme.colorScheme.onSurface,
-                            )
-                            Text(
-                                text = if (sessionChunksExpanded) "Hide" else "Show",
-                                style = MaterialTheme.typography.labelLarge,
-                                fontWeight = FontWeight.SemiBold,
-                                color = MaterialTheme.colorScheme.primary,
-                            )
-                        }
-                        AnimatedVisibility(
-                            visible = sessionChunksExpanded,
-                            enter = fadeIn(animationSpec = tween(180)) + expandVertically(animationSpec = tween(260)),
-                            exit = fadeOut(animationSpec = tween(120)) + shrinkVertically(animationSpec = tween(200)),
-                        ) {
-                               Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                                    sessionSegments.forEach { segment ->
-                                        SessionChunkRow(segment = segment)
-                                    }
-                                }
+                            sessionSegments.forEach { segment ->
+                                SessionChunkRow(segment = segment)
+                            }
                         }
                     }
-
                 }
             }
         }
