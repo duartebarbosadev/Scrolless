@@ -166,12 +166,11 @@
     <string name="usage_analytics_today">Today</string>
     <string name="usage_analytics_go_today">Go to today</string>
     <string name="usage_analytics_swipe_hint">&lt; Swipe to view days &gt;</string>
-    <string name="usage_analytics_empty_day">No tracked usage for this day.</string>
-    <string name="usage_analytics_timeline_title">Day timeline</string>
-    <string name="usage_analytics_sessions_title">Session chunks</string>
+    <string name="usage_analytics_timeline_title">Timeline</string>
+    <string name="usage_analytics_sessions_title">Sessions</string>
     <string name="usage_analytics_app_totals_title">App totals</string>
-    <string name="usage_analytics_weekday_average_title">Average by weekday</string>
-    <string name="usage_analytics_weekday_average_subtitle">Last month</string>
+    <string name="usage_analytics_average_title">Average</string>
+    <string name="usage_analytics_average_subtitle">Last month</string>
     <string name="usage_analytics_session_count">%1$d sessions</string>
     <string name="usage_analytics_time_range">%1$s-%2$s</string>
     <string name="visit_github">Visit GitHub Repository</string>

@@ -1693,27 +1693,20 @@ private fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunks
                 .fillMaxWidth()
                 .animateContentSize(animationSpec = tween(durationMillis = 320)),
             shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surfaceContainerHigh,
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
+            color = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0f),
         ) {
             Column(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
                 UsageTimelineCanvas(sessionSegments = sessionSegments)
-                if (sessionSegments.isEmpty()) {
-                    Text(
-                        text = stringResource(R.string.usage_analytics_empty_day),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                } else {
+                if (!sessionSegments.isEmpty()) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(RoundedCornerShape(14.dp))
                             .clickable(onClick = onToggleSessionChunks)
-                            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.74f))
+                            .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.4f))
                             .border(
                                 1.dp,
                                 MaterialTheme.colorScheme.outline.copy(alpha = 0.10f),
@@ -1723,18 +1716,11 @@ private fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunks
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        Column {
-                            Text(
-                                text = stringResource(R.string.usage_analytics_sessions_title),
-                                style = MaterialTheme.typography.labelLarge,
-                                color = MaterialTheme.colorScheme.onSurface,
-                            )
-                            Text(
-                                text = stringResource(R.string.usage_analytics_session_count, sessionSegments.size),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
+                        Text(
+                            text = stringResource(R.string.usage_analytics_session_count, sessionSegments.size),
+                            style = MaterialTheme.typography.labelLarge,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
                         Text(
                             text = if (sessionChunksExpanded) "Hide" else "Show",
                             style = MaterialTheme.typography.labelLarge,
@@ -1747,9 +1733,17 @@ private fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunks
                         enter = fadeIn(animationSpec = tween(180)) + expandVertically(animationSpec = tween(260)),
                         exit = fadeOut(animationSpec = tween(120)) + shrinkVertically(animationSpec = tween(200)),
                     ) {
+                        Surface(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
+                            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.10f)),
+                        ) {
                         Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                            sessionSegments.forEach { segment ->
-                                SessionChunkRow(segment = segment)
+
+                                sessionSegments.forEach { segment ->
+                                    SessionChunkRow(segment = segment)
+                                }
                             }
                         }
                     }
@@ -1827,57 +1821,50 @@ private fun TimelineTickLabels() {
 private fun SessionChunkRow(segment: SessionSegment) {
     val startTime = segment.startDateTime.toLocalTime()
     val endTime = segment.startDateTime.plusNanos(TimeUnit.MILLISECONDS.toNanos(segment.durationMillis)).toLocalTime()
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(12.dp),
-        color = MaterialTheme.colorScheme.surface,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.10f)),
+    Row(
+        modifier = Modifier.padding(start = 10.dp, top = 10.dp, end = 10.dp, bottom = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Row(
-            modifier = Modifier.padding(start = 10.dp, top = 10.dp, end = 10.dp, bottom = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            Box(
-                modifier = Modifier
-                    .width(4.dp)
-                    .height(42.dp)
-                    .background(segment.app.analyticsColor(), RoundedCornerShape(4.dp)),
+        Box(
+            modifier = Modifier
+                .width(4.dp)
+                .height(42.dp)
+                .background(segment.app.analyticsColor(), RoundedCornerShape(4.dp)),
+        )
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = segment.app.analyticsDisplayName(),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
             )
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = segment.app.analyticsDisplayName(),
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                Text(
-                    text = stringResource(
-                        R.string.usage_analytics_time_range,
-                        startTime.format(ANALYTICS_TIME_FORMATTER),
-                        endTime.format(ANALYTICS_TIME_FORMATTER),
-                    ),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-            Surface(
-                shape = RoundedCornerShape(12.dp),
-                color = segment.app.analyticsColor().copy(alpha = 0.12f),
-                contentColor = MaterialTheme.colorScheme.onSurface,
-            ) {
-                AutoResizingText(
-                    text = segment.durationMillis.formatAnalyticsDuration(),
-                    modifier = Modifier
-                        .widthIn(min = 54.dp, max = 92.dp)
-                        .padding(horizontal = 8.dp, vertical = 5.dp),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Center,
-                    maxLines = 2,
-                    minFontSize = 10.sp,
-                )
-            }
+            Text(
+                text = stringResource(
+                    R.string.usage_analytics_time_range,
+                    startTime.format(ANALYTICS_TIME_FORMATTER),
+                    endTime.format(ANALYTICS_TIME_FORMATTER),
+                ),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        Surface(
+            shape = RoundedCornerShape(12.dp),
+            color = segment.app.analyticsColor().copy(alpha = 0.12f),
+            contentColor = MaterialTheme.colorScheme.onSurface,
+        ) {
+            AutoResizingText(
+                text = segment.durationMillis.formatAnalyticsDuration(),
+                modifier = Modifier
+                    .widthIn(min = 54.dp, max = 92.dp)
+                    .padding(horizontal = 8.dp, vertical = 5.dp),
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                minFontSize = 10.sp,
+            )
         }
     }
 }
@@ -1888,14 +1875,13 @@ private fun WeekdayAverageSection(weekdayAverages: List<WeekdayUsageAverage>) {
 
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         SectionTitleRow(
-            title = stringResource(R.string.usage_analytics_weekday_average_title),
-            trailing = stringResource(R.string.usage_analytics_weekday_average_subtitle),
+            title = stringResource(R.string.usage_analytics_average_title),
+            trailing = stringResource(R.string.usage_analytics_average_subtitle),
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surface,
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
+            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.2f),
         ) {
             Row(
                 modifier = Modifier
