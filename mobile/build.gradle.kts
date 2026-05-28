@@ -56,8 +56,8 @@ android {
             libs.versions.targetSdk
                 .get()
                 .toInt()
-        versionCode = 18
-        versionName = "1.3.1"
+        versionCode = 19
+        versionName = "1.4.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -118,6 +118,7 @@ android {
         getByName("release") {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -193,6 +194,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.navigation3.ui)
+    implementation(libs.androidx.navigation3.viewmodel)
 
     implementation(libs.androidx.window)
     implementation(libs.androidx.window.core)

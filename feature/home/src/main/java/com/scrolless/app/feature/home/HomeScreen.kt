@@ -136,20 +136,13 @@ import com.scrolless.app.designsystem.util.formatTime
 import com.scrolless.app.designsystem.util.radialGradientScrim
 import com.scrolless.app.designsystem.util.toCountdownLabel
 import com.scrolless.app.designsystem.util.toIntervalLabel
-import com.scrolless.app.feature.home.components.ANALYTICS_DATE_FORMATTER
-import com.scrolless.app.feature.home.components.ANALYTICS_PAGER_DAY_COUNT
 import com.scrolless.app.feature.home.components.AccessibilityExplainerBottomSheet
 import com.scrolless.app.feature.home.components.AccessibilitySuccessBottomSheet
 import com.scrolless.app.feature.home.components.AccessibilitySuccessBottomSheetPreview
 import com.scrolless.app.feature.home.components.FloatingDebugUsagePanel
 import com.scrolless.app.feature.home.components.HelpDialog
-import com.scrolless.app.feature.home.components.InlineUsageAnalyticsPanel
 import com.scrolless.app.feature.home.components.IntervalTimerDialog
 import com.scrolless.app.feature.home.components.TimeLimitDialog
-import com.scrolless.app.feature.home.components.WeekdayAverageSection
-import com.scrolless.app.feature.home.components.analyticsForDate
-import com.scrolless.app.feature.home.components.pageDateForPage
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
@@ -341,6 +334,15 @@ fun HomeScreen(
                     showTimeLimitDialog = true
                 } else {
                     Timber.w("Accessibility service not enabled. Showing explainer (daily limit).")
+                    showAccessibilityExplainerPrompt()
+                }
+            },
+            onScreenTimerToggled = { enabled ->
+                Timber.d("On-screen timer toggle from UI: %s", enabled)
+                if (context.isAccessibilityServiceEnabled(accessibilityServiceClass)) {
+                    viewModel.onScreenTimerToggled(enabled)
+                } else {
+                    Timber.w("Accessibility service not enabled. Showing explainer (on-screen timer).")
                     showAccessibilityExplainerPrompt()
                 }
             },

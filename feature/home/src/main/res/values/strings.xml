@@ -145,6 +145,8 @@
 
     <string name="settings">Settings</string>
 
+    <string name="show_onscreen_timer">Show on-screen timer</string>
+
     <string name="step_one" translatable="false">1</string>
 
     <string name="step_three" translatable="false">3</string>

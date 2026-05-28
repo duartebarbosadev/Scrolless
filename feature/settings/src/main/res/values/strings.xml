@@ -30,8 +30,7 @@
     <string name="settings_pause_duration_title">Pause Duration</string>
     
     <string name="settings_section_blocking">Blocking</string>
-    <string name="settings_show_onscreen_timer_description">Keep a floating timer visible while watching short-form content.</string>
-    <string name="settings_show_onscreen_timer_title">Show on-screen timer</string>
+
     <plurals name="settings_pause_duration_value">
         <item quantity="one">%1$d minute</item>
         <item quantity="other">%1$d minutes</item>
