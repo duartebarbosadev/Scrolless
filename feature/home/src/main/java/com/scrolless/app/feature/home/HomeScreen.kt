@@ -503,21 +503,27 @@ private fun HomeContent(
     onUsageAnalyticsDateSelected: (LocalDate) -> Unit = {},
     onUsageAnalyticsTodaySelected: () -> Unit = {},
 ) {
-
+    // Live pause/debug/expansion state used by the fixed home content below.
     val pauseRemainingMillis = rememberPauseRemainingTime(uiState.pauseUntilMillis)
     val isPauseActive = pauseRemainingMillis > 0L
     val showDebugPanel = BuildConfig.DEBUG || LocalInspectionMode.current
     var isDebugExpanded by remember { mutableStateOf(false) }
     var sessionChunksExpanded by remember(uiState.usageAnalytics.selectedDate) { mutableStateOf(false) }
+
+    // Analytics pager state: page index 0 is the oldest day, today is the last page.
     val analytics = uiState.usageAnalytics
     val todayPage = ANALYTICS_PAGER_DAY_COUNT - 1
     val selectedPage = (
         todayPage - ChronoUnit.DAYS.between(analytics.selectedDate, analytics.today).toInt()
         ).coerceIn(0, todayPage)
     val pagerState = rememberPagerState(initialPage = selectedPage, pageCount = { ANALYTICS_PAGER_DAY_COUNT })
+
+    // Screen-wide horizontal drags manually move only the progress-card pager.
     var hasDismissedSwipeHint by rememberSaveable { mutableStateOf(false) }
-    val dateSwipeThresholdPx = with(LocalDensity.current) { 72.dp.toPx() }
+    val dateSwipeThresholdPx = with(LocalDensity.current) { 32.dp.toPx() }
     val coroutineScope = rememberCoroutineScope()
+
+    // Pointer input is long-lived, so it reads latest values through rememberUpdatedState.
     val latestAnalytics by rememberUpdatedState(analytics)
     val latestSelectedPage by rememberUpdatedState(selectedPage)
     val latestOnUsageAnalyticsDateSelected by rememberUpdatedState(onUsageAnalyticsDateSelected)
