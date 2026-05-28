@@ -35,6 +35,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -57,6 +58,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -85,10 +87,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -98,7 +100,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -151,8 +155,8 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
@@ -482,7 +486,7 @@ fun HomeScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3ExpressiveApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun HomeContent(
     uiState: HomeUiState,
@@ -505,7 +509,18 @@ private fun HomeContent(
     val showDebugPanel = BuildConfig.DEBUG || LocalInspectionMode.current
     var isDebugExpanded by remember { mutableStateOf(false) }
     var sessionChunksExpanded by remember(uiState.usageAnalytics.selectedDate) { mutableStateOf(false) }
-    val isViewingToday = uiState.usageAnalytics.selectedDate == uiState.usageAnalytics.today
+    val analytics = uiState.usageAnalytics
+    val todayPage = ANALYTICS_PAGER_DAY_COUNT - 1
+    val selectedPage = (
+        todayPage - ChronoUnit.DAYS.between(analytics.selectedDate, analytics.today).toInt()
+        ).coerceIn(0, todayPage)
+    val pagerState = rememberPagerState(initialPage = selectedPage, pageCount = { ANALYTICS_PAGER_DAY_COUNT })
+    var hasDismissedSwipeHint by rememberSaveable { mutableStateOf(false) }
+    val dateSwipeThresholdPx = with(LocalDensity.current) { 72.dp.toPx() }
+    val coroutineScope = rememberCoroutineScope()
+    val latestAnalytics by rememberUpdatedState(analytics)
+    val latestSelectedPage by rememberUpdatedState(selectedPage)
+    val latestOnUsageAnalyticsDateSelected by rememberUpdatedState(onUsageAnalyticsDateSelected)
 
     // Determine if blocking is currently active (user would be blocked if they tried to view content)
     val isBlockingActive = when (uiState.blockOption) {
@@ -519,9 +534,52 @@ private fun HomeContent(
         BlockOption.NothingSelected -> false
     }
 
+    LaunchedEffect(selectedPage) {
+        if (!pagerState.isScrollInProgress && pagerState.currentPage != selectedPage) {
+            pagerState.animateScrollToPage(selectedPage)
+        }
+    }
+
     Box(
         modifier
             .fillMaxSize()
+            .pointerInput(pagerState, dateSwipeThresholdPx) {
+                var totalDragX = 0f
+                var dragStartPage = latestSelectedPage
+                detectHorizontalDragGestures(
+                    onDragStart = {
+                        totalDragX = 0f
+                        dragStartPage = latestSelectedPage
+                        hasDismissedSwipeHint = true
+                    },
+                    onHorizontalDrag = { change, dragAmount ->
+                        change.consume()
+                        totalDragX += dragAmount
+                        pagerState.dispatchRawDelta(-dragAmount)
+                    },
+                    onDragEnd = {
+                        val targetPage = when {
+                            totalDragX <= -dateSwipeThresholdPx -> dragStartPage + 1
+                            totalDragX >= dateSwipeThresholdPx -> dragStartPage - 1
+                            else -> dragStartPage
+                        }.coerceIn(0, todayPage)
+                        val targetDate = pageDateForPage(targetPage, latestAnalytics.today, todayPage)
+
+                        if (targetDate != latestAnalytics.selectedDate) {
+                            latestOnUsageAnalyticsDateSelected(targetDate)
+                        }
+
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(targetPage)
+                        }
+                    },
+                    onDragCancel = {
+                        coroutineScope.launch {
+                            pagerState.animateScrollToPage(dragStartPage)
+                        }
+                    },
+                )
+            }
             .padding(16.dp),
     ) {
         Column(
@@ -532,8 +590,11 @@ private fun HomeContent(
         ) {
             UsageOverviewHeader(
                 uiState = uiState,
-                isViewingToday = isViewingToday,
-                onUsageAnalyticsDateSelected = onUsageAnalyticsDateSelected,
+                analytics = analytics,
+                isViewingToday = analytics.selectedDate == analytics.today,
+                showDateSwipeHint = !hasDismissedSwipeHint,
+                pagerState = pagerState,
+                todayPage = todayPage,
                 onUsageAnalyticsTodaySelected = onUsageAnalyticsTodaySelected,
                 onHelpClicked = onHelpClicked,
                 onNavigateToSettings = onNavigateToSettings,
@@ -546,7 +607,7 @@ private fun HomeContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 AnimatedVisibility(
-                    visible = isViewingToday,
+                    visible = analytics.selectedDate == analytics.today,
                     enter = expandVertically(
                         expandFrom = Alignment.Top,
                         animationSpec = tween(220),
@@ -570,14 +631,14 @@ private fun HomeContent(
                 }
 
                 InlineUsageAnalyticsPanel(
-                    analytics = uiState.usageAnalytics,
+                    analytics = analytics,
                     sessionChunksExpanded = sessionChunksExpanded,
                     onToggleSessionChunks = { sessionChunksExpanded = !sessionChunksExpanded },
                 )
 
-                if (isViewingToday) {
+                if (analytics.selectedDate == analytics.today) {
                     Spacer(modifier = Modifier.height(24.dp))
-                    WeekdayAverageSection(weekdayAverages = uiState.usageAnalytics.weekdayAverages)
+                    WeekdayAverageSection(weekdayAverages = analytics.weekdayAverages)
                 }
             }
         }
@@ -600,8 +661,11 @@ private fun HomeContent(
 @Composable
 private fun UsageOverviewHeader(
     uiState: HomeUiState,
+    analytics: UsageAnalyticsUiState,
     isViewingToday: Boolean,
-    onUsageAnalyticsDateSelected: (LocalDate) -> Unit,
+    showDateSwipeHint: Boolean,
+    pagerState: PagerState,
+    todayPage: Int,
     onUsageAnalyticsTodaySelected: () -> Unit,
     onHelpClicked: () -> Unit,
     onNavigateToSettings: () -> Unit,
@@ -611,12 +675,39 @@ private fun UsageOverviewHeader(
         modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center,
     ) {
-        SwipeableProgressCard(
-            uiState = uiState,
-            onDateSelected = onUsageAnalyticsDateSelected,
-            onProgressCardClicked = onUsageAnalyticsTodaySelected,
+        HorizontalPager(
+            state = pagerState,
             modifier = Modifier.padding(top = 54.dp),
-        )
+            beyondViewportPageCount = 1,
+            userScrollEnabled = false,
+        ) { page ->
+            val pageDate = remember(page, analytics.today) {
+                pageDateForPage(page, analytics.today, todayPage)
+            }
+            val pageAnalytics = remember(pageDate, analytics.daySummaries) {
+                analyticsForDate(analytics = analytics, date = pageDate)
+            }
+            val isTodayPage = pageDate == analytics.today
+            val dateLabel = if (isTodayPage) {
+                stringResource(R.string.usage_analytics_today)
+            } else {
+                pageDate.format(ANALYTICS_DATE_FORMATTER)
+            }
+
+            ProgressCard(
+                blockOption = if (isTodayPage) uiState.blockOption else BlockOption.NothingSelected,
+                progress = if (isTodayPage) uiState.progress else 0,
+                currentUsage = if (isTodayPage) uiState.currentUsage else pageAnalytics.dailyTotalMillis,
+                intervalUsage = if (isTodayPage) uiState.intervalUsage else 0L,
+                timeLimit = if (isTodayPage) uiState.timeLimit else 0L,
+                intervalLength = if (isTodayPage) uiState.intervalLength else 0L,
+                intervalWindowStart = if (isTodayPage) uiState.intervalWindowStart else 0L,
+                listSessionSegments = if (isTodayPage) uiState.listSessionSegments else pageAnalytics.sessionSegments,
+                dateLabel = dateLabel,
+                showDateSwipeHint = showDateSwipeHint,
+                onClick = onUsageAnalyticsTodaySelected,
+            )
+        }
 
         AnimatedVisibility(
             visible = !isViewingToday,
@@ -1203,77 +1294,6 @@ fun FeatureButton(
                 minFontSize = 12.sp,
             )
         }
-    }
-}
-
-@Composable
-@OptIn(ExperimentalFoundationApi::class)
-private fun SwipeableProgressCard(
-    uiState: HomeUiState,
-    onDateSelected: (LocalDate) -> Unit,
-    onProgressCardClicked: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val analytics = uiState.usageAnalytics
-    val todayPage = ANALYTICS_PAGER_DAY_COUNT - 1
-    val selectedPage = (
-        todayPage - ChronoUnit.DAYS.between(analytics.selectedDate, analytics.today).toInt()
-        ).coerceIn(0, todayPage)
-    val pagerState = rememberPagerState(initialPage = selectedPage, pageCount = { ANALYTICS_PAGER_DAY_COUNT })
-    var hasDismissedSwipeHint by rememberSaveable { mutableStateOf(false) }
-
-    LaunchedEffect(selectedPage) {
-        if (!pagerState.isScrollInProgress && pagerState.currentPage != selectedPage) {
-            pagerState.animateScrollToPage(selectedPage)
-        }
-    }
-
-    LaunchedEffect(pagerState, analytics.today, analytics.selectedDate) {
-        snapshotFlow { pagerState.targetPage }
-            .distinctUntilChanged()
-            .collect { targetPage ->
-                val daysBack = todayPage - targetPage
-                val pageDate = analytics.today.minusDays(daysBack.toLong())
-                if (pageDate != analytics.selectedDate) {
-                    if (targetPage != selectedPage) {
-                        hasDismissedSwipeHint = true
-                    }
-                    onDateSelected(pageDate)
-                }
-            }
-    }
-
-    HorizontalPager(
-        state = pagerState,
-        modifier = modifier.fillMaxWidth(),
-        beyondViewportPageCount = 1,
-    ) { page ->
-        val pageDate = remember(page, analytics.today) {
-            val daysBack = todayPage - page
-            analytics.today.minusDays(daysBack.toLong())
-        }
-        val isTodayPage = pageDate == analytics.today
-        val pageAnalytics = remember(pageDate, analytics.daySummaries) {
-            analytics.daySummaries[pageDate] ?: UsageAnalyticsDayUiState(date = pageDate)
-        }
-        val dateLabel = if (isTodayPage) {
-            stringResource(R.string.usage_analytics_today)
-        } else {
-            pageDate.format(ANALYTICS_DATE_FORMATTER)
-        }
-        ProgressCard(
-            blockOption = if (isTodayPage) uiState.blockOption else BlockOption.NothingSelected,
-            progress = if (isTodayPage) uiState.progress else 0,
-            currentUsage = if (isTodayPage) uiState.currentUsage else pageAnalytics.dailyTotalMillis,
-            intervalUsage = if (isTodayPage) uiState.intervalUsage else 0L,
-            timeLimit = if (isTodayPage) uiState.timeLimit else 0L,
-            intervalLength = if (isTodayPage) uiState.intervalLength else 0L,
-            intervalWindowStart = if (isTodayPage) uiState.intervalWindowStart else 0L,
-            listSessionSegments = if (isTodayPage) uiState.listSessionSegments else pageAnalytics.sessionSegments,
-            dateLabel = dateLabel,
-            showDateSwipeHint = !hasDismissedSwipeHint,
-            onClick = onProgressCardClicked,
-        )
     }
 }
 
@@ -1989,6 +2009,22 @@ private fun usageIntensityColor(fraction: Float): Color = when {
     fraction >= 0.72f -> progressbar_red_use.copy(alpha = 0.82f)
     fraction >= 0.38f -> progressbar_orange_use.copy(alpha = 0.82f)
     else -> progressbar_green_use.copy(alpha = 0.82f)
+}
+
+private fun pageDateForPage(page: Int, today: LocalDate, todayPage: Int): LocalDate {
+    val daysBack = todayPage - page
+    return today.minusDays(daysBack.toLong())
+}
+
+private fun analyticsForDate(analytics: UsageAnalyticsUiState, date: LocalDate): UsageAnalyticsUiState {
+    val dayAnalytics = analytics.daySummaries[date] ?: UsageAnalyticsDayUiState(date = date)
+    return analytics.copy(
+        selectedDate = date,
+        dailyTotalMillis = dayAnalytics.dailyTotalMillis,
+        sessionSegments = dayAnalytics.sessionSegments,
+        appTotals = dayAnalytics.appTotals,
+        canNavigateNext = date.isBefore(analytics.today),
+    )
 }
 
 @Composable
