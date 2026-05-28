@@ -70,6 +70,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -85,6 +86,7 @@ import com.scrolless.app.designsystem.theme.snapchatColor
 import com.scrolless.app.designsystem.theme.tiktokColor
 import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.designsystem.util.formatMinutes
+import com.scrolless.app.feature.home.R
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -655,13 +657,14 @@ private fun Int.addMinutesOfDay(delta: Int): Int {
     return if (total < 0) total + DAY_TOTAL_MINUTES else total
 }
 
+@Composable
 private fun BlockableApp.displayName(): String = when (this) {
-    BlockableApp.FACEBOOK -> "Facebook"
-    BlockableApp.FACEBOOK_LITE -> "Facebook Lite"
-    BlockableApp.REELS -> "Reels"
-    BlockableApp.SNAPCHAT -> "Snapchat"
-    BlockableApp.SHORTS -> "Shorts"
-    BlockableApp.TIKTOK -> "TikTok"
+    BlockableApp.FACEBOOK -> stringResource(R.string.app_facebook)
+    BlockableApp.FACEBOOK_LITE -> stringResource(R.string.app_facebook_lite)
+    BlockableApp.REELS -> stringResource(R.string.app_reels)
+    BlockableApp.SNAPCHAT -> stringResource(R.string.app_snapchat)
+    BlockableApp.SHORTS -> stringResource(R.string.app_shorts)
+    BlockableApp.TIKTOK -> stringResource(R.string.app_tiktok)
 }
 
 private fun BlockableApp.timelineColor(): Color = when (this) {

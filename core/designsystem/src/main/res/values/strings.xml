@@ -19,4 +19,6 @@
     <string name="time_format_hour_suffix" translatable="false">h</string>
     <string name="time_format_minute_suffix" translatable="false">m</string>
     <string name="time_format_second_suffix" translatable="false">s</string>
+    <string name="time_placeholder_dash" translatable="false">--</string>
+    <string name="time_placeholder_zero" translatable="false">0:00</string>
 </resources>

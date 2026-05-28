@@ -78,14 +78,14 @@ fun Long.formatAsTime(): String {
     }
 }
 
-fun Long.toIntervalLabel(): String {
-    if (this <= 0L) return "--"
+fun Long.toIntervalLabel(placeholder: String): String {
+    if (this <= 0L) return placeholder
     val totalMinutes = (this / 60_000L).toInt()
     return totalMinutes.formatMinutes()
 }
 
-fun Long.toCountdownLabel(): String {
-    if (this <= 0L) return "0:00"
+fun Long.toCountdownLabel(placeholder: String): String {
+    if (this <= 0L) return placeholder
     val totalSeconds = (this / 1000L).coerceAtLeast(0L)
     val minutes = totalSeconds / 60
     val seconds = totalSeconds % 60

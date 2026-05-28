@@ -986,8 +986,8 @@ private fun IntervalTimerSettingsCard(
     modifier: Modifier = Modifier,
 ) {
     val hasSchedule = intervalLengthMillis > 0 && allowanceMillis > 0
-    val allowanceLabel = if (hasSchedule) allowanceMillis.toIntervalLabel() else "--"
-    val breakLabel = if (hasSchedule) intervalLengthMillis.toIntervalLabel() else "--"
+    val allowanceLabel = allowanceMillis.toIntervalLabel(stringResource(R.string.time_placeholder_dash))
+    val breakLabel = intervalLengthMillis.toIntervalLabel(stringResource(R.string.time_placeholder_dash))
     val actionLabel = if (hasSchedule) {
         stringResource(R.string.interval_timer_card_edit)
     } else {
@@ -1714,9 +1714,15 @@ fun PauseButton(
             label = "pauseButtonSupportingText",
         ) { paused ->
             val text = if (paused) {
-                stringResource(id = R.string.pause_resumes_in, remainingMillis.toCountdownLabel())
+                stringResource(
+                    id = R.string.pause_resumes_in,
+                    remainingMillis.toCountdownLabel(stringResource(R.string.time_placeholder_zero)),
+                )
             } else {
-                stringResource(id = R.string.pause_duration_hint, pauseDurationMinutes)
+                stringResource(
+                    id = R.string.pause_duration_hint,
+                    pauseDurationMinutes,
+                )
             }
             Text(
                 text = text,

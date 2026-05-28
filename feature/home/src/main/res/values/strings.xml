@@ -182,6 +182,8 @@
     <string name="usage_analytics_day_fri">Fri</string>
     <string name="usage_analytics_day_sat">Sat</string>
     <string name="usage_analytics_day_sun">Sun</string>
+    <string name="time_placeholder_dash" translatable="false">--</string>
+    <string name="time_placeholder_zero" translatable="false">0:00</string>
     <string name="visit_github">Visit GitHub Repository</string>
 
 </resources>
