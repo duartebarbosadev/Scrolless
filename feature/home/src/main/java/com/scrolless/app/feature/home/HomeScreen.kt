@@ -398,6 +398,7 @@ fun HomeScreen(
             },
             onUsageAnalyticsDateSelected = viewModel::onUsageAnalyticsDateSelected,
             onUsageAnalyticsTodaySelected = viewModel::onUsageAnalyticsTodaySelected,
+            onAveragePeriodSelected = viewModel::onAveragePeriodSelected,
         )
 
         SnackbarHost(
@@ -498,6 +499,7 @@ private fun HomeContent(
     onDebugUsageReset: () -> Unit = {},
     onUsageAnalyticsDateSelected: (LocalDate) -> Unit = {},
     onUsageAnalyticsTodaySelected: () -> Unit = {},
+    onAveragePeriodSelected: (UsageAveragePeriod) -> Unit = {},
 ) {
     // Live pause/debug/expansion state used by the fixed home content below.
     val pauseRemainingMillis = rememberPauseRemainingTime(uiState.pauseUntilMillis)
@@ -505,7 +507,6 @@ private fun HomeContent(
     val showDebugPanel = BuildConfig.DEBUG || LocalInspectionMode.current
     var isDebugExpanded by remember { mutableStateOf(false) }
     var sessionChunksExpanded by remember(uiState.usageAnalytics.selectedDate) { mutableStateOf(false) }
-    var usageAveragePeriod by remember { mutableStateOf(UsageAveragePeriod.LAST_MONTH) }
 
     // Analytics pager state: page index 0 is the oldest day, today is the last page.
     val analytics = uiState.usageAnalytics
@@ -643,8 +644,8 @@ private fun HomeContent(
                     Spacer(modifier = Modifier.height(24.dp))
                     WeekdayAverageSection(
                         weekdayAverages = analytics.weekdayAverages,
-                        selectedPeriod = usageAveragePeriod,
-                        onPeriodSelected = { usageAveragePeriod = it },
+                        selectedPeriod = uiState.averagePeriod,
+                        onPeriodSelected = { onAveragePeriodSelected(it) },
                     )
                 }
             }

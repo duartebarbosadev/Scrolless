@@ -25,6 +25,7 @@ import com.scrolless.app.core.model.usage.WeekdayUsageAverage
 import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
+import com.scrolless.app.feature.home.components.UsageAveragePeriod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.DayOfWeek
 import java.time.Duration
@@ -59,6 +60,7 @@ class HomeViewModel @Inject constructor(
 
     private val _showComingSoonSnackBar = MutableStateFlow(false)
     private val _requestReview = MutableStateFlow(false)
+    private val _selectedAveragePeriod = MutableStateFlow(UsageAveragePeriod.LAST_WEEK)
     private val selectedAnalyticsDate = MutableStateFlow(ZonedDateTime.now().toLocalDate())
     private val currentDate = currentDayFlow().stateIn(
         scope = viewModelScope,
@@ -153,12 +155,14 @@ class HomeViewModel @Inject constructor(
         currentDate,
         selectedAnalyticsSegments,
         analyticsWindowSegments,
-    ) { selectedDate, today, selectedSegments, windowSegments ->
+        _selectedAveragePeriod,
+    ) { selectedDate, today, selectedSegments, windowSegments, period ->
         buildUsageAnalyticsUiState(
             selectedDate = selectedDate.coerceAtMost(today),
             today = today,
             selectedSegments = selectedSegments,
             windowSegments = windowSegments,
+            period = period,
         )
     }
 
@@ -191,7 +195,8 @@ class HomeViewModel @Inject constructor(
         userSettingsStore.getHasSeenAccessibilityExplainer(),
         userSettingsStore.getPauseDuration(),
         analyticsSnapshot,
-    ) { usage, timerEnabled, pauseUntil, showComingSoonSnackBar, requestReview, hasSeenAccessibilityExplainer, pauseDuration, analytics ->
+        _selectedAveragePeriod,
+    ) { usage, timerEnabled, pauseUntil, showComingSoonSnackBar, requestReview, hasSeenAccessibilityExplainer, pauseDuration, analytics, averagePeriod ->
 
         val progress = calculateProgress(
             blockOption = usage.blockOption,
@@ -217,6 +222,7 @@ class HomeViewModel @Inject constructor(
             hasLoadedSettings = true,
             listSessionSegments = usage.sessionSegment,
             usageAnalytics = analytics,
+            averagePeriod = averagePeriod,
         )
     }.stateIn(
         scope = viewModelScope,
@@ -398,6 +404,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun onAveragePeriodSelected(period: UsageAveragePeriod) {
+        _selectedAveragePeriod.value = period
+    }
+
     private fun currentDayFlow() = flow {
         while (true) {
             val now = ZonedDateTime.now()
@@ -409,13 +419,14 @@ class HomeViewModel @Inject constructor(
     }.distinctUntilChanged()
 }
 
-private const val ANALYTICS_AVERAGE_WINDOW_WEEKS = 4L
+private const val ANALYTICS_AVERAGE_WINDOW_WEEKS = 52L
 
 private fun buildUsageAnalyticsUiState(
     selectedDate: LocalDate,
     today: LocalDate,
     selectedSegments: List<SessionSegment>,
     windowSegments: List<SessionSegment>,
+    period: UsageAveragePeriod = UsageAveragePeriod.LAST_WEEK,
 ): UsageAnalyticsUiState {
     val windowStart = today.minusWeeks(ANALYTICS_AVERAGE_WINDOW_WEEKS).plusDays(1)
     val segmentsByDate = windowSegments.groupBy { it.startDateTime.toLocalDate() }
@@ -432,6 +443,12 @@ private fun buildUsageAnalyticsUiState(
     val selectedDay = daySummaries[selectedDate]
         ?: buildUsageAnalyticsDayUiState(date = selectedDate, segments = selectedSegments)
 
+    val averageStartDate = when (period) {
+        UsageAveragePeriod.LAST_WEEK -> today.minusDays(7)
+        UsageAveragePeriod.LAST_MONTH -> today.minusDays(30)
+        UsageAveragePeriod.LAST_YEAR -> today.minusDays(365)
+    }
+
     return UsageAnalyticsUiState(
         selectedDate = selectedDate,
         today = today,
@@ -440,7 +457,7 @@ private fun buildUsageAnalyticsUiState(
         appTotals = selectedDay.appTotals,
         daySummaries = daySummaries,
         weekdayAverages = buildWeekdayAverages(
-            startDate = windowStart,
+            startDate = averageStartDate,
             endDateInclusive = today,
             daySummaries = daySummaries,
         ),
@@ -527,6 +544,7 @@ data class HomeUiState(
      */
     val listSessionSegments: List<SessionSegment> = emptyList(),
     val usageAnalytics: UsageAnalyticsUiState = UsageAnalyticsUiState(),
+    val averagePeriod: UsageAveragePeriod = UsageAveragePeriod.LAST_WEEK,
 )
 
 private data class UsageSnapshot(

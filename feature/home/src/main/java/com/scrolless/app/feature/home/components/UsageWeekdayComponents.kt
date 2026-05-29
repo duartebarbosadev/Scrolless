@@ -75,7 +75,7 @@ enum class UsageAveragePeriod(val labelResId: Int) {
 @Composable
 fun WeekdayAverageSection(
     weekdayAverages: List<WeekdayUsageAverage>,
-    selectedPeriod: UsageAveragePeriod = UsageAveragePeriod.LAST_MONTH,
+    selectedPeriod: UsageAveragePeriod = UsageAveragePeriod.LAST_WEEK,
     onPeriodSelected: (UsageAveragePeriod) -> Unit = {},
 ) {
     val maxValue = weekdayAverages.maxOfOrNull { it.averageMillis } ?: 0L
@@ -239,8 +239,6 @@ fun DayOfWeek.shortLabel(): String = when (this) {
     DayOfWeek.SATURDAY -> stringResource(R.string.usage_analytics_day_sat)
     DayOfWeek.SUNDAY -> stringResource(R.string.usage_analytics_day_sun)
 }
-
-// --- Weekday previews ---
 
 @Preview(name = "Weekday Average Section")
 @Composable
