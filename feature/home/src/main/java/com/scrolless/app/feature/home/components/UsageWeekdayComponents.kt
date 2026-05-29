@@ -20,6 +20,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,12 +31,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,15 +66,81 @@ import com.scrolless.app.feature.home.R
 import java.time.DayOfWeek
 import java.util.concurrent.TimeUnit
 
+enum class UsageAveragePeriod(val labelResId: Int) {
+    LAST_WEEK(R.string.usage_analytics_average_week),
+    LAST_MONTH(R.string.usage_analytics_average_month),
+    LAST_YEAR(R.string.usage_analytics_average_year),
+}
+
 @Composable
-fun WeekdayAverageSection(weekdayAverages: List<WeekdayUsageAverage>) {
+fun WeekdayAverageSection(
+    weekdayAverages: List<WeekdayUsageAverage>,
+    selectedPeriod: UsageAveragePeriod = UsageAveragePeriod.LAST_MONTH,
+    onPeriodSelected: (UsageAveragePeriod) -> Unit = {},
+) {
     val maxValue = weekdayAverages.maxOfOrNull { it.averageMillis } ?: 0L
+    var menuExpanded by remember { mutableStateOf(false) }
 
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        SectionTitleRow(
-            title = stringResource(R.string.usage_analytics_average_title),
-            trailing = stringResource(R.string.usage_analytics_average_subtitle),
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = stringResource(R.string.usage_analytics_average_title),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Box {
+                Row(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable { menuExpanded = true }
+                        .padding(start = 8.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(selectedPeriod.labelResId),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1,
+                    )
+                    Icon(
+                        imageVector = Icons.Filled.ArrowDropDown,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.width(20.dp),
+                    )
+                }
+                DropdownMenu(
+                    expanded = menuExpanded,
+                    onDismissRequest = { menuExpanded = false },
+                ) {
+                    UsageAveragePeriod.entries.forEach { period ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(period.labelResId),
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = if (period == selectedPeriod) FontWeight.SemiBold else FontWeight.Normal,
+                                    color = if (period == selectedPeriod) {
+                                        MaterialTheme.colorScheme.primary
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurface
+                                    },
+                                )
+                            },
+                            onClick = {
+                                onPeriodSelected(period)
+                                menuExpanded = false
+                            },
+                        )
+                    }
+                }
+            }
+        }
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -143,28 +219,6 @@ fun WeekdayAverageBar(average: WeekdayUsageAverage, maxValue: Long, modifier: Mo
             text = average.dayOfWeek.shortLabel(),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurface,
-        )
-    }
-}
-
-@Composable
-fun SectionTitleRow(title: String, trailing: String) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold,
-            color = MaterialTheme.colorScheme.onSurface,
-        )
-        Text(
-            text = trailing,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
         )
     }
 }

@@ -18,6 +18,7 @@ package com.scrolless.app.feature.home.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -37,13 +38,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -172,17 +178,38 @@ fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded
             ) {
 
                 if (sessionSegments.isNotEmpty()) {
-
-                    Text(
-                        text = if (sessionChunksExpanded) {
-                            stringResource(R.string.usage_analytics_collapse)
-                        } else {
-                            stringResource(R.string.usage_analytics_expand)
-                        },
-                        style = MaterialTheme.typography.labelMedium,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.primary,
+                    val iconRotation by animateFloatAsState(
+                        targetValue = if (sessionChunksExpanded) 180f else 0f,
+                        animationSpec = tween(durationMillis = 260),
+                        label = "expandIconRotation",
                     )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(2.dp),
+                    ) {
+                        Text(
+                            text = if (sessionChunksExpanded) {
+                                stringResource(R.string.usage_analytics_collapse)
+                            } else {
+                                stringResource(R.string.usage_analytics_expand)
+                            },
+                            style = MaterialTheme.typography.labelMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                        Icon(
+                            imageVector = Icons.Filled.ArrowDropDown,
+                            contentDescription = if (sessionChunksExpanded) {
+                                stringResource(R.string.usage_analytics_collapse)
+                            } else {
+                                stringResource(R.string.usage_analytics_expand)
+                            },
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .width(20.dp)
+                                .rotate(iconRotation),
+                        )
+                    }
                 }
             }
         }

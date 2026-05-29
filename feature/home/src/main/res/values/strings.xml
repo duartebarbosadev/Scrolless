@@ -173,6 +173,9 @@
     <string name="usage_analytics_app_totals_title">App totals</string>
     <string name="usage_analytics_average_title">Average</string>
     <string name="usage_analytics_average_subtitle">Last month</string>
+    <string name="usage_analytics_average_week">Last week</string>
+    <string name="usage_analytics_average_month">Last month</string>
+    <string name="usage_analytics_average_year">Last year</string>
     <string name="usage_analytics_session_count">%1$d sessions</string>
     <string name="usage_analytics_time_range">%1$s-%2$s</string>
     <string name="usage_analytics_expand">Expand</string>

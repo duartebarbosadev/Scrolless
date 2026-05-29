@@ -146,6 +146,7 @@ import com.scrolless.app.feature.home.components.HelpDialog
 import com.scrolless.app.feature.home.components.InlineUsageAnalyticsPanel
 import com.scrolless.app.feature.home.components.IntervalTimerDialog
 import com.scrolless.app.feature.home.components.TimeLimitDialog
+import com.scrolless.app.feature.home.components.UsageAveragePeriod
 import com.scrolless.app.feature.home.components.WeekdayAverageSection
 import com.scrolless.app.feature.home.components.analyticsForDate
 import com.scrolless.app.feature.home.components.pageDateForPage
@@ -504,6 +505,7 @@ private fun HomeContent(
     val showDebugPanel = BuildConfig.DEBUG || LocalInspectionMode.current
     var isDebugExpanded by remember { mutableStateOf(false) }
     var sessionChunksExpanded by remember(uiState.usageAnalytics.selectedDate) { mutableStateOf(false) }
+    var usageAveragePeriod by remember { mutableStateOf(UsageAveragePeriod.LAST_MONTH) }
 
     // Analytics pager state: page index 0 is the oldest day, today is the last page.
     val analytics = uiState.usageAnalytics
@@ -639,7 +641,11 @@ private fun HomeContent(
 
                 if (analytics.selectedDate == analytics.today) {
                     Spacer(modifier = Modifier.height(24.dp))
-                    WeekdayAverageSection(weekdayAverages = analytics.weekdayAverages)
+                    WeekdayAverageSection(
+                        weekdayAverages = analytics.weekdayAverages,
+                        selectedPeriod = usageAveragePeriod,
+                        onPeriodSelected = { usageAveragePeriod = it },
+                    )
                 }
             }
         }
