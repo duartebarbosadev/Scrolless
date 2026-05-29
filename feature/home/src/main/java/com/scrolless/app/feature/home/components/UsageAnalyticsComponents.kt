@@ -149,13 +149,30 @@ fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded
                         shape = RoundedCornerShape(100.dp),
                         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
                     ) {
-                        Text(
-                            text = stringResource(R.string.usage_analytics_session_count, sessionSegments.size),
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                        ) {
+                            Text(
+                                text = stringResource(R.string.usage_analytics_session_count, sessionSegments.size),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Medium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                            Text(
+                                text = "•",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                            )
+
+                            Text(
+                                text = analytics.dailyTotalMillis.formatAnalyticsDuration(),
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                maxLines = 1,
+                            )
+                        }
                     }
                 }
             }
@@ -163,18 +180,9 @@ fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Text(
-                    text = analytics.dailyTotalMillis.formatAnalyticsDuration(),
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
-                )
+
                 if (sessionSegments.isNotEmpty()) {
-                    Text(
-                        text = "•",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                    )
+
                     Text(
                         text = if (sessionChunksExpanded) {
                             stringResource(R.string.usage_analytics_collapse)

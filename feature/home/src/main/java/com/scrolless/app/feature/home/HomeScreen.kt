@@ -518,7 +518,7 @@ private fun HomeContent(
     val dateSwipeThresholdPx = with(LocalDensity.current) { 32.dp.toPx() }
     val coroutineScope = rememberCoroutineScope()
 
-    // Pointer input is long-lived, so it reads latest values through rememberUpdatedState.
+    // Pointer input is long-lived, so it reads the latest values through rememberUpdatedState.
     val latestAnalytics by rememberUpdatedState(analytics)
     val latestSelectedPage by rememberUpdatedState(selectedPage)
     val latestOnUsageAnalyticsDateSelected by rememberUpdatedState(onUsageAnalyticsDateSelected)
