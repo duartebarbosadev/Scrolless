@@ -391,10 +391,10 @@ fun HomeScreen(
                 }
             },
             onDebugUsageChanged = { usageSegments ->
-                viewModel.onDebugUsageSegmentsChanged(usageSegments)
+                viewModel.onDebugUsageSegmentsChanged(uiState.usageAnalytics.selectedDate, usageSegments)
             },
             onDebugUsageReset = {
-                viewModel.onDebugResetUsage()
+                viewModel.onDebugResetUsage(uiState.usageAnalytics.selectedDate)
             },
             onUsageAnalyticsDateSelected = viewModel::onUsageAnalyticsDateSelected,
             onUsageAnalyticsTodaySelected = viewModel::onUsageAnalyticsTodaySelected,
@@ -652,7 +652,8 @@ private fun HomeContent(
 
         if (showDebugPanel) {
             FloatingDebugUsagePanel(
-                sessionSegments = uiState.listSessionSegments,
+                sessionSegments = analytics.sessionSegments,
+                selectedDate = analytics.selectedDate,
                 isExpanded = isDebugExpanded,
                 onToggleExpanded = { isDebugExpanded = !isDebugExpanded },
                 onUsageChanged = onDebugUsageChanged,

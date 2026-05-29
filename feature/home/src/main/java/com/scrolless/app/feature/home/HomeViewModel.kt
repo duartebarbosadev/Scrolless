@@ -374,9 +374,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onDebugUsageSegmentsChanged(sessionSegments: List<SessionSegment>) {
+    fun onDebugUsageSegmentsChanged(date: LocalDate, sessionSegments: List<SessionSegment>) {
         viewModelScope.launch {
-            val today = ZonedDateTime.now().toLocalDate()
             val normalizedSegments = sessionSegments.map { segment ->
                 segment.copy(
                     durationMillis = segment.durationMillis.coerceAtLeast(0L),
@@ -384,16 +383,16 @@ class HomeViewModel @Inject constructor(
                 )
             }
             sessionSegmentStore.replaceSessionSegmentsForDate(
-                date = today,
+                date = date,
                 sessionSegments = normalizedSegments,
             )
         }
     }
 
-    fun onDebugResetUsage() {
+    fun onDebugResetUsage(date: LocalDate) {
         viewModelScope.launch {
             sessionSegmentStore.replaceSessionSegmentsForDate(
-                date = ZonedDateTime.now().toLocalDate(),
+                date = date,
                 sessionSegments = emptyList(),
             )
         }
