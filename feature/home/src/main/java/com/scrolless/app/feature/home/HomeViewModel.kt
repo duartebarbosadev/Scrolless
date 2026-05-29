@@ -29,7 +29,9 @@ import com.scrolless.app.feature.home.components.UsageAveragePeriod
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.DayOfWeek
 import java.time.Duration
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
@@ -150,19 +152,26 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private val analyticsSnapshot = kotlinx.coroutines.flow.combine(
+    private val analyticsSnapshot = combine(
         selectedAnalyticsDate,
         currentDate,
         selectedAnalyticsSegments,
         analyticsWindowSegments,
         _selectedAveragePeriod,
-    ) { selectedDate, today, selectedSegments, windowSegments, period ->
+        userSettingsStore.getFirstLaunchAt(),
+    ) { selectedDate, today, selectedSegments, windowSegments, period, firstLaunchAt ->
+        val firstLaunchDate = if (firstLaunchAt > 0L) {
+            Instant.ofEpochMilli(firstLaunchAt).atZone(ZoneId.systemDefault()).toLocalDate()
+        } else {
+            LocalDate.EPOCH
+        }
         buildUsageAnalyticsUiState(
             selectedDate = selectedDate.coerceAtMost(today),
             today = today,
             selectedSegments = selectedSegments,
             windowSegments = windowSegments,
             period = period,
+            firstLaunchDate = firstLaunchDate,
         )
     }
 
@@ -427,6 +436,7 @@ private fun buildUsageAnalyticsUiState(
     selectedSegments: List<SessionSegment>,
     windowSegments: List<SessionSegment>,
     period: UsageAveragePeriod = UsageAveragePeriod.LAST_WEEK,
+    firstLaunchDate: LocalDate = LocalDate.EPOCH,
 ): UsageAnalyticsUiState {
     val windowStart = today.minusWeeks(ANALYTICS_AVERAGE_WINDOW_WEEKS).plusDays(1)
     val segmentsByDate = windowSegments.groupBy { it.startDateTime.toLocalDate() }
@@ -444,9 +454,9 @@ private fun buildUsageAnalyticsUiState(
         ?: buildUsageAnalyticsDayUiState(date = selectedDate, segments = selectedSegments)
 
     val averageStartDate = when (period) {
-        UsageAveragePeriod.LAST_WEEK -> today.minusDays(7)
-        UsageAveragePeriod.LAST_MONTH -> today.minusDays(30)
-        UsageAveragePeriod.LAST_YEAR -> today.minusDays(365)
+        UsageAveragePeriod.LAST_WEEK -> maxOf(today.minusDays(7), firstLaunchDate)
+        UsageAveragePeriod.LAST_MONTH -> maxOf(today.minusDays(30), firstLaunchDate)
+        UsageAveragePeriod.LAST_YEAR -> maxOf(today.minusDays(365), firstLaunchDate)
     }
 
     return UsageAnalyticsUiState(

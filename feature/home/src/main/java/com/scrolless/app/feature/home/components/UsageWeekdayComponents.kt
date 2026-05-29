@@ -252,6 +252,40 @@ private fun PreviewWeekdayAverageSection() {
     }
 }
 
+@Preview(name = "Weekday Average Section — Period Dropdown Open")
+@Composable
+private fun PreviewWeekdayAverageSectionDropdownOpen() {
+    ScrollessTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Box(modifier = Modifier.padding(16.dp)) {
+                WeekdayAverageSection(weekdayAverages = previewWeekdayAverages())
+                DropdownMenu(
+                    expanded = true,
+                    onDismissRequest = {},
+                ) {
+                    UsageAveragePeriod.entries.forEach { period ->
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    text = stringResource(period.labelResId),
+                                    style = MaterialTheme.typography.labelMedium,
+                                    fontWeight = if (period == UsageAveragePeriod.LAST_WEEK) FontWeight.SemiBold else FontWeight.Normal,
+                                    color = if (period == UsageAveragePeriod.LAST_WEEK) {
+                                        MaterialTheme.colorScheme.primary
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurface
+                                    },
+                                )
+                            },
+                            onClick = {},
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 private fun previewWeekdayAverages(): List<WeekdayUsageAverage> = DayOfWeek.entries.mapIndexed { index, dayOfWeek ->
     WeekdayUsageAverage(
         dayOfWeek = dayOfWeek,
