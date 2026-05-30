@@ -495,9 +495,16 @@ private fun HomeContent(
         BlockOption.NothingSelected -> false
     }
 
+    var isInitialPageLoad by remember { mutableStateOf(true) }
+
     LaunchedEffect(selectedPage) {
         if (pagerState.currentPage != selectedPage) {
-            pagerState.animateScrollToPage(selectedPage)
+            if (isInitialPageLoad) {
+                isInitialPageLoad = false
+                pagerState.scrollToPage(selectedPage)
+            } else {
+                pagerState.animateScrollToPage(selectedPage)
+            }
         }
     }
 
