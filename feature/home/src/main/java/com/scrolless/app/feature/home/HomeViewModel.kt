@@ -99,9 +99,30 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
+<<<<<<< HEAD
             currentDate.collect { today ->
                 if (selectedAnalyticsDate.value.isAfter(today)) {
                     selectedAnalyticsDate.value = today
+=======
+            // Gate review prompts by first launch, attempt count, and retry delay
+            kotlinx.coroutines.flow.combine(
+                userSettingsStore.getFirstLaunchAt(),
+                userSettingsStore.getHasSeenReviewPrompt(),
+                userSettingsStore.getReviewPromptAttemptCount(),
+                userSettingsStore.getReviewPromptLastAttemptAt(),
+            ) { firstLaunchAt, hasSeenReviewPrompt, attemptCount, lastAttemptAt ->
+                ReviewPromptSnapshot(firstLaunchAt, hasSeenReviewPrompt, attemptCount, lastAttemptAt)
+            }.collect { snapshot ->
+                if (snapshot.firstLaunchAt == -1L) return@collect
+                val now = System.currentTimeMillis()
+                latestReviewAttemptCount = snapshot.attemptCount
+                latestReviewAttemptAt = snapshot.lastAttemptAt
+                val resolvedFirstLaunch = if (snapshot.firstLaunchAt == 0L) {
+                    userSettingsStore.setFirstLaunchAt(now)
+                    now
+                } else {
+                    snapshot.firstLaunchAt
+>>>>>>> origin/main
                 }
             }
         }
