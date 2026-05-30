@@ -707,4 +707,3 @@ fun TodayBlockingIntervalTimerControlsPreview() {
         }
     }
 }
-

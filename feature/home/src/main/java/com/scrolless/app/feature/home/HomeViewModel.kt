@@ -78,8 +78,11 @@ class HomeViewModel @Inject constructor(
         reviewPromptDismissed,
     ) { firstLaunchAt, hasSeenReviewPrompt, attemptCount, lastAttemptAt, dismissed ->
         if (dismissed) return@combine false
-        if (firstLaunchAt == 0L) return@combine false
+        if (firstLaunchAt == -1L) return@combine false
         val now = System.currentTimeMillis()
+
+        // Avoid spamming
+        // Require an initial delay, a retry cooldown, and a max attempt cap.
         !hasSeenReviewPrompt &&
             attemptCount < REVIEW_PROMPT_MAX_ATTEMPTS &&
             (lastAttemptAt == 0L || now - lastAttemptAt >= REVIEW_PROMPT_RETRY_DELAY_MILLIS) &&
@@ -423,6 +426,39 @@ class HomeViewModel @Inject constructor(
     }.distinctUntilChanged()
 }
 
+@Immutable
+data class HomeUiState(
+    val blockOption: BlockOption = BlockOption.NothingSelected,
+    val timeLimit: Long = 0L,
+    val intervalLength: Long = 0L,
+    val intervalUsage: Long = 0L,
+    val intervalWindowStart: Long = 0L,
+    val currentUsage: Long = 0L,
+    val progress: Int = 0,
+    val showComingSoonSnackBar: Boolean = false,
+    val requestReview: Boolean = false,
+    val isDevMode: Boolean = false,
+    val playStoreUrl: String? = null,
+    val pauseUntilMillis: Long = 0L,
+    val pauseDurationMillis: Long = 5 * 60 * 1000L,
+    val hasSeenAccessibilityExplainer: Boolean = false,
+
+    /**
+     * True once the initial values from [UserSettingsStore] have been emitted at least once.
+     *
+     * Home screen side effects gate on this flag to avoid running before persisted settings load
+     * (e.g., auto-showing the accessibility explainer on the very first launch).
+     */
+    val hasLoadedSettings: Boolean = false,
+
+    /**
+     * Per-app usage breakdown for the segmented progress indicator.
+     */
+    val listSessionSegments: List<SessionSegment> = emptyList(),
+    val usageAnalytics: UsageAnalyticsUiState = UsageAnalyticsUiState(),
+    val averagePeriod: UsageAveragePeriod = UsageAveragePeriod.LAST_WEEK,
+)
+
 private fun buildUsageAnalyticsUiState(
     selectedDate: LocalDate,
     today: LocalDate,
@@ -528,39 +564,6 @@ private fun datesBetween(startDate: LocalDate, endDateInclusive: LocalDate): Lis
     val dayCount = ChronoUnit.DAYS.between(startDate, endDateInclusive).toInt()
     return (0..dayCount).map { offset -> startDate.plusDays(offset.toLong()) }
 }
-
-@Immutable
-data class HomeUiState(
-    val blockOption: BlockOption = BlockOption.NothingSelected,
-    val timeLimit: Long = 0L,
-    val intervalLength: Long = 0L,
-    val intervalUsage: Long = 0L,
-    val intervalWindowStart: Long = 0L,
-    val currentUsage: Long = 0L,
-    val progress: Int = 0,
-    val showComingSoonSnackBar: Boolean = false,
-    val requestReview: Boolean = false,
-    val isDevMode: Boolean = false,
-    val playStoreUrl: String? = null,
-    val pauseUntilMillis: Long = 0L,
-    val pauseDurationMillis: Long = 5 * 60 * 1000L,
-    val hasSeenAccessibilityExplainer: Boolean = false,
-
-    /**
-     * True once the initial values from [UserSettingsStore] have been emitted at least once.
-     *
-     * Home screen side effects gate on this flag to avoid running before persisted settings load
-     * (e.g., auto-showing the accessibility explainer on the very first launch).
-     */
-    val hasLoadedSettings: Boolean = false,
-
-    /**
-     * Per-app usage breakdown for the segmented progress indicator.
-     */
-    val listSessionSegments: List<SessionSegment> = emptyList(),
-    val usageAnalytics: UsageAnalyticsUiState = UsageAnalyticsUiState(),
-    val averagePeriod: UsageAveragePeriod = UsageAveragePeriod.LAST_WEEK,
-)
 
 private data class UsageSnapshot(
     val blockOption: BlockOption,

@@ -213,7 +213,7 @@ fun HomeScreen(
                     Timber.i("Block option selected while accessibility disabled - showing explainer")
                     showAccessibilityExplainerPrompt()
                 }
-           }
+            }
         }
     }
 
@@ -457,7 +457,6 @@ private fun HomeContent(
     onUsageAnalyticsTodaySelected: () -> Unit = {},
     onAveragePeriodSelected: (UsageAveragePeriod) -> Unit = {},
 ) {
-    // Live pause/debug/expansion state used by the fixed home content below.
     val pauseRemainingMillis = rememberPauseRemainingTime(uiState.pauseUntilMillis)
     val isPauseActive = pauseRemainingMillis > 0L
     val showDebugPanel = BuildConfig.DEBUG || LocalInspectionMode.current
