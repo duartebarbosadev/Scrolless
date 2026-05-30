@@ -163,17 +163,10 @@
 
     <string name="time_limit_dialog_title">Set Daily Limit Time</string>
 
-    <string name="usage_analytics_title">Usage details</string>
-    <string name="usage_analytics_previous_day">Previous day</string>
-    <string name="usage_analytics_next_day">Next day</string>
     <string name="usage_analytics_today">Today</string>
-    <string name="usage_analytics_go_today">Go to today</string>
     <string name="usage_analytics_swipe_hint">&lt; Swipe to view days &gt;</string>
     <string name="usage_analytics_timeline_title">Timeline</string>
-    <string name="usage_analytics_sessions_title">Sessions</string>
-    <string name="usage_analytics_app_totals_title">App totals</string>
     <string name="usage_analytics_average_title">Average</string>
-    <string name="usage_analytics_average_subtitle">Last month</string>
     <string name="usage_analytics_average_week">Last week</string>
     <string name="usage_analytics_average_month">Last month</string>
     <string name="usage_analytics_average_year">Last year</string>
