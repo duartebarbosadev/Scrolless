@@ -186,7 +186,6 @@ class HomeViewModel @Inject constructor(
 
     val uiState: StateFlow<HomeUiState> = combine(
         usageSnapshot,
-        userSettingsStore.getTimerOverlayEnabled(),
         userSettingsStore.getPauseUntil(),
         _showComingSoonSnackBar,
         requestReview,
@@ -196,7 +195,6 @@ class HomeViewModel @Inject constructor(
         _selectedAveragePeriod,
     ) {
             usage,
-            timerEnabled,
             pauseUntil,
             showComingSoonSnackBar,
             requestReview,
@@ -221,7 +219,6 @@ class HomeViewModel @Inject constructor(
             intervalWindowStart = usage.intervalWindowStart,
             currentUsage = usage.currentUsage,
             progress = progress,
-            timerOverlayEnabled = timerEnabled,
             pauseUntilMillis = pauseUntil,
             pauseDurationMillis = pauseDuration,
             showComingSoonSnackBar = showComingSoonSnackBar,
@@ -541,7 +538,6 @@ data class HomeUiState(
     val intervalWindowStart: Long = 0L,
     val currentUsage: Long = 0L,
     val progress: Int = 0,
-    val timerOverlayEnabled: Boolean = false,
     val showComingSoonSnackBar: Boolean = false,
     val requestReview: Boolean = false,
     val isDevMode: Boolean = false,
@@ -553,7 +549,7 @@ data class HomeUiState(
     /**
      * True once the initial values from [UserSettingsStore] have been emitted at least once.
      *
-     * Home screen side-effects gate on this flag to avoid running before persisted settings load
+     * Home screen side effects gate on this flag to avoid running before persisted settings load
      * (e.g., auto-showing the accessibility explainer on the very first launch).
      */
     val hasLoadedSettings: Boolean = false,

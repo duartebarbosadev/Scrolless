@@ -318,7 +318,7 @@ fun ConfigButton(
     ) {
         Image(
             painter = painterResource(id = R.drawable.icons8_control_48),
-            contentDescription = stringResource(id = R.string.go_to_accessibility_settings),
+            contentDescription = stringResource(id = R.string.daily_limit_configure_time_content_description),
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(),
@@ -674,7 +674,7 @@ fun TodayBlockingControlsPreview() {
     ScrollessTheme(darkTheme = true) {
         Surface {
             TodayBlockingControls(
-                uiState = HomeUiState(blockOption = BlockOption.NothingSelected),
+                uiState = HomeUiState(blockOption = BlockOption.DailyLimit),
                 isBlockingActive = false,
                 isPauseActive = false,
                 pauseRemainingMillis = 0L,
@@ -687,3 +687,24 @@ fun TodayBlockingControlsPreview() {
         }
     }
 }
+
+@DevicePreviews
+@Composable
+fun TodayBlockingIntervalTimerControlsPreview() {
+    ScrollessTheme(darkTheme = true) {
+        Surface {
+            TodayBlockingControls(
+                uiState = HomeUiState(blockOption = BlockOption.IntervalTimer),
+                isBlockingActive = false,
+                isPauseActive = false,
+                pauseRemainingMillis = 0L,
+                onBlockOptionSelected = {},
+                onConfigureDailyLimit = {},
+                onIntervalTimerClick = {},
+                onIntervalTimerEdit = {},
+                onPauseToggle = { _ -> },
+            )
+        }
+    }
+}
+

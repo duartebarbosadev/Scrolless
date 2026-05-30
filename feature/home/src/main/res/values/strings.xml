@@ -70,6 +70,7 @@
 
 
     <string name="go_to_accessibility_settings">Go to Accessibility Settings</string>
+    <string name="daily_limit_configure_time_content_description">Configure daily limit time</string>
 
     <string name="help">Help</string>
 

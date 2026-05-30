@@ -213,12 +213,7 @@ fun HomeScreen(
                     Timber.i("Block option selected while accessibility disabled - showing explainer")
                     showAccessibilityExplainerPrompt()
                 }
-
-                uiState.timerOverlayEnabled -> {
-                    Timber.i("Timer overlay ON while accessibility disabled - showing explainer")
-                    showAccessibilityExplainerPrompt()
-                }
-            }
+           }
         }
     }
 
@@ -853,7 +848,6 @@ fun HomeScreenPreview() {
         timeLimit = TimeUnit.MINUTES.toMillis(60),
         currentUsage = TimeUnit.MINUTES.toMillis(42),
         progress = 70,
-        timerOverlayEnabled = true,
         listSessionSegments = listOf(
             SessionSegment(BlockableApp.FACEBOOK, TimeUnit.MINUTES.toMillis(8), LocalDateTime.of(2026, 10, 2, 0, 55)),
             SessionSegment(BlockableApp.FACEBOOK_LITE, TimeUnit.MINUTES.toMillis(5), LocalDateTime.of(2026, 10, 2, 1, 0)),
