@@ -48,7 +48,7 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     private val _reviewPromptAttemptCount = MutableStateFlow(0)
     private val _reviewPromptLastAttemptAt = MutableStateFlow(0L)
     private val _pauseUntil = MutableStateFlow(0L)
-    private val _firstLaunchAt = MutableStateFlow(0L)
+    private val _firstLaunchAt = MutableStateFlow(-1L)
     private val _pauseDuration = MutableStateFlow(5 * 60 * 1000L)
     private val _exceptReelsSentByDm = MutableStateFlow(false)
 
