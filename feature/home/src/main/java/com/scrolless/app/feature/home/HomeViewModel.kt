@@ -75,6 +75,7 @@ class HomeViewModel @Inject constructor(
             ) { firstLaunchAt, hasSeenReviewPrompt, attemptCount, lastAttemptAt ->
                 ReviewPromptSnapshot(firstLaunchAt, hasSeenReviewPrompt, attemptCount, lastAttemptAt)
             }.collect { snapshot ->
+                if (snapshot.firstLaunchAt == -1L) return@collect
                 val now = System.currentTimeMillis()
                 latestReviewAttemptCount = snapshot.attemptCount
                 latestReviewAttemptAt = snapshot.lastAttemptAt
