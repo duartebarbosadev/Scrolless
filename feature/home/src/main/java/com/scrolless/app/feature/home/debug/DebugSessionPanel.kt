@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.feature.home.components
+package com.scrolless.app.feature.home.debug
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -85,6 +85,7 @@ import com.scrolless.app.designsystem.theme.snapchatColor
 import com.scrolless.app.designsystem.theme.tiktokColor
 import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.designsystem.util.formatMinutes
+import com.scrolless.app.feature.home.components.ANALYTICS_DATE_FORMATTER
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime

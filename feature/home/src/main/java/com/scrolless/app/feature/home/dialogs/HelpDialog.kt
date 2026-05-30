@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.feature.home.components
+package com.scrolless.app.feature.home.dialogs
 
 import android.content.Intent
 import androidx.compose.foundation.background
@@ -62,7 +62,6 @@ import com.scrolless.app.feature.home.R
 import com.scrolless.app.feature.home.openActivityAccessibilitySettings
 import timber.log.Timber
 
-@Suppress("FunctionNaming", "LongMethod")
 @Composable
 fun HelpDialog(onDismiss: () -> Unit) {
     LaunchedEffect(Unit) {

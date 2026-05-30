@@ -23,6 +23,14 @@ import com.scrolless.app.core.model.usage.WeekdayUsageAverage
 import java.time.LocalDate
 import java.time.ZonedDateTime
 
+enum class UsageAveragePeriod(val labelResId: Int) {
+    LAST_WEEK(R.string.usage_analytics_average_week),
+    LAST_MONTH(R.string.usage_analytics_average_month),
+    LAST_YEAR(R.string.usage_analytics_average_year),
+}
+
+const val ANALYTICS_PAGER_DAY_COUNT = 365
+
 @Immutable
 data class UsageAnalyticsUiState(
     val selectedDate: LocalDate = ZonedDateTime.now().toLocalDate(),
@@ -33,6 +41,7 @@ data class UsageAnalyticsUiState(
     val daySummaries: Map<LocalDate, UsageAnalyticsDayUiState> = emptyMap(),
     val weekdayAverages: List<WeekdayUsageAverage> = emptyList(),
     val canNavigateNext: Boolean = false,
+    val dataStartDate: LocalDate = ZonedDateTime.now().toLocalDate(),
 )
 
 @Immutable

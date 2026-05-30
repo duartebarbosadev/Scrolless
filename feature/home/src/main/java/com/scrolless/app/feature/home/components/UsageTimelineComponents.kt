@@ -78,7 +78,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
-const val ANALYTICS_PAGER_DAY_COUNT = 365 // 365 days should be enough for anyone :)
 val ANALYTICS_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE, MMM d")
 val ANALYTICS_TIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 

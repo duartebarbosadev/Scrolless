@@ -63,14 +63,9 @@ import com.scrolless.app.designsystem.theme.progressbar_green_use
 import com.scrolless.app.designsystem.theme.progressbar_orange_use
 import com.scrolless.app.designsystem.theme.progressbar_red_use
 import com.scrolless.app.feature.home.R
+import com.scrolless.app.feature.home.UsageAveragePeriod
 import java.time.DayOfWeek
 import java.util.concurrent.TimeUnit
-
-enum class UsageAveragePeriod(val labelResId: Int) {
-    LAST_WEEK(R.string.usage_analytics_average_week),
-    LAST_MONTH(R.string.usage_analytics_average_month),
-    LAST_YEAR(R.string.usage_analytics_average_year),
-}
 
 @Composable
 fun WeekdayAverageSection(
