@@ -62,7 +62,6 @@ import com.scrolless.app.feature.home.R
 import com.scrolless.app.feature.home.openActivityAccessibilitySettings
 import timber.log.Timber
 
-@Suppress("FunctionNaming", "LongMethod")
 @Composable
 fun HelpDialog(onDismiss: () -> Unit) {
     LaunchedEffect(Unit) {

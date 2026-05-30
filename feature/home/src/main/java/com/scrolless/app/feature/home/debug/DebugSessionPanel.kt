@@ -85,6 +85,7 @@ import com.scrolless.app.designsystem.theme.snapchatColor
 import com.scrolless.app.designsystem.theme.tiktokColor
 import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.designsystem.util.formatMinutes
+import com.scrolless.app.feature.home.components.ANALYTICS_DATE_FORMATTER
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -111,6 +112,7 @@ private val TIMELINE_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm")
 @Composable
 internal fun FloatingDebugUsagePanel(
     sessionSegments: List<SessionSegment>,
+    selectedDate: LocalDate,
     isExpanded: Boolean,
     onToggleExpanded: () -> Unit,
     onUsageChanged: (List<SessionSegment>) -> Unit,
@@ -185,6 +187,7 @@ internal fun FloatingDebugUsagePanel(
             ) {
                 DebugDayTimelinePanel(
                     sessionSegments = sessionSegments,
+                    selectedDate = selectedDate,
                     onUsageChanged = onUsageChanged,
                     onReset = onReset,
                     modifier = Modifier
@@ -227,6 +230,7 @@ internal fun FloatingDebugUsagePanel(
 @Composable
 private fun DebugDayTimelinePanel(
     sessionSegments: List<SessionSegment>,
+    selectedDate: LocalDate,
     onUsageChanged: (List<SessionSegment>) -> Unit,
     onReset: () -> Unit,
     modifier: Modifier = Modifier,
@@ -237,10 +241,9 @@ private fun DebugDayTimelinePanel(
     var selectedStartMinutes by remember { mutableIntStateOf(nowMinutes) }
     var requestedCenterMinutes by remember { mutableIntStateOf(nowMinutes) }
     var centerRequestToken by remember { mutableIntStateOf(1) }
-    val today = LocalDate.now()
-    val todaySegments = remember(sessionSegments, today) {
+    val todaySegments = remember(sessionSegments, selectedDate) {
         sessionSegments
-            .filter { it.startDateTime.toLocalDate() == today }
+            .filter { it.startDateTime.toLocalDate() == selectedDate }
             .sortedBy { it.startDateTime }
     }
     val totalMinutes = todaySegments.sumOf { it.durationMillis.toWholeMinutes().coerceAtLeast(0) }
@@ -257,7 +260,7 @@ private fun DebugDayTimelinePanel(
         val newSegment = SessionSegment(
             app = selectedApp,
             durationMillis = TimeUnit.MINUTES.toMillis(minOf(newSessionDurationMinutes, maxDurationMinutes).toLong()),
-            startDateTime = today.atStartOfDay().plusMinutes(selectedStartMinutes.toLong()),
+            startDateTime = selectedDate.atStartOfDay().plusMinutes(selectedStartMinutes.toLong()),
         )
         onUsageChanged((todaySegments + newSegment).sortedBy { it.startDateTime })
     }
@@ -283,7 +286,7 @@ private fun DebugDayTimelinePanel(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "Today Timeline",
+                    text = "Timeline — ${selectedDate.format(ANALYTICS_DATE_FORMATTER)}",
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface,
@@ -404,6 +407,7 @@ private fun DebugDayTimelinePanel(
 
             DayTimeline(
                 sessionSegments = todaySegments,
+                selectedDate = selectedDate,
                 selectedStartMinutes = selectedStartMinutes,
                 requestedCenterMinutes = requestedCenterMinutes,
                 centerRequestToken = centerRequestToken,
@@ -473,6 +477,7 @@ private fun DurationOptionChip(
 @Composable
 private fun DayTimeline(
     sessionSegments: List<SessionSegment>,
+    selectedDate: LocalDate,
     selectedStartMinutes: Int,
     requestedCenterMinutes: Int,
     centerRequestToken: Int,
@@ -483,7 +488,7 @@ private fun DayTimeline(
     var viewportWidthPx by remember { mutableIntStateOf(0) }
     val density = LocalDensity.current
     val timelineWidthPx = with(density) { TIMELINE_TRACK_WIDTH.roundToPx() }
-    val dayStart = LocalDate.now().atStartOfDay()
+    val dayStart = selectedDate.atStartOfDay()
     var nowMinutes by remember(dayStart) { mutableIntStateOf(LocalDateTime.now().minutesSince(dayStart).coerceIn(0, DAY_TOTAL_MINUTES)) }
 
     LaunchedEffect(dayStart) {
@@ -569,14 +574,16 @@ private fun DayTimeline(
                 }
             }
 
-            val nowOffset = TIMELINE_TRACK_WIDTH * (nowMinutes / DAY_TOTAL_MINUTES.toFloat())
-            Box(
-                modifier = Modifier
-                    .offset(x = nowOffset)
-                    .fillMaxHeight()
-                    .width(1.dp)
-                    .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.75f)),
-            )
+            if (selectedDate == LocalDate.now()) {
+                val nowOffset = TIMELINE_TRACK_WIDTH * (nowMinutes / DAY_TOTAL_MINUTES.toFloat())
+                Box(
+                    modifier = Modifier
+                        .offset(x = nowOffset)
+                        .fillMaxHeight()
+                        .width(1.dp)
+                        .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.75f)),
+                )
+            }
 
             val selectedOffset =
                 TIMELINE_TRACK_WIDTH * (selectedStartMinutes.coerceIn(0, DAY_TOTAL_MINUTES - 1) / DAY_TOTAL_MINUTES.toFloat())
@@ -678,36 +685,18 @@ private fun Long.toWholeMinutes(): Int = TimeUnit.MILLISECONDS.toMinutes(this).t
 @Preview(name = "Debug Usage Timeline")
 @Composable
 private fun PreviewDebugUsagePanel() {
+    val today = LocalDate.now()
     ScrollessTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             FloatingDebugUsagePanel(
                 sessionSegments = listOf(
-                    SessionSegment(
-                        BlockableApp.FACEBOOK,
-                        TimeUnit.MINUTES.toMillis(12),
-                        LocalDate.now().atTime(8, 5),
-                    ),
-                    SessionSegment(
-                        BlockableApp.FACEBOOK_LITE,
-                        TimeUnit.MINUTES.toMillis(10),
-                        LocalDate.now().atTime(8, 30),
-                    ),
-                    SessionSegment(
-                        BlockableApp.REELS,
-                        TimeUnit.MINUTES.toMillis(18),
-                        LocalDate.now().atTime(9, 20),
-                    ),
-                    SessionSegment(
-                        BlockableApp.REELS,
-                        TimeUnit.MINUTES.toMillis(35),
-                        LocalDate.now().atTime(12, 10),
-                    ),
-                    SessionSegment(
-                        BlockableApp.REELS,
-                        TimeUnit.MINUTES.toMillis(22),
-                        LocalDate.now().atTime(20, 5),
-                    ),
+                    SessionSegment(BlockableApp.FACEBOOK, TimeUnit.MINUTES.toMillis(12), today.atTime(8, 5)),
+                    SessionSegment(BlockableApp.FACEBOOK_LITE, TimeUnit.MINUTES.toMillis(10), today.atTime(8, 30)),
+                    SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(18), today.atTime(9, 20)),
+                    SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(35), today.atTime(12, 10)),
+                    SessionSegment(BlockableApp.REELS, TimeUnit.MINUTES.toMillis(22), today.atTime(20, 5)),
                 ),
+                selectedDate = today,
                 isExpanded = true,
                 onToggleExpanded = {},
                 onUsageChanged = {},

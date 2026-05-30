@@ -33,10 +33,12 @@ class SettingsViewModel @Inject constructor(private val userSettingsStore: UserS
     val uiState: StateFlow<SettingsUiState> = combine(
         userSettingsStore.getPauseDuration(),
         userSettingsStore.getExceptReelsSentByDm(),
-    ) { pauseDurationMillis, exceptReelsSentByDm ->
+        userSettingsStore.getTimerOverlayEnabled(),
+    ) { pauseDurationMillis, exceptReelsSentByDm, timerOverlayEnabled ->
         SettingsUiState(
             pauseDurationMinutes = (pauseDurationMillis / 60_000L).toInt().coerceIn(1, 60),
             exceptReelsSentByDm = exceptReelsSentByDm,
+            timerOverlayEnabled = timerOverlayEnabled,
         )
     }
         .stateIn(
@@ -56,6 +58,16 @@ class SettingsViewModel @Inject constructor(private val userSettingsStore: UserS
             userSettingsStore.setExceptReelsSentByDm(checked)
         }
     }
+
+    fun onTimerOverlayEnabledChange(checked: Boolean) {
+        viewModelScope.launch {
+            userSettingsStore.setTimerOverlayToggle(checked)
+        }
+    }
 }
 
-data class SettingsUiState(val pauseDurationMinutes: Int = 5, val exceptReelsSentByDm: Boolean = false)
+data class SettingsUiState(
+    val pauseDurationMinutes: Int = 5,
+    val exceptReelsSentByDm: Boolean = false,
+    val timerOverlayEnabled: Boolean = false,
+)
