@@ -19,6 +19,9 @@ package com.scrolless.app.feature.home
 import android.accessibilityservice.AccessibilityService
 import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -122,6 +125,7 @@ import timber.log.Timber
 
 private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
 private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)
+
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -130,6 +134,8 @@ fun HomeScreen(
     onRequestAppReview: (Activity, (ReviewPromptResult) -> Unit) -> Unit = { _, onResult ->
         onResult(ReviewPromptResult.SkippedPermanent)
     },
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -281,6 +287,8 @@ fun HomeScreen(
             modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing),
             uiState = uiState,
             onNavigateToSettings = onNavigateToSettings,
+            sharedTransitionScope = sharedTransitionScope,
+            animatedVisibilityScope = animatedVisibilityScope,
             onBlockOptionSelected = { blockOption ->
                 val shouldBypass = BuildConfig.DEBUG && debugBypassAccessibilityCheck
                 if (shouldBypass || context.isAccessibilityServiceEnabled(accessibilityServiceClass)) {
@@ -439,12 +447,13 @@ fun HomeScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun HomeContent(
     uiState: HomeUiState,
     modifier: Modifier = Modifier,
     onNavigateToSettings: () -> Unit = {},
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
     onBlockOptionSelected: (BlockOption) -> Unit,
     onConfigureDailyLimit: () -> Unit,
     onHelpClicked: () -> Unit,
@@ -533,6 +542,8 @@ private fun HomeContent(
                 onUsageAnalyticsTodaySelected = onUsageAnalyticsTodaySelected,
                 onHelpClicked = onHelpClicked,
                 onNavigateToSettings = onNavigateToSettings,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -600,6 +611,7 @@ private fun HomeContent(
 
 @Composable
 private fun UsageOverviewHeader(
+    modifier: Modifier = Modifier,
     uiState: HomeUiState,
     analytics: UsageAnalyticsUiState,
     isViewingToday: Boolean,
@@ -609,7 +621,8 @@ private fun UsageOverviewHeader(
     onUsageAnalyticsTodaySelected: () -> Unit,
     onHelpClicked: () -> Unit,
     onNavigateToSettings: () -> Unit,
-    modifier: Modifier = Modifier,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
@@ -672,6 +685,8 @@ private fun UsageOverviewHeader(
 
             SettingsButton(
                 onClick = onNavigateToSettings,
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope,
             )
         }
     }
@@ -753,10 +768,26 @@ fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun SettingsButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun SettingsButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
+) {
+    val sharedBoundsModifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+        with(sharedTransitionScope) {
+            Modifier.sharedBounds(
+                sharedContentState = rememberSharedContentState(key = "settings_transition"),
+                animatedVisibilityScope = animatedVisibilityScope,
+            )
+        }
+    } else {
+        Modifier
+    }
+
     FilledTonalIconButton(
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.then(sharedBoundsModifier),
         colors = IconButtonDefaults.filledTonalIconButtonColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.55f),
             contentColor = MaterialTheme.colorScheme.onSurface,

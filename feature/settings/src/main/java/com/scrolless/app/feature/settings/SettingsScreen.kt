@@ -17,6 +17,8 @@
 package com.scrolless.app.feature.settings
 
 import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -68,31 +70,52 @@ import com.scrolless.app.designsystem.theme.ScrollessTheme
 import kotlin.math.roundToInt
 
 @Composable
-fun SettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifier, viewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen(
+    modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
+    viewModel: SettingsViewModel = hiltViewModel(),
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SettingsScreenContent(
+        modifier = modifier,
         uiState = uiState,
         onPauseDurationChange = viewModel::onPauseDurationChange,
         onExceptReelsSentByDmChange = viewModel::onExceptReelsSentByDmChange,
         onTimerOverlayEnabledChange = viewModel::onTimerOverlayEnabledChange,
         onNavigateBack = onNavigateBack,
-        modifier = modifier,
+        sharedTransitionScope = sharedTransitionScope,
+        animatedVisibilityScope = animatedVisibilityScope,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SettingsScreenContent(
+    modifier: Modifier = Modifier,
     uiState: SettingsUiState,
     onPauseDurationChange: (Int) -> Unit,
     onExceptReelsSentByDmChange: (Boolean) -> Unit,
     onTimerOverlayEnabledChange: (Boolean) -> Unit,
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier,
+    sharedTransitionScope: SharedTransitionScope? = null,
+    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
+    val sharedBoundsModifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+        with(sharedTransitionScope) {
+            Modifier.sharedBounds(
+                sharedContentState = rememberSharedContentState(key = "settings_transition"),
+                animatedVisibilityScope = animatedVisibilityScope,
+            )
+        }
+    } else {
+        Modifier
+    }
+
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.then(sharedBoundsModifier),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(

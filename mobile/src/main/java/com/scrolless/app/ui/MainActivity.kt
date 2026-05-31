@@ -19,8 +19,10 @@ package com.scrolless.app.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import androidx.navigation3.ui.NavDisplay
 import com.scrolless.app.accessibility.ScrollessBlockAccessibilityService
 import com.scrolless.app.designsystem.theme.ScrollessTheme
@@ -31,6 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @OptIn(ExperimentalSharedTransitionApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,14 +48,22 @@ class MainActivity : ComponentActivity() {
                         onBack = { appState.navigateBack() },
                         entryProvider = entryProvider {
                             entry<ScrollessRoute.Home> {
+                                val animatedVisibilityScope = LocalNavAnimatedContentScope.current
                                 HomeScreen(
                                     onNavigateToSettings = appState::navigateToSettings,
                                     accessibilityServiceClass = ScrollessBlockAccessibilityService::class.java,
                                     onRequestAppReview = ::requestAppReview,
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                    animatedVisibilityScope = animatedVisibilityScope,
                                 )
                             }
                             entry<ScrollessRoute.Settings> {
-                                SettingsScreen(onNavigateBack = appState::navigateBack)
+                                val animatedVisibilityScope = LocalNavAnimatedContentScope.current
+                                SettingsScreen(
+                                    onNavigateBack = appState::navigateBack,
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                    animatedVisibilityScope = animatedVisibilityScope,
+                                )
                             }
                         },
                     )
