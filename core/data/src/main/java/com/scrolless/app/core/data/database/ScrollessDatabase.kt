@@ -224,20 +224,22 @@ abstract class ScrollessDatabase : RoomDatabase() {
         // exists, the earliest local session is our best persisted lower bound for the install/start date.
         // Room stores session start times as LocalDateTime text, so the SQLite 'utc' modifier converts the
         // local wall-clock value to epoch millis without shifting early-morning sessions to the wrong date.
+        // The timestamp is truncated to seconds before strftime to avoid Android SQLite compatibility issues
+        // with nanosecond fractions emitted by DateTimeFormatter.ISO_LOCAL_DATE_TIME.
         val MIGRATION_8_9 = object : Migration(8, 9) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL(
                     """
                     UPDATE user_settings
                     SET first_launch_at = (
-                        SELECT CAST(strftime('%s', MIN(startDateTime), 'utc') AS INTEGER) * 1000
+                        SELECT CAST(strftime('%s', replace(substr(MIN(startDateTime), 1, 19), 'T', ' '), 'utc') AS INTEGER) * 1000
                         FROM session_segments
                     )
                     WHERE EXISTS (SELECT 1 FROM session_segments)
                         AND (
                             first_launch_at = 0
                             OR first_launch_at > (
-                                SELECT CAST(strftime('%s', MIN(startDateTime), 'utc') AS INTEGER) * 1000
+                                SELECT CAST(strftime('%s', replace(substr(MIN(startDateTime), 1, 19), 'T', ' '), 'utc') AS INTEGER) * 1000
                                 FROM session_segments
                             )
                         )
