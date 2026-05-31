@@ -180,27 +180,8 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                 text = stringResource(R.string.accessibility_explainer_step3),
             )
 
-            Spacer(modifier = Modifier.height(18.dp))
-
-            // Privacy Note
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
-                ),
-                shape = RoundedCornerShape(16.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.accessibility_explainer_privacy_note),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Light,
-                    modifier = Modifier.padding(12.dp),
-                )
-            }
-
             Spacer(modifier = Modifier.height(12.dp))
+
 
             val githubUrl = stringResource(R.string.github_url)
 
@@ -236,6 +217,23 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
                     maxLines = 1,
+                )
+            }
+            // Privacy Note
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
+                ),
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.accessibility_explainer_privacy_note),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Light,
+                    modifier = Modifier.padding(12.dp),
                 )
             }
 

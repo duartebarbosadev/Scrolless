@@ -33,13 +33,18 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -74,120 +79,167 @@ fun HelpDialog(onDismiss: () -> Unit) {
         },
         properties = DialogProperties(usePlatformDefaultWidth = false),
     ) {
-        Card(
+        HelpDialogContent(onDismiss = onDismiss)
+    }
+}
+
+@Composable
+private fun HelpDialogContent(onDismiss: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp),
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background,
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+    ) {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
                 .padding(20.dp),
-            shape = RoundedCornerShape(24.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.background,
-            ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Column(
+            // Header
+            AutoResizingText(
+                text = stringResource(R.string.help_dialog_title),
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary,
+                textAlign = TextAlign.Center,
+                maxLines = 1,
+                minFontSize = 14.sp,
+            )
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            HorizontalDivider(
+                modifier = Modifier.alpha(0.5f),
+                color = MaterialTheme.colorScheme.primary,
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Step 1
+            HelpStep(
+                stepNumber = "1",
+                title = stringResource(R.string.help_step1_title),
+                description = stringResource(R.string.help_step1_description),
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Step 2
+            HelpStep(
+                stepNumber = "2",
+                title = stringResource(R.string.help_step2_title),
+                description = stringResource(R.string.help_step2_description),
+            )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Step 3
+            HelpStep(
+                stepNumber = "3",
+                title = stringResource(R.string.help_step3_title),
+                description = stringResource(R.string.help_step3_description),
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // GitHub Card
+            GitHubCard()
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            // Icons8 Attribution
+            Text(
+                text = stringResource(R.string.icons8_attribution),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                textAlign = TextAlign.Center,
+                fontSize = 10.sp,
+                modifier = Modifier.alpha(0.7f),
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Action Buttons
+            val context = LocalContext.current
+
+            Button(
+                onClick = {
+                    try {
+                        Timber.i("HelpDialog: open accessibility settings")
+                        context.openActivityAccessibilitySettings()
+                        onDismiss()
+                    } catch (e: Exception) {
+                        Timber.e(e, "HelpDialog: failed to open accessibility settings")
+                    }
+                },
                 modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(20.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                    .fillMaxWidth()
+                    .height(48.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ),
+                shape = RoundedCornerShape(12.dp),
             ) {
-                // Header
-                AutoResizingText(
-                    text = stringResource(R.string.help_dialog_title),
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.primary,
-                    textAlign = TextAlign.Center,
-                    maxLines = 1,
-                    minFontSize = 14.sp,
-                )
-
-                Spacer(modifier = Modifier.height(6.dp))
-
-                HorizontalDivider(
-                    modifier = Modifier.alpha(0.5f),
-                    color = MaterialTheme.colorScheme.primary,
-                )
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                // Step 1
-                HelpStep(
-                    stepNumber = "1",
-                    title = stringResource(R.string.help_step1_title),
-                    description = stringResource(R.string.help_step1_description),
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                // Step 2
-                HelpStep(
-                    stepNumber = "2",
-                    title = stringResource(R.string.help_step2_title),
-                    description = stringResource(R.string.help_step2_description),
-                )
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                // Step 3
-                HelpStep(
-                    stepNumber = "3",
-                    title = stringResource(R.string.help_step3_title),
-                    description = stringResource(R.string.help_step3_description),
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // GitHub Card
-                GitHubCard()
-
-                Spacer(modifier = Modifier.height(6.dp))
-
-                // Icons8 Attribution
-                Text(
-                    text = stringResource(R.string.icons8_attribution),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-                    textAlign = TextAlign.Center,
-                    fontSize = 10.sp,
-                    modifier = Modifier.alpha(0.7f),
-                )
-
-                Spacer(modifier = Modifier.height(6.dp))
-
-                // Action Buttons
-                val context = LocalContext.current
-
-                TextButton(
-                    onClick = {
-                        try {
-                            Timber.i("HelpDialog: open accessibility settings")
-                            context.openActivityAccessibilitySettings()
-                            onDismiss()
-                        } catch (e: Exception) {
-                            Timber.e(e, "HelpDialog: failed to open accessibility settings")
-                        }
-                    },
-                    modifier = Modifier.fillMaxWidth(),
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
                 ) {
-                    Text(
+                    Icon(
+                        imageVector = Icons.Filled.Settings,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    AutoResizingText(
                         text = stringResource(R.string.go_to_accessibility_settings),
+                        modifier = Modifier.weight(1f, fill = false),
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
+                        maxLines = 1,
+                        minFontSize = 10.sp,
                     )
                 }
+            }
 
-                TextButton(
-                    onClick = {
-                        Timber.d("HelpDialog: close clicked")
-                        onDismiss()
-                    },
-                    modifier = Modifier.fillMaxWidth(),
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedButton(
+                onClick = {
+                    Timber.d("HelpDialog: close clicked")
+                    onDismiss()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                shape = RoundedCornerShape(12.dp),
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
                 ) {
-                    Text(
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    AutoResizingText(
                         text = stringResource(R.string.close),
+                        modifier = Modifier.weight(1f, fill = false),
+                        fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
-                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
+                        maxLines = 1,
+                        minFontSize = 10.sp,
                     )
                 }
             }
@@ -281,7 +333,6 @@ private fun GitHubCard() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
@@ -291,23 +342,26 @@ private fun GitHubCard() {
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            Spacer(modifier = Modifier.width(16.dp))
-
             Text(
                 text = stringResource(R.string.visit_github),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 8.dp),
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
             )
+
+            Spacer(modifier = Modifier.width(24.dp))
         }
     }
 }
 
-@Suppress("FunctionNaming")
 @DevicePreviews
 @Composable
 fun HelpDialogPreview() {
     ScrollessTheme {
-        HelpDialog(onDismiss = {})
+        HelpDialogContent(onDismiss = {})
     }
 }
