@@ -66,6 +66,7 @@ object DataDiModule {
                 ScrollessDatabase.MIGRATION_5_6,
                 ScrollessDatabase.MIGRATION_6_7,
                 ScrollessDatabase.MIGRATION_7_8,
+                ScrollessDatabase.MIGRATION_8_9,
             ).fallbackToDestructiveMigration(true) // Not recommended but for now it shouldn't matter
             .fallbackToDestructiveMigrationOnDowngrade(true).addCallback(
                 object : RoomDatabase.Callback() {

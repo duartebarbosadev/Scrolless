@@ -50,6 +50,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+private const val FIRST_LAUNCH_LOADING = -1L
+
 /**
  * ViewModel that handles the business logic and screen state of the HomeScreen.
  */
@@ -78,7 +80,7 @@ class HomeViewModel @Inject constructor(
         reviewPromptDismissed,
     ) { firstLaunchAt, hasSeenReviewPrompt, attemptCount, lastAttemptAt, dismissed ->
         if (dismissed) return@combine false
-        if (firstLaunchAt == -1L) return@combine false
+        if (firstLaunchAt == FIRST_LAUNCH_LOADING) return@combine false
         val now = System.currentTimeMillis()
 
         // Avoid spamming
@@ -95,9 +97,9 @@ class HomeViewModel @Inject constructor(
 
     companion object {
         private const val PROGRESS_MAX = 100
-        private val REVIEW_PROMPT_DELAY_MILLIS = TimeUnit.DAYS.toMillis(1) // Show review popup after 1 day
+        private val REVIEW_PROMPT_DELAY_MILLIS = TimeUnit.MINUTES.toMillis(5) // Show review popup after 5 minutes
         private const val REVIEW_PROMPT_MAX_ATTEMPTS = 3
-        private val REVIEW_PROMPT_RETRY_DELAY_MILLIS = TimeUnit.DAYS.toMillis(2)
+        private val REVIEW_PROMPT_RETRY_DELAY_MILLIS = TimeUnit.DAYS.toMillis(1)
     }
 
     init {
@@ -106,13 +108,6 @@ class HomeViewModel @Inject constructor(
                 if (selectedAnalyticsDate.value.isAfter(today)) {
                     selectedAnalyticsDate.value = today
                 }
-            }
-        }
-
-        viewModelScope.launch {
-            val firstLaunch = userSettingsStore.getFirstLaunchAt().first()
-            if (firstLaunch == 0L) {
-                userSettingsStore.setFirstLaunchAt(System.currentTimeMillis())
             }
         }
     }
