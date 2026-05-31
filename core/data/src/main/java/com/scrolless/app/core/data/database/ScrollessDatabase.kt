@@ -34,7 +34,7 @@ import com.scrolless.app.core.data.database.model.UserSettingsEntity
         UserSettingsEntity::class,
         SessionSegmentEntity::class,
     ],
-    version = 8,
+    version = 9,
     exportSchema = false,
 )
 @TypeConverters(LocalDateTypeConverters::class, BlockableAppTypeConverters::class, LocalDateTimeTypeConverters::class)
@@ -218,6 +218,40 @@ abstract class ScrollessDatabase : RoomDatabase() {
         val MIGRATION_7_8 = object : Migration(7, 8) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL("ALTER TABLE user_settings ADD COLUMN except_reels_sent_by_dm INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+        // Repair first_launch_at values overwritten by the cold-start settings race. When session history
+        // exists, the earliest local session is our best persisted lower bound for the install/start date.
+        // Room stores session start times as LocalDateTime text, so the SQLite 'utc' modifier converts the
+        // local wall-clock value to epoch millis without shifting early-morning sessions to the wrong date.
+        // The timestamp is truncated to seconds before strftime to avoid Android SQLite compatibility issues
+        // with nanosecond fractions emitted by DateTimeFormatter.ISO_LOCAL_DATE_TIME.
+        val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    UPDATE user_settings
+                    SET first_launch_at = (
+                        SELECT CAST(strftime('%s', replace(substr(MIN(startDateTime), 1, 19), 'T', ' '), 'utc') AS INTEGER) * 1000
+                        FROM session_segments
+                    )
+                    WHERE EXISTS (SELECT 1 FROM session_segments)
+                        AND (
+                            first_launch_at = 0
+                            OR first_launch_at > (
+                                SELECT CAST(strftime('%s', replace(substr(MIN(startDateTime), 1, 19), 'T', ' '), 'utc') AS INTEGER) * 1000
+                                FROM session_segments
+                            )
+                        )
+                    """.trimIndent(),
+                )
+                db.execSQL(
+                    """
+                    UPDATE user_settings
+                    SET first_launch_at = CAST(strftime('%s','now') AS INTEGER) * 1000
+                    WHERE first_launch_at = 0
+                    """.trimIndent(),
+                )
             }
         }
     }
