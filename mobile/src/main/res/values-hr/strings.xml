@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Sve je spremno!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Blokiraj\nSve</string>
-    <string name="cd_add">Dodaj</string>
     <string name="close">Zatvori</string>
     <string name="daily_limit">Dnevno\nOgraničenje</string>
     <string name="feature_coming_soon">Značajka uskoro dolazi</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Postavi raspored</string>
     <string name="interval_timer_card_summary">Gledajte do %1$s svakih %2$s</string>
     <string name="interval_timer_card_summary_empty">Postavite svoj prvi raspored za početak izmjeničnih pauza.</string>
-    <string name="interval_timer_card_title">Raspored intervalnog tajmera</string>
     <string name="interval_timer_dialog_allowance_description">Koliko dugo možete gledati kratke videozapise nakon što pauza počne.</string>
     <string name="interval_timer_dialog_allowance_label">Dopušteno vrijeme gledanja</string>
     <string name="interval_timer_dialog_break_description">Scrolless drži podržane aplikacije blokiranima toliko dugo prije sljedeće pauze.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pauziraj</string>
     <string name="pause_duration_hint">Pauzira blokiranje na 5 minuta</string>
     <string name="pause_resumes_in">Nastavlja se za %1$s</string>
-    <string name="rate_scrolless">Ocijenite Scrolless na Trgovini Play</string>
     <string name="resume">Nastavi</string>
     <string name="success_icon_description">Ikona kvačice za uspjeh</string>
     <string name="time_limit_dialog_title">Postavi vrijeme dnevnog ograničenja</string>
     <string name="visit_github">Posjeti GitHub repozitorij</string>
     <string name="time_interval">Vremenski\nInterval</string>
-    <string name="show_onscreen_timer">Prikaži mjerač vremena na zaslonu</string>
-    <string name="timer_overlay_description">Držite plutajući mjerač vremena vidljivim dok gledate sadržaj brain rot.</string>
     <string name="limit_chip">%1$s ograničenje</string>
     <string name="back">Natrag</string>
     <string name="settings">Postavke</string>

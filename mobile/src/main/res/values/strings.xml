@@ -18,7 +18,6 @@
 <resources>
     <string name="app_name">Scrolless</string>
 
-    <string name="cd_add">Add</string>
     <string name="help">Help</string>
 
     <string name="github_url" translatable="false">https://github.com/duartebarbosadev/scrolless</string>
@@ -28,10 +27,7 @@
     <string name="daily_limit">Daily\nLimit</string>
     <string name="time_interval">Time\nInterval</string>
 
-    <string name="show_onscreen_timer">Show on-screen timer</string>
-    <string name="timer_overlay_description">Keep a floating timer visible while watching brain rot content.</string>
     <string name="limit_chip">%1$s limit</string>
-    <string name="rate_scrolless">Rate Scrolless on Play Store</string>
     <string name="pause">Pause</string>
     <string name="resume">Resume</string>
     <string name="pause_duration_hint">Pauses blocking for %1$d min</string>
@@ -51,7 +47,6 @@
     <string name="back">Back</string>
     <string name="feature_coming_soon">Feature coming soon</string>
     <string name="time_limit_dialog_title">Set Daily Limit Time</string>
-    <string name="interval_timer_card_title">Interval timer schedule</string>
     <string name="interval_timer_card_summary">Watch up to %1$s every %2$s</string>
     <string name="interval_timer_card_summary_empty">Set your first schedule to start alternating breaks.</string>
     <string name="interval_timer_card_allowance_chip">Watch time</string>

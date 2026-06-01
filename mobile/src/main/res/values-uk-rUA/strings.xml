@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Усе готово!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Блокувати\nусе</string>
-    <string name="cd_add">Додати</string>
     <string name="close">Закрити</string>
     <string name="daily_limit">Денний\nліміт</string>
     <string name="feature_coming_soon">Функція незабаром з\'явиться</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Встановити розклад</string>
     <string name="interval_timer_card_summary">Дивіться до %1$s кожні %2$s</string>
     <string name="interval_timer_card_summary_empty">Встановіть свій перший розклад, щоб почати чергувати перерви.</string>
-    <string name="interval_timer_card_title">Розклад інтервального таймера</string>
     <string name="interval_timer_dialog_allowance_description">Як довго ви можете дивитися короткі відео після початку перерви.</string>
     <string name="interval_timer_dialog_allowance_label">Дозволений час перегляду</string>
     <string name="interval_timer_dialog_break_description">Scrolless тримає підтримувані програми заблокованими протягом цього часу до наступної перерви.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Пауза</string>
     <string name="pause_duration_hint">Призупиняє блокування на 5 хвилин</string>
     <string name="pause_resumes_in">Відновиться через %1$s</string>
-    <string name="rate_scrolless">Оцінити Scrolless у Play Store</string>
     <string name="resume">Відновити</string>
     <string name="success_icon_description">Іконка галочки успіху</string>
     <string name="time_limit_dialog_title">Встановити час щоденного ліміту</string>
     <string name="visit_github">Відвідати репозиторій GitHub</string>
     <string name="time_interval">Інтервал\nчасу</string>
-    <string name="show_onscreen_timer">Показувати екранний таймер</string>
-    <string name="timer_overlay_description">Тримайте плаваючий таймер видимим під час перегляду brainrot контенту.</string>
     <string name="limit_chip">%1$s ліміт</string>
     <string name="back">Назад</string>
     <string name="settings">Налаштування</string>

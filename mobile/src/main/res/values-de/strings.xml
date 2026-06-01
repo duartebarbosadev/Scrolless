@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Alles klar!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Alles\nblockieren</string>
-    <string name="cd_add">Hinzufügen</string>
     <string name="close">Schließen</string>
     <string name="daily_limit">Tages-\nlimit</string>
     <string name="feature_coming_soon">Funktion demnächst verfügbar</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Zeitplan festlegen</string>
     <string name="interval_timer_card_summary">Bis zu %1$s alle %2$s ansehen</string>
     <string name="interval_timer_card_summary_empty">Legen Sie Ihren ersten Zeitplan fest, um mit abwechselnden Pausen zu beginnen.</string>
-    <string name="interval_timer_card_title">Intervall-Timer-Zeitplan</string>
     <string name="interval_timer_dialog_allowance_description">Wie lange Sie Shorts ansehen können, sobald eine Pause beginnt.</string>
     <string name="interval_timer_dialog_allowance_label">Erlaubte Sehzeit</string>
     <string name="interval_timer_dialog_break_description">Scrolless hält unterstützte Apps für diese Dauer blockiert, bevor die nächste Pause beginnt.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pause</string>
     <string name="pause_duration_hint">Blockierung für 5 Minuten pausieren</string>
     <string name="pause_resumes_in">Wird in %1$s fortgesetzt</string>
-    <string name="rate_scrolless">Scrolless im Play Store bewerten</string>
     <string name="resume">Fortsetzen</string>
     <string name="success_icon_description">Erfolgs-Häkchen-Symbol</string>
     <string name="time_limit_dialog_title">Tageslimit-Zeit festlegen</string>
     <string name="visit_github">GitHub-Repository besuchen</string>
     <string name="time_interval">Zeit-\nintervall</string>
-    <string name="show_onscreen_timer">Timer auf dem Bildschirm anzeigen</string>
-    <string name="timer_overlay_description">Einen schwebenden Timer anzeigen, während brain rot-Inhalte angesehen werden.</string>
     <string name="limit_chip">%1$s Limit</string>
     <string name="back">Zurück</string>
     <string name="settings">Einstellungen</string>

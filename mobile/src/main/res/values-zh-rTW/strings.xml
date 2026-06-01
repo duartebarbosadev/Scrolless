@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">全部設定完成！</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">全部\n封鎖</string>
-    <string name="cd_add">新增</string>
     <string name="close">關閉</string>
     <string name="daily_limit">每日\n限制</string>
     <string name="feature_coming_soon">功能即將推出</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">設定排程</string>
     <string name="interval_timer_card_summary">每 %2$s 最多觀看 %1$s</string>
     <string name="interval_timer_card_summary_empty">設定您的第一個排程以開始交替休息。</string>
-    <string name="interval_timer_card_title">間隔計時器排程</string>
     <string name="interval_timer_dialog_allowance_description">休息開始後您可以觀看短影音的時間長度。</string>
     <string name="interval_timer_dialog_allowance_label">允許觀看時間</string>
     <string name="interval_timer_dialog_break_description">在下一次休息之前，Scrolless 會將支援的應用程式封鎖這麼長的時間。</string>
@@ -70,14 +68,11 @@
     <string name="pause">暫停</string>
     <string name="pause_duration_hint">暫停封鎖 5 分鐘</string>
     <string name="pause_resumes_in">將在 %1$s 後恢復</string>
-    <string name="rate_scrolless">在 Play 商店上為 Scrolless 評分</string>
     <string name="resume">恢復</string>
     <string name="success_icon_description">成功核取標記圖示</string>
     <string name="time_limit_dialog_title">設定每日限制時間</string>
     <string name="visit_github">造訪 GitHub 儲存庫</string>
     <string name="time_interval">時間\n間隔</string>
-    <string name="show_onscreen_timer">顯示螢幕計時器</string>
-    <string name="timer_overlay_description">觀看 brainrot 內容時，保持浮動計時器可見。</string>
     <string name="limit_chip">%1$s 限制</string>
     <string name="back">返回</string>
     <string name="settings">設定</string>

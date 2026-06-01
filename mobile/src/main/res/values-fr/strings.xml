@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Tout est prêt !</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Tout\nBloquer</string>
-    <string name="cd_add">Ajouter</string>
     <string name="close">Fermer</string>
     <string name="daily_limit">Limite\nQuotidienne</string>
     <string name="feature_coming_soon">Fonctionnalité bientôt disponible</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Définir le programme</string>
     <string name="interval_timer_card_summary">Regardez jusqu\'à %1$s toutes les %2$s</string>
     <string name="interval_timer_card_summary_empty">Définissez votre premier programme pour commencer à alterner les pauses.</string>
-    <string name="interval_timer_card_title">Programme de la minuterie d\'intervalle</string>
     <string name="interval_timer_dialog_allowance_description">Combien de temps vous pouvez regarder des shorts une fois qu\'une pause commence.</string>
     <string name="interval_timer_dialog_allowance_label">Temps de visionnage autorisé</string>
     <string name="interval_timer_dialog_break_description">Scrolless maintient les applications prises en charge bloquées pendant cette durée avant la prochaine pause.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pause</string>
     <string name="pause_duration_hint">Met le blocage en pause pendant 5 minutes</string>
     <string name="pause_resumes_in">Reprise dans %1$s</string>
-    <string name="rate_scrolless">Évaluer Scrolless sur le Play Store</string>
     <string name="resume">Reprendre</string>
     <string name="success_icon_description">Icône de coche de succès</string>
     <string name="time_limit_dialog_title">Définir la limite de temps quotidienne</string>
     <string name="visit_github">Visiter le dépôt GitHub</string>
     <string name="time_interval">Intervalle\nde temps</string>
-    <string name="show_onscreen_timer">Afficher le minuteur à l\'écran</string>
-    <string name="timer_overlay_description">Garder un minuteur flottant visible pendant que vous regardez du contenu brainrot.</string>
     <string name="limit_chip">Limite de %1$s</string>
     <string name="back">Retour</string>
     <string name="settings">Paramètres</string>

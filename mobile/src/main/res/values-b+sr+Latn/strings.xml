@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Sve je spremno!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Blokiraj\nSve</string>
-    <string name="cd_add">Dodaj</string>
     <string name="close">Zatvori</string>
     <string name="daily_limit">Dnevno\nOgraničenje</string>
     <string name="feature_coming_soon">Funkcija uskoro dolazi</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Podesi raspored</string>
     <string name="interval_timer_card_summary">Gledajte do %1$s svakih %2$s</string>
     <string name="interval_timer_card_summary_empty">Podesite svoj prvi raspored da biste počeli sa naizmeničnim pauzama.</string>
-    <string name="interval_timer_card_title">Raspored intervalnog tajmera</string>
     <string name="interval_timer_dialog_allowance_description">Koliko dugo možete da gledate kratke video zapise kada pauza počne.</string>
     <string name="interval_timer_dialog_allowance_label">Dozvoljeno vreme gledanja</string>
     <string name="interval_timer_dialog_break_description">Scrolless drži podržane aplikacije blokirane tokom ovog vremena pre sledeće pauze.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pauziraj</string>
     <string name="pause_duration_hint">Pauzira blokiranje na 5 minuta</string>
     <string name="pause_resumes_in">Nastavlja se za %1$s</string>
-    <string name="rate_scrolless">Oceni Scrolless na Play Store-u</string>
     <string name="resume">Nastavi</string>
     <string name="success_icon_description">Ikona kvačice za uspeh</string>
     <string name="time_limit_dialog_title">Podesi vreme dnevnog ograničenja</string>
     <string name="visit_github">Poseti GitHub repozitorijum</string>
     <string name="time_interval">Vremenski\nInterval</string>
-    <string name="show_onscreen_timer">Prikaži tajmer na ekranu</string>
-    <string name="timer_overlay_description">Držite plutajući tajmer vidljivim dok gledate brain rot sadržaj.</string>
     <string name="limit_chip">%1$s ograničenje</string>
     <string name="back">Nazad</string>
     <string name="settings">Podešavanja</string>

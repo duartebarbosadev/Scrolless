@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Όλα Έτοιμα!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Μπλοκάρισμα\nΌλων</string>
-    <string name="cd_add">Προσθήκη</string>
     <string name="close">Κλείσιμο</string>
     <string name="daily_limit">Ημερήσιο\nΌριο</string>
     <string name="feature_coming_soon">Η λειτουργία έρχεται σύντομα</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Ορισμός προγράμματος</string>
     <string name="interval_timer_card_summary">Παρακολουθήστε έως %1$s κάθε %2$s</string>
     <string name="interval_timer_card_summary_empty">Ορίστε το πρώτο σας πρόγραμμα για να ξεκινήσετε την εναλλαγή διαλειμμάτων.</string>
-    <string name="interval_timer_card_title">Πρόγραμμα χρονομέτρου διαλείμματος</string>
     <string name="interval_timer_dialog_allowance_description">Πόσο καιρό μπορείτε να παρακολουθείτε shorts μόλις ξεκινήσει ένα διάλειμμα.</string>
     <string name="interval_timer_dialog_allowance_label">Επιτρεπόμενος χρόνος παρακολούθησης</string>
     <string name="interval_timer_dialog_break_description">Το Scrolless διατηρεί τις υποστηριζόμενες εφαρμογές μπλοκαρισμένες για αυτό το διάστημα πριν από το επόμενο διάλειμμα.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Παύση</string>
     <string name="pause_duration_hint">Παύει το μπλοκάρισμα για 5 λεπτά</string>
     <string name="pause_resumes_in">Συνέχιση σε %1$s</string>
-    <string name="rate_scrolless">Βαθμολογήστε το Scrolless στο Play Store</string>
     <string name="resume">Συνέχιση</string>
     <string name="success_icon_description">Εικονίδιο επιτυχίας (τικ)</string>
     <string name="time_limit_dialog_title">Ορισμός Χρόνου Ημερήσιου Ορίου</string>
     <string name="visit_github">Επίσκεψη στο Αποθετήριο GitHub</string>
     <string name="time_interval">Χρονικό\nΔιάστημα</string>
-    <string name="show_onscreen_timer">Εμφάνιση χρονομέτρου στην οθόνη</string>
-    <string name="timer_overlay_description">Διατηρήστε έναν αιωρούμενο χρονομέτρη ορατό ενώ παρακολουθείτε brain rot περιεχόμενο.</string>
     <string name="limit_chip">%1$s όριο</string>
     <string name="back">Πίσω</string>
     <string name="settings">Ρυθμίσεις</string>

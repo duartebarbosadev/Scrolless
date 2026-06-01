@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">すべて設定完了！</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">すべて\nブロック</string>
-    <string name="cd_add">追加</string>
     <string name="close">閉じる</string>
     <string name="daily_limit">1日の\n制限</string>
     <string name="feature_coming_soon">近日公開予定の機能</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">スケジュールを設定</string>
     <string name="interval_timer_card_summary">%2$sごとに最大%1$s視聴</string>
     <string name="interval_timer_card_summary_empty">最初のスケジュールを設定して、休憩を交互に開始します。</string>
-    <string name="interval_timer_card_title">インターバルタイマースケジュール</string>
     <string name="interval_timer_dialog_allowance_description">休憩が始まってからショート動画を視聴できる時間。</string>
     <string name="interval_timer_dialog_allowance_label">許可される視聴時間</string>
     <string name="interval_timer_dialog_break_description">Scrollessは、次の休憩までの間、サポートされているアプリをこの時間ブロックし続けます。</string>
@@ -70,14 +68,11 @@
     <string name="pause">一時停止</string>
     <string name="pause_duration_hint">ブロックを5分間一時停止します</string>
     <string name="pause_resumes_in">%1$s後に再開</string>
-    <string name="rate_scrolless">PlayストアでScrollessを評価</string>
     <string name="resume">再開</string>
     <string name="success_icon_description">成功チェックマークアイコン</string>
     <string name="time_limit_dialog_title">1日の制限時間を設定</string>
     <string name="visit_github">GitHubリポジトリにアクセス</string>
     <string name="time_interval">時間\n間隔</string>
-    <string name="show_onscreen_timer">画面上にタイマーを表示</string>
-    <string name="timer_overlay_description">brainrotコンテンツを視聴中にフローティングタイマーを表示します。</string>
     <string name="limit_chip">%1$sの制限</string>
     <string name="back">戻る</string>
     <string name="settings">設定</string>

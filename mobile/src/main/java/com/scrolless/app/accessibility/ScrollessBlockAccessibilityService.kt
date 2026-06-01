@@ -275,7 +275,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                     // Session continues, usage still tracked, only blocking checks are skipped
                 } else if (!nowPaused && wasPaused) {
                     Timber.i("Pause expired, resuming blocking checks")
-                    // If still in blocked content, check if should block now
+                    // If still in blocked content, check if we should block now
                     if (isProcessingBlockedContent && !isBlockingSuppressed) {
                         serviceScope.launch(Dispatchers.IO) {
                             if (blockingManager.onEnterBlockedContent()) {
@@ -343,8 +343,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     /**
      * Syncs package filtering with current tracking state.
      *
-     * If the user has one of the BlockableApps open we need listen to all packages (so that we accurately detect minimises etc)
-     * Otherwise restrict back the service to only listen to restricted packages
+     * If the user has one of the BlockableApps open we need listen to all packages (so that we accurately detect minimizes etc.)
+     * Otherwise, restrict back the service to only listen to restricted packages
      */
     private fun refreshServiceConfig() {
         updateServiceConfig(isProcessingBlockedContent || currentForegroundBrainRotApp != null)
@@ -439,7 +439,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             }
         }
 
-        // If we are processing content and we received an event
+        // If we are processing content, and we received an event
         //  make sure that the app is still visible as we can get events from other apps
         //  otherwise it means that the user has left the app
         currentForegroundBrainRotApp?.let { blockableApp ->

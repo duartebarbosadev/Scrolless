@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Allt klart!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Blockera\nAllt</string>
-    <string name="cd_add">Lägg till</string>
     <string name="close">Stäng</string>
     <string name="daily_limit">Daglig\nGräns</string>
     <string name="feature_coming_soon">Funktion kommer snart</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Ställ in schema</string>
     <string name="interval_timer_card_summary">Titta upp till %1$s var %2$s</string>
     <string name="interval_timer_card_summary_empty">Ställ in ditt första schema för att börja växla pauser.</string>
-    <string name="interval_timer_card_title">Intervalltimerschema</string>
     <string name="interval_timer_dialog_allowance_description">Hur länge du kan titta på shorts när en paus börjar.</string>
     <string name="interval_timer_dialog_allowance_label">Tillåten tittid</string>
     <string name="interval_timer_dialog_break_description">Scrolless håller appar som stöds blockerade så länge innan nästa paus.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pausa</string>
     <string name="pause_duration_hint">Pausar blockeringen i 5 minuter</string>
     <string name="pause_resumes_in">Återupptas om %1$s</string>
-    <string name="rate_scrolless">Betygsätt Scrolless på Play Store</string>
     <string name="resume">Återuppta</string>
     <string name="success_icon_description">Ikon för framgångsmarkering</string>
     <string name="time_limit_dialog_title">Ställ in daglig gränstid</string>
     <string name="visit_github">Besök GitHub-arkivet</string>
     <string name="time_interval">Tids\nintervall</string>
-    <string name="show_onscreen_timer">Visa timer på skärmen</string>
-    <string name="timer_overlay_description">Håll en flytande timer synlig medan du tittar på brainrot-innehåll.</string>
     <string name="limit_chip">%1$s gräns</string>
     <string name="back">Tillbaka</string>
     <string name="settings">Inställningar</string>

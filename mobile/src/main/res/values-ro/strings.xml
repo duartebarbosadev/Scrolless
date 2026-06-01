@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Totul e gata!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Blochează\nTot</string>
-    <string name="cd_add">Adaugă</string>
     <string name="close">Închide</string>
     <string name="daily_limit">Limită\nZilnică</string>
     <string name="feature_coming_soon">Funcție disponibilă în curând</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Setează programul</string>
     <string name="interval_timer_card_summary">Vizionează până la %1$s la fiecare %2$s</string>
     <string name="interval_timer_card_summary_empty">Setează primul tău program pentru a începe alternarea pauzelor.</string>
-    <string name="interval_timer_card_title">Program cronometru interval</string>
     <string name="interval_timer_dialog_allowance_description">Cât timp poți viziona clipuri scurte odată ce începe o pauză.</string>
     <string name="interval_timer_dialog_allowance_label">Timp de vizionare permis</string>
     <string name="interval_timer_dialog_break_description">Scrolless menține aplicațiile acceptate blocate pentru această durată înainte de următoarea pauză.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pauză</string>
     <string name="pause_duration_hint">Pune pe pauză blocarea pentru 5 minute</string>
     <string name="pause_resumes_in">Se reia în %1$s</string>
-    <string name="rate_scrolless">Evaluează Scrolless pe Magazin Play</string>
     <string name="resume">Reia</string>
     <string name="success_icon_description">Pictogramă bifă de succes</string>
     <string name="time_limit_dialog_title">Setează Timpul Limită Zilnic</string>
     <string name="visit_github">Vizitează Depozitul GitHub</string>
     <string name="time_interval">Interval\nDe Timp</string>
-    <string name="show_onscreen_timer">Afișează cronometrul pe ecran</string>
-    <string name="timer_overlay_description">Menține un cronometru plutitor vizibil în timp ce urmărești conținut brainrot.</string>
     <string name="limit_chip">limită %1$s</string>
     <string name="back">Înapoi</string>
     <string name="settings">Setări</string>

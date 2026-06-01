@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Đã Xong!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Chặn\nTất cả</string>
-    <string name="cd_add">Thêm</string>
     <string name="close">Đóng</string>
     <string name="daily_limit">Giới hạn\nHàng ngày</string>
     <string name="feature_coming_soon">Tính năng sắp ra mắt</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Đặt lịch trình</string>
     <string name="interval_timer_card_summary">Xem tối đa %1$s sau mỗi %2$s</string>
     <string name="interval_timer_card_summary_empty">Đặt lịch trình đầu tiên của bạn để bắt đầu xen kẽ các lần nghỉ giải lao.</string>
-    <string name="interval_timer_card_title">Lịch hẹn giờ khoảng thời gian</string>
     <string name="interval_timer_dialog_allowance_description">Thời gian bạn có thể xem video ngắn sau khi bắt đầu nghỉ giải lao.</string>
     <string name="interval_timer_dialog_allowance_label">Thời gian xem được phép</string>
     <string name="interval_timer_dialog_break_description">Scrolless giữ các ứng dụng được hỗ trợ bị chặn trong khoảng thời gian này trước lần nghỉ giải lao tiếp theo.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Tạm dừng</string>
     <string name="pause_duration_hint">Tạm dừng chặn trong 5 phút</string>
     <string name="pause_resumes_in">Tiếp tục sau %1$s</string>
-    <string name="rate_scrolless">Đánh giá Scrolless trên Play Store</string>
     <string name="resume">Tiếp tục</string>
     <string name="success_icon_description">Biểu tượng dấu kiểm thành công</string>
     <string name="time_limit_dialog_title">Đặt Thời gian Giới hạn Hàng ngày</string>
     <string name="visit_github">Truy cập Kho lưu trữ GitHub</string>
     <string name="time_interval">Khoảng\nThời gian</string>
-    <string name="show_onscreen_timer">Hiển thị đồng hồ đếm giờ trên màn hình</string>
-    <string name="timer_overlay_description">Giữ đồng hồ đếm giờ nổi hiển thị trong khi xem nội dung brainrot.</string>
     <string name="limit_chip">Giới hạn %1$s</string>
     <string name="back">Quay lại</string>
     <string name="settings">Cài đặt</string>

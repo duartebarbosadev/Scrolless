@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Vše nastaveno!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Blokovat\nVše</string>
-    <string name="cd_add">Přidat</string>
     <string name="close">Zavřít</string>
     <string name="daily_limit">Denní\nLimit</string>
     <string name="feature_coming_soon">Funkce bude brzy k dispozici</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Nastavit rozvrh</string>
     <string name="interval_timer_card_summary">Sledujte až %1$s každých %2$s</string>
     <string name="interval_timer_card_summary_empty">Nastavte si svůj první rozvrh pro střídání přestávek.</string>
-    <string name="interval_timer_card_title">Rozvrh intervalového časovače</string>
     <string name="interval_timer_dialog_allowance_description">Jak dlouho můžete sledovat krátká videa, jakmile začne přestávka.</string>
     <string name="interval_timer_dialog_allowance_label">Povolená doba sledování</string>
     <string name="interval_timer_dialog_break_description">Scrolless udržuje podporované aplikace zablokované po tuto dobu před další přestávkou.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pozastavit</string>
     <string name="pause_duration_hint">Pozastaví blokování na 5 minut</string>
     <string name="pause_resumes_in">Obnoví se za %1$s</string>
-    <string name="rate_scrolless">Ohodnotit Scrolless v Obchodě Play</string>
     <string name="resume">Obnovit</string>
     <string name="success_icon_description">Ikona zaškrtnutí úspěchu</string>
     <string name="time_limit_dialog_title">Nastavit čas denního limitu</string>
     <string name="visit_github">Navštívit GitHub repozitář</string>
     <string name="time_interval">Časový\nInterval</string>
-    <string name="show_onscreen_timer">Zobrazit časovač na obrazovce</string>
-    <string name="timer_overlay_description">Ponechat plovoucí časovač viditelný při sledování obsahu brainrot.</string>
     <string name="limit_chip">%1$s limit</string>
     <string name="back">Zpět</string>
     <string name="settings">Nastavení</string>

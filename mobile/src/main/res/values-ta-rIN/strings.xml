@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">அனைத்தும் தயார்!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">அனைத்தையும்\nதடு</string>
-    <string name="cd_add">சேர்</string>
     <string name="close">மூடு</string>
     <string name="daily_limit">தினசரி\nவரம்பு</string>
     <string name="feature_coming_soon">வசதி விரைவில் வருகிறது</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">அட்டவணையை அமைக்கவும்</string>
     <string name="interval_timer_card_summary">ஒவ்வொரு %2$s க்கும் %1$s வரை பார்க்கலாம்</string>
     <string name="interval_timer_card_summary_empty">மாற்று இடைவெளிகளைத் தொடங்க உங்கள் முதல் அட்டவணையை அமைக்கவும்.</string>
-    <string name="interval_timer_card_title">இடைவெளி நேர அட்டவணை</string>
     <string name="interval_timer_dialog_allowance_description">ஒரு இடைவெளி தொடங்கியவுடன் நீங்கள் எவ்வளவு நேரம் ஷார்ட்ஸ்களைப் பார்க்கலாம்.</string>
     <string name="interval_timer_dialog_allowance_label">அனுமதிக்கப்பட்ட பார்க்கும் நேரம்</string>
     <string name="interval_timer_dialog_break_description">அடுத்த இடைவெளிக்கு முன் இந்த நேரம் வரை ஆதரிக்கப்படும் பயன்பாடுகளை Scrolless தடுக்கிறது.</string>
@@ -70,14 +68,11 @@
     <string name="pause">இடைநிறுத்து</string>
     <string name="pause_duration_hint">5 நிமிடங்களுக்குத் தடுப்பதை இடைநிறுத்துகிறது</string>
     <string name="pause_resumes_in">%1$s இல் மீண்டும் தொடங்குகிறது</string>
-    <string name="rate_scrolless">Play Store இல் Scrolless க்கு மதிப்பிடவும்</string>
     <string name="resume">மீண்டும் தொடங்கு</string>
     <string name="success_icon_description">வெற்றிக் குறியீடு ஐகான்</string>
     <string name="time_limit_dialog_title">தினசரி வரம்பு நேரத்தை அமைக்கவும்</string>
     <string name="visit_github">GitHub களஞ்சியத்தைப் பார்வையிடவும்</string>
     <string name="time_interval">நேர\nஇடைவெளி</string>
-    <string name="show_onscreen_timer">திரையில் நேரத்தைக் காட்டு</string>
-    <string name="timer_overlay_description">brain rot உள்ளடக்கத்தைப் பார்க்கும்போது மிதக்கும் டைமரைத் தெரியும்படி வைத்திருங்கள்.</string>
     <string name="limit_chip">%1$s வரம்பு</string>
     <string name="back">பின்செல்க</string>
     <string name="settings">அமைப்புகள்</string>

@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Alt klart!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Blokker\nAlt</string>
-    <string name="cd_add">Legg til</string>
     <string name="close">Lukk</string>
     <string name="daily_limit">Daglig\nGrense</string>
     <string name="feature_coming_soon">Funksjon kommer snart</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Angi tidsplan</string>
     <string name="interval_timer_card_summary">Se opptil %1$s hver %2$s</string>
     <string name="interval_timer_card_summary_empty">Angi din første tidsplan for å starte vekslende pauser.</string>
-    <string name="interval_timer_card_title">Intervalltidtaker-tidsplan</string>
     <string name="interval_timer_dialog_allowance_description">Hvor lenge du kan se shorts når en pause starter.</string>
     <string name="interval_timer_dialog_allowance_label">Tillatt se-tid</string>
     <string name="interval_timer_dialog_break_description">Scrolless holder støttede apper blokkert så lenge før neste pause.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pause</string>
     <string name="pause_duration_hint">Pauser blokkering i 5 minutter</string>
     <string name="pause_resumes_in">Gjenopptas om %1$s</string>
-    <string name="rate_scrolless">Vurder Scrolless på Play Store</string>
     <string name="resume">Gjenoppta</string>
     <string name="success_icon_description">Suksess-hakeikon</string>
     <string name="time_limit_dialog_title">Angi daglig grensetid</string>
     <string name="visit_github">Besøk GitHub-repositoriet</string>
     <string name="time_interval">Tids\nIntervall</string>
-    <string name="show_onscreen_timer">Vis tidtaker på skjermen</string>
-    <string name="timer_overlay_description">Hold en flytende tidtaker synlig mens du ser på brain rot-innhold.</string>
     <string name="limit_chip">%1$s grense</string>
     <string name="back">Tilbake</string>
     <string name="settings">Innstillinger</string>

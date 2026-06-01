@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Wszystko gotowe!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Blokuj\nwszystko</string>
-    <string name="cd_add">Dodaj</string>
     <string name="close">Zamknij</string>
     <string name="daily_limit">Limit\ndzienny</string>
     <string name="feature_coming_soon">Funkcja wkrótce dostępna</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Ustaw harmonogram</string>
     <string name="interval_timer_card_summary">Oglądaj do %1$s co %2$s</string>
     <string name="interval_timer_card_summary_empty">Ustaw swój pierwszy harmonogram, aby rozpocząć przeplatanie przerw.</string>
-    <string name="interval_timer_card_title">Harmonogram licznika interwałowego</string>
     <string name="interval_timer_dialog_allowance_description">Jak długo możesz oglądać shorty po rozpoczęciu przerwy.</string>
     <string name="interval_timer_dialog_allowance_label">Dozwolony czas oglądania</string>
     <string name="interval_timer_dialog_break_description">Scrolless utrzymuje zablokowane obsługiwane aplikacje przez ten czas przed następną przerwą.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pauza</string>
     <string name="pause_duration_hint">Wstrzymuje blokowanie na 5 minut</string>
     <string name="pause_resumes_in">Wznowienie za %1$s</string>
-    <string name="rate_scrolless">Oceń Scrolless w Play Store</string>
     <string name="resume">Wznów</string>
     <string name="success_icon_description">Ikona znacznika sukcesu</string>
     <string name="time_limit_dialog_title">Ustaw dzienny limit czasu</string>
     <string name="visit_github">Odwiedź repozytorium GitHub</string>
     <string name="time_interval">Interwał\nczasowy</string>
-    <string name="show_onscreen_timer">Pokaż minutnik na ekranie</string>
-    <string name="timer_overlay_description">Utrzymuj widoczny pływający minutnik podczas oglądania treści typu brain rot.</string>
     <string name="limit_chip">%1$s limit</string>
     <string name="back">Wstecz</string>
     <string name="settings">Ustawienia</string>

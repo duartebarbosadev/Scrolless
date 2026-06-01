@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">¡Todo listo!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Bloquear\nTodo</string>
-    <string name="cd_add">Añadir</string>
     <string name="close">Cerrar</string>
     <string name="daily_limit">Límite\nDiario</string>
     <string name="feature_coming_soon">Función próximamente</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Establecer horario</string>
     <string name="interval_timer_card_summary">Ver hasta %1$s cada %2$s</string>
     <string name="interval_timer_card_summary_empty">Establece tu primer horario para empezar a alternar descansos.</string>
-    <string name="interval_timer_card_title">Horario del temporizador de intervalo</string>
     <string name="interval_timer_dialog_allowance_description">Cuánto tiempo puedes ver vídeos cortos una vez que comienza un descanso.</string>
     <string name="interval_timer_dialog_allowance_label">Tiempo de visualización permitido</string>
     <string name="interval_timer_dialog_break_description">Scrolless mantiene las aplicaciones compatibles bloqueadas durante este tiempo antes del siguiente descanso.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pausar</string>
     <string name="pause_duration_hint">Pausa el bloqueo durante 5 minutos</string>
     <string name="pause_resumes_in">Se reanuda en %1$s</string>
-    <string name="rate_scrolless">Valora Scrolless en Play Store</string>
     <string name="resume">Reanudar</string>
     <string name="success_icon_description">Icono de marca de verificación de éxito</string>
     <string name="time_limit_dialog_title">Establecer Tiempo Límite Diario</string>
     <string name="visit_github">Visitar Repositorio de GitHub</string>
     <string name="time_interval">Intervalo\nde Tiempo</string>
-    <string name="show_onscreen_timer">Mostrar temporizador en pantalla</string>
-    <string name="timer_overlay_description">Mantener un temporizador flotante visible mientras ves contenido brain rot.</string>
     <string name="limit_chip">Límite de %1$s</string>
     <string name="back">Atrás</string>
     <string name="settings">Ajustes</string>

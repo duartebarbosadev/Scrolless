@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Minden beállítva!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Összes\nblokkolása</string>
-    <string name="cd_add">Hozzáadás</string>
     <string name="close">Bezárás</string>
     <string name="daily_limit">Napi\nlimit</string>
     <string name="feature_coming_soon">Funkció hamarosan érkezik</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Ütemezés beállítása</string>
     <string name="interval_timer_card_summary">Akár %1$s nézési idő minden %2$s után</string>
     <string name="interval_timer_card_summary_empty">Állítsa be az első ütemezést a szünetek váltogatásának megkezdéséhez.</string>
-    <string name="interval_timer_card_title">Intervallum időzítő ütemezése</string>
     <string name="interval_timer_dialog_allowance_description">Mennyi ideig nézhet rövid videókat, miután elkezdődik egy szünet.</string>
     <string name="interval_timer_dialog_allowance_label">Engedélyezett nézési idő</string>
     <string name="interval_timer_dialog_break_description">A Scrolless eddig az ideig blokkolja a támogatott alkalmazásokat a következő szünet előtt.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Szüneteltetés</string>
     <string name="pause_duration_hint">5 percre szünetelteti a blokkolást</string>
     <string name="pause_resumes_in">Folytatás %1$s múlva</string>
-    <string name="rate_scrolless">Értékelje a Scrolless-t a Play Áruházban</string>
     <string name="resume">Folytatás</string>
     <string name="success_icon_description">Siker jelölőnégyzet ikon</string>
     <string name="time_limit_dialog_title">Napi limit idő beállítása</string>
     <string name="visit_github">GitHub tároló megtekintése</string>
     <string name="time_interval">Idő\nintervallum</string>
-    <string name="show_onscreen_timer">Képernyőn megjelenő időzítő mutatása</string>
-    <string name="timer_overlay_description">Tartson láthatóan egy lebegő időzítőt a brain rot tartalom nézése közben.</string>
     <string name="limit_chip">%1$s limit</string>
     <string name="back">Vissza</string>
     <string name="settings">Beállítások</string>

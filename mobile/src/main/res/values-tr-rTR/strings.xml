@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Her Şey Ayarlandı!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Tümünü\nEngelle</string>
-    <string name="cd_add">Ekle</string>
     <string name="close">Kapat</string>
     <string name="daily_limit">Günlük\nSınır</string>
     <string name="feature_coming_soon">Özellik yakında geliyor</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Programı ayarla</string>
     <string name="interval_timer_card_summary">Her %2$s sürede %1$s kadar izle</string>
     <string name="interval_timer_card_summary_empty">Molaları dönüşümlü olarak başlatmak için ilk programınızı ayarlayın.</string>
-    <string name="interval_timer_card_title">Aralık zamanlayıcı programı</string>
     <string name="interval_timer_dialog_allowance_description">Bir mola başladığında kısa videoları ne kadar süre izleyebileceğiniz.</string>
     <string name="interval_timer_dialog_allowance_label">İzin verilen izleme süresi</string>
     <string name="interval_timer_dialog_break_description">Scrolless, bir sonraki molaya kadar desteklenen uygulamaları bu süre boyunca engeller.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Duraklat</string>
     <string name="pause_duration_hint">Engellemeyi 5 dakika duraklatır</string>
     <string name="pause_resumes_in">Devam etme süresi: %1$s</string>
-    <string name="rate_scrolless">Scrolless\'ı Play Store\'da oyla</string>
     <string name="resume">Devam Et</string>
     <string name="success_icon_description">Başarı onay işareti simgesi</string>
     <string name="time_limit_dialog_title">Günlük Sınır Süresini Ayarla</string>
     <string name="visit_github">GitHub Deposunu Ziyaret Et</string>
     <string name="time_interval">Zaman\nAralığı</string>
-    <string name="show_onscreen_timer">Ekran üstü zamanlayıcıyı göster</string>
-    <string name="timer_overlay_description">brain rot içeriği izlerken kayan bir zamanlayıcıyı görünür tutun.</string>
     <string name="limit_chip">%1$s sınırı</string>
     <string name="back">Geri</string>
     <string name="settings">Ayarlar</string>

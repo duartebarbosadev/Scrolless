@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">सब सेट है!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">सभी\nब्लॉक करें</string>
-    <string name="cd_add">जोड़ें</string>
     <string name="close">बंद करें</string>
     <string name="daily_limit">दैनिक\nसीमा</string>
     <string name="feature_coming_soon">सुविधा जल्द ही आ रही है</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">शेड्यूल सेट करें</string>
     <string name="interval_timer_card_summary">हर %2$s में %1$s तक देखें</string>
     <string name="interval_timer_card_summary_empty">ब्रेक को बारी-बारी से शुरू करने के लिए अपना पहला शेड्यूल सेट करें।</string>
-    <string name="interval_timer_card_title">अंतराल टाइमर शेड्यूल</string>
     <string name="interval_timer_dialog_allowance_description">ब्रेक शुरू होने के बाद आप कितनी देर तक शॉर्ट्स देख सकते हैं।</string>
     <string name="interval_timer_dialog_allowance_label">अनुमत देखने का समय</string>
     <string name="interval_timer_dialog_break_description">Scrolless अगले ब्रेक से पहले इतनी देर तक समर्थित ऐप्स को ब्लॉक रखता है।</string>
@@ -70,14 +68,11 @@
     <string name="pause">रोकें</string>
     <string name="pause_duration_hint">5 मिनट के लिए ब्लॉकिंग रोकता है</string>
     <string name="pause_resumes_in">%1$s में फिर से शुरू होगा</string>
-    <string name="rate_scrolless">Play Store पर Scrolless को रेट करें</string>
     <string name="resume">फिर से शुरू करें</string>
     <string name="success_icon_description">सफलता चेक मार्क आइकॉन</string>
     <string name="time_limit_dialog_title">दैनिक सीमा समय सेट करें</string>
     <string name="visit_github">GitHub रिपॉजिटरी पर जाएँ</string>
     <string name="time_interval">समय\nअंतराल</string>
-    <string name="show_onscreen_timer">ऑन-स्क्रीन टाइमर दिखाएं</string>
-    <string name="timer_overlay_description">brainrot सामग्री देखते समय एक फ़्लोटिंग टाइमर दृश्यमान रखें।</string>
     <string name="limit_chip">%1$s सीमा</string>
     <string name="back">वापस</string>
     <string name="settings">सेटिंग्स</string>

@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Všetko nastavené!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Blokovať\nVšetko</string>
-    <string name="cd_add">Pridať</string>
     <string name="close">Zavrieť</string>
     <string name="daily_limit">Denný\nLimit</string>
     <string name="feature_coming_soon">Funkcia už čoskoro</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Nastaviť rozvrh</string>
     <string name="interval_timer_card_summary">Sledujte až %1$s každých %2$s</string>
     <string name="interval_timer_card_summary_empty">Nastavte si svoj prvý rozvrh, aby ste mohli začať striedať prestávky.</string>
-    <string name="interval_timer_card_title">Rozvrh intervalového časovača</string>
     <string name="interval_timer_dialog_allowance_description">Ako dlho môžete sledovať krátke videá, keď sa začne prestávka.</string>
     <string name="interval_timer_dialog_allowance_label">Povolený čas sledovania</string>
     <string name="interval_timer_dialog_break_description">Scrolless ponechá podporované aplikácie zablokované po túto dobu pred ďalšou prestávkou.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pozastaviť</string>
     <string name="pause_duration_hint">Pozastaví blokovanie na 5 minút</string>
     <string name="pause_resumes_in">Pokračuje za %1$s</string>
-    <string name="rate_scrolless">Ohodnoťte Scrolless v Obchode Play</string>
     <string name="resume">Pokračovať</string>
     <string name="success_icon_description">Ikona zaškrtnutia úspechu</string>
     <string name="time_limit_dialog_title">Nastaviť čas denného limitu</string>
     <string name="visit_github">Navštíviť GitHub Repozitár</string>
     <string name="time_interval">Časový\nInterval</string>
-    <string name="show_onscreen_timer">Zobraziť časovač na obrazovke</string>
-    <string name="timer_overlay_description">Ponechať plávajúci časovač viditeľný počas sledovania obsahu brainrot.</string>
     <string name="limit_chip">%1$s limit</string>
     <string name="back">Späť</string>
     <string name="settings">Nastavenia</string>

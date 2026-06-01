@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Alt klart!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Blokker\nAlt</string>
-    <string name="cd_add">Legg til</string>
     <string name="close">Lukk</string>
     <string name="daily_limit">Dagleg\nGrense</string>
     <string name="feature_coming_soon">Funksjon kjem snart</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Set tidsplan</string>
     <string name="interval_timer_card_summary">Sjå opptil %1$s kvar %2$s</string>
     <string name="interval_timer_card_summary_empty">Set den første tidsplanen din for å starte vekslande pausar.</string>
-    <string name="interval_timer_card_title">Tidsplan for intervalltimer</string>
     <string name="interval_timer_dialog_allowance_description">Kor lenge du kan sjå shorts når ein pause startar.</string>
     <string name="interval_timer_dialog_allowance_label">Tillaten sjåtid</string>
     <string name="interval_timer_dialog_break_description">Scrolless held støtta apper blokkert så lenge før neste pause.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pause</string>
     <string name="pause_duration_hint">Set blokkering på pause i 5 minutt</string>
     <string name="pause_resumes_in">Gjenopptar om %1$s</string>
-    <string name="rate_scrolless">Vurder Scrolless på Play Store</string>
     <string name="resume">Gjenoppta</string>
     <string name="success_icon_description">Ikon for suksess-hake</string>
     <string name="time_limit_dialog_title">Set dagleg grensetid</string>
     <string name="visit_github">Gå til GitHub-lageret</string>
     <string name="time_interval">Tids\nintervall</string>
-    <string name="show_onscreen_timer">Vis tidtakar på skjermen</string>
-    <string name="timer_overlay_description">Hald ein flytande tidtakar synleg medan du ser på brain rot-innhald.</string>
     <string name="limit_chip">%1$s grense</string>
     <string name="back">Tilbake</string>
     <string name="settings">Innstillingar</string>

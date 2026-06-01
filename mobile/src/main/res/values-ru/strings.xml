@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Все готово!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Блокировать\nвсе</string>
-    <string name="cd_add">Добавить</string>
     <string name="close">Закрыть</string>
     <string name="daily_limit">Дневной\nлимит</string>
     <string name="feature_coming_soon">Функция скоро появится</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Установить расписание</string>
     <string name="interval_timer_card_summary">Смотрите до %1$s каждые %2$s</string>
     <string name="interval_timer_card_summary_empty">Установите свое первое расписание, чтобы начать чередовать перерывы.</string>
-    <string name="interval_timer_card_title">Расписание интервального таймера</string>
     <string name="interval_timer_dialog_allowance_description">Как долго вы можете смотреть короткие видео после начала перерыва.</string>
     <string name="interval_timer_dialog_allowance_label">Разрешенное время просмотра</string>
     <string name="interval_timer_dialog_break_description">Scrolless блокирует поддерживаемые приложения на это время до следующего перерыва.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Пауза</string>
     <string name="pause_duration_hint">Приостанавливает блокировку на 5 минут</string>
     <string name="pause_resumes_in">Возобновится через %1$s</string>
-    <string name="rate_scrolless">Оценить Scrolless в Play Store</string>
     <string name="resume">Возобновить</string>
     <string name="success_icon_description">Значок галочки успеха</string>
     <string name="time_limit_dialog_title">Установить время дневного лимита</string>
     <string name="visit_github">Посетить репозиторий GitHub</string>
     <string name="time_interval">Временной\nинтервал</string>
-    <string name="show_onscreen_timer">Показывать таймер на экране</string>
-    <string name="timer_overlay_description">Отображать плавающий таймер во время просмотра контента brainrot.</string>
     <string name="limit_chip">%1$s лимит</string>
     <string name="back">Назад</string>
     <string name="settings">Настройки</string>

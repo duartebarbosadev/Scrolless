@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">എല്ലാം സജ്ജം!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">എല്ലാം\nതടയുക</string>
-    <string name="cd_add">ചേർക്കുക</string>
     <string name="close">അടയ്ക്കുക</string>
     <string name="daily_limit">ദിവസേനയുള്ള\nപരിധി</string>
     <string name="feature_coming_soon">ഫീച്ചർ ഉടൻ വരുന്നു</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">ഷെഡ്യൂൾ സജ്ജമാക്കുക</string>
     <string name="interval_timer_card_summary">ഓരോ %2$s-ലും %1$s വരെ കാണുക</string>
     <string name="interval_timer_card_summary_empty">ഇടവിട്ടുള്ള ബ്രേക്കുകൾ ആരംഭിക്കാൻ നിങ്ങളുടെ ആദ്യ ഷെഡ്യൂൾ സജ്ജമാക്കുക.</string>
-    <string name="interval_timer_card_title">ഇന്റർവെൽ ടൈമർ ഷെഡ്യൂൾ</string>
     <string name="interval_timer_dialog_allowance_description">ഒരു ബ്രേക്ക് ആരംഭിച്ചാൽ നിങ്ങൾക്ക് എത്രത്തോളം ഷോർട്ട്‌സ് കാണാൻ കഴിയും.</string>
     <string name="interval_timer_dialog_allowance_label">അനുവദനീയമായ കാണാനുള്ള സമയം</string>
     <string name="interval_timer_dialog_break_description">അടുത്ത ബ്രേക്കിന് മുമ്പ് Scrolless പിന്തുണയ്ക്കുന്ന ആപ്പുകൾ ഇത്രയും നേരം തടഞ്ഞുവെക്കുന്നു.</string>
@@ -70,14 +68,11 @@
     <string name="pause">താൽക്കാലികമായി നിർത്തുക</string>
     <string name="pause_duration_hint">5 മിനിറ്റിന് തടയൽ താൽക്കാലികമായി നിർത്തുന്നു</string>
     <string name="pause_resumes_in">%1$s-ൽ പുനരാരംഭിക്കുന്നു</string>
-    <string name="rate_scrolless">Play Store-ൽ Scrolless-ന് റേറ്റ് ചെയ്യുക</string>
     <string name="resume">പുനരാരംഭിക്കുക</string>
     <string name="success_icon_description">വിജയത്തിന്റെ ചെക്ക്മാർക്ക് ഐക്കൺ</string>
     <string name="time_limit_dialog_title">ദിവസേനയുള്ള പരിധി സമയം സജ്ജമാക്കുക</string>
     <string name="visit_github">GitHub റിപ്പോസിറ്ററി സന്ദർശിക്കുക</string>
     <string name="time_interval">സമയ\nഇടവേള</string>
-    <string name="show_onscreen_timer">ഓൺ-സ്ക്രീൻ ടൈമർ കാണിക്കുക</string>
-    <string name="timer_overlay_description">brainrot ഉള്ളടക്കം കാണുമ്പോൾ ഒരു ഫ്ലോട്ടിംഗ് ടൈമർ ദൃശ്യമായി നിലനിർത്തുക.</string>
     <string name="limit_chip">%1$s പരിധി</string>
     <string name="back">തിരികെ</string>
     <string name="settings">ക്രമീകരണങ്ങൾ</string>

@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">सर्व सेट!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">सर्व\nब्लॉक करा</string>
-    <string name="cd_add">जोडा</string>
     <string name="close">बंद करा</string>
     <string name="daily_limit">दैनिक\nमर्यादा</string>
     <string name="feature_coming_soon">वैशिष्ट्य लवकरच येत आहे</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">वेळापत्रक सेट करा</string>
     <string name="interval_timer_card_summary">प्रत्येक %2$s मध्ये %1$s पर्यंत पहा</string>
     <string name="interval_timer_card_summary_empty">ब्रेक बदलणे सुरू करण्यासाठी तुमचे पहिले वेळापत्रक सेट करा.</string>
-    <string name="interval_timer_card_title">अंतराल टायमर वेळापत्रक</string>
     <string name="interval_timer_dialog_allowance_description">ब्रेक सुरू झाल्यावर तुम्ही किती वेळ शॉर्ट्स पाहू शकता.</string>
     <string name="interval_timer_dialog_allowance_label">पाहण्याची अनुमती दिलेली वेळ</string>
     <string name="interval_timer_dialog_break_description">पुढील ब्रेकपूर्वी Scrolless समर्थित ॲप्स इतक्या वेळेसाठी ब्लॉक ठेवते.</string>
@@ -70,14 +68,11 @@
     <string name="pause">विराम द्या</string>
     <string name="pause_duration_hint">५ मिनिटांसाठी ब्लॉकिंगला विराम देतो</string>
     <string name="pause_resumes_in">%1$s मध्ये पुन्हा सुरू होते</string>
-    <string name="rate_scrolless">Play Store वर Scrolless ला रेट करा</string>
     <string name="resume">पुन्हा सुरू करा</string>
     <string name="success_icon_description">यश चेक मार्क चिन्ह</string>
     <string name="time_limit_dialog_title">दैनिक मर्यादा वेळ सेट करा</string>
     <string name="visit_github">GitHub रेपॉजिटरीला भेट द्या</string>
     <string name="time_interval">वेळ\nअंतराल</string>
-    <string name="show_onscreen_timer">ऑन-स्क्रीन टाइमर दाखवा</string>
-    <string name="timer_overlay_description">brain rot सामग्री पाहताना फ्लोटिंग टाइमर दृश्यमान ठेवा.</string>
     <string name="limit_chip">%1$s मर्यादा</string>
     <string name="back">मागे</string>
     <string name="settings">सेटिंग्ज</string>

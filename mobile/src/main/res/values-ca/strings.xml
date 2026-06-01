@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Tot a punt!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Bloqueja\nTot</string>
-    <string name="cd_add">Afegeix</string>
     <string name="close">Tanca</string>
     <string name="daily_limit">Límit\nDiari</string>
     <string name="feature_coming_soon">Funció properament</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Estableix l\'horari</string>
     <string name="interval_timer_card_summary">Mira fins a %1$s cada %2$s</string>
     <string name="interval_timer_card_summary_empty">Estableix el teu primer horari per començar a alternar pauses.</string>
-    <string name="interval_timer_card_title">Horari del temporitzador d\'intervals</string>
     <string name="interval_timer_dialog_allowance_description">Quant de temps pots veure vídeos curts un cop comença una pausa.</string>
     <string name="interval_timer_dialog_allowance_label">Temps de visualització permès</string>
     <string name="interval_timer_dialog_break_description">Scrolless manté les aplicacions compatibles bloquejades durant aquest temps abans de la següent pausa.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pausa</string>
     <string name="pause_duration_hint">Pausa el bloqueig durant 5 minuts</string>
     <string name="pause_resumes_in">Es reprèn en %1$s</string>
-    <string name="rate_scrolless">Valora Scrolless a Play Store</string>
     <string name="resume">Reprèn</string>
     <string name="success_icon_description">Icona de marca de verificació d\'èxit</string>
     <string name="time_limit_dialog_title">Estableix el temps límit diari</string>
     <string name="visit_github">Visita el repositori de GitHub</string>
     <string name="time_interval">Interval\nde temps</string>
-    <string name="show_onscreen_timer">Mostra el temporitzador en pantalla</string>
-    <string name="timer_overlay_description">Mantén un temporitzador flotant visible mentre mires contingut brain rot.</string>
     <string name="limit_chip">%1$s de límit</string>
     <string name="back">Enrere</string>
     <string name="settings">Configuració</string>

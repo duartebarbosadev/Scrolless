@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Tudo Pronto!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Bloquear\nTudo</string>
-    <string name="cd_add">Adicionar</string>
     <string name="close">Fechar</string>
     <string name="daily_limit">Limite\nDiário</string>
     <string name="feature_coming_soon">Funcionalidade em breve</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Definir agendamento</string>
     <string name="interval_timer_card_summary">Veja até %1$s a cada %2$s</string>
     <string name="interval_timer_card_summary_empty">Defina o seu primeiro agendamento para começar a alternar pausas.</string>
-    <string name="interval_timer_card_title">Agendamento do temporizador de intervalo</string>
     <string name="interval_timer_dialog_allowance_description">Quanto tempo pode ver shorts assim que uma pausa começa.</string>
     <string name="interval_timer_dialog_allowance_label">Tempo de visualização permitido</string>
     <string name="interval_timer_dialog_break_description">O Scrolless mantém as aplicações suportadas bloqueadas durante este tempo antes da próxima pausa.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Pausar</string>
     <string name="pause_duration_hint">Pausa o bloqueio por 5 minutos</string>
     <string name="pause_resumes_in">Retoma em %1$s</string>
-    <string name="rate_scrolless">Avaliar Scrolless na Play Store</string>
     <string name="resume">Retomar</string>
     <string name="success_icon_description">Ícone de visto de sucesso</string>
     <string name="time_limit_dialog_title">Definir Tempo Limite Diário</string>
     <string name="visit_github">Visitar Repositório do GitHub</string>
     <string name="time_interval">Intervalo\nTempo</string>
-    <string name="show_onscreen_timer">Mostrar temporizador no ecrã</string>
-    <string name="timer_overlay_description">Manter um temporizador flutuante visível enquanto assiste a conteúdo de brain rot.</string>
     <string name="limit_chip">Limite de %1$s</string>
     <string name="back">Voltar</string>
     <string name="settings">Definições</string>

@@ -146,8 +146,6 @@
 
     <string name="settings">Settings</string>
 
-    <string name="show_onscreen_timer">Show on-screen timer</string>
-
     <string name="step_one" translatable="false">1</string>
 
     <string name="step_three" translatable="false">3</string>
@@ -170,7 +168,7 @@
     <string name="usage_analytics_average_week">Last week</string>
     <string name="usage_analytics_average_month">Last month</string>
     <string name="usage_analytics_average_year">Last year</string>
-    <string name="usage_analytics_session_count">%1$d sessions</string>
+    <!-- TODO PLURAL --> <string name="usage_analytics_session_count">%1$d sessions</string>
     <string name="usage_analytics_time_range">%1$s-%2$s</string>
     <string name="usage_analytics_expand">Expand</string>
     <string name="usage_analytics_collapse">Collapse</string>

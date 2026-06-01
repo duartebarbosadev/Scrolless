@@ -31,7 +31,6 @@
     <string name="accessibility_success_title">Valmista!</string>
     <string name="app_name">Scrolless</string>
     <string name="block_all">Estä\nkaikki</string>
-    <string name="cd_add">Lisää</string>
     <string name="close">Sulje</string>
     <string name="daily_limit">Päivittäinen\nraja</string>
     <string name="feature_coming_soon">Ominaisuus tulossa pian</string>
@@ -52,7 +51,6 @@
     <string name="interval_timer_card_set_schedule">Aseta aikataulu</string>
     <string name="interval_timer_card_summary">Katso enintään %1$s joka %2$s</string>
     <string name="interval_timer_card_summary_empty">Aseta ensimmäinen aikataulusi aloittaaksesi taukojen vuorottelun.</string>
-    <string name="interval_timer_card_title">Aikaväliajastimen aikataulu</string>
     <string name="interval_timer_dialog_allowance_description">Kuinka kauan voit katsoa shortseja, kun tauko alkaa.</string>
     <string name="interval_timer_dialog_allowance_label">Sallittu katseluaika</string>
     <string name="interval_timer_dialog_break_description">Scrolless pitää tuetut sovellukset estettyinä tämän ajan ennen seuraavaa taukoa.</string>
@@ -70,14 +68,11 @@
     <string name="pause">Keskeytä</string>
     <string name="pause_duration_hint">Keskeyttää eston 5 minuutiksi</string>
     <string name="pause_resumes_in">Jatkuu %1$s kuluttua</string>
-    <string name="rate_scrolless">Arvioi Scrolless Play Kaupassa</string>
     <string name="resume">Jatka</string>
     <string name="success_icon_description">Onnistumisen valintamerkkikuvake</string>
     <string name="time_limit_dialog_title">Aseta päivittäinen aikaraja</string>
     <string name="visit_github">Vieraile GitHub-arkistossa</string>
     <string name="time_interval">Aika\nväli</string>
-    <string name="show_onscreen_timer">Näytä ajastin näytöllä</string>
-    <string name="timer_overlay_description">Pidä kelluva ajastin näkyvissä katsoessasi brainrot-sisältöä.</string>
     <string name="limit_chip">%1$s raja</string>
     <string name="back">Takaisin</string>
     <string name="settings">Asetukset</string>
