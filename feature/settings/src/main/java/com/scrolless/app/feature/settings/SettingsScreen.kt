@@ -97,7 +97,7 @@ private fun SettingsScreenContent(
     val sharedTransitionScope = LocalSharedTransitionScope.current
     val animatedVisibilityScope = LocalNavAnimatedContentScope.current
 
-    val sharedBoundsModifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+    val sharedBoundsModifier = if (sharedTransitionScope != null) {
         with(sharedTransitionScope) {
             Modifier.sharedBounds(
                 sharedContentState = rememberSharedContentState(key = SETTINGS_TRANSITION_KEY),
