@@ -19,6 +19,7 @@ package com.scrolless.app.feature.home
 import android.accessibilityservice.AccessibilityService
 import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -50,7 +51,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButtonDefaults
@@ -88,9 +88,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.designsystem.theme.LocalSharedTransitionScope
+import com.scrolless.app.designsystem.theme.SETTINGS_TRANSITION_KEY
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.theme.progressbar_green_use
 import com.scrolless.app.designsystem.theme.progressbar_orange_use
@@ -122,6 +125,7 @@ import timber.log.Timber
 
 private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
 private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)
+
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -439,7 +443,6 @@ fun HomeScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun HomeContent(
     uiState: HomeUiState,
@@ -600,6 +603,7 @@ private fun HomeContent(
 
 @Composable
 private fun UsageOverviewHeader(
+    modifier: Modifier = Modifier,
     uiState: HomeUiState,
     analytics: UsageAnalyticsUiState,
     isViewingToday: Boolean,
@@ -609,7 +613,6 @@ private fun UsageOverviewHeader(
     onUsageAnalyticsTodaySelected: () -> Unit,
     onHelpClicked: () -> Unit,
     onNavigateToSettings: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
@@ -752,11 +755,27 @@ fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SettingsButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun SettingsButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    val sharedTransitionScope = LocalSharedTransitionScope.current
+
+    val sharedBoundsModifier = if (sharedTransitionScope != null) {
+        val animatedVisibilityScope = LocalNavAnimatedContentScope.current
+        with(sharedTransitionScope) {
+            Modifier.sharedBounds(
+                sharedContentState = rememberSharedContentState(key = SETTINGS_TRANSITION_KEY),
+                animatedVisibilityScope = animatedVisibilityScope,
+                clipInOverlayDuringTransition = OverlayClip(clipShape = RoundedCornerShape(50)),
+            )
+        }
+    } else {
+        Modifier
+    }
+
     FilledTonalIconButton(
         onClick = onClick,
-        modifier = modifier,
+        modifier = modifier.then(sharedBoundsModifier),
         colors = IconButtonDefaults.filledTonalIconButtonColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.55f),
             contentColor = MaterialTheme.colorScheme.onSurface,

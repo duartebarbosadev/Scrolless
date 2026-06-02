@@ -17,6 +17,7 @@
 package com.scrolless.app.feature.settings
 
 import android.content.res.Configuration
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -64,35 +65,53 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import com.scrolless.app.designsystem.theme.LocalSharedTransitionScope
+import com.scrolless.app.designsystem.theme.SETTINGS_TRANSITION_KEY
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import kotlin.math.roundToInt
 
 @Composable
-fun SettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifier, viewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen(modifier: Modifier = Modifier, onNavigateBack: () -> Unit, viewModel: SettingsViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SettingsScreenContent(
+        modifier = modifier,
         uiState = uiState,
         onPauseDurationChange = viewModel::onPauseDurationChange,
         onExceptReelsSentByDmChange = viewModel::onExceptReelsSentByDmChange,
         onTimerOverlayEnabledChange = viewModel::onTimerOverlayEnabledChange,
         onNavigateBack = onNavigateBack,
-        modifier = modifier,
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 private fun SettingsScreenContent(
+    modifier: Modifier = Modifier,
     uiState: SettingsUiState,
     onPauseDurationChange: (Int) -> Unit,
     onExceptReelsSentByDmChange: (Boolean) -> Unit,
     onTimerOverlayEnabledChange: (Boolean) -> Unit,
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
+    val sharedTransitionScope = LocalSharedTransitionScope.current
+
+    val sharedBoundsModifier = if (sharedTransitionScope != null) {
+        val animatedVisibilityScope = LocalNavAnimatedContentScope.current
+        with(sharedTransitionScope) {
+            Modifier.sharedBounds(
+                sharedContentState = rememberSharedContentState(key = SETTINGS_TRANSITION_KEY),
+                animatedVisibilityScope = animatedVisibilityScope,
+                clipInOverlayDuringTransition = OverlayClip(clipShape = RoundedCornerShape(0.dp)),
+            )
+        }
+    } else {
+        Modifier
+    }
+
     Scaffold(
-        modifier = modifier,
+        modifier = modifier.then(sharedBoundsModifier),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
