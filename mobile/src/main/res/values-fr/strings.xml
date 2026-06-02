@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Recherchez les applications et appuyez sur \"Scrolless\" dans la liste des services</string>
     <string name="accessibility_explainer_step3">Activez l\'interrupteur pour permettre à Scrolless de vous aider à arrêter le défilement sans fin</string>
     <string name="accessibility_explainer_subtitle">Scrolless a besoin de l\'accès à l\'accessibilité pour détecter et arrêter les vidéos courtes.</string>
-    <string name="accessibility_explainer_title">Nous avons besoin de l\'accès à l\'accessibilité</string>
     <string name="accessibility_service_description">Ce service détecte quand les Reels/Shorts/TikTok sont ouverts afin que Scrolless puisse les bloquer si configuré.</string>
     <string name="accessibility_success_description">Scrolless est maintenant prêt !</string>
     <string name="accessibility_success_title">Tout est prêt !</string>

@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Βρείτε τις εφαρμογές και πατήστε στο \"Scrolless\" στη λίστα υπηρεσιών</string>
     <string name="accessibility_explainer_step3">Ενεργοποιήστε τον διακόπτη για να επιτρέψετε στο Scrolless να σας βοηθήσει να σταματήσετε το ατελείωτο scrolling</string>
     <string name="accessibility_explainer_subtitle">Το Scrolless χρειάζεται πρόσβαση στην προσβασιμότητα για να εντοπίζει και να σταματά τα σύντομα βίντεο.</string>
-    <string name="accessibility_explainer_title">Χρειαζόμαστε Πρόσβαση στην Προσβασιμότητα</string>
     <string name="accessibility_service_description">Αυτή η υπηρεσία εντοπίζει πότε ανοίγουν τα reels/shorts/tiktok, ώστε το Scrolless να μπορεί να τα μπλοκάρει, αν έχει ρυθμιστεί.</string>
     <string name="accessibility_success_description">Το Scrolless είναι τώρα έτοιμο!</string>
     <string name="accessibility_success_title">Όλα Έτοιμα!</string>

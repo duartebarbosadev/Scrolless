@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Najděte aplikace a klepněte na „Scrolless“ v seznamu služeb</string>
     <string name="accessibility_explainer_step3">Přepněte přepínač do polohy ZAPNUTO, abyste aplikaci Scrolless umožnili pomoci vám zastavit nekonečné posouvání</string>
     <string name="accessibility_explainer_subtitle">Scrolless potřebuje přístup k usnadnění přístupu k detekci a zastavení krátkých videí.</string>
-    <string name="accessibility_explainer_title">Potřebujeme přístup k usnadnění přístupu</string>
     <string name="accessibility_service_description">Tato služba detekuje, kdy jsou otevřeny Reels/Shorts/TikTok, aby je Scrolless mohl zablokovat, pokud je tak nastaven.</string>
     <string name="accessibility_success_description">Scrolless je nyní připraven!</string>
     <string name="accessibility_success_title">Vše nastaveno!</string>

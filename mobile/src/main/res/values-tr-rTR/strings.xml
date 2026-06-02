@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Uygulamaları bulun ve hizmetler listesinden \"Scrolless\" öğesine dokunun</string>
     <string name="accessibility_explainer_step3">Scrolless\'ın sonsuz kaydırmayı durdurmanıza yardımcı olmasını sağlamak için anahtarı AÇIK konuma getirin</string>
     <string name="accessibility_explainer_subtitle">Scrolless\'ın kısa videoları algılayıp durdurması için erişilebilirlik erişimine ihtiyacı var.</string>
-    <string name="accessibility_explainer_title">Erişilebilirlik Erişimi Gerekiyor</string>
     <string name="accessibility_service_description">Bu hizmet, Reels/Shorts/TikTok açıldığında Scrolless\'ın yapılandırılmışsa bunları engellemesini sağlamak için algılar.</string>
     <string name="accessibility_success_description">Scrolless artık hazır!</string>
     <string name="accessibility_success_title">Her Şey Ayarlandı!</string>

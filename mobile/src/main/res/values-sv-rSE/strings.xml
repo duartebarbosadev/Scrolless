@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Hitta applikationer och tryck på \"Scrolless\" i listan över tjänster</string>
     <string name="accessibility_explainer_step3">Växla omkopplaren till PÅ för att aktivera Scrolless för att hjälpa dig att stoppa oändligt scrollande</string>
     <string name="accessibility_explainer_subtitle">Scrolless behöver tillgänglighetsåtkomst för att upptäcka och stoppa korta videor.</string>
-    <string name="accessibility_explainer_title">Vi behöver tillgänglighetsåtkomst</string>
     <string name="accessibility_service_description">Denna tjänst upptäcker när reels/shorts/tiktok öppnas så att Scrolless kan blockera dem om det är konfigurerat.</string>
     <string name="accessibility_success_description">Scrolless är nu redo!</string>
     <string name="accessibility_success_title">Allt klart!</string>
