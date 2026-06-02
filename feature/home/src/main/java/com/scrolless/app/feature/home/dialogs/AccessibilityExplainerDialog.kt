@@ -212,7 +212,7 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                     maxLines = 1,
                 )
             }
-           
+
             Spacer(modifier = Modifier.height(12.dp))
             // Privacy Note
             Card(
