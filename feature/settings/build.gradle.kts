@@ -51,6 +51,7 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -63,6 +64,7 @@ kotlin {
 }
 
 dependencies {
+    coreLibraryDesugaring(libs.core.jdk.desugaring)
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
     implementation(libs.androidx.compose.animation)
