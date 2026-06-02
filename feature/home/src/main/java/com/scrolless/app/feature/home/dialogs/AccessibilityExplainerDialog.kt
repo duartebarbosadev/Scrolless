@@ -213,6 +213,7 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                 )
             }
 
+            Spacer(modifier = Modifier.height(12.dp))
             // Privacy Note
             Card(
                 modifier = Modifier.fillMaxWidth(),
