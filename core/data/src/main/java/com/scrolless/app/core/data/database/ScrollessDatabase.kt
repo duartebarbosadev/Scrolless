@@ -222,10 +222,6 @@ abstract class ScrollessDatabase : RoomDatabase() {
         }
         // Repair first_launch_at values overwritten by the cold-start settings race. When session history
         // exists, the earliest local session is our best persisted lower bound for the install/start date.
-        // Room stores session start times as LocalDateTime text, so the SQLite 'utc' modifier converts the
-        // local wall-clock value to epoch millis without shifting early-morning sessions to the wrong date.
-        // The timestamp is truncated to seconds before strftime to avoid Android SQLite compatibility issues
-        // with nanosecond fractions emitted by DateTimeFormatter.ISO_LOCAL_DATE_TIME.
         val MIGRATION_8_9 = object : Migration(8, 9) {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL(

@@ -19,6 +19,7 @@ package com.scrolless.app.designsystem.component
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -87,7 +88,7 @@ fun AutoResizingText(
         mutableStateOf(false)
     }
     var currentFontSize by remember(text, resolvedMaxFontSize, resolvedMinFontSize, maxLines, style, overflow) {
-        mutableStateOf(resolvedMaxFontSize.value)
+        mutableFloatStateOf(resolvedMaxFontSize.value)
     }
 
     Text(

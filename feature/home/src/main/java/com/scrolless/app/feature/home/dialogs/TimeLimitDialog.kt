@@ -38,7 +38,7 @@ internal fun TimeLimitDialog(onDismiss: (selectedTimeInSeconds: Long) -> Unit) {
         visible = true,
         onCloseRequest = {
             Timber.d("TimeLimitDialog: closed without selection")
-            onDismiss(-1) // -1 means cancelled,
+            onDismiss(-1) // -1 means canceled
         },
     )
 
