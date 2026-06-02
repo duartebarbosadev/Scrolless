@@ -343,8 +343,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     /**
      * Syncs package filtering with current tracking state.
      *
-     * If the user has one of the BlockableApps open we need listen to all packages (so that we accurately detect minimizes etc.)
-     * Otherwise, restrict back the service to only listen to restricted packages
+     * If the user has one of the BlockableApps open, we need to listen to all packages (so that we accurately detect minimizes, etc.).
+     * Otherwise, restrict the service back to only listen to restricted packages
      */
     private fun refreshServiceConfig() {
         updateServiceConfig(isProcessingBlockedContent || currentForegroundBrainRotApp != null)
@@ -439,9 +439,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             }
         }
 
-        // If we are processing content, and we received an event
-        //  make sure that the app is still visible as we can get events from other apps
-        //  otherwise it means that the user has left the app
+        // If we are processing content and we received an event,
+        //  make sure that the app is still visible as we can get events from other apps,
+        //  otherwise it means that the user has left the app.
         currentForegroundBrainRotApp?.let { blockableApp ->
             if (isBlockedAppPackageVisible(blockableApp)) {
                 return blockableApp
@@ -487,9 +487,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      */
     private fun detectBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): DetectedBlockedContent? {
 
-        // If we are processing content, and we received an event
-        //  make sure that the app is still visible as we can get events from other apps
-        //  otherwise it means that the user has left the app
+        // If we are processing content and we received an event,
+        //  make sure that the app is still visible as we can get events from other apps,
+        //  otherwise it means that the user has left the app.
         blockedContentSession?.app?.let { blockableApp ->
             if (rootNode.matchesBlockedContent(blockableApp)) {
                 return rootNode.toDetectedBlockedContent(blockableApp)
