@@ -21,10 +21,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.navigation3.runtime.entryProvider
-import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import androidx.navigation3.ui.NavDisplay
 import com.scrolless.app.accessibility.ScrollessBlockAccessibilityService
+import com.scrolless.app.designsystem.theme.LocalSharedTransitionScope
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.feature.home.HomeScreen
 import com.scrolless.app.feature.settings.SettingsScreen
@@ -43,30 +44,26 @@ class MainActivity : ComponentActivity() {
 
             ScrollessTheme {
                 SharedTransitionLayout {
-                    NavDisplay(
-                        appState.backStack,
-                        onBack = { appState.navigateBack() },
-                        entryProvider = entryProvider {
-                            entry<ScrollessRoute.Home> {
-                                val animatedVisibilityScope = LocalNavAnimatedContentScope.current
-                                HomeScreen(
-                                    onNavigateToSettings = appState::navigateToSettings,
-                                    accessibilityServiceClass = ScrollessBlockAccessibilityService::class.java,
-                                    onRequestAppReview = ::requestAppReview,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    animatedVisibilityScope = animatedVisibilityScope,
-                                )
-                            }
-                            entry<ScrollessRoute.Settings> {
-                                val animatedVisibilityScope = LocalNavAnimatedContentScope.current
-                                SettingsScreen(
-                                    onNavigateBack = appState::navigateBack,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    animatedVisibilityScope = animatedVisibilityScope,
-                                )
-                            }
-                        },
-                    )
+                    CompositionLocalProvider(LocalSharedTransitionScope provides this) {
+                        NavDisplay(
+                            appState.backStack,
+                            onBack = { appState.navigateBack() },
+                            entryProvider = entryProvider {
+                                entry<ScrollessRoute.Home> {
+                                    HomeScreen(
+                                        onNavigateToSettings = appState::navigateToSettings,
+                                        accessibilityServiceClass = ScrollessBlockAccessibilityService::class.java,
+                                        onRequestAppReview = ::requestAppReview,
+                                    )
+                                }
+                                entry<ScrollessRoute.Settings> {
+                                    SettingsScreen(
+                                        onNavigateBack = appState::navigateBack,
+                                    )
+                                }
+                            },
+                        )
+                    }
                 }
             }
         }

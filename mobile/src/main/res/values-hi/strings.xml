@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">एप्लिकेशन ढूंढें और सेवाओं की सूची में \"Scrolless\" पर टैप करें</string>
     <string name="accessibility_explainer_step3">Scrolless को अंतहीन स्क्रॉलिंग रोकने में मदद करने के लिए स्विच को ON करें</string>
     <string name="accessibility_explainer_subtitle">शॉर्ट वीडियो का पता लगाने और उन्हें रोकने के लिए Scrolless को एक्सेसिबिलिटी एक्सेस की आवश्यकता है।</string>
-    <string name="accessibility_explainer_title">हमें एक्सेसिबिलिटी एक्सेस चाहिए</string>
     <string name="accessibility_service_description">यह सेवा पता लगाती है कि रील्स/शॉर्ट्स/टिकटॉक कब खोले जाते हैं ताकि Scrolless, कॉन्फ़िगर किए जाने पर उन्हें ब्लॉक कर सके।</string>
     <string name="accessibility_success_description">Scrolless अब तैयार है!</string>
     <string name="accessibility_success_title">सब सेट है!</string>

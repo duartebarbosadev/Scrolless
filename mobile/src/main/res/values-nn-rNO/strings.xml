@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Finn applikasjonar og trykk på \\«Scrolless\\» i lista over tenester</string>
     <string name="accessibility_explainer_step3">Slå på brytaren for å la Scrolless hjelpe deg med å stoppe endelaus scrolling</string>
     <string name="accessibility_explainer_subtitle">Scrolless treng tilgjengelegheitstilgang for å oppdage og stoppe korte videoar.</string>
-    <string name="accessibility_explainer_title">Vi treng tilgjengelegheitstilgang</string>
     <string name="accessibility_service_description">Denne tenesta oppdagar når reels/shorts/tiktok blir opna, slik at Scrolless kan blokkere dei om konfigurert.</string>
     <string name="accessibility_success_description">Scrolless er no klar!</string>
     <string name="accessibility_success_title">Alt klart!</string>

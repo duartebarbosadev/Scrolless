@@ -92,6 +92,7 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
+import kotlin.random.Random
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -268,22 +269,22 @@ private fun DebugDayTimelinePanel(
     fun addRandomStuff() {
         val apps = BlockableApp.entries
         val newSegments = mutableListOf<SessionSegment>()
-        val numSegments = kotlin.random.Random.nextInt(3, 7)
-        var currentMinute = kotlin.random.Random.nextInt(0, 120)
-        
+        val numSegments = Random.nextInt(3, 7)
+        var currentMinute = Random.nextInt(0, 120)
+
         repeat(numSegments) {
             if (currentMinute >= DAY_TOTAL_MINUTES - 45) return@repeat
-            
-            val gap = kotlin.random.Random.nextInt(60, 240)
+
+            val gap = Random.nextInt(60, 240)
             currentMinute += gap
             if (currentMinute >= DAY_TOTAL_MINUTES - 15) return@repeat
-            
+
             val remainingMinutes = DAY_TOTAL_MINUTES - currentMinute
             val maxDuration = minOf(60, remainingMinutes)
             if (maxDuration <= 5) return@repeat
-            val durationMinutes = kotlin.random.Random.nextInt(5, maxDuration)
-            
-            val app = apps[kotlin.random.Random.nextInt(apps.size)]
+            val durationMinutes = Random.nextInt(5, maxDuration)
+
+            val app = apps[Random.nextInt(apps.size)]
             val segment = SessionSegment(
                 app = app,
                 durationMillis = TimeUnit.MINUTES.toMillis(durationMinutes.toLong()),
@@ -292,10 +293,9 @@ private fun DebugDayTimelinePanel(
             newSegments.add(segment)
             currentMinute += durationMinutes
         }
-        
+
         onUsageChanged((todaySegments + newSegments).sortedBy { it.startDateTime })
     }
-
 
     Card(
         modifier = modifier.heightIn(max = 460.dp),
@@ -434,7 +434,7 @@ private fun DebugDayTimelinePanel(
                     ),
                     onClick = { addRandomStuff() },
                 ) {
-                    Text(text = "Add Random", style = MaterialTheme.typography.labelLarge)
+                    Text(text = "Add Random", style = MaterialTheme.typography.labelMedium)
                 }
 
                 TextButton(

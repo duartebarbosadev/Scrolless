@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">在服务列表中找到应用并点击“Scrolless”</string>
     <string name="accessibility_explainer_step3">将开关切换为“开”以启用 Scrolless，帮助您停止无休止的滚动</string>
     <string name="accessibility_explainer_subtitle">Scrolless 需要无障碍权限才能检测和阻止短视频。</string>
-    <string name="accessibility_explainer_title">我们需要无障碍权限</string>
     <string name="accessibility_service_description">此服务用于检测 Reels/Shorts/TikTok 何时打开，以便 Scrolless 可以根据配置阻止它们。</string>
     <string name="accessibility_success_description">Scrolless 现已就绪！</string>
     <string name="accessibility_success_title">全部设置完毕！</string>

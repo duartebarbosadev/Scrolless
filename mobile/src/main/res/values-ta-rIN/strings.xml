@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">பயன்பாடுகளைக் கண்டறிந்து, சேவைகளின் பட்டியலில் \"Scrolless\" என்பதைத் தட்டவும்</string>
     <string name="accessibility_explainer_step3">முடிவில்லாத ஸ்க்ரோலிங்கை நிறுத்த உங்களுக்கு உதவ Scrolless ஐ இயக்க, சுவிட்சை ON நிலைக்கு மாற்றவும்</string>
     <string name="accessibility_explainer_subtitle">குறுகிய வீடியோக்களைக் கண்டறிந்து நிறுத்த Scrolless க்கு அணுகல் தேவை.</string>
-    <string name="accessibility_explainer_title">எங்களுக்கு அணுகல் தேவை</string>
     <string name="accessibility_service_description">ரீல்கள்/ஷார்ட்ஸ்கள்/டிக்டாக் திறக்கப்படும்போது இந்தச் சேவை கண்டறிகிறது, இதனால் Scrolless, கட்டமைக்கப்பட்டால் அவற்றைத் தடுக்க முடியும்.</string>
     <string name="accessibility_success_description">Scrolless இப்போது தயாராக உள்ளது!</string>
     <string name="accessibility_success_title">அனைத்தும் தயார்!</string>

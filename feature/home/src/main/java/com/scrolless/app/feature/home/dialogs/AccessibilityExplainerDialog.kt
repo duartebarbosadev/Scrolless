@@ -37,6 +37,10 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -148,17 +152,7 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                 maxLines = 1,
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            AutoResizingText(
-                text = stringResource(R.string.accessibility_explainer_subtitle),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
-                maxLines = 2,
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Steps with staggered animation
             AccessibilityStep(
@@ -237,6 +231,37 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                 )
             }
 
+            Spacer(modifier = Modifier.height(12.dp))
+            // Privacy Note
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
+                ),
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                Row(
+                    modifier = Modifier.padding(12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Info,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp),
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                    )
+                    Spacer(modifier = Modifier.width(12.dp))
+                    Text(
+                        text = stringResource(R.string.accessibility_explainer_privacy_note),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        textAlign = TextAlign.Start,
+                        fontWeight = FontWeight.Medium,
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
 
             // Proceed Button
@@ -246,17 +271,33 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(42.dp),
+                    .height(48.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                 ),
                 shape = RoundedCornerShape(12.dp),
             ) {
-                Text(
-                    text = stringResource(R.string.accessibility_explainer_proceed_button),
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Settings,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    AutoResizingText(
+                        text = stringResource(R.string.accessibility_explainer_proceed_button),
+                        modifier = Modifier.weight(1f, fill = false),
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
+                        maxLines = 1,
+                        minFontSize = 10.sp,
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -267,12 +308,31 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                     Timber.d("AccessibilityExplainer: Not now")
                     onDismiss()
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
             ) {
-                Text(
-                    text = stringResource(R.string.accessibility_explainer_not_now_button),
-                    color = MaterialTheme.colorScheme.primary,
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp),
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    AutoResizingText(
+                        text = stringResource(R.string.accessibility_explainer_not_now_button),
+                        modifier = Modifier.weight(1f, fill = false),
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
+                        maxLines = 1,
+                        minFontSize = 10.sp,
+                    )
+                }
             }
         }
 

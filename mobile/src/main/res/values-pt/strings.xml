@@ -25,7 +25,7 @@
     <string name="accessibility_explainer_step2">Encontre as aplicações e toque em \"Scrolless\" na lista de serviços</string>
     <string name="accessibility_explainer_step3">Ative o interruptor para LIGADO para permitir que o Scrolless o ajude a parar o brain-rot</string>
     <string name="accessibility_explainer_subtitle">O Scrolless precisa de acesso de acessibilidade para detetar e parar vídeos curtos.</string>
-    <string name="accessibility_explainer_title">Precisamos de Acesso de Acessibilidade</string>
+    <string name="accessibility_explainer_title">Ative a Permissão de Accessibildade</string>
     <string name="accessibility_service_description">Este serviço deteta quando reels/shorts/tiktok são abertos para que o Scrolless os possa bloquear, se configurado.</string>
     <string name="accessibility_success_description">O Scrolless está pronto!</string>
     <string name="accessibility_success_title">Tudo Pronto!</string>

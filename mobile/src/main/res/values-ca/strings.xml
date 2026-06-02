@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Cerca aplicacions i toca \"Scrolless\" a la llista de serveis</string>
     <string name="accessibility_explainer_step3">Activa l\'interruptor per permetre que Scrolless t\'ajudi a aturar el desplaçament sense fi</string>
     <string name="accessibility_explainer_subtitle">Scrolless necessita accés d\'accessibilitat per detectar i aturar vídeos curts.</string>
-    <string name="accessibility_explainer_title">Necessitem accés d\'accessibilitat</string>
     <string name="accessibility_service_description">Aquest servei detecta quan s\'obren reels/shorts/tiktok perquè Scrolless els pugui bloquejar si està configurat.</string>
     <string name="accessibility_success_description">Scrolless ja està a punt!</string>
     <string name="accessibility_success_title">Tot a punt!</string>

@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">സേവനങ്ങളുടെ പട്ടികയിൽ ആപ്ലിക്കേഷനുകൾ കണ്ടെത്തി \"Scrolless\" ടാപ്പ് ചെയ്യുക</string>
     <string name="accessibility_explainer_step3">അനന്തമായ സ്ക്രോളിംഗ് നിർത്താൻ നിങ്ങളെ സഹായിക്കുന്നതിന് Scrolless പ്രവർത്തനക്ഷമമാക്കാൻ സ്വിച്ച് ഓൺ ആക്കുക</string>
     <string name="accessibility_explainer_subtitle">ഷോർട്ട് വീഡിയോകൾ കണ്ടെത്താനും നിർത്താനും Scrolless-ന് പ്രവേശനക്ഷമത ആവശ്യമാണ്.</string>
-    <string name="accessibility_explainer_title">ഞങ്ങൾക്ക് പ്രവേശനക്ഷമത ആവശ്യമാണ്</string>
     <string name="accessibility_service_description">റീലുകൾ/ഷോർട്ട്‌സ്/ടിക്‌ടോക്ക് തുറക്കുമ്പോൾ ഈ സേവനം കണ്ടെത്തുകയും, ക്രമീകരിച്ചിട്ടുണ്ടെങ്കിൽ Scrolless-ന് അവ തടയാൻ കഴിയുകയും ചെയ്യും.</string>
     <string name="accessibility_success_description">Scrolless ഇപ്പോൾ തയ്യാറാണ്!</string>
     <string name="accessibility_success_title">എല്ലാം സജ്ജം!</string>

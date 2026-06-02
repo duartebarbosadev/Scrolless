@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Suchen Sie Anwendungen und tippen Sie in der Diensteliste auf \"Scrolless\"</string>
     <string name="accessibility_explainer_step3">Schalten Sie den Schalter auf EIN, damit Scrolless Ihnen helfen kann, endloses Scrollen zu stoppen</string>
     <string name="accessibility_explainer_subtitle">Scrolless benötigt Barrierefreiheitszugriff, um kurze Videos zu erkennen und zu stoppen.</string>
-    <string name="accessibility_explainer_title">Wir benötigen Barrierefreiheitszugriff</string>
     <string name="accessibility_service_description">Dieser Dienst erkennt, wann Reels/Shorts/TikToks geöffnet werden, damit Scrolless sie bei entsprechender Konfiguration blockieren kann.</string>
     <string name="accessibility_success_description">Scrolless ist jetzt bereit!</string>
     <string name="accessibility_success_title">Alles klar!</string>

@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">アプリケーションを見つけ、サービスの一覧から「Scrolless」をタップします</string>
     <string name="accessibility_explainer_step3">スイッチをONに切り替えて、Scrollessがエンドレススクロールを停止できるようにします</string>
     <string name="accessibility_explainer_subtitle">Scrollessがショート動画を検出して停止するには、ユーザー補助機能へのアクセスが必要です。</string>
-    <string name="accessibility_explainer_title">ユーザー補助機能へのアクセスが必要です</string>
     <string name="accessibility_service_description">このサービスは、リール/ショート/TikTokが開かれたことを検出し、設定されている場合にScrollessがそれらをブロックできるようにします。</string>
     <string name="accessibility_success_description">Scrollessの準備ができました！</string>
     <string name="accessibility_success_title">すべて設定完了！</string>
