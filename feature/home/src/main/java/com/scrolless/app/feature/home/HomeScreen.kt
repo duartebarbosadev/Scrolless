@@ -19,6 +19,7 @@ package com.scrolless.app.feature.home
 import android.accessibilityservice.AccessibilityService
 import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -754,6 +755,7 @@ fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SettingsButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
