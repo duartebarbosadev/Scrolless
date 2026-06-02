@@ -182,7 +182,6 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
 
             Spacer(modifier = Modifier.height(12.dp))
 
-
             val githubUrl = stringResource(R.string.github_url)
 
             // Open Source Link
