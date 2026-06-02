@@ -19,8 +19,7 @@ package com.scrolless.app.feature.home
 import android.accessibilityservice.AccessibilityService
 import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -43,9 +42,13 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -89,9 +92,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.designsystem.theme.LocalSharedTransitionScope
+import com.scrolless.app.designsystem.theme.SETTINGS_TRANSITION_KEY
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.theme.progressbar_green_use
 import com.scrolless.app.designsystem.theme.progressbar_orange_use
@@ -132,8 +138,6 @@ fun HomeScreen(
     onRequestAppReview: (Activity, (ReviewPromptResult) -> Unit) -> Unit = { _, onResult ->
         onResult(ReviewPromptResult.SkippedPermanent)
     },
-    sharedTransitionScope: SharedTransitionScope? = null,
-    animatedVisibilityScope: AnimatedVisibilityScope? = null,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -282,11 +286,9 @@ fun HomeScreen(
         }
 
         HomeContent(
-            modifier = modifier.windowInsetsPadding(WindowInsets.safeDrawing),
+            modifier = modifier,
             uiState = uiState,
             onNavigateToSettings = onNavigateToSettings,
-            sharedTransitionScope = sharedTransitionScope,
-            animatedVisibilityScope = animatedVisibilityScope,
             onBlockOptionSelected = { blockOption ->
                 val shouldBypass = BuildConfig.DEBUG && debugBypassAccessibilityCheck
                 if (shouldBypass || context.isAccessibilityServiceEnabled(accessibilityServiceClass)) {
@@ -450,8 +452,6 @@ private fun HomeContent(
     uiState: HomeUiState,
     modifier: Modifier = Modifier,
     onNavigateToSettings: () -> Unit = {},
-    sharedTransitionScope: SharedTransitionScope? = null,
-    animatedVisibilityScope: AnimatedVisibilityScope? = null,
     onBlockOptionSelected: (BlockOption) -> Unit,
     onConfigureDailyLimit: () -> Unit,
     onHelpClicked: () -> Unit,
@@ -522,7 +522,7 @@ private fun HomeContent(
                 onUsageAnalyticsDateSelected = onUsageAnalyticsDateSelected,
                 onSwipeStart = { hasDismissedSwipeHint = true },
             )
-            .padding(16.dp),
+            .padding(horizontal = 16.dp),
     ) {
         Column(
             modifier = Modifier
@@ -530,6 +530,8 @@ private fun HomeContent(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
+
             UsageOverviewHeader(
                 uiState = uiState,
                 analytics = analytics,
@@ -540,8 +542,6 @@ private fun HomeContent(
                 onUsageAnalyticsTodaySelected = onUsageAnalyticsTodaySelected,
                 onHelpClicked = onHelpClicked,
                 onNavigateToSettings = onNavigateToSettings,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedVisibilityScope = animatedVisibilityScope,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -589,6 +589,8 @@ private fun HomeContent(
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
         }
 
         if (showDebugPanel) {
@@ -619,8 +621,6 @@ private fun UsageOverviewHeader(
     onUsageAnalyticsTodaySelected: () -> Unit,
     onHelpClicked: () -> Unit,
     onNavigateToSettings: () -> Unit,
-    sharedTransitionScope: SharedTransitionScope? = null,
-    animatedVisibilityScope: AnimatedVisibilityScope? = null,
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
@@ -683,8 +683,6 @@ private fun UsageOverviewHeader(
 
             SettingsButton(
                 onClick = onNavigateToSettings,
-                sharedTransitionScope = sharedTransitionScope,
-                animatedVisibilityScope = animatedVisibilityScope,
             )
         }
     }
@@ -765,18 +763,18 @@ fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun SettingsButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    sharedTransitionScope: SharedTransitionScope? = null,
-    animatedVisibilityScope: AnimatedVisibilityScope? = null,
-) {
-    val sharedBoundsModifier = if (sharedTransitionScope != null && animatedVisibilityScope != null) {
+fun SettingsButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    val sharedTransitionScope = LocalSharedTransitionScope.current
+
+    val sharedBoundsModifier = if (sharedTransitionScope != null) {
+        val animatedVisibilityScope = LocalNavAnimatedContentScope.current
         with(sharedTransitionScope) {
             Modifier.sharedBounds(
-                sharedContentState = rememberSharedContentState(key = "settings_transition"),
+                sharedContentState = rememberSharedContentState(key = SETTINGS_TRANSITION_KEY),
                 animatedVisibilityScope = animatedVisibilityScope,
+                clipInOverlayDuringTransition = OverlayClip(clipShape = RoundedCornerShape(50)),
             )
         }
     } else {
@@ -793,7 +791,7 @@ fun SettingsButton(
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_settings),
-            contentDescription = stringResource(R.string.settings_button_content_description),
+            contentDescription = stringResource(R.string.settings),
             tint = MaterialTheme.colorScheme.onSurface,
         )
     }
