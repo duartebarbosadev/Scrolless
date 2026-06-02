@@ -30,7 +30,7 @@ class DayLimitBlockHandler(private val timeLimit: Long) : BlockOptionHandler {
      * Checks if daily usage already exceeds the limit on entry.
      *
      * @param currentDailyUsage Current daily usage in milliseconds.
-     * @return true if should block immediately.
+     * @return true if we should block immediately.
      */
     override fun onEnterContent(currentDailyUsage: Long): Boolean {
 

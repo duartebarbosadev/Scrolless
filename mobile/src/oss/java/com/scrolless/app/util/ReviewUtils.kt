@@ -14,6 +14,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+@file:Suppress("RedundantSuppression")
+
 package com.scrolless.app.util
 
 import android.app.Activity
@@ -23,7 +25,7 @@ import timber.log.Timber
 /**
  * F-Droid builds intentionally exclude the Play Review SDK.
  */
-@Suppress("unused")
+@Suppress("unused") // Do not remove this or else Spotless will fail in this variant
 fun requestAppReview(activity: Activity, onResult: (ReviewPromptResult) -> Unit) {
     Timber.i("In-app review skipped for F-Droid variant")
     onResult(ReviewPromptResult.SkippedPermanent)

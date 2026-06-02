@@ -26,7 +26,7 @@ interface BlockOptionHandler {
 
     /**
      * Called when user enters content.
-     * Should return true if should immediately block, false otherwise.
+     * Should return true if we should immediately block, false otherwise.
      *
      * @param currentDailyUsage Current daily usage in milliseconds.
      */
