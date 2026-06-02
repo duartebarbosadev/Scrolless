@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Tìm ứng dụng và chạm vào \"Scrolless\" trong danh sách dịch vụ</string>
     <string name="accessibility_explainer_step3">Bật công tắc để cho phép Scrolless giúp bạn dừng cuộn vô tận</string>
     <string name="accessibility_explainer_subtitle">Scrolless cần quyền truy cập trợ năng để phát hiện và chặn các video ngắn.</string>
-    <string name="accessibility_explainer_title">Chúng tôi Cần Quyền Truy Cập Trợ năng</string>
     <string name="accessibility_service_description">Dịch vụ này phát hiện khi reels/shorts/tiktok được mở để Scrolless có thể chặn chúng nếu được cấu hình.</string>
     <string name="accessibility_success_description">Scrolless đã sẵn sàng!</string>
     <string name="accessibility_success_title">Đã Xong!</string>

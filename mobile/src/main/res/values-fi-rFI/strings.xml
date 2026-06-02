@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Etsi sovellukset ja napauta \"Scrolless\" palveluiden luettelosta</string>
     <string name="accessibility_explainer_step3">Kytke kytkin PÄÄLLE, jotta Scrolless voi auttaa sinua lopettamaan loputtoman selaamisen</string>
     <string name="accessibility_explainer_subtitle">Scrolless tarvitsee esteettömyysluvan havaitakseen ja pysäyttääkseen lyhyet videot.</string>
-    <string name="accessibility_explainer_title">Tarvitsemme esteettömyysluvan</string>
     <string name="accessibility_service_description">Tämä palvelu havaitsee, kun reels/shorts/tiktok avataan, jotta Scrolless voi estää ne, jos se on määritetty.</string>
     <string name="accessibility_success_description">Scrolless on nyt valmis!</string>
     <string name="accessibility_success_title">Valmista!</string>

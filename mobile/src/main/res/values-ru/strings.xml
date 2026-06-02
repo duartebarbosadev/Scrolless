@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Найдите приложения и нажмите на «Scrolless» в списке служб</string>
     <string name="accessibility_explainer_step3">Включите переключатель, чтобы Scrolless мог помочь вам остановить бесконечный скроллинг</string>
     <string name="accessibility_explainer_subtitle">Scrolless требуется доступ к специальным возможностям для обнаружения и остановки коротких видео.</string>
-    <string name="accessibility_explainer_title">Нам нужен доступ к специальным возможностям</string>
     <string name="accessibility_service_description">Эта служба определяет, когда открываются Reels/Shorts/TikTok, чтобы Scrolless мог их заблокировать, если это настроено.</string>
     <string name="accessibility_success_description">Scrolless готов к работе!</string>
     <string name="accessibility_success_title">Все готово!</string>

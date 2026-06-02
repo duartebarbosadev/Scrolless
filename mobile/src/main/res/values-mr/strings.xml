@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">सेवांच्या सूचीमध्ये ॲप्लिकेशन्स शोधा आणि \"Scrolless\" वर टॅप करा</string>
     <string name="accessibility_explainer_step3">तुम्हाला अंतहीन स्क्रोलिंग थांबविण्यात मदत करण्यासाठी Scrolless सक्षम करण्यासाठी स्विच ON करा</string>
     <string name="accessibility_explainer_subtitle">शॉर्ट व्हिडिओ शोधण्यासाठी आणि थांबवण्यासाठी Scrolless ला ॲक्सेसिबिलिटी ॲक्सेसची आवश्यकता आहे.</string>
-    <string name="accessibility_explainer_title">आम्हाला ॲक्सेसिबिलिटी ॲक्सेसची आवश्यकता आहे</string>
     <string name="accessibility_service_description">जेव्हा रील्स/शॉर्ट्स/टिकटॉक उघडले जातात, तेव्हा ही सेवा शोधते, जेणेकरून Scrolless, कॉन्फिगर केले असल्यास त्यांना ब्लॉक करू शकेल.</string>
     <string name="accessibility_success_description">Scrolless आता तयार आहे!</string>
     <string name="accessibility_success_title">सर्व सेट!</string>

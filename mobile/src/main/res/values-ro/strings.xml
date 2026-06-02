@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Găsiți aplicațiile și atingeți \"Scrolless\" în lista de servicii</string>
     <string name="accessibility_explainer_step3">Comutați butonul pe PORNIT pentru a permite Scrolless să vă ajute să opriți derularea fără sfârșit</string>
     <string name="accessibility_explainer_subtitle">Scrolless are nevoie de accesibilitate pentru a detecta și a opri videoclipurile scurte.</string>
-    <string name="accessibility_explainer_title">Avem nevoie de accesibilitate</string>
     <string name="accessibility_service_description">Acest serviciu detectează când sunt deschise reels/shorts/tiktok, astfel încât Scrolless să le poată bloca dacă este configurat.</string>
     <string name="accessibility_success_description">Scrolless este acum gata!</string>
     <string name="accessibility_success_title">Totul e gata!</string>

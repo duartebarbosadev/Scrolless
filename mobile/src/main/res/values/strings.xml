@@ -77,7 +77,7 @@
 
     <!-- Accessibility Explainer Dialog -->
     <string name="accessibility_explainer_icon_description">Accessibility Permission Icon</string>
-    <string name="accessibility_explainer_title">We Need Accessibility Access</string>
+    <string name="accessibility_explainer_title">Enable Accessibility Permission</string>
     <string name="accessibility_explainer_subtitle">Scrolless needs accessibility access to detect and stop short videos.</string>
     <string name="accessibility_explainer_step1">Tap \"Go to Settings\" below to open Android\'s Accessibility settings</string>
     <string name="accessibility_explainer_step2">Find applications and tap on \"Scrolless\" in the list of services</string>

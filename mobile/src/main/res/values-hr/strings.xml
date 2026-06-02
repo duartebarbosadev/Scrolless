@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Pronađite aplikacije i dodirnite \"Scrolless\" na popisu usluga</string>
     <string name="accessibility_explainer_step3">Prebacite prekidač na UKLJUČENO kako biste omogućili aplikaciji Scrolless da vam pomogne zaustaviti beskonačno skrolanje</string>
     <string name="accessibility_explainer_subtitle">Scrolless treba pristup pristupačnosti za otkrivanje i zaustavljanje kratkih videozapisa.</string>
-    <string name="accessibility_explainer_title">Trebamo pristup pristupačnosti</string>
     <string name="accessibility_service_description">Ova usluga otkriva kada se otvore Reels/Shorts/TikTok kako bi ih Scrolless mogao blokirati ako je konfigurirano.</string>
     <string name="accessibility_success_description">Scrolless je sada spreman!</string>
     <string name="accessibility_success_title">Sve je spremno!</string>

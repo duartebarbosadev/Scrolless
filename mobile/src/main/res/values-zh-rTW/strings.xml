@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">在服務清單中找到應用程式並點擊「Scrolless」</string>
     <string name="accessibility_explainer_step3">將開關切換為「開啟」以啟用 Scrolless，協助您停止無止盡的滑動</string>
     <string name="accessibility_explainer_subtitle">Scrolless 需要協助工具權限才能偵測並停止短影音。</string>
-    <string name="accessibility_explainer_title">我們需要協助工具權限</string>
     <string name="accessibility_service_description">此服務會偵測短影音/短片/TikTok 何時開啟，以便 Scrolless 在設定後將其封鎖。</string>
     <string name="accessibility_success_description">Scrolless 現已準備就緒！</string>
     <string name="accessibility_success_title">全部設定完成！</string>

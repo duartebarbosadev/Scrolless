@@ -25,7 +25,6 @@
     <string name="accessibility_explainer_step2">Zoek naar applicaties en tik op \"Scrolless\" in de lijst met services</string>
     <string name="accessibility_explainer_step3">Zet de schakelaar op AAN om Scrolless in te schakelen en eindeloos scrollen te stoppen</string>
     <string name="accessibility_explainer_subtitle">Scrolless heeft toegankelijkheidstoegang nodig om korte video\'s te detecteren en te stoppen.</string>
-    <string name="accessibility_explainer_title">We hebben toegankelijkheidstoegang nodig</string>
     <string name="accessibility_service_description">Deze service detecteert wanneer reels/shorts/tiktok worden geopend, zodat Scrolless ze kan blokkeren indien geconfigureerd.</string>
     <string name="accessibility_success_description">Scrolless is nu klaar!</string>
     <string name="accessibility_success_title">Alles ingesteld!</string>
