@@ -54,6 +54,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -150,7 +151,11 @@ fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded
                             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                         ) {
                             Text(
-                                text = stringResource(R.string.usage_analytics_session_count, sessionSegments.size),
+                                text = pluralStringResource(
+                                    R.plurals.usage_analytics_session_count,
+                                    sessionSegments.size,
+                                    sessionSegments.size,
+                                ),
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Medium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
