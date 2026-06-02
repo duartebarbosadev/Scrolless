@@ -270,19 +270,19 @@ private fun DebugDayTimelinePanel(
         val newSegments = mutableListOf<SessionSegment>()
         val numSegments = kotlin.random.Random.nextInt(3, 7)
         var currentMinute = kotlin.random.Random.nextInt(0, 120)
-        
+
         repeat(numSegments) {
             if (currentMinute >= DAY_TOTAL_MINUTES - 45) return@repeat
-            
+
             val gap = kotlin.random.Random.nextInt(60, 240)
             currentMinute += gap
             if (currentMinute >= DAY_TOTAL_MINUTES - 15) return@repeat
-            
+
             val remainingMinutes = DAY_TOTAL_MINUTES - currentMinute
             val maxDuration = minOf(60, remainingMinutes)
             if (maxDuration <= 5) return@repeat
             val durationMinutes = kotlin.random.Random.nextInt(5, maxDuration)
-            
+
             val app = apps[kotlin.random.Random.nextInt(apps.size)]
             val segment = SessionSegment(
                 app = app,
@@ -292,10 +292,9 @@ private fun DebugDayTimelinePanel(
             newSegments.add(segment)
             currentMinute += durationMinutes
         }
-        
+
         onUsageChanged((todaySegments + newSegments).sortedBy { it.startDateTime })
     }
-
 
     Card(
         modifier = modifier.heightIn(max = 460.dp),
