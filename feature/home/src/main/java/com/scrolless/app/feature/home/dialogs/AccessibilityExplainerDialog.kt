@@ -213,25 +213,7 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                     maxLines = 1,
                 )
             }
-            // Privacy Note
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
-                ),
-                shape = RoundedCornerShape(16.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.accessibility_explainer_privacy_note),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Light,
-                    modifier = Modifier.padding(12.dp),
-                )
-            }
 
-            Spacer(modifier = Modifier.height(12.dp))
             // Privacy Note
             Card(
                 modifier = Modifier.fillMaxWidth(),
