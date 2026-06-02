@@ -757,9 +757,9 @@ fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
 @Composable
 fun SettingsButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
-    val animatedVisibilityScope = LocalNavAnimatedContentScope.current
 
     val sharedBoundsModifier = if (sharedTransitionScope != null) {
+        val animatedVisibilityScope = LocalNavAnimatedContentScope.current
         with(sharedTransitionScope) {
             Modifier.sharedBounds(
                 sharedContentState = rememberSharedContentState(key = SETTINGS_TRANSITION_KEY),
