@@ -28,9 +28,9 @@
     <string name="accessibility_explainer_title">Wir benötigen Zugriff auf Bedienungshilfen</string>
     <string name="accessibility_success_description">Scrolless ist jetzt bereit!</string>
     <string name="accessibility_success_title">Alles bereit!</string>
-    <string name="block_all">Alle\nblockieren</string>
+    <string name="block_all">Alle\nBlockieren</string>
     <string name="close">Schließen</string>
-    <string name="daily_limit">Tages-\nlimit</string>
+    <string name="daily_limit">Tages-\nLimit</string>
     <string name="daily_limit_configure_time_content_description">Tageslimit-Zeit konfigurieren</string>
     <string name="feature_coming_soon">Funktion demnächst verfügbar</string>
     <string name="get_started">Los geht\'s</string>
@@ -71,7 +71,7 @@
     <string name="resume">Fortsetzen</string>
     <string name="settings">Einstellungen</string>
     <string name="success_icon_description">Häkchen-Symbol für Erfolg</string>
-    <string name="time_interval">Zeit-\nintervall</string>
+    <string name="time_interval">Zeit-\nIntervall</string>
     <string name="time_limit_dialog_title">Tägliches Zeitlimit festlegen</string>
     <string name="usage_analytics_average_month">Letzter Monat</string>
     <string name="usage_analytics_average_title">Durchschnitt</string>

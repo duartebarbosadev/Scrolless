@@ -28,9 +28,9 @@
     <string name="accessibility_explainer_title">Precisamos de acesso à acessibilidade</string>
     <string name="accessibility_success_description">O Scrolless está pronto!</string>
     <string name="accessibility_success_title">Tudo pronto!</string>
-    <string name="block_all">Bloquear\ntudo</string>
+    <string name="block_all">Bloquear\nTudo</string>
     <string name="close">Fechar</string>
-    <string name="daily_limit">Limite\ndiário</string>
+    <string name="daily_limit">Limite\nDiário</string>
     <string name="daily_limit_configure_time_content_description">Configurar tempo limite diário</string>
     <string name="feature_coming_soon">Funcionalidade em breve</string>
     <string name="get_started">Começar</string>
@@ -71,7 +71,7 @@
     <string name="resume">Retomar</string>
     <string name="settings">Definições</string>
     <string name="success_icon_description">Ícone de confirmação</string>
-    <string name="time_interval">Intervalo\nde tempo</string>
+    <string name="time_interval">Intervalo\nde Tempo</string>
     <string name="time_limit_dialog_title">Definir limite de tempo diário</string>
     <string name="usage_analytics_average_month">Último mês</string>
     <string name="usage_analytics_average_title">Média</string>

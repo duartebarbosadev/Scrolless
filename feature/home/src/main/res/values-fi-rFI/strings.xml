@@ -28,9 +28,9 @@
     <string name="accessibility_explainer_title">Tarvitsemme esteettömyysoikeudet</string>
     <string name="accessibility_success_description">Scrolless on nyt valmis!</string>
     <string name="accessibility_success_title">Kaikki valmista!</string>
-    <string name="block_all">Estä\nkaikki</string>
+    <string name="block_all">Estä\nKaikki</string>
     <string name="close">Sulje</string>
-    <string name="daily_limit">Päivittäinen\nraja</string>
+    <string name="daily_limit">Päivittäinen\nRaja</string>
     <string name="daily_limit_configure_time_content_description">Määritä päivittäinen aikaraja</string>
     <string name="feature_coming_soon">Ominaisuus tulossa pian</string>
     <string name="get_started">Aloita</string>

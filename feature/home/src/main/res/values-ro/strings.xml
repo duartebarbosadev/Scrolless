@@ -28,9 +28,9 @@
     <string name="accessibility_explainer_title">Avem nevoie de accesibilitate</string>
     <string name="accessibility_success_description">Scrolless este gata.</string>
     <string name="accessibility_success_title">Totul este pregătit</string>
-    <string name="block_all">Blochează\ntot</string>
+    <string name="block_all">Blochează\nTot</string>
     <string name="close">Închide</string>
-    <string name="daily_limit">Limită\nzilnică</string>
+    <string name="daily_limit">Limită\nZilnică</string>
     <string name="daily_limit_configure_time_content_description">Configurează timpul limitei zilnice</string>
     <string name="feature_coming_soon">Funcție disponibilă în curând</string>
     <string name="get_started">Începe</string>
@@ -71,7 +71,7 @@
     <string name="resume">Reia</string>
     <string name="settings">Setări</string>
     <string name="success_icon_description">Pictogramă bifă de succes</string>
-    <string name="time_interval">Interval\nde timp</string>
+    <string name="time_interval">Interval\nde Timp</string>
     <string name="time_limit_dialog_title">Setează timpul limitei zilnice</string>
     <string name="usage_analytics_average_month">Luna trecută</string>
     <string name="usage_analytics_average_title">Medie</string>

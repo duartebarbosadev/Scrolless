@@ -28,9 +28,9 @@
     <string name="accessibility_explainer_title">Erişilebilirlik erişimi gerekiyor</string>
     <string name="accessibility_success_description">Scrolless artık hazır!</string>
     <string name="accessibility_success_title">Her şey hazır!</string>
-    <string name="block_all">Tümünü\nengelle</string>
+    <string name="block_all">Tümünü\nEngelle</string>
     <string name="close">Kapat</string>
-    <string name="daily_limit">Günlük\nsınır</string>
+    <string name="daily_limit">Günlük\nSınır</string>
     <string name="daily_limit_configure_time_content_description">Günlük sınır süresini yapılandır</string>
     <string name="feature_coming_soon">Özellik yakında geliyor</string>
     <string name="get_started">Başla</string>
@@ -71,7 +71,7 @@
     <string name="resume">Devam et</string>
     <string name="settings">Ayarlar</string>
     <string name="success_icon_description">Başarılı onay işareti simgesi</string>
-    <string name="time_interval">Zaman\naralığı</string>
+    <string name="time_interval">Zaman\nAralığı</string>
     <string name="time_limit_dialog_title">Günlük sınır süresini ayarla</string>
     <string name="usage_analytics_average_month">Geçen ay</string>
     <string name="usage_analytics_average_title">Ortalama</string>

@@ -28,9 +28,9 @@
     <string name="accessibility_explainer_title">Necesitamos acceso a Accesibilidad</string>
     <string name="accessibility_success_description">Scrolless ya está listo.</string>
     <string name="accessibility_success_title">Todo listo</string>
-    <string name="block_all">Bloquear\ntodo</string>
+    <string name="block_all">Bloquear\nTodo</string>
     <string name="close">Cerrar</string>
-    <string name="daily_limit">Límite\ndiario</string>
+    <string name="daily_limit">Límite\nDiario</string>
     <string name="daily_limit_configure_time_content_description">Configurar el tiempo del límite diario</string>
     <string name="feature_coming_soon">Función próximamente</string>
     <string name="get_started">Empezar</string>
@@ -71,7 +71,7 @@
     <string name="resume">Reanudar</string>
     <string name="settings">Ajustes</string>
     <string name="success_icon_description">Icono de confirmación correcta</string>
-    <string name="time_interval">Intervalo\nde tiempo</string>
+    <string name="time_interval">Intervalo\nde Tiempo</string>
     <string name="time_limit_dialog_title">Definir tiempo del límite diario</string>
     <string name="usage_analytics_average_month">Último mes</string>
     <string name="usage_analytics_average_title">Promedio</string>
