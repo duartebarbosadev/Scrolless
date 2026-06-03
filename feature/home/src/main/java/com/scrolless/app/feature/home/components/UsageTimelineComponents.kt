@@ -83,8 +83,6 @@ import com.scrolless.app.feature.home.UsageAnalyticsUiState
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 val ANALYTICS_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("EEE, MMM d")
 val ANALYTICS_TIME_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
@@ -235,7 +233,10 @@ fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
-                UsageTimelineCanvas(sessionSegments = sessionSegments)
+                UsageTimelineCanvas(
+                    sessionSegments = sessionSegments,
+                    selectedDate = analytics.selectedDate,
+                )
                 if (sessionSegments.isNotEmpty()) {
                     AnimatedVisibility(
                         visible = sessionChunksExpanded,
@@ -258,27 +259,19 @@ fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded
 }
 
 @Composable
-fun UsageTimelineCanvas(sessionSegments: List<SessionSegment>) {
+fun UsageTimelineCanvas(sessionSegments: List<SessionSegment>, selectedDate: LocalDate) {
     val outline = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
     val trackColor = MaterialTheme.colorScheme.surface
 
-    // Animatable progress for each segment to stagger growth
-    val animatedProgressList = remember(sessionSegments) {
-        sessionSegments.map { Animatable(0f) }
-    }
-    LaunchedEffect(sessionSegments) {
-        animatedProgressList.forEachIndexed { index, animatable ->
-            launch {
-                delay(index * 15L) // 15ms stagger delay
-                animatable.animateTo(
-                    targetValue = 1f,
-                    animationSpec = spring(
-                        stiffness = Spring.StiffnessLow,
-                        dampingRatio = Spring.DampingRatioMediumBouncy,
-                    ),
-                )
-            }
-        }
+    val transitionProgress = remember(selectedDate) { Animatable(0f) }
+    LaunchedEffect(selectedDate) {
+        transitionProgress.animateTo(
+            targetValue = 1f,
+            animationSpec = spring(
+                stiffness = Spring.StiffnessLow,
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+            ),
+        )
     }
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -307,7 +300,7 @@ fun UsageTimelineCanvas(sessionSegments: List<SessionSegment>) {
             }
 
             sessionSegments.forEachIndexed { index, segment ->
-                val progress = animatedProgressList.getOrNull(index)?.value ?: 1f
+                val progress = (transitionProgress.value * (1f + index * 0.05f) - index * 0.05f).coerceAtLeast(0f)
                 val startMinutes = segment.startDateTime.toLocalTime().toSecondOfDay() / 60f
                 val durationMinutes = TimeUnit.MILLISECONDS.toMinutes(segment.durationMillis).coerceAtLeast(1).toFloat()
                 val startX = size.width * (startMinutes / 1440f)

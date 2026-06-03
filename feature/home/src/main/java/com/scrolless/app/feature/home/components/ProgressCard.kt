@@ -205,6 +205,13 @@ fun ProgressCard(
                     dampingRatio = Spring.DampingRatioNoBouncy,
                 ),
             )
+        } else if (cardScale.value != 1f) {
+            cardScale.animateTo(
+                targetValue = 1f,
+                animationSpec = spring(
+                    stiffness = Spring.StiffnessLow,
+                ),
+            )
         }
     }
 
