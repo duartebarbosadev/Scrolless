@@ -18,7 +18,10 @@ package com.scrolless.app.feature.home.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -45,7 +48,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -228,7 +233,10 @@ fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
-                UsageTimelineCanvas(sessionSegments = sessionSegments)
+                UsageTimelineCanvas(
+                    sessionSegments = sessionSegments,
+                    selectedDate = analytics.selectedDate,
+                )
                 if (sessionSegments.isNotEmpty()) {
                     AnimatedVisibility(
                         visible = sessionChunksExpanded,
@@ -251,9 +259,20 @@ fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded
 }
 
 @Composable
-fun UsageTimelineCanvas(sessionSegments: List<SessionSegment>) {
+fun UsageTimelineCanvas(sessionSegments: List<SessionSegment>, selectedDate: LocalDate) {
     val outline = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
     val trackColor = MaterialTheme.colorScheme.surface
+
+    val transitionProgress = remember(selectedDate) { Animatable(0f) }
+    LaunchedEffect(selectedDate) {
+        transitionProgress.animateTo(
+            targetValue = 1f,
+            animationSpec = spring(
+                stiffness = Spring.StiffnessLow,
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+            ),
+        )
+    }
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Canvas(
@@ -280,15 +299,20 @@ fun UsageTimelineCanvas(sessionSegments: List<SessionSegment>) {
                 )
             }
 
-            sessionSegments.forEach { segment ->
+            sessionSegments.forEachIndexed { index, segment ->
+                val progress = (transitionProgress.value * (1f + index * 0.05f) - index * 0.05f).coerceAtLeast(0f)
                 val startMinutes = segment.startDateTime.toLocalTime().toSecondOfDay() / 60f
                 val durationMinutes = TimeUnit.MILLISECONDS.toMinutes(segment.durationMillis).coerceAtLeast(1).toFloat()
                 val startX = size.width * (startMinutes / 1440f)
                 val width = (size.width * (durationMinutes / 1440f)).coerceAtLeast(4.dp.toPx())
+
+                val animatedHeight = trackHeight * progress
+                val animatedTop = trackTop + (trackHeight - animatedHeight) / 2f
+
                 drawRoundRect(
                     color = segment.app.analyticsColor(),
-                    topLeft = Offset(startX, trackTop),
-                    size = Size(width.coerceAtMost(size.width - startX), trackHeight),
+                    topLeft = Offset(startX, animatedTop),
+                    size = Size(width.coerceAtMost(size.width - startX), animatedHeight),
                     cornerRadius = CornerRadius(trackHeight / 2f, trackHeight / 2f),
                 )
             }

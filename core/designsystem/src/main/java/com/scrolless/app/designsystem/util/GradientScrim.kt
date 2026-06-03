@@ -92,7 +92,7 @@ fun Modifier.radialGradientScrim(
     }
     val baseAlpha = max(blendedBase.alpha, 0.38f)
     val highlightMix = (0.85f - (clampedAccentStrength * 0.15f)).coerceIn(0.65f, 0.9f)
-    
+
     val holoPalette = listOf(
         holographicElectricSky,
         holographicVioletGlow,
