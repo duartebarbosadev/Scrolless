@@ -87,22 +87,36 @@ fun Modifier.radialGradientScrim(
     } else {
         baseColor
     }
-    val baseAlpha = max(blendedBase.alpha, 0.32f)
-    val highlightMix = (0.48f - (clampedAccentStrength * 0.12f)).coerceIn(0.28f, 0.55f)
-    val palette = listOf(
-        blendedBase.copy(alpha = baseAlpha),
+    val baseAlpha = max(blendedBase.alpha, 0.38f)
+    val highlightMix = (0.85f - (clampedAccentStrength * 0.15f)).coerceIn(0.65f, 0.9f)
+    
+    val holoPalette = listOf(
         lerp(blendedBase, Color(0xFF58C7FF), highlightMix).copy(alpha = baseAlpha), // electric sky
         lerp(blendedBase, Color(0xFF9C7BFF), highlightMix).copy(alpha = baseAlpha), // violet glow
         lerp(blendedBase, Color(0xFF5DFFB3), highlightMix).copy(alpha = baseAlpha), // neon mint
-        blendedBase.copy(alpha = baseAlpha * 0.9f),
+        lerp(blendedBase, Color(0xFF58C7FF), highlightMix).copy(alpha = baseAlpha), // electric sky (loop)
     )
+
+    val palette = if (accentColor != null) {
+        val statusPalette = listOf(
+            accentColor.copy(alpha = baseAlpha),
+            lerp(accentColor, Color.White, 0.25f).copy(alpha = baseAlpha),
+            lerp(accentColor, Color.Black, 0.15f).copy(alpha = baseAlpha),
+            accentColor.copy(alpha = baseAlpha)
+        )
+        holoPalette.zip(statusPalette) { holoColor, statusColor ->
+            lerp(holoColor, statusColor, clampedAccentStrength)
+        }
+    } else {
+        holoPalette
+    }
     val animatedColor = lerpPalette(
         palette = palette,
         fraction = 0.2f + (tintShift * 0.8f),
     )
     val innerAlpha = (baseAlpha * (0.82f + pulse * 0.6f) * (0.85f + (clampedAccentStrength * 0.35f)))
-        .coerceAtMost(0.4f)
-    val midAlpha = (innerAlpha * 0.45f).coerceAtMost(0.22f)
+        .coerceAtMost(0.48f)
+    val midAlpha = (innerAlpha * 0.5f).coerceAtMost(0.28f)
 
     val radialGradient = object : ShaderBrush() {
         override fun createShader(size: Size): Shader {
