@@ -72,7 +72,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.graphicsLayer
@@ -138,33 +137,16 @@ fun TodayBlockingControls(
     val isIntervalPressed by intervalInteractionSource.collectIsPressedAsState()
 
     // Helper to evaluate target weight based on click/press states
-    fun weightFor(button: BlockingButtonType): Float {
-        val isPressedOrClicked = when (button) {
-            BlockingButtonType.BLOCK_ALL -> isBlockAllPressed || lastClicked == BlockingButtonType.BLOCK_ALL
-            BlockingButtonType.DAILY_LIMIT -> isDailyLimitPressed || lastClicked == BlockingButtonType.DAILY_LIMIT
-            BlockingButtonType.INTERVAL -> isIntervalPressed || lastClicked == BlockingButtonType.INTERVAL
-        }
-        if (isPressedOrClicked) return weightExpanded
+    fun isPressedOrClicked(button: BlockingButtonType): Boolean = when (button) {
+        BlockingButtonType.BLOCK_ALL -> isBlockAllPressed || lastClicked == BlockingButtonType.BLOCK_ALL
+        BlockingButtonType.DAILY_LIMIT -> isDailyLimitPressed || lastClicked == BlockingButtonType.DAILY_LIMIT
+        BlockingButtonType.INTERVAL -> isIntervalPressed || lastClicked == BlockingButtonType.INTERVAL
+    }
 
-        val isAnyOtherPressedOrClicked = when (button) {
-            BlockingButtonType.BLOCK_ALL -> {
-                (isDailyLimitPressed || lastClicked == BlockingButtonType.DAILY_LIMIT) ||
-                    (isIntervalPressed || lastClicked == BlockingButtonType.INTERVAL)
-            }
-
-            BlockingButtonType.DAILY_LIMIT -> {
-                (isBlockAllPressed || lastClicked == BlockingButtonType.BLOCK_ALL) ||
-                    (isIntervalPressed || lastClicked == BlockingButtonType.INTERVAL)
-            }
-
-            BlockingButtonType.INTERVAL -> {
-                (isBlockAllPressed || lastClicked == BlockingButtonType.BLOCK_ALL) ||
-                    (isDailyLimitPressed || lastClicked == BlockingButtonType.DAILY_LIMIT)
-            }
-        }
-        if (isAnyOtherPressedOrClicked) return weightShrunk
-
-        return weightBase
+    fun weightFor(button: BlockingButtonType): Float = when {
+        isPressedOrClicked(button) -> weightExpanded
+        BlockingButtonType.entries.any { isPressedOrClicked(it) } -> weightShrunk
+        else -> weightBase
     }
 
     // 2. Calculate Animated Weights (Float) based on interaction and click states
@@ -243,28 +225,19 @@ fun TodayBlockingControls(
                 animationSpec = tween(300),
             ) + fadeOut(animationSpec = tween(200)),
         ) {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Spacer(modifier = Modifier.weight(blockAllWeight))
-                Box(
-                    modifier = Modifier
-                        .weight(dailyLimitWeight)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.TopCenter,
-                ) {
-                    ConfigButton(
-                        onClick = {
-                            Timber.d("Open DailyLimit config button clicked")
-                            onConfigureDailyLimit()
-                        },
-                        dailyLimitInteractionSource = dailyLimitInteractionSource,
-                        blockAllInteractionSource = blockAllInteractionSource,
-                        lastClicked = lastClicked,
-                        modifier = Modifier
-                            .fillMaxWidth(0.6f)
-                            .align(Alignment.Center),
-                    )
-                }
-                Spacer(modifier = Modifier.weight(intervalWeight))
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                ConfigButton(
+                    onClick = {
+                        Timber.d("Open DailyLimit config button clicked")
+                        onConfigureDailyLimit()
+                    },
+                    dailyLimitInteractionSource = dailyLimitInteractionSource,
+                    blockAllInteractionSource = blockAllInteractionSource,
+                    modifier = Modifier.fillMaxWidth(0.2f),
+                )
             }
         }
 
@@ -329,28 +302,14 @@ fun ConfigButton(
     onClick: () -> Unit,
     dailyLimitInteractionSource: MutableInteractionSource,
     blockAllInteractionSource: MutableInteractionSource,
-    lastClicked: BlockingButtonType?,
     modifier: Modifier = Modifier,
 ) {
     // Collect pressed state from both sources
     val isDailyLimitPressed by dailyLimitInteractionSource.collectIsPressedAsState()
     val isBlockAllPressed by blockAllInteractionSource.collectIsPressedAsState()
 
-    // Wiggle if EITHER linked button is pressed or was last clicked
-    val isPressed = isDailyLimitPressed || isBlockAllPressed ||
-        lastClicked == BlockingButtonType.DAILY_LIMIT ||
-        lastClicked == BlockingButtonType.BLOCK_ALL
-
-    // Animate rotation on composition
-    var rotationAngle by remember { mutableStateOf(0f) }
-    LaunchedEffect(Unit) {
-        rotationAngle = 360f
-    }
-    val animatedRotation by animateFloatAsState(
-        targetValue = rotationAngle,
-        animationSpec = spring(stiffness = Spring.StiffnessLow, dampingRatio = Spring.DampingRatioMediumBouncy),
-        label = "configIconRotation",
-    )
+    // Wiggle if EITHER linked button is actively pressed
+    val isPressed = isDailyLimitPressed || isBlockAllPressed
 
     // Fast tweens for visual feedback
     val animationSpec = tween<Float>(durationMillis = 100)
@@ -386,8 +345,7 @@ fun ConfigButton(
             contentDescription = stringResource(id = R.string.daily_limit_configure_time_content_description),
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight()
-                .rotate(animatedRotation),
+                .fillMaxHeight(),
         )
     }
 }

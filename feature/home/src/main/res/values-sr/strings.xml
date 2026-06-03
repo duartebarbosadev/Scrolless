@@ -28,9 +28,9 @@
     <string name="accessibility_explainer_title">Потребан нам је приступ приступачности</string>
     <string name="accessibility_success_description">Scrolless је сада спреман.</string>
     <string name="accessibility_success_title">Све је спремно</string>
-    <string name="block_all">Блокирај\nсве</string>
+    <string name="block_all">Блокирај\nСве</string>
     <string name="close">Затвори</string>
-    <string name="daily_limit">Дневни\nлимит</string>
+    <string name="daily_limit">Дневни\nЛимит</string>
     <string name="daily_limit_configure_time_content_description">Подесите време дневног лимита</string>
     <string name="feature_coming_soon">Функција ускоро стиже</string>
     <string name="get_started">Започни</string>
@@ -71,7 +71,7 @@
     <string name="resume">Настави</string>
     <string name="settings">Подешавања</string>
     <string name="success_icon_description">Икона успешне потврде</string>
-    <string name="time_interval">Временски\nинтервал</string>
+    <string name="time_interval">Временски\nИнтервал</string>
     <string name="time_limit_dialog_title">Подесите време дневног лимита</string>
     <string name="usage_analytics_average_month">Прошлог месеца</string>
     <string name="usage_analytics_average_title">Просек</string>

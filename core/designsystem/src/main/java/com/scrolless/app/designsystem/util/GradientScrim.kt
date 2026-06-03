@@ -92,13 +92,16 @@ fun Modifier.radialGradientScrim(
     }
     val baseAlpha = max(blendedBase.alpha, 0.38f)
     val highlightMix = (0.85f - (clampedAccentStrength * 0.15f)).coerceIn(0.65f, 0.9f)
-    
+
     val holoPalette = listOf(
-        lerp(blendedBase, holographicElectricSky, highlightMix).copy(alpha = baseAlpha), // electric sky
-        lerp(blendedBase, holographicVioletGlow, highlightMix).copy(alpha = baseAlpha), // violet glow
-        lerp(blendedBase, holographicNeonMint, highlightMix).copy(alpha = baseAlpha), // neon mint
-        lerp(blendedBase, holographicElectricSky, highlightMix).copy(alpha = baseAlpha), // electric sky (loop)
-    )
+        holographicElectricSky,
+        holographicVioletGlow,
+        holographicNeonMint,
+        holographicElectricSky
+    ).map { color ->
+        lerp(blendedBase, color, highlightMix).copy(alpha = baseAlpha)
+    }
+
 
     val palette = if (accentColor != null) {
         val statusPalette = listOf(

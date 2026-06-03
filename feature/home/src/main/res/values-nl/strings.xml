@@ -28,9 +28,9 @@
     <string name="accessibility_explainer_title">We hebben toegankelijkheidstoegang nodig</string>
     <string name="accessibility_success_description">Scrolless is nu klaar!</string>
     <string name="accessibility_success_title">Alles klaar!</string>
-    <string name="block_all">Alles\nblokkeren</string>
+    <string name="block_all">Alles\nBlokkeren</string>
     <string name="close">Sluiten</string>
-    <string name="daily_limit">Dagelijkse\nlimiet</string>
+    <string name="daily_limit">Dagelijkse\nLimiet</string>
     <string name="daily_limit_configure_time_content_description">Configureer dagelijkse limiettijd</string>
     <string name="feature_coming_soon">Functie komt binnenkort</string>
     <string name="get_started">Beginnen</string>
@@ -71,7 +71,7 @@
     <string name="resume">Hervatten</string>
     <string name="settings">Instellingen</string>
     <string name="success_icon_description">Vinkje voor succes</string>
-    <string name="time_interval">Tijds\ninterval</string>
+    <string name="time_interval">Tijds\nInterval</string>
     <string name="time_limit_dialog_title">Dagelijkse limiettijd instellen</string>
     <string name="usage_analytics_average_month">Vorige maand</string>
     <string name="usage_analytics_average_title">Gemiddelde</string>

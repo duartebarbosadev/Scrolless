@@ -30,7 +30,7 @@
     <string name="accessibility_success_title">Tout est prêt !</string>
     <string name="block_all">Bloquer\nTout</string>
     <string name="close">Fermer</string>
-    <string name="daily_limit">Limite\nquotidienne</string>
+    <string name="daily_limit">Limite\nQuotidienne</string>
     <string name="daily_limit_configure_time_content_description">Configurer la limite de temps quotidienne</string>
     <string name="feature_coming_soon">Fonctionnalité à venir</string>
     <string name="get_started">Commencer</string>
@@ -71,7 +71,7 @@
     <string name="resume">Reprendre</string>
     <string name="settings">Paramètres</string>
     <string name="success_icon_description">Icône de validation</string>
-    <string name="time_interval">Intervalle\nde temps</string>
+    <string name="time_interval">Intervalle\nde Temps</string>
     <string name="time_limit_dialog_title">Définir la limite de temps quotidienne</string>
     <string name="usage_analytics_average_month">Le mois dernier</string>
     <string name="usage_analytics_average_title">Moyenne</string>
