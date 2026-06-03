@@ -19,6 +19,9 @@ package com.scrolless.app.feature.home.components
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -53,6 +56,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -181,6 +185,29 @@ fun ProgressCard(
         BlockOption.IntervalTimer -> timeLimit in 1..intervalUsage && !intervalResetReady
         else -> false
     }
+
+    // Card Exceeded Bounce animation
+    val cardScale = remember { Animatable(1f) }
+    LaunchedEffect(isLimitReached) {
+        if (isLimitReached) {
+            // Quick overshoot bounce
+            cardScale.animateTo(
+                targetValue = 1.08f,
+                animationSpec = spring(
+                    stiffness = Spring.StiffnessMedium,
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                ),
+            )
+            cardScale.animateTo(
+                targetValue = 1f,
+                animationSpec = spring(
+                    stiffness = Spring.StiffnessLow,
+                    dampingRatio = Spring.DampingRatioNoBouncy,
+                ),
+            )
+        }
+    }
+
     val limitChipBackground by animateColorAsState(
         targetValue = if (isLimitReached) {
             progressbar_red_use.copy(alpha = 0.16f)
@@ -215,6 +242,10 @@ fun ProgressCard(
     ) {
         Card(
             modifier = Modifier
+                .graphicsLayer(
+                    scaleX = cardScale.value,
+                    scaleY = cardScale.value,
+                )
                 .size(220.dp)
                 .padding(16.dp)
                 .clickable(onClick = onClick),
@@ -226,6 +257,7 @@ fun ProgressCard(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
             ) {
+
                 SegmentedCircularProgressIndicator(
                     modifier = Modifier.size(180.dp),
                     segments = progressBarSegments,
