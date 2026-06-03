@@ -18,6 +18,7 @@ package com.scrolless.app.feature.home
 
 import android.accessibilityservice.AccessibilityService
 import android.app.Activity
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateColorAsState
@@ -45,7 +46,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
@@ -55,15 +58,21 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -72,11 +81,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -85,6 +92,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -104,7 +112,6 @@ import com.scrolless.app.designsystem.theme.progressbar_orange_use
 import com.scrolless.app.designsystem.theme.progressbar_red_use
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.designsystem.util.radialGradientScrim
-import com.scrolless.app.feature.home.components.ANALYTICS_DATE_FORMATTER
 import com.scrolless.app.feature.home.components.InlineUsageAnalyticsPanel
 import com.scrolless.app.feature.home.components.ProgressCard
 import com.scrolless.app.feature.home.components.TodayBlockingControls
@@ -120,7 +127,10 @@ import com.scrolless.app.feature.home.dialogs.IntervalTimerDialog
 import com.scrolless.app.feature.home.dialogs.TimeLimitDialog
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -129,6 +139,7 @@ import timber.log.Timber
 
 private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
 private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)
+private val HEADER_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("MMM d")
 
 @Composable
 fun HomeScreen(
@@ -480,7 +491,6 @@ private fun HomeContent(
     val pagerState = rememberPagerState(initialPage = selectedPage, pageCount = { pageCount.coerceAtLeast(1) })
 
     // Screen-wide horizontal drags manually move only the progress-card pager.
-    var hasDismissedSwipeHint by rememberSaveable { mutableStateOf(false) }
     val dateSwipeThresholdPx = with(LocalDensity.current) { 32.dp.toPx() }
     val coroutineScope = rememberCoroutineScope()
 
@@ -520,7 +530,6 @@ private fun HomeContent(
                 selectedPage = selectedPage,
                 coroutineScope = coroutineScope,
                 onUsageAnalyticsDateSelected = onUsageAnalyticsDateSelected,
-                onSwipeStart = { hasDismissedSwipeHint = true },
             )
             .padding(horizontal = 16.dp),
     ) {
@@ -535,10 +544,10 @@ private fun HomeContent(
             UsageOverviewHeader(
                 uiState = uiState,
                 analytics = analytics,
-                isViewingToday = analytics.selectedDate == analytics.today,
-                showDateSwipeHint = !hasDismissedSwipeHint && pageCount > 1,
                 pagerState = pagerState,
                 todayPage = todayPage,
+                selectedPage = selectedPage,
+                onUsageAnalyticsDateSelected = onUsageAnalyticsDateSelected,
                 onUsageAnalyticsTodaySelected = onUsageAnalyticsTodaySelected,
                 onHelpClicked = onHelpClicked,
                 onNavigateToSettings = onNavigateToSettings,
@@ -614,21 +623,62 @@ private fun UsageOverviewHeader(
     modifier: Modifier = Modifier,
     uiState: HomeUiState,
     analytics: UsageAnalyticsUiState,
-    isViewingToday: Boolean,
-    showDateSwipeHint: Boolean,
     pagerState: PagerState,
     todayPage: Int,
+    selectedPage: Int,
+    onUsageAnalyticsDateSelected: (LocalDate) -> Unit,
     onUsageAnalyticsTodaySelected: () -> Unit,
     onHelpClicked: () -> Unit,
     onNavigateToSettings: () -> Unit,
 ) {
-    Box(
+    Column(
         modifier = modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp),
+        ) {
+            if (todayPage > 0) {
+                DateNavigator(
+                    selectedDate = analytics.selectedDate,
+                    today = analytics.today,
+                    canGoBack = selectedPage > 0,
+                    canGoForward = selectedPage < todayPage,
+                    onDateClick = onUsageAnalyticsTodaySelected,
+                    onPrevious = {
+                        val targetPage = (selectedPage - 1).coerceAtLeast(0)
+                        onUsageAnalyticsDateSelected(pageDateForPage(targetPage, analytics.today, todayPage))
+                    },
+                    onNext = {
+                        val targetPage = (selectedPage + 1).coerceAtMost(todayPage)
+                        onUsageAnalyticsDateSelected(pageDateForPage(targetPage, analytics.today, todayPage))
+                    },
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(start = 8.dp),
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                HelpButton(
+                    onClick = onHelpClicked,
+                )
+
+                SettingsButton(
+                    onClick = onNavigateToSettings,
+                )
+            }
+        }
+
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.padding(top = 16.dp),
             beyondViewportPageCount = 1,
             userScrollEnabled = false,
         ) { page ->
@@ -639,11 +689,6 @@ private fun UsageOverviewHeader(
                 analyticsForDate(analytics = analytics, date = pageDate)
             }
             val isTodayPage = pageDate == analytics.today
-            val dateLabel = if (isTodayPage) {
-                stringResource(R.string.usage_analytics_today)
-            } else {
-                pageDate.format(ANALYTICS_DATE_FORMATTER)
-            }
 
             ProgressCard(
                 blockOption = if (isTodayPage) uiState.blockOption else BlockOption.NothingSelected,
@@ -654,38 +699,111 @@ private fun UsageOverviewHeader(
                 intervalLength = if (isTodayPage) uiState.intervalLength else 0L,
                 intervalWindowStart = if (isTodayPage) uiState.intervalWindowStart else 0L,
                 listSessionSegments = if (isTodayPage) uiState.listSessionSegments else pageAnalytics.sessionSegments,
-                dateLabel = dateLabel,
-                showDateSwipeHint = showDateSwipeHint,
                 onClick = onUsageAnalyticsTodaySelected,
             )
         }
+    }
+}
 
-        AnimatedVisibility(
-            visible = !isViewingToday,
-            enter = fadeIn(animationSpec = tween(180)) + expandVertically(animationSpec = tween(240)),
-            exit = fadeOut(animationSpec = tween(140)) + shrinkVertically(animationSpec = tween(180)),
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(8.dp, 8.dp, 0.dp, 8.dp),
-        ) {
-            TodayShortcutButton(onClick = onUsageAnalyticsTodaySelected)
-        }
+@Composable
+private fun DateNavigator(
+    selectedDate: LocalDate,
+    today: LocalDate,
+    canGoBack: Boolean,
+    canGoForward: Boolean,
+    onDateClick: () -> Unit,
+    onPrevious: () -> Unit,
+    onNext: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val dateLabel = if (selectedDate == today) {
+        stringResource(R.string.usage_analytics_today)
+    } else {
+        selectedDate.formatHeaderDate()
+    }
 
+    Surface(
+        modifier = modifier.height(40.dp),
+        shape = RoundedCornerShape(20.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.52f),
+        contentColor = MaterialTheme.colorScheme.onSurface,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.1f)),
+        tonalElevation = 1.dp,
+    ) {
         Row(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(8.dp, 8.dp, 0.dp, 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.padding(horizontal = 2.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            HelpButton(
-                onClick = onHelpClicked,
-            )
-
-            SettingsButton(
-                onClick = onNavigateToSettings,
-            )
+            if (canGoBack) {
+                DateNavButton(
+                    onClick = onPrevious,
+                    icon = {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                            contentDescription = stringResource(R.string.usage_analytics_previous_day),
+                        )
+                    },
+                )
+            }
+            AnimatedContent(
+                targetState = dateLabel,
+                label = "selectedDateLabel",
+            ) { label ->
+                Text(
+                    text = label,
+                    modifier = Modifier
+                        .widthIn(max = 128.dp)
+                        .clickable(
+                            enabled = selectedDate != today,
+                            onClick = onDateClick,
+                        )
+                        .padding(horizontal = 10.dp, vertical = 8.dp),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.88f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            if (canGoForward) {
+                DateNavButton(
+                    onClick = onNext,
+                    icon = {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            contentDescription = stringResource(R.string.usage_analytics_next_day),
+                        )
+                    },
+                )
+            }
         }
     }
+}
+
+@Composable
+private fun DateNavButton(onClick: () -> Unit, icon: @Composable () -> Unit) {
+    IconButton(
+        onClick = onClick,
+        modifier = Modifier.size(34.dp),
+    ) {
+        val contentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f)
+        Box(modifier = Modifier.size(22.dp)) {
+            CompositionLocalProvider(LocalContentColor provides contentColor) {
+                icon()
+            }
+        }
+    }
+}
+
+private fun LocalDate.formatHeaderDate(): String {
+    val locale = Locale.getDefault()
+    val weekday = dayOfWeek.getDisplayName(TextStyle.FULL, locale)
+    val compactWeekday = if (weekday.length <= 4) {
+        weekday
+    } else {
+        "${weekday.take(3)}."
+    }
+    return "$compactWeekday, ${format(HEADER_DATE_FORMATTER.withLocale(locale))}"
 }
 
 @Composable
@@ -715,34 +833,6 @@ private fun rememberPauseRemainingTime(pauseUntilMillis: Long): Long {
     }
 
     return remaining
-}
-
-@Composable
-private fun TodayShortcutButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier
-            .height(36.dp)
-            .clip(RoundedCornerShape(18.dp))
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(18.dp),
-        color = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.72f),
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
-        tonalElevation = 2.dp,
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 14.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-        ) {
-            Text(
-                text = stringResource(R.string.usage_analytics_today),
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-            )
-        }
-    }
 }
 
 @Composable
@@ -827,7 +917,6 @@ fun Modifier.dateSwipeGesture(
     selectedPage: Int,
     coroutineScope: kotlinx.coroutines.CoroutineScope,
     onUsageAnalyticsDateSelected: (LocalDate) -> Unit,
-    onSwipeStart: () -> Unit,
 ): Modifier = this.pointerInput(pagerState, dateSwipeThresholdPx, selectedPage, analytics.selectedDate) {
     var totalDragX = 0f
     var dragStartPage = selectedPage
@@ -835,7 +924,6 @@ fun Modifier.dateSwipeGesture(
         onDragStart = {
             totalDragX = 0f
             dragStartPage = selectedPage
-            onSwipeStart()
         },
         onHorizontalDrag = { change, dragAmount ->
             change.consume()

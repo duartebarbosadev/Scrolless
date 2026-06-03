@@ -276,8 +276,8 @@ private fun calculateSegments(appUsageData: List<ProgressBarSegment>, totalSweep
 fun AppUsageLegend(items: List<LegendItem>, modifier: Modifier = Modifier) {
     FlowRow(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(14.dp, Alignment.CenterHorizontally),
+        verticalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         items.forEach { item ->
             LegendEntry(item = item)

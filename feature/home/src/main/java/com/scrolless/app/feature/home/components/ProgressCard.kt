@@ -16,18 +16,11 @@
  */
 package com.scrolless.app.feature.home.components
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -98,8 +91,6 @@ fun ProgressCard(
     intervalWindowStart: Long,
     modifier: Modifier = Modifier,
     listSessionSegments: List<SessionSegment> = emptyList(),
-    dateLabel: String? = null,
-    showDateSwipeHint: Boolean = false,
     onClick: () -> Unit = {},
 ) {
     val clampedProgress = progress.coerceIn(0, 100)
@@ -332,44 +323,6 @@ fun ProgressCard(
                 .fillMaxWidth()
                 .padding(top = 8.dp),
         )
-
-        if (dateLabel != null) {
-            Column(
-                modifier = Modifier.padding(top = 6.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Surface(
-                    shape = RoundedCornerShape(14.dp),
-                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
-                ) {
-                    AnimatedContent(
-                        targetState = dateLabel,
-                        label = "progressDateLabel",
-                    ) { label ->
-                        Text(
-                            text = label,
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        )
-                    }
-                }
-                AnimatedVisibility(
-                    visible = showDateSwipeHint,
-                    enter = fadeIn(animationSpec = tween(180)) + expandVertically(animationSpec = tween(180)),
-                    exit = fadeOut(animationSpec = tween(140)) + shrinkVertically(animationSpec = tween(160)),
-                ) {
-                    Text(
-                        text = stringResource(R.string.usage_analytics_swipe_hint),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f),
-                        modifier = Modifier.padding(top = 4.dp),
-                        maxLines = 1,
-                    )
-                }
-            }
-        }
     }
 }
 
@@ -458,12 +411,13 @@ private fun buildLegendItems(progressBarSegments: List<ProgressBarSegment>): Lis
         if (totalMillis <= 0L) {
             return@mapNotNull null
         }
-        LegendItem(
+        totalMillis to LegendItem(
             legendName = segmentName,
             formattedTime = totalMillis.formatTime(),
             color = segments.first().color,
         )
-    }
+    }.sortedByDescending { it.first }
+        .map { it.second }
 
 @DevicePreviews
 @Composable
@@ -483,8 +437,6 @@ fun ProgressCardPreview() {
                     SessionSegment(BlockableApp.REELS, 1200000L, java.time.LocalDateTime.now()),
                     SessionSegment(BlockableApp.FACEBOOK, 600000L, java.time.LocalDateTime.now()),
                 ),
-                dateLabel = "Today",
-                showDateSwipeHint = true,
             )
         }
     }
