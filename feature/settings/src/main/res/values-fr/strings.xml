@@ -27,6 +27,6 @@
     </plurals>
     <string name="settings_except_reels_sent_by_dms_description">Ne pas bloquer les Reels envoyés par messages directs.</string>
     <string name="settings_except_reels_sent_by_dms_title">Reels envoyés par messages directs</string>
-    <string name="settings_show_onscreen_timer_description">Garder un minuteur flottant visible en regardant du contenu court.</string>
+    <string name="settings_show_onscreen_timer_description">Garder un minuteur flottant visible en regardant des vidéos courtes.</string>
     <string name="settings_show_onscreen_timer_title">Afficher le minuteur à l\'écran</string>
 </resources>

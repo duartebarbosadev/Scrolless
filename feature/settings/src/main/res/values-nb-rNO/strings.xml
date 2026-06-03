@@ -27,6 +27,6 @@
     </plurals>
     <string name="settings_except_reels_sent_by_dms_description">Ikke blokker Reels sendt i DM-er.</string>
     <string name="settings_except_reels_sent_by_dms_title">Reels sendt i DM-er</string>
-    <string name="settings_show_onscreen_timer_description">Hold en flytende tidtaker synlig mens du ser på kortformatinnhold.</string>
+    <string name="settings_show_onscreen_timer_description">Hold en flytende tidtaker synlig mens du ser på korte videoer.</string>
     <string name="settings_show_onscreen_timer_title">Vis tidtaker på skjermen</string>
 </resources>

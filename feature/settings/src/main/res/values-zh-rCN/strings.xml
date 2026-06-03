@@ -24,8 +24,8 @@
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d 分钟</item>
     </plurals>
-    <string name="settings_except_reels_sent_by_dms_description">不拦截通过私信发送的Reels。</string>
-    <string name="settings_except_reels_sent_by_dms_title">私信发送的Reels</string>
+    <string name="settings_except_reels_sent_by_dms_description">不拦截通过私信发送的 Reels。</string>
+    <string name="settings_except_reels_sent_by_dms_title">私信发送的 Reels</string>
     <string name="settings_show_onscreen_timer_description">观看短视频内容时，保持浮动计时器可见。</string>
-    <string name="settings_show_onscreen_timer_title">显示屏幕计时器</string>
+    <string name="settings_show_onscreen_timer_title">显示屏幕悬浮计时器</string>
 </resources>

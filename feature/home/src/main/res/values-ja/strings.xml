@@ -19,7 +19,7 @@
     <string name="accessibility_explainer_icon_description">ユーザー補助権限アイコン</string>
     <string name="accessibility_explainer_not_now_button">今はしない</string>
     <string name="accessibility_explainer_open_source">当社のコードはGitHubで100\%オープンソースです。</string>
-    <string name="accessibility_explainer_privacy_note">Scrollessは、短い形式のコンテンツを検出して停止するためにのみこの権限を使用します。個人情報は一切収集しません。</string>
+    <string name="accessibility_explainer_privacy_note">Scrollessは、短い動画を検出して停止するためにのみこの権限を使用します。個人情報は一切収集しません。</string>
     <string name="accessibility_explainer_proceed_button">設定に進む</string>
     <string name="accessibility_explainer_step1">下の「設定に進む」をタップして、Androidのユーザー補助設定を開きます</string>
     <string name="accessibility_explainer_step2">アプリケーションを見つけて、サービスリストの「Scrolless」をタップします</string>
@@ -45,22 +45,22 @@
     <string name="help_step3_title">サポートに連絡</string>
     <string name="icons8_attribution">Icons8 (icons8.com) 提供のアイコン</string>
     <string name="interval_timer_card_allowance_chip">視聴時間</string>
-    <string name="interval_timer_card_break_chip">休憩時間</string>
+    <string name="interval_timer_card_break_chip">ブロック時間</string>
     <string name="interval_timer_card_edit">スケジュールを編集</string>
     <string name="interval_timer_card_set_schedule">スケジュールを設定</string>
     <string name="interval_timer_card_summary">%2$sごとに最大%1$s視聴</string>
-    <string name="interval_timer_card_summary_empty">休憩を交互に開始するには、最初のスケジュールを設定してください。</string>
-    <string name="interval_timer_dialog_allowance_description">休憩が始まってからショート動画を視聴できる時間。</string>
+    <string name="interval_timer_card_summary_empty">ブロック期間を切り替える最初のスケジュールを設定してください。</string>
+    <string name="interval_timer_dialog_allowance_description">視聴枠が始まったときにショート動画を視聴できる時間。</string>
     <string name="interval_timer_dialog_allowance_label">許可される視聴時間</string>
-    <string name="interval_timer_dialog_break_description">Scrollessは、次の休憩までサポートされているアプリをこの期間ブロックし続けます。</string>
-    <string name="interval_timer_dialog_break_label">休憩時間</string>
+    <string name="interval_timer_dialog_break_description">Scrollessは、次の視聴枠まで対応アプリをこの時間ブロックします。</string>
+    <string name="interval_timer_dialog_break_label">ブロック時間</string>
     <string name="interval_timer_dialog_cancel">キャンセル</string>
     <string name="interval_timer_dialog_save">スケジュールを保存</string>
-    <string name="interval_timer_dialog_subtitle">コンテンツがロックされる時間と、各休憩中に視聴できる時間を選択します。</string>
+    <string name="interval_timer_dialog_subtitle">コンテンツをブロックする時間と、各視聴枠で視聴できる時間を選択します。</string>
     <string name="interval_timer_dialog_summary">結果: %2$sごとに最大%1$s</string>
     <string name="interval_timer_dialog_title">インターバルタイマーを設定</string>
     <string name="interval_timer_next_reset_in">リセットまで%1$s</string>
-    <string name="interval_timer_next_reset_ready">次の休憩はロック解除済み</string>
+    <string name="interval_timer_next_reset_ready">次の視聴枠が利用可能です</string>
     <string name="limit_chip">%1$s制限</string>
     <string name="next_step_1">ブロックモードを選択</string>
     <string name="next_step_2">1日の制限機能を試して、タイマーオーバーレイを有効にする</string>
@@ -92,7 +92,6 @@
     <string name="usage_analytics_today">今日</string>
     <string name="visit_github">GitHubリポジトリにアクセス</string>
     <plurals name="usage_analytics_session_count">
-        <item quantity="one">%1$dセッション</item>
         <item quantity="other">%1$dセッション</item>
     </plurals>
 </resources>

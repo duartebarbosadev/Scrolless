@@ -45,22 +45,22 @@
     <string name="help_step3_title">联系支持</string>
     <string name="icons8_attribution">图标由 Icons8 (icons8.com) 提供</string>
     <string name="interval_timer_card_allowance_chip">观看时间</string>
-    <string name="interval_timer_card_break_chip">休息时长</string>
+    <string name="interval_timer_card_break_chip">拦截时长</string>
     <string name="interval_timer_card_edit">编辑日程</string>
     <string name="interval_timer_card_set_schedule">设置日程</string>
     <string name="interval_timer_card_summary">每 %2$s 观看长达 %1$s</string>
-    <string name="interval_timer_card_summary_empty">设置您的第一个日程以开始交替休息。</string>
-    <string name="interval_timer_dialog_allowance_description">休息开始后，您可以观看短视频的时长。</string>
+    <string name="interval_timer_card_summary_empty">设置第一个日程，开始交替使用拦截时段。</string>
+    <string name="interval_timer_dialog_allowance_description">使用时段开始后，您可以观看短视频的时长。</string>
     <string name="interval_timer_dialog_allowance_label">允许观看时长</string>
-    <string name="interval_timer_dialog_break_description">Scrolless 会在此期间阻止支持的应用程序，直到下一次休息。</string>
-    <string name="interval_timer_dialog_break_label">休息时长</string>
+    <string name="interval_timer_dialog_break_description">Scrolless 会在此期间拦截支持的应用，直到下一个使用时段。</string>
+    <string name="interval_timer_dialog_break_label">拦截时长</string>
     <string name="interval_timer_dialog_cancel">取消</string>
     <string name="interval_timer_dialog_save">保存日程</string>
-    <string name="interval_timer_dialog_subtitle">选择内容锁定多长时间以及每次休息可以观看多长时间。</string>
+    <string name="interval_timer_dialog_subtitle">选择内容被拦截的时长，以及每个使用时段可观看的时长。</string>
     <string name="interval_timer_dialog_summary">结果：每 %2$s 最多 %1$s</string>
     <string name="interval_timer_dialog_title">配置间隔计时器</string>
     <string name="interval_timer_next_reset_in">%1$s 后重置</string>
-    <string name="interval_timer_next_reset_ready">下一次休息已解锁</string>
+    <string name="interval_timer_next_reset_ready">下一个使用时段已解锁</string>
     <string name="limit_chip">%1$s 限制</string>
     <string name="next_step_1">选择一个屏蔽模式</string>
     <string name="next_step_2">尝试每日限制功能并激活计时器叠加层</string>
@@ -92,7 +92,6 @@
     <string name="usage_analytics_today">今天</string>
     <string name="visit_github">访问 GitHub 仓库</string>
     <plurals name="usage_analytics_session_count">
-        <item quantity="one">%1$d 次会话</item>
         <item quantity="other">%1$d 次会话</item>
     </plurals>
 </resources>

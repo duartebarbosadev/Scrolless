@@ -25,8 +25,8 @@
         <item quantity="other">%1$d dakika</item>
         <item quantity="one">%1$d dakika</item>
     </plurals>
-    <string name="settings_except_reels_sent_by_dms_description">DM\'lerde gönderilen Reels\'leri engelleme.</string>
+    <string name="settings_except_reels_sent_by_dms_description">DM\'lerde gönderilen Reels\'ler engellenmez.</string>
     <string name="settings_except_reels_sent_by_dms_title">DM\'lerde gönderilen Reels\'ler</string>
-    <string name="settings_show_onscreen_timer_description">Kısa biçimli içerik izlerken yüzen bir zamanlayıcıyı görünür tut.</string>
+    <string name="settings_show_onscreen_timer_description">Kısa videolar izlerken kayan zamanlayıcıyı görünür tut.</string>
     <string name="settings_show_onscreen_timer_title">Ekran zamanlayıcısını göster</string>
 </resources>

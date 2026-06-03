@@ -29,6 +29,6 @@
     </plurals>
     <string name="settings_except_reels_sent_by_dms_description">Nie blokuj Reels wysyłanych w wiadomościach prywatnych.</string>
     <string name="settings_except_reels_sent_by_dms_title">Reels wysyłane w wiadomościach prywatnych</string>
-    <string name="settings_show_onscreen_timer_description">Utrzymuj widoczny pływający licznik podczas oglądania krótkich treści.</string>
-    <string name="settings_show_onscreen_timer_title">Pokaż licznik na ekranie</string>
+    <string name="settings_show_onscreen_timer_description">Utrzymuj widoczny pływający minutnik podczas oglądania krótkich filmów.</string>
+    <string name="settings_show_onscreen_timer_title">Pokaż minutnik na ekranie</string>
 </resources>

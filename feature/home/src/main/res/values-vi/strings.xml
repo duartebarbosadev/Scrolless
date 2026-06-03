@@ -19,7 +19,7 @@
     <string name="accessibility_explainer_icon_description">Biểu tượng Quyền truy cập</string>
     <string name="accessibility_explainer_not_now_button">Không phải bây giờ</string>
     <string name="accessibility_explainer_open_source">Mã của chúng tôi là 100\% mã nguồn mở trên GitHub.</string>
-    <string name="accessibility_explainer_privacy_note">Scrolless chỉ sử dụng quyền này để phát hiện và dừng nội dung dạng ngắn. Chúng tôi không thu thập bất kỳ thông tin cá nhân nào.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless chỉ sử dụng quyền này để phát hiện và dừng video ngắn. Chúng tôi không thu thập bất kỳ thông tin cá nhân nào.</string>
     <string name="accessibility_explainer_proceed_button">Đi tới Cài đặt</string>
     <string name="accessibility_explainer_step1">Nhấn \"Đi tới Cài đặt\" bên dưới để mở cài đặt Trợ năng của Android</string>
     <string name="accessibility_explainer_step2">Tìm ứng dụng và nhấn vào \"Scrolless\" trong danh sách dịch vụ</string>
@@ -45,22 +45,22 @@
     <string name="help_step3_title">Liên hệ Hỗ trợ</string>
     <string name="icons8_attribution">Các biểu tượng được cung cấp bởi Icons8 (icons8.com)</string>
     <string name="interval_timer_card_allowance_chip">Thời gian xem</string>
-    <string name="interval_timer_card_break_chip">Thời gian nghỉ</string>
+    <string name="interval_timer_card_break_chip">Thời gian chặn</string>
     <string name="interval_timer_card_edit">Chỉnh sửa lịch trình</string>
     <string name="interval_timer_card_set_schedule">Đặt lịch trình</string>
     <string name="interval_timer_card_summary">Xem tối đa %1$s mỗi %2$s</string>
-    <string name="interval_timer_card_summary_empty">Đặt lịch trình đầu tiên của bạn để bắt đầu các khoảng nghỉ xen kẽ.</string>
-    <string name="interval_timer_dialog_allowance_description">Bạn có thể xem video ngắn trong bao lâu khi bắt đầu một khoảng nghỉ.</string>
+    <string name="interval_timer_card_summary_empty">Đặt lịch trình đầu tiên để xen kẽ các khoảng thời gian chặn.</string>
+    <string name="interval_timer_dialog_allowance_description">Bạn có thể xem video ngắn trong bao lâu khi một khung sử dụng bắt đầu.</string>
     <string name="interval_timer_dialog_allowance_label">Thời gian xem được phép</string>
-    <string name="interval_timer_dialog_break_description">Scrolless giữ các ứng dụng được hỗ trợ bị chặn trong khoảng thời gian này trước khoảng nghỉ tiếp theo.</string>
-    <string name="interval_timer_dialog_break_label">Thời lượng nghỉ</string>
+    <string name="interval_timer_dialog_break_description">Scrolless giữ các ứng dụng được hỗ trợ bị chặn trong khoảng thời gian này trước khung sử dụng tiếp theo.</string>
+    <string name="interval_timer_dialog_break_label">Thời gian chặn</string>
     <string name="interval_timer_dialog_cancel">Hủy</string>
     <string name="interval_timer_dialog_save">Lưu lịch trình</string>
-    <string name="interval_timer_dialog_subtitle">Chọn thời gian nội dung bị khóa và thời gian bạn có thể xem trong mỗi lần nghỉ.</string>
+    <string name="interval_timer_dialog_subtitle">Chọn thời gian nội dung bị chặn và thời gian bạn có thể xem trong mỗi khung sử dụng.</string>
     <string name="interval_timer_dialog_summary">Kết quả: tối đa %1$s mỗi %2$s</string>
     <string name="interval_timer_dialog_title">Cấu hình hẹn giờ khoảng thời gian</string>
     <string name="interval_timer_next_reset_in">Đặt lại sau %1$s</string>
-    <string name="interval_timer_next_reset_ready">Lần nghỉ tiếp theo đã mở khóa</string>
+    <string name="interval_timer_next_reset_ready">Khung sử dụng tiếp theo đã mở khóa</string>
     <string name="limit_chip">Giới hạn %1$s</string>
     <string name="next_step_1">Chọn chế độ chặn</string>
     <string name="next_step_2">Thử tính năng giới hạn hàng ngày và kích hoạt lớp phủ hẹn giờ</string>
@@ -92,7 +92,6 @@
     <string name="usage_analytics_today">Hôm nay</string>
     <string name="visit_github">Truy cập Kho lưu trữ GitHub</string>
     <plurals name="usage_analytics_session_count">
-        <item quantity="one">%1$d phiên</item>
         <item quantity="other">%1$d phiên</item>
     </plurals>
 </resources>

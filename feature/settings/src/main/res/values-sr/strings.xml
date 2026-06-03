@@ -16,18 +16,18 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
-    <string name="back">Nazad</string>
-    <string name="settings">Podešavanja</string>
-    <string name="settings_section_blocking">Blokiranje</string>
-    <string name="settings_pause_duration_title">Trajanje pauze</string>
-    <string name="settings_pause_duration_description">Koliko dugo je blokiranje pauzirano kada dodirnete „Pauziraj”.</string>
+    <string name="back">Назад</string>
+    <string name="settings">Подешавања</string>
+    <string name="settings_section_blocking">Блокирање</string>
+    <string name="settings_pause_duration_title">Трајање паузе</string>
+    <string name="settings_pause_duration_description">Колико дуго је блокирање паузирано када додирнете „Пауза“.</string>
     <plurals name="settings_pause_duration_value">
-        <item quantity="other">%1$d minuta</item>
-        <item quantity="one">%1$d minut</item>
-        <item quantity="few">%1$d minuta</item>
+        <item quantity="one">%1$d минут</item>
+        <item quantity="few">%1$d минута</item>
+        <item quantity="other">%1$d минута</item>
     </plurals>
-    <string name="settings_except_reels_sent_by_dms_description">Ne blokiraj Reels-ove poslate u DM-ovima.</string>
-    <string name="settings_except_reels_sent_by_dms_title">Reels-ovi poslati u DM-ovima</string>
-    <string name="settings_show_onscreen_timer_description">Drži plutajući tajmer vidljivim dok gledaš kratak sadržaj.</string>
-    <string name="settings_show_onscreen_timer_title">Prikaži tajmer na ekranu</string>
+    <string name="settings_except_reels_sent_by_dms_description">Не блокирај Reels послате у DM-овима.</string>
+    <string name="settings_except_reels_sent_by_dms_title">Reels послати у DM-овима</string>
+    <string name="settings_show_onscreen_timer_description">Држи плутајући тајмер видљивим док гледаш кратке видео-записе.</string>
+    <string name="settings_show_onscreen_timer_title">Прикажи тајмер на екрану</string>
 </resources>

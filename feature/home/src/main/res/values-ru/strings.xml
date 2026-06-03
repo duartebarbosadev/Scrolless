@@ -19,7 +19,7 @@
     <string name="accessibility_explainer_icon_description">Значок разрешения доступности</string>
     <string name="accessibility_explainer_not_now_button">Не сейчас</string>
     <string name="accessibility_explainer_open_source">Наш код на 100\% открыт на GitHub.</string>
-    <string name="accessibility_explainer_privacy_note">Scrolless использует это разрешение только для обнаружения и остановки короткого контента. Мы не собираем никакой личной информации.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless использует это разрешение только для обнаружения и остановки коротких видео. Мы не собираем никакой личной информации.</string>
     <string name="accessibility_explainer_proceed_button">Перейти в настройки</string>
     <string name="accessibility_explainer_step1">Нажмите «Перейти в настройки» ниже, чтобы открыть настройки доступности Android</string>
     <string name="accessibility_explainer_step2">Найдите приложения и нажмите «Scrolless» в списке служб</string>
@@ -45,22 +45,22 @@
     <string name="help_step3_title">Связаться со службой поддержки</string>
     <string name="icons8_attribution">Иконки предоставлены Icons8 (icons8.com)</string>
     <string name="interval_timer_card_allowance_chip">Время просмотра</string>
-    <string name="interval_timer_card_break_chip">Длительность перерыва</string>
+    <string name="interval_timer_card_break_chip">Длительность блокировки</string>
     <string name="interval_timer_card_edit">Изменить расписание</string>
     <string name="interval_timer_card_set_schedule">Установить расписание</string>
     <string name="interval_timer_card_summary">Смотрите до %1$s каждые %2$s</string>
-    <string name="interval_timer_card_summary_empty">Установите свое первое расписание, чтобы начать чередовать перерывы.</string>
-    <string name="interval_timer_dialog_allowance_description">Как долго вы можете смотреть короткие видео после начала перерыва.</string>
+    <string name="interval_timer_card_summary_empty">Настройте первое расписание, чтобы чередовать периоды блокировки.</string>
+    <string name="interval_timer_dialog_allowance_description">Как долго вы можете смотреть короткие видео, когда начинается окно использования.</string>
     <string name="interval_timer_dialog_allowance_label">Разрешенное время просмотра</string>
-    <string name="interval_timer_dialog_break_description">Scrolless блокирует поддерживаемые приложения в течение этого времени до следующего перерыва.</string>
-    <string name="interval_timer_dialog_break_label">Продолжительность перерыва</string>
+    <string name="interval_timer_dialog_break_description">Scrolless блокирует поддерживаемые приложения на это время до следующего окна использования.</string>
+    <string name="interval_timer_dialog_break_label">Длительность блокировки</string>
     <string name="interval_timer_dialog_cancel">Отмена</string>
     <string name="interval_timer_dialog_save">Сохранить расписание</string>
-    <string name="interval_timer_dialog_subtitle">Выберите, как долго контент остается заблокированным и сколько времени вы можете смотреть в каждом перерыве.</string>
+    <string name="interval_timer_dialog_subtitle">Выберите, как долго контент остается заблокированным и сколько времени можно смотреть в каждом окне использования.</string>
     <string name="interval_timer_dialog_summary">Результат: до %1$s каждые %2$s</string>
     <string name="interval_timer_dialog_title">Настроить интервальный таймер</string>
     <string name="interval_timer_next_reset_in">Сброс через %1$s</string>
-    <string name="interval_timer_next_reset_ready">Следующий перерыв разблокирован</string>
+    <string name="interval_timer_next_reset_ready">Следующее окно использования разблокировано</string>
     <string name="limit_chip">Лимит %1$s</string>
     <string name="next_step_1">Выберите режим блокировки</string>
     <string name="next_step_2">Попробуйте функцию дневного лимита и активируйте наложение таймера</string>
@@ -93,6 +93,8 @@
     <string name="visit_github">Посетить репозиторий GitHub</string>
     <plurals name="usage_analytics_session_count">
         <item quantity="one">%1$d сеанс</item>
+        <item quantity="few">%1$d сеанса</item>
+        <item quantity="many">%1$d сеансов</item>
         <item quantity="other">%1$d сеанса</item>
     </plurals>
 </resources>

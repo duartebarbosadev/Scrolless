@@ -19,7 +19,7 @@
     <string name="accessibility_explainer_icon_description">Ikona povolenia prístupnosti</string>
     <string name="accessibility_explainer_not_now_button">Nie teraz</string>
     <string name="accessibility_explainer_open_source">Náš kód je 100\% open source na GitHub.</string>
-    <string name="accessibility_explainer_privacy_note">Scrolless používa toto povolenie iba na detekciu a zastavenie krátkeho obsahu. Nezhromažďujeme žiadne osobné údaje.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless používa toto povolenie iba na detekciu a zastavenie krátkych videí. Nezhromažďujeme žiadne osobné údaje.</string>
     <string name="accessibility_explainer_proceed_button">Prejsť do nastavení</string>
     <string name="accessibility_explainer_step1">Ťuknite na \"Prejsť do nastavení\" nižšie, aby ste otvorili nastavenia prístupnosti systému Android</string>
     <string name="accessibility_explainer_step2">Nájdite aplikácie a ťuknite na \"Scrolless\" v zozname služieb</string>
@@ -45,22 +45,22 @@
     <string name="help_step3_title">Kontaktujte podporu</string>
     <string name="icons8_attribution">Ikony poskytuje Icons8 (icons8.com)</string>
     <string name="interval_timer_card_allowance_chip">Čas sledovania</string>
-    <string name="interval_timer_card_break_chip">Dĺžka prestávky</string>
+    <string name="interval_timer_card_break_chip">Trvanie blokovania</string>
     <string name="interval_timer_card_edit">Upraviť rozvrh</string>
     <string name="interval_timer_card_set_schedule">Nastaviť rozvrh</string>
     <string name="interval_timer_card_summary">Sledujte až %1$s každých %2$s</string>
-    <string name="interval_timer_card_summary_empty">Nastavte si svoj prvý rozvrh na striedanie prestávok.</string>
-    <string name="interval_timer_dialog_allowance_description">Ako dlho môžete sledovať krátke videá, keď sa začne prestávka.</string>
+    <string name="interval_timer_card_summary_empty">Nastavte si prvý rozvrh na striedanie období blokovania.</string>
+    <string name="interval_timer_dialog_allowance_description">Ako dlho môžete sledovať krátke videá, keď sa začne okno používania.</string>
     <string name="interval_timer_dialog_allowance_label">Povolený čas sledovania</string>
-    <string name="interval_timer_dialog_break_description">Scrolless blokuje podporované aplikácie po túto dobu pred ďalšou prestávkou.</string>
-    <string name="interval_timer_dialog_break_label">Trvanie prestávky</string>
+    <string name="interval_timer_dialog_break_description">Scrolless blokuje podporované aplikácie po túto dobu pred ďalším oknom používania.</string>
+    <string name="interval_timer_dialog_break_label">Trvanie blokovania</string>
     <string name="interval_timer_dialog_cancel">Zrušiť</string>
     <string name="interval_timer_dialog_save">Uložiť rozvrh</string>
-    <string name="interval_timer_dialog_subtitle">Vyberte, ako dlho zostane obsah uzamknutý a koľko času môžete sledovať počas každej prestávky.</string>
+    <string name="interval_timer_dialog_subtitle">Vyberte, ako dlho zostane obsah zablokovaný a koľko času môžete sledovať v každom okne používania.</string>
     <string name="interval_timer_dialog_summary">Výsledok: až %1$s každých %2$s</string>
     <string name="interval_timer_dialog_title">Konfigurovať časovač intervalov</string>
     <string name="interval_timer_next_reset_in">Resetuje sa za %1$s</string>
-    <string name="interval_timer_next_reset_ready">Ďalšia prestávka odomknutá</string>
+    <string name="interval_timer_next_reset_ready">Ďalšie okno používania odomknuté</string>
     <string name="limit_chip">%1$s limit</string>
     <string name="next_step_1">Vyberte režim blokovania</string>
     <string name="next_step_2">Vyskúšajte funkciu denného limitu a aktivujte prekrytie časovača</string>
@@ -93,6 +93,8 @@
     <string name="visit_github">Navštíviť GitHub Repozitár</string>
     <plurals name="usage_analytics_session_count">
         <item quantity="one">%1$d relácia</item>
+        <item quantity="few">%1$d relácie</item>
+        <item quantity="many">%1$d relácie</item>
         <item quantity="other">%1$d relácií</item>
     </plurals>
 </resources>

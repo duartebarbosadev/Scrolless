@@ -28,6 +28,6 @@
     </plurals>
     <string name="settings_except_reels_sent_by_dms_description">Nu bloca Reels trimise în mesaje directe.</string>
     <string name="settings_except_reels_sent_by_dms_title">Reels trimise în mesaje directe</string>
-    <string name="settings_show_onscreen_timer_description">Păstrează un cronometru plutitor vizibil în timp ce vizionezi conținut video scurt.</string>
+    <string name="settings_show_onscreen_timer_description">Păstrează un cronometru plutitor vizibil în timp ce vizionezi videoclipuri scurte.</string>
     <string name="settings_show_onscreen_timer_title">Afișează cronometrul pe ecran</string>
 </resources>

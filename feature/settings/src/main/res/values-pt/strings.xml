@@ -27,6 +27,6 @@
     </plurals>
     <string name="settings_except_reels_sent_by_dms_description">Não bloquear Reels enviados em DMs.</string>
     <string name="settings_except_reels_sent_by_dms_title">Reels enviados em DMs</string>
-    <string name="settings_show_onscreen_timer_description">Manter um temporizador flutuante visível enquanto assiste a conteúdo de formato curto.</string>
+    <string name="settings_show_onscreen_timer_description">Mantenha um temporizador flutuante visível enquanto vê vídeos curtos.</string>
     <string name="settings_show_onscreen_timer_title">Mostrar temporizador no ecrã</string>
 </resources>

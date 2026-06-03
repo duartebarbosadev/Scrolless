@@ -19,7 +19,7 @@
     <string name="accessibility_explainer_icon_description">Ikona uprawnień dostępności</string>
     <string name="accessibility_explainer_not_now_button">Nie teraz</string>
     <string name="accessibility_explainer_open_source">Nasz kod jest w 100\% open source na GitHub.</string>
-    <string name="accessibility_explainer_privacy_note">Scrolless używa tego uprawnienia tylko do wykrywania i zatrzymywania krótkich treści. Nie zbieramy żadnych danych osobowych.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless używa tego uprawnienia tylko do wykrywania i zatrzymywania krótkich filmów. Nie zbieramy żadnych danych osobowych.</string>
     <string name="accessibility_explainer_proceed_button">Przejdź do ustawień</string>
     <string name="accessibility_explainer_step1">Dotknij \"Przejdź do ustawień\" poniżej, aby otworzyć ustawienia dostępności Androida</string>
     <string name="accessibility_explainer_step2">Znajdź aplikacje i dotknij \"Scrolless\" na liście usług</string>
@@ -45,22 +45,22 @@
     <string name="help_step3_title">Skontaktuj się z pomocą techniczną</string>
     <string name="icons8_attribution">Ikony dostarczone przez Icons8 (icons8.com)</string>
     <string name="interval_timer_card_allowance_chip">Czas oglądania</string>
-    <string name="interval_timer_card_break_chip">Długość przerwy</string>
+    <string name="interval_timer_card_break_chip">Czas blokady</string>
     <string name="interval_timer_card_edit">Edytuj harmonogram</string>
     <string name="interval_timer_card_set_schedule">Ustaw harmonogram</string>
     <string name="interval_timer_card_summary">Oglądaj do %1$s co %2$s</string>
-    <string name="interval_timer_card_summary_empty">Ustaw swój pierwszy harmonogram, aby rozpocząć naprzemienne przerwy.</string>
-    <string name="interval_timer_dialog_allowance_description">Jak długo możesz oglądać krótkie filmy po rozpoczęciu przerwy.</string>
+    <string name="interval_timer_card_summary_empty">Ustaw pierwszy harmonogram, aby przeplatać okresy blokady.</string>
+    <string name="interval_timer_dialog_allowance_description">Jak długo możesz oglądać krótkie filmy po rozpoczęciu okna korzystania.</string>
     <string name="interval_timer_dialog_allowance_label">Dozwolony czas oglądania</string>
-    <string name="interval_timer_dialog_break_description">Scrolless blokuje obsługiwane aplikacje przez ten czas przed następną przerwą.</string>
-    <string name="interval_timer_dialog_break_label">Czas trwania przerwy</string>
+    <string name="interval_timer_dialog_break_description">Scrolless blokuje obsługiwane aplikacje przez ten czas przed następnym oknem korzystania.</string>
+    <string name="interval_timer_dialog_break_label">Czas blokady</string>
     <string name="interval_timer_dialog_cancel">Anuluj</string>
     <string name="interval_timer_dialog_save">Zapisz harmonogram</string>
-    <string name="interval_timer_dialog_subtitle">Wybierz, jak długo treść pozostaje zablokowana i ile czasu możesz oglądać w każdej przerwie.</string>
+    <string name="interval_timer_dialog_subtitle">Wybierz, jak długo treści pozostają zablokowane i ile czasu możesz oglądać w każdym oknie korzystania.</string>
     <string name="interval_timer_dialog_summary">Wynik: do %1$s co %2$s</string>
     <string name="interval_timer_dialog_title">Skonfiguruj licznik interwałów</string>
     <string name="interval_timer_next_reset_in">Resetuje się za %1$s</string>
-    <string name="interval_timer_next_reset_ready">Następna przerwa odblokowana</string>
+    <string name="interval_timer_next_reset_ready">Następne okno korzystania odblokowane</string>
     <string name="limit_chip">Limit %1$s</string>
     <string name="next_step_1">Wybierz tryb blokowania</string>
     <string name="next_step_2">Wypróbuj funkcję dziennego limitu i aktywuj nakładkę timera</string>
@@ -93,6 +93,8 @@
     <string name="visit_github">Odwiedź repozytorium GitHub</string>
     <plurals name="usage_analytics_session_count">
         <item quantity="one">%1$d sesja</item>
+        <item quantity="few">%1$d sesje</item>
+        <item quantity="many">%1$d sesji</item>
         <item quantity="other">%1$d sesji</item>
     </plurals>
 </resources>

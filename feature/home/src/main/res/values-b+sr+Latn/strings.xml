@@ -45,22 +45,22 @@
     <string name="help_step3_title">Kontaktirajte podršku</string>
     <string name="icons8_attribution">Ikone obezbedio Icons8 (icons8.com)</string>
     <string name="interval_timer_card_allowance_chip">Vreme gledanja</string>
-    <string name="interval_timer_card_break_chip">Dužina pauze</string>
+    <string name="interval_timer_card_break_chip">Trajanje blokade</string>
     <string name="interval_timer_card_edit">Uredi raspored</string>
     <string name="interval_timer_card_set_schedule">Podesi raspored</string>
     <string name="interval_timer_card_summary">Gledajte do %1$s svakih %2$s</string>
-    <string name="interval_timer_card_summary_empty">Podesite svoj prvi raspored da biste počeli sa naizmeničnim pauzama.</string>
-    <string name="interval_timer_dialog_allowance_description">Koliko dugo možete gledati kratke video zapise kada pauza počne.</string>
+    <string name="interval_timer_card_summary_empty">Podesite prvi raspored da biste naizmenično koristili periode blokiranja.</string>
+    <string name="interval_timer_dialog_allowance_description">Koliko dugo možete da gledate kratke video zapise kada počne period korišćenja.</string>
     <string name="interval_timer_dialog_allowance_label">Dozvoljeno vreme gledanja</string>
-    <string name="interval_timer_dialog_break_description">Scrolless drži podržane aplikacije blokiranim ovoliko dugo pre sledeće pauze.</string>
-    <string name="interval_timer_dialog_break_label">Trajanje pauze</string>
+    <string name="interval_timer_dialog_break_description">Scrolless drži podržane aplikacije blokiranim ovoliko dugo pre sledećeg perioda korišćenja.</string>
+    <string name="interval_timer_dialog_break_label">Trajanje blokade</string>
     <string name="interval_timer_dialog_cancel">Otkaži</string>
     <string name="interval_timer_dialog_save">Sačuvaj raspored</string>
-    <string name="interval_timer_dialog_subtitle">Izaberite koliko dugo sadržaj ostaje zaključan i koliko vremena možete gledati u svakoj pauzi.</string>
+    <string name="interval_timer_dialog_subtitle">Izaberite koliko dugo sadržaj ostaje blokiran i koliko vremena možete da gledate u svakom periodu korišćenja.</string>
     <string name="interval_timer_dialog_summary">Rezultat: do %1$s svakih %2$s</string>
     <string name="interval_timer_dialog_title">Konfigurišite intervalni tajmer</string>
     <string name="interval_timer_next_reset_in">Resetuje se za %1$s</string>
-    <string name="interval_timer_next_reset_ready">Sledeća pauza otključana</string>
+    <string name="interval_timer_next_reset_ready">Sledeći period korišćenja je otključan</string>
     <string name="limit_chip">%1$s limit</string>
     <string name="next_step_1">Izaberite režim blokiranja</string>
     <string name="next_step_2">Isprobajte funkciju dnevnog limita i aktivirajte preklapanje tajmera</string>
@@ -93,6 +93,7 @@
     <string name="visit_github">Posetite GitHub repozitorijum</string>
     <plurals name="usage_analytics_session_count">
         <item quantity="one">%1$d sesija</item>
+        <item quantity="few">%1$d sesije</item>
         <item quantity="other">%1$d sesija</item>
     </plurals>
 </resources>

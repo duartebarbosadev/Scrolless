@@ -27,6 +27,6 @@
     </plurals>
     <string name="settings_except_reels_sent_by_dms_description">Älä estä DM-viesteissä lähetettyjä Reelsejä.</string>
     <string name="settings_except_reels_sent_by_dms_title">DM-viesteissä lähetetyt Reelsit</string>
-    <string name="settings_show_onscreen_timer_description">Pidä kelluva ajastin näkyvissä katsoessasi lyhytmuotoista sisältöä.</string>
-    <string name="settings_show_onscreen_timer_title">Näytä ajastin ruudulla</string>
+    <string name="settings_show_onscreen_timer_description">Pidä kelluva ajastin näkyvissä, kun katsot lyhytvideoita.</string>
+    <string name="settings_show_onscreen_timer_title">Näytä ajastin näytöllä</string>
 </resources>
