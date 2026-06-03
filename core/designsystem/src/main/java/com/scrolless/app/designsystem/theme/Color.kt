@@ -247,3 +247,8 @@ val tiktokColor = Color(0xFF00F2EA) // Cyan/aqua
 val youtubeShortsColor = Color(0xFFFFB300) // Amber
 
 val timerOverlayBackgroundColor = Color(0xB3000000) // ~70% alpha black
+
+// Holographic ambient background gradient colors
+val holographicElectricSky = Color(0xFF58C7FF)
+val holographicVioletGlow = Color(0xFF9C7BFF)
+val holographicNeonMint = Color(0xFF5DFFB3)
