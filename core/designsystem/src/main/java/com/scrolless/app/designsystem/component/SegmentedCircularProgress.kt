@@ -294,7 +294,7 @@ private fun LegendEntry(item: LegendItem) {
         // Color indicator dot
         Box(
             modifier = Modifier
-                .size(8.dp)
+                .size(6.dp)
                 .background(color = item.color, shape = CircleShape),
         )
 
@@ -302,7 +302,7 @@ private fun LegendEntry(item: LegendItem) {
         Text(
             text = "${item.legendName} (${item.formattedTime})",
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f),
         )
     }
 }

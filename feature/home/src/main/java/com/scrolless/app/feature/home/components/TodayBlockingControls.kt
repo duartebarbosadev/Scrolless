@@ -293,7 +293,7 @@ fun TodayBlockingControls(
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(12.dp))
     }
 }
 
@@ -559,7 +559,7 @@ fun FeatureButtonsRow(
         overflowIndicator = {},
         modifier = modifier
             .fillMaxWidth()
-            .height(128.dp),
+            .height(108.dp),
     ) {
         customItem(
             buttonGroupContent = {
@@ -711,7 +711,7 @@ fun FeatureButton(
             AutoResizingText(
                 text = text,
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.labelMedium,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(top = 4.dp),

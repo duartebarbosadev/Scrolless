@@ -219,7 +219,7 @@ fun ProgressCard(
         targetValue = if (isLimitReached) {
             progressbar_red_use.copy(alpha = 0.16f)
         } else {
-            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.18f)
+            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)
         },
         animationSpec = tween(durationMillis = 600),
         label = "limitChipBackground",
@@ -228,7 +228,7 @@ fun ProgressCard(
         targetValue = if (isLimitReached) {
             progressbar_red_use.copy(alpha = 0.7f)
         } else {
-            Color.Transparent
+            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
         },
         animationSpec = tween(durationMillis = 600),
         label = "limitChipBorderColor",
@@ -237,7 +237,7 @@ fun ProgressCard(
         targetValue = if (isLimitReached) {
             progressbar_red_use
         } else {
-            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f)
+            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.9f)
         },
         animationSpec = tween(durationMillis = 600),
         label = "limitChipTextColor",
@@ -256,9 +256,12 @@ fun ProgressCard(
                 .size(220.dp)
                 .padding(16.dp)
                 .clickable(onClick = onClick),
-            shape = RoundedCornerShape(96.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
-            elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+            shape = RoundedCornerShape(110.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.08f)
+            ),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -284,7 +287,7 @@ fun ProgressCard(
                             .fillMaxWidth(),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         textAlign = TextAlign.Center,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -314,7 +317,7 @@ fun ProgressCard(
                         AutoResizingText(
                             text = resetText,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.65f),
                             textAlign = TextAlign.Center,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
