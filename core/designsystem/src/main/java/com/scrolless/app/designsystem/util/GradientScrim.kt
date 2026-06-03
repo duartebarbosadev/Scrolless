@@ -31,6 +31,9 @@
  */
 package com.scrolless.app.designsystem.util
 
+import com.scrolless.app.designsystem.theme.holographicElectricSky
+import com.scrolless.app.designsystem.theme.holographicNeonMint
+import com.scrolless.app.designsystem.theme.holographicVioletGlow
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -91,10 +94,10 @@ fun Modifier.radialGradientScrim(
     val highlightMix = (0.85f - (clampedAccentStrength * 0.15f)).coerceIn(0.65f, 0.9f)
     
     val holoPalette = listOf(
-        lerp(blendedBase, Color(0xFF58C7FF), highlightMix).copy(alpha = baseAlpha), // electric sky
-        lerp(blendedBase, Color(0xFF9C7BFF), highlightMix).copy(alpha = baseAlpha), // violet glow
-        lerp(blendedBase, Color(0xFF5DFFB3), highlightMix).copy(alpha = baseAlpha), // neon mint
-        lerp(blendedBase, Color(0xFF58C7FF), highlightMix).copy(alpha = baseAlpha), // electric sky (loop)
+        lerp(blendedBase, holographicElectricSky, highlightMix).copy(alpha = baseAlpha), // electric sky
+        lerp(blendedBase, holographicVioletGlow, highlightMix).copy(alpha = baseAlpha), // violet glow
+        lerp(blendedBase, holographicNeonMint, highlightMix).copy(alpha = baseAlpha), // neon mint
+        lerp(blendedBase, holographicElectricSky, highlightMix).copy(alpha = baseAlpha), // electric sky (loop)
     )
 
     val palette = if (accentColor != null) {
