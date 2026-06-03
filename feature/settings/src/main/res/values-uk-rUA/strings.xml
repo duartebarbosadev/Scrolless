@@ -27,4 +27,8 @@
         <item quantity="many">%1$d хвилин</item>
         <item quantity="one">%1$d хвилина</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">Не блокувати Reels, надіслані в особистих повідомленнях.</string>
+    <string name="settings_except_reels_sent_by_dms_title">Reels, надіслані в особистих повідомленнях</string>
+    <string name="settings_show_onscreen_timer_description">Залишати плаваючий таймер видимим під час перегляду коротких відео.</string>
+    <string name="settings_show_onscreen_timer_title">Показувати таймер на екрані</string>
 </resources>

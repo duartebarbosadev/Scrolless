@@ -25,4 +25,8 @@
         <item quantity="other">%1$d मिनट</item>
         <item quantity="one">%1$d मिनट</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">DMs में भेजे गए रील्स को ब्लॉक न करें।</string>
+    <string name="settings_except_reels_sent_by_dms_title">DMs में भेजे गए रील्स</string>
+    <string name="settings_show_onscreen_timer_description">छोटे वीडियो देखते समय एक फ़्लोटिंग टाइमर दृश्यमान रखें।</string>
+    <string name="settings_show_onscreen_timer_title">ऑन-स्क्रीन टाइमर दिखाएँ</string>
 </resources>

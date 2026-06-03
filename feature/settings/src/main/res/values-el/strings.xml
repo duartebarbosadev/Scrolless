@@ -25,4 +25,8 @@
         <item quantity="other">%1$d λεπτά</item>
         <item quantity="one">%1$d λεπτό</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">Να μην αποκλείονται τα Reels που αποστέλλονται σε DM.</string>
+    <string name="settings_except_reels_sent_by_dms_title">Reels που αποστέλλονται σε DM</string>
+    <string name="settings_show_onscreen_timer_description">Να εμφανίζεται ένας αιωρούμενος χρονοδιακόπτης κατά την παρακολούθηση σύντομων βίντεο.</string>
+    <string name="settings_show_onscreen_timer_title">Εμφάνιση χρονοδιακόπτη στην οθόνη</string>
 </resources>

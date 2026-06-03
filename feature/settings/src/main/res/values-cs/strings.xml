@@ -27,4 +27,8 @@
         <item quantity="many">%1$d minut</item>
         <item quantity="other">%1$d minut</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">Neblokovat Reels odeslané v DMs.</string>
+    <string name="settings_except_reels_sent_by_dms_title">Reels odeslané v DMs</string>
+    <string name="settings_show_onscreen_timer_description">Při sledování krátkých videí ponechat viditelný plovoucí časovač.</string>
+    <string name="settings_show_onscreen_timer_title">Zobrazit časovač na obrazovce</string>
 </resources>

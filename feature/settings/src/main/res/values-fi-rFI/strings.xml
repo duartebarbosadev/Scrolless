@@ -25,4 +25,8 @@
         <item quantity="other">%1$d minuuttia</item>
         <item quantity="one">%1$d minuutti</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">Älä estä DM-viesteissä lähetettyjä Reelsejä.</string>
+    <string name="settings_except_reels_sent_by_dms_title">DM-viesteissä lähetetyt Reelsit</string>
+    <string name="settings_show_onscreen_timer_description">Pidä kelluva ajastin näkyvissä, kun katsot lyhytvideoita.</string>
+    <string name="settings_show_onscreen_timer_title">Näytä ajastin näytöllä</string>
 </resources>

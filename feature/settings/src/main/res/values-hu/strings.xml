@@ -25,4 +25,8 @@
         <item quantity="other">%1$d perc</item>
         <item quantity="one">%1$d perc</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">Ne blokkolja a DM-ben küldött Reelseket.</string>
+    <string name="settings_except_reels_sent_by_dms_title">DM-ben küldött Reels-ek</string>
+    <string name="settings_show_onscreen_timer_description">Tartsa láthatóan a lebegő időzítőt rövid videók nézése közben.</string>
+    <string name="settings_show_onscreen_timer_title">Képernyőn megjelenő időzítő</string>
 </resources>

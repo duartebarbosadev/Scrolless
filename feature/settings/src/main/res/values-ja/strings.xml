@@ -24,4 +24,8 @@
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d分</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">DMで送られたReelsはブロックしません。</string>
+    <string name="settings_except_reels_sent_by_dms_title">DMで送られたReels</string>
+    <string name="settings_show_onscreen_timer_description">ショート動画を視聴中にフローティングタイマーを表示します。</string>
+    <string name="settings_show_onscreen_timer_title">画面タイマーを表示</string>
 </resources>

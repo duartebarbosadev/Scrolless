@@ -24,4 +24,8 @@
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d 分鐘</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">不封鎖在私訊中傳送的 Reels。</string>
+    <string name="settings_except_reels_sent_by_dms_title">私訊中傳送的 Reels</string>
+    <string name="settings_show_onscreen_timer_description">觀看短影音內容時，保持浮動計時器可見。</string>
+    <string name="settings_show_onscreen_timer_title">顯示螢幕浮動計時器</string>
 </resources>

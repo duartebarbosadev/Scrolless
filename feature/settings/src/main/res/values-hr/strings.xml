@@ -26,4 +26,8 @@
         <item quantity="other">%1$d minuta</item>
         <item quantity="few">%1$d minute</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">Ne blokiraj Reels poslane u DM-ovima.</string>
+    <string name="settings_except_reels_sent_by_dms_title">Reels poslani u DM-ovima</string>
+    <string name="settings_show_onscreen_timer_description">Zadrži plutajući mjerač vremena vidljivim dok gledaš kratke videozapise.</string>
+    <string name="settings_show_onscreen_timer_title">Prikaži mjerač vremena na zaslonu</string>
 </resources>
