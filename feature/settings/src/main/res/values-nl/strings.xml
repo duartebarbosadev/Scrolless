@@ -25,4 +25,8 @@
         <item quantity="one">%1$d minuut</item>
         <item quantity="other">%1$d minuten</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">Blokkeer geen Reels die via DM\'s zijn verzonden.</string>
+    <string name="settings_except_reels_sent_by_dms_title">Reels verzonden via DM\'s</string>
+    <string name="settings_show_onscreen_timer_description">Houd een zwevende timer zichtbaar tijdens het bekijken van korte content.</string>
+    <string name="settings_show_onscreen_timer_title">Toon timer op scherm</string>
 </resources>

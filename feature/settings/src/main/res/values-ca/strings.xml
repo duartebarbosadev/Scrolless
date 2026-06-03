@@ -25,4 +25,8 @@
         <item quantity="one">%1$d minut</item>
         <item quantity="other">%1$d minuts</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">No bloquis els Reels enviats per missatges directes.</string>
+    <string name="settings_except_reels_sent_by_dms_title">Reels enviats per missatges directes</string>
+    <string name="settings_show_onscreen_timer_description">Mantén un temporitzador flotant visible mentre mires contingut de format curt.</string>
+    <string name="settings_show_onscreen_timer_title">Mostra el temporitzador en pantalla</string>
 </resources>

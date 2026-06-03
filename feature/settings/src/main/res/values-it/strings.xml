@@ -25,4 +25,8 @@
         <item quantity="one">%1$d minuto</item>
         <item quantity="other">%1$d minuti</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">Non bloccare i Reel inviati nei messaggi diretti.</string>
+    <string name="settings_except_reels_sent_by_dms_title">Reel inviati nei messaggi diretti</string>
+    <string name="settings_show_onscreen_timer_description">Mantieni un timer mobile visibile mentre guardi contenuti brevi.</string>
+    <string name="settings_show_onscreen_timer_title">Mostra timer sullo schermo</string>
 </resources>

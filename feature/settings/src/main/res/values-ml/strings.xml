@@ -25,4 +25,8 @@
         <item quantity="other">%1$d മിനിറ്റ്</item>
         <item quantity="one">%1$d മിനിറ്റ്</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">DM-കളിൽ അയച്ച റീലുകൾ ബ്ലോക്ക് ചെയ്യരുത്.</string>
+    <string name="settings_except_reels_sent_by_dms_title">DM-കളിൽ അയച്ച റീലുകൾ</string>
+    <string name="settings_show_onscreen_timer_description">ചെറിയ ഉള്ളടക്കം കാണുമ്പോൾ ഒരു ഫ്ലോട്ടിംഗ് ടൈമർ ദൃശ്യമാക്കി നിർത്തുക.</string>
+    <string name="settings_show_onscreen_timer_title">ഓൺ-സ്ക്രീൻ ടൈമർ കാണിക്കുക</string>
 </resources>

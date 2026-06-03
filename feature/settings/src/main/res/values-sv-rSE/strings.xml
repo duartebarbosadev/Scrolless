@@ -25,4 +25,8 @@
         <item quantity="other">%1$d minuter</item>
         <item quantity="one">%1$d minut</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">Blockera inte Reels som skickats i DM.</string>
+    <string name="settings_except_reels_sent_by_dms_title">Reels skickade i DM</string>
+    <string name="settings_show_onscreen_timer_description">Håll en flytande timer synlig när du tittar på kort videoinnehåll.</string>
+    <string name="settings_show_onscreen_timer_title">Visa timer på skärmen</string>
 </resources>

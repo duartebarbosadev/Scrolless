@@ -24,4 +24,8 @@
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d phút</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">Không chặn Reels được gửi trong tin nhắn trực tiếp.</string>
+    <string name="settings_except_reels_sent_by_dms_title">Reels được gửi trong tin nhắn trực tiếp</string>
+    <string name="settings_show_onscreen_timer_description">Giữ bộ hẹn giờ nổi hiển thị khi xem nội dung dạng ngắn.</string>
+    <string name="settings_show_onscreen_timer_title">Hiển thị bộ hẹn giờ trên màn hình</string>
 </resources>

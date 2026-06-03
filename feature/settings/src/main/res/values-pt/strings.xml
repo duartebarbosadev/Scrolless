@@ -25,4 +25,8 @@
         <item quantity="other">%1$d minutos</item>
         <item quantity="one">%1$d minuto</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">Não bloquear Reels enviados em DMs.</string>
+    <string name="settings_except_reels_sent_by_dms_title">Reels enviados em DMs</string>
+    <string name="settings_show_onscreen_timer_description">Manter um temporizador flutuante visível enquanto assiste a conteúdo de formato curto.</string>
+    <string name="settings_show_onscreen_timer_title">Mostrar temporizador no ecrã</string>
 </resources>

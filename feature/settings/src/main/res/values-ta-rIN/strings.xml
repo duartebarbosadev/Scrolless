@@ -25,4 +25,8 @@
         <item quantity="one">%1$d நிமிடம்</item>
         <item quantity="other">%1$d நிமிடங்கள்</item>
     </plurals>
+    <string name="settings_except_reels_sent_by_dms_description">நேரடிச் செய்திகளில் அனுப்பப்பட்ட ரீல்ஸ்களைத் தடுக்க வேண்டாம்.</string>
+    <string name="settings_except_reels_sent_by_dms_title">நேரடிச் செய்திகளில் அனுப்பப்பட்ட ரீல்ஸ்கள்</string>
+    <string name="settings_show_onscreen_timer_description">குறுகிய வடிவ உள்ளடக்கத்தைப் பார்க்கும்போது மிதக்கும் டைமரைத் திரையில் தெரியும்படி வைத்திருங்கள்.</string>
+    <string name="settings_show_onscreen_timer_title">திரையில் டைமரைக் காட்டு</string>
 </resources>
