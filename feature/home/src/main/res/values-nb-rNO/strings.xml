@@ -71,7 +71,7 @@
     <string name="resume">Gjenoppta</string>
     <string name="settings">Innstillinger</string>
     <string name="success_icon_description">Suksess-ikon</string>
-    <string name="time_interval">Tids\nintervall</string>
+    <string name="time_interval">Tids\nIntervall</string>
     <string name="time_limit_dialog_title">Angi daglig grensetid</string>
     <string name="usage_analytics_average_month">Siste måned</string>
     <string name="usage_analytics_average_title">Gjennomsnitt</string>

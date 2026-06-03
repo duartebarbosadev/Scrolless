@@ -28,9 +28,9 @@
     <string name="accessibility_explainer_title">Chúng tôi cần quyền truy cập trợ năng</string>
     <string name="accessibility_success_description">Scrolless đã sẵn sàng!</string>
     <string name="accessibility_success_title">Tất cả đã sẵn sàng!</string>
-    <string name="block_all">Chặn\nTất cả</string>
+    <string name="block_all">Chặn\nTất Cả</string>
     <string name="close">Đóng</string>
-    <string name="daily_limit">Giới hạn\nHàng ngày</string>
+    <string name="daily_limit">Giới Hạn\nHàng Ngày</string>
     <string name="daily_limit_configure_time_content_description">Cấu hình thời gian giới hạn hàng ngày</string>
     <string name="feature_coming_soon">Tính năng sắp ra mắt</string>
     <string name="get_started">Bắt đầu</string>
@@ -71,7 +71,7 @@
     <string name="resume">Tiếp tục</string>
     <string name="settings">Cài đặt</string>
     <string name="success_icon_description">Biểu tượng dấu kiểm thành công</string>
-    <string name="time_interval">Khoảng\nThời gian</string>
+    <string name="time_interval">Khoảng\nThời Gian</string>
     <string name="time_limit_dialog_title">Đặt Thời gian Giới hạn Hàng ngày</string>
     <string name="usage_analytics_average_month">Tháng trước</string>
     <string name="usage_analytics_average_title">Trung bình</string>

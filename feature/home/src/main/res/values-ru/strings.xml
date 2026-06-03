@@ -28,9 +28,9 @@
     <string name="accessibility_explainer_title">Нам нужен доступ к специальным возможностям</string>
     <string name="accessibility_success_description">Scrolless готов к работе!</string>
     <string name="accessibility_success_title">Все готово!</string>
-    <string name="block_all">Блокировать\nвсе</string>
+    <string name="block_all">Блокировать\nВсе</string>
     <string name="close">Закрыть</string>
-    <string name="daily_limit">Дневной\nлимит</string>
+    <string name="daily_limit">Дневной\nЛимит</string>
     <string name="daily_limit_configure_time_content_description">Настроить время дневного лимита</string>
     <string name="feature_coming_soon">Функция скоро появится</string>
     <string name="get_started">Начать</string>
@@ -71,7 +71,7 @@
     <string name="resume">Возобновить</string>
     <string name="settings">Настройки</string>
     <string name="success_icon_description">Значок галочки успеха</string>
-    <string name="time_interval">Временной\nинтервал</string>
+    <string name="time_interval">Временной\nИнтервал</string>
     <string name="time_limit_dialog_title">Установить время дневного лимита</string>
     <string name="usage_analytics_average_month">Последний месяц</string>
     <string name="usage_analytics_average_title">Среднее</string>

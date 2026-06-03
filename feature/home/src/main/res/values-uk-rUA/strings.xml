@@ -28,9 +28,9 @@
     <string name="accessibility_explainer_title">Нам потрібен доступ до функцій доступності</string>
     <string name="accessibility_success_description">Scrolless готовий до роботи!</string>
     <string name="accessibility_success_title">Все налаштовано!</string>
-    <string name="block_all">Блокувати\nвсе</string>
+    <string name="block_all">Блокувати\nВсе</string>
     <string name="close">Закрити</string>
-    <string name="daily_limit">Денний\nліміт</string>
+    <string name="daily_limit">Денний\nЛіміт</string>
     <string name="daily_limit_configure_time_content_description">Налаштувати час денного ліміту</string>
     <string name="feature_coming_soon">Функція незабаром</string>
     <string name="get_started">Почати</string>
@@ -71,7 +71,7 @@
     <string name="resume">Відновити</string>
     <string name="settings">Налаштування</string>
     <string name="success_icon_description">Іконка успішної позначки</string>
-    <string name="time_interval">Часовий\nінтервал</string>
+    <string name="time_interval">Часовий\nІнтервал</string>
     <string name="time_limit_dialog_title">Встановити щоденний ліміт часу</string>
     <string name="usage_analytics_average_month">Минулий місяць</string>
     <string name="usage_analytics_average_title">Середнє</string>

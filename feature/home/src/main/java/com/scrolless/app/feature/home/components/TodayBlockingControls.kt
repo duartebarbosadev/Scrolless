@@ -20,7 +20,10 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -61,13 +64,19 @@ import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonColors
 import androidx.compose.material3.ToggleButtonShapes
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -83,7 +92,10 @@ import com.scrolless.app.designsystem.util.toCountdownLabel
 import com.scrolless.app.designsystem.util.toIntervalLabel
 import com.scrolless.app.feature.home.HomeUiState
 import com.scrolless.app.feature.home.R
+import kotlinx.coroutines.delay
 import timber.log.Timber
+
+enum class BlockingButtonType { BLOCK_ALL, DAILY_LIMIT, INTERVAL }
 
 @Composable
 fun TodayBlockingControls(
@@ -98,9 +110,22 @@ fun TodayBlockingControls(
     onPauseToggle: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val weightBase = 1f
-    val weightExpanded = 1.2f
-    val weightShrunk = 0.9f
+    val weightBase = 1.0f
+    val weightExpanded = 1.15f
+    val weightShrunk = 0.65f
+    val releaseDelay = 160L
+    val pressAnimationSpec = spring<Float>(stiffness = 550f)
+
+    var lastClicked by remember { mutableStateOf<BlockingButtonType?>(null) }
+    val hapticFeedback = LocalHapticFeedback.current
+
+    // Auto-releases the button expansion animation after releaseDelay
+    LaunchedEffect(lastClicked) {
+        if (lastClicked != null) {
+            delay(releaseDelay)
+            lastClicked = null
+        }
+    }
 
     // 1. Define interaction sources for ALL buttons
     val blockAllInteractionSource = remember { MutableInteractionSource() }
@@ -111,32 +136,33 @@ fun TodayBlockingControls(
     val isDailyLimitPressed by dailyLimitInteractionSource.collectIsPressedAsState()
     val isIntervalPressed by intervalInteractionSource.collectIsPressedAsState()
 
-    // 2. Calculate Animated Weights (Float) based on interaction states
+    // Helper to evaluate target weight based on click/press states
+    fun isPressedOrClicked(button: BlockingButtonType): Boolean = when (button) {
+        BlockingButtonType.BLOCK_ALL -> isBlockAllPressed || lastClicked == BlockingButtonType.BLOCK_ALL
+        BlockingButtonType.DAILY_LIMIT -> isDailyLimitPressed || lastClicked == BlockingButtonType.DAILY_LIMIT
+        BlockingButtonType.INTERVAL -> isIntervalPressed || lastClicked == BlockingButtonType.INTERVAL
+    }
+
+    fun weightFor(button: BlockingButtonType): Float = when {
+        isPressedOrClicked(button) -> weightExpanded
+        BlockingButtonType.entries.any { isPressedOrClicked(it) } -> weightShrunk
+        else -> weightBase
+    }
+
+    // 2. Calculate Animated Weights (Float) based on interaction and click states
     val blockAllWeight by animateFloatAsState(
-        targetValue = when {
-            isBlockAllPressed -> weightExpanded
-            isDailyLimitPressed || isIntervalPressed -> weightShrunk
-            else -> weightBase
-        },
-        animationSpec = tween(100), label = "blockAllWeight",
+        targetValue = weightFor(BlockingButtonType.BLOCK_ALL),
+        animationSpec = pressAnimationSpec, label = "blockAllWeight",
     )
 
     val dailyLimitWeight by animateFloatAsState(
-        targetValue = when {
-            isDailyLimitPressed -> weightExpanded
-            isBlockAllPressed || isIntervalPressed -> weightShrunk
-            else -> weightBase
-        },
-        animationSpec = tween(100), label = "dailyLimitWeight",
+        targetValue = weightFor(BlockingButtonType.DAILY_LIMIT),
+        animationSpec = pressAnimationSpec, label = "dailyLimitWeight",
     )
 
     val intervalWeight by animateFloatAsState(
-        targetValue = when {
-            isIntervalPressed -> weightExpanded
-            isBlockAllPressed || isDailyLimitPressed -> weightShrunk
-            else -> weightBase
-        },
-        animationSpec = tween(100), label = "intervalWeight",
+        targetValue = weightFor(BlockingButtonType.INTERVAL),
+        animationSpec = pressAnimationSpec, label = "intervalWeight",
     )
 
     Column(
@@ -148,6 +174,8 @@ fun TodayBlockingControls(
         FeatureButtonsRow(
             selectedOption = uiState.blockOption,
             onBlockAllClick = {
+                lastClicked = BlockingButtonType.BLOCK_ALL
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                 val newOption = if (uiState.blockOption == BlockOption.BlockAll) {
                     BlockOption.NothingSelected
                 } else {
@@ -157,6 +185,8 @@ fun TodayBlockingControls(
                 onBlockOptionSelected(newOption)
             },
             onDailyLimitClick = {
+                lastClicked = BlockingButtonType.DAILY_LIMIT
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                 if (uiState.timeLimit == 0L && uiState.blockOption != BlockOption.DailyLimit) {
                     Timber.d("DailyLimit clicked -> open TimeLimitDialog (no limit set)")
                     onConfigureDailyLimit()
@@ -171,6 +201,8 @@ fun TodayBlockingControls(
                 }
             },
             onIntervalTimerClick = {
+                lastClicked = BlockingButtonType.INTERVAL
+                hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
                 Timber.i("IntervalTimer clicked from feature row")
                 onIntervalTimerClick()
             },
@@ -193,27 +225,19 @@ fun TodayBlockingControls(
                 animationSpec = tween(300),
             ) + fadeOut(animationSpec = tween(200)),
         ) {
-            Row(modifier = Modifier.fillMaxWidth()) {
-                Spacer(modifier = Modifier.weight(blockAllWeight))
-                Box(
-                    modifier = Modifier
-                        .weight(dailyLimitWeight)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.TopCenter,
-                ) {
-                    ConfigButton(
-                        onClick = {
-                            Timber.d("Open DailyLimit config button clicked")
-                            onConfigureDailyLimit()
-                        },
-                        dailyLimitInteractionSource = dailyLimitInteractionSource,
-                        blockAllInteractionSource = blockAllInteractionSource,
-                        modifier = Modifier
-                            .fillMaxWidth(0.6f)
-                            .align(Alignment.Center),
-                    )
-                }
-                Spacer(modifier = Modifier.weight(intervalWeight))
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                ConfigButton(
+                    onClick = {
+                        Timber.d("Open DailyLimit config button clicked")
+                        onConfigureDailyLimit()
+                    },
+                    dailyLimitInteractionSource = dailyLimitInteractionSource,
+                    blockAllInteractionSource = blockAllInteractionSource,
+                    modifier = Modifier.fillMaxWidth(0.2f),
+                )
             }
         }
 
@@ -284,7 +308,7 @@ fun ConfigButton(
     val isDailyLimitPressed by dailyLimitInteractionSource.collectIsPressedAsState()
     val isBlockAllPressed by blockAllInteractionSource.collectIsPressedAsState()
 
-    // Wiggle if EITHER linked button is pressed
+    // Wiggle if EITHER linked button is actively pressed
     val isPressed = isDailyLimitPressed || isBlockAllPressed
 
     // Fast tweens for visual feedback
@@ -556,7 +580,7 @@ fun FeatureButtonsRow(
             buttonGroupContent = {
                 FeatureButton(
                     onClick = onDailyLimitClick,
-                    icon = R.drawable.icons8_timer_64,
+                    icon = R.drawable.icons8_timer_no_shadow_64,
                     text = stringResource(id = R.string.daily_limit),
                     contentDescription = stringResource(id = R.string.daily_limit),
                     isSelected = selectedOption == BlockOption.DailyLimit,
@@ -576,7 +600,7 @@ fun FeatureButtonsRow(
                 ) {
                     FeatureButton(
                         onClick = onIntervalTimerClick,
-                        icon = R.drawable.icons8_stopwatch_64,
+                        icon = R.drawable.icons8_stopwatch_no_shadow_64,
                         text = stringResource(id = R.string.time_interval),
                         contentDescription = stringResource(id = R.string.time_interval),
                         isSelected = selectedOption == BlockOption.IntervalTimer,
@@ -613,6 +637,41 @@ fun FeatureButton(
 ) {
     val finalModifier = if (!isEnabled) modifier.alpha(0.7f) else modifier
 
+    val iconRotation = remember { Animatable(0f) }
+    val iconScale = remember { Animatable(1f) }
+
+    LaunchedEffect(isSelected) {
+        if (isSelected) {
+            when (icon) {
+                R.drawable.icons8_timer_no_shadow_64 -> {
+                    iconRotation.snapTo(0f)
+                    iconRotation.animateTo(
+                        targetValue = 45f,
+                        animationSpec = spring(stiffness = Spring.StiffnessMedium, dampingRatio = Spring.DampingRatioMediumBouncy),
+                    )
+                }
+
+                R.drawable.icons8_stopwatch_no_shadow_64 -> {
+                    iconRotation.snapTo(0f)
+                    iconRotation.animateTo(15f, spring(stiffness = Spring.StiffnessHigh))
+                    iconRotation.animateTo(-15f, spring(stiffness = Spring.StiffnessHigh))
+                    iconRotation.animateTo(8f, spring(stiffness = Spring.StiffnessMedium))
+                    iconRotation.animateTo(-8f, spring(stiffness = Spring.StiffnessMedium))
+                    iconRotation.animateTo(0f, spring(stiffness = Spring.StiffnessLow))
+                }
+
+                R.drawable.icons8_block_120 -> {
+                    iconScale.snapTo(1f)
+                    iconScale.animateTo(1.25f, spring(stiffness = Spring.StiffnessMedium, dampingRatio = Spring.DampingRatioMediumBouncy))
+                    iconScale.animateTo(1.0f, spring(stiffness = Spring.StiffnessLow))
+                }
+            }
+        } else {
+            iconRotation.snapTo(0f)
+            iconScale.snapTo(1f)
+        }
+    }
+
     ToggleButton(
         checked = isSelected,
         onCheckedChange = { onClick() },
@@ -641,7 +700,13 @@ fun FeatureButton(
             Image(
                 painter = painterResource(id = icon),
                 contentDescription = contentDescription,
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier
+                    .size(32.dp)
+                    .graphicsLayer(
+                        scaleX = iconScale.value,
+                        scaleY = iconScale.value,
+                        rotationZ = iconRotation.value,
+                    ),
             )
             AutoResizingText(
                 text = text,

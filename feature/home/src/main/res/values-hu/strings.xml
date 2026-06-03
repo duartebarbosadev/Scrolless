@@ -28,9 +28,9 @@
     <string name="accessibility_explainer_title">Hozzáférés szükséges a kisegítő lehetőségekhez</string>
     <string name="accessibility_success_description">A Scrolless készen áll!</string>
     <string name="accessibility_success_title">Minden beállítva!</string>
-    <string name="block_all">Összes\nblokkolása</string>
+    <string name="block_all">Összes\nBlokkolása</string>
     <string name="close">Bezárás</string>
-    <string name="daily_limit">Napi\nlimit</string>
+    <string name="daily_limit">Napi\nLimit</string>
     <string name="daily_limit_configure_time_content_description">Napi limit idő konfigurálása</string>
     <string name="feature_coming_soon">Funkció hamarosan érkezik</string>
     <string name="get_started">Kezdés</string>
@@ -71,7 +71,7 @@
     <string name="resume">Folytatás</string>
     <string name="settings">Beállítások</string>
     <string name="success_icon_description">Siker jelölő ikon</string>
-    <string name="time_interval">Idő\nintervallum</string>
+    <string name="time_interval">Idő\nIntervallum</string>
     <string name="time_limit_dialog_title">Napi limit beállítása</string>
     <string name="usage_analytics_average_month">Múlt hónap</string>
     <string name="usage_analytics_average_title">Átlag</string>
