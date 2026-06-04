@@ -95,4 +95,6 @@
         <item quantity="one">%1$d munkamenet</item>
         <item quantity="other">%1$d munkamenet</item>
     </plurals>
+    <string name="usage_analytics_next_day">Következő nap</string>
+    <string name="usage_analytics_previous_day">Előző nap</string>
 </resources>

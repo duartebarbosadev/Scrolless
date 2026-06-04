@@ -95,4 +95,6 @@
         <item quantity="one">%1$d oturum</item>
         <item quantity="other">%1$d oturum</item>
     </plurals>
+    <string name="usage_analytics_next_day">Sonraki gün</string>
+    <string name="usage_analytics_previous_day">Önceki gün</string>
 </resources>

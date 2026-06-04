@@ -97,4 +97,6 @@
         <item quantity="few">%1$d relace</item>
         <item quantity="many">%1$d relací</item>
     </plurals>
+    <string name="usage_analytics_next_day">Další den</string>
+    <string name="usage_analytics_previous_day">Předchozí den</string>
 </resources>

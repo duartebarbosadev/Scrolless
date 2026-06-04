@@ -95,4 +95,6 @@
         <item quantity="one">%1$d istunto</item>
         <item quantity="other">%1$d istuntoa</item>
     </plurals>
+    <string name="usage_analytics_next_day">Seuraava päivä</string>
+    <string name="usage_analytics_previous_day">Edellinen päivä</string>
 </resources>
