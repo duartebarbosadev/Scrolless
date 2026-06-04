@@ -16,18 +16,12 @@
  */
 package com.scrolless.app.feature.home.components
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
+import android.content.Context
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -57,6 +51,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -73,13 +69,7 @@ import com.scrolless.app.designsystem.component.LegendItem
 import com.scrolless.app.designsystem.component.ProgressBarSegment
 import com.scrolless.app.designsystem.component.SegmentedCircularProgressIndicator
 import com.scrolless.app.designsystem.theme.ScrollessTheme
-import com.scrolless.app.designsystem.theme.facebookColor
-import com.scrolless.app.designsystem.theme.facebookLiteColor
-import com.scrolless.app.designsystem.theme.instagramReelsColor
 import com.scrolless.app.designsystem.theme.progressbar_red_use
-import com.scrolless.app.designsystem.theme.snapchatColor
-import com.scrolless.app.designsystem.theme.tiktokColor
-import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.designsystem.util.formatTime
 import com.scrolless.app.feature.home.R
@@ -98,8 +88,6 @@ fun ProgressCard(
     intervalWindowStart: Long,
     modifier: Modifier = Modifier,
     listSessionSegments: List<SessionSegment> = emptyList(),
-    dateLabel: String? = null,
-    showDateSwipeHint: Boolean = false,
     onClick: () -> Unit = {},
 ) {
     val clampedProgress = progress.coerceIn(0, 100)
@@ -150,25 +138,15 @@ fun ProgressCard(
         null
     }
 
-    val facebookLabel = stringResource(R.string.app_facebook)
-    val facebookLiteLabel = stringResource(R.string.app_facebook_lite)
-    val reelsLabel = stringResource(R.string.app_reels)
-    val snapchatLabel = stringResource(R.string.app_snapchat)
-    val tiktokLabel = stringResource(R.string.app_tiktok)
-    val shortsLabel = stringResource(R.string.app_shorts)
-
+    val context = LocalContext.current
+    val configuration = LocalConfiguration.current
     // Per-app usage data for the segmented progress indicator
     val progressBarSegments =
-        remember(listSessionSegments, currentUsage, facebookLabel, facebookLiteLabel, reelsLabel, snapchatLabel, tiktokLabel, shortsLabel) {
+        remember(listSessionSegments, currentUsage, context, configuration) {
             buildProgressBarSegments(
                 sessionSegments = listSessionSegments,
                 currentUsage = currentUsage,
-                facebookLabel = facebookLabel,
-                facebookLiteLabel = facebookLiteLabel,
-                reelsLabel = reelsLabel,
-                snapchatLabel = snapchatLabel,
-                tiktokLabel = tiktokLabel,
-                shortsLabel = shortsLabel,
+                context = context,
             )
         }
     val legendItems = remember(progressBarSegments) { buildLegendItems(progressBarSegments) }
@@ -332,44 +310,6 @@ fun ProgressCard(
                 .fillMaxWidth()
                 .padding(top = 8.dp),
         )
-
-        if (dateLabel != null) {
-            Column(
-                modifier = Modifier.padding(top = 6.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Surface(
-                    shape = RoundedCornerShape(14.dp),
-                    color = MaterialTheme.colorScheme.surfaceContainerHigh,
-                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.12f)),
-                ) {
-                    AnimatedContent(
-                        targetState = dateLabel,
-                        label = "progressDateLabel",
-                    ) { label ->
-                        Text(
-                            text = label,
-                            style = MaterialTheme.typography.labelLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        )
-                    }
-                }
-                AnimatedVisibility(
-                    visible = showDateSwipeHint,
-                    enter = fadeIn(animationSpec = tween(180)) + expandVertically(animationSpec = tween(180)),
-                    exit = fadeOut(animationSpec = tween(140)) + shrinkVertically(animationSpec = tween(160)),
-                ) {
-                    Text(
-                        text = stringResource(R.string.usage_analytics_swipe_hint),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.72f),
-                        modifier = Modifier.padding(top = 4.dp),
-                        maxLines = 1,
-                    )
-                }
-            }
-        }
     }
 }
 
@@ -409,12 +349,7 @@ private fun rememberIntervalRemainingTime(isRunning: Boolean, intervalLength: Lo
 private fun buildProgressBarSegments(
     sessionSegments: List<SessionSegment>,
     currentUsage: Long,
-    facebookLabel: String,
-    facebookLiteLabel: String,
-    reelsLabel: String,
-    snapchatLabel: String,
-    tiktokLabel: String,
-    shortsLabel: String,
+    context: Context,
 ): List<ProgressBarSegment> {
     val totalSegmentMillis = sessionSegments.sumOf { it.durationMillis.coerceAtLeast(0L) }
     val cappedTotalUsage = currentUsage.coerceAtLeast(0L)
@@ -431,24 +366,11 @@ private fun buildProgressBarSegments(
         }
         val usageMillis = (rawUsageMillis * scale).toLong().coerceAtLeast(1L)
 
-        val color = when (segment.app) {
-            BlockableApp.FACEBOOK -> facebookColor
-            BlockableApp.FACEBOOK_LITE -> facebookLiteColor
-            BlockableApp.REELS -> instagramReelsColor
-            BlockableApp.SNAPCHAT -> snapchatColor
-            BlockableApp.SHORTS -> youtubeShortsColor
-            BlockableApp.TIKTOK -> tiktokColor
-        }
-        val appName = when (segment.app) {
-            BlockableApp.FACEBOOK -> facebookLabel
-            BlockableApp.FACEBOOK_LITE -> facebookLiteLabel
-            BlockableApp.REELS -> reelsLabel
-            BlockableApp.SNAPCHAT -> snapchatLabel
-            BlockableApp.SHORTS -> shortsLabel
-            BlockableApp.TIKTOK -> tiktokLabel
-        }
-
-        ProgressBarSegment(segmentName = appName, usageMillis = usageMillis, color = color)
+        ProgressBarSegment(
+            segmentName = segment.app.displayName(context),
+            usageMillis = usageMillis,
+            color = segment.app.analyticsColor(),
+        )
     }
 }
 
@@ -458,12 +380,13 @@ private fun buildLegendItems(progressBarSegments: List<ProgressBarSegment>): Lis
         if (totalMillis <= 0L) {
             return@mapNotNull null
         }
-        LegendItem(
+        totalMillis to LegendItem(
             legendName = segmentName,
             formattedTime = totalMillis.formatTime(),
             color = segments.first().color,
         )
-    }
+    }.sortedByDescending { it.first }
+        .map { it.second }
 
 @DevicePreviews
 @Composable
@@ -483,8 +406,6 @@ fun ProgressCardPreview() {
                     SessionSegment(BlockableApp.REELS, 1200000L, java.time.LocalDateTime.now()),
                     SessionSegment(BlockableApp.FACEBOOK, 600000L, java.time.LocalDateTime.now()),
                 ),
-                dateLabel = "Today",
-                showDateSwipeHint = true,
             )
         }
     }

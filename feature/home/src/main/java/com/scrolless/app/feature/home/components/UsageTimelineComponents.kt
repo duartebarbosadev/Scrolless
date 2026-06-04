@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.feature.home.components
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
@@ -59,6 +60,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -407,11 +409,6 @@ fun Long.formatAnalyticsDuration(): String {
     }
 }
 
-fun pageDateForPage(page: Int, today: LocalDate, todayPage: Int): LocalDate {
-    val daysBack = todayPage - page
-    return today.minusDays(daysBack.toLong())
-}
-
 fun analyticsForDate(analytics: UsageAnalyticsUiState, date: LocalDate): UsageAnalyticsUiState {
     val dayAnalytics = analytics.daySummaries[date] ?: UsageAnalyticsDayUiState(date = date)
     return analytics.copy(
@@ -423,15 +420,19 @@ fun analyticsForDate(analytics: UsageAnalyticsUiState, date: LocalDate): UsageAn
     )
 }
 
+fun BlockableApp.displayName(context: Context): String = context.getString(
+    when (this) {
+        BlockableApp.FACEBOOK -> R.string.app_facebook
+        BlockableApp.FACEBOOK_LITE -> R.string.app_facebook_lite
+        BlockableApp.REELS -> R.string.app_reels
+        BlockableApp.SNAPCHAT -> R.string.app_snapchat
+        BlockableApp.SHORTS -> R.string.app_shorts
+        BlockableApp.TIKTOK -> R.string.app_tiktok
+    },
+)
+
 @Composable
-fun BlockableApp.analyticsDisplayName(): String = when (this) {
-    BlockableApp.FACEBOOK -> stringResource(R.string.app_facebook)
-    BlockableApp.FACEBOOK_LITE -> stringResource(R.string.app_facebook_lite)
-    BlockableApp.REELS -> stringResource(R.string.app_reels)
-    BlockableApp.SNAPCHAT -> stringResource(R.string.app_snapchat)
-    BlockableApp.SHORTS -> stringResource(R.string.app_shorts)
-    BlockableApp.TIKTOK -> stringResource(R.string.app_tiktok)
-}
+fun BlockableApp.analyticsDisplayName(): String = displayName(LocalContext.current)
 
 fun BlockableApp.analyticsColor(): Color = when (this) {
     BlockableApp.FACEBOOK -> facebookColor

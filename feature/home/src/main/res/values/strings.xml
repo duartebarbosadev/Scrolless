@@ -162,6 +162,8 @@
     <string name="time_limit_dialog_title">Set Daily Limit Time</string>
 
     <string name="usage_analytics_today">Today</string>
+    <string name="usage_analytics_previous_day">Previous day</string>
+    <string name="usage_analytics_next_day">Next day</string>
     <string name="usage_analytics_swipe_hint">&lt; Swipe to view days &gt;</string>
     <string name="usage_analytics_timeline_title">Timeline</string>
     <string name="usage_analytics_average_title">Average</string>
