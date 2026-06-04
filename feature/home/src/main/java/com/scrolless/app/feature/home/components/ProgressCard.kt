@@ -51,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
@@ -138,9 +139,10 @@ fun ProgressCard(
     }
 
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
     // Per-app usage data for the segmented progress indicator
     val progressBarSegments =
-        remember(listSessionSegments, currentUsage) {
+        remember(listSessionSegments, currentUsage, context, configuration) {
             buildProgressBarSegments(
                 sessionSegments = listSessionSegments,
                 currentUsage = currentUsage,
