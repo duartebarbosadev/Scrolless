@@ -96,4 +96,6 @@
         <item quantity="few">%1$d сесије</item>
         <item quantity="other">%1$d сесија</item>
     </plurals>
+    <string name="usage_analytics_next_day">Следећи дан</string>
+    <string name="usage_analytics_previous_day">Претходни дан</string>
 </resources>

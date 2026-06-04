@@ -94,4 +94,6 @@
     <plurals name="usage_analytics_session_count">
         <item quantity="other">%1$dセッション</item>
     </plurals>
+    <string name="usage_analytics_next_day">翌日</string>
+    <string name="usage_analytics_previous_day">前日</string>
 </resources>

@@ -95,4 +95,6 @@
         <item quantity="one">%1$d सत्र</item>
         <item quantity="other">%1$d सत्रे</item>
     </plurals>
+    <string name="usage_analytics_next_day">पुढील दिवस</string>
+    <string name="usage_analytics_previous_day">मागील दिवस</string>
 </resources>

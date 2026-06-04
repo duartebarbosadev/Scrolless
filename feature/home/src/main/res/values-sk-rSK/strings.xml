@@ -97,4 +97,6 @@
         <item quantity="many">%1$d relácie</item>
         <item quantity="other">%1$d relácií</item>
     </plurals>
+    <string name="usage_analytics_next_day">Ďalší deň</string>
+    <string name="usage_analytics_previous_day">Predchádzajúci deň</string>
 </resources>

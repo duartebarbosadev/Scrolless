@@ -97,4 +97,6 @@
         <item quantity="many">%1$d сеансов</item>
         <item quantity="other">%1$d сеанса</item>
     </plurals>
+    <string name="usage_analytics_next_day">Следующий день</string>
+    <string name="usage_analytics_previous_day">Предыдущий день</string>
 </resources>

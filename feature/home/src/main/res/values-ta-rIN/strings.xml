@@ -95,4 +95,6 @@
         <item quantity="one">%1$d அமர்வு</item>
         <item quantity="other">%1$d அமர்வுகள்</item>
     </plurals>
+    <string name="usage_analytics_next_day">அடுத்த நாள்</string>
+    <string name="usage_analytics_previous_day">முந்தைய நாள்</string>
 </resources>

@@ -95,4 +95,6 @@
         <item quantity="one">%1$d സെഷൻ</item>
         <item quantity="other">%1$d സെഷനുകൾ</item>
     </plurals>
+    <string name="usage_analytics_next_day">അടുത്ത ദിവസം</string>
+    <string name="usage_analytics_previous_day">മുമ്പത്തെ ദിവസം</string>
 </resources>

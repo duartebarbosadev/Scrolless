@@ -95,4 +95,6 @@
         <item quantity="one">%1$d økt</item>
         <item quantity="other">%1$d økter</item>
     </plurals>
+    <string name="usage_analytics_next_day">Neste dag</string>
+    <string name="usage_analytics_previous_day">Forrige dag</string>
 </resources>
