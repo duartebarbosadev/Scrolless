@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.feature.home.components
 
+import android.content.Context
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
@@ -50,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -66,13 +68,7 @@ import com.scrolless.app.designsystem.component.LegendItem
 import com.scrolless.app.designsystem.component.ProgressBarSegment
 import com.scrolless.app.designsystem.component.SegmentedCircularProgressIndicator
 import com.scrolless.app.designsystem.theme.ScrollessTheme
-import com.scrolless.app.designsystem.theme.facebookColor
-import com.scrolless.app.designsystem.theme.facebookLiteColor
-import com.scrolless.app.designsystem.theme.instagramReelsColor
 import com.scrolless.app.designsystem.theme.progressbar_red_use
-import com.scrolless.app.designsystem.theme.snapchatColor
-import com.scrolless.app.designsystem.theme.tiktokColor
-import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.designsystem.util.formatTime
 import com.scrolless.app.feature.home.R
@@ -141,25 +137,14 @@ fun ProgressCard(
         null
     }
 
-    val facebookLabel = stringResource(R.string.app_facebook)
-    val facebookLiteLabel = stringResource(R.string.app_facebook_lite)
-    val reelsLabel = stringResource(R.string.app_reels)
-    val snapchatLabel = stringResource(R.string.app_snapchat)
-    val tiktokLabel = stringResource(R.string.app_tiktok)
-    val shortsLabel = stringResource(R.string.app_shorts)
-
+    val context = LocalContext.current
     // Per-app usage data for the segmented progress indicator
     val progressBarSegments =
-        remember(listSessionSegments, currentUsage, facebookLabel, facebookLiteLabel, reelsLabel, snapchatLabel, tiktokLabel, shortsLabel) {
+        remember(listSessionSegments, currentUsage) {
             buildProgressBarSegments(
                 sessionSegments = listSessionSegments,
                 currentUsage = currentUsage,
-                facebookLabel = facebookLabel,
-                facebookLiteLabel = facebookLiteLabel,
-                reelsLabel = reelsLabel,
-                snapchatLabel = snapchatLabel,
-                tiktokLabel = tiktokLabel,
-                shortsLabel = shortsLabel,
+                context = context,
             )
         }
     val legendItems = remember(progressBarSegments) { buildLegendItems(progressBarSegments) }
@@ -362,12 +347,7 @@ private fun rememberIntervalRemainingTime(isRunning: Boolean, intervalLength: Lo
 private fun buildProgressBarSegments(
     sessionSegments: List<SessionSegment>,
     currentUsage: Long,
-    facebookLabel: String,
-    facebookLiteLabel: String,
-    reelsLabel: String,
-    snapchatLabel: String,
-    tiktokLabel: String,
-    shortsLabel: String,
+    context: Context,
 ): List<ProgressBarSegment> {
     val totalSegmentMillis = sessionSegments.sumOf { it.durationMillis.coerceAtLeast(0L) }
     val cappedTotalUsage = currentUsage.coerceAtLeast(0L)
@@ -384,24 +364,11 @@ private fun buildProgressBarSegments(
         }
         val usageMillis = (rawUsageMillis * scale).toLong().coerceAtLeast(1L)
 
-        val color = when (segment.app) {
-            BlockableApp.FACEBOOK -> facebookColor
-            BlockableApp.FACEBOOK_LITE -> facebookLiteColor
-            BlockableApp.REELS -> instagramReelsColor
-            BlockableApp.SNAPCHAT -> snapchatColor
-            BlockableApp.SHORTS -> youtubeShortsColor
-            BlockableApp.TIKTOK -> tiktokColor
-        }
-        val appName = when (segment.app) {
-            BlockableApp.FACEBOOK -> facebookLabel
-            BlockableApp.FACEBOOK_LITE -> facebookLiteLabel
-            BlockableApp.REELS -> reelsLabel
-            BlockableApp.SNAPCHAT -> snapchatLabel
-            BlockableApp.SHORTS -> shortsLabel
-            BlockableApp.TIKTOK -> tiktokLabel
-        }
-
-        ProgressBarSegment(segmentName = appName, usageMillis = usageMillis, color = color)
+        ProgressBarSegment(
+            segmentName = segment.app.displayName(context),
+            usageMillis = usageMillis,
+            color = segment.app.analyticsColor(),
+        )
     }
 }
 

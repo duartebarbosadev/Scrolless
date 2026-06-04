@@ -78,14 +78,10 @@ import androidx.compose.ui.unit.dp
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.theme.ScrollessTheme
-import com.scrolless.app.designsystem.theme.facebookColor
-import com.scrolless.app.designsystem.theme.facebookLiteColor
-import com.scrolless.app.designsystem.theme.instagramReelsColor
-import com.scrolless.app.designsystem.theme.snapchatColor
-import com.scrolless.app.designsystem.theme.tiktokColor
-import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.designsystem.util.formatMinutes
 import com.scrolless.app.feature.home.components.ANALYTICS_DATE_FORMATTER
+import com.scrolless.app.feature.home.components.analyticsColor
+import com.scrolless.app.feature.home.components.analyticsDisplayName
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -361,9 +357,9 @@ private fun DebugDayTimelinePanel(
                 )
                 BlockableApp.entries.forEach { app ->
                     DurationOptionChip(
-                        label = app.displayName(),
+                        label = app.analyticsDisplayName(),
                         selected = app == selectedApp,
-                        selectedColor = app.timelineColor(),
+                        selectedColor = app.analyticsColor(),
                         useSoftSelection = true,
                         onClick = { selectedApp = app },
                     )
@@ -657,7 +653,7 @@ private fun TimelineSessionBlock(segment: SessionSegment, index: Int, dayStart: 
     val leftOffset = TIMELINE_TRACK_WIDTH * (startMinutes / DAY_TOTAL_MINUTES.toFloat())
     val rawWidth = TIMELINE_TRACK_WIDTH * ((endMinutes - startMinutes) / DAY_TOTAL_MINUTES.toFloat())
     val blockWidth = rawWidth.coerceAtLeast(MIN_TIMELINE_SEGMENT_WIDTH)
-    val appColor = segment.app.timelineColor()
+    val appColor = segment.app.analyticsColor()
     val backgroundColor = appColor.copy(alpha = 0.22f + ((index % 2) * 0.08f))
 
     Box(
@@ -675,7 +671,7 @@ private fun TimelineSessionBlock(segment: SessionSegment, index: Int, dayStart: 
         contentAlignment = Alignment.CenterStart,
     ) {
         Text(
-            text = "${segment.app.displayName()} • ${segment.timelineLabel(durationMinutes)}",
+            text = "${segment.app.analyticsDisplayName()} • ${segment.timelineLabel(durationMinutes)}",
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onSurface,
             maxLines = 1,
@@ -703,24 +699,6 @@ private fun Int.toTimeLabel(): String {
 private fun Int.addMinutesOfDay(delta: Int): Int {
     val total = (this + delta) % DAY_TOTAL_MINUTES
     return if (total < 0) total + DAY_TOTAL_MINUTES else total
-}
-
-private fun BlockableApp.displayName(): String = when (this) {
-    BlockableApp.FACEBOOK -> "Facebook"
-    BlockableApp.FACEBOOK_LITE -> "Facebook Lite"
-    BlockableApp.REELS -> "Reels"
-    BlockableApp.SNAPCHAT -> "Snapchat"
-    BlockableApp.SHORTS -> "Shorts"
-    BlockableApp.TIKTOK -> "TikTok"
-}
-
-private fun BlockableApp.timelineColor(): Color = when (this) {
-    BlockableApp.FACEBOOK -> facebookColor
-    BlockableApp.FACEBOOK_LITE -> facebookLiteColor
-    BlockableApp.REELS -> instagramReelsColor
-    BlockableApp.SNAPCHAT -> snapchatColor
-    BlockableApp.SHORTS -> youtubeShortsColor
-    BlockableApp.TIKTOK -> tiktokColor
 }
 
 private fun Long.toWholeMinutes(): Int = TimeUnit.MILLISECONDS.toMinutes(this).toInt()

@@ -65,14 +65,12 @@ import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -85,6 +83,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -92,6 +91,7 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -117,7 +117,7 @@ import com.scrolless.app.feature.home.components.ProgressCard
 import com.scrolless.app.feature.home.components.TodayBlockingControls
 import com.scrolless.app.feature.home.components.WeekdayAverageSection
 import com.scrolless.app.feature.home.components.analyticsForDate
-import com.scrolless.app.feature.home.components.pageDateForPage
+import com.scrolless.app.feature.home.components.shortLabel
 import com.scrolless.app.feature.home.debug.FloatingDebugUsagePanel
 import com.scrolless.app.feature.home.dialogs.AccessibilityExplainerBottomSheet
 import com.scrolless.app.feature.home.dialogs.AccessibilitySuccessBottomSheet
@@ -125,21 +125,18 @@ import com.scrolless.app.feature.home.dialogs.AccessibilitySuccessBottomSheetPre
 import com.scrolless.app.feature.home.dialogs.HelpDialog
 import com.scrolless.app.feature.home.dialogs.IntervalTimerDialog
 import com.scrolless.app.feature.home.dialogs.TimeLimitDialog
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
-import java.time.temporal.ChronoUnit
-import java.util.Locale
-import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.TextStyle
+import java.time.temporal.ChronoUnit
+import java.util.concurrent.TimeUnit
 
 private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
 private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)
-private val HEADER_DATE_FORMATTER: DateTimeFormatter = DateTimeFormatter.ofPattern("MMM d")
 
 @Composable
 fun HomeScreen(
@@ -483,12 +480,17 @@ private fun HomeContent(
 
     // Analytics pager state: page index 0 is the oldest day, today is the last page.
     val analytics = uiState.usageAnalytics
-    val pageCount = ChronoUnit.DAYS.between(analytics.dataStartDate, analytics.today).toInt() + 1
-    val todayPage = pageCount - 1
-    val selectedPage = (
-        todayPage - ChronoUnit.DAYS.between(analytics.selectedDate, analytics.today).toInt()
-        ).coerceIn(0, todayPage.coerceAtLeast(0))
-    val pagerState = rememberPagerState(initialPage = selectedPage, pageCount = { pageCount.coerceAtLeast(1) })
+    val todayPage = remember(analytics.dataStartDate, analytics.today) {
+        ChronoUnit.DAYS.between(analytics.dataStartDate, analytics.today).toInt()
+    }
+    val selectedPage = remember(analytics.dataStartDate, analytics.selectedDate, todayPage) {
+        ChronoUnit.DAYS.between(analytics.dataStartDate, analytics.selectedDate).toInt()
+            .coerceIn(0, todayPage.coerceAtLeast(0))
+    }
+    val pagerState = rememberPagerState(
+        initialPage = selectedPage,
+        pageCount = { (todayPage + 1).coerceAtLeast(1) }
+    )
 
     // Screen-wide horizontal drags manually move only the progress-card pager.
     val dateSwipeThresholdPx = with(LocalDensity.current) { 32.dp.toPx() }
@@ -649,11 +651,11 @@ private fun UsageOverviewHeader(
                     onDateClick = onUsageAnalyticsTodaySelected,
                     onPrevious = {
                         val targetPage = (selectedPage - 1).coerceAtLeast(0)
-                        onUsageAnalyticsDateSelected(pageDateForPage(targetPage, analytics.today, todayPage))
+                        onUsageAnalyticsDateSelected(analytics.dataStartDate.plusDays(targetPage.toLong()))
                     },
                     onNext = {
                         val targetPage = (selectedPage + 1).coerceAtMost(todayPage)
-                        onUsageAnalyticsDateSelected(pageDateForPage(targetPage, analytics.today, todayPage))
+                        onUsageAnalyticsDateSelected(analytics.dataStartDate.plusDays(targetPage.toLong()))
                     },
                     modifier = Modifier
                         .align(Alignment.CenterStart)
@@ -682,8 +684,8 @@ private fun UsageOverviewHeader(
             beyondViewportPageCount = 1,
             userScrollEnabled = false,
         ) { page ->
-            val pageDate = remember(page, analytics.today) {
-                pageDateForPage(page, analytics.today, todayPage)
+            val pageDate = remember(page, analytics.dataStartDate) {
+                analytics.dataStartDate.plusDays(page.toLong())
             }
             val pageAnalytics = remember(pageDate, analytics.daySummaries) {
                 analyticsForDate(analytics = analytics, date = pageDate)
@@ -737,12 +739,8 @@ private fun DateNavigator(
             if (canGoBack) {
                 DateNavButton(
                     onClick = onPrevious,
-                    icon = {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
-                            contentDescription = stringResource(R.string.usage_analytics_previous_day),
-                        )
-                    },
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                    contentDescription = stringResource(R.string.usage_analytics_previous_day),
                 )
             }
             AnimatedContent(
@@ -768,12 +766,8 @@ private fun DateNavigator(
             if (canGoForward) {
                 DateNavButton(
                     onClick = onNext,
-                    icon = {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                            contentDescription = stringResource(R.string.usage_analytics_next_day),
-                        )
-                    },
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = stringResource(R.string.usage_analytics_next_day),
                 )
             }
         }
@@ -781,29 +775,28 @@ private fun DateNavigator(
 }
 
 @Composable
-private fun DateNavButton(onClick: () -> Unit, icon: @Composable () -> Unit) {
+private fun DateNavButton(onClick: () -> Unit, imageVector: ImageVector, contentDescription: String) {
     IconButton(
         onClick = onClick,
         modifier = Modifier.size(34.dp),
     ) {
-        val contentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f)
-        Box(modifier = Modifier.size(22.dp)) {
-            CompositionLocalProvider(LocalContentColor provides contentColor) {
-                icon()
-            }
-        }
+        Icon(
+            imageVector = imageVector,
+            contentDescription = contentDescription,
+            modifier = Modifier.size(22.dp),
+            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.82f),
+        )
     }
 }
 
+@Composable
 private fun LocalDate.formatHeaderDate(): String {
-    val locale = Locale.getDefault()
-    val weekday = dayOfWeek.getDisplayName(TextStyle.FULL, locale)
-    val compactWeekday = if (weekday.length <= 4) {
-        weekday
-    } else {
-        "${weekday.take(3)}."
-    }
-    return "$compactWeekday, ${format(HEADER_DATE_FORMATTER.withLocale(locale))}"
+    val locale = Locale.current.platformLocale
+    val weekday = dayOfWeek.shortLabel()
+    val monthStr = month.getDisplayName(TextStyle.SHORT, locale)
+    val formattedWeekday = if (weekday.endsWith('.')) weekday else "$weekday."
+    val formattedMonth = if (monthStr.endsWith('.')) monthStr else "$monthStr."
+    return "$formattedWeekday, $formattedMonth $dayOfMonth"
 }
 
 @Composable
@@ -936,7 +929,7 @@ fun Modifier.dateSwipeGesture(
                 totalDragX >= dateSwipeThresholdPx -> dragStartPage - 1
                 else -> dragStartPage
             }.coerceIn(0, todayPage)
-            val targetDate = pageDateForPage(targetPage, analytics.today, todayPage)
+            val targetDate = analytics.dataStartDate.plusDays(targetPage.toLong())
 
             if (targetDate != analytics.selectedDate) {
                 onUsageAnalyticsDateSelected(targetDate)
