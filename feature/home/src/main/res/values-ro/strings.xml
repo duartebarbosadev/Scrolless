@@ -96,4 +96,6 @@
         <item quantity="few">%1$d sesiuni</item>
         <item quantity="other">%1$d sesiuni</item>
     </plurals>
+    <string name="usage_analytics_next_day">Ziua următoare</string>
+    <string name="usage_analytics_previous_day">Ziua precedentă</string>
 </resources>

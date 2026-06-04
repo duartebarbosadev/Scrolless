@@ -95,4 +95,6 @@
         <item quantity="one">%1$d συνεδρία</item>
         <item quantity="other">%1$d συνεδρίες</item>
     </plurals>
+    <string name="usage_analytics_next_day">Επόμενη μέρα</string>
+    <string name="usage_analytics_previous_day">Προηγούμενη μέρα</string>
 </resources>

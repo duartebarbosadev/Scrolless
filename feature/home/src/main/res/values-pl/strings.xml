@@ -97,4 +97,6 @@
         <item quantity="many">%1$d sesji</item>
         <item quantity="other">%1$d sesji</item>
     </plurals>
+    <string name="usage_analytics_next_day">Następny dzień</string>
+    <string name="usage_analytics_previous_day">Poprzedni dzień</string>
 </resources>

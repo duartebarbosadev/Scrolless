@@ -95,4 +95,6 @@
         <item quantity="one">%1$d session</item>
         <item quantity="other">%1$d sessioner</item>
     </plurals>
+    <string name="usage_analytics_next_day">Nästa dag</string>
+    <string name="usage_analytics_previous_day">Föregående dag</string>
 </resources>

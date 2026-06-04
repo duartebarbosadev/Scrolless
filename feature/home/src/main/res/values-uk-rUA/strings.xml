@@ -97,4 +97,6 @@
         <item quantity="few">%1$d сесії</item>
         <item quantity="many">%1$d сесій</item>
     </plurals>
+    <string name="usage_analytics_next_day">Наступний день</string>
+    <string name="usage_analytics_previous_day">Попередній день</string>
 </resources>
