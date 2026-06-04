@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - mobile/build.gradle.kts
+      - app/build.gradle.kts
   workflow_dispatch:
 
 concurrency:
@@ -46,7 +46,7 @@ jobs:
             grep -E 'applicationId\s*=\s*"[^"]+"' "$1" | head -n1 | sed -E 's/.*=\s*"([^"]+)".*/\1/'
           }
 
-          current_file="mobile/build.gradle.kts"
+          current_file="app/build.gradle.kts"
           current_version_code="$(extract_version_code "$current_file")"
           current_version_name="$(extract_version_name "$current_file")"
           current_application_id="$(extract_application_id "$current_file")"
@@ -164,7 +164,7 @@ jobs:
           ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
           ANDROID_RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
           ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
-        run: ./gradlew :mobile:assemblePlayRelease :mobile:bundlePlayRelease :mobile:assembleOssRelease
+        run: ./gradlew :app:assemblePlayRelease :app:bundlePlayRelease :app:assembleOssRelease
 
       - name: Validate release outputs
         if: steps.version.outputs.should_release == 'true'
@@ -172,27 +172,27 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
-          play_apks=(mobile/build/outputs/apk/play/release/*.apk)
+          play_apks=(app/build/outputs/apk/play/release/*.apk)
           if [ "${#play_apks[@]}" -eq 0 ]; then
             echo "No Play release APK files found."
             exit 1
           fi
-          oss_apks=(mobile/build/outputs/apk/oss/release/*.apk)
+          oss_apks=(app/build/outputs/apk/oss/release/*.apk)
           if [ "${#oss_apks[@]}" -eq 0 ]; then
             echo "No OSS release APK files found."
             exit 1
           fi
-          aabs=(mobile/build/outputs/bundle/playRelease/*.aab)
+          aabs=(app/build/outputs/bundle/playRelease/*.aab)
           shopt -u nullglob
           if [ "${#aabs[@]}" -eq 0 ]; then
             echo "No Play release AAB files found."
             exit 1
           fi
-          if ls mobile/build/outputs/apk/play/release/*-unsigned.apk >/dev/null 2>&1; then
+          if ls app/build/outputs/apk/play/release/*-unsigned.apk >/dev/null 2>&1; then
             echo "Found unsigned Play release APK. Configure release signing before publishing."
             exit 1
           fi
-          if ls mobile/build/outputs/apk/oss/release/*-unsigned.apk >/dev/null 2>&1; then
+          if ls app/build/outputs/apk/oss/release/*-unsigned.apk >/dev/null 2>&1; then
             echo "Found unsigned OSS release APK. Configure release signing before publishing."
             exit 1
           fi
@@ -203,7 +203,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: ${{ steps.version.outputs.application_id }}
-          releaseFiles: mobile/build/outputs/bundle/playRelease/*.aab
+          releaseFiles: app/build/outputs/bundle/playRelease/*.aab
           track: internal
           status: completed
 
@@ -216,5 +216,5 @@ jobs:
           name: ${{ steps.version.outputs.tag_name }}
           generate_release_notes: true
           files: |
-            mobile/build/outputs/apk/play/release/*.apk
-            mobile/build/outputs/apk/oss/release/*.apk
+            app/build/outputs/apk/play/release/*.apk
+            app/build/outputs/apk/oss/release/*.apk

@@ -39,7 +39,7 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import kotlinx.serialization.Serializable
 
 /**
- * List of screens for [ScrollessApplication]
+ * List of screens for [MainActivity]
  */
 @Serializable
 sealed interface ScrollessRoute : NavKey {

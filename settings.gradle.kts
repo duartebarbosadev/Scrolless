@@ -45,7 +45,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Scrolless"
 include(
-    ":mobile",
+    ":app",
     ":core:data",
     ":core:domain",
     ":core:designsystem",
