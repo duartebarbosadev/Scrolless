@@ -95,5 +95,5 @@
         <item quantity="other">%1$d phiên</item>
     </plurals>
     <string name="usage_analytics_next_day">Ngày tiếp theo</string>
-    <string name="usage_analytics_previous_day">Ngày trước</string>
+    <string name="usage_analytics_previous_day">Ngày trước đó</string>
 </resources>
