@@ -16,7 +16,7 @@
  */
 package com.scrolless.app.core.data.repository
 
-import com.scrolless.app.core.data.repository.utils.TestSchedulerTimeProvider
+import com.scrolless.app.core.domain.utils.TestSchedulerTimeProvider
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.repository.SessionSegmentStore
