@@ -14,10 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.core.data.repository
+package com.scrolless.app.core.domain.usage
 
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.core.model.usage.calculateDailyTotals
+import com.scrolless.app.core.model.usage.calculateWeekdayAverages
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.util.concurrent.TimeUnit
@@ -27,7 +29,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 @RunWith(JUnit4::class)
-class SessionUsageAnalyticsTest {
+class UsageAnalyticsExtensionsTest {
 
     @Test
     fun `daily totals sum all tracked apps for selected day`() {
@@ -38,8 +40,7 @@ class SessionUsageAnalyticsTest {
             segment(BlockableApp.TIKTOK, date.plusDays(1), 10, TimeUnit.MINUTES.toMillis(30)),
         )
 
-        val totals = SessionUsageAnalytics.dailyTotals(
-            sessionSegments = segments,
+        val totals = segments.calculateDailyTotals(
             startDate = date,
             endDateInclusive = date,
         )
@@ -57,8 +58,7 @@ class SessionUsageAnalyticsTest {
             segment(BlockableApp.SHORTS, endDate, 9, TimeUnit.MINUTES.toMillis(20)),
         )
 
-        val totals = SessionUsageAnalytics.dailyTotals(
-            sessionSegments = segments,
+        val totals = segments.calculateDailyTotals(
             startDate = startDate,
             endDateInclusive = endDate,
         )
@@ -79,8 +79,11 @@ class SessionUsageAnalyticsTest {
             segment(BlockableApp.TIKTOK, monday.plusDays(1), 9, TimeUnit.MINUTES.toMillis(14)),
         )
 
-        val averages = SessionUsageAnalytics.weekdayAverages(
-            sessionSegments = segments,
+        val dailyTotals = segments.calculateDailyTotals(
+            startDate = monday,
+            endDateInclusive = sunday,
+        )
+        val averages = dailyTotals.calculateWeekdayAverages(
             startDate = monday,
             endDateInclusive = sunday,
         )

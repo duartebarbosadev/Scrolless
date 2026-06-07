@@ -41,3 +41,8 @@ play-account.json
 *service-account*.json
 *.jks
 *.keystore
+
+# Build / local files
+app/release/
+gradle/gradle-daemon-jvm.properties
+

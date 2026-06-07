@@ -22,18 +22,14 @@ import androidx.lifecycle.viewModelScope
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.model.usage.DailyUsageTotal
-import com.scrolless.app.core.model.usage.WeekdayUsageAverage
+import com.scrolless.app.core.model.usage.calculateWeekdayAverages
 import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.DayOfWeek
 import java.time.Duration
-import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.min
@@ -116,14 +112,10 @@ class HomeViewModel @Inject constructor(
         sessionSegmentStore.getListSessionSegments(currentDate)
     }
 
-    private val dailyUsageTotals = combine(currentDate, userSettingsStore.getFirstLaunchAt()) { today, firstLaunchAt ->
-        val firstLaunchDate = if (firstLaunchAt > 0L) {
-            Instant.ofEpochMilli(firstLaunchAt).atZone(ZoneId.systemDefault()).toLocalDate()
-        } else {
-            today
-        }
+    private val dailyUsageTotals = combine(currentDate, userSettingsStore.getFirstLaunchDate()) { today, firstLaunchDate ->
+        val actualFirstLaunchDate = firstLaunchDate ?: today
         val pagerStart = today.minusDays(ANALYTICS_PAGER_DAY_COUNT.toLong())
-        val windowStart = maxOf(pagerStart, firstLaunchDate)
+        val windowStart = maxOf(pagerStart, actualFirstLaunchDate)
         today to windowStart
     }.flatMapLatest { (today, windowStart) ->
         sessionSegmentStore.getDailyUsageTotals(
@@ -145,20 +137,15 @@ class HomeViewModel @Inject constructor(
         dailyUsageTotals,
         detailedWindowSegments,
         _selectedAveragePeriod,
-        userSettingsStore.getFirstLaunchAt(),
-    ) { selectedDate, today, dailyTotals, detailedSegments, period, firstLaunchAt ->
-        val firstLaunchDate = if (firstLaunchAt > 0L) {
-            Instant.ofEpochMilli(firstLaunchAt).atZone(ZoneId.systemDefault()).toLocalDate()
-        } else {
-            LocalDate.EPOCH
-        }
+        userSettingsStore.getFirstLaunchDate(),
+    ) { selectedDate, today, dailyTotals, detailedSegments, period, firstLaunchDate ->
         buildUsageAnalyticsUiState(
             selectedDate = selectedDate.coerceAtMost(today),
             today = today,
             dailyTotals = dailyTotals,
             detailedSegments = detailedSegments,
             period = period,
-            firstLaunchDate = firstLaunchDate,
+            firstLaunchDate = firstLaunchDate ?: LocalDate.EPOCH,
         )
     }
 
@@ -467,7 +454,9 @@ private fun buildUsageAnalyticsUiState(
     val dailyTotalsMap = dailyTotals.associate { it.date to it.totalMillis }
 
     val daySummaries = buildMap {
-        datesBetween(windowStart, today).forEach { date ->
+        val dayCount = java.time.temporal.ChronoUnit.DAYS.between(windowStart, today).toInt()
+        (0..dayCount).forEach { offset ->
+            val date = windowStart.plusDays(offset.toLong())
             val segments = detailedSegmentsByDate[date].orEmpty()
             if (segments.isNotEmpty() || date == selectedDate || date == selectedDate.minusDays(1) || date == selectedDate.plusDays(1)) {
                 put(date, buildUsageAnalyticsDayUiState(date = date, segments = segments))
@@ -502,10 +491,9 @@ private fun buildUsageAnalyticsUiState(
         sessionSegments = selectedDay.sessionSegments,
         appTotals = selectedDay.appTotals,
         daySummaries = daySummaries,
-        weekdayAverages = buildWeekdayAverages(
+        weekdayAverages = dailyTotals.calculateWeekdayAverages(
             startDate = averageStartDate,
             endDateInclusive = today,
-            dailyTotals = dailyTotalsMap,
         ),
         canNavigateNext = selectedDate.isBefore(today),
         dataStartDate = dataStartDate,
@@ -531,33 +519,6 @@ private fun buildUsageAnalyticsDayUiState(date: LocalDate, segments: List<Sessio
         sessionSegments = sortedSegments,
         appTotals = appTotals,
     )
-}
-
-private fun buildWeekdayAverages(
-    startDate: LocalDate,
-    endDateInclusive: LocalDate,
-    dailyTotals: Map<LocalDate, Long>,
-): List<WeekdayUsageAverage> {
-    val totalsByWeekday = datesBetween(startDate, endDateInclusive)
-        .groupBy { it.dayOfWeek }
-        .mapValues { (_, dates) ->
-            dates.map { date -> dailyTotals[date] ?: 0L }
-        }
-
-    return DayOfWeek.entries.map { dayOfWeek ->
-        val totals = totalsByWeekday[dayOfWeek].orEmpty()
-        WeekdayUsageAverage(
-            dayOfWeek = dayOfWeek,
-            averageMillis = if (totals.isEmpty()) 0L else totals.sum() / totals.size,
-        )
-    }
-}
-
-private fun datesBetween(startDate: LocalDate, endDateInclusive: LocalDate): List<LocalDate> {
-    if (endDateInclusive.isBefore(startDate)) return emptyList()
-
-    val dayCount = ChronoUnit.DAYS.between(startDate, endDateInclusive).toInt()
-    return (0..dayCount).map { offset -> startDate.plusDays(offset.toLong()) }
 }
 
 private data class UsageSnapshot(

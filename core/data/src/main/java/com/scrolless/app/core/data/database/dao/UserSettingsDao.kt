@@ -100,9 +100,6 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
     @Query("SELECT first_launch_at FROM user_settings WHERE id = 1")
     abstract fun getFirstLaunchAt(): Flow<Long>
 
-    @Query("UPDATE user_settings SET first_launch_at = :firstLaunchAt WHERE id = 1")
-    abstract suspend fun setFirstLaunchAt(firstLaunchAt: Long)
-
     @Query("SELECT has_seen_review_prompt FROM user_settings WHERE id = 1")
     abstract fun getHasSeenReviewPrompt(): Flow<Boolean>
 

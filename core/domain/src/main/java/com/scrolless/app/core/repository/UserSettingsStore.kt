@@ -17,6 +17,7 @@
 package com.scrolless.app.core.repository
 
 import com.scrolless.app.core.model.BlockOption
+import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
 
 interface UserSettingsStore {
@@ -61,7 +62,7 @@ interface UserSettingsStore {
     suspend fun setExceptReelsSentByDm(checked: Boolean)
 
     fun getFirstLaunchAt(): Flow<Long>
-    suspend fun setFirstLaunchAt(firstLaunchAt: Long)
+    fun getFirstLaunchDate(): Flow<LocalDate?>
 
     fun getHasSeenReviewPrompt(): Flow<Boolean>
     suspend fun setHasSeenReviewPrompt(seen: Boolean)

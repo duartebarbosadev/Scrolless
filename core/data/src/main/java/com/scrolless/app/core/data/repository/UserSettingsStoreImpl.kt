@@ -19,12 +19,16 @@ package com.scrolless.app.core.data.repository
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.repository.UserSettingsStore
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 /**
@@ -205,9 +209,12 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
 
     override fun getFirstLaunchAt(): Flow<Long> = _firstLaunchAt
 
-    override suspend fun setFirstLaunchAt(firstLaunchAt: Long) {
-        _firstLaunchAt.value = firstLaunchAt
-        userSettingsDao.setFirstLaunchAt(firstLaunchAt)
+    override fun getFirstLaunchDate(): Flow<LocalDate?> = _firstLaunchAt.map { firstLaunchAt ->
+        if (firstLaunchAt > 0L) {
+            Instant.ofEpochMilli(firstLaunchAt).atZone(ZoneId.systemDefault()).toLocalDate()
+        } else {
+            null
+        }
     }
 
     override fun getHasSeenReviewPrompt(): Flow<Boolean> = _hasSeenReviewPrompt
