@@ -24,7 +24,6 @@ import java.time.ZoneId
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineScheduler
 
-// Same as com.scrolless.app.core.TestSchedulerTimeProvider
 @OptIn(ExperimentalCoroutinesApi::class)
 class TestSchedulerTimeProvider(private val scheduler: TestCoroutineScheduler) : TimeProvider {
     override fun currentTimeInMillis() = scheduler.currentTime

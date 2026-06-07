@@ -114,4 +114,5 @@ dependencies {
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(testFixtures(projects.core.domain))
 }

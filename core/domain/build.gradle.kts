@@ -68,6 +68,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
+    @Suppress("UnstableApiUsage")
+    testFixtures {
+        enable = true
+    }
 }
 
 kotlin {
@@ -92,4 +97,6 @@ dependencies {
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
+
+    testFixturesApi(libs.kotlinx.coroutines.test)
 }
