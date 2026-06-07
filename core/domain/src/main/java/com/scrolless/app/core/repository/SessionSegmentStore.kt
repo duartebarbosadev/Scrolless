@@ -26,9 +26,7 @@ interface SessionSegmentStore {
 
     fun getCurrentTotalDurationForToday(): Long
 
-    fun getListSessionSegments(date: LocalDate): Flow<List<SessionSegment>>
-
-    fun getListSessionSegments(startDate: LocalDate, endDateInclusive: LocalDate): Flow<List<SessionSegment>>
+    fun getListSessionSegments(startDate: LocalDate, endDateInclusive: LocalDate = startDate): Flow<List<SessionSegment>>
 
     fun getDailyUsageTotals(startDate: LocalDate, endDateInclusive: LocalDate): Flow<List<DailyUsageTotal>>
 
