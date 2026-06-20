@@ -58,8 +58,7 @@ class SessionSegmentStoreImplTest : BaseTest() {
     }
 
     private class MutableTimeProvider(var currentDate: LocalDate) : TimeProvider {
-        override fun currentTimeInMillis(): Long =
-            currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+        override fun currentTimeInMillis(): Long = currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
         override fun localDateNow(): LocalDate = currentDate
 

@@ -36,8 +36,7 @@ class SessionSegmentStoreImpl @Inject constructor(
     private val sessionSegmentDao: SessionSegmentDao,
 ) : SessionSegmentStore {
 
-    override fun observeTotalDuration(date: LocalDate): Flow<Long> =
-        sessionSegmentDao.getTotalDuration(date, date.plusDays(1))
+    override fun observeTotalDuration(date: LocalDate): Flow<Long> = sessionSegmentDao.getTotalDuration(date, date.plusDays(1))
 
     override suspend fun getTodayTotalDurationSnapshot(): Long {
         val today = timeProvider.localDateNow()
