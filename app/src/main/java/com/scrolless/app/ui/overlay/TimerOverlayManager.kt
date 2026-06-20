@@ -30,6 +30,7 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
@@ -429,6 +430,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                 object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
                         persistOverlayPosition(params.x, params.y)
+                        rootView?.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
                     }
                 },
             )

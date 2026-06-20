@@ -69,6 +69,7 @@ import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.scrolless.app.designsystem.theme.LocalSharedTransitionScope
 import com.scrolless.app.designsystem.theme.SETTINGS_TRANSITION_KEY
 import com.scrolless.app.designsystem.theme.ScrollessTheme
+import com.scrolless.app.designsystem.util.rememberHapticHelper
 import kotlin.math.roundToInt
 
 @Composable
@@ -96,6 +97,8 @@ private fun SettingsScreenContent(
     onNavigateBack: () -> Unit,
 ) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
+
+    val hapticHelper = rememberHapticHelper()
 
     val sharedBoundsModifier = if (sharedTransitionScope != null) {
         val animatedVisibilityScope = LocalNavAnimatedContentScope.current
@@ -125,7 +128,10 @@ private fun SettingsScreenContent(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = onNavigateBack,
+                        onClick = {
+                            hapticHelper.playTick()
+                            onNavigateBack()
+                        },
                         colors = IconButtonDefaults.iconButtonColors(
                             contentColor = MaterialTheme.colorScheme.onSurface,
                         ),
@@ -215,6 +221,7 @@ private fun SettingsDivider(modifier: Modifier = Modifier) {
 
 @Composable
 private fun PauseDurationItem(pauseDurationMinutes: Int, onPauseDurationChange: (Int) -> Unit, modifier: Modifier = Modifier) {
+    val hapticHelper = rememberHapticHelper()
     var sliderValue by remember(pauseDurationMinutes) {
         mutableIntStateOf(pauseDurationMinutes)
     }
@@ -252,10 +259,15 @@ private fun PauseDurationItem(pauseDurationMinutes: Int, onPauseDurationChange: 
         Slider(
             value = sliderValue.toFloat(),
             onValueChange = {
-                sliderValue = it.roundToInt()
+                val newValue = it.roundToInt()
+                if (newValue != sliderValue) {
+                    hapticHelper.playTick()
+                }
+                sliderValue = newValue
             },
             onValueChangeFinished = {
                 if (sliderValue != pauseDurationMinutes) {
+                    hapticHelper.playConfirm()
                     onPauseDurationChange(sliderValue)
                 }
             },
@@ -320,6 +332,7 @@ private fun SettingsSwitchItem(
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val hapticHelper = rememberHapticHelper()
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -344,7 +357,10 @@ private fun SettingsSwitchItem(
         }
         Switch(
             checked = checked,
-            onCheckedChange = onCheckedChange,
+            onCheckedChange = { isOn ->
+                hapticHelper.playToggle(isOn)
+                onCheckedChange(isOn)
+            },
             colors = SwitchDefaults.colors(
                 checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
                 checkedTrackColor = MaterialTheme.colorScheme.primary,

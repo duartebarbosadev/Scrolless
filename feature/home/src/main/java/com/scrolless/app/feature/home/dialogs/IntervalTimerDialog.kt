@@ -47,6 +47,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.designsystem.util.formatMinutes
+import com.scrolless.app.designsystem.util.rememberHapticHelper
 import com.scrolless.app.feature.home.R
 import kotlin.math.roundToInt
 
@@ -65,6 +66,7 @@ fun IntervalTimerDialog(
     onConfirm: (breakMillis: Long, allowanceMillis: Long) -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val hapticHelper = rememberHapticHelper()
     var breakMinutes by rememberSaveable {
         mutableIntStateOf(
             initialBreakMillis.millisToRoundedMinutes(
@@ -124,12 +126,19 @@ fun IntervalTimerDialog(
                     Slider(
                         value = breakMinutes.toFloat(),
                         onValueChange = { rawValue ->
-                            breakMinutes = snapToStepValue(
+                            val newValue = snapToStepValue(
                                 value = rawValue,
                                 step = BREAK_STEP_MINUTES,
                                 min = MIN_BREAK_MINUTES,
                                 max = MAX_BREAK_MINUTES,
                             )
+                            if (newValue != breakMinutes) {
+                                hapticHelper.playTick()
+                            }
+                            breakMinutes = newValue
+                        },
+                        onValueChangeFinished = {
+                            hapticHelper.playConfirm()
                         },
                         valueRange = MIN_BREAK_MINUTES.toFloat()..MAX_BREAK_MINUTES.toFloat(),
                         steps = ((MAX_BREAK_MINUTES - MIN_BREAK_MINUTES) / BREAK_STEP_MINUTES) - 1,
@@ -146,12 +155,19 @@ fun IntervalTimerDialog(
                     Slider(
                         value = allowanceMinutes.toFloat(),
                         onValueChange = { rawValue ->
-                            allowanceMinutes = snapToStepValue(
+                            val newValue = snapToStepValue(
                                 value = rawValue,
                                 step = ALLOWANCE_STEP_MINUTES,
                                 min = MIN_ALLOWANCE_MINUTES,
                                 max = MAX_ALLOWANCE_MINUTES,
                             )
+                            if (newValue != allowanceMinutes) {
+                                hapticHelper.playTick()
+                            }
+                            allowanceMinutes = newValue
+                        },
+                        onValueChangeFinished = {
+                            hapticHelper.playConfirm()
                         },
                         valueRange = MIN_ALLOWANCE_MINUTES.toFloat()..MAX_ALLOWANCE_MINUTES.toFloat(),
                         steps = (MAX_ALLOWANCE_MINUTES - MIN_ALLOWANCE_MINUTES) - 1,
@@ -177,11 +193,16 @@ fun IntervalTimerDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End),
                 ) {
-                    TextButton(onClick = onDismiss) {
+                    TextButton(
+                        onClick = {
+                            onDismiss()
+                        },
+                    ) {
                         Text(text = stringResource(R.string.interval_timer_dialog_cancel))
                     }
                     Button(
                         onClick = {
+                            hapticHelper.playConfirm()
                             onConfirm(
                                 breakMinutes.minutesToMillis(),
                                 allowanceMinutes.minutesToMillis(),

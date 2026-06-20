@@ -35,12 +35,14 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.scrolless.app.designsystem.util.rememberHapticHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
 fun AnimatedButton(onClick: () -> Unit, text: String, delay: Long) {
     val isPreview = LocalInspectionMode.current
+    val hapticHelper = rememberHapticHelper()
 
     val alpha = remember { Animatable(if (isPreview) 1f else 0f) }
     val offsetY = remember { Animatable(if (isPreview) 0f else 20f) }
@@ -64,7 +66,10 @@ fun AnimatedButton(onClick: () -> Unit, text: String, delay: Long) {
     }
 
     Button(
-        onClick = onClick,
+        onClick = {
+            hapticHelper.playClick()
+            onClick()
+        },
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)

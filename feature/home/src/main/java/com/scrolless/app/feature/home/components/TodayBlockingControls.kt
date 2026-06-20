@@ -88,6 +88,7 @@ import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
+import com.scrolless.app.designsystem.util.rememberHapticHelper
 import com.scrolless.app.designsystem.util.toCountdownLabel
 import com.scrolless.app.designsystem.util.toIntervalLabel
 import com.scrolless.app.feature.home.HomeUiState
@@ -117,7 +118,7 @@ fun TodayBlockingControls(
     val pressAnimationSpec = spring<Float>(stiffness = 550f)
 
     var lastClicked by remember { mutableStateOf<BlockingButtonType?>(null) }
-    val hapticFeedback = LocalHapticFeedback.current
+    val hapticFeedback = rememberHapticHelper()
 
     // Auto-releases the button expansion animation after releaseDelay
     LaunchedEffect(lastClicked) {
@@ -176,12 +177,7 @@ fun TodayBlockingControls(
             onBlockAllClick = {
                 lastClicked = BlockingButtonType.BLOCK_ALL
                 val isSelected = uiState.blockOption == BlockOption.BlockAll
-                val hapticFeedbackType = if (isSelected) {
-                    HapticFeedbackType.ToggleOff
-                } else {
-                    HapticFeedbackType.ToggleOn
-                }
-                hapticFeedback.performHapticFeedback(hapticFeedbackType)
+                hapticFeedback.playToggle(!isSelected)
                 val newOption = if (isSelected) {
                     BlockOption.NothingSelected
                 } else {
@@ -193,12 +189,7 @@ fun TodayBlockingControls(
             onDailyLimitClick = {
                 lastClicked = BlockingButtonType.DAILY_LIMIT
                 val isSelected = uiState.blockOption == BlockOption.DailyLimit
-                val hapticFeedbackType = if (isSelected) {
-                    HapticFeedbackType.ToggleOff
-                } else {
-                    HapticFeedbackType.ToggleOn
-                }
-                hapticFeedback.performHapticFeedback(hapticFeedbackType)
+                hapticFeedback.playToggle(!isSelected)
                 if (uiState.timeLimit == 0L && !isSelected) {
                     Timber.d("DailyLimit clicked -> open TimeLimitDialog (no limit set)")
                     onConfigureDailyLimit()
@@ -215,12 +206,7 @@ fun TodayBlockingControls(
             onIntervalTimerClick = {
                 lastClicked = BlockingButtonType.INTERVAL
                 val isSelected = uiState.blockOption == BlockOption.IntervalTimer
-                val hapticFeedbackType = if (isSelected) {
-                    HapticFeedbackType.ToggleOff
-                } else {
-                    HapticFeedbackType.ToggleOn
-                }
-                hapticFeedback.performHapticFeedback(hapticFeedbackType)
+                hapticFeedback.playToggle(!isSelected)
                 Timber.i("IntervalTimer clicked from feature row")
                 onIntervalTimerClick()
             },
@@ -473,6 +459,9 @@ fun PauseButton(
     remainingMillis: Long,
     pauseDurationMinutes: Int = 5,
 ) {
+
+    val hapticHelper = rememberHapticHelper()
+
     val buttonShape = RoundedCornerShape(20.dp)
     val containerColor by animateColorAsState(
         targetValue = if (isPaused) {
@@ -512,7 +501,10 @@ fun PauseButton(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Button(
-            onClick = { onTogglePause(!isPaused) },
+            onClick = {
+                hapticHelper.playToggle(isPaused)
+                onTogglePause(!isPaused)
+            },
             shape = buttonShape,
             border = BorderStroke(1.dp, borderColor),
             colors = ButtonDefaults.buttonColors(
@@ -779,7 +771,7 @@ fun TodayBlockingIntervalTimerControlsPreview() {
             TodayBlockingControls(
                 uiState = HomeUiState(blockOption = BlockOption.IntervalTimer),
                 isBlockingActive = false,
-                isPauseActive = false,
+                isPauseActive = true,
                 pauseRemainingMillis = 0L,
                 onBlockOptionSelected = {},
                 onConfigureDailyLimit = {},
