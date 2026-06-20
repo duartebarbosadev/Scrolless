@@ -39,8 +39,6 @@ import android.widget.TextView
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowInsetsCompat
 import com.scrolless.app.R
-import com.scrolless.app.core.model.BlockOption
-import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.repository.setTimerOverlayPosition
 import com.scrolless.app.designsystem.theme.timerOverlayBackgroundColor
@@ -61,10 +59,7 @@ import timber.log.Timber
  * A View-based implementation of TimerOverlayManager.
  * Replaces the Compose-based version to resolve drag lag issues.
  */
-class TimerOverlayManager @Inject constructor(
-    private val userSettingsStore: UserSettingsStore,
-    private val sessionTracker: SessionTracker,
-) {
+class TimerOverlayManager @Inject constructor(private val userSettingsStore: UserSettingsStore) {
 
     private var rootView: DragInterceptFrameLayout? = null
     private var timerTextView: TextView? = null
@@ -81,8 +76,6 @@ class TimerOverlayManager @Inject constructor(
     private var timerJob: Job? = null
     private var exitAnimationJob: Job? = null
     private var screenBounds: ScreenBounds? = null
-    private var activeBlockOption: BlockOption = BlockOption.NothingSelected
-    private var intervalUsageMillis: Long = 0L
 
     // Drag state
     private var initialX = 0
@@ -90,19 +83,6 @@ class TimerOverlayManager @Inject constructor(
     private var initialTouchX = 0f
     private var initialTouchY = 0f
     private var isDragging = false
-
-    init {
-        coroutineScope.launch {
-            userSettingsStore.getActiveBlockOption().collect { option ->
-                activeBlockOption = option
-            }
-        }
-        coroutineScope.launch {
-            userSettingsStore.getIntervalUsage().collect { usage ->
-                intervalUsageMillis = usage
-            }
-        }
-    }
 
     fun attachServiceContext(context: Context) {
         serviceContext = context
@@ -188,19 +168,18 @@ class TimerOverlayManager @Inject constructor(
         }
     }
 
-    fun hide() {
+    fun hide(summaryTotalMillis: Long, sessionStartAt: Long) {
 
         Timber.d("Hiding overlay view")
-        timerJob?.cancel()
-
-        val sessionMillis = (System.currentTimeMillis() - sessionStartTime).coerceAtLeast(0L)
-        val totalMillis = if (activeBlockOption == BlockOption.IntervalTimer) {
-            intervalUsageMillis + sessionMillis
-        } else {
-            sessionTracker.getDailyUsage() + sessionMillis
+        if (sessionStartTime != sessionStartAt) {
+            Timber.v("Ignoring stale overlay hide for session=%d, current=%d", sessionStartAt, sessionStartTime)
+            return
         }
 
-        timerTextView?.text = totalMillis.formatAsTime()
+        timerJob?.cancel()
+
+        timerTextView?.text = summaryTotalMillis.formatAsTime()
+
         startWiggleAnimation()
 
         exitAnimationJob?.cancel()

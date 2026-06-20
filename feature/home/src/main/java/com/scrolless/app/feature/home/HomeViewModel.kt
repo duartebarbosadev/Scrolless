@@ -155,7 +155,7 @@ class HomeViewModel @Inject constructor(
         userSettingsStore.getIntervalLength(),
         userSettingsStore.getIntervalUsage(),
         userSettingsStore.getIntervalWindowStart(),
-        sessionSegmentStore.getTotalDurationForToday(),
+        currentDate.flatMapLatest { date -> sessionSegmentStore.observeTotalDuration(date) },
         sessionSegmentsForCurrentDay,
     ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage, usageSegment ->
         UsageSnapshot(

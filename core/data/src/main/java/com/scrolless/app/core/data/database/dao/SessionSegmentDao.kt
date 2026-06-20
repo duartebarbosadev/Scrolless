@@ -41,6 +41,9 @@ abstract class SessionSegmentDao : BaseDao<SessionSegmentEntity> {
     @Query("SELECT COALESCE(SUM(durationMillis), 0) FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
     abstract fun getTotalDuration(date: LocalDate, datePlusOneDay: LocalDate): Flow<Long>
 
+    @Query("SELECT COALESCE(SUM(durationMillis), 0) FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
+    abstract suspend fun getTotalDurationSnapshot(date: LocalDate, datePlusOneDay: LocalDate): Long
+
     @Query("DELETE FROM session_segments WHERE startDateTime >= :date AND startDateTime < :datePlusOneDay")
     abstract suspend fun deleteSessionSegment(date: LocalDate, datePlusOneDay: LocalDate): Int
 
