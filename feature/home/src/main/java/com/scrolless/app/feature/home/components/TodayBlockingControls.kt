@@ -175,8 +175,14 @@ fun TodayBlockingControls(
             selectedOption = uiState.blockOption,
             onBlockAllClick = {
                 lastClicked = BlockingButtonType.BLOCK_ALL
-                hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                val newOption = if (uiState.blockOption == BlockOption.BlockAll) {
+                val isSelected = uiState.blockOption == BlockOption.BlockAll
+                val hapticFeedbackType = if (isSelected) {
+                    HapticFeedbackType.ToggleOff
+                } else {
+                    HapticFeedbackType.ToggleOn
+                }
+                hapticFeedback.performHapticFeedback(hapticFeedbackType)
+                val newOption = if (isSelected) {
                     BlockOption.NothingSelected
                 } else {
                     BlockOption.BlockAll
@@ -186,12 +192,18 @@ fun TodayBlockingControls(
             },
             onDailyLimitClick = {
                 lastClicked = BlockingButtonType.DAILY_LIMIT
-                hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
-                if (uiState.timeLimit == 0L && uiState.blockOption != BlockOption.DailyLimit) {
+                val isSelected = uiState.blockOption == BlockOption.DailyLimit
+                val hapticFeedbackType = if (isSelected) {
+                    HapticFeedbackType.ToggleOff
+                } else {
+                    HapticFeedbackType.ToggleOn
+                }
+                hapticFeedback.performHapticFeedback(hapticFeedbackType)
+                if (uiState.timeLimit == 0L && !isSelected) {
                     Timber.d("DailyLimit clicked -> open TimeLimitDialog (no limit set)")
                     onConfigureDailyLimit()
                 } else {
-                    val newOption = if (uiState.blockOption == BlockOption.DailyLimit) {
+                    val newOption = if (isSelected) {
                         BlockOption.NothingSelected
                     } else {
                         BlockOption.DailyLimit
@@ -202,7 +214,13 @@ fun TodayBlockingControls(
             },
             onIntervalTimerClick = {
                 lastClicked = BlockingButtonType.INTERVAL
-                hapticFeedback.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                val isSelected = uiState.blockOption == BlockOption.IntervalTimer
+                val hapticFeedbackType = if (isSelected) {
+                    HapticFeedbackType.ToggleOff
+                } else {
+                    HapticFeedbackType.ToggleOn
+                }
+                hapticFeedback.performHapticFeedback(hapticFeedbackType)
                 Timber.i("IntervalTimer clicked from feature row")
                 onIntervalTimerClick()
             },
