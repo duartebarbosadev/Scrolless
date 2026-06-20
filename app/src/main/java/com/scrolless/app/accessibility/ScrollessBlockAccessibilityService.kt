@@ -43,6 +43,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -658,12 +659,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         val sessionTime = System.currentTimeMillis() - session.startedAtMillis
         Timber.d("Exited blocked content. Session=%d ms (app=%s)", sessionTime, session.app)
 
-        // Hide timer overlay if enabled
-        if (currentTimerOverlayEnabled) {
-            Timber.v("Hiding timer overlay")
-            timerOverlayManager.hide()
-        }
-
         stopPeriodicCheck()
         blockedContentSession = null
 
@@ -673,6 +668,24 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         val exitedApp = session.app
 
         serviceScope.launch(Dispatchers.IO) {
+
+            // Get total time spent on brainrot to show on the overlay timer before hiding
+            val overlaySummaryTotal = if (currentTimerOverlayEnabled) {
+                when (userSettingsStore.getActiveBlockOption().first()) {
+                    BlockOption.IntervalTimer -> userSettingsStore.getIntervalUsage().first() + sessionTime
+                    else -> sessionTracker.getDailyUsage() + sessionTime
+                }
+            } else {
+                null
+            }
+
+            overlaySummaryTotal?.let { total ->
+                mainHandler.post {
+                    Timber.v("Hiding timer overlay")
+                    timerOverlayManager.hide(total, session.startedAtMillis)
+                }
+            }
+
             // Add to usage in memory with per-app tracking
             Timber.d("Recording session usage: %d ms for app: %s (%s)", sessionTime, exitedApp.app.name, exitedApp.packageId)
             sessionTracker.addToDailyUsage(sessionTime, exitedApp.app)

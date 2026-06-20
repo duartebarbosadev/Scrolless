@@ -44,7 +44,7 @@ class SessionTrackerImpl @Inject constructor(
     private val usageMutex = Mutex()
     private val sessionState = AtomicReference(SessionState(sessionStartLocalDate = timeProvider.localDateNow()))
 
-    override fun getDailyUsage(): Long = sessionSegmentStore.getCurrentTotalDurationForToday()
+    override suspend fun getDailyUsage(): Long = sessionSegmentStore.getTodayTotalDurationSnapshot()
 
     override suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp) {
         usageMutex.withLock {

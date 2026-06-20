@@ -23,7 +23,7 @@ interface SessionTracker {
     /**
      * Get the current total daily usage in milliseconds.
      */
-    fun getDailyUsage(): Long
+    suspend fun getDailyUsage(): Long
 
     /**
      * Add session time to daily usage and persist immediately.

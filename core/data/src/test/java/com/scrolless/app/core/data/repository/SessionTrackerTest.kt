@@ -22,7 +22,6 @@ import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.repository.SessionSegmentStore
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import java.time.Duration
 import junit.framework.TestCase.assertEquals
@@ -47,8 +46,7 @@ class SessionTrackerTest : BaseTest() {
     private var sessionTracker = SessionTrackerImpl(timeProvider = timeProvider, store)
 
     init {
-        every { store.getTotalDurationForToday() } returns totalDurationForToday
-        every { store.getCurrentTotalDurationForToday() } answers { totalDurationForToday.value }
+        coEvery { store.getTodayTotalDurationSnapshot() } answers { totalDurationForToday.value }
     }
 
     @Test
