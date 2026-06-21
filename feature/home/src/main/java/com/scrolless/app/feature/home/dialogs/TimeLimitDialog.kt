@@ -26,6 +26,7 @@ import com.maxkeppeler.sheets.duration.DurationDialog
 import com.maxkeppeler.sheets.duration.models.DurationConfig
 import com.maxkeppeler.sheets.duration.models.DurationFormat
 import com.maxkeppeler.sheets.duration.models.DurationSelection
+import com.scrolless.app.designsystem.util.rememberHapticHelper
 import com.scrolless.app.feature.home.R
 import timber.log.Timber
 
@@ -33,6 +34,7 @@ import timber.log.Timber
 @Composable
 internal fun TimeLimitDialog(onDismiss: (selectedTimeInSeconds: Long) -> Unit) {
     Timber.d("TimeLimitDialog: show")
+    val hapticHelper = rememberHapticHelper()
 
     val state = rememberUseCaseState(
         visible = true,
@@ -46,6 +48,7 @@ internal fun TimeLimitDialog(onDismiss: (selectedTimeInSeconds: Long) -> Unit) {
         state = state,
         selection = DurationSelection { newTimeInSeconds ->
             Timber.i("TimeLimitDialog: selected %d seconds", newTimeInSeconds)
+            hapticHelper.playConfirm()
             onDismiss(newTimeInSeconds)
         },
         config = DurationConfig(

@@ -25,7 +25,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -72,6 +71,7 @@ import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.theme.progressbar_red_use
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.designsystem.util.formatTime
+import com.scrolless.app.designsystem.util.hapticClickable
 import com.scrolless.app.feature.home.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -233,7 +233,7 @@ fun ProgressCard(
                 )
                 .size(220.dp)
                 .padding(16.dp)
-                .clickable(onClick = onClick),
+                .hapticClickable(onClick = onClick),
             shape = RoundedCornerShape(96.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
             elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),

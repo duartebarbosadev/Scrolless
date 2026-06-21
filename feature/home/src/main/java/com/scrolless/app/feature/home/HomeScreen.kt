@@ -112,6 +112,7 @@ import com.scrolless.app.designsystem.theme.progressbar_orange_use
 import com.scrolless.app.designsystem.theme.progressbar_red_use
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.designsystem.util.radialGradientScrim
+import com.scrolless.app.designsystem.util.rememberHapticHelper
 import com.scrolless.app.feature.home.components.InlineUsageAnalyticsPanel
 import com.scrolless.app.feature.home.components.ProgressCard
 import com.scrolless.app.feature.home.components.TodayBlockingControls
@@ -718,6 +719,7 @@ private fun DateNavigator(
     onNext: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val hapticHelper = rememberHapticHelper()
     val dateLabel = if (selectedDate == today) {
         stringResource(R.string.usage_analytics_today)
     } else {
@@ -753,7 +755,10 @@ private fun DateNavigator(
                         .widthIn(max = 128.dp)
                         .clickable(
                             enabled = selectedDate != today,
-                            onClick = onDateClick,
+                            onClick = {
+                                hapticHelper.playClick()
+                                onDateClick()
+                            },
                         )
                         .padding(horizontal = 10.dp, vertical = 8.dp),
                     style = MaterialTheme.typography.labelLarge,
@@ -776,8 +781,12 @@ private fun DateNavigator(
 
 @Composable
 private fun DateNavButton(onClick: () -> Unit, imageVector: ImageVector, contentDescription: String) {
+    val hapticHelper = rememberHapticHelper()
     IconButton(
-        onClick = onClick,
+        onClick = {
+            hapticHelper.playClick()
+            onClick()
+        },
         modifier = Modifier.size(34.dp),
     ) {
         Icon(
@@ -830,8 +839,12 @@ private fun rememberPauseRemainingTime(pauseUntilMillis: Long): Long {
 
 @Composable
 fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val hapticHelper = rememberHapticHelper()
     FilledTonalIconButton(
-        onClick = onClick,
+        onClick = {
+            hapticHelper.playClick()
+            onClick()
+        },
         modifier = modifier,
         colors = IconButtonDefaults.filledTonalIconButtonColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.55f),
@@ -849,6 +862,7 @@ fun HelpButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SettingsButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    val hapticHelper = rememberHapticHelper()
     val sharedTransitionScope = LocalSharedTransitionScope.current
 
     val sharedBoundsModifier = if (sharedTransitionScope != null) {
@@ -865,7 +879,10 @@ fun SettingsButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     }
 
     FilledTonalIconButton(
-        onClick = onClick,
+        onClick = {
+            hapticHelper.playClick()
+            onClick()
+        },
         modifier = modifier.then(sharedBoundsModifier),
         colors = IconButtonDefaults.filledTonalIconButtonColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.55f),

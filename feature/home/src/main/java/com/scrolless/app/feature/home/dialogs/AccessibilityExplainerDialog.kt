@@ -74,6 +74,7 @@ import com.scrolless.app.designsystem.component.AnimatedIcon
 import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
+import com.scrolless.app.designsystem.util.rememberHapticHelper
 import com.scrolless.app.feature.home.R
 import com.scrolless.app.feature.home.openActivityAccessibilitySettings
 import timber.log.Timber
@@ -125,6 +126,7 @@ fun AccessibilityExplainerBottomSheet(onDismiss: () -> Unit) {
 @Composable
 private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings: () -> Unit) {
     val context = LocalContext.current
+    val hapticHelper = rememberHapticHelper()
 
     Box(
         modifier = Modifier
@@ -249,6 +251,7 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
             // Proceed Button
             Button(
                 onClick = {
+                    hapticHelper.playConfirm()
                     onOpenSettings()
                 },
                 modifier = Modifier
