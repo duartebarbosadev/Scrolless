@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Tulos: jopa %1$s joka %2$s</string>
     <string name="interval_timer_dialog_title">Määritä aikavälin ajastin</string>
     <string name="interval_timer_next_reset_in">Nollaantuu %1$s kuluttua</string>
-    <string name="interval_timer_next_reset_ready">Seuraava käyttöikkuna avattu</string>
     <string name="limit_chip">%1$s raja</string>
     <string name="next_step_1">Valitse estotila</string>
     <string name="next_step_2">Kokeile päivittäisen rajan ominaisuutta ja aktivoi ajastimen peittokuva</string>

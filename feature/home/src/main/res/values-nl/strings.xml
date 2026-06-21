@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Resultaat: tot %1$s elke %2$s</string>
     <string name="interval_timer_dialog_title">Intervaltimer configureren</string>
     <string name="interval_timer_next_reset_in">Reset over %1$s</string>
-    <string name="interval_timer_next_reset_ready">Volgende gebruiksvenster ontgrendeld</string>
     <string name="limit_chip">%1$s limiet</string>
     <string name="next_step_1">Selecteer een blokkeermodus</string>
     <string name="next_step_2">Probeer de dagelijkse limietfunctie en activeer de timeroverlay</string>

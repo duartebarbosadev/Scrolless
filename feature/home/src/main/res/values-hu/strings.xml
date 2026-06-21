@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Eredmény: akár %1$s minden %2$s-ben</string>
     <string name="interval_timer_dialog_title">Intervallum időzítő konfigurálása</string>
     <string name="interval_timer_next_reset_in">Visszaállítás %1$s múlva</string>
-    <string name="interval_timer_next_reset_ready">Következő használati ablak feloldva</string>
     <string name="limit_chip">%1$s limit</string>
     <string name="next_step_1">Válasszon blokkolási módot</string>
     <string name="next_step_2">Próbálja ki a napi limit funkciót, és aktiválja az időzítő átfedést</string>

@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Resultat: opptil %1$s kvar %2$s</string>
     <string name="interval_timer_dialog_title">Konfigurer intervalltidtakar</string>
     <string name="interval_timer_next_reset_in">Tilbakestiller om %1$s</string>
-    <string name="interval_timer_next_reset_ready">Neste bruksvindauge låst opp</string>
     <string name="limit_chip">%1$s grense</string>
     <string name="next_step_1">Vel ein blokkeringsmodus</string>
     <string name="next_step_2">Prøv funksjonen for dagleg grense og aktiver tidtakaroverlegget</string>

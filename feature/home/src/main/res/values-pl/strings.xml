@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Wynik: do %1$s co %2$s</string>
     <string name="interval_timer_dialog_title">Skonfiguruj licznik interwałów</string>
     <string name="interval_timer_next_reset_in">Resetuje się za %1$s</string>
-    <string name="interval_timer_next_reset_ready">Następne okno korzystania odblokowane</string>
     <string name="limit_chip">Limit %1$s</string>
     <string name="next_step_1">Wybierz tryb blokowania</string>
     <string name="next_step_2">Wypróbuj funkcję dziennego limitu i aktywuj nakładkę timera</string>

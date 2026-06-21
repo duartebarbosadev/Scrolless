@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Αποτέλεσμα: έως %1$s κάθε %2$s</string>
     <string name="interval_timer_dialog_title">Διαμόρφωση χρονοδιακόπτη διαστήματος</string>
     <string name="interval_timer_next_reset_in">Επαναφορά σε %1$s</string>
-    <string name="interval_timer_next_reset_ready">Το επόμενο παράθυρο χρήσης ξεκλειδώθηκε</string>
     <string name="limit_chip">Όριο %1$s</string>
     <string name="next_step_1">Επιλέξτε μια λειτουργία αποκλεισμού</string>
     <string name="next_step_2">Δοκιμάστε τη λειτουργία ημερήσιου ορίου και ενεργοποιήστε την επικάλυψη χρονοδιακόπτη</string>

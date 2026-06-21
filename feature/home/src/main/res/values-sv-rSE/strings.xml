@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Resultat: upp till %1$s var %2$s</string>
     <string name="interval_timer_dialog_title">Konfigurera intervalltimer</string>
     <string name="interval_timer_next_reset_in">Återställs om %1$s</string>
-    <string name="interval_timer_next_reset_ready">Nästa användningsfönster upplåst</string>
     <string name="limit_chip">%1$s gräns</string>
     <string name="next_step_1">Välj ett blockeringsläge</string>
     <string name="next_step_2">Prova funktionen för daglig gräns och aktivera timeröverlägget</string>

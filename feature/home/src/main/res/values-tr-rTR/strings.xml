@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Sonuç: her %2$s için %1$s\'ye kadar</string>
     <string name="interval_timer_dialog_title">Aralık zamanlayıcısını yapılandır</string>
     <string name="interval_timer_next_reset_in">%1$s içinde sıfırlanır</string>
-    <string name="interval_timer_next_reset_ready">Sonraki kullanım penceresi açıldı</string>
     <string name="limit_chip">%1$s sınırı</string>
     <string name="next_step_1">Bir engelleme modu seçin</string>
     <string name="next_step_2">Günlük sınır özelliğini deneyin ve zamanlayıcı yer paylaşımını etkinleştirin</string>

@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">結果: %2$sごとに最大%1$s</string>
     <string name="interval_timer_dialog_title">インターバルタイマーを設定</string>
     <string name="interval_timer_next_reset_in">リセットまで%1$s</string>
-    <string name="interval_timer_next_reset_ready">次の視聴枠が利用可能です</string>
     <string name="limit_chip">%1$s制限</string>
     <string name="next_step_1">ブロックモードを選択</string>
     <string name="next_step_2">1日の制限機能を試して、タイマーオーバーレイを有効にする</string>

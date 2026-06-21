@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Ergebnis: bis zu %1$s alle %2$s</string>
     <string name="interval_timer_dialog_title">Intervall-Timer konfigurieren</string>
     <string name="interval_timer_next_reset_in">Zurücksetzung in %1$s</string>
-    <string name="interval_timer_next_reset_ready">Nächstes Nutzungsfenster freigeschaltet</string>
     <string name="limit_chip">%1$s Limit</string>
     <string name="next_step_1">Wählen Sie einen Blockierungsmodus</string>
     <string name="next_step_2">Probieren Sie die Tageslimit-Funktion aus und aktivieren Sie das Timer-Overlay</string>

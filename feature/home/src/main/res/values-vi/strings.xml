@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Kết quả: tối đa %1$s mỗi %2$s</string>
     <string name="interval_timer_dialog_title">Cấu hình hẹn giờ khoảng thời gian</string>
     <string name="interval_timer_next_reset_in">Đặt lại sau %1$s</string>
-    <string name="interval_timer_next_reset_ready">Khung sử dụng tiếp theo đã mở khóa</string>
     <string name="limit_chip">Giới hạn %1$s</string>
     <string name="next_step_1">Chọn chế độ chặn</string>
     <string name="next_step_2">Thử tính năng giới hạn hàng ngày và kích hoạt lớp phủ hẹn giờ</string>
