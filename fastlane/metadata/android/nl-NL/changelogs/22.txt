@@ -1,0 +1,4 @@
+• Een belangrijke bug opgelost waarbij gebruiksregistratie en limieten niet altijd correct naar de volgende dag werden overgezet.
+• Haptische feedback toegevoegd in de hele app voor een verfijndere en responsievere ervaring.
+• De voortgangsbalk bijgewerkt met een schoner en neutraler kleurenschema.
+• Algemene bugfixes en stabiliteitsverbeteringen.

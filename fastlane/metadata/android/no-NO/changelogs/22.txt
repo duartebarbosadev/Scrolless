@@ -1,0 +1,4 @@
+• Rettet en viktig feil der bruksregistrering og grenser ikke alltid ble riktig overført til neste dag.
+• Lagt til haptisk tilbakemelding i hele appen for en mer polert og responsiv opplevelse.
+• Oppdatert fremdriftslinjen med et renere og mer nøytralt fargetema.
+• Generelle feilrettinger og stabilitetsforbedringer.

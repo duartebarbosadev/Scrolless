@@ -1,0 +1,4 @@
+• U rregullua një gabim i rëndësishëm ku gjurmimi i përdorimit dhe kufijtë nuk kalonin gjithmonë siç duhet në ditën tjetër.
+• U shtua reagim haptik në të gjithë aplikacionin për një përvojë më të rafinuar dhe më reaguese.
+• Shiriti i progresit u përditësua me një skemë ngjyrash më të pastër dhe më neutrale.
+• Rregullime të përgjithshme gabimesh dhe përmirësime të stabilitetit.

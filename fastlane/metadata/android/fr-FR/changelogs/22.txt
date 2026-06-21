@@ -1,0 +1,4 @@
+• Correction d’un bug important qui empêchait parfois le suivi d’utilisation et les limites de passer correctement au jour suivant.
+• Ajout de retours haptiques dans toute l’application pour une expérience plus soignée et réactive.
+• Mise à jour de la barre de progression avec une palette de couleurs plus sobre et neutre.
+• Corrections de bugs générales et améliorations de la stabilité.

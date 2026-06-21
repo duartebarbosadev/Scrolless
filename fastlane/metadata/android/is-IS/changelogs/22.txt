@@ -1,0 +1,4 @@
+• Lagaði mikilvæga villu þar sem notkunarskráning og mörk færðust ekki alltaf rétt yfir á næsta dag.
+• Bætt var við titringssvörun víða í appinu fyrir fágaðri og viðbragðsmeiri upplifun.
+• Framvindustikan var uppfærð með hreinni og hlutlausari litasamsetningu.
+• Almennar villulagfæringar og stöðugleikabætur.

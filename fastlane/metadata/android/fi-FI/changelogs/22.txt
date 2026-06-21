@@ -1,0 +1,4 @@
+• Korjattu tärkeä virhe, jossa käytön seuranta ja rajoitukset eivät aina siirtyneet oikein seuraavalle päivälle.
+• Lisätty haptista palautetta koko sovellukseen viimeistellymmän ja reagoivamman käyttökokemuksen takaamiseksi.
+• Päivitetty edistymispalkki selkeämmällä ja neutraalimmalla värimaailmalla.
+• Yleisiä virheenkorjauksia ja vakausparannuksia.

@@ -1,0 +1,4 @@
+• Javítottunk egy fontos hibát, amely miatt a használatkövetés és a limitek nem mindig gördültek át megfelelően a következő napra.
+• Haptikus visszajelzést adtunk hozzá az alkalmazás több részéhez a kifinomultabb és reszponzívabb élményért.
+• Frissítettük a folyamatjelző sávot egy letisztultabb, semlegesebb színvilággal.
+• Általános hibajavítások és stabilitási fejlesztések.

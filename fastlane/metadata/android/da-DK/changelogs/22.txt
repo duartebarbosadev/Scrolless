@@ -1,0 +1,4 @@
+• Rettet en vigtig fejl, hvor brugsregistrering og grænser ikke altid blev overført korrekt til næste dag.
+• Tilføjet haptisk feedback i hele appen for en mere poleret og responsiv oplevelse.
+• Opdateret statuslinjen med et renere og mere neutralt farvetema.
+• Generelle fejlrettelser og stabilitetsforbedringer.

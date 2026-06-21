@@ -1,0 +1,4 @@
+• Opravená dôležitá chyba, kvôli ktorej sa sledovanie používania a limity nie vždy správne preniesli do ďalšieho dňa.
+• Pridaná haptická odozva v celej aplikácii pre uhladenejší a responzívnejší zážitok.
+• Aktualizovaný ukazovateľ priebehu s čistejšou a neutrálnejšou farebnou schémou.
+• Všeobecné opravy chýb a vylepšenia stability.

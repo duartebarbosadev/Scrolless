@@ -1,0 +1,4 @@
+• Parandati oluline viga, mille tõttu kasutuse jälgimine ja piirangud ei kandunud alati õigesti järgmisse päeva.
+• Lisati haptilline tagasiside kogu rakenduses, et kasutuskogemus oleks viimistletum ja tundlikum.
+• Värskendati edenemisriba puhtama ja neutraalsema värvilahendusega.
+• Üldised veaparandused ja stabiilsuse täiustused.

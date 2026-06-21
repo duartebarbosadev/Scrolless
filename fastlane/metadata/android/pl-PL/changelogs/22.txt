@@ -1,0 +1,4 @@
+• Naprawiono ważny błąd, przez który śledzenie użycia i limity nie zawsze poprawnie przechodziły na kolejny dzień.
+• Dodano reakcje haptyczne w całej aplikacji, aby korzystanie było bardziej dopracowane i responsywne.
+• Zaktualizowano pasek postępu, wprowadzając czystszy i bardziej neutralny schemat kolorów.
+• Ogólne poprawki błędów i ulepszenia stabilności.

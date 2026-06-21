@@ -1,0 +1,4 @@
+• Ein wichtiger Fehler wurde behoben, bei dem Nutzungsdaten und Limits nicht immer korrekt auf den nächsten Tag übertragen wurden.
+• Haptisches Feedback wurde in der gesamten App hinzugefügt, um die Bedienung hochwertiger und reaktionsschneller zu machen.
+• Die Fortschrittsleiste wurde mit einem klareren, neutraleren Farbschema aktualisiert.
+• Allgemeine Fehlerbehebungen und Stabilitätsverbesserungen.

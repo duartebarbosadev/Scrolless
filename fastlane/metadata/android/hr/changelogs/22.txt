@@ -1,0 +1,4 @@
+• Ispravljena je važna pogreška zbog koje se praćenje upotrebe i ograničenja nisu uvijek ispravno prenosili na sljedeći dan.
+• Dodana je haptička povratna informacija kroz cijelu aplikaciju za uglađenije i responzivnije iskustvo.
+• Ažurirana je traka napretka čišćom i neutralnijom paletom boja.
+• Opći ispravci pogrešaka i poboljšanja stabilnosti.

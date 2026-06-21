@@ -1,0 +1,4 @@
+• Memperbaiki bug penting di mana pelacakan penggunaan dan batasan tidak selalu berpindah dengan benar ke hari berikutnya.
+• Menambahkan umpan balik haptik di seluruh aplikasi untuk pengalaman yang lebih halus dan responsif.
+• Memperbarui bilah progres dengan skema warna yang lebih bersih dan netral.
+• Perbaikan bug umum dan peningkatan stabilitas.

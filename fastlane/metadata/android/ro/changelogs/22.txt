@@ -1,0 +1,4 @@
+• A fost remediată o eroare importantă din cauza căreia urmărirea utilizării și limitele nu se reportau întotdeauna corect în ziua următoare.
+• A fost adăugat feedback haptic în întreaga aplicație pentru o experiență mai rafinată și mai receptivă.
+• Bara de progres a fost actualizată cu o schemă de culori mai curată și mai neutră.
+• Remedieri generale de erori și îmbunătățiri ale stabilității.

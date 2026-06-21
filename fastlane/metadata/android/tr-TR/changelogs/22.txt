@@ -1,0 +1,4 @@
+• Kullanım takibi ve limitlerin her zaman doğru şekilde sonraki güne aktarılmamasına neden olan önemli bir hata düzeltildi.
+• Daha şık ve hızlı tepki veren bir deneyim için uygulama genelinde dokunsal geri bildirim eklendi.
+• İlerleme çubuğu daha temiz ve daha nötr bir renk düzeniyle güncellendi.
+• Genel hata düzeltmeleri ve kararlılık iyileştirmeleri.

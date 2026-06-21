@@ -1,0 +1,4 @@
+• Inayos ang mahalagang bug kung saan hindi laging lumilipat nang tama sa susunod na araw ang usage tracking at limits.
+• Nagdagdag ng haptic feedback sa buong app para sa mas pulido at responsive na karanasan.
+• In-update ang progress bar gamit ang mas malinis at mas neutral na color scheme.
+• Mga pangkalahatang bug fix at stability improvement.

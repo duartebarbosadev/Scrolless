@@ -1,0 +1,4 @@
+• Åtgärdat en viktig bugg där användningsspårning och gränser inte alltid överfördes korrekt till nästa dag.
+• Lagt till haptisk feedback i hela appen för en mer polerad och responsiv upplevelse.
+• Uppdaterat förloppsindikatorn med ett renare och mer neutralt färgschema.
+• Allmänna buggfixar och stabilitetsförbättringar.

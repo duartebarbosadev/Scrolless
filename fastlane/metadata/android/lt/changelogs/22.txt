@@ -1,0 +1,4 @@
+• Ištaisyta svarbi klaida, dėl kurios naudojimo stebėjimas ir limitai ne visada teisingai persikeldavo į kitą dieną.
+• Visoje programoje pridėtas haptinis grįžtamasis ryšys, kad patirtis būtų sklandesnė ir jautresnė.
+• Atnaujinta eigos juosta su švaresne ir neutralesne spalvų schema.
+• Bendri klaidų taisymai ir stabilumo patobulinimai.

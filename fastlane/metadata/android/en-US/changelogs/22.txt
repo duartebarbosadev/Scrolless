@@ -1,0 +1,4 @@
+• Fixed an important bug where usage tracking and limits did not always roll over correctly to the next day.
+• Added haptic feedback throughout the app for a more polished and responsive experience.
+• Updated the progress bar with a cleaner, more neutral colour scheme.
+• General bug fixes and stability improvements.

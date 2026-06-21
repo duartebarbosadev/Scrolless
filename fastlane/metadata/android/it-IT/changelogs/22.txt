@@ -1,0 +1,4 @@
+• Corretto un bug importante per cui il monitoraggio dell’utilizzo e i limiti non passavano sempre correttamente al giorno successivo.
+• Aggiunto feedback aptico in tutta l’app per un’esperienza più curata e reattiva.
+• Aggiornata la barra di avanzamento con una combinazione di colori più pulita e neutra.
+• Correzioni generali di bug e miglioramenti della stabilità.

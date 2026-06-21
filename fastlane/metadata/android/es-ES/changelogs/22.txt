@@ -1,0 +1,4 @@
+• Se ha corregido un error importante por el que el seguimiento de uso y los límites no siempre pasaban correctamente al día siguiente.
+• Se ha añadido respuesta háptica en toda la app para una experiencia más pulida y ágil.
+• Se ha actualizado la barra de progreso con una paleta de colores más limpia y neutral.
+• Correcciones generales de errores y mejoras de estabilidad.

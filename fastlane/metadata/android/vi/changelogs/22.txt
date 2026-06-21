@@ -1,0 +1,4 @@
+• Đã sửa một lỗi quan trọng khiến việc theo dõi sử dụng và giới hạn không phải lúc nào cũng chuyển đúng sang ngày tiếp theo.
+• Đã thêm phản hồi xúc giác trong toàn bộ ứng dụng để mang lại trải nghiệm tinh tế và phản hồi tốt hơn.
+• Đã cập nhật thanh tiến trình với bảng màu sạch hơn và trung tính hơn.
+• Sửa lỗi chung và cải thiện độ ổn định.
