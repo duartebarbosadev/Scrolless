@@ -123,9 +123,6 @@
 
     <string name="interval_timer_next_reset_in">Resets in %1$s</string>
 
-    <string name="interval_timer_next_reset_ready">Next break unlocked</string>
-
-
 
     <string name="limit_chip">%1$s limit</string>
 

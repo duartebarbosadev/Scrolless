@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Risultato: fino a %1$s ogni %2$s</string>
     <string name="interval_timer_dialog_title">Configura il timer a intervalli</string>
     <string name="interval_timer_next_reset_in">Si resetta tra %1$s</string>
-    <string name="interval_timer_next_reset_ready">Prossima finestra di utilizzo sbloccata</string>
     <string name="limit_chip">Limite di %1$s</string>
     <string name="next_step_1">Seleziona una modalità di blocco</string>
     <string name="next_step_2">Prova la funzione limite giornaliero e attiva l\'overlay del timer</string>

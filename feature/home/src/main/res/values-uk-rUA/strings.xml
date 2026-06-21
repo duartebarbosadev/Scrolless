@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Результат: до %1$s кожні %2$s</string>
     <string name="interval_timer_dialog_title">Налаштувати таймер інтервалів</string>
     <string name="interval_timer_next_reset_in">Скидання через %1$s</string>
-    <string name="interval_timer_next_reset_ready">Наступне вікно використання розблоковано</string>
     <string name="limit_chip">Ліміт %1$s</string>
     <string name="next_step_1">Виберіть режим блокування</string>
     <string name="next_step_2">Спробуйте функцію щоденного ліміту та активуйте накладання таймера</string>

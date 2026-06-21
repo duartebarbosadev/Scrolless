@@ -127,7 +127,7 @@ fun ProgressCard(
 
             intervalLength <= 0L || intervalWindowStart <= 0L -> null
 
-            intervalRemainingMillis <= 1_000L -> stringResource(R.string.interval_timer_next_reset_ready)
+            intervalRemainingMillis <= 1_000L -> null
 
             else -> stringResource(
                 R.string.interval_timer_next_reset_in,
@@ -235,7 +235,7 @@ fun ProgressCard(
                 .padding(16.dp)
                 .hapticClickable(onClick = onClick),
             shape = RoundedCornerShape(96.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
         ) {
             Box(

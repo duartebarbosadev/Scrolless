@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">结果：每 %2$s 最多 %1$s</string>
     <string name="interval_timer_dialog_title">配置间隔计时器</string>
     <string name="interval_timer_next_reset_in">%1$s 后重置</string>
-    <string name="interval_timer_next_reset_ready">下一个使用时段已解锁</string>
     <string name="limit_chip">%1$s 限制</string>
     <string name="next_step_1">选择一个屏蔽模式</string>
     <string name="next_step_2">尝试每日限制功能并激活计时器叠加层</string>

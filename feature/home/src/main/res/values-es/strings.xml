@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Resultado: hasta %1$s cada %2$s</string>
     <string name="interval_timer_dialog_title">Configurar temporizador por intervalos</string>
     <string name="interval_timer_next_reset_in">Se reinicia en %1$s</string>
-    <string name="interval_timer_next_reset_ready">Siguiente ventana de uso desbloqueada</string>
     <string name="limit_chip">Límite de %1$s</string>
     <string name="next_step_1">Selecciona un modo de bloqueo</string>
     <string name="next_step_2">Prueba la función de límite diario y activa el temporizador superpuesto</string>

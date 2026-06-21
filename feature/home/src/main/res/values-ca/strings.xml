@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Resultat: fins a %1$s cada %2$s</string>
     <string name="interval_timer_dialog_title">Configurar temporitzador d\'intervals</string>
     <string name="interval_timer_next_reset_in">Es reinicia en %1$s</string>
-    <string name="interval_timer_next_reset_ready">Pròxima finestra d\'ús desbloquejada</string>
     <string name="limit_chip">Límit de %1$s</string>
     <string name="next_step_1">Selecciona un mode de bloqueig</string>
     <string name="next_step_2">Prova la funció de límit diari i activa la superposició del temporitzador</string>

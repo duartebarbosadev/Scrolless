@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">முடிவு: ஒவ்வொரு %2$s க்கும் %1$s வரை</string>
     <string name="interval_timer_dialog_title">இடைவெளி டைமரை உள்ளமைக்கவும்</string>
     <string name="interval_timer_next_reset_in">%1$s இல் மீட்டமைக்கிறது</string>
-    <string name="interval_timer_next_reset_ready">அடுத்த பயன்பாட்டு சாளரம் திறக்கப்பட்டது</string>
     <string name="limit_chip">%1$s வரம்பு</string>
     <string name="next_step_1">தடுக்கும் பயன்முறையைத் தேர்ந்தெடுக்கவும்</string>
     <string name="next_step_2">தினசரி வரம்பு அம்சத்தை முயற்சித்து டைமர் ஓவர்லேயரைச் செயல்படுத்தவும்</string>

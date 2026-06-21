@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">ഫലം: ഓരോ %2$s-ലും %1$s വരെ</string>
     <string name="interval_timer_dialog_title">ഇന്റർവെൽ ടൈമർ ക്രമീകരിക്കുക</string>
     <string name="interval_timer_next_reset_in">%1$s-ൽ പുനഃസജ്ജമാക്കുന്നു</string>
-    <string name="interval_timer_next_reset_ready">അടുത്ത ഉപയോഗ വിൻഡോ അൺലോക്ക് ചെയ്തു</string>
     <string name="limit_chip">%1$s പരിധി</string>
     <string name="next_step_1">ഒരു ബ്ലോക്കിംഗ് മോഡ് തിരഞ്ഞെടുക്കുക</string>
     <string name="next_step_2">പ്രതിദിന പരിധി ഫീച്ചർ പരീക്ഷിച്ച് ടൈമർ ഓവർലേ സജീവമാക്കുക</string>

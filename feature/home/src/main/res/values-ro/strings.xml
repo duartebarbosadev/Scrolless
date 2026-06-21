@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Rezultat: până la %1$s la fiecare %2$s</string>
     <string name="interval_timer_dialog_title">Configurează temporizatorul pe intervale</string>
     <string name="interval_timer_next_reset_in">Se resetează în %1$s</string>
-    <string name="interval_timer_next_reset_ready">Următoarea fereastră de utilizare este deblocată</string>
     <string name="limit_chip">Limită de %1$s</string>
     <string name="next_step_1">Selectează un mod de blocare</string>
     <string name="next_step_2">Încearcă funcția de limită zilnică și activează temporizatorul suprapus</string>

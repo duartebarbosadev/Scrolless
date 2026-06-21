@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Výsledek: až %1$s každých %2$s</string>
     <string name="interval_timer_dialog_title">Konfigurovat časovač intervalů</string>
     <string name="interval_timer_next_reset_in">Resetuje se za %1$s</string>
-    <string name="interval_timer_next_reset_ready">Další okno používání odemčeno</string>
     <string name="limit_chip">Limit %1$s</string>
     <string name="next_step_1">Vyberte režim blokování</string>
     <string name="next_step_2">Vyzkoušejte funkci denního limitu a aktivujte překrytí časovače</string>

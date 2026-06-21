@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Résultat : jusqu\'à %1$s toutes les %2$s</string>
     <string name="interval_timer_dialog_title">Configurer le minuteur d\'intervalle</string>
     <string name="interval_timer_next_reset_in">Réinitialisation dans %1$s</string>
-    <string name="interval_timer_next_reset_ready">Prochaine fenêtre d\'utilisation débloquée</string>
     <string name="limit_chip">Limite de %1$s</string>
     <string name="next_step_1">Sélectionnez un mode de blocage</string>
     <string name="next_step_2">Essayez la fonction de limite quotidienne et activez la superposition du minuteur</string>

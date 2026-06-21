@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">結果：每 %2$s 最多 %1$s</string>
     <string name="interval_timer_dialog_title">設定間隔計時器</string>
     <string name="interval_timer_next_reset_in">將在 %1$s 後重設</string>
-    <string name="interval_timer_next_reset_ready">下一個使用時段已解鎖</string>
     <string name="limit_chip">%1$s 限制</string>
     <string name="next_step_1">選擇封鎖模式</string>
     <string name="next_step_2">嘗試每日限制功能並啟用計時器疊加層</string>

@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Результат: до %1$s каждые %2$s</string>
     <string name="interval_timer_dialog_title">Настроить интервальный таймер</string>
     <string name="interval_timer_next_reset_in">Сброс через %1$s</string>
-    <string name="interval_timer_next_reset_ready">Следующее окно использования разблокировано</string>
     <string name="limit_chip">Лимит %1$s</string>
     <string name="next_step_1">Выберите режим блокировки</string>
     <string name="next_step_2">Попробуйте функцию дневного лимита и активируйте наложение таймера</string>

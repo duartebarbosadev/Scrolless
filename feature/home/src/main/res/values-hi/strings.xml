@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">परिणाम: प्रत्येक %2$s में %1$s तक</string>
     <string name="interval_timer_dialog_title">अंतराल टाइमर कॉन्फ़िगर करें</string>
     <string name="interval_timer_next_reset_in">%1$s में रीसेट होता है</string>
-    <string name="interval_timer_next_reset_ready">अगली उपयोग विंडो अनलॉक हो गई</string>
     <string name="limit_chip">%1$s सीमा</string>
     <string name="next_step_1">एक ब्लॉकिंग मोड चुनें</string>
     <string name="next_step_2">दैनिक सीमा सुविधा आज़माएं और टाइमर ओवरले सक्रिय करें</string>

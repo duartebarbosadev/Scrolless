@@ -60,7 +60,6 @@
     <string name="interval_timer_dialog_summary">Rezultat: do %1$s svakih %2$s</string>
     <string name="interval_timer_dialog_title">Konfigurišite intervalni tajmer</string>
     <string name="interval_timer_next_reset_in">Resetuje se za %1$s</string>
-    <string name="interval_timer_next_reset_ready">Sledeći period korišćenja je otključan</string>
     <string name="limit_chip">%1$s limit</string>
     <string name="next_step_1">Izaberite režim blokiranja</string>
     <string name="next_step_2">Isprobajte funkciju dnevnog limita i aktivirajte preklapanje tajmera</string>
