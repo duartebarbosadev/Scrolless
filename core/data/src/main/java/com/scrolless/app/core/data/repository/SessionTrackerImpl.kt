@@ -46,6 +46,15 @@ class SessionTrackerImpl @Inject constructor(
 
     override suspend fun getDailyUsage(): Long = sessionSegmentStore.getTodayTotalDurationSnapshot()
 
+    override fun getCurrentSegmentDuration(): Long {
+        val state = sessionState.get()
+        return if (state.shouldStartNewSessionOnNextUsage) {
+            0L
+        } else {
+            state.currentSessionTotalTime
+        }
+    }
+
     override suspend fun addToDailyUsage(sessionTime: Long, app: BlockableApp) {
         usageMutex.withLock {
             val currentSessionState = sessionState.get()

@@ -39,13 +39,10 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowInsetsCompat
-import com.scrolless.app.R
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.repository.setTimerOverlayPosition
 import com.scrolless.app.designsystem.theme.timerOverlayBackgroundColor
 import com.scrolless.app.designsystem.util.formatAsTime
-import javax.inject.Inject
-import kotlin.math.abs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -55,6 +52,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
+import kotlin.math.abs
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * A View-based implementation of TimerOverlayManager.
@@ -74,6 +74,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private var sessionStartTime = 0L
+    private var initialSessionDurationMillis = 0L
     private var timerJob: Job? = null
     private var exitAnimationJob: Job? = null
     private var screenBounds: ScreenBounds? = null
@@ -91,7 +92,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    fun show(sessionStartAt: Long = System.currentTimeMillis()) {
+    fun show(sessionStartAt: Long = System.currentTimeMillis(), initialDurationMillis: Long = 0L) {
         if (rootView != null) {
             cleanupView()
         }
@@ -102,10 +103,11 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         val wm = windowManager ?: return
 
         sessionStartTime = sessionStartAt
+        initialSessionDurationMillis = initialDurationMillis.coerceAtLeast(0L)
 
         // Create TextView with polished styling
         timerTextView = TextView(serviceContext).apply {
-            text = resources.getText(R.string.timer_default_value)
+            text = initialSessionDurationMillis.formatAsTime()
             textSize = 18f // sp
             typeface = Typeface.DEFAULT_BOLD
             setTextColor(Color.WHITE)
@@ -185,7 +187,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
         exitAnimationJob?.cancel()
         exitAnimationJob = coroutineScope.launch {
-            delay(SUMMARY_DISPLAY_DURATION_MS)
+            delay(SUMMARY_DISPLAY_DURATION_MS.milliseconds)
             startExitAnimation()
         }
     }
@@ -224,9 +226,10 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         timerJob?.cancel()
         timerJob = coroutineScope.launch {
             while (true) {
-                val elapsed = (System.currentTimeMillis() - sessionStartTime).coerceAtLeast(0L)
+                val elapsed = initialSessionDurationMillis +
+                    (System.currentTimeMillis() - sessionStartTime).coerceAtLeast(0L)
                 timerTextView?.text = elapsed.formatAsTime()
-                delay(1000)
+                delay(1000.milliseconds)
             }
         }
     }

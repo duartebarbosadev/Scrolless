@@ -614,7 +614,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                     mainHandler.post {
                         if (currentTimerOverlayEnabled && isProcessingBlockedContent) {
                             Timber.v("Showing timer overlay")
-                            timerOverlayManager.show(session.startedAtMillis)
+                            timerOverlayManager.show(
+                                sessionStartAt = session.startedAtMillis,
+                                initialDurationMillis = sessionTracker.getCurrentSegmentDuration(),
+                            )
                         }
                     }
                     Timber.d("Content allowed on enter, will monitor usage")
@@ -625,7 +628,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             if (currentTimerOverlayEnabled) {
                 Timber.v("Showing timer overlay (blocking skipped)")
                 mainHandler.post {
-                    timerOverlayManager.show(session.startedAtMillis)
+                    timerOverlayManager.show(
+                        sessionStartAt = session.startedAtMillis,
+                        initialDurationMillis = sessionTracker.getCurrentSegmentDuration(),
+                    )
                 }
             }
             Timber.d(

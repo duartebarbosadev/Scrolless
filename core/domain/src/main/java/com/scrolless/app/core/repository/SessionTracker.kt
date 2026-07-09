@@ -26,6 +26,13 @@ interface SessionTracker {
     suspend fun getDailyUsage(): Long
 
     /**
+     * Get the persisted duration of the current session segment in milliseconds.
+     *
+     * This excludes any in-progress viewing time that has not been added yet.
+     */
+    fun getCurrentSegmentDuration(): Long
+
+    /**
      * Add session time to daily usage and persist immediately.
      * Also updates per-app usage when app is provided.
      * Thread-safe and non-blocking.
