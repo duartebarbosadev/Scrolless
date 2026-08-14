@@ -205,6 +205,8 @@ dependencies {
     add("playImplementation", libs.android.review)
     add("playImplementation", libs.android.review.ktx)
 
+    testImplementation(libs.junit)
+
     implementation(projects.core.data)
     implementation(projects.core.designsystem)
     implementation(projects.core.domain)

@@ -35,6 +35,7 @@ import com.scrolless.app.core.model.ResolvedBlockableApp
 import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.ui.overlay.TimerOverlayManager
+import com.scrolless.app.ui.overlay.sessionDurationInCurrentLocalDay
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -126,6 +127,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private data class DetectedBlockedContent(val app: ResolvedBlockableApp, val blockingSuppressed: Boolean)
 
     private data class BlockedContentSession(val app: ResolvedBlockableApp, val startedAtMillis: Long, val blockingSuppressed: Boolean)
+
+    private data class TimerOverlayInitialState(val durationMillis: Long, val resetAtLocalMidnight: Boolean)
 
     private var blockedContentSession: BlockedContentSession? = null
 
@@ -610,13 +613,18 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                     performBackNavigation()
                 } else {
                     // Only show timer overlay if we're NOT blocking immediately
-                    // (no point showing timer if user is about to be kicked out)
+                    // (no point showing timer if user  is about to be kicked out)
+                    val timerInitialState = getTimerOverlayInitialState()
                     mainHandler.post {
-                        if (currentTimerOverlayEnabled && isProcessingBlockedContent) {
+                        if (
+                            currentTimerOverlayEnabled &&
+                            blockedContentSession?.startedAtMillis == session.startedAtMillis
+                        ) {
                             Timber.v("Showing timer overlay")
                             timerOverlayManager.show(
                                 sessionStartAt = session.startedAtMillis,
-                                initialDurationMillis = sessionTracker.getCurrentSegmentDuration(),
+                                initialDurationMillis = timerInitialState.durationMillis,
+                                resetAtLocalMidnight = timerInitialState.resetAtLocalMidnight,
                             )
                         }
                     }
@@ -626,12 +634,21 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         } else {
             // Paused or blocking-suppressed content still counts as watched time.
             if (currentTimerOverlayEnabled) {
-                Timber.v("Showing timer overlay (blocking skipped)")
-                mainHandler.post {
-                    timerOverlayManager.show(
-                        sessionStartAt = session.startedAtMillis,
-                        initialDurationMillis = sessionTracker.getCurrentSegmentDuration(),
-                    )
+                serviceScope.launch(Dispatchers.IO) {
+                    val timerInitialState = getTimerOverlayInitialState()
+                    mainHandler.post {
+                        if (
+                            currentTimerOverlayEnabled &&
+                            blockedContentSession?.startedAtMillis == session.startedAtMillis
+                        ) {
+                            Timber.v("Showing timer overlay (blocking skipped)")
+                            timerOverlayManager.show(
+                                sessionStartAt = session.startedAtMillis,
+                                initialDurationMillis = timerInitialState.durationMillis,
+                                resetAtLocalMidnight = timerInitialState.resetAtLocalMidnight,
+                            )
+                        }
+                    }
                 }
             }
             Timber.d(
@@ -662,7 +679,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             return
         }
 
-        val sessionTime = System.currentTimeMillis() - session.startedAtMillis
+        val sessionEndedAtMillis = System.currentTimeMillis()
+        val sessionTime = sessionEndedAtMillis - session.startedAtMillis
         Timber.d("Exited blocked content. Session=%d ms (app=%s)", sessionTime, session.app)
 
         stopPeriodicCheck()
@@ -679,7 +697,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             val overlaySummaryTotal = if (currentTimerOverlayEnabled) {
                 when (userSettingsStore.getActiveBlockOption().first()) {
                     BlockOption.IntervalTimer -> userSettingsStore.getIntervalUsage().first() + sessionTime
-                    else -> sessionTracker.getDailyUsage() + sessionTime
+
+                    else -> sessionTracker.getDailyUsage() +
+                        sessionDurationInCurrentLocalDay(
+                            sessionStartAtMillis = session.startedAtMillis,
+                            sessionEndAtMillis = sessionEndedAtMillis,
+                        )
                 }
             } else {
                 null
@@ -701,6 +724,18 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
 
         Timber.d("Exit handling completed for app: %s (%s)", exitedApp.app.name, exitedApp.packageId)
+    }
+
+    private suspend fun getTimerOverlayInitialState(): TimerOverlayInitialState = when (userSettingsStore.getActiveBlockOption().first()) {
+        BlockOption.IntervalTimer -> TimerOverlayInitialState(
+            durationMillis = userSettingsStore.getIntervalUsage().first(),
+            resetAtLocalMidnight = false,
+        )
+
+        else -> TimerOverlayInitialState(
+            durationMillis = sessionTracker.getDailyUsage(),
+            resetAtLocalMidnight = true,
+        )
     }
 
     /**

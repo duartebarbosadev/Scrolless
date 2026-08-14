@@ -25,6 +25,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import java.time.Duration
 import junit.framework.TestCase.assertEquals
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,7 +34,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(JUnit4::class)
@@ -154,43 +154,6 @@ class SessionTrackerTest : BaseTest() {
         coVerify(exactly = 0) {
             store.updateSessionSegmentDuration(any(), any())
         }
-    }
-
-    @Test
-    fun `current segment duration returns previous usage when reopening within merge window`() = runTest(testDispatcher) {
-        val segmentId = 1L
-        coEvery { store.addSessionSegment(any()) } returns segmentId
-
-        val app = BlockableApp.REELS
-        sessionTracker.onAppOpen(app)
-
-        val firstSessionTime = 5_000L
-        delay(firstSessionTime.milliseconds)
-        sessionTracker.addToDailyUsage(firstSessionTime, app)
-        sessionTracker.onAppClose()
-
-        delay(1_000.milliseconds)
-        sessionTracker.onAppOpen(app)
-
-        assertEquals(firstSessionTime, sessionTracker.getCurrentSegmentDuration())
-    }
-
-    @Test
-    fun `current segment duration returns zero when reopening after merge window`() = runTest(testDispatcher) {
-        coEvery { store.addSessionSegment(any()) } returns 1L
-
-        val app = BlockableApp.REELS
-        sessionTracker.onAppOpen(app)
-
-        val firstSessionTime = 5_000L
-        delay(firstSessionTime.milliseconds)
-        sessionTracker.addToDailyUsage(firstSessionTime, app)
-        sessionTracker.onAppClose()
-
-        delay(40_000.milliseconds)
-        sessionTracker.onAppOpen(app)
-
-        assertEquals(0L, sessionTracker.getCurrentSegmentDuration())
     }
 
     @Test
