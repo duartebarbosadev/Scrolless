@@ -16,39 +16,49 @@
  */
 package com.scrolless.app.ui.overlay
 
+import com.scrolless.app.core.blocking.handler.IntervalTimerSnapshot
 import java.time.Instant
 import java.time.ZoneId
+
+/** State captured when a timer overlay session begins. */
+sealed interface TimerOverlayInitialState {
+
+    data class Daily(val usageMillis: Long) : TimerOverlayInitialState
+
+    data class Interval(val snapshot: IntervalTimerSnapshot) : TimerOverlayInitialState
+}
 
 /**
  * Returns the time shown in the overlay.
  *
- * [initialDurationMillis] is the usage recorded before the current session. Daily timers reset at
- * midnight, while interval timers keep counting because their window may cross midnight.
+ * Daily timers reset at midnight. Interval timers use their configured fixed window boundary.
  * [zoneId] is used to find local midnight and can be replaced in tests.
  */
 internal fun calculateDisplayedTimerDuration(
-    initialDurationMillis: Long,
+    initialState: TimerOverlayInitialState,
     sessionStartAtMillis: Long,
     nowMillis: Long,
-    resetAtLocalMidnight: Boolean,
     zoneId: ZoneId = ZoneId.systemDefault(),
-): Long {
-    val persistedUsageBeforeSession = initialDurationMillis.coerceAtLeast(0L)
-    val elapsedSinceSessionStart = (nowMillis - sessionStartAtMillis).coerceAtLeast(0L)
-    if (!resetAtLocalMidnight) {
-        return persistedUsageBeforeSession + elapsedSinceSessionStart
+): Long = when (initialState) {
+    is TimerOverlayInitialState.Interval ->
+        initialState.snapshot.usageIncludingSession(
+            sessionStartAtMillis = sessionStartAtMillis,
+            nowMillis = nowMillis,
+        )
+
+    is TimerOverlayInitialState.Daily -> {
+        val persistedUsageBeforeSession = initialState.usageMillis.coerceAtLeast(0L)
+        val currentDate = Instant.ofEpochMilli(nowMillis).atZone(zoneId).toLocalDate()
+        val sessionStartDate = Instant.ofEpochMilli(sessionStartAtMillis).atZone(zoneId).toLocalDate()
+        val persistedUsageToday = if (sessionStartDate == currentDate) persistedUsageBeforeSession else 0L
+        val sessionUsageToday = sessionDurationInCurrentLocalDay(
+            sessionStartAtMillis = sessionStartAtMillis,
+            sessionEndAtMillis = nowMillis,
+            zoneId = zoneId,
+        )
+
+        persistedUsageToday + sessionUsageToday
     }
-
-    val currentDate = Instant.ofEpochMilli(nowMillis).atZone(zoneId).toLocalDate()
-    val sessionStartDate = Instant.ofEpochMilli(sessionStartAtMillis).atZone(zoneId).toLocalDate()
-    val persistedUsageToday = if (sessionStartDate == currentDate) persistedUsageBeforeSession else 0L
-    val sessionUsageToday = sessionDurationInCurrentLocalDay(
-        sessionStartAtMillis = sessionStartAtMillis,
-        sessionEndAtMillis = nowMillis,
-        zoneId = zoneId,
-    )
-
-    return persistedUsageToday + sessionUsageToday
 }
 
 /** Returns how much of the session happened after the most recent local midnight. */

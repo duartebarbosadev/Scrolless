@@ -74,13 +74,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private var sessionStartTime = 0L
-    private var initialSessionDurationMillis = 0L
-
-    /**
-     * `true` for daily usage so the previous day's baseline is discarded at local midnight.
-     * This should only be `false` for interval usage, whose configured window can span midnight.
-     */
-    private var resetAtLocalMidnight = false
+    private var initialState: TimerOverlayInitialState = TimerOverlayInitialState.Daily(usageMillis = 0L)
     private var timerJob: Job? = null
     private var exitAnimationJob: Job? = null
     private var screenBounds: ScreenBounds? = null
@@ -98,7 +92,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    fun show(sessionStartAt: Long = System.currentTimeMillis(), initialDurationMillis: Long = 0L, resetAtLocalMidnight: Boolean = false) {
+    fun show(sessionStartAt: Long, initialState: TimerOverlayInitialState) {
         if (rootView != null) {
             cleanupView()
         }
@@ -109,16 +103,14 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         val wm = windowManager ?: return
 
         sessionStartTime = sessionStartAt
-        initialSessionDurationMillis = initialDurationMillis.coerceAtLeast(0L)
-        this.resetAtLocalMidnight = resetAtLocalMidnight
+        this.initialState = initialState
 
         // Create TextView with polished styling
         timerTextView = TextView(serviceContext).apply {
             text = calculateDisplayedTimerDuration(
-                initialDurationMillis = initialSessionDurationMillis,
+                initialState = initialState,
                 sessionStartAtMillis = sessionStartTime,
                 nowMillis = System.currentTimeMillis(),
-                resetAtLocalMidnight = resetAtLocalMidnight,
             ).formatAsTime()
             textSize = 18f // sp
             typeface = Typeface.DEFAULT_BOLD
@@ -239,10 +231,9 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         timerJob = coroutineScope.launch {
             while (true) {
                 val elapsed = calculateDisplayedTimerDuration(
-                    initialDurationMillis = initialSessionDurationMillis,
+                    initialState = initialState,
                     sessionStartAtMillis = sessionStartTime,
                     nowMillis = System.currentTimeMillis(),
-                    resetAtLocalMidnight = resetAtLocalMidnight,
                 )
                 timerTextView?.text = elapsed.formatAsTime()
                 delay(1000.milliseconds)

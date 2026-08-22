@@ -27,6 +27,7 @@ import android.os.PowerManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.scrolless.app.core.blocking.BlockingManager
+import com.scrolless.app.core.blocking.handler.IntervalTimerSnapshot
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.BlockingResult
@@ -34,6 +35,7 @@ import com.scrolless.app.core.model.DetectionMethod
 import com.scrolless.app.core.model.ResolvedBlockableApp
 import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
+import com.scrolless.app.ui.overlay.TimerOverlayInitialState
 import com.scrolless.app.ui.overlay.TimerOverlayManager
 import com.scrolless.app.ui.overlay.sessionDurationInCurrentLocalDay
 import dagger.hilt.android.AndroidEntryPoint
@@ -127,8 +129,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private data class DetectedBlockedContent(val app: ResolvedBlockableApp, val blockingSuppressed: Boolean)
 
     private data class BlockedContentSession(val app: ResolvedBlockableApp, val startedAtMillis: Long, val blockingSuppressed: Boolean)
-
-    private data class TimerOverlayInitialState(val durationMillis: Long, val resetAtLocalMidnight: Boolean)
 
     private var blockedContentSession: BlockedContentSession? = null
 
@@ -603,59 +603,39 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         startPeriodicCheck()
 
-        // Only enforce blocking when neither pause nor a content-specific exception is active.
-        if (!isBlockingSuppressed) {
-            serviceScope.launch(Dispatchers.IO) {
+        val blockingSuppressed = isBlockingSuppressed
+        serviceScope.launch(Dispatchers.IO) {
 
-                val shouldBlock = blockingManager.onEnterBlockedContent()
-                if (shouldBlock) {
-                    Timber.i("Blocking on enter")
-                    performBackNavigation()
-                } else {
-                    // Only show timer overlay if we're NOT blocking immediately
-                    // (no point showing timer if user  is about to be kicked out)
-                    val timerInitialState = getTimerOverlayInitialState()
-                    mainHandler.post {
-                        if (
-                            currentTimerOverlayEnabled &&
-                            blockedContentSession?.startedAtMillis == session.startedAtMillis
-                        ) {
-                            Timber.v("Showing timer overlay")
-                            timerOverlayManager.show(
-                                sessionStartAt = session.startedAtMillis,
-                                initialDurationMillis = timerInitialState.durationMillis,
-                                resetAtLocalMidnight = timerInitialState.resetAtLocalMidnight,
-                            )
-                        }
-                    }
-                    Timber.d("Content allowed on enter, will monitor usage")
-                }
+            // Paused and exempt sessions are still tracked, but they must not trigger blocking.
+            if (!blockingSuppressed && blockingManager.onEnterBlockedContent()) {
+                Timber.i("Blocking on enter")
+                performBackNavigation()
+                return@launch
             }
-        } else {
-            // Paused or blocking-suppressed content still counts as watched time.
+
             if (currentTimerOverlayEnabled) {
-                serviceScope.launch(Dispatchers.IO) {
-                    val timerInitialState = getTimerOverlayInitialState()
-                    mainHandler.post {
-                        if (
-                            currentTimerOverlayEnabled &&
-                            blockedContentSession?.startedAtMillis == session.startedAtMillis
-                        ) {
-                            Timber.v("Showing timer overlay (blocking skipped)")
-                            timerOverlayManager.show(
-                                sessionStartAt = session.startedAtMillis,
-                                initialDurationMillis = timerInitialState.durationMillis,
-                                resetAtLocalMidnight = timerInitialState.resetAtLocalMidnight,
-                            )
-                        }
+                val timerInitialState = getTimerOverlayInitialState()
+                mainHandler.post {
+                    if (
+                        currentTimerOverlayEnabled &&
+                        blockedContentSession?.startedAtMillis == session.startedAtMillis
+                    ) {
+                        Timber.v("Showing timer overlay")
+                        timerOverlayManager.show(
+                            sessionStartAt = session.startedAtMillis,
+                            initialState = timerInitialState,
+                        )
                     }
                 }
             }
-            Timber.d(
-                "Skipping blocking check on enter, but tracking usage (paused=%b, suppressed=%b)",
-                isPauseActive(),
-                isBlockingSuppressedForCurrentContent,
-            )
+
+            if (blockingSuppressed) {
+                Timber.d(
+                    "Skipping blocking check on enter, but tracking usage (paused=%b, suppressed=%b)",
+                    isPauseActive(),
+                    isBlockingSuppressedForCurrentContent,
+                )
+            }
         }
     }
 
@@ -693,10 +673,15 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         serviceScope.launch(Dispatchers.IO) {
 
-            // Get total time spent on brainrot to show on the overlay timer before hiding
+            val activeBlockOption = userSettingsStore.getActiveBlockOption().first()
+
+            // Finish the session before reading the total shown by the overlay.
+            blockingManager.onExitBlockedContent(sessionTime)
+
+            // Get total time spent on brainrot to show on the overlay timer before hiding.
             val overlaySummaryTotal = if (currentTimerOverlayEnabled) {
-                when (userSettingsStore.getActiveBlockOption().first()) {
-                    BlockOption.IntervalTimer -> userSettingsStore.getIntervalUsage().first() + sessionTime
+                when (activeBlockOption) {
+                    BlockOption.IntervalTimer -> userSettingsStore.getIntervalUsage().first()
 
                     else -> sessionTracker.getDailyUsage() +
                         sessionDurationInCurrentLocalDay(
@@ -718,24 +703,21 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             // Add to usage in memory with per-app tracking
             Timber.d("Recording session usage: %d ms for app: %s (%s)", sessionTime, exitedApp.app.name, exitedApp.packageId)
             sessionTracker.addToDailyUsage(sessionTime, exitedApp.app)
-
-            // Let blocking manager do its logic, if needed
-            blockingManager.onExitBlockedContent(sessionTime)
         }
 
         Timber.d("Exit handling completed for app: %s (%s)", exitedApp.app.name, exitedApp.packageId)
     }
 
     private suspend fun getTimerOverlayInitialState(): TimerOverlayInitialState = when (userSettingsStore.getActiveBlockOption().first()) {
-        BlockOption.IntervalTimer -> TimerOverlayInitialState(
-            durationMillis = userSettingsStore.getIntervalUsage().first(),
-            resetAtLocalMidnight = false,
+        BlockOption.IntervalTimer -> TimerOverlayInitialState.Interval(
+            IntervalTimerSnapshot(
+                windowStartMillis = userSettingsStore.getIntervalWindowStart().first(),
+                usageMillis = userSettingsStore.getIntervalUsage().first(),
+                intervalLengthMillis = userSettingsStore.getIntervalLength().first(),
+            ),
         )
 
-        else -> TimerOverlayInitialState(
-            durationMillis = sessionTracker.getDailyUsage(),
-            resetAtLocalMidnight = true,
-        )
+        else -> TimerOverlayInitialState.Daily(usageMillis = sessionTracker.getDailyUsage())
     }
 
     /**

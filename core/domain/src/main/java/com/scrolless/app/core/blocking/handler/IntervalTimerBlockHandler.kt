@@ -21,12 +21,56 @@ import kotlin.math.max
 import timber.log.Timber
 
 /**
- * Stores the persisted state of the interval timer cycle.
+ * The part of an interval timer that is saved between viewing sessions.
  *
  * @property windowStartMillis Epoch millis at which the current allowance window started.
  * @property usageMillis Milliseconds already consumed during the active allowance window.
  */
 data class IntervalTimerState(val windowStartMillis: Long, val usageMillis: Long)
+
+/**
+ * Everything the overlay needs to keep counting correctly if an interval ends while it is visible.
+ */
+data class IntervalTimerSnapshot(val windowStartMillis: Long, val usageMillis: Long, val intervalLengthMillis: Long) {
+
+    /**
+     * Returns the usage for the window containing [nowMillis], including the active session.
+     */
+    fun usageIncludingSession(sessionStartAtMillis: Long, nowMillis: Long): Long {
+        val safeUsage = usageMillis.coerceAtLeast(0L)
+        val sessionDuration = (nowMillis - sessionStartAtMillis).coerceAtLeast(0L)
+        if (intervalLengthMillis <= 0L) {
+            return safeUsage + sessionDuration
+        }
+
+        val activeWindowStart = activeWindowStartAt(nowMillis)
+        val usageBeforeSession = if (activeWindowStart == windowStartMillis) safeUsage else 0L
+        val sessionUsage = (nowMillis - maxOf(sessionStartAtMillis, activeWindowStart)).coerceAtLeast(0L)
+        return usageBeforeSession + sessionUsage
+    }
+
+    /**
+     * Returns how much of a session belongs to the window containing [nowMillis].
+     */
+    fun sessionDurationInCurrentWindow(sessionDurationMillis: Long, nowMillis: Long): Long {
+        val safeSessionDuration = sessionDurationMillis.coerceAtLeast(0L)
+        if (intervalLengthMillis <= 0L) {
+            return safeSessionDuration
+        }
+
+        val durationSinceWindowStart = (nowMillis - activeWindowStartAt(nowMillis)).coerceAtLeast(0L)
+        return minOf(safeSessionDuration, durationSinceWindowStart)
+    }
+
+    private fun activeWindowStartAt(nowMillis: Long): Long {
+        if (nowMillis <= windowStartMillis) {
+            return windowStartMillis
+        }
+
+        val intervalsPassed = (nowMillis - windowStartMillis) / intervalLengthMillis
+        return windowStartMillis + intervalsPassed * intervalLengthMillis
+    }
+}
 
 /**
  * Blocks content when the watch allowance for the current interval window is exhausted.
@@ -39,22 +83,35 @@ class IntervalTimerBlockHandler(
     allowanceMillis: Long,
     private val intervalLengthMillis: Long,
     initialState: IntervalTimerState,
-    private val onStateChanged: (IntervalTimerState) -> Unit,
     private val currentTimeProvider: () -> Long = System::currentTimeMillis,
+    private val saveState: suspend (IntervalTimerState) -> Unit = {},
 ) : BlockOptionHandler {
 
     private val safeAllowanceMillis: Long = max(0L, allowanceMillis)
 
-    private var state: IntervalTimerState = initialState
+    // Usage already saved for the active interval window.
+    internal var state: IntervalTimerState = initialState
+        private set
+
+    // Usage that existed when the current viewing session started. The elapsed session
+    // time is added to this value during checks, so we do not need to save every second.
     private var sessionUsageBase: Long = initialState.usageMillis
 
+    // Use the same interval-boundary calculation for blocking and for the timer overlay.
+    private fun snapshot(): IntervalTimerSnapshot = IntervalTimerSnapshot(
+        windowStartMillis = state.windowStartMillis,
+        usageMillis = state.usageMillis,
+        intervalLengthMillis = intervalLengthMillis,
+    )
+
     /**
-     * Reset stale window timestamps so allowance resets stay in sync with the clock.
+     * Move to the window containing [now], clearing usage if the previous window ended.
      */
-    private fun ensureWindowFresh(now: Long) {
+    private suspend fun ensureWindowFresh(now: Long) {
         val currentStart = state.windowStartMillis
 
-        // No interval configured – treat allowance as a single bucket and clamp bad timestamps.
+        // With no valid interval length there is no boundary to cross. We only repair a
+        // missing start time or a start time made invalid by the device clock moving back.
         if (intervalLengthMillis <= 0L) {
             if (currentStart == 0L || now < currentStart) {
                 resetWindow(now)
@@ -62,13 +119,14 @@ class IntervalTimerBlockHandler(
             return
         }
 
-        // Missing or future start values can happen on first run or after clock changes.
+        // Start a new window on first run or after the device clock moves behind our saved start.
         if (currentStart == 0L || now < currentStart) {
             resetWindow(now)
             return
         }
 
-        // Advance the window in fixed-size steps if one or more full intervals already passed.
+        // Keep the original interval schedule. For example, if several windows passed while
+        // the app was closed, advance by whole windows instead of starting a new schedule now.
         val elapsed = now - currentStart
         if (elapsed >= intervalLengthMillis) {
             val intervalsPassed = elapsed / intervalLengthMillis
@@ -84,38 +142,41 @@ class IntervalTimerBlockHandler(
     }
 
     /**
-     * Start a fresh allowance window at [newStartMillis] and clear accumulated usage.
+     * Start a fresh allowance window and forget usage from the previous one.
      */
-    private fun resetWindow(newStartMillis: Long) {
-        updateState(
-            IntervalTimerState(windowStartMillis = newStartMillis, usageMillis = 0L),
-            resetSessionBase = true,
-        )
+    private suspend fun resetWindow(newStartMillis: Long) {
+        updateState(IntervalTimerState(windowStartMillis = newStartMillis, usageMillis = 0L))
     }
 
     /**
-     * Persist a new interval state and optionally update the session baseline.
+     * Keep the in-memory value and the value in settings in sync.
+     * The save is awaited so callers cannot immediately read an older value.
      */
-    private fun updateState(newState: IntervalTimerState, resetSessionBase: Boolean) {
-        if (newState != state) {
-            Timber.v(
-                "IntervalTimer.stateChanged: start=%d -> %d, usage=%d -> %d",
-                state.windowStartMillis,
-                newState.windowStartMillis,
-                state.usageMillis,
-                newState.usageMillis,
-            )
-            state = newState
-            onStateChanged(newState)
-        }
-        if (resetSessionBase) {
+    private suspend fun updateState(newState: IntervalTimerState) {
+        if (newState == state) {
             sessionUsageBase = newState.usageMillis
+            return
         }
+
+        Timber.v(
+            "IntervalTimer.stateChanged: start=%d -> %d, usage=%d -> %d",
+            state.windowStartMillis,
+            newState.windowStartMillis,
+            state.usageMillis,
+            newState.usageMillis,
+        )
+        state = newState
+        sessionUsageBase = newState.usageMillis
+        saveState(newState)
     }
 
-    override fun onEnterContent(currentDailyUsage: Long): Boolean {
+    override suspend fun onEnterContent(currentDailyUsage: Long): Boolean {
         val now = currentTimeProvider()
+
+        // The previous window may have ended while the user was outside blocked content.
         ensureWindowFresh(now)
+
+        // Remember where this session starts so elapsed time is not counted twice.
         sessionUsageBase = state.usageMillis
 
         val shouldBlock = state.usageMillis >= safeAllowanceMillis
@@ -136,15 +197,18 @@ class IntervalTimerBlockHandler(
      * @param elapsedTime Time elapsed in current session in milliseconds.
      * @return [BlockingResult.BlockNow] if should block, [BlockingResult.Continue] otherwise.
      */
-    override fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult {
+    override suspend fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult {
         val now = currentTimeProvider()
         ensureWindowFresh(now)
 
-        val projectedUsage = sessionUsageBase + elapsedTime
-        return if (projectedUsage >= safeAllowanceMillis) {
+        // elapsedTime covers the whole viewing session. If the session crossed a window
+        // boundary, only the part inside the current window should count.
+        val sessionUsage = snapshot().sessionDurationInCurrentWindow(elapsedTime, now)
+        val projectedUsage = sessionUsageBase + sessionUsage
+        val result = if (projectedUsage >= safeAllowanceMillis) {
             val clamped = safeAllowanceMillis
             if (state.usageMillis != clamped) {
-                updateState(state.copy(usageMillis = clamped), resetSessionBase = true)
+                updateState(state.copy(usageMillis = clamped))
             } else {
                 sessionUsageBase = clamped
             }
@@ -164,9 +228,10 @@ class IntervalTimerBlockHandler(
             )
             BlockingResult.CheckLater(remaining)
         }
+        return result
     }
 
-    override fun onExitContent(sessionTime: Long) {
+    override suspend fun onExitContent(sessionTime: Long) {
         if (sessionTime <= 0L) {
             Timber.v("IntervalTimer.onExit: ignore non-positive session=%d", sessionTime)
             return
@@ -175,10 +240,12 @@ class IntervalTimerBlockHandler(
         val now = currentTimeProvider()
         ensureWindowFresh(now)
 
-        val updatedUsage = (sessionUsageBase + sessionTime).coerceAtMost(safeAllowanceMillis)
+        // Save only the part of the session that belongs to the active interval window.
+        val sessionUsage = snapshot().sessionDurationInCurrentWindow(sessionTime, now)
+        val updatedUsage = (sessionUsageBase + sessionUsage).coerceAtMost(safeAllowanceMillis)
         if (updatedUsage != state.usageMillis) {
             Timber.v("IntervalTimer.onExit: +%d -> usage=%d", sessionTime, updatedUsage)
-            updateState(state.copy(usageMillis = updatedUsage), resetSessionBase = true)
+            updateState(state.copy(usageMillis = updatedUsage))
         } else {
             sessionUsageBase = updatedUsage
         }

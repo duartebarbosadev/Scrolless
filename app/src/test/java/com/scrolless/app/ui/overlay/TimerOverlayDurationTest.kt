@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.ui.overlay
 
+import com.scrolless.app.core.blocking.handler.IntervalTimerSnapshot
 import java.time.LocalDateTime
 import java.time.ZoneId
 import junit.framework.TestCase.assertEquals
@@ -31,10 +32,9 @@ class TimerOverlayDurationTest {
         val now = epochMillis(2026, 8, 13, 10, 5)
 
         val duration = calculateDisplayedTimerDuration(
-            initialDurationMillis = 20 * MINUTE_MILLIS,
+            initialState = TimerOverlayInitialState.Daily(usageMillis = 20 * MINUTE_MILLIS),
             sessionStartAtMillis = sessionStart,
             nowMillis = now,
-            resetAtLocalMidnight = true,
             zoneId = zoneId,
         )
 
@@ -47,10 +47,9 @@ class TimerOverlayDurationTest {
         val now = epochMillis(2026, 8, 14, 0, 5)
 
         val duration = calculateDisplayedTimerDuration(
-            initialDurationMillis = 20 * MINUTE_MILLIS,
+            initialState = TimerOverlayInitialState.Daily(usageMillis = 20 * MINUTE_MILLIS),
             sessionStartAtMillis = sessionStart,
             nowMillis = now,
-            resetAtLocalMidnight = true,
             zoneId = zoneId,
         )
 
@@ -59,18 +58,46 @@ class TimerOverlayDurationTest {
 
     @Test
     fun `interval timer keeps baseline across midnight`() {
+        val windowStart = epochMillis(2026, 8, 13, 23, 30)
         val sessionStart = epochMillis(2026, 8, 13, 23, 55)
         val now = epochMillis(2026, 8, 14, 0, 5)
 
         val duration = calculateDisplayedTimerDuration(
-            initialDurationMillis = 20 * MINUTE_MILLIS,
+            initialState = TimerOverlayInitialState.Interval(
+                IntervalTimerSnapshot(
+                    windowStartMillis = windowStart,
+                    usageMillis = 20 * MINUTE_MILLIS,
+                    intervalLengthMillis = 60 * MINUTE_MILLIS,
+                ),
+            ),
             sessionStartAtMillis = sessionStart,
             nowMillis = now,
-            resetAtLocalMidnight = false,
             zoneId = zoneId,
         )
 
         assertEquals(30 * MINUTE_MILLIS, duration)
+    }
+
+    @Test
+    fun `interval timer resets baseline and pre-boundary session usage at window boundary`() {
+        val windowStart = epochMillis(2026, 8, 13, 12, 0)
+        val sessionStart = epochMillis(2026, 8, 13, 12, 58)
+        val now = epochMillis(2026, 8, 13, 13, 3)
+
+        val duration = calculateDisplayedTimerDuration(
+            initialState = TimerOverlayInitialState.Interval(
+                IntervalTimerSnapshot(
+                    windowStartMillis = windowStart,
+                    usageMillis = 20 * MINUTE_MILLIS,
+                    intervalLengthMillis = 60 * MINUTE_MILLIS,
+                ),
+            ),
+            sessionStartAtMillis = sessionStart,
+            nowMillis = now,
+            zoneId = zoneId,
+        )
+
+        assertEquals(3 * MINUTE_MILLIS, duration)
     }
 
     @Test

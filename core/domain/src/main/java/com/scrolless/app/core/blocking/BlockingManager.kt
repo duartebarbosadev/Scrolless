@@ -53,5 +53,5 @@ interface BlockingManager {
      *
      * @param sessionTime Duration of the session in milliseconds.
      */
-    fun onExitBlockedContent(sessionTime: Long)
+    suspend fun onExitBlockedContent(sessionTime: Long)
 }
