@@ -37,7 +37,6 @@ import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.ui.overlay.TimerOverlayInitialState
 import com.scrolless.app.ui.overlay.TimerOverlayManager
-import com.scrolless.app.ui.overlay.sessionDurationInCurrentLocalDay
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -672,31 +671,15 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         val exitedApp = session.app
 
         serviceScope.launch(Dispatchers.IO) {
-
-            val activeBlockOption = userSettingsStore.getActiveBlockOption().first()
-
-            // Finish the session before reading the total shown by the overlay.
             blockingManager.onExitBlockedContent(sessionTime)
 
-            // Get total time spent on brainrot to show on the overlay timer before hiding.
-            val overlaySummaryTotal = if (currentTimerOverlayEnabled) {
-                when (activeBlockOption) {
-                    BlockOption.IntervalTimer -> userSettingsStore.getIntervalUsage().first()
-
-                    else -> sessionTracker.getDailyUsage() +
-                        sessionDurationInCurrentLocalDay(
-                            sessionStartAtMillis = session.startedAtMillis,
-                            sessionEndAtMillis = sessionEndedAtMillis,
-                        )
-                }
-            } else {
-                null
-            }
-
-            overlaySummaryTotal?.let { total ->
+            if (currentTimerOverlayEnabled) {
                 mainHandler.post {
                     Timber.v("Hiding timer overlay")
-                    timerOverlayManager.hide(total, session.startedAtMillis)
+                    timerOverlayManager.hide(
+                        sessionStartAt = session.startedAtMillis,
+                        sessionEndAt = sessionEndedAtMillis,
+                    )
                 }
             }
 

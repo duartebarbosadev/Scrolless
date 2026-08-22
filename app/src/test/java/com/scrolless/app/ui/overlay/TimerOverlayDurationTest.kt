@@ -79,6 +79,28 @@ class TimerOverlayDurationTest {
     }
 
     @Test
+    fun `interval timer keeps counting when session exceeds blocking allowance`() {
+        val windowStart = epochMillis(2026, 8, 13, 12, 0)
+        val sessionStart = epochMillis(2026, 8, 13, 12, 10)
+        val now = epochMillis(2026, 8, 13, 12, 40)
+
+        val duration = calculateDisplayedTimerDuration(
+            initialState = TimerOverlayInitialState.Interval(
+                IntervalTimerSnapshot(
+                    windowStartMillis = windowStart,
+                    usageMillis = 0L,
+                    intervalLengthMillis = 60 * MINUTE_MILLIS,
+                ),
+            ),
+            sessionStartAtMillis = sessionStart,
+            nowMillis = now,
+            zoneId = zoneId,
+        )
+
+        assertEquals(30 * MINUTE_MILLIS, duration)
+    }
+
+    @Test
     fun `interval timer resets baseline and pre-boundary session usage at window boundary`() {
         val windowStart = epochMillis(2026, 8, 13, 12, 0)
         val sessionStart = epochMillis(2026, 8, 13, 12, 58)

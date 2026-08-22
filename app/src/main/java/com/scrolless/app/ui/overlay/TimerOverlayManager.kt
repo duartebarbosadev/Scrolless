@@ -175,7 +175,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         }
     }
 
-    fun hide(summaryTotalMillis: Long, sessionStartAt: Long) {
+    fun hide(sessionStartAt: Long, sessionEndAt: Long) {
 
         Timber.d("Hiding overlay view")
         if (sessionStartTime != sessionStartAt) {
@@ -185,7 +185,12 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
         timerJob?.cancel()
 
-        timerTextView?.text = summaryTotalMillis.formatAsTime()
+        val summaryDuration = calculateDisplayedTimerDuration(
+            initialState = initialState,
+            sessionStartAtMillis = sessionStartAt,
+            nowMillis = sessionEndAt,
+        )
+        timerTextView?.text = summaryDuration.formatAsTime()
 
         startWiggleAnimation()
 
