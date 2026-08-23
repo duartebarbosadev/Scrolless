@@ -54,6 +54,8 @@
 
     <string name="app_tiktok" translatable="false">TikTok</string>
 
+    <string name="app_tiktok_lite" translatable="false">TikTok Lite</string>
+
     <string name="block_all">Block\nAll</string>
 
     <string name="close">Close</string>

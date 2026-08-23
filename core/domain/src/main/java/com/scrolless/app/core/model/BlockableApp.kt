@@ -66,6 +66,12 @@ enum class BlockableApp(
         detectionMethod = DetectionMethod.ViewId("player_view"),
         exitStrategy = GLOBAL_ACTION_HOME,
     ),
+    TIKTOK_LITE(
+        packageIds = listOf("com.zhiliaoapp.musically.lite"),
+        // TikTok Lite shares the same player componentry as the main TikTok app
+        detectionMethod = DetectionMethod.ViewId("player_view"),
+        exitStrategy = GLOBAL_ACTION_HOME,
+    ),
     FACEBOOK(
         packageIds = listOf("com.facebook.katana"),
         // Facebook needs several detection methods because there's different ways of watching reels
