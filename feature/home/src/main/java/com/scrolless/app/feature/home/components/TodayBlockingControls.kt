@@ -75,8 +75,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -85,6 +83,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.IntervalTimerWindow
 import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
@@ -188,7 +187,7 @@ fun TodayBlockingControls(
             },
             onDailyLimitClick = {
                 lastClicked = BlockingButtonType.DAILY_LIMIT
-                val isSelected = uiState.blockOption == BlockOption.DailyLimit
+                val isSelected = uiState.blockOption is BlockOption.DailyLimit
                 hapticFeedback.playToggle(!isSelected)
                 if (uiState.timeLimit == 0L && !isSelected) {
                     Timber.d("DailyLimit clicked -> open TimeLimitDialog (no limit set)")
@@ -197,7 +196,7 @@ fun TodayBlockingControls(
                     val newOption = if (isSelected) {
                         BlockOption.NothingSelected
                     } else {
-                        BlockOption.DailyLimit
+                        BlockOption.DailyLimit(limitMillis = uiState.timeLimit)
                     }
                     Timber.i("DailyLimit clicked -> newOption=%s (prev=%s)", newOption, uiState.blockOption)
                     onBlockOptionSelected(newOption)
@@ -205,7 +204,7 @@ fun TodayBlockingControls(
             },
             onIntervalTimerClick = {
                 lastClicked = BlockingButtonType.INTERVAL
-                val isSelected = uiState.blockOption == BlockOption.IntervalTimer
+                val isSelected = uiState.blockOption is BlockOption.IntervalTimer
                 hapticFeedback.playToggle(!isSelected)
                 Timber.i("IntervalTimer clicked from feature row")
                 onIntervalTimerClick()
@@ -219,7 +218,7 @@ fun TodayBlockingControls(
         )
 
         AnimatedVisibility(
-            visible = uiState.blockOption == BlockOption.DailyLimit,
+            visible = uiState.blockOption is BlockOption.DailyLimit,
             enter = expandVertically(
                 expandFrom = Alignment.Top,
                 animationSpec = tween(300),
@@ -245,14 +244,14 @@ fun TodayBlockingControls(
             }
         }
 
-        if (uiState.blockOption == BlockOption.IntervalTimer) {
+        if (uiState.blockOption is BlockOption.IntervalTimer) {
             Spacer(
                 modifier = Modifier.height(8.dp),
             )
         }
 
         AnimatedVisibility(
-            visible = uiState.blockOption == BlockOption.IntervalTimer,
+            visible = uiState.blockOption is BlockOption.IntervalTimer,
             enter = expandVertically(
                 expandFrom = Alignment.Top,
                 animationSpec = tween(300),
@@ -270,7 +269,7 @@ fun TodayBlockingControls(
             )
         }
 
-        if (uiState.blockOption == BlockOption.IntervalTimer) {
+        if (uiState.blockOption is BlockOption.IntervalTimer) {
             Spacer(modifier = Modifier.height(24.dp))
         }
 
@@ -593,7 +592,7 @@ fun FeatureButtonsRow(
                     icon = R.drawable.icons8_timer_no_shadow_64,
                     text = stringResource(id = R.string.daily_limit),
                     contentDescription = stringResource(id = R.string.daily_limit),
-                    isSelected = selectedOption == BlockOption.DailyLimit,
+                    isSelected = selectedOption is BlockOption.DailyLimit,
                     interactionSource = dailyLimitInteractionSource,
                     modifier = Modifier.weight(dailyLimitAnimatedWeight),
                 )
@@ -613,12 +612,12 @@ fun FeatureButtonsRow(
                         icon = R.drawable.icons8_stopwatch_no_shadow_64,
                         text = stringResource(id = R.string.time_interval),
                         contentDescription = stringResource(id = R.string.time_interval),
-                        isSelected = selectedOption == BlockOption.IntervalTimer,
+                        isSelected = selectedOption is BlockOption.IntervalTimer,
                         interactionSource = intervalInteractionSource,
                         modifier = Modifier.fillMaxSize(),
                     )
 
-                    if (selectedOption == BlockOption.IntervalTimer) {
+                    if (selectedOption is BlockOption.IntervalTimer) {
                         IntervalTimerPointer(
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
@@ -749,7 +748,7 @@ fun TodayBlockingControlsPreview() {
     ScrollessTheme(darkTheme = true) {
         Surface {
             TodayBlockingControls(
-                uiState = HomeUiState(blockOption = BlockOption.DailyLimit),
+                uiState = HomeUiState(blockOption = BlockOption.DailyLimit(limitMillis = 60 * 60 * 1000L)),
                 isBlockingActive = false,
                 isPauseActive = false,
                 pauseRemainingMillis = 0L,
@@ -769,7 +768,16 @@ fun TodayBlockingIntervalTimerControlsPreview() {
     ScrollessTheme(darkTheme = true) {
         Surface {
             TodayBlockingControls(
-                uiState = HomeUiState(blockOption = BlockOption.IntervalTimer),
+                uiState = HomeUiState(
+                    blockOption = BlockOption.IntervalTimer(
+                        allowanceMillis = 5 * 60 * 1000L,
+                        window = IntervalTimerWindow(
+                            startMillis = 0L,
+                            lengthMillis = 60 * 60 * 1000L,
+                            usageMillis = 0L,
+                        ),
+                    ),
+                ),
                 isBlockingActive = false,
                 isPauseActive = true,
                 pauseRemainingMillis = 0L,

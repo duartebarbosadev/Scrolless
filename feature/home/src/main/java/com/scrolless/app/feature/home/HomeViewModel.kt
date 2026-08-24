@@ -23,6 +23,7 @@ import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.model.usage.DailyUsageTotal
 import com.scrolless.app.core.model.usage.calculateWeekdayAverages
+import com.scrolless.app.core.repository.BlockingConfigRepository
 import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
@@ -55,6 +56,7 @@ private const val FIRST_LAUNCH_LOADING = -1L
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val userSettingsStore: UserSettingsStore,
+    private val blockingConfigRepository: BlockingConfigRepository,
     private val sessionSegmentStore: SessionSegmentStore,
 ) : ViewModel() {
 
@@ -149,21 +151,24 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private val usageSnapshot = combine(
-        userSettingsStore.getActiveBlockOption(),
-        userSettingsStore.getTimeLimit(),
-        userSettingsStore.getIntervalLength(),
-        userSettingsStore.getIntervalUsage(),
-        userSettingsStore.getIntervalWindowStart(),
+    private val usageSnapshot = kotlinx.coroutines.flow.combine(
+        blockingConfigRepository.observeActiveOption(),
+        blockingConfigRepository.observeSavedIntervalTimer(),
         currentDate.flatMapLatest { date -> sessionSegmentStore.observeTotalDuration(date) },
         sessionSegmentsForCurrentDay,
-    ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage, usageSegment ->
+    ) { activeOption, savedInterval, currentUsage, usageSegment ->
+        val interval = activeOption as? BlockOption.IntervalTimer ?: savedInterval
+        val displayedLimit = when (activeOption) {
+            is BlockOption.DailyLimit -> activeOption.limitMillis
+            is BlockOption.IntervalTimer -> activeOption.allowanceMillis
+            else -> savedInterval.allowanceMillis
+        }
         UsageSnapshot(
-            blockOption = blockOption,
-            timeLimit = timeLimit,
-            intervalLength = intervalLength,
-            intervalUsage = intervalUsage,
-            intervalWindowStart = intervalWindowStart,
+            blockOption = activeOption,
+            timeLimit = displayedLimit,
+            intervalLength = interval.window.lengthMillis,
+            intervalUsage = interval.window.usageMillis,
+            intervalWindowStart = interval.window.startMillis,
             currentUsage = currentUsage,
             sessionSegment = usageSegment,
         )
@@ -192,8 +197,6 @@ class HomeViewModel @Inject constructor(
         val progress = calculateProgress(
             blockOption = usage.blockOption,
             currentUsage = usage.currentUsage,
-            timeLimit = usage.timeLimit,
-            intervalUsage = usage.intervalUsage,
         )
 
         HomeUiState(
@@ -223,7 +226,7 @@ class HomeViewModel @Inject constructor(
     fun onBlockOptionSelected(blockOption: BlockOption) {
         Timber.i("Block option selected: %s", blockOption)
         viewModelScope.launch {
-            userSettingsStore.setActiveBlockOption(blockOption)
+            blockingConfigRepository.setActiveOption(blockOption)
             if (blockOption == BlockOption.NothingSelected) {
                 onPauseToggle(false)
             }
@@ -233,8 +236,7 @@ class HomeViewModel @Inject constructor(
     fun onTimeLimitChange(durationMillis: Long) {
         Timber.d("Time limit changed: %d ms", durationMillis)
         viewModelScope.launch {
-            userSettingsStore.setActiveBlockOption(BlockOption.DailyLimit)
-            userSettingsStore.setTimeLimit(durationMillis)
+            blockingConfigRepository.configureDailyLimit(durationMillis)
         }
     }
 
@@ -262,41 +264,29 @@ class HomeViewModel @Inject constructor(
             allowanceMillis,
         )
         viewModelScope.launch {
-            userSettingsStore.setIntervalLength(intervalBreakMillis)
-            userSettingsStore.setTimeLimit(allowanceMillis)
-            userSettingsStore.updateIntervalState(windowStart = 0L, usage = 0L)
-            userSettingsStore.setActiveBlockOption(BlockOption.IntervalTimer)
+            blockingConfigRepository.configureIntervalTimer(
+                allowanceMillis = allowanceMillis,
+                intervalLengthMillis = intervalBreakMillis,
+            )
         }
     }
 
     /**
-     * Computes progress percentage for the active blocking mode.
-     *
-     * Daily mode uses [currentUsage] against [timeLimit].
-     * Interval mode uses [intervalUsage] against [timeLimit].
-     *
-     * @param blockOption Active blocking strategy.
-     * @param currentUsage Total usage accumulated for the current day.
-     * @param timeLimit Configured limit in milliseconds.
-     * @param intervalUsage Usage accumulated in the current interval window.
-     * @return Progress in integer percent, clamped to the [0, 100] range.
+     * Daily progress uses today's total usage. Interval progress uses the current window only.
      */
-    private fun calculateProgress(blockOption: BlockOption, currentUsage: Long, timeLimit: Long, intervalUsage: Long): Int =
-        when (blockOption) {
-            BlockOption.DailyLimit -> usageToProgress(usage = currentUsage, limit = timeLimit)
-            BlockOption.IntervalTimer -> usageToProgress(usage = intervalUsage, limit = timeLimit)
-            else -> 0
-        }
+    private fun calculateProgress(blockOption: BlockOption, currentUsage: Long): Int = when (blockOption) {
+        is BlockOption.DailyLimit -> usageToProgress(usage = currentUsage, limit = blockOption.limitMillis)
+
+        is BlockOption.IntervalTimer ->
+            usageToProgress(usage = blockOption.window.usageMillis, limit = blockOption.allowanceMillis)
+
+        BlockOption.BlockAll,
+        BlockOption.NothingSelected,
+        -> 0
+    }
 
     /**
-     * Converts a usage/limit pair to an integer percentage.
-     *
-     * For non-zero usage below the limit, returns at least `1` so tiny progress
-     * remains visible in the UI.
-     *
-     * @param usage Elapsed usage in milliseconds.
-     * @param limit Allowed usage in milliseconds.
-     * @return Progress in integer percent, clamped to the [0, 100] range.
+     * Keeps non-zero progress visible even when it is less than one percent.
      */
     private fun usageToProgress(usage: Long, limit: Long): Int {
         if (limit <= 0L) return 0
@@ -426,10 +416,10 @@ data class HomeUiState(
     val hasSeenAccessibilityExplainer: Boolean = false,
 
     /**
-     * True once the initial values from [UserSettingsStore] have been emitted at least once.
+     * `true` after the app has loaded the user's settings for the first time.
      *
-     * Home screen side effects gate on this flag to avoid running before persisted settings load
-     * (e.g., auto-showing the accessibility explainer on the very first launch).
+     * The Home screen waits for this before opening dialogs automatically. Without this check, it
+     * could mistake temporary default values for the user's saved settings.
      */
     val hasLoadedSettings: Boolean = false,
 

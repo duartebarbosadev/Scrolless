@@ -21,7 +21,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import com.scrolless.app.core.model.BlockOption
 
 @Entity(
     tableName = "user_settings",
@@ -32,7 +31,7 @@ import com.scrolless.app.core.model.BlockOption
 @Immutable
 data class UserSettingsEntity(
     @PrimaryKey @ColumnInfo(name = "id") val id: Int = 1, // Single row for settings
-    @ColumnInfo(name = "active_block_option") val activeBlockOption: BlockOption,
+    @ColumnInfo(name = "active_block_option") val activeBlockOption: BlockOptionType,
     @ColumnInfo(name = "time_limit") val timeLimit: Long,
     @ColumnInfo(name = "interval_length") val intervalLength: Long,
     @ColumnInfo(name = "interval_window_start_at") val intervalWindowStartAt: Long = 0L,

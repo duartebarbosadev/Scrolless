@@ -92,7 +92,7 @@ fun ProgressCard(
 ) {
     val clampedProgress = progress.coerceIn(0, 100)
 
-    val isIntervalMode = blockOption == BlockOption.IntervalTimer
+    val isIntervalMode = blockOption is BlockOption.IntervalTimer
     val intervalAllowanceConfigured = isIntervalMode && timeLimit > 0L
     val intervalRemainingMillis = if (isIntervalMode) {
         rememberIntervalRemainingTime(
@@ -117,7 +117,7 @@ fun ProgressCard(
     }
     val limitChipText = when {
         isIntervalMode && intervalAllowanceConfigured -> timeLimit.formatTime()
-        blockOption == BlockOption.DailyLimit && timeLimit > 0L -> timeLimit.formatTime()
+        blockOption is BlockOption.DailyLimit && timeLimit > 0L -> timeLimit.formatTime()
         else -> null
     }
 
@@ -152,15 +152,15 @@ fun ProgressCard(
     val legendItems = remember(progressBarSegments) { buildLegendItems(progressBarSegments) }
 
     val segmentProgressFraction = when {
-        blockOption == BlockOption.DailyLimit && timeLimit > 0L -> displayProgress / 100f
-        blockOption == BlockOption.IntervalTimer && intervalAllowanceConfigured -> displayProgress / 100f
+        blockOption is BlockOption.DailyLimit && timeLimit > 0L -> displayProgress / 100f
+        blockOption is BlockOption.IntervalTimer && intervalAllowanceConfigured -> displayProgress / 100f
         progressBarSegments.isNotEmpty() -> 1f
         else -> 0f
     }
 
     val isLimitReached = when (blockOption) {
-        BlockOption.DailyLimit -> timeLimit in 1..currentUsage
-        BlockOption.IntervalTimer -> timeLimit in 1..intervalUsage && !intervalResetReady
+        is BlockOption.DailyLimit -> timeLimit in 1..currentUsage
+        is BlockOption.IntervalTimer -> timeLimit in 1..intervalUsage && !intervalResetReady
         else -> false
     }
 

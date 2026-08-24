@@ -39,9 +39,11 @@ import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.ScrollessDatabase
 import com.scrolless.app.core.data.database.dao.SessionSegmentDao
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
+import com.scrolless.app.core.data.repository.BlockingConfigRepositoryImpl
 import com.scrolless.app.core.data.repository.SessionSegmentStoreImpl
 import com.scrolless.app.core.data.repository.SessionTrackerImpl
 import com.scrolless.app.core.data.repository.UserSettingsStoreImpl
+import com.scrolless.app.core.repository.BlockingConfigRepository
 import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
@@ -99,6 +101,11 @@ object DataDiModule {
     @Singleton
     fun provideUserSettingsStore(userSettingsDao: UserSettingsDao): UserSettingsStore =
         UserSettingsStoreImpl(userSettingsDao = userSettingsDao)
+
+    @Provides
+    @Singleton
+    fun provideBlockingConfigRepository(userSettingsDao: UserSettingsDao): BlockingConfigRepository =
+        BlockingConfigRepositoryImpl(userSettingsDao = userSettingsDao)
 
     @Provides
     @Singleton

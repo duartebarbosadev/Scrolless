@@ -16,7 +16,7 @@
  */
 package com.scrolless.app.ui.overlay
 
-import com.scrolless.app.core.blocking.handler.IntervalTimerSnapshot
+import com.scrolless.app.core.model.IntervalTimerWindow
 import java.time.LocalDateTime
 import java.time.ZoneId
 import junit.framework.TestCase.assertEquals
@@ -64,10 +64,10 @@ class TimerOverlayDurationTest {
 
         val duration = calculateDisplayedTimerDuration(
             initialState = TimerOverlayInitialState.Interval(
-                IntervalTimerSnapshot(
-                    windowStartMillis = windowStart,
+                IntervalTimerWindow(
+                    startMillis = windowStart,
+                    lengthMillis = 60 * MINUTE_MILLIS,
                     usageMillis = 20 * MINUTE_MILLIS,
-                    intervalLengthMillis = 60 * MINUTE_MILLIS,
                 ),
             ),
             sessionStartAtMillis = sessionStart,
@@ -86,10 +86,10 @@ class TimerOverlayDurationTest {
 
         val duration = calculateDisplayedTimerDuration(
             initialState = TimerOverlayInitialState.Interval(
-                IntervalTimerSnapshot(
-                    windowStartMillis = windowStart,
+                IntervalTimerWindow(
+                    startMillis = windowStart,
+                    lengthMillis = 60 * MINUTE_MILLIS,
                     usageMillis = 0L,
-                    intervalLengthMillis = 60 * MINUTE_MILLIS,
                 ),
             ),
             sessionStartAtMillis = sessionStart,
@@ -108,10 +108,10 @@ class TimerOverlayDurationTest {
 
         val duration = calculateDisplayedTimerDuration(
             initialState = TimerOverlayInitialState.Interval(
-                IntervalTimerSnapshot(
-                    windowStartMillis = windowStart,
+                IntervalTimerWindow(
+                    startMillis = windowStart,
+                    lengthMillis = 60 * MINUTE_MILLIS,
                     usageMillis = 20 * MINUTE_MILLIS,
-                    intervalLengthMillis = 60 * MINUTE_MILLIS,
                 ),
             ),
             sessionStartAtMillis = sessionStart,

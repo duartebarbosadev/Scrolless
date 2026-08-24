@@ -18,8 +18,9 @@ package com.scrolless.app.core.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import com.scrolless.app.core.data.database.model.BlockOptionType
+import com.scrolless.app.core.data.database.model.BlockingConfigEntity
 import com.scrolless.app.core.data.database.model.UserSettingsEntity
-import com.scrolless.app.core.model.BlockOption
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -28,35 +29,37 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
 
-    @Query("SELECT active_block_option FROM user_settings WHERE id = 1")
-    abstract fun getActiveBlockOption(): Flow<BlockOption>
+    @Query(
+        """
+        SELECT active_block_option, time_limit, interval_length,
+               interval_window_start_at, interval_usage
+        FROM user_settings
+        WHERE id = 1
+        """,
+    )
+    abstract fun observeBlockingConfig(): Flow<BlockingConfigEntity>
 
     @Query("UPDATE user_settings SET active_block_option = :blockOption WHERE id = 1")
-    abstract suspend fun setActiveBlockOption(blockOption: BlockOption)
+    abstract suspend fun setActiveBlockOption(blockOption: BlockOptionType)
 
-    @Query("SELECT time_limit FROM user_settings WHERE id = 1")
-    abstract fun getTimeLimit(): Flow<Long>
-
-    @Query("UPDATE user_settings SET time_limit = :timeLimit WHERE id = 1")
-    abstract suspend fun setTimeLimit(timeLimit: Long)
-
-    @Query("SELECT interval_length FROM user_settings WHERE id = 1")
-    abstract fun getIntervalLength(): Flow<Long>
-
-    @Query("UPDATE user_settings SET interval_length = :intervalLength WHERE id = 1")
-    abstract suspend fun setIntervalLength(intervalLength: Long)
-
-    @Query("SELECT interval_window_start_at FROM user_settings WHERE id = 1")
-    abstract fun getIntervalWindowStart(): Flow<Long>
-
-    @Query("UPDATE user_settings SET interval_window_start_at = :windowStart WHERE id = 1")
-    abstract suspend fun setIntervalWindowStart(windowStart: Long)
-
-    @Query("SELECT interval_usage FROM user_settings WHERE id = 1")
-    abstract fun getIntervalUsage(): Flow<Long>
-
-    @Query("UPDATE user_settings SET interval_usage = :usage WHERE id = 1")
-    abstract suspend fun setIntervalUsage(usage: Long)
+    @Query(
+        """
+        UPDATE user_settings
+        SET active_block_option = :activeOption,
+            time_limit = :limitMillis,
+            interval_length = :intervalLengthMillis,
+            interval_window_start_at = :intervalWindowStartMillis,
+            interval_usage = :intervalUsageMillis
+        WHERE id = 1
+        """,
+    )
+    abstract suspend fun updateBlockingConfig(
+        activeOption: BlockOptionType,
+        limitMillis: Long,
+        intervalLengthMillis: Long,
+        intervalWindowStartMillis: Long,
+        intervalUsageMillis: Long,
+    )
 
     @Query("UPDATE user_settings SET interval_window_start_at = :windowStart, interval_usage = :usage WHERE id = 1")
     abstract suspend fun updateIntervalState(windowStart: Long, usage: Long)

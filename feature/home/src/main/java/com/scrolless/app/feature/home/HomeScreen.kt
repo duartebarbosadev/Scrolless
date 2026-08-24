@@ -103,6 +103,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
+import com.scrolless.app.core.model.IntervalTimerWindow
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.theme.LocalSharedTransitionScope
 import com.scrolless.app.designsystem.theme.SETTINGS_TRANSITION_KEY
@@ -244,8 +245,8 @@ fun HomeScreen(
     }
 
     val hasLimitTimer =
-        (uiState.blockOption == BlockOption.DailyLimit && uiState.timeLimit > 0L) ||
-            (uiState.blockOption == BlockOption.IntervalTimer && uiState.timeLimit > 0L)
+        (uiState.blockOption is BlockOption.DailyLimit && uiState.timeLimit > 0L) ||
+            (uiState.blockOption is BlockOption.IntervalTimer && uiState.timeLimit > 0L)
     val limitProgressFraction = if (hasLimitTimer) {
         uiState.progress.coerceIn(0, 100) / 100f
     } else {
@@ -326,12 +327,21 @@ fun HomeScreen(
                 val shouldBypass = BuildConfig.DEBUG && debugBypassAccessibilityCheck
                 if (shouldBypass || context.isAccessibilityServiceEnabled(accessibilityServiceClass)) {
                     Timber.i("Interval timer clicked -> current=%s", uiState.blockOption)
-                    if (uiState.blockOption == BlockOption.IntervalTimer) {
+                    if (uiState.blockOption is BlockOption.IntervalTimer) {
                         viewModel.onBlockOptionSelected(BlockOption.NothingSelected)
                     } else if (uiState.intervalLength == 0L || uiState.timeLimit == 0L) {
                         openIntervalConfig()
                     } else {
-                        viewModel.onBlockOptionSelected(BlockOption.IntervalTimer)
+                        viewModel.onBlockOptionSelected(
+                            BlockOption.IntervalTimer(
+                                allowanceMillis = uiState.timeLimit,
+                                window = IntervalTimerWindow(
+                                    startMillis = uiState.intervalWindowStart,
+                                    lengthMillis = uiState.intervalLength,
+                                    usageMillis = uiState.intervalUsage,
+                                ),
+                            ),
+                        )
                     }
                 } else {
                     Timber.w("Accessibility service not enabled. Showing explainer (interval timer).")
@@ -502,9 +512,12 @@ private fun HomeContent(
         // Always blocking
         BlockOption.BlockAll -> true
 
-        BlockOption.DailyLimit -> uiState.timeLimit > 0 && uiState.currentUsage >= uiState.timeLimit
+        is BlockOption.DailyLimit ->
+            uiState.blockOption.limitMillis > 0 && uiState.currentUsage >= uiState.blockOption.limitMillis
 
-        BlockOption.IntervalTimer -> uiState.timeLimit > 0 && uiState.intervalUsage >= uiState.timeLimit
+        is BlockOption.IntervalTimer ->
+            uiState.blockOption.allowanceMillis > 0 &&
+                uiState.blockOption.window.usageMillis >= uiState.blockOption.allowanceMillis
 
         BlockOption.NothingSelected -> false
     }
@@ -975,7 +988,7 @@ fun Modifier.dateSwipeGesture(
 @Composable
 fun HomeScreenPreview() {
     val mockState = HomeUiState(
-        blockOption = BlockOption.DailyLimit,
+        blockOption = BlockOption.DailyLimit(limitMillis = TimeUnit.MINUTES.toMillis(60)),
         timeLimit = TimeUnit.MINUTES.toMillis(60),
         currentUsage = TimeUnit.MINUTES.toMillis(42),
         progress = 70,
@@ -1041,7 +1054,14 @@ fun PreviewIntervalTimerSelected() {
     ScrollessTheme {
         HomeContent(
             uiState = HomeUiState(
-                blockOption = BlockOption.IntervalTimer,
+                blockOption = BlockOption.IntervalTimer(
+                    allowanceMillis = TimeUnit.MINUTES.toMillis(5),
+                    window = IntervalTimerWindow(
+                        startMillis = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(30),
+                        lengthMillis = TimeUnit.MINUTES.toMillis(60),
+                        usageMillis = TimeUnit.MINUTES.toMillis(3),
+                    ),
+                ),
                 timeLimit = TimeUnit.MINUTES.toMillis(5),
                 intervalLength = TimeUnit.MINUTES.toMillis(60),
                 intervalUsage = TimeUnit.MINUTES.toMillis(3),
@@ -1064,7 +1084,14 @@ fun PreviewIntervalTimer() {
     ScrollessTheme {
         HomeContent(
             uiState = HomeUiState(
-                blockOption = BlockOption.IntervalTimer,
+                blockOption = BlockOption.IntervalTimer(
+                    allowanceMillis = TimeUnit.MINUTES.toMillis(5),
+                    window = IntervalTimerWindow(
+                        startMillis = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(45),
+                        lengthMillis = TimeUnit.MINUTES.toMillis(60),
+                        usageMillis = TimeUnit.MINUTES.toMillis(4),
+                    ),
+                ),
                 timeLimit = TimeUnit.MINUTES.toMillis(5),
                 intervalLength = TimeUnit.MINUTES.toMillis(60),
                 intervalUsage = TimeUnit.MINUTES.toMillis(4),

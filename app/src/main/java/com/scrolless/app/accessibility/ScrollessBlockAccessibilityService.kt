@@ -27,12 +27,12 @@ import android.os.PowerManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import com.scrolless.app.core.blocking.BlockingManager
-import com.scrolless.app.core.blocking.handler.IntervalTimerSnapshot
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.BlockingResult
 import com.scrolless.app.core.model.DetectionMethod
 import com.scrolless.app.core.model.ResolvedBlockableApp
+import com.scrolless.app.core.repository.BlockingConfigRepository
 import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.ui.overlay.TimerOverlayInitialState
@@ -43,7 +43,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -112,7 +111,13 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     lateinit var blockingManager: BlockingManager
 
     /**
-     * Provides access to user settings including active block option, time limits, and overlay preferences.
+     * Emits the active option together with the values needed to enforce it.
+     */
+    @Inject
+    lateinit var blockingConfigRepository: BlockingConfigRepository
+
+    /**
+     * Provides access to preferences that do not participate in blocking decisions.
      */
     @Inject
     lateinit var userSettingsStore: UserSettingsStore
@@ -246,14 +251,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             }
         }
 
-        // Observe changes to the block config
         serviceScope.launch {
-            val timeLimitFlow = userSettingsStore.getTimeLimit().distinctUntilChanged()
-            val intervalLengthFlow = userSettingsStore.getIntervalLength().distinctUntilChanged()
-            val blockOptionFlow = userSettingsStore.getActiveBlockOption().distinctUntilChanged()
-            combine(timeLimitFlow, intervalLengthFlow, blockOptionFlow) { _, _, blockOption -> blockOption }.collect { blockOption ->
-                Timber.d("Settings changed, re-initializing blocking manager with %s", blockOption)
-                blockingManager.init(blockOption)
+            blockingConfigRepository.observeActiveOption().collect { option ->
+                Timber.d("Blocking option changed: %s", option)
+                blockingManager.init(option)
             }
         }
 
@@ -691,16 +692,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         Timber.d("Exit handling completed for app: %s (%s)", exitedApp.app.name, exitedApp.packageId)
     }
 
-    private suspend fun getTimerOverlayInitialState(): TimerOverlayInitialState = when (userSettingsStore.getActiveBlockOption().first()) {
-        BlockOption.IntervalTimer -> TimerOverlayInitialState.Interval(
-            IntervalTimerSnapshot(
-                windowStartMillis = userSettingsStore.getIntervalWindowStart().first(),
-                usageMillis = userSettingsStore.getIntervalUsage().first(),
-                intervalLengthMillis = userSettingsStore.getIntervalLength().first(),
-            ),
-        )
-
-        else -> TimerOverlayInitialState.Daily(usageMillis = sessionTracker.getDailyUsage())
+    private suspend fun getTimerOverlayInitialState(): TimerOverlayInitialState {
+        val option = blockingConfigRepository.observeActiveOption().first()
+        return when (option) {
+            is BlockOption.IntervalTimer -> TimerOverlayInitialState.Interval(option.window)
+            else -> TimerOverlayInitialState.Daily(usageMillis = sessionTracker.getDailyUsage())
+        }
     }
 
     /**
@@ -738,7 +735,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     /**
      * Performs automatic back navigation to exit blocked content.
      *
-     * Uses the detected app's configured exit strategy, or defaults to [GLOBAL_ACTION_BACK].
+     * Uses the exit action configured for the detected app. If the app has no custom action, this
+     * presses the system Back button with [GLOBAL_ACTION_BACK].
      * The action is posted to the main thread handler to ensure it runs on the UI thread.
      */
     private fun performBackNavigation() {
