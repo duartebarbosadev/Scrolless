@@ -41,7 +41,6 @@ sealed class DetectionMethod {
         }
     }
     data class AnyOf(val detectionMethods: List<DetectionMethod>) : DetectionMethod()
-    data class AllOf(val detectionMethods: List<DetectionMethod>) : DetectionMethod()
 }
 
 /**
@@ -204,9 +203,6 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             is DetectionMethod.NodeStructure -> false
 
             is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matchesFastNode(node) }
-
-            is DetectionMethod.AllOf ->
-                detectionMethods.isNotEmpty() && detectionMethods.all { method -> method.matchesFastNode(node) }
         }
     }
 
@@ -218,8 +214,6 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             }
 
             is DetectionMethod.AnyOf -> detectionMethods.forEach { method -> method.collectStructuralClassNames(destination) }
-
-            is DetectionMethod.AllOf -> detectionMethods.forEach { method -> method.collectStructuralClassNames(destination) }
 
             is DetectionMethod.ViewId,
             is DetectionMethod.ContentDescriptions,
@@ -241,8 +235,6 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             }
 
             is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matches(nodes, childrenByParentId) }
-
-            is DetectionMethod.AllOf -> detectionMethods.all { method -> method.matches(nodes, childrenByParentId) }
         }
     }
 
