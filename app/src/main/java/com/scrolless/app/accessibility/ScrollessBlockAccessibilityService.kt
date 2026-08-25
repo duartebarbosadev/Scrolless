@@ -31,6 +31,7 @@ import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.BlockingResult
 import com.scrolless.app.core.model.DetectionMethod
+import com.scrolless.app.core.model.DetectionNode
 import com.scrolless.app.core.model.ResolvedBlockableApp
 import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
@@ -792,32 +793,20 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * to support both signals here.
      */
     private fun AccessibilityNodeInfo.matchesBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
-        return matchesDetectionMethod(blockableApp, blockableApp.getDetectionMethod())
+        val detectionMethod = blockableApp.getDetectionMethod()
+
+        // View IDs are indexed by Android, so use the platform lookup instead of walking the tree.
+        if (detectionMethod is DetectionMethod.ViewId) {
+            return findAccessibilityNodeInfosByViewId(blockableApp.getViewId(detectionMethod)).any(::isNodeVisibleToTheUser)
+        }
+
+        return matchesComplexBlockedContent(blockableApp)
     }
 
     private fun AccessibilityNodeInfo.shouldSuppressBlocking(blockableApp: ResolvedBlockableApp): Boolean {
         return blockableApp.app == BlockableApp.REELS &&
             currentExceptReelsSentByDm &&
             isInstagramReelSentInDm(blockableApp)
-    }
-
-    private fun AccessibilityNodeInfo.matchesDetectionMethod(
-        blockableApp: ResolvedBlockableApp,
-        detectionMethod: DetectionMethod,
-    ): Boolean {
-        return when (detectionMethod) {
-            is DetectionMethod.ViewId ->
-                findAccessibilityNodeInfosByViewId(blockableApp.getViewId(detectionMethod)).any(::isNodeVisibleToTheUser)
-
-            is DetectionMethod.ContentDescriptions ->
-                hasVisibleContentDescription(detectionMethod.contentDescriptions)
-
-            is DetectionMethod.ContentDescriptionPrefix ->
-                hasVisibleContentDescriptionPrefix(detectionMethod)
-
-            is DetectionMethod.AnyOf ->
-                detectionMethod.detectionMethods.any { matchesDetectionMethod(blockableApp, it) }
-        }
     }
 
     private fun AccessibilityNodeInfo.isInstagramReelSentInDm(blockableApp: ResolvedBlockableApp): Boolean {
@@ -837,58 +826,64 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     /**
-     * Content descriptions are not indexed like view IDs, so we have to walk the visible accessibility tree
-     * and look for a matching node
+     * Scans the Facebook tree once. Cheap single-node rules return immediately; only node classes used
+     * by structural rules are retained for the hierarchy matcher.
      */
-    private fun AccessibilityNodeInfo.hasVisibleContentDescription(contentDescriptions: Set<String>): Boolean {
-        return hasVisibleNodeMatching { node ->
-            node.contentDescription?.toString() in contentDescriptions
-        }
-    }
-
-    /**
-     * Prefix matching for content descriptions lets us target stable navigation labels such as
-     * "Reels, tab 2 of 6" without treating every visible "Reels" label in the feed as a block trigger.
-     */
-    private fun AccessibilityNodeInfo.hasVisibleContentDescriptionPrefix(
-        detectionMethod: DetectionMethod.ContentDescriptionPrefix,
-    ): Boolean {
+    private fun AccessibilityNodeInfo.matchesComplexBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
+        val structuralNodes = mutableListOf<DetectionNode>()
+        val structuralClassNames = blockableApp.getStructuralClassNames()
+        val nodesToVisit = ArrayDeque<Pair<AccessibilityNodeInfo, Int?>>()
         val rootBounds = android.graphics.Rect().also(::getBoundsInScreen)
-        val maxTop = detectionMethod.maxTopScreenFraction?.let { fraction ->
-            val clampedFraction = fraction.coerceIn(0f, 1f)
-            rootBounds.top + (rootBounds.height() * clampedFraction).toInt()
-        }
-
-        return hasVisibleNodeMatching { node ->
-            val contentDescription = node.contentDescription?.toString() ?: return@hasVisibleNodeMatching false
-            val matchesPrefix = detectionMethod.prefixes.any(contentDescription::startsWith)
-            if (!matchesPrefix) {
-                return@hasVisibleNodeMatching false
-            }
-
-            val nodeBounds = android.graphics.Rect().also(node::getBoundsInScreen)
-            val matchesSelectedState = !detectionMethod.requireSelected || node.isSelected
-            val matchesTopConstraint = maxTop == null || nodeBounds.bottom <= maxTop
-            matchesSelectedState && matchesTopConstraint
-        }
-    }
-
-    private fun AccessibilityNodeInfo.hasVisibleNodeMatching(matchesNode: (AccessibilityNodeInfo) -> Boolean): Boolean {
-        val nodesToVisit = ArrayDeque<AccessibilityNodeInfo>()
-        nodesToVisit.add(this)
+        var nextStructuralNodeId = 0
+        nodesToVisit.add(this to null)
 
         while (nodesToVisit.isNotEmpty()) {
-            val node = nodesToVisit.removeFirst()
-            if (isNodeVisibleToTheUser(node) && matchesNode(node)) {
-                return true
+            val (node, parentStructuralNodeId) = nodesToVisit.removeFirst()
+            val isVisible = isNodeVisibleToTheUser(node)
+            var structuralNodeId: Int? = null
+
+            // Invisible nodes cannot match any rule. But still visit their children because Android can
+            // expose visible descendants below an invisible accessibility wrapper.
+            if (isVisible) {
+                val fastNode = DetectionNode(
+                    nodeId = -1,
+                    viewId = node.viewIdResourceName,
+                    contentDescription = node.contentDescription?.toString(),
+                    isSelected = node.isSelected,
+                )
+
+                if (blockableApp.matchesFastDetectionNode(fastNode)) {
+                    return true
+                }
+
+                val className = node.className?.toString()
+                if (className in structuralClassNames) {
+                    val nodeBounds = android.graphics.Rect().also(node::getBoundsInScreen)
+                    val nodeId = nextStructuralNodeId++
+                    structuralNodeId = nodeId
+                    structuralNodes += DetectionNode(
+                        nodeId = nodeId,
+                        parentNodeId = parentStructuralNodeId,
+                        className = className,
+                        screenWidthFraction = nodeBounds.width().fractionOf(rootBounds.width()),
+                        screenHeightFraction = nodeBounds.height().fractionOf(rootBounds.height()),
+                        isScrollable = node.isScrollable,
+                        isLongClickable = node.isLongClickable,
+                    )
+                }
             }
 
+            val childStructuralParentId = structuralNodeId ?: parentStructuralNodeId
             for (index in 0 until node.childCount) {
-                node.getChild(index)?.let(nodesToVisit::addLast)
+                node.getChild(index)?.let { child -> nodesToVisit.addLast(child to childStructuralParentId) }
             }
         }
 
-        return false
+        return blockableApp.matchesDetectionNodes(structuralNodes)
+    }
+
+    private fun Int.fractionOf(total: Int): Float {
+        return if (total > 0) (toFloat() / total).coerceIn(0f, 1f) else 0f
     }
 
     /**
