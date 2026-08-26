@@ -26,6 +26,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BlockAllBlockHandlerTest : BaseTest() {
@@ -48,7 +49,7 @@ class BlockAllBlockHandlerTest : BaseTest() {
 
     @Test
     fun whenExitContent_resetsState() = runTest(testDispatcher) {
-        blockAllBlockHandler.onExitContent(0L)
+        blockAllBlockHandler.onExitContent(0L, 0L)
         // No state to verify directly, but ensure no exceptions occur
     }
 
@@ -72,7 +73,7 @@ class BlockAllBlockHandlerTest : BaseTest() {
         assert(rapidCheck3 is BlockingResult.Continue)
 
         // After some time, it should block again
-        delay(1500)
+        delay(1500.milliseconds)
         val laterCheck = blockAllBlockHandler.onPeriodicCheck(0L, 0L)
         assert(laterCheck is BlockingResult.BlockNow)
     }

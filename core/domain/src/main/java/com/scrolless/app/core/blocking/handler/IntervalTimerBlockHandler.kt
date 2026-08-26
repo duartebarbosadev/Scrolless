@@ -16,186 +16,52 @@
  */
 package com.scrolless.app.core.blocking.handler
 
+import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.model.BlockingResult
-import com.scrolless.app.core.model.IntervalTimerWindow
-import kotlin.math.max
+import com.scrolless.app.core.repository.BlockingConfigRepository
 import timber.log.Timber
 
 /**
- * The interval start and watched time saved between viewing sessions.
- */
-data class IntervalTimerState(val windowStartMillis: Long, val usageMillis: Long)
-
-/**
- * Lets the user watch for a limited amount of time during each interval window.
+ * Limits how long the user can watch during one interval window.
  *
- * Content is blocked after the allowed watch time is used. When [intervalLengthMillis] has passed,
- * watched time returns to zero and the user receives the full allowance again.
+ * The handler only decides when to block. The repository owns the window and its usage, so this
+ * class keeps no state of its own and always reads the values that are saved right now.
  */
 class IntervalTimerBlockHandler(
-    allowanceMillis: Long,
-    private val intervalLengthMillis: Long,
-    initialState: IntervalTimerState,
-    private val currentTimeProvider: () -> Long = System::currentTimeMillis,
-    private val saveState: suspend (IntervalTimerState) -> Unit = {},
+    private val allowanceMillis: Long,
+    private val blockingConfigRepository: BlockingConfigRepository,
+    private val timeProvider: TimeProvider,
 ) : BlockOptionHandler {
 
-    private val safeAllowanceMillis: Long = max(0L, allowanceMillis)
-
-    internal var state: IntervalTimerState = initialState
-        private set
-
-    // Usage that existed when the current viewing session started. The elapsed session
-    // time is added to this value during checks, so we do not need to save every second.
-    private var sessionUsageBase: Long = initialState.usageMillis
-
-    private fun currentWindow(): IntervalTimerWindow = IntervalTimerWindow(
-        startMillis = state.windowStartMillis,
-        lengthMillis = intervalLengthMillis,
-        usageMillis = state.usageMillis,
-    )
-
-    /**
-     * Advances to the window containing [now] and clears usage from older windows.
-     *
-     * Windows advance from their saved start instead of restarting whenever the app checks them.
-     */
-    private suspend fun ensureWindowFresh(now: Long) {
-        val currentStart = state.windowStartMillis
-
-        // With no valid interval length there is no boundary to cross. We only repair a
-        // missing start time or a start time made invalid by the device clock moving back.
-        if (intervalLengthMillis <= 0L) {
-            if (currentStart == 0L || now < currentStart) {
-                resetWindow(now)
-            }
-            return
-        }
-
-        // Start a new window on first run or after the device clock moves behind our saved start.
-        if (currentStart == 0L || now < currentStart) {
-            resetWindow(now)
-            return
-        }
-
-        // Keep the original interval schedule. For example, if several windows passed while
-        // the app was closed, advance by whole windows instead of starting a new schedule now.
-        val elapsed = now - currentStart
-        if (elapsed >= intervalLengthMillis) {
-            val intervalsPassed = elapsed / intervalLengthMillis
-            val newStart = currentStart + intervalsPassed * intervalLengthMillis
-            Timber.v(
-                "IntervalTimer.reset: elapsed=%d, intervals=%d -> newStart=%d",
-                elapsed,
-                intervalsPassed,
-                newStart,
-            )
-            resetWindow(newStart)
-        }
-    }
-
-    /**
-     * Starts a window with no watched time.
-     */
-    private suspend fun resetWindow(newStartMillis: Long) {
-        updateState(IntervalTimerState(windowStartMillis = newStartMillis, usageMillis = 0L))
-    }
-
-    /**
-     * Waits for the save so the overlay cannot immediately load the previous value.
-     */
-    private suspend fun updateState(newState: IntervalTimerState) {
-        if (newState == state) {
-            sessionUsageBase = newState.usageMillis
-            return
-        }
-
-        Timber.v(
-            "IntervalTimer.stateChanged: start=%d -> %d, usage=%d -> %d",
-            state.windowStartMillis,
-            newState.windowStartMillis,
-            state.usageMillis,
-            newState.usageMillis,
-        )
-        state = newState
-        sessionUsageBase = newState.usageMillis
-        saveState(newState)
-    }
-
     override suspend fun onEnterContent(currentDailyUsage: Long): Boolean {
-        val now = currentTimeProvider()
+        val window = blockingConfigRepository.getCurrentIntervalWindow(timeProvider.currentTimeInMillis())
 
-        // The previous window may have ended while the user was outside blocked content.
-        ensureWindowFresh(now)
-
-        // Remember where this session starts so elapsed time is not counted twice.
-        sessionUsageBase = state.usageMillis
-
-        val shouldBlock = state.usageMillis >= safeAllowanceMillis
-        Timber.d(
-            "IntervalTimer.onEnter: usage=%d/%d start=%d -> block=%s",
-            state.usageMillis,
-            safeAllowanceMillis,
-            state.windowStartMillis,
-            shouldBlock,
-        )
+        val shouldBlock = window.usageMillis >= allowanceMillis
+        Timber.d("IntervalTimer.onEnter: usage=%d/%d -> block=%s", window.usageMillis, allowanceMillis, shouldBlock)
         return shouldBlock
     }
 
     /**
-     * Counts only the part of the current session watched inside the active interval window.
+     * Includes the session in progress, which is not saved yet, when checking the allowance.
      */
     override suspend fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult {
-        val now = currentTimeProvider()
-        ensureWindowFresh(now)
+        val now = timeProvider.currentTimeInMillis()
+        val window = blockingConfigRepository.getCurrentIntervalWindow(now)
+        val usage = window.usageAt(sessionStartMillis = now - elapsedTime, nowMillis = now)
 
-        // elapsedTime covers the whole viewing session. If the session crossed a window
-        // boundary, only the part inside the current window should count.
-        val sessionUsage = currentWindow().sessionDurationInCurrentWindow(elapsedTime, now)
-        val projectedUsage = sessionUsageBase + sessionUsage
-        val result = if (projectedUsage >= safeAllowanceMillis) {
-            val clamped = safeAllowanceMillis
-            if (state.usageMillis != clamped) {
-                updateState(state.copy(usageMillis = clamped))
-            } else {
-                sessionUsageBase = clamped
-            }
-            Timber.v(
-                "IntervalTimer.onPeriodic: projected=%d/%d -> block",
-                projectedUsage,
-                safeAllowanceMillis,
-            )
-            BlockingResult.BlockNow
-        } else {
-            val remaining = safeAllowanceMillis - projectedUsage
-            Timber.v(
-                "IntervalTimer.onPeriodic: projected=%d/%d -> continue for %d ms",
-                projectedUsage,
-                safeAllowanceMillis,
-                remaining,
-            )
-            BlockingResult.CheckLater(remaining)
+        if (usage >= allowanceMillis) {
+            Timber.v("IntervalTimer.onPeriodic: usage=%d/%d -> block", usage, allowanceMillis)
+            return BlockingResult.BlockNow
         }
-        return result
+
+        Timber.v("IntervalTimer.onPeriodic: usage=%d/%d -> continue", usage, allowanceMillis)
+        return BlockingResult.CheckLater(allowanceMillis - usage)
     }
 
-    override suspend fun onExitContent(sessionTime: Long) {
-        if (sessionTime <= 0L) {
-            Timber.v("IntervalTimer.onExit: ignore non-positive session=%d", sessionTime)
-            return
-        }
+    override suspend fun onExitContent(sessionStartMillis: Long, sessionEndMillis: Long) {
+        if (sessionEndMillis <= sessionStartMillis) return
 
-        val now = currentTimeProvider()
-        ensureWindowFresh(now)
-
-        // Save only the part of the session that belongs to the active interval window.
-        val sessionUsage = currentWindow().sessionDurationInCurrentWindow(sessionTime, now)
-        val updatedUsage = (sessionUsageBase + sessionUsage).coerceAtMost(safeAllowanceMillis)
-        if (updatedUsage != state.usageMillis) {
-            Timber.v("IntervalTimer.onExit: +%d -> usage=%d", sessionTime, updatedUsage)
-            updateState(state.copy(usageMillis = updatedUsage))
-        } else {
-            sessionUsageBase = updatedUsage
-        }
+        val window = blockingConfigRepository.recordIntervalUsage(sessionStartMillis, sessionEndMillis)
+        Timber.v("IntervalTimer.onExit: session=%d, usage=%d", sessionEndMillis - sessionStartMillis, window.usageMillis)
     }
 }

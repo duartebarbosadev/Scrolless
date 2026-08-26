@@ -83,7 +83,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.scrolless.app.core.model.BlockOption
-import com.scrolless.app.core.model.IntervalTimerWindow
+import com.scrolless.app.core.model.BlockingSettings
+import com.scrolless.app.core.model.UsageWindow
 import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
@@ -94,6 +95,7 @@ import com.scrolless.app.feature.home.HomeUiState
 import com.scrolless.app.feature.home.R
 import kotlinx.coroutines.delay
 import timber.log.Timber
+import kotlin.time.Duration.Companion.milliseconds
 
 enum class BlockingButtonType { BLOCK_ALL, DAILY_LIMIT, INTERVAL }
 
@@ -122,7 +124,7 @@ fun TodayBlockingControls(
     // Auto-releases the button expansion animation after releaseDelay
     LaunchedEffect(lastClicked) {
         if (lastClicked != null) {
-            delay(releaseDelay)
+            delay(releaseDelay.milliseconds)
             lastClicked = null
         }
     }
@@ -189,14 +191,14 @@ fun TodayBlockingControls(
                 lastClicked = BlockingButtonType.DAILY_LIMIT
                 val isSelected = uiState.blockOption is BlockOption.DailyLimit
                 hapticFeedback.playToggle(!isSelected)
-                if (uiState.timeLimit == 0L && !isSelected) {
+                if (uiState.savedSettings.dailyLimitMillis == 0L && !isSelected) {
                     Timber.d("DailyLimit clicked -> open TimeLimitDialog (no limit set)")
                     onConfigureDailyLimit()
                 } else {
                     val newOption = if (isSelected) {
                         BlockOption.NothingSelected
                     } else {
-                        BlockOption.DailyLimit(limitMillis = uiState.timeLimit)
+                        BlockOption.DailyLimit(limitMillis = uiState.savedSettings.dailyLimitMillis)
                     }
                     Timber.i("DailyLimit clicked -> newOption=%s (prev=%s)", newOption, uiState.blockOption)
                     onBlockOptionSelected(newOption)
@@ -262,8 +264,8 @@ fun TodayBlockingControls(
             ) + fadeOut(animationSpec = tween(200)),
         ) {
             IntervalTimerSettingsCard(
-                intervalLengthMillis = uiState.intervalLength,
-                allowanceMillis = uiState.timeLimit,
+                intervalLengthMillis = uiState.savedSettings.intervalLengthMillis,
+                allowanceMillis = uiState.savedSettings.intervalAllowanceMillis,
                 onEditClick = onIntervalTimerEdit,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -748,7 +750,10 @@ fun TodayBlockingControlsPreview() {
     ScrollessTheme(darkTheme = true) {
         Surface {
             TodayBlockingControls(
-                uiState = HomeUiState(blockOption = BlockOption.DailyLimit(limitMillis = 60 * 60 * 1000L)),
+                uiState = HomeUiState(
+                    blockOption = BlockOption.DailyLimit(limitMillis = 60 * 60 * 1000L),
+                    savedSettings = BlockingSettings(dailyLimitMillis = 60 * 60 * 1000L),
+                ),
                 isBlockingActive = false,
                 isPauseActive = false,
                 pauseRemainingMillis = 0L,
@@ -771,12 +776,13 @@ fun TodayBlockingIntervalTimerControlsPreview() {
                 uiState = HomeUiState(
                     blockOption = BlockOption.IntervalTimer(
                         allowanceMillis = 5 * 60 * 1000L,
-                        window = IntervalTimerWindow(
-                            startMillis = 0L,
-                            lengthMillis = 60 * 60 * 1000L,
-                            usageMillis = 0L,
-                        ),
+                        intervalLengthMillis = 60 * 60 * 1000L,
                     ),
+                    savedSettings = BlockingSettings(
+                        intervalAllowanceMillis = 5 * 60 * 1000L,
+                        intervalLengthMillis = 60 * 60 * 1000L,
+                    ),
+                    intervalUsageWindow = UsageWindow(startMillis = 0L, lengthMillis = 60 * 60 * 1000L, usageMillis = 0L),
                 ),
                 isBlockingActive = false,
                 isPauseActive = true,

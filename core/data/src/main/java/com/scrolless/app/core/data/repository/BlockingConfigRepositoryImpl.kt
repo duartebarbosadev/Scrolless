@@ -17,111 +17,79 @@
 package com.scrolless.app.core.data.repository
 
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.data.database.model.savedIntervalTimer
-import com.scrolless.app.core.data.database.model.toActiveOption
 import com.scrolless.app.core.data.database.model.toBlockOptionType
+import com.scrolless.app.core.data.database.model.toBlockingConfig
 import com.scrolless.app.core.model.BlockOption
-import com.scrolless.app.core.model.IntervalTimerWindow
-import com.scrolless.app.core.model.withConfig
+import com.scrolless.app.core.model.BlockingConfig
+import com.scrolless.app.core.model.UsageWindow
 import com.scrolless.app.core.repository.BlockingConfigRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
 /**
- * Stores blocking settings in the single `user_settings` row.
+ * Stores blocking settings and interval usage in the single `user_settings` row.
  *
- * Writes run one at a time so a settings change cannot overwrite interval usage saved by the
- * accessibility service.
+ * Settings and usage live in separate columns, so editing the settings can expand the current
+ * interval without replacing its start time or watched time.
  */
 class BlockingConfigRepositoryImpl @Inject constructor(private val userSettingsDao: UserSettingsDao) : BlockingConfigRepository {
 
-    // Prevent a Home screen edit and an accessibility-service usage save from overlapping.
+    // Recording usage reads the current window before it writes the new one. Keep that pair
+    // together when a settings edit arrives at the same time.
     private val writeMutex = Mutex()
 
-    override fun observeActiveOption(): Flow<BlockOption> = userSettingsDao.observeBlockingConfig()
-        .map { it.toActiveOption() }
+    override fun observeConfig(): Flow<BlockingConfig> = userSettingsDao.observeUserSettings()
+        .map { it.toBlockingConfig() }
         .distinctUntilChanged()
 
-    override fun observeSavedIntervalTimer(): Flow<BlockOption.IntervalTimer> = userSettingsDao.observeBlockingConfig()
-        .map { it.savedIntervalTimer() }
+    override fun observeActiveOption(): Flow<BlockOption> = observeConfig()
+        .map { it.activeOption }
         .distinctUntilChanged()
+
+    override suspend fun getConfig(): BlockingConfig = userSettingsDao.getUserSettings().toBlockingConfig()
 
     override suspend fun setActiveOption(option: BlockOption) = writeMutex.withLock {
-        when (option) {
-            BlockOption.BlockAll,
-            BlockOption.NothingSelected,
-            -> userSettingsDao.setActiveBlockOption(option.toBlockOptionType())
-
-            is BlockOption.DailyLimit -> persist(option)
-
-            is BlockOption.IntervalTimer -> persist(option)
-        }
+        userSettingsDao.setActiveBlockOption(option.toBlockOptionType())
     }
 
     override suspend fun configureDailyLimit(limitMillis: Long) = writeMutex.withLock {
-        persist(BlockOption.DailyLimit(limitMillis = limitMillis.coerceAtLeast(0L)))
+        require(limitMillis > 0L) { "Daily limit must be greater than zero" }
+        userSettingsDao.configureDailyLimit(limitMillis)
     }
 
     override suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long) = writeMutex.withLock {
-        val current = observeActiveOption().first()
-        val updated = if (current is BlockOption.IntervalTimer) {
-            current.withConfig(
-                allowanceMillis = allowanceMillis,
-                intervalLengthMillis = intervalLengthMillis,
-            )
-        } else {
-            BlockOption.IntervalTimer(
-                allowanceMillis = allowanceMillis.coerceAtLeast(0L),
-                window = IntervalTimerWindow(
-                    startMillis = 0L,
-                    lengthMillis = intervalLengthMillis,
-                    usageMillis = 0L,
-                ),
-            )
+        require(allowanceMillis > 0L) { "Interval allowance must be greater than zero" }
+        require(intervalLengthMillis > 0L) { "Interval length must be greater than zero" }
+
+        userSettingsDao.configureIntervalTimer(
+            allowanceMillis = allowanceMillis,
+            intervalLengthMillis = intervalLengthMillis,
+        )
+    }
+
+    override suspend fun getCurrentIntervalWindow(nowMillis: Long): UsageWindow = writeMutex.withLock {
+        val savedWindow = getConfig().intervalUsageWindow
+        val currentWindow = savedWindow.windowAt(nowMillis)
+        if (currentWindow != savedWindow) {
+            saveWindow(currentWindow)
         }
-        persist(updated)
+
+        currentWindow
     }
 
-    override suspend fun updateIntervalWindow(windowStartMillis: Long, usageMillis: Long) = writeMutex.withLock {
-        userSettingsDao.updateIntervalState(
-            windowStart = windowStartMillis,
-            usage = usageMillis.coerceAtLeast(0L),
-        )
+    override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): UsageWindow = writeMutex.withLock {
+        val savedWindow = getConfig().intervalUsageWindow
+        val updatedWindow = savedWindow.addingSession(sessionStartMillis, sessionEndMillis)
+        saveWindow(updatedWindow)
+
+        updatedWindow
     }
 
-    /**
-     * Saves a daily limit while keeping the last interval window available for later.
-     */
-    private suspend fun persist(option: BlockOption.DailyLimit) {
-        val savedInterval = observeSavedIntervalTimer().first()
-        persist(option = option, interval = savedInterval)
-    }
-
-    private suspend fun persist(option: BlockOption.IntervalTimer) {
-        userSettingsDao.updateBlockingConfig(
-            activeOption = option.toBlockOptionType(),
-            limitMillis = option.allowanceMillis,
-            intervalLengthMillis = option.window.lengthMillis,
-            intervalWindowStartMillis = option.window.startMillis,
-            intervalUsageMillis = option.window.usageMillis,
-        )
-    }
-
-    /**
-     * Daily and interval modes currently save their allowance in the same database column.
-     */
-    private suspend fun persist(option: BlockOption.DailyLimit, interval: BlockOption.IntervalTimer) {
-        userSettingsDao.updateBlockingConfig(
-            activeOption = option.toBlockOptionType(),
-            limitMillis = option.limitMillis,
-            intervalLengthMillis = interval.window.lengthMillis,
-            intervalWindowStartMillis = interval.window.startMillis,
-            intervalUsageMillis = interval.window.usageMillis,
-        )
+    private suspend fun saveWindow(window: UsageWindow) {
+        userSettingsDao.updateIntervalState(windowStart = window.startMillis, usage = window.usageMillis)
     }
 }

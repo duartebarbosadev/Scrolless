@@ -20,7 +20,6 @@ import com.scrolless.app.core.blocking.handler.BlockAllBlockHandler
 import com.scrolless.app.core.blocking.handler.BlockOptionHandler
 import com.scrolless.app.core.blocking.handler.DayLimitBlockHandler
 import com.scrolless.app.core.blocking.handler.IntervalTimerBlockHandler
-import com.scrolless.app.core.blocking.handler.IntervalTimerState
 import com.scrolless.app.core.blocking.handler.NoBlockHandler
 import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.model.BlockOption
@@ -45,94 +44,52 @@ class BlockingManagerImpl @Inject constructor(
     private val timeProvider: TimeProvider,
 ) : BlockingManager {
 
-    private lateinit var handler: BlockOptionHandler
+    private var handler: BlockOptionHandler = NoBlockHandler()
 
-    // Settings changes, timer checks, and session exits can arrive from different coroutines.
-    // Finish one handler operation before another starts or replaces the handler.
+    // Settings changes, timer checks, and session exits arrive from different coroutines. Finish
+    // one handler operation before another starts or replaces the handler.
     private val handlerMutex = Mutex()
 
-    /**
-     * Initializes the manager with a block option configuration.
-     *
-     * @param option The blocking option to apply.
-     */
     override suspend fun init(option: BlockOption) = handlerMutex.withLock {
         Timber.i("Initializing blocking manager with %s", option)
         handler = createHandler(option)
     }
 
+    /**
+     * Builds the handler that applies [option] during viewing sessions.
+     */
     private fun createHandler(option: BlockOption): BlockOptionHandler = when (option) {
-        BlockOption.BlockAll -> BlockAllBlockHandler(timeProvider).also { Timber.d("Using BlockAll handler") }
+        BlockOption.BlockAll -> BlockAllBlockHandler(timeProvider)
 
         is BlockOption.DailyLimit -> DayLimitBlockHandler(option.limitMillis)
-            .also { Timber.d("Using DayLimit handler (limit=%d)", option.limitMillis) }
 
-        is BlockOption.IntervalTimer -> {
-            val intervalState = IntervalTimerState(
-                windowStartMillis = option.window.startMillis,
-                usageMillis = option.window.usageMillis,
-            )
-            IntervalTimerBlockHandler(
-                allowanceMillis = option.allowanceMillis,
-                intervalLengthMillis = option.window.lengthMillis,
-                initialState = intervalState,
-                saveState = { state ->
-                    // Await this write so the overlay cannot read the previous window's values.
-                    blockingConfigRepository.updateIntervalWindow(
-                        windowStartMillis = state.windowStartMillis,
-                        usageMillis = state.usageMillis,
-                    )
-                },
-            ).also {
-                Timber.d(
-                    "Using IntervalTimer handler (limit=%d, interval=%d)",
-                    option.allowanceMillis,
-                    option.window.lengthMillis,
-                )
-            }
-        }
+        is BlockOption.IntervalTimer -> IntervalTimerBlockHandler(
+            allowanceMillis = option.allowanceMillis,
+            blockingConfigRepository = blockingConfigRepository,
+            timeProvider = timeProvider,
+        )
 
-        BlockOption.NothingSelected -> NoBlockHandler().also { Timber.d("Using NothingSelected handler") }
+        BlockOption.NothingSelected -> NoBlockHandler()
     }
 
-    /**
-     * Checks current usage when the user enters blocked content.
-     *
-     * @return `true` when the content should be closed immediately.
-     */
-    override suspend fun onEnterBlockedContent(): Boolean {
-        return handlerMutex.withLock {
-            val currentDailyUsage = sessionTracker.getDailyUsage()
-            val shouldBlock = handler.onEnterContent(currentDailyUsage)
+    override suspend fun onEnterBlockedContent(): Boolean = handlerMutex.withLock {
+        val currentDailyUsage = sessionTracker.getDailyUsage()
+        val shouldBlock = handler.onEnterContent(currentDailyUsage)
 
-            Timber.d("onEnterBlockedContent: daily=%d -> shouldBlock=%s", currentDailyUsage, shouldBlock)
-            shouldBlock
-        }
+        Timber.d("onEnterBlockedContent: daily=%d -> shouldBlock=%s", currentDailyUsage, shouldBlock)
+        shouldBlock
     }
 
-    /**
-     * Checks whether the active handler allows the viewing session to continue.
-     *
-     * @param elapsedTime Time since the session started, in milliseconds.
-     * @return The next action for the accessibility service.
-     */
-    override suspend fun onPeriodicCheck(elapsedTime: Long): BlockingResult {
-        return handlerMutex.withLock {
-            val currentDailyUsage = sessionTracker.getDailyUsage()
-            val result = handler.onPeriodicCheck(currentDailyUsage, elapsedTime)
+    override suspend fun onPeriodicCheck(elapsedTime: Long): BlockingResult = handlerMutex.withLock {
+        val currentDailyUsage = sessionTracker.getDailyUsage()
+        val result = handler.onPeriodicCheck(currentDailyUsage, elapsedTime)
 
-            Timber.v("onPeriodicCheck: daily=%d, elapsed=%d -> result=%s", currentDailyUsage, elapsedTime, result)
-            result
-        }
+        Timber.v("onPeriodicCheck: daily=%d, elapsed=%d -> result=%s", currentDailyUsage, elapsedTime, result)
+        result
     }
 
-    /**
-     * Gives the completed session duration to the active handler so it can save usage.
-     *
-     * @param sessionTime Total session duration, in milliseconds.
-     */
-    override suspend fun onExitBlockedContent(sessionTime: Long) = handlerMutex.withLock {
-        Timber.d("onExitBlockedContent: session=%d", sessionTime)
-        handler.onExitContent(sessionTime)
+    override suspend fun onExitBlockedContent(sessionStartMillis: Long, sessionEndMillis: Long) = handlerMutex.withLock {
+        Timber.d("onExitBlockedContent: session=%d", sessionEndMillis - sessionStartMillis)
+        handler.onExitContent(sessionStartMillis, sessionEndMillis)
     }
 }

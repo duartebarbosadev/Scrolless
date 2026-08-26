@@ -32,10 +32,10 @@ import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.BlockingResult
 import com.scrolless.app.core.model.DetectionMethod
 import com.scrolless.app.core.model.ResolvedBlockableApp
+import com.scrolless.app.core.model.UsageWindow
 import com.scrolless.app.core.repository.BlockingConfigRepository
 import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
-import com.scrolless.app.ui.overlay.TimerOverlayInitialState
 import com.scrolless.app.ui.overlay.TimerOverlayManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -44,7 +44,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -606,15 +605,17 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         val blockingSuppressed = isBlockingSuppressed
         serviceScope.launch(Dispatchers.IO) {
 
-            // Paused and exempt sessions are still tracked, but they must not trigger blocking.
-            if (!blockingSuppressed && blockingManager.onEnterBlockedContent()) {
+            // Every session is started in the manager so it can be saved with the rule that was
+            // active on entry. Paused and exempt sessions simply ignore the blocking result.
+            val shouldBlock = blockingManager.onEnterBlockedContent()
+            if (!blockingSuppressed && shouldBlock) {
                 Timber.i("Blocking on enter")
                 performBackNavigation()
                 return@launch
             }
 
             if (currentTimerOverlayEnabled) {
-                val timerInitialState = getTimerOverlayInitialState()
+                val usageWindow = getTimerOverlayUsageWindow()
                 mainHandler.post {
                     if (
                         currentTimerOverlayEnabled &&
@@ -623,7 +624,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                         Timber.v("Showing timer overlay")
                         timerOverlayManager.show(
                             sessionStartAt = session.startedAtMillis,
-                            initialState = timerInitialState,
+                            usageWindow = usageWindow,
                         )
                     }
                 }
@@ -672,7 +673,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         val exitedApp = session.app
 
         serviceScope.launch(Dispatchers.IO) {
-            blockingManager.onExitBlockedContent(sessionTime)
+            blockingManager.onExitBlockedContent(
+                sessionStartMillis = session.startedAtMillis,
+                sessionEndMillis = sessionEndedAtMillis,
+            )
 
             if (currentTimerOverlayEnabled) {
                 mainHandler.post {
@@ -692,11 +696,19 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         Timber.d("Exit handling completed for app: %s (%s)", exitedApp.app.name, exitedApp.packageId)
     }
 
-    private suspend fun getTimerOverlayInitialState(): TimerOverlayInitialState {
-        val option = blockingConfigRepository.observeActiveOption().first()
-        return when (option) {
-            is BlockOption.IntervalTimer -> TimerOverlayInitialState.Interval(option.window)
-            else -> TimerOverlayInitialState.Daily(usageMillis = sessionTracker.getDailyUsage())
+    /**
+     * The usage the overlay counts up from, and the point at which it restarts.
+     *
+     * Interval mode counts the current interval. Every other mode counts today, so the overlay
+     * restarts at midnight.
+     */
+    private suspend fun getTimerOverlayUsageWindow(): UsageWindow {
+        val nowMillis = System.currentTimeMillis()
+
+        return if (blockingConfigRepository.getConfig().activeOption is BlockOption.IntervalTimer) {
+            blockingConfigRepository.getCurrentIntervalWindow(nowMillis)
+        } else {
+            UsageWindow.forLocalDay(nowMillis = nowMillis, usageMillis = sessionTracker.getDailyUsage())
         }
     }
 

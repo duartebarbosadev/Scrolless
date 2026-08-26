@@ -39,6 +39,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowInsetsCompat
+import com.scrolless.app.core.model.UsageWindow
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.repository.setTimerOverlayPosition
 import com.scrolless.app.designsystem.theme.timerOverlayBackgroundColor
@@ -74,7 +75,11 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private var sessionStartTime = 0L
-    private var initialState: TimerOverlayInitialState = TimerOverlayInitialState.Daily(usageMillis = 0L)
+
+    // Usage already recorded when the overlay opened. The displayed time adds the running session
+    // to it, and restarts with the window (at midnight for a daily limit, at the end of an
+    // interval otherwise).
+    private var usageWindow = UsageWindow.EMPTY
     private var timerJob: Job? = null
     private var exitAnimationJob: Job? = null
     private var screenBounds: ScreenBounds? = null
@@ -92,7 +97,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    fun show(sessionStartAt: Long, initialState: TimerOverlayInitialState) {
+    fun show(sessionStartAt: Long, usageWindow: UsageWindow) {
         if (rootView != null) {
             cleanupView()
         }
@@ -103,15 +108,11 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         val wm = windowManager ?: return
 
         sessionStartTime = sessionStartAt
-        this.initialState = initialState
+        this.usageWindow = usageWindow
 
         // Create TextView with polished styling
         timerTextView = TextView(serviceContext).apply {
-            text = calculateDisplayedTimerDuration(
-                initialState = initialState,
-                sessionStartAtMillis = sessionStartTime,
-                nowMillis = System.currentTimeMillis(),
-            ).formatAsTime()
+            text = displayedDurationAt(System.currentTimeMillis()).formatAsTime()
             textSize = 18f // sp
             typeface = Typeface.DEFAULT_BOLD
             setTextColor(Color.WHITE)
@@ -185,12 +186,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
         timerJob?.cancel()
 
-        val summaryDuration = calculateDisplayedTimerDuration(
-            initialState = initialState,
-            sessionStartAtMillis = sessionStartAt,
-            nowMillis = sessionEndAt,
-        )
-        timerTextView?.text = summaryDuration.formatAsTime()
+        timerTextView?.text = displayedDurationAt(sessionEndAt).formatAsTime()
 
         startWiggleAnimation()
 
@@ -231,16 +227,15 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         velocityTracker = null
     }
 
+    /** The number on the overlay: usage saved before this session, plus the session so far. */
+    private fun displayedDurationAt(nowMillis: Long): Long =
+        usageWindow.usageAt(sessionStartMillis = sessionStartTime, nowMillis = nowMillis)
+
     private fun startTimer() {
         timerJob?.cancel()
         timerJob = coroutineScope.launch {
             while (true) {
-                val elapsed = calculateDisplayedTimerDuration(
-                    initialState = initialState,
-                    sessionStartAtMillis = sessionStartTime,
-                    nowMillis = System.currentTimeMillis(),
-                )
-                timerTextView?.text = elapsed.formatAsTime()
+                timerTextView?.text = displayedDurationAt(System.currentTimeMillis()).formatAsTime()
                 delay(1000.milliseconds)
             }
         }

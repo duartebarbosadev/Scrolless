@@ -50,9 +50,10 @@ interface BlockingManager {
     suspend fun onPeriodicCheck(elapsedTime: Long): BlockingResult
 
     /**
-     * Finishes a viewing session and gives its duration to the active blocking rule.
+     * Finishes a viewing session.
      *
-     * @param sessionTime Total session duration, in milliseconds.
+     * @param sessionStartMillis Time when the session started.
+     * @param sessionEndMillis Time when the session ended.
      */
-    suspend fun onExitBlockedContent(sessionTime: Long)
+    suspend fun onExitBlockedContent(sessionStartMillis: Long, sessionEndMillis: Long)
 }

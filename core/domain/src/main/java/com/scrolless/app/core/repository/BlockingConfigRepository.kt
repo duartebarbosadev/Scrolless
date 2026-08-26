@@ -17,33 +17,42 @@
 package com.scrolless.app.core.repository
 
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockingConfig
+import com.scrolless.app.core.model.UsageWindow
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Stores the selected blocking option and the current interval window.
+ * Single owner of the blocking settings and of the interval usage they produce.
  */
 interface BlockingConfigRepository {
 
+    fun observeConfig(): Flow<BlockingConfig>
+
+    /** Emits only when the selected mode or its settings change, never when usage changes. */
     fun observeActiveOption(): Flow<BlockOption>
 
-    /**
-     * Used by the Home screen to restore interval settings while another option is selected.
-     */
-    fun observeSavedIntervalTimer(): Flow<BlockOption.IntervalTimer>
+    suspend fun getConfig(): BlockingConfig
 
-    /**
-     * Selects [option] without clearing settings saved for other options.
-     */
+    /** Selects [option] without touching the settings or usage of the other modes. */
     suspend fun setActiveOption(option: BlockOption)
 
+    /** Saves the daily limit and selects daily limit mode. */
     suspend fun configureDailyLimit(limitMillis: Long)
 
-    /**
-     * Editing an active interval keeps its start time and watched time. For example, changing a
-     * 30-minute window to 60 minutes expands the same window instead of resetting it. Configuring
-     * interval mode while another option is selected starts a new window.
-     */
+    /** Saves the interval settings and selects interval mode, keeping the running window. */
     suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long)
 
-    suspend fun updateIntervalWindow(windowStartMillis: Long, usageMillis: Long)
+    /**
+     * Returns the interval window containing [nowMillis], advancing and saving it when the
+     * previous window has ended.
+     */
+    suspend fun getCurrentIntervalWindow(nowMillis: Long): UsageWindow
+
+    /**
+     * Adds one finished viewing session to the interval usage and returns the updated window.
+     *
+     * Callers pass timestamps rather than a window, so window rollover always uses the settings
+     * that are saved right now.
+     */
+    suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): UsageWindow
 }

@@ -51,10 +51,11 @@ class NoBlockHandler : BlockOptionHandler {
     /**
      * No usage tracking or blocking.
      *
-     * @param sessionTime Duration of the session in milliseconds.
+     * @param sessionStartMillis Time when the session started.
+     * @param sessionEndMillis Time when the session ended.
      */
-    override suspend fun onExitContent(sessionTime: Long) {
-        Timber.v("NothingSelected.onExit: session=%d", sessionTime)
+    override suspend fun onExitContent(sessionStartMillis: Long, sessionEndMillis: Long) {
+        Timber.v("NothingSelected.onExit: session=%d", sessionEndMillis - sessionStartMillis)
         // No usage tracking or blocking
     }
 }
