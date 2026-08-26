@@ -39,9 +39,11 @@ import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.ScrollessDatabase
 import com.scrolless.app.core.data.database.dao.SessionSegmentDao
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
+import com.scrolless.app.core.data.repository.BlockingConfigRepositoryImpl
 import com.scrolless.app.core.data.repository.SessionSegmentStoreImpl
 import com.scrolless.app.core.data.repository.SessionTrackerImpl
 import com.scrolless.app.core.data.repository.UserSettingsStoreImpl
+import com.scrolless.app.core.repository.BlockingConfigRepository
 import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
@@ -67,6 +69,7 @@ object DataDiModule {
                 ScrollessDatabase.MIGRATION_6_7,
                 ScrollessDatabase.MIGRATION_7_8,
                 ScrollessDatabase.MIGRATION_8_9,
+                ScrollessDatabase.MIGRATION_9_10,
             ).fallbackToDestructiveMigration(true) // Not recommended but for now it shouldn't matter
             .fallbackToDestructiveMigrationOnDowngrade(true).addCallback(
                 object : RoomDatabase.Callback() {
@@ -75,7 +78,8 @@ object DataDiModule {
                         // Insert default user settings row
                         db.execSQL(
                             """
-                        INSERT INTO user_settings (id, active_block_option, time_limit, interval_length,
+                        INSERT INTO user_settings (id, active_block_option, daily_limit,
+                                                   interval_allowance, interval_length,
                                                    interval_window_start_at, interval_usage,
                                                    timer_overlay_enabled,
                                                    timer_overlay_x, timer_overlay_y, waiting_for_accessibility,
@@ -83,7 +87,7 @@ object DataDiModule {
                                                    first_launch_at, has_seen_review_prompt,
                                                    review_prompt_attempt_count, review_prompt_last_attempt_at,
                                                    pause_duration_millis, except_reels_sent_by_dm)
-                        VALUES (1, 'NothingSelected', 0, 0, 0, 0, 0, 0, 100, 0, 0, 0,
+                        VALUES (1, 'NothingSelected', 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0,
                                 CAST(strftime('%s','now') AS INTEGER) * 1000, 0, 0, 0, 300000, 0)
                         """,
                         )
@@ -99,6 +103,11 @@ object DataDiModule {
     @Singleton
     fun provideUserSettingsStore(userSettingsDao: UserSettingsDao): UserSettingsStore =
         UserSettingsStoreImpl(userSettingsDao = userSettingsDao)
+
+    @Provides
+    @Singleton
+    fun provideBlockingConfigRepository(userSettingsDao: UserSettingsDao): BlockingConfigRepository =
+        BlockingConfigRepositoryImpl(userSettingsDao = userSettingsDao)
 
     @Provides
     @Singleton

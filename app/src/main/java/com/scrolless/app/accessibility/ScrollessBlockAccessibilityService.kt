@@ -33,6 +33,7 @@ import com.scrolless.app.core.model.BlockingResult
 import com.scrolless.app.core.model.DetectionMethod
 import com.scrolless.app.core.model.DetectionNode
 import com.scrolless.app.core.model.ResolvedBlockableApp
+import com.scrolless.app.core.repository.BlockingConfigRepository
 import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.ui.overlay.TimerOverlayManager
@@ -42,9 +43,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -111,7 +110,13 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     lateinit var blockingManager: BlockingManager
 
     /**
-     * Provides access to user settings including active block option, time limits, and overlay preferences.
+     * Emits the active option together with the values needed to enforce it.
+     */
+    @Inject
+    lateinit var blockingConfigRepository: BlockingConfigRepository
+
+    /**
+     * Provides access to preferences that do not participate in blocking decisions.
      */
     @Inject
     lateinit var userSettingsStore: UserSettingsStore
@@ -247,12 +252,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         // Observe changes to the block config
         serviceScope.launch {
-            val timeLimitFlow = userSettingsStore.getTimeLimit().distinctUntilChanged()
-            val intervalLengthFlow = userSettingsStore.getIntervalLength().distinctUntilChanged()
-            val blockOptionFlow = userSettingsStore.getActiveBlockOption().distinctUntilChanged()
-            combine(timeLimitFlow, intervalLengthFlow, blockOptionFlow) { _, _, blockOption -> blockOption }.collect { blockOption ->
-                Timber.d("Settings changed, re-initializing blocking manager with %s", blockOption)
-                blockingManager.init(blockOption)
+            blockingConfigRepository.observeActiveOption().collect { option ->
+                Timber.d("Blocking option changed: %s", option)
+                blockingManager.init(option)
             }
         }
 
@@ -672,8 +674,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
             // Get total time spent on brainrot to show on the overlay timer before hiding
             val overlaySummaryTotal = if (currentTimerOverlayEnabled) {
-                when (userSettingsStore.getActiveBlockOption().first()) {
-                    BlockOption.IntervalTimer -> userSettingsStore.getIntervalUsage().first() + sessionTime
+                val config = blockingConfigRepository.getConfig()
+                when (config.activeOption) {
+                    is BlockOption.IntervalTimer -> config.intervalUsageWindow.usageMillis + sessionTime
                     else -> sessionTracker.getDailyUsage() + sessionTime
                 }
             } else {
@@ -692,7 +695,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             sessionTracker.addToDailyUsage(sessionTime, exitedApp.app)
 
             // Let blocking manager do its logic, if needed
-            blockingManager.onExitBlockedContent(sessionTime)
+            blockingManager.onExitBlockedContent(
+                sessionStartMillis = session.startedAtMillis,
+                sessionEndMillis =
+                    session.startedAtMillis + sessionTime,
+            )
         }
 
         Timber.d("Exit handling completed for app: %s (%s)", exitedApp.app.name, exitedApp.packageId)

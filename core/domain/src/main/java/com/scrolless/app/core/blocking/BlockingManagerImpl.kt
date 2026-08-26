@@ -20,129 +20,76 @@ import com.scrolless.app.core.blocking.handler.BlockAllBlockHandler
 import com.scrolless.app.core.blocking.handler.BlockOptionHandler
 import com.scrolless.app.core.blocking.handler.DayLimitBlockHandler
 import com.scrolless.app.core.blocking.handler.IntervalTimerBlockHandler
-import com.scrolless.app.core.blocking.handler.IntervalTimerState
 import com.scrolless.app.core.blocking.handler.NoBlockHandler
 import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingResult
+import com.scrolless.app.core.repository.BlockingConfigRepository
 import com.scrolless.app.core.repository.SessionTracker
-import com.scrolless.app.core.repository.UserSettingsStore
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import timber.log.Timber
 
 /**
- * Manages blocking logic for restricted content based on configured [BlockOption].
+ * Delegates viewing-session events to the handler for the selected [BlockOption].
  *
- * Uses a [BlockOptionHandler] strategy pattern to delegate blocking decisions
- * based on the active block configuration.
+ * Handler changes and session events are processed one at a time.
  */
 @Singleton
 class BlockingManagerImpl @Inject constructor(
     private val sessionTracker: SessionTracker,
-    private val userSettingsStore: UserSettingsStore,
+    private val blockingConfigRepository: BlockingConfigRepository,
     private val timeProvider: TimeProvider,
 ) : BlockingManager {
 
-    private lateinit var handler: BlockOptionHandler
-    private val persistenceScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    private var handler: BlockOptionHandler = NoBlockHandler()
 
-    /**
-     * Initializes the manager with a block option configuration.
-     * Sets up the appropriate handler and ensures usage data is current.
-     *
-     * @param blockOption The blocking option to apply.
-     */
-    override suspend fun init(blockOption: BlockOption) {
-        val timeLimit = userSettingsStore.getTimeLimit().first()
-        val intervalLength = userSettingsStore.getIntervalLength().first()
-        val intervalState = IntervalTimerState(
-            windowStartMillis = userSettingsStore.getIntervalWindowStart().first(),
-            usageMillis = userSettingsStore.getIntervalUsage().first(),
-        )
+    // Settings changes, timer checks, and session exits arrive from different coroutines. Finish
+    // one handler operation before another starts or replaces the handler.
+    private val handlerMutex = Mutex()
 
-        Timber.i(
-            "init: option=%s, timeLimit=%d, intervalLength=%d, intervalState=%s",
-            blockOption,
-            timeLimit,
-            intervalLength,
-            intervalState,
-        )
-        handler = createHandlerForConfig(blockOption, timeLimit, intervalLength, intervalState)
+    override suspend fun init(option: BlockOption) = handlerMutex.withLock {
+        Timber.i("Initializing blocking manager with %s", option)
+        handler = createHandler(option)
     }
 
     /**
-     * Creates the appropriate [BlockOptionHandler] based on configuration.
-     *
-     * @param blockOption The blocking option type.
-     * @param timeLimit Daily or interval time limit in milliseconds.
-     * @param intervalLength Interval duration in milliseconds (for IntervalTimer).
-     * @return A handler matching the configuration.
+     * Builds the handler that applies [option] during viewing sessions.
      */
-    private fun createHandlerForConfig(
-        blockOption: BlockOption,
-        timeLimit: Long,
-        intervalLength: Long,
-        intervalState: IntervalTimerState,
-    ): BlockOptionHandler = when (blockOption) {
-        BlockOption.BlockAll -> BlockAllBlockHandler(timeProvider).also { Timber.d("Using BlockAll handler") }
+    private fun createHandler(option: BlockOption): BlockOptionHandler = when (option) {
+        BlockOption.BlockAll -> BlockAllBlockHandler(timeProvider)
 
-        BlockOption.DailyLimit -> DayLimitBlockHandler(timeLimit).also { Timber.d("Using DayLimit handler (limit=%d)", timeLimit) }
+        is BlockOption.DailyLimit -> DayLimitBlockHandler(option.limitMillis)
 
-        BlockOption.IntervalTimer ->
-            IntervalTimerBlockHandler(
-                allowanceMillis = timeLimit,
-                intervalLengthMillis = intervalLength,
-                initialState = intervalState,
-                onStateChanged = { state ->
-                    persistenceScope.launch {
-                        userSettingsStore.updateIntervalState(state.windowStartMillis, state.usageMillis)
-                    }
-                },
-            ).also { Timber.d("Using IntervalTimer handler (limit=%d, interval=%d)", timeLimit, intervalLength) }
+        is BlockOption.IntervalTimer -> IntervalTimerBlockHandler(
+            allowanceMillis = option.allowanceMillis,
+            blockingConfigRepository = blockingConfigRepository,
+            timeProvider = timeProvider,
+        )
 
-        BlockOption.NothingSelected -> NoBlockHandler().also { Timber.d("Using NothingSelected handler") }
+        BlockOption.NothingSelected -> NoBlockHandler()
     }
 
-    /**
-     * Called when entering blocked content.
-     * Checks usage and decides if the content should be immediately blocked.
-     *
-     * @return `true` if blocking is required immediately.
-     */
-    override suspend fun onEnterBlockedContent(): Boolean {
+    override suspend fun onEnterBlockedContent(): Boolean = handlerMutex.withLock {
         val currentDailyUsage = sessionTracker.getDailyUsage()
         val shouldBlock = handler.onEnterContent(currentDailyUsage)
+
         Timber.d("onEnterBlockedContent: daily=%d -> shouldBlock=%s", currentDailyUsage, shouldBlock)
-        return shouldBlock
+        shouldBlock
     }
 
-    /**
-     * Called periodically to check if blocking should occur.
-     * For example, to check if a time limit has been reached during the session.
-     *
-     * @param elapsedTime Time elapsed in the current session (milliseconds).
-     * @return [com.scrolless.app.core.model.BlockingResult] indicating whether to block, continue, or check later.
-     */
-    override suspend fun onPeriodicCheck(elapsedTime: Long): BlockingResult {
+    override suspend fun onPeriodicCheck(elapsedTime: Long): BlockingResult = handlerMutex.withLock {
         val currentDailyUsage = sessionTracker.getDailyUsage()
         val result = handler.onPeriodicCheck(currentDailyUsage, elapsedTime)
+
         Timber.v("onPeriodicCheck: daily=%d, elapsed=%d -> result=%s", currentDailyUsage, elapsedTime, result)
-        return result
+        result
     }
 
-    /**
-     * Called when exiting blocked content.
-     *
-     * @param sessionTime Duration of the session in milliseconds.
-     */
-    override fun onExitBlockedContent(sessionTime: Long) {
-        Timber.d("onExitBlockedContent: session=%d", sessionTime)
-        handler.onExitContent(sessionTime)
+    override suspend fun onExitBlockedContent(sessionStartMillis: Long, sessionEndMillis: Long) = handlerMutex.withLock {
+        Timber.d("onExitBlockedContent: session=%d", sessionEndMillis - sessionStartMillis)
+        handler.onExitContent(sessionStartMillis, sessionEndMillis)
     }
 }

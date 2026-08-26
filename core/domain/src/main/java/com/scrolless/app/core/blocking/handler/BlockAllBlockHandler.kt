@@ -28,7 +28,7 @@ class BlockAllBlockHandler(private val timeProvider: TimeProvider) : BlockOption
     private var lastBlockTime = 0L
     private var blockAttempts = 0
 
-    override fun onEnterContent(currentDailyUsage: Long): Boolean {
+    override suspend fun onEnterContent(currentDailyUsage: Long): Boolean {
         Timber.d("BlockAll.onEnterContent: daily=%d -> block", currentDailyUsage)
         // Always block immediately.
 
@@ -43,7 +43,7 @@ class BlockAllBlockHandler(private val timeProvider: TimeProvider) : BlockOption
      * @param elapsedTime Time elapsed in current session in milliseconds.
      * @return [BlockingResult.BlockNow] to block, or [BlockingResult.Continue] for rapid re-block.
      */
-    override fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult = runSafe {
+    override suspend fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult = runSafe {
 
         lastBlockTime = timeProvider.currentTimeInMillis()
         Timber.v("BlockAll.onPeriodicCheck: daily=%d, elapsed=%d -> blocking now", currentDailyUsage, elapsedTime)
@@ -63,8 +63,8 @@ class BlockAllBlockHandler(private val timeProvider: TimeProvider) : BlockOption
         return function()
     }
 
-    override fun onExitContent(sessionTime: Long) {
-        Timber.v("BlockAll.onExitContent: session=%d", sessionTime)
+    override suspend fun onExitContent(sessionStartMillis: Long, sessionEndMillis: Long) {
+        Timber.v("BlockAll.onExitContent: session=%d", sessionEndMillis - sessionStartMillis)
         blockAttempts = 0
         lastBlockTime = 0L
     }

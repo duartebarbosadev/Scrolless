@@ -103,7 +103,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
+import com.scrolless.app.core.model.BlockingSettings
 import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.core.model.UsageWindow
 import com.scrolless.app.designsystem.theme.LocalSharedTransitionScope
 import com.scrolless.app.designsystem.theme.SETTINGS_TRANSITION_KEY
 import com.scrolless.app.designsystem.theme.ScrollessTheme
@@ -245,8 +247,8 @@ fun HomeScreen(
     }
 
     val hasLimitTimer =
-        (uiState.blockOption == BlockOption.DailyLimit && uiState.timeLimit > 0L) ||
-            (uiState.blockOption == BlockOption.IntervalTimer && uiState.timeLimit > 0L)
+        (uiState.blockOption is BlockOption.DailyLimit && uiState.savedSettings.dailyLimitMillis > 0L) ||
+            (uiState.blockOption is BlockOption.IntervalTimer && uiState.savedSettings.intervalAllowanceMillis > 0L)
     val limitProgressFraction = if (hasLimitTimer) {
         uiState.progress.coerceIn(0, 100) / 100f
     } else {
@@ -290,8 +292,8 @@ fun HomeScreen(
         accentStrength = backgroundAccentStrength,
     ) {
         fun openIntervalConfig() {
-            pendingIntervalBreak = uiState.intervalLength.takeIf { it > 0L } ?: DEFAULT_INTERVAL_BREAK_MILLIS
-            pendingIntervalAllowance = uiState.timeLimit.takeIf { it > 0L } ?: DEFAULT_INTERVAL_ALLOWANCE_MILLIS
+            pendingIntervalBreak = uiState.savedSettings.intervalLengthMillis.takeIf { it > 0L } ?: DEFAULT_INTERVAL_BREAK_MILLIS
+            pendingIntervalAllowance = uiState.savedSettings.intervalAllowanceMillis.takeIf { it > 0L } ?: DEFAULT_INTERVAL_ALLOWANCE_MILLIS
             showIntervalTimerDialog = true
         }
 
@@ -327,12 +329,17 @@ fun HomeScreen(
                 val shouldBypass = BuildConfig.DEBUG && debugBypassAccessibilityCheck
                 if (shouldBypass || context.isAccessibilityServiceEnabled(accessibilityServiceClass)) {
                     Timber.i("Interval timer clicked -> current=%s", uiState.blockOption)
-                    if (uiState.blockOption == BlockOption.IntervalTimer) {
+                    if (uiState.blockOption is BlockOption.IntervalTimer) {
                         viewModel.onBlockOptionSelected(BlockOption.NothingSelected)
-                    } else if (uiState.intervalLength == 0L || uiState.timeLimit == 0L) {
+                    } else if (uiState.savedSettings.intervalLengthMillis == 0L || uiState.savedSettings.intervalAllowanceMillis == 0L) {
                         openIntervalConfig()
                     } else {
-                        viewModel.onBlockOptionSelected(BlockOption.IntervalTimer)
+                        viewModel.onBlockOptionSelected(
+                            BlockOption.IntervalTimer(
+                                allowanceMillis = uiState.savedSettings.intervalAllowanceMillis,
+                                intervalLengthMillis = uiState.savedSettings.intervalLengthMillis,
+                            ),
+                        )
                     }
                 } else {
                     Timber.w("Accessibility service not enabled. Showing explainer (interval timer).")
@@ -503,9 +510,12 @@ private fun HomeContent(
         // Always blocking
         BlockOption.BlockAll -> true
 
-        BlockOption.DailyLimit -> uiState.timeLimit > 0 && uiState.currentUsage >= uiState.timeLimit
+        is BlockOption.DailyLimit ->
+            uiState.blockOption.limitMillis > 0 && uiState.currentUsage >= uiState.blockOption.limitMillis
 
-        BlockOption.IntervalTimer -> uiState.timeLimit > 0 && uiState.intervalUsage >= uiState.timeLimit
+        is BlockOption.IntervalTimer ->
+            uiState.blockOption.allowanceMillis > 0 &&
+                uiState.intervalUsageWindow.usageMillis >= uiState.blockOption.allowanceMillis
 
         BlockOption.NothingSelected -> false
     }
@@ -698,10 +708,16 @@ private fun UsageOverviewHeader(
                 blockOption = if (isTodayPage) uiState.blockOption else BlockOption.NothingSelected,
                 progress = if (isTodayPage) uiState.progress else 0,
                 currentUsage = if (isTodayPage) uiState.currentUsage else pageAnalytics.dailyTotalMillis,
-                intervalUsage = if (isTodayPage) uiState.intervalUsage else 0L,
-                timeLimit = if (isTodayPage) uiState.timeLimit else 0L,
-                intervalLength = if (isTodayPage) uiState.intervalLength else 0L,
-                intervalWindowStart = if (isTodayPage) uiState.intervalWindowStart else 0L,
+                limitMillis = if (isTodayPage) {
+                    when (uiState.blockOption) {
+                        is BlockOption.DailyLimit -> uiState.savedSettings.dailyLimitMillis
+                        is BlockOption.IntervalTimer -> uiState.savedSettings.intervalAllowanceMillis
+                        else -> 0L
+                    }
+                } else {
+                    0L
+                },
+                intervalUsageWindow = if (isTodayPage) uiState.intervalUsageWindow else UsageWindow.EMPTY,
                 listSessionSegments = if (isTodayPage) uiState.listSessionSegments else pageAnalytics.sessionSegments,
                 onClick = onUsageAnalyticsTodaySelected,
             )
@@ -976,8 +992,8 @@ fun Modifier.dateSwipeGesture(
 @Composable
 fun HomeScreenPreview() {
     val mockState = HomeUiState(
-        blockOption = BlockOption.DailyLimit,
-        timeLimit = TimeUnit.MINUTES.toMillis(60),
+        blockOption = BlockOption.DailyLimit(limitMillis = TimeUnit.MINUTES.toMillis(60)),
+        savedSettings = BlockingSettings(dailyLimitMillis = TimeUnit.MINUTES.toMillis(60)),
         currentUsage = TimeUnit.MINUTES.toMillis(42),
         progress = 70,
         listSessionSegments = listOf(
@@ -1042,11 +1058,19 @@ fun PreviewIntervalTimerSelected() {
     ScrollessTheme {
         HomeContent(
             uiState = HomeUiState(
-                blockOption = BlockOption.IntervalTimer,
-                timeLimit = TimeUnit.MINUTES.toMillis(5),
-                intervalLength = TimeUnit.MINUTES.toMillis(60),
-                intervalUsage = TimeUnit.MINUTES.toMillis(3),
-                intervalWindowStart = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(30),
+                blockOption = BlockOption.IntervalTimer(
+                    allowanceMillis = TimeUnit.MINUTES.toMillis(5),
+                    intervalLengthMillis = TimeUnit.MINUTES.toMillis(60),
+                ),
+                savedSettings = BlockingSettings(
+                    intervalAllowanceMillis = TimeUnit.MINUTES.toMillis(5),
+                    intervalLengthMillis = TimeUnit.MINUTES.toMillis(60),
+                ),
+                intervalUsageWindow = UsageWindow(
+                    startMillis = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(30),
+                    lengthMillis = TimeUnit.MINUTES.toMillis(60),
+                    usageMillis = TimeUnit.MINUTES.toMillis(3),
+                ),
                 currentUsage = TimeUnit.MINUTES.toMillis(42),
             ),
             onBlockOptionSelected = {},
@@ -1065,11 +1089,19 @@ fun PreviewIntervalTimer() {
     ScrollessTheme {
         HomeContent(
             uiState = HomeUiState(
-                blockOption = BlockOption.IntervalTimer,
-                timeLimit = TimeUnit.MINUTES.toMillis(5),
-                intervalLength = TimeUnit.MINUTES.toMillis(60),
-                intervalUsage = TimeUnit.MINUTES.toMillis(4),
-                intervalWindowStart = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(45),
+                blockOption = BlockOption.IntervalTimer(
+                    allowanceMillis = TimeUnit.MINUTES.toMillis(5),
+                    intervalLengthMillis = TimeUnit.MINUTES.toMillis(60),
+                ),
+                savedSettings = BlockingSettings(
+                    intervalAllowanceMillis = TimeUnit.MINUTES.toMillis(5),
+                    intervalLengthMillis = TimeUnit.MINUTES.toMillis(60),
+                ),
+                intervalUsageWindow = UsageWindow(
+                    startMillis = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(45),
+                    lengthMillis = TimeUnit.MINUTES.toMillis(60),
+                    usageMillis = TimeUnit.MINUTES.toMillis(4),
+                ),
                 currentUsage = TimeUnit.MINUTES.toMillis(50),
             ),
             onBlockOptionSelected = {},

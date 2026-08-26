@@ -20,9 +20,13 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockingConfig
+import com.scrolless.app.core.model.BlockingSettings
 import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.core.model.UsageWindow
 import com.scrolless.app.core.model.usage.DailyUsageTotal
 import com.scrolless.app.core.model.usage.calculateWeekdayAverages
+import com.scrolless.app.core.repository.BlockingConfigRepository
 import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
@@ -39,6 +43,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
@@ -56,6 +61,7 @@ private const val FIRST_LAUNCH_LOADING = -1L
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val userSettingsStore: UserSettingsStore,
+    private val blockingConfigRepository: BlockingConfigRepository,
     private val sessionSegmentStore: SessionSegmentStore,
 ) : ViewModel() {
 
@@ -69,7 +75,7 @@ class HomeViewModel @Inject constructor(
     )
     private val reviewPromptDismissed = MutableStateFlow(false)
 
-    private val requestReview = kotlinx.coroutines.flow.combine(
+    private val requestReview = combine(
         userSettingsStore.getFirstLaunchAt(),
         userSettingsStore.getHasSeenReviewPrompt(),
         userSettingsStore.getReviewPromptAttemptCount(),
@@ -151,20 +157,12 @@ class HomeViewModel @Inject constructor(
     }
 
     private val usageSnapshot = combine(
-        userSettingsStore.getActiveBlockOption(),
-        userSettingsStore.getTimeLimit(),
-        userSettingsStore.getIntervalLength(),
-        userSettingsStore.getIntervalUsage(),
-        userSettingsStore.getIntervalWindowStart(),
+        blockingConfigRepository.observeConfig(),
         currentDate.flatMapLatest { date -> sessionSegmentStore.observeTotalDuration(date) },
         sessionSegmentsForCurrentDay,
-    ) { blockOption, timeLimit, intervalLength, intervalUsage, intervalWindowStart, currentUsage, usageSegment ->
+    ) { blockingConfig, currentUsage, usageSegment ->
         UsageSnapshot(
-            blockOption = blockOption,
-            timeLimit = timeLimit,
-            intervalLength = intervalLength,
-            intervalUsage = intervalUsage,
-            intervalWindowStart = intervalWindowStart,
+            blockingConfig = blockingConfig,
             currentUsage = currentUsage,
             sessionSegment = usageSegment,
         )
@@ -191,18 +189,14 @@ class HomeViewModel @Inject constructor(
         ->
 
         val progress = calculateProgress(
-            blockOption = usage.blockOption,
+            blockingConfig = usage.blockingConfig,
             currentUsage = usage.currentUsage,
-            timeLimit = usage.timeLimit,
-            intervalUsage = usage.intervalUsage,
         )
 
         HomeUiState(
-            blockOption = usage.blockOption,
-            timeLimit = usage.timeLimit,
-            intervalLength = usage.intervalLength,
-            intervalUsage = usage.intervalUsage,
-            intervalWindowStart = usage.intervalWindowStart,
+            blockOption = usage.blockingConfig.activeOption,
+            savedSettings = usage.blockingConfig.savedSettings,
+            intervalUsageWindow = usage.blockingConfig.intervalUsageWindow,
             currentUsage = usage.currentUsage,
             progress = progress,
             pauseUntilMillis = pauseUntil,
@@ -224,7 +218,7 @@ class HomeViewModel @Inject constructor(
     fun onBlockOptionSelected(blockOption: BlockOption) {
         Timber.i("Block option selected: %s", blockOption)
         viewModelScope.launch {
-            userSettingsStore.setActiveBlockOption(blockOption)
+            blockingConfigRepository.setActiveOption(blockOption)
             if (blockOption == BlockOption.NothingSelected) {
                 onPauseToggle(false)
             }
@@ -234,8 +228,7 @@ class HomeViewModel @Inject constructor(
     fun onTimeLimitChange(durationMillis: Long) {
         Timber.d("Time limit changed: %d ms", durationMillis)
         viewModelScope.launch {
-            userSettingsStore.setActiveBlockOption(BlockOption.DailyLimit)
-            userSettingsStore.setTimeLimit(durationMillis)
+            blockingConfigRepository.configureDailyLimit(durationMillis)
         }
     }
 
@@ -263,41 +256,30 @@ class HomeViewModel @Inject constructor(
             allowanceMillis,
         )
         viewModelScope.launch {
-            userSettingsStore.setIntervalLength(intervalBreakMillis)
-            userSettingsStore.setTimeLimit(allowanceMillis)
-            userSettingsStore.updateIntervalState(windowStart = 0L, usage = 0L)
-            userSettingsStore.setActiveBlockOption(BlockOption.IntervalTimer)
+            blockingConfigRepository.configureIntervalTimer(
+                allowanceMillis = allowanceMillis,
+                intervalLengthMillis = intervalBreakMillis,
+            )
         }
     }
 
     /**
-     * Computes progress percentage for the active blocking mode.
-     *
-     * Daily mode uses [currentUsage] against [timeLimit].
-     * Interval mode uses [intervalUsage] against [timeLimit].
-     *
-     * @param blockOption Active blocking strategy.
-     * @param currentUsage Total usage accumulated for the current day.
-     * @param timeLimit Configured limit in milliseconds.
-     * @param intervalUsage Usage accumulated in the current interval window.
-     * @return Progress in integer percent, clamped to the [0, 100] range.
+     * Daily progress uses today's total usage. Interval progress uses the current window only.
      */
-    private fun calculateProgress(blockOption: BlockOption, currentUsage: Long, timeLimit: Long, intervalUsage: Long): Int =
-        when (blockOption) {
-            BlockOption.DailyLimit -> usageToProgress(usage = currentUsage, limit = timeLimit)
-            BlockOption.IntervalTimer -> usageToProgress(usage = intervalUsage, limit = timeLimit)
-            else -> 0
+    private fun calculateProgress(blockingConfig: BlockingConfig, currentUsage: Long): Int =
+        when (val option = blockingConfig.activeOption) {
+            is BlockOption.DailyLimit -> usageToProgress(usage = currentUsage, limit = option.limitMillis)
+
+            is BlockOption.IntervalTimer ->
+                usageToProgress(usage = blockingConfig.intervalUsageWindow.usageMillis, limit = option.allowanceMillis)
+
+            BlockOption.BlockAll,
+            BlockOption.NothingSelected,
+            -> 0
         }
 
     /**
-     * Converts a usage/limit pair to an integer percentage.
-     *
-     * For non-zero usage below the limit, returns at least `1` so tiny progress
-     * remains visible in the UI.
-     *
-     * @param usage Elapsed usage in milliseconds.
-     * @param limit Allowed usage in milliseconds.
-     * @return Progress in integer percent, clamped to the [0, 100] range.
+     * Keeps non-zero progress visible even when it is less than one percent.
      */
     private fun usageToProgress(usage: Long, limit: Long): Int {
         if (limit <= 0L) return 0
@@ -412,10 +394,8 @@ class HomeViewModel @Inject constructor(
 @Immutable
 data class HomeUiState(
     val blockOption: BlockOption = BlockOption.NothingSelected,
-    val timeLimit: Long = 0L,
-    val intervalLength: Long = 0L,
-    val intervalUsage: Long = 0L,
-    val intervalWindowStart: Long = 0L,
+    val savedSettings: BlockingSettings = BlockingSettings(),
+    val intervalUsageWindow: UsageWindow = UsageWindow.EMPTY,
     val currentUsage: Long = 0L,
     val progress: Int = 0,
     val showComingSoonSnackBar: Boolean = false,
@@ -427,10 +407,10 @@ data class HomeUiState(
     val hasSeenAccessibilityExplainer: Boolean = false,
 
     /**
-     * True once the initial values from [UserSettingsStore] have been emitted at least once.
+     * `true` after the app has loaded the user's settings for the first time.
      *
-     * Home screen side effects gate on this flag to avoid running before persisted settings load
-     * (e.g., auto-showing the accessibility explainer on the very first launch).
+     * The Home screen waits for this before opening dialogs automatically. Without this check, it
+     * could mistake temporary default values for the user's saved settings.
      */
     val hasLoadedSettings: Boolean = false,
 
@@ -522,12 +502,4 @@ private fun buildUsageAnalyticsDayUiState(date: LocalDate, segments: List<Sessio
     )
 }
 
-private data class UsageSnapshot(
-    val blockOption: BlockOption,
-    val timeLimit: Long,
-    val intervalLength: Long,
-    val intervalUsage: Long,
-    val intervalWindowStart: Long,
-    val currentUsage: Long,
-    val sessionSegment: List<SessionSegment>,
-)
+private data class UsageSnapshot(val blockingConfig: BlockingConfig, val currentUsage: Long, val sessionSegment: List<SessionSegment>)

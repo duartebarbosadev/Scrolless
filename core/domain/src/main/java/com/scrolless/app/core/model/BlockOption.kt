@@ -16,9 +16,23 @@
  */
 package com.scrolless.app.core.model
 
-enum class BlockOption {
-    BlockAll,
-    DailyLimit,
-    IntervalTimer,
-    NothingSelected,
+/**
+ * The blocking mode the user selected, with the settings needed to enforce it.
+ *
+ * This only describes configuration. How much the user already watched lives in
+ * [UsageWindow] and in the session tracker, so selecting a mode never carries usage.
+ */
+sealed interface BlockOption {
+
+    /** Closes blocked content as soon as it is opened. */
+    data object BlockAll : BlockOption
+
+    /** Allows [limitMillis] of blocked content per day. */
+    data class DailyLimit(val limitMillis: Long) : BlockOption
+
+    /** Allows [allowanceMillis] of blocked content per [intervalLengthMillis] window. */
+    data class IntervalTimer(val allowanceMillis: Long, val intervalLengthMillis: Long) : BlockOption
+
+    /** Nothing is blocked. */
+    data object NothingSelected : BlockOption
 }
