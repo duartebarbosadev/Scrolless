@@ -18,8 +18,8 @@ package com.scrolless.app.core.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
-import com.scrolless.app.core.data.database.model.BlockOptionType
 import com.scrolless.app.core.data.database.model.UserSettingsEntity
+import com.scrolless.app.core.model.BlockOption
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -35,15 +35,17 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
     abstract suspend fun getUserSettings(): UserSettingsEntity
 
     @Query("UPDATE user_settings SET active_block_option = :blockOption WHERE id = 1")
-    abstract suspend fun setActiveBlockOption(blockOption: BlockOptionType)
+    abstract suspend fun setActiveBlockOption(blockOption: BlockOption)
 
-    @Query("UPDATE user_settings SET active_block_option = 'DailyLimit', daily_limit = :limitMillis WHERE id = 1")
-    abstract suspend fun configureDailyLimit(limitMillis: Long)
+    @Query("UPDATE user_settings SET active_block_option = :blockOption, daily_limit = :limitMillis WHERE id = 1")
+    protected abstract suspend fun configureDailyLimit(blockOption: BlockOption, limitMillis: Long)
+
+    suspend fun configureDailyLimit(limitMillis: Long) = configureDailyLimit(BlockOption.DailyLimit, limitMillis)
 
     @Query(
         """
         UPDATE user_settings
-        SET active_block_option = 'IntervalTimer',
+        SET active_block_option = :blockOption,
             interval_allowance = :allowanceMillis,
             interval_length = :intervalLengthMillis,
             interval_window_start_at = :windowStart,
@@ -51,7 +53,16 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
         WHERE id = 1
         """,
     )
-    abstract suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long, windowStart: Long, usage: Long)
+    protected abstract suspend fun configureIntervalTimer(
+        blockOption: BlockOption,
+        allowanceMillis: Long,
+        intervalLengthMillis: Long,
+        windowStart: Long,
+        usage: Long,
+    )
+
+    suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long, windowStart: Long, usage: Long) =
+        configureIntervalTimer(BlockOption.IntervalTimer, allowanceMillis, intervalLengthMillis, windowStart, usage)
 
     @Query("UPDATE user_settings SET interval_window_start_at = :windowStart, interval_usage = :usage WHERE id = 1")
     abstract suspend fun updateIntervalState(windowStart: Long, usage: Long)

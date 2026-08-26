@@ -18,7 +18,6 @@ package com.scrolless.app.core.data.repository
 
 import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.data.database.model.BlockOptionType
 import com.scrolless.app.core.data.database.model.UserSettingsEntity
 import com.scrolless.app.core.model.BlockOption
 import io.mockk.coEvery
@@ -27,7 +26,9 @@ import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDate
 import java.time.LocalDateTime
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -87,9 +88,9 @@ class BlockingConfigRepositoryImplTest {
 
     @Test
     fun `selecting a mode does not overwrite its saved settings`() = runTest {
-        repository.setActiveOption(BlockOption.DailyLimit(limitMillis = 1L))
+        repository.setActiveOption(BlockOption.DailyLimit)
 
-        coVerify(exactly = 1) { dao.setActiveBlockOption(BlockOptionType.DailyLimit) }
+        coVerify(exactly = 1) { dao.setActiveBlockOption(BlockOption.DailyLimit) }
         coVerify(exactly = 0) { dao.configureDailyLimit(any()) }
     }
 
@@ -122,7 +123,7 @@ class BlockingConfigRepositoryImplTest {
     @Test
     fun `a session that started in interval mode is recorded after another mode is selected`() = runTest {
         coEvery { dao.getUserSettings() } returns config(
-            activeOption = BlockOptionType.DailyLimit,
+            activeOption = BlockOption.DailyLimit,
             windowStartMillis = 1_000L,
             usageMillis = 10_000L,
         )
@@ -134,55 +135,41 @@ class BlockingConfigRepositoryImplTest {
     }
 
     @Test
-    fun `reading a window that has not ended does not write to the database`() = runTest {
-        coEvery { dao.getUserSettings() } returns config(windowStartMillis = 1_000L, usageMillis = 4_000L)
-
-        val window = repository.getCurrentIntervalWindow(nowMillis = 5_000L)
-
-        assertEquals(1_000L, window.startMillis)
-        assertEquals(4_000L, window.usageMillis)
-        coVerify(exactly = 0) { dao.updateIntervalState(any(), any()) }
-    }
-
-    @Test
-    fun `reading a window that ended returns the current one without writing`() = runTest {
+    fun `reading the config never writes the window it rolled forward`() = runTest {
         coEvery { dao.getUserSettings() } returns config(
             intervalLengthMillis = 10_000L,
             windowStartMillis = 1_000L,
             usageMillis = 4_000L,
         )
 
-        val window = repository.getCurrentIntervalWindow(nowMillis = 25_000L)
+        val saved = repository.getConfig().intervalUsage
 
-        assertEquals(21_000L, window.startMillis)
-        assertEquals(0L, window.usageMillis)
+        assertEquals(1_000L, saved.startMillis)
+        assertEquals(4_000L, saved.usageMillis)
+        assertEquals(21_000L, saved.currentAt(nowMillis = 25_000L, lengthMillis = 10_000L).startMillis)
+        assertEquals(0L, saved.currentAt(nowMillis = 25_000L, lengthMillis = 10_000L).usageMillis)
         coVerify(exactly = 0) { dao.updateIntervalState(any(), any()) }
     }
 
     @Test
-    fun `usage changes do not emit a new active option`() = runTest {
+    fun `usage changes do not emit new blocking settings`() = runTest {
         every { dao.observeUserSettings() } returns flowOf(
             config(usageMillis = 0L),
             config(usageMillis = 10_000L),
             config(allowanceMillis = 2 * MINUTE_MILLIS, usageMillis = 10_000L),
         )
 
-        val options = repository.observeActiveOption().toList()
+        // The accessibility service rebuilds its handler off exactly this projection.
+        val settings = repository.observeConfig()
+            .map { it.activeOption to it.settings }
+            .distinctUntilChanged()
+            .toList()
 
-        assertEquals(2, options.size)
-    }
-
-    @Test
-    fun `a mode selected before it was configured blocks nothing`() = runTest {
-        every { dao.observeUserSettings() } returns flowOf(
-            config(activeOption = BlockOptionType.DailyLimit, dailyLimitMillis = 0L),
-        )
-
-        assertEquals(listOf(BlockOption.NothingSelected), repository.observeActiveOption().toList())
+        assertEquals(2, settings.size)
     }
 
     private fun config(
-        activeOption: BlockOptionType = BlockOptionType.IntervalTimer,
+        activeOption: BlockOption = BlockOption.IntervalTimer,
         dailyLimitMillis: Long = 5 * MINUTE_MILLIS,
         allowanceMillis: Long = MINUTE_MILLIS,
         intervalLengthMillis: Long = 30 * MINUTE_MILLIS,

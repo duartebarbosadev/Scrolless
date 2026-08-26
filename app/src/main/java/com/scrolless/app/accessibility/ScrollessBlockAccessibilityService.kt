@@ -44,6 +44,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -109,15 +110,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     @Inject
     lateinit var blockingManager: BlockingManager
 
-    /**
-     * Emits the active option together with the values needed to enforce it.
-     */
+    /** The blocking mode and the settings that enforce it. */
     @Inject
     lateinit var blockingConfigRepository: BlockingConfigRepository
 
-    /**
-     * Provides access to preferences that do not participate in blocking decisions.
-     */
+    /** Preferences that do not participate in blocking decisions. */
     @Inject
     lateinit var userSettingsStore: UserSettingsStore
 
@@ -252,10 +249,14 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         // Observe changes to the block config
         serviceScope.launch {
-            blockingConfigRepository.observeActiveOption().collect { option ->
-                Timber.d("Blocking option changed: %s", option)
-                blockingManager.init(option)
-            }
+            // Usage changes constantly; only the mode and its settings need a new handler.
+            blockingConfigRepository.observeConfig()
+                .map { it.activeOption to it.settings }
+                .distinctUntilChanged()
+                .collect { (option, settings) ->
+                    Timber.d("Blocking option changed: %s", option)
+                    blockingManager.init(option, settings)
+                }
         }
 
         // Observe timer overlay enabled changes
@@ -677,10 +678,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             val overlaySummaryTotal = if (currentTimerOverlayEnabled) {
                 val config = blockingConfigRepository.getConfig()
                 when (config.activeOption) {
-                    // Same arithmetic the repository is about to persist, so the number shown on
-                    // the way out matches the one the Home screen shows afterwards.
-                    is BlockOption.IntervalTimer ->
-                        config.intervalUsageWindow.plusSession(session.startedAtMillis, sessionEndMillis).usageMillis
+                    BlockOption.IntervalTimer -> config.intervalUsage.plusSession(
+                        sessionStartMillis = session.startedAtMillis,
+                        sessionEndMillis = sessionEndMillis,
+                        lengthMillis = config.settings.intervalLengthMillis,
+                    ).usageMillis
 
                     else -> sessionTracker.getDailyUsage() + sessionTime
                 }

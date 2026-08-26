@@ -24,7 +24,7 @@ import androidx.room.PrimaryKey
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.BlockingSettings
-import com.scrolless.app.core.model.IntervalUsageWindow
+import com.scrolless.app.core.model.IntervalUsage
 
 /**
  * The single row that holds every user setting.
@@ -38,7 +38,7 @@ import com.scrolless.app.core.model.IntervalUsageWindow
 @Immutable
 data class UserSettingsEntity(
     @PrimaryKey @ColumnInfo(name = "id") val id: Int = 1, // Single row for settings
-    @ColumnInfo(name = "active_block_option") val activeBlockOption: BlockOptionType,
+    @ColumnInfo(name = "active_block_option") val activeBlockOption: BlockOption,
     @ColumnInfo(name = "daily_limit") val dailyLimit: Long = 0L,
     @ColumnInfo(name = "interval_allowance") val intervalAllowance: Long = 0L,
     @ColumnInfo(name = "interval_length") val intervalLength: Long = 0L,
@@ -59,37 +59,11 @@ data class UserSettingsEntity(
 )
 
 fun UserSettingsEntity.toBlockingConfig(): BlockingConfig = BlockingConfig(
-    activeOption = toActiveOption(),
-    savedSettings = BlockingSettings(
+    activeOption = activeBlockOption,
+    settings = BlockingSettings(
         dailyLimitMillis = dailyLimit,
         intervalAllowanceMillis = intervalAllowance,
         intervalLengthMillis = intervalLength,
     ),
-    intervalUsageWindow = IntervalUsageWindow(
-        startMillis = intervalWindowStartAt,
-        lengthMillis = intervalLength,
-        usageMillis = intervalUsage,
-    ),
+    intervalUsage = IntervalUsage(startMillis = intervalWindowStartAt, usageMillis = intervalUsage),
 )
-
-/**
- * Reads the selected mode, falling back to [BlockOption.NothingSelected] when that mode has no
- * settings saved yet.
- */
-private fun UserSettingsEntity.toActiveOption(): BlockOption = when (activeBlockOption) {
-    BlockOptionType.BlockAll -> BlockOption.BlockAll
-
-    BlockOptionType.DailyLimit -> if (dailyLimit > 0L) {
-        BlockOption.DailyLimit(dailyLimit)
-    } else {
-        BlockOption.NothingSelected
-    }
-
-    BlockOptionType.IntervalTimer -> if (intervalAllowance > 0L && intervalLength > 0L) {
-        BlockOption.IntervalTimer(intervalAllowance, intervalLength)
-    } else {
-        BlockOption.NothingSelected
-    }
-
-    BlockOptionType.NothingSelected -> BlockOption.NothingSelected
-}

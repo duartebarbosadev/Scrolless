@@ -18,23 +18,17 @@ package com.scrolless.app.core.model
 
 import androidx.compose.runtime.Immutable
 
-/**
- * The state of blocking right now, in one snapshot.
- */
+/** The state of blocking right now, in one snapshot. */
+@Immutable
 data class BlockingConfig(
-    /** The mode to enforce. Its settings are the ones from [savedSettings] that belong to it. */
     val activeOption: BlockOption = BlockOption.NothingSelected,
-
-    /** What every mode is configured with, whether or not it is the selected one. */
-    val savedSettings: BlockingSettings = BlockingSettings(),
-
-    /** How much was watched in the current interval. Only meaningful for the interval timer. */
-    val intervalUsageWindow: IntervalUsageWindow = IntervalUsageWindow.EMPTY,
+    val settings: BlockingSettings = BlockingSettings(),
+    val intervalUsage: IntervalUsage = IntervalUsage.NOT_STARTED,
 )
 
 /**
- * The settings of every mode, kept even while another mode is selected so switching back restores
- * them. `0` means the mode was never configured.
+ * What every mode is configured with, kept even while another mode is selected so switching back
+ * restores it. `0` means the mode was never configured.
  */
 @Immutable
 data class BlockingSettings(val dailyLimitMillis: Long = 0L, val intervalAllowanceMillis: Long = 0L, val intervalLengthMillis: Long = 0L)

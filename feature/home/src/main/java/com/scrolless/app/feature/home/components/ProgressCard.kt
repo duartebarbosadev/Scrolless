@@ -61,7 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
-import com.scrolless.app.core.model.IntervalUsageWindow
+import com.scrolless.app.core.model.IntervalUsage
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.component.AppUsageLegend
 import com.scrolless.app.designsystem.component.AutoResizingText
@@ -85,31 +85,33 @@ fun ProgressCard(
     progress: Int,
     currentUsage: Long,
     limitMillis: Long,
-    intervalUsageWindow: IntervalUsageWindow,
+    intervalLengthMillis: Long,
+    intervalUsage: IntervalUsage,
     modifier: Modifier = Modifier,
     listSessionSegments: List<SessionSegment> = emptyList(),
     onClick: () -> Unit = {},
 ) {
     val clampedProgress = progress.coerceIn(0, 100)
 
-    val isIntervalMode = blockOption is BlockOption.IntervalTimer
-    val intervalAllowanceConfigured = isIntervalMode && limitMillis > 0L
+    val isIntervalMode = blockOption == BlockOption.IntervalTimer
+    val isIntervalRunning = isIntervalMode && limitMillis > 0L && intervalLengthMillis > 0L && intervalUsage.isStarted
     val intervalRemainingMillis = rememberIntervalRemainingTime(
-        isRunning = intervalAllowanceConfigured && intervalUsageWindow.isStarted,
-        window = intervalUsageWindow,
+        isRunning = isIntervalRunning,
+        startMillis = intervalUsage.startMillis,
+        lengthMillis = intervalLengthMillis,
     )
 
     val primaryText = when {
-        isIntervalMode -> intervalUsageWindow.usageMillis.formatTime()
+        isIntervalMode -> intervalUsage.usageMillis.formatTime()
         else -> currentUsage.formatTime()
     }
     val limitChipText = when {
-        isIntervalMode && intervalAllowanceConfigured -> limitMillis.formatTime()
-        blockOption is BlockOption.DailyLimit && limitMillis > 0L -> limitMillis.formatTime()
+        isIntervalMode && limitMillis > 0L -> limitMillis.formatTime()
+        blockOption == BlockOption.DailyLimit && limitMillis > 0L -> limitMillis.formatTime()
         else -> null
     }
 
-    val resetText = if (intervalAllowanceConfigured && intervalUsageWindow.isStarted) {
+    val resetText = if (isIntervalRunning) {
         stringResource(R.string.interval_timer_next_reset_in, intervalRemainingMillis.formatTime())
     } else {
         null
@@ -129,15 +131,15 @@ fun ProgressCard(
     val legendItems = remember(progressBarSegments) { buildLegendItems(progressBarSegments) }
 
     val segmentProgressFraction = when {
-        blockOption is BlockOption.DailyLimit && limitMillis > 0L -> clampedProgress / 100f
-        blockOption is BlockOption.IntervalTimer && intervalAllowanceConfigured -> clampedProgress / 100f
+        blockOption == BlockOption.DailyLimit && limitMillis > 0L -> clampedProgress / 100f
+        blockOption == BlockOption.IntervalTimer && limitMillis > 0L -> clampedProgress / 100f
         progressBarSegments.isNotEmpty() -> 1f
         else -> 0f
     }
 
     val isLimitReached = when (blockOption) {
-        is BlockOption.DailyLimit -> limitMillis in 1..currentUsage
-        is BlockOption.IntervalTimer -> limitMillis in 1..intervalUsageWindow.usageMillis
+        BlockOption.DailyLimit -> limitMillis in 1..currentUsage
+        BlockOption.IntervalTimer -> limitMillis in 1..intervalUsage.usageMillis
         else -> false
     }
 
@@ -291,21 +293,24 @@ fun ProgressCard(
 }
 
 /**
- * Counts down to the end of the running interval, restarting on its own when one ends.
+ * Counts down to the end of the running interval, rolling over on its own when one ends.
+ *
+ * Keyed on the window schedule only, so recording usage does not restart the countdown.
  */
 @Composable
-private fun rememberIntervalRemainingTime(isRunning: Boolean, window: IntervalUsageWindow): Long {
+private fun rememberIntervalRemainingTime(isRunning: Boolean, startMillis: Long, lengthMillis: Long): Long {
     val isInspectionMode = LocalInspectionMode.current
+    val schedule = remember(startMillis) { IntervalUsage(startMillis = startMillis, usageMillis = 0L) }
 
-    var remaining by remember(isRunning, window) {
-        mutableLongStateOf(window.remainingMillisAt(System.currentTimeMillis()))
+    var remaining by remember(isRunning, startMillis, lengthMillis) {
+        mutableLongStateOf(schedule.remainingMillisAt(System.currentTimeMillis(), lengthMillis))
     }
 
-    LaunchedEffect(isRunning, window, isInspectionMode) {
+    LaunchedEffect(isRunning, schedule, lengthMillis, isInspectionMode) {
         if (!isRunning || isInspectionMode) return@LaunchedEffect
 
         while (isActive) {
-            remaining = window.remainingMillisAt(System.currentTimeMillis())
+            remaining = schedule.remainingMillisAt(System.currentTimeMillis(), lengthMillis)
             delay(1_000L.milliseconds)
         }
     }
@@ -365,7 +370,8 @@ fun ProgressCardPreview() {
                 progress = 0,
                 currentUsage = 3600000L,
                 limitMillis = 0L,
-                intervalUsageWindow = IntervalUsageWindow.EMPTY,
+                intervalLengthMillis = 0L,
+                intervalUsage = IntervalUsage.NOT_STARTED,
                 listSessionSegments = listOf(
                     SessionSegment(BlockableApp.TIKTOK, 1800000L, java.time.LocalDateTime.now()),
                     SessionSegment(BlockableApp.REELS, 1200000L, java.time.LocalDateTime.now()),

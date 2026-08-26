@@ -84,7 +84,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingSettings
-import com.scrolless.app.core.model.IntervalUsageWindow
+import com.scrolless.app.core.model.IntervalUsage
 import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
@@ -189,16 +189,16 @@ fun TodayBlockingControls(
             },
             onDailyLimitClick = {
                 lastClicked = BlockingButtonType.DAILY_LIMIT
-                val isSelected = uiState.blockOption is BlockOption.DailyLimit
+                val isSelected = uiState.blockOption == BlockOption.DailyLimit
                 hapticFeedback.playToggle(!isSelected)
-                if (uiState.savedSettings.dailyLimitMillis == 0L && !isSelected) {
+                if (uiState.settings.dailyLimitMillis == 0L && !isSelected) {
                     Timber.d("DailyLimit clicked -> open TimeLimitDialog (no limit set)")
                     onConfigureDailyLimit()
                 } else {
                     val newOption = if (isSelected) {
                         BlockOption.NothingSelected
                     } else {
-                        BlockOption.DailyLimit(limitMillis = uiState.savedSettings.dailyLimitMillis)
+                        BlockOption.DailyLimit
                     }
                     Timber.i("DailyLimit clicked -> newOption=%s (prev=%s)", newOption, uiState.blockOption)
                     onBlockOptionSelected(newOption)
@@ -206,7 +206,7 @@ fun TodayBlockingControls(
             },
             onIntervalTimerClick = {
                 lastClicked = BlockingButtonType.INTERVAL
-                val isSelected = uiState.blockOption is BlockOption.IntervalTimer
+                val isSelected = uiState.blockOption == BlockOption.IntervalTimer
                 hapticFeedback.playToggle(!isSelected)
                 Timber.i("IntervalTimer clicked from feature row")
                 onIntervalTimerClick()
@@ -220,7 +220,7 @@ fun TodayBlockingControls(
         )
 
         AnimatedVisibility(
-            visible = uiState.blockOption is BlockOption.DailyLimit,
+            visible = uiState.blockOption == BlockOption.DailyLimit,
             enter = expandVertically(
                 expandFrom = Alignment.Top,
                 animationSpec = tween(300),
@@ -246,14 +246,14 @@ fun TodayBlockingControls(
             }
         }
 
-        if (uiState.blockOption is BlockOption.IntervalTimer) {
+        if (uiState.blockOption == BlockOption.IntervalTimer) {
             Spacer(
                 modifier = Modifier.height(8.dp),
             )
         }
 
         AnimatedVisibility(
-            visible = uiState.blockOption is BlockOption.IntervalTimer,
+            visible = uiState.blockOption == BlockOption.IntervalTimer,
             enter = expandVertically(
                 expandFrom = Alignment.Top,
                 animationSpec = tween(300),
@@ -264,14 +264,14 @@ fun TodayBlockingControls(
             ) + fadeOut(animationSpec = tween(200)),
         ) {
             IntervalTimerSettingsCard(
-                intervalLengthMillis = uiState.savedSettings.intervalLengthMillis,
-                allowanceMillis = uiState.savedSettings.intervalAllowanceMillis,
+                intervalLengthMillis = uiState.settings.intervalLengthMillis,
+                allowanceMillis = uiState.settings.intervalAllowanceMillis,
                 onEditClick = onIntervalTimerEdit,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
 
-        if (uiState.blockOption is BlockOption.IntervalTimer) {
+        if (uiState.blockOption == BlockOption.IntervalTimer) {
             Spacer(modifier = Modifier.height(24.dp))
         }
 
@@ -594,7 +594,7 @@ fun FeatureButtonsRow(
                     icon = R.drawable.icons8_timer_no_shadow_64,
                     text = stringResource(id = R.string.daily_limit),
                     contentDescription = stringResource(id = R.string.daily_limit),
-                    isSelected = selectedOption is BlockOption.DailyLimit,
+                    isSelected = selectedOption == BlockOption.DailyLimit,
                     interactionSource = dailyLimitInteractionSource,
                     modifier = Modifier.weight(dailyLimitAnimatedWeight),
                 )
@@ -614,12 +614,12 @@ fun FeatureButtonsRow(
                         icon = R.drawable.icons8_stopwatch_no_shadow_64,
                         text = stringResource(id = R.string.time_interval),
                         contentDescription = stringResource(id = R.string.time_interval),
-                        isSelected = selectedOption is BlockOption.IntervalTimer,
+                        isSelected = selectedOption == BlockOption.IntervalTimer,
                         interactionSource = intervalInteractionSource,
                         modifier = Modifier.fillMaxSize(),
                     )
 
-                    if (selectedOption is BlockOption.IntervalTimer) {
+                    if (selectedOption == BlockOption.IntervalTimer) {
                         IntervalTimerPointer(
                             color = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
@@ -751,8 +751,8 @@ fun TodayBlockingControlsPreview() {
         Surface {
             TodayBlockingControls(
                 uiState = HomeUiState(
-                    blockOption = BlockOption.DailyLimit(limitMillis = 60 * 60 * 1000L),
-                    savedSettings = BlockingSettings(dailyLimitMillis = 60 * 60 * 1000L),
+                    blockOption = BlockOption.DailyLimit,
+                    settings = BlockingSettings(dailyLimitMillis = 60 * 60 * 1000L),
                 ),
                 isBlockingActive = false,
                 isPauseActive = false,
@@ -774,15 +774,11 @@ fun TodayBlockingIntervalTimerControlsPreview() {
         Surface {
             TodayBlockingControls(
                 uiState = HomeUiState(
-                    blockOption = BlockOption.IntervalTimer(
-                        allowanceMillis = 5 * 60 * 1000L,
-                        intervalLengthMillis = 60 * 60 * 1000L,
-                    ),
-                    savedSettings = BlockingSettings(
+                    blockOption = BlockOption.IntervalTimer,
+                    settings = BlockingSettings(
                         intervalAllowanceMillis = 5 * 60 * 1000L,
                         intervalLengthMillis = 60 * 60 * 1000L,
                     ),
-                    intervalUsageWindow = IntervalUsageWindow(startMillis = 0L, lengthMillis = 60 * 60 * 1000L, usageMillis = 0L),
                 ),
                 isBlockingActive = false,
                 isPauseActive = true,

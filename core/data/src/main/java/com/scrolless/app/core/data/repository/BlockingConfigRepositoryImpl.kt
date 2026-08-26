@@ -18,11 +18,10 @@ package com.scrolless.app.core.data.repository
 
 import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.data.database.model.toBlockOptionType
 import com.scrolless.app.core.data.database.model.toBlockingConfig
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingConfig
-import com.scrolless.app.core.model.IntervalUsageWindow
+import com.scrolless.app.core.model.IntervalUsage
 import com.scrolless.app.core.repository.BlockingConfigRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -50,14 +49,10 @@ class BlockingConfigRepositoryImpl @Inject constructor(
         .map { it.toBlockingConfig() }
         .distinctUntilChanged()
 
-    override fun observeActiveOption(): Flow<BlockOption> = observeConfig()
-        .map { it.activeOption }
-        .distinctUntilChanged()
-
     override suspend fun getConfig(): BlockingConfig = userSettingsDao.getUserSettings().toBlockingConfig()
 
     override suspend fun setActiveOption(option: BlockOption) = writeMutex.withLock {
-        userSettingsDao.setActiveBlockOption(option.toBlockOptionType())
+        userSettingsDao.setActiveBlockOption(option)
     }
 
     override suspend fun configureDailyLimit(limitMillis: Long) = writeMutex.withLock {
@@ -69,27 +64,24 @@ class BlockingConfigRepositoryImpl @Inject constructor(
         require(allowanceMillis > 0L) { "Interval allowance must be greater than zero" }
         require(intervalLengthMillis > 0L) { "Interval length must be greater than zero" }
 
-        // Roll the saved window forward using the length it was recorded under, and store the
-        // result together with the new length. Writing the new length on its own would re-measure
-        // the old window against it, so lengthening the interval could pull an already expired
-        // window back into the present and charge its usage to the new one.
-        val currentWindow = getConfig().intervalUsageWindow.currentAt(timeProvider.currentTimeInMillis())
+        // Roll the window forward with the length it was recorded under before storing the new
+        // one, otherwise lengthening the interval revives an expired window and its usage.
+        val config = getConfig()
+        val current = config.intervalUsage.currentAt(timeProvider.currentTimeInMillis(), config.settings.intervalLengthMillis)
 
         userSettingsDao.configureIntervalTimer(
             allowanceMillis = allowanceMillis,
             intervalLengthMillis = intervalLengthMillis,
-            windowStart = currentWindow.startMillis,
-            usage = currentWindow.usageMillis,
+            windowStart = current.startMillis,
+            usage = current.usageMillis,
         )
     }
 
-    override suspend fun getCurrentIntervalWindow(nowMillis: Long): IntervalUsageWindow =
-        getConfig().intervalUsageWindow.currentAt(nowMillis)
+    override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsage = writeMutex.withLock {
+        val config = getConfig()
+        val updated = config.intervalUsage.plusSession(sessionStartMillis, sessionEndMillis, config.settings.intervalLengthMillis)
+        userSettingsDao.updateIntervalState(windowStart = updated.startMillis, usage = updated.usageMillis)
 
-    override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsageWindow = writeMutex.withLock {
-        val updatedWindow = getConfig().intervalUsageWindow.plusSession(sessionStartMillis, sessionEndMillis)
-        userSettingsDao.updateIntervalState(windowStart = updatedWindow.startMillis, usage = updatedWindow.usageMillis)
-
-        updatedWindow
+        updated
     }
 }

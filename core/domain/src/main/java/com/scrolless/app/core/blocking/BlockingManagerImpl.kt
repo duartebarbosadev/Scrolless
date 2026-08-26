@@ -24,6 +24,7 @@ import com.scrolless.app.core.blocking.handler.NoBlockHandler
 import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingResult
+import com.scrolless.app.core.model.BlockingSettings
 import com.scrolless.app.core.repository.BlockingConfigRepository
 import com.scrolless.app.core.repository.SessionTracker
 import javax.inject.Inject
@@ -50,24 +51,35 @@ class BlockingManagerImpl @Inject constructor(
     // one handler operation before another starts or replaces the handler.
     private val handlerMutex = Mutex()
 
-    override suspend fun init(option: BlockOption) = handlerMutex.withLock {
+    override suspend fun init(option: BlockOption, settings: BlockingSettings) = handlerMutex.withLock {
         Timber.i("Initializing blocking manager with %s", option)
-        handler = createHandler(option)
+        handler = createHandler(option, settings)
     }
 
     /**
      * Builds the handler that applies [option] during viewing sessions.
+     *
+     * A mode the user never configured has nothing to enforce, so it does not block.
      */
-    private fun createHandler(option: BlockOption): BlockOptionHandler = when (option) {
+    private fun createHandler(option: BlockOption, settings: BlockingSettings): BlockOptionHandler = when (option) {
         BlockOption.BlockAll -> BlockAllBlockHandler(timeProvider)
 
-        is BlockOption.DailyLimit -> DayLimitBlockHandler(option.limitMillis)
+        BlockOption.DailyLimit -> if (settings.dailyLimitMillis > 0L) {
+            DayLimitBlockHandler(settings.dailyLimitMillis)
+        } else {
+            NoBlockHandler()
+        }
 
-        is BlockOption.IntervalTimer -> IntervalTimerBlockHandler(
-            allowanceMillis = option.allowanceMillis,
-            blockingConfigRepository = blockingConfigRepository,
-            timeProvider = timeProvider,
-        )
+        BlockOption.IntervalTimer -> if (settings.intervalAllowanceMillis > 0L && settings.intervalLengthMillis > 0L) {
+            IntervalTimerBlockHandler(
+                allowanceMillis = settings.intervalAllowanceMillis,
+                intervalLengthMillis = settings.intervalLengthMillis,
+                blockingConfigRepository = blockingConfigRepository,
+                timeProvider = timeProvider,
+            )
+        } else {
+            NoBlockHandler()
+        }
 
         BlockOption.NothingSelected -> NoBlockHandler()
     }

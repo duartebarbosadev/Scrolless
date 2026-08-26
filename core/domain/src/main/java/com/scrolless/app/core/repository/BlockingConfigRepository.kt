@@ -18,18 +18,13 @@ package com.scrolless.app.core.repository
 
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingConfig
-import com.scrolless.app.core.model.IntervalUsageWindow
+import com.scrolless.app.core.model.IntervalUsage
 import kotlinx.coroutines.flow.Flow
 
-/**
- * Single owner of the blocking settings and of the interval usage they produce.
- */
+/** Single owner of the blocking settings and of the interval usage they produce. */
 interface BlockingConfigRepository {
 
     fun observeConfig(): Flow<BlockingConfig>
-
-    /** Emits only when the selected mode or its settings change, never when usage changes. */
-    fun observeActiveOption(): Flow<BlockOption>
 
     suspend fun getConfig(): BlockingConfig
 
@@ -43,17 +38,9 @@ interface BlockingConfigRepository {
     suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long)
 
     /**
-     * Returns the interval window containing [nowMillis], which is the saved one until it ends.
-     *
-     * Restarting a window is derived, never stored, so reading never writes.
-     */
-    suspend fun getCurrentIntervalWindow(nowMillis: Long): IntervalUsageWindow
-
-    /**
      * Adds one finished viewing session to the interval usage and returns the updated window.
      *
-     * Callers pass timestamps rather than a window, so window rollover always uses the settings
-     * that are saved right now.
+     * Rollover uses the interval length that is saved right now, not one the caller snapshotted.
      */
-    suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsageWindow
+    suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsage
 }

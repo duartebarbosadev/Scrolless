@@ -22,7 +22,7 @@ import androidx.lifecycle.viewModelScope
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.BlockingSettings
-import com.scrolless.app.core.model.IntervalUsageWindow
+import com.scrolless.app.core.model.IntervalUsage
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.model.usage.DailyUsageTotal
 import com.scrolless.app.core.model.usage.calculateWeekdayAverages
@@ -158,16 +158,11 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    /**
-     * The blocking config, with its interval window rolled forward to the one running right now.
-     *
-     * The saved window is only written when a session ends, so it outlives the interval it
-     * describes. Following its restarts here is what lets the whole screen show a fresh window
-     * without waiting for the user to open something.
-     */
+    /** The blocking config, with its interval window rolled forward to the one running now. */
     private val currentBlockingConfig: Flow<BlockingConfig> = blockingConfigRepository.observeConfig()
         .flatMapLatest { config ->
-            config.intervalUsageWindow.emitOnEveryRestart().map { window -> config.copy(intervalUsageWindow = window) }
+            config.intervalUsage.emitOnEveryRestart(config.settings.intervalLengthMillis)
+                .map { usage -> config.copy(intervalUsage = usage) }
         }
         .distinctUntilChanged()
 
@@ -205,14 +200,15 @@ class HomeViewModel @Inject constructor(
 
         val progress = calculateProgress(
             activeOption = usage.blockingConfig.activeOption,
+            settings = usage.blockingConfig.settings,
             currentUsage = usage.currentUsage,
-            intervalUsageMillis = usage.blockingConfig.intervalUsageWindow.usageMillis,
+            intervalUsageMillis = usage.blockingConfig.intervalUsage.usageMillis,
         )
 
         HomeUiState(
             blockOption = usage.blockingConfig.activeOption,
-            savedSettings = usage.blockingConfig.savedSettings,
-            intervalUsageWindow = usage.blockingConfig.intervalUsageWindow,
+            settings = usage.blockingConfig.settings,
+            intervalUsage = usage.blockingConfig.intervalUsage,
             currentUsage = usage.currentUsage,
             progress = progress,
             pauseUntilMillis = pauseUntil,
@@ -282,10 +278,15 @@ class HomeViewModel @Inject constructor(
     /**
      * Daily progress uses today's total usage. Interval progress uses the current window only.
      */
-    private fun calculateProgress(activeOption: BlockOption, currentUsage: Long, intervalUsageMillis: Long): Int = when (activeOption) {
-        is BlockOption.DailyLimit -> usageToProgress(usage = currentUsage, limit = activeOption.limitMillis)
+    private fun calculateProgress(
+        activeOption: BlockOption,
+        settings: BlockingSettings,
+        currentUsage: Long,
+        intervalUsageMillis: Long,
+    ): Int = when (activeOption) {
+        BlockOption.DailyLimit -> usageToProgress(usage = currentUsage, limit = settings.dailyLimitMillis)
 
-        is BlockOption.IntervalTimer -> usageToProgress(usage = intervalUsageMillis, limit = activeOption.allowanceMillis)
+        BlockOption.IntervalTimer -> usageToProgress(usage = intervalUsageMillis, limit = settings.intervalAllowanceMillis)
 
         BlockOption.BlockAll,
         BlockOption.NothingSelected,
@@ -408,8 +409,8 @@ class HomeViewModel @Inject constructor(
 @Immutable
 data class HomeUiState(
     val blockOption: BlockOption = BlockOption.NothingSelected,
-    val savedSettings: BlockingSettings = BlockingSettings(),
-    val intervalUsageWindow: IntervalUsageWindow = IntervalUsageWindow.EMPTY,
+    val settings: BlockingSettings = BlockingSettings(),
+    val intervalUsage: IntervalUsage = IntervalUsage.NOT_STARTED,
     val currentUsage: Long = 0L,
     val progress: Int = 0,
     val showComingSoonSnackBar: Boolean = false,
@@ -521,15 +522,15 @@ private fun buildUsageAnalyticsDayUiState(date: LocalDate, segments: List<Sessio
  *
  * A window that never started has nothing to wait for, so the flow ends after one value.
  */
-private fun IntervalUsageWindow.emitOnEveryRestart(): Flow<IntervalUsageWindow> = flow {
-    var window = this@emitOnEveryRestart
+private fun IntervalUsage.emitOnEveryRestart(lengthMillis: Long): Flow<IntervalUsage> = flow {
+    var usage = this@emitOnEveryRestart
 
     while (true) {
-        window = window.currentAt(System.currentTimeMillis())
-        emit(window)
-        if (!window.isStarted) return@flow
+        usage = usage.currentAt(System.currentTimeMillis(), lengthMillis)
+        emit(usage)
+        if (!usage.isStarted || lengthMillis <= 0L) return@flow
 
-        delay(window.remainingMillisAt(System.currentTimeMillis()).milliseconds)
+        delay(usage.remainingMillisAt(System.currentTimeMillis(), lengthMillis).milliseconds)
     }
 }
 

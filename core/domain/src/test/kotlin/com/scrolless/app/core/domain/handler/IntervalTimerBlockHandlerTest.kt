@@ -22,7 +22,8 @@ import com.scrolless.app.core.domain.BaseTest
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.BlockingResult
-import com.scrolless.app.core.model.IntervalUsageWindow
+import com.scrolless.app.core.model.BlockingSettings
+import com.scrolless.app.core.model.IntervalUsage
 import com.scrolless.app.core.repository.BlockingConfigRepository
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -51,6 +52,7 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
 
     private val handler = IntervalTimerBlockHandler(
         allowanceMillis = ALLOWANCE_MILLIS,
+        intervalLengthMillis = INTERVAL_LENGTH_MILLIS,
         blockingConfigRepository = repository,
         timeProvider = timeProvider,
     )
@@ -58,7 +60,7 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
     @Test
     fun `entering under the allowance does not block`() = runTest(testDispatcher) {
         nowMillis = 2_000L
-        repository.window = window(usageMillis = 500L)
+        repository.usage = IntervalUsage(startMillis = 1_000L, usageMillis = 500L)
 
         assertFalse(handler.onEnterContent(currentDailyUsage = 0L))
     }
@@ -66,7 +68,7 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
     @Test
     fun `entering with the allowance used up blocks`() = runTest(testDispatcher) {
         nowMillis = 2_000L
-        repository.window = window(usageMillis = ALLOWANCE_MILLIS)
+        repository.usage = IntervalUsage(startMillis = 1_000L, usageMillis = ALLOWANCE_MILLIS)
 
         assertTrue(handler.onEnterContent(currentDailyUsage = 0L))
     }
@@ -74,7 +76,7 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
     @Test
     fun `the running session counts toward the allowance`() = runTest(testDispatcher) {
         nowMillis = 4_500L
-        repository.window = window(usageMillis = 2_000L)
+        repository.usage = IntervalUsage(startMillis = 1_000L, usageMillis = 2_000L)
 
         val result = handler.onPeriodicCheck(currentDailyUsage = 0L, elapsedTime = 3_500L)
 
@@ -84,7 +86,7 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
     @Test
     fun `the next check is scheduled for the remaining allowance`() = runTest(testDispatcher) {
         nowMillis = 2_500L
-        repository.window = window(startMillis = 500L, usageMillis = 1_000L)
+        repository.usage = IntervalUsage(startMillis = 500L, usageMillis = 1_000L)
 
         val result = handler.onPeriodicCheck(currentDailyUsage = 0L, elapsedTime = 2_000L)
 
@@ -94,7 +96,7 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
     @Test
     fun `a session crossing a window boundary only counts the new window`() = runTest(testDispatcher) {
         nowMillis = 13_000L
-        repository.window = window(startMillis = 1_000L, lengthMillis = 10_000L, usageMillis = 1_000L)
+        repository.usage = IntervalUsage(startMillis = 1_000L, usageMillis = 1_000L)
 
         val result = handler.onPeriodicCheck(currentDailyUsage = 0L, elapsedTime = 4_000L)
 
@@ -115,19 +117,23 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
         assertEquals(null, repository.recordedSession)
     }
 
-    private fun window(startMillis: Long = 1_000L, lengthMillis: Long = INTERVAL_LENGTH_MILLIS, usageMillis: Long = 0L) =
-        IntervalUsageWindow(startMillis = startMillis, lengthMillis = lengthMillis, usageMillis = usageMillis)
-
     private class FakeBlockingConfigRepository : BlockingConfigRepository {
 
-        var window = IntervalUsageWindow(startMillis = 1_000L, lengthMillis = INTERVAL_LENGTH_MILLIS, usageMillis = 0L)
+        var usage = IntervalUsage(startMillis = 1_000L, usageMillis = 0L)
         var recordedSession: Pair<Long, Long>? = null
 
-        override fun observeConfig(): Flow<BlockingConfig> = flowOf(BlockingConfig())
+        private fun config() = BlockingConfig(
+            activeOption = BlockOption.IntervalTimer,
+            settings = BlockingSettings(
+                intervalAllowanceMillis = ALLOWANCE_MILLIS,
+                intervalLengthMillis = INTERVAL_LENGTH_MILLIS,
+            ),
+            intervalUsage = usage,
+        )
 
-        override fun observeActiveOption(): Flow<BlockOption> = flowOf(BlockOption.NothingSelected)
+        override fun observeConfig(): Flow<BlockingConfig> = flowOf(config())
 
-        override suspend fun getConfig(): BlockingConfig = BlockingConfig()
+        override suspend fun getConfig(): BlockingConfig = config()
 
         override suspend fun setActiveOption(option: BlockOption) = Unit
 
@@ -135,13 +141,11 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
 
         override suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long) = Unit
 
-        override suspend fun getCurrentIntervalWindow(nowMillis: Long): IntervalUsageWindow = window.currentAt(nowMillis)
-
-        override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsageWindow {
+        override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsage {
             recordedSession = sessionStartMillis to sessionEndMillis
-            window = window.plusSession(sessionStartMillis, sessionEndMillis)
+            usage = usage.plusSession(sessionStartMillis, sessionEndMillis, INTERVAL_LENGTH_MILLIS)
 
-            return window
+            return usage
         }
     }
 

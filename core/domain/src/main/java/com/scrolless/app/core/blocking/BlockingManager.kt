@@ -18,6 +18,7 @@ package com.scrolless.app.core.blocking
 
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingResult
+import com.scrolless.app.core.model.BlockingSettings
 
 /**
  * Runs blocking checks during a viewing session.
@@ -29,11 +30,9 @@ import com.scrolless.app.core.model.BlockingResult
 interface BlockingManager {
 
     /**
-     * Initializes the manager with a block option configuration.
-     *
-     * @param option The blocking option to apply.
+     * Initializes the manager with the selected mode and the settings that enforce it.
      */
-    suspend fun init(option: BlockOption)
+    suspend fun init(option: BlockOption, settings: BlockingSettings)
 
     /**
      * Starts a viewing session.

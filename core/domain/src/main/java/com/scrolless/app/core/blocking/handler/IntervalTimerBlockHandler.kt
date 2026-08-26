@@ -24,30 +24,33 @@ import timber.log.Timber
 /**
  * Limits how long the user can watch during one interval window.
  *
- * The handler only decides when to block. The repository owns the window and its usage, so this
- * class keeps no state of its own and always reads the values that are saved right now.
+ * The settings come from the manager, the usage is read from the repository on every check, so the
+ * handler keeps no state of its own.
  */
 class IntervalTimerBlockHandler(
     private val allowanceMillis: Long,
+    private val intervalLengthMillis: Long,
     private val blockingConfigRepository: BlockingConfigRepository,
     private val timeProvider: TimeProvider,
 ) : BlockOptionHandler {
 
-    override suspend fun onEnterContent(currentDailyUsage: Long): Boolean {
-        val window = blockingConfigRepository.getCurrentIntervalWindow(timeProvider.currentTimeInMillis())
+    private suspend fun usageAt(nowMillis: Long) =
+        blockingConfigRepository.getConfig().intervalUsage.currentAt(nowMillis, intervalLengthMillis)
 
-        val shouldBlock = window.usageMillis >= allowanceMillis
-        Timber.d("IntervalTimer.onEnter: usage=%d/%d -> block=%s", window.usageMillis, allowanceMillis, shouldBlock)
+    override suspend fun onEnterContent(currentDailyUsage: Long): Boolean {
+        val usage = usageAt(timeProvider.currentTimeInMillis()).usageMillis
+
+        val shouldBlock = usage >= allowanceMillis
+        Timber.d("IntervalTimer.onEnter: usage=%d/%d -> block=%s", usage, allowanceMillis, shouldBlock)
         return shouldBlock
     }
 
-    /**
-     * Includes the session in progress, which is not saved yet, when checking the allowance.
-     */
+    /** Includes the session in progress, which is not saved yet, when checking the allowance. */
     override suspend fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult {
         val now = timeProvider.currentTimeInMillis()
-        val window = blockingConfigRepository.getCurrentIntervalWindow(now)
-        val usage = window.plusSession(sessionStartMillis = now - elapsedTime, sessionEndMillis = now).usageMillis
+        val usage = usageAt(now)
+            .plusSession(sessionStartMillis = now - elapsedTime, sessionEndMillis = now, lengthMillis = intervalLengthMillis)
+            .usageMillis
 
         if (usage >= allowanceMillis) {
             Timber.v("IntervalTimer.onPeriodic: usage=%d/%d -> block", usage, allowanceMillis)
@@ -61,7 +64,7 @@ class IntervalTimerBlockHandler(
     override suspend fun onExitContent(sessionStartMillis: Long, sessionEndMillis: Long) {
         if (sessionEndMillis <= sessionStartMillis) return
 
-        val window = blockingConfigRepository.recordIntervalUsage(sessionStartMillis, sessionEndMillis)
-        Timber.v("IntervalTimer.onExit: session=%d, usage=%d", sessionEndMillis - sessionStartMillis, window.usageMillis)
+        val usage = blockingConfigRepository.recordIntervalUsage(sessionStartMillis, sessionEndMillis)
+        Timber.v("IntervalTimer.onExit: session=%d, usage=%d", sessionEndMillis - sessionStartMillis, usage.usageMillis)
     }
 }
