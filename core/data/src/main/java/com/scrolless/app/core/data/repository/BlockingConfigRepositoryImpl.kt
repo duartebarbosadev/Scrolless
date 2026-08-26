@@ -71,25 +71,13 @@ class BlockingConfigRepositoryImpl @Inject constructor(private val userSettingsD
         )
     }
 
-    override suspend fun getCurrentIntervalWindow(nowMillis: Long): IntervalUsageWindow = writeMutex.withLock {
-        val savedWindow = getConfig().intervalUsageWindow
-        val currentWindow = savedWindow.currentAt(nowMillis)
-        if (currentWindow != savedWindow) {
-            saveWindow(currentWindow)
-        }
-
-        currentWindow
-    }
+    override suspend fun getCurrentIntervalWindow(nowMillis: Long): IntervalUsageWindow =
+        getConfig().intervalUsageWindow.currentAt(nowMillis)
 
     override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsageWindow = writeMutex.withLock {
-        val savedWindow = getConfig().intervalUsageWindow
-        val updatedWindow = savedWindow.plusSession(sessionStartMillis, sessionEndMillis)
-        saveWindow(updatedWindow)
+        val updatedWindow = getConfig().intervalUsageWindow.plusSession(sessionStartMillis, sessionEndMillis)
+        userSettingsDao.updateIntervalState(windowStart = updatedWindow.startMillis, usage = updatedWindow.usageMillis)
 
         updatedWindow
-    }
-
-    private suspend fun saveWindow(window: IntervalUsageWindow) {
-        userSettingsDao.updateIntervalState(windowStart = window.startMillis, usage = window.usageMillis)
     }
 }

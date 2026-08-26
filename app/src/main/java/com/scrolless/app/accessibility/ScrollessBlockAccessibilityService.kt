@@ -659,7 +659,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             return
         }
 
-        val sessionTime = System.currentTimeMillis() - session.startedAtMillis
+        val sessionEndMillis = System.currentTimeMillis()
+        val sessionTime = sessionEndMillis - session.startedAtMillis
         Timber.d("Exited blocked content. Session=%d ms (app=%s)", sessionTime, session.app)
 
         stopPeriodicCheck()
@@ -676,8 +677,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             val overlaySummaryTotal = if (currentTimerOverlayEnabled) {
                 val config = blockingConfigRepository.getConfig()
                 when (config.activeOption) {
+                    // Same arithmetic the repository is about to persist, so the number shown on
+                    // the way out matches the one the Home screen shows afterwards.
                     is BlockOption.IntervalTimer ->
-                        config.intervalUsageWindow.usageMillisAt(System.currentTimeMillis()) + sessionTime
+                        config.intervalUsageWindow.plusSession(session.startedAtMillis, sessionEndMillis).usageMillis
 
                     else -> sessionTracker.getDailyUsage() + sessionTime
                 }
@@ -699,8 +702,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             // Let blocking manager do its logic, if needed
             blockingManager.onExitBlockedContent(
                 sessionStartMillis = session.startedAtMillis,
-                sessionEndMillis =
-                    session.startedAtMillis + sessionTime,
+                sessionEndMillis = sessionEndMillis,
             )
         }
 

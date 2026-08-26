@@ -47,8 +47,8 @@ class IntervalUsageWindowTest {
     fun `usage of a window that ended belongs to the previous one and is dropped`() {
         val window = window(startMillis = 1_000L, lengthMillis = 10_000L, usageMillis = 5_000L)
 
-        assertEquals(5_000L, window.usageMillisAt(nowMillis = 9_000L))
-        assertEquals(0L, window.usageMillisAt(nowMillis = 11_000L))
+        assertEquals(5_000L, window.currentAt(nowMillis = 9_000L).usageMillis)
+        assertEquals(0L, window.currentAt(nowMillis = 11_000L).usageMillis)
     }
 
     @Test
@@ -130,10 +130,10 @@ class IntervalUsageWindowTest {
     }
 
     @Test
-    fun `a clock moved backwards restarts the window instead of counting down forever`() {
+    fun `a clock moved backwards keeps the window instead of handing out a fresh allowance`() {
         val window = window(startMillis = 10_000L, lengthMillis = 10_000L, usageMillis = 5_000L)
 
-        assertEquals(0L, window.usageMillisAt(nowMillis = 4_000L))
+        assertEquals(5_000L, window.currentAt(nowMillis = 4_000L).usageMillis)
         assertEquals(10_000L, window.remainingMillisAt(nowMillis = 4_000L))
     }
 

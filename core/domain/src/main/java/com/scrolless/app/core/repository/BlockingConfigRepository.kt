@@ -43,8 +43,9 @@ interface BlockingConfigRepository {
     suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long)
 
     /**
-     * Returns the interval window containing [nowMillis], advancing and saving it when the
-     * previous window has ended.
+     * Returns the interval window containing [nowMillis], which is the saved one until it ends.
+     *
+     * Restarting a window is derived, never stored, so reading never writes.
      */
     suspend fun getCurrentIntervalWindow(nowMillis: Long): IntervalUsageWindow
 

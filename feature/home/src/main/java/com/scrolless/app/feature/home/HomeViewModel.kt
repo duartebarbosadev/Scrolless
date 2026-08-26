@@ -102,9 +102,6 @@ class HomeViewModel @Inject constructor(
 
     companion object {
         private const val PROGRESS_MAX = 100
-
-        /** Waking up a moment after the interval ended avoids re-checking a boundary not reached yet. */
-        private const val INTERVAL_RESTART_GRACE_MILLIS = 100L
         private val REVIEW_PROMPT_DELAY_MILLIS = TimeUnit.MINUTES.toMillis(5) // Show review popup after 5 minutes
         private const val REVIEW_PROMPT_MAX_ATTEMPTS = 3
         private val REVIEW_PROMPT_RETRY_DELAY_MILLIS = TimeUnit.DAYS.toMillis(1)
@@ -162,45 +159,27 @@ class HomeViewModel @Inject constructor(
     }
 
     /**
-     * The interval window the user is in right now, kept up to date across its own restarts.
+     * The blocking config, with its interval window rolled forward to the one running right now.
      *
-     * The saved window only changes when the blocking service writes usage, so it can outlive the
-     * interval it describes. Re-emitting when the running interval ends is what lets the whole
-     * screen show a restarted window without waiting for the next session.
+     * The saved window is only written when a session ends, so it outlives the interval it
+     * describes. Following its restarts here is what lets the whole screen show a fresh window
+     * without waiting for the user to open something.
      */
-    private val currentIntervalWindow: Flow<IntervalUsageWindow> = blockingConfigRepository.observeConfig()
-        .map { config ->
-            if (config.activeOption is BlockOption.IntervalTimer) config.intervalUsageWindow else IntervalUsageWindow.EMPTY
-        }
-        .distinctUntilChanged()
-        .flatMapLatest { savedWindow ->
-            flow {
-                var window = savedWindow
-                while (true) {
-                    val now = System.currentTimeMillis()
-                    window = window.currentAt(now)
-                    emit(window)
-                    if (!window.isStarted) break
-
-                    // Wake up just after this interval ends, which is the only moment the saved
-                    // usage stops being the usage of the window the user is in.
-                    delay((window.remainingMillisAt(now) + INTERVAL_RESTART_GRACE_MILLIS).milliseconds)
-                }
-            }
+    private val currentBlockingConfig: Flow<BlockingConfig> = blockingConfigRepository.observeConfig()
+        .flatMapLatest { config ->
+            config.intervalUsageWindow.emitOnEveryRestart().map { window -> config.copy(intervalUsageWindow = window) }
         }
         .distinctUntilChanged()
 
     private val usageSnapshot = combine(
-        blockingConfigRepository.observeConfig(),
+        currentBlockingConfig,
         currentDate.flatMapLatest { date -> sessionSegmentStore.observeTotalDuration(date) },
         sessionSegmentsForCurrentDay,
-        currentIntervalWindow,
-    ) { blockingConfig, currentUsage, usageSegment, intervalWindow ->
+    ) { blockingConfig, currentUsage, usageSegment ->
         UsageSnapshot(
             blockingConfig = blockingConfig,
             currentUsage = currentUsage,
             sessionSegment = usageSegment,
-            intervalUsageWindow = intervalWindow,
         )
     }
 
@@ -227,13 +206,13 @@ class HomeViewModel @Inject constructor(
         val progress = calculateProgress(
             activeOption = usage.blockingConfig.activeOption,
             currentUsage = usage.currentUsage,
-            intervalUsageMillis = usage.intervalUsageWindow.usageMillis,
+            intervalUsageMillis = usage.blockingConfig.intervalUsageWindow.usageMillis,
         )
 
         HomeUiState(
             blockOption = usage.blockingConfig.activeOption,
             savedSettings = usage.blockingConfig.savedSettings,
-            intervalUsageWindow = usage.intervalUsageWindow,
+            intervalUsageWindow = usage.blockingConfig.intervalUsageWindow,
             currentUsage = usage.currentUsage,
             progress = progress,
             pauseUntilMillis = pauseUntil,
@@ -537,9 +516,21 @@ private fun buildUsageAnalyticsDayUiState(date: LocalDate, segments: List<Sessio
     )
 }
 
-private data class UsageSnapshot(
-    val blockingConfig: BlockingConfig,
-    val currentUsage: Long,
-    val sessionSegment: List<SessionSegment>,
-    val intervalUsageWindow: IntervalUsageWindow,
-)
+/**
+ * Emits the window containing the current time, then again every time it restarts.
+ *
+ * A window that never started has nothing to wait for, so the flow ends after one value.
+ */
+private fun IntervalUsageWindow.emitOnEveryRestart(): Flow<IntervalUsageWindow> = flow {
+    var window = this@emitOnEveryRestart
+
+    while (true) {
+        window = window.currentAt(System.currentTimeMillis())
+        emit(window)
+        if (!window.isStarted) return@flow
+
+        delay(window.remainingMillisAt(System.currentTimeMillis()).milliseconds)
+    }
+}
+
+private data class UsageSnapshot(val blockingConfig: BlockingConfig, val currentUsage: Long, val sessionSegment: List<SessionSegment>)

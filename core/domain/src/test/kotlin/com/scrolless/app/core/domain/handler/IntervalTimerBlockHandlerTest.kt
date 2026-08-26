@@ -135,9 +135,7 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
 
         override suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long) = Unit
 
-        override suspend fun getCurrentIntervalWindow(nowMillis: Long): IntervalUsageWindow = window.currentAt(nowMillis).also {
-            window = it
-        }
+        override suspend fun getCurrentIntervalWindow(nowMillis: Long): IntervalUsageWindow = window.currentAt(nowMillis)
 
         override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsageWindow {
             recordedSession = sessionStartMillis to sessionEndMillis

@@ -29,8 +29,9 @@ import androidx.compose.runtime.Immutable
  * [lengthMillis] mirrors [BlockingSettings.intervalLengthMillis]; only the persistence mapper
  * builds this from the saved settings, so the two cannot drift apart.
  *
- * A saved window can be older than the repeat that contains the current time. Every read goes
- * through [currentAt] so that callers only ever see the usage of the window they asked about.
+ * The saved window is only written when a session ends, so it can be left behind by the clock.
+ * [currentAt] and [remainingMillisAt] answer for the window the current time falls in, which is
+ * why a window can restart without anything being saved.
  */
 @Immutable
 data class IntervalUsageWindow(val startMillis: Long, val lengthMillis: Long, val usageMillis: Long) {
@@ -42,26 +43,19 @@ data class IntervalUsageWindow(val startMillis: Long, val lengthMillis: Long, va
     /**
      * Returns the repeat of this window that contains [nowMillis], with its own usage.
      *
-     * Usage carries over only while the saved window is still running. The repeating schedule is
-     * kept even when several windows passed while the app was closed.
+     * The result depends only on [nowMillis], never on when or how often this is called. So the
+     * Home screen and the accessibility service compute the same window from the same saved row,
+     * without either one having to write the restart down for the other to see it.
      */
     fun currentAt(nowMillis: Long): IntervalUsageWindow {
-        if (!isStarted || nowMillis < startMillis) {
-            return copy(startMillis = nowMillis, usageMillis = 0L)
-        }
+        if (!isStarted) return this
 
-        val elapsed = nowMillis - startMillis
-        if (elapsed < lengthMillis) return this
-
-        // Jump straight to the window holding nowMillis instead of stepping through the ones that
-        // passed while the app was closed, so the restarts stay on their original schedule.
-        val windowsPassed = elapsed / lengthMillis
+        // Negative when the clock moved backwards, which must not hand out a fresh allowance.
+        val windowsPassed = ((nowMillis - startMillis) / lengthMillis).coerceAtLeast(0L)
+        if (windowsPassed == 0L) return this
 
         return copy(startMillis = startMillis + windowsPassed * lengthMillis, usageMillis = 0L)
     }
-
-    /** Watched time in the window that contains [nowMillis]. */
-    fun usageMillisAt(nowMillis: Long): Long = currentAt(nowMillis).usageMillis
 
     /** Milliseconds left before the window that contains [nowMillis] ends. */
     fun remainingMillisAt(nowMillis: Long): Long {

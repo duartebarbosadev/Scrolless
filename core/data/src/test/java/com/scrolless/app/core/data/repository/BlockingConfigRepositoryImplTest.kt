@@ -105,7 +105,7 @@ class BlockingConfigRepositoryImplTest {
     }
 
     @Test
-    fun `reading a window that ended advances and saves it`() = runTest {
+    fun `reading a window that ended returns the current one without writing`() = runTest {
         coEvery { dao.getUserSettings() } returns config(
             intervalLengthMillis = 10_000L,
             windowStartMillis = 1_000L,
@@ -116,7 +116,7 @@ class BlockingConfigRepositoryImplTest {
 
         assertEquals(21_000L, window.startMillis)
         assertEquals(0L, window.usageMillis)
-        coVerify { dao.updateIntervalState(windowStart = 21_000L, usage = 0L) }
+        coVerify(exactly = 0) { dao.updateIntervalState(any(), any()) }
     }
 
     @Test
