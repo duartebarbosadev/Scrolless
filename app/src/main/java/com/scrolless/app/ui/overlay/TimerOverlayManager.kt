@@ -46,6 +46,7 @@ import com.scrolless.app.designsystem.theme.timerOverlayBackgroundColor
 import com.scrolless.app.designsystem.util.formatAsTime
 import javax.inject.Inject
 import kotlin.math.abs
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -185,7 +186,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
         exitAnimationJob?.cancel()
         exitAnimationJob = coroutineScope.launch {
-            delay(SUMMARY_DISPLAY_DURATION_MS)
+            delay(SUMMARY_DISPLAY_DURATION_MS.milliseconds)
             startExitAnimation()
         }
     }
@@ -226,7 +227,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             while (true) {
                 val elapsed = (System.currentTimeMillis() - sessionStartTime).coerceAtLeast(0L)
                 timerTextView?.text = elapsed.formatAsTime()
-                delay(1000)
+                delay(1000.milliseconds)
             }
         }
     }
