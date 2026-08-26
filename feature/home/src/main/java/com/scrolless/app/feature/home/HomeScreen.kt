@@ -131,6 +131,7 @@ import java.time.LocalDateTime
 import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -829,7 +830,7 @@ private fun rememberPauseRemainingTime(pauseUntilMillis: Long): Long {
             while (isActive) {
                 remaining = calculateRemaining()
                 if (remaining <= 0L) break
-                delay(1_000L)
+                delay(1_000L.milliseconds)
             }
         }
     }

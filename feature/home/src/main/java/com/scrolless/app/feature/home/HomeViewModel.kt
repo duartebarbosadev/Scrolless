@@ -33,6 +33,7 @@ import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.math.min
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -403,7 +404,7 @@ class HomeViewModel @Inject constructor(
             emit(now.toLocalDate())
             val nextMidnight = now.toLocalDate().plusDays(1).atStartOfDay(now.zone)
             val delayMillis = Duration.between(now, nextMidnight).toMillis().coerceAtLeast(1L)
-            delay(delayMillis)
+            delay(delayMillis.milliseconds)
         }
     }.distinctUntilChanged()
 }
