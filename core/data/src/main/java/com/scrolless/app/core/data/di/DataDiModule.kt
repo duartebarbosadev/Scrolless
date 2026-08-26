@@ -106,8 +106,8 @@ object DataDiModule {
 
     @Provides
     @Singleton
-    fun provideBlockingConfigRepository(userSettingsDao: UserSettingsDao): BlockingConfigRepository =
-        BlockingConfigRepositoryImpl(userSettingsDao = userSettingsDao)
+    fun provideBlockingConfigRepository(userSettingsDao: UserSettingsDao, timeProvider: TimeProvider): BlockingConfigRepository =
+        BlockingConfigRepositoryImpl(userSettingsDao = userSettingsDao, timeProvider = timeProvider)
 
     @Provides
     @Singleton

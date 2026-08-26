@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.core.data.repository
 
+import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.data.database.model.toBlockOptionType
 import com.scrolless.app.core.data.database.model.toBlockingConfig
@@ -36,7 +37,10 @@ import kotlinx.coroutines.sync.withLock
  * Settings and usage live in separate columns, so editing the settings can expand the current
  * interval without replacing its start time or watched time.
  */
-class BlockingConfigRepositoryImpl @Inject constructor(private val userSettingsDao: UserSettingsDao) : BlockingConfigRepository {
+class BlockingConfigRepositoryImpl @Inject constructor(
+    private val userSettingsDao: UserSettingsDao,
+    private val timeProvider: TimeProvider,
+) : BlockingConfigRepository {
 
     // Recording usage reads the current window before it writes the new one. Keep that pair
     // together when a settings edit arrives at the same time.
@@ -65,9 +69,17 @@ class BlockingConfigRepositoryImpl @Inject constructor(private val userSettingsD
         require(allowanceMillis > 0L) { "Interval allowance must be greater than zero" }
         require(intervalLengthMillis > 0L) { "Interval length must be greater than zero" }
 
+        // Roll the saved window forward using the length it was recorded under, and store the
+        // result together with the new length. Writing the new length on its own would re-measure
+        // the old window against it, so lengthening the interval could pull an already expired
+        // window back into the present and charge its usage to the new one.
+        val currentWindow = getConfig().intervalUsageWindow.currentAt(timeProvider.currentTimeInMillis())
+
         userSettingsDao.configureIntervalTimer(
             allowanceMillis = allowanceMillis,
             intervalLengthMillis = intervalLengthMillis,
+            windowStart = currentWindow.startMillis,
+            usage = currentWindow.usageMillis,
         )
     }
 

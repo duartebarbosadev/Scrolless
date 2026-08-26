@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.core.data.repository
 
+import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.data.database.model.BlockOptionType
 import com.scrolless.app.core.data.database.model.UserSettingsEntity
@@ -24,6 +25,8 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import java.time.LocalDate
+import java.time.LocalDateTime
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
@@ -33,16 +36,53 @@ import org.junit.Test
 class BlockingConfigRepositoryImplTest {
 
     private val dao = mockk<UserSettingsDao>(relaxed = true)
-    private val repository = BlockingConfigRepositoryImpl(dao)
+    private var nowMillis = 5_000L
+    private val timeProvider = object : TimeProvider {
+        override fun currentTimeInMillis(): Long = nowMillis
+        override fun localDateNow(): LocalDate = LocalDate.EPOCH
+        override fun localDateTimeNow(): LocalDateTime = LocalDateTime.MIN
+    }
+    private val repository = BlockingConfigRepositoryImpl(dao, timeProvider)
 
     @Test
     fun `changing the interval settings keeps the running window`() = runTest {
+        nowMillis = 5_000L
+        coEvery { dao.getUserSettings() } returns config(windowStartMillis = 1_000L, usageMillis = 4_000L)
+
         repository.configureIntervalTimer(allowanceMillis = 2 * MINUTE_MILLIS, intervalLengthMillis = 60 * MINUTE_MILLIS)
 
         coVerify(exactly = 1) {
-            dao.configureIntervalTimer(allowanceMillis = 2 * MINUTE_MILLIS, intervalLengthMillis = 60 * MINUTE_MILLIS)
+            dao.configureIntervalTimer(
+                allowanceMillis = 2 * MINUTE_MILLIS,
+                intervalLengthMillis = 60 * MINUTE_MILLIS,
+                windowStart = 1_000L,
+                usage = 4_000L,
+            )
         }
-        coVerify(exactly = 0) { dao.updateIntervalState(any(), any()) }
+    }
+
+    @Test
+    fun `lengthening the interval does not resurrect the usage of an expired window`() = runTest {
+        // Window 1_000..11_000 with 4s used, already over by the time the length is changed.
+        nowMillis = 25_000L
+        coEvery { dao.getUserSettings() } returns config(
+            intervalLengthMillis = 10_000L,
+            windowStartMillis = 1_000L,
+            usageMillis = 4_000L,
+        )
+
+        repository.configureIntervalTimer(allowanceMillis = 2 * MINUTE_MILLIS, intervalLengthMillis = 60 * MINUTE_MILLIS)
+
+        // Rolled forward with the old length first, so the longer interval starts empty instead of
+        // measuring the stale window against it and finding it still running.
+        coVerify(exactly = 1) {
+            dao.configureIntervalTimer(
+                allowanceMillis = 2 * MINUTE_MILLIS,
+                intervalLengthMillis = 60 * MINUTE_MILLIS,
+                windowStart = 21_000L,
+                usage = 0L,
+            )
+        }
     }
 
     @Test

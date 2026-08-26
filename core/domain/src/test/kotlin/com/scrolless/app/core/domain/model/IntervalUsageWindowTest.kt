@@ -130,11 +130,23 @@ class IntervalUsageWindowTest {
     }
 
     @Test
-    fun `a clock moved backwards keeps the window instead of handing out a fresh allowance`() {
+    fun `a clock moved backwards keeps the usage instead of handing out a fresh allowance`() {
         val window = window(startMillis = 10_000L, lengthMillis = 10_000L, usageMillis = 5_000L)
 
         assertEquals(5_000L, window.currentAt(nowMillis = 4_000L).usageMillis)
         assertEquals(10_000L, window.remainingMillisAt(nowMillis = 4_000L))
+    }
+
+    @Test
+    fun `a session watched while the clock is behind the window still counts`() {
+        val window = window(startMillis = 10_000L, lengthMillis = 10_000L, usageMillis = 5_000L)
+
+        val updated = window.plusSession(sessionStartMillis = 3_000L, sessionEndMillis = 4_000L)
+
+        // Re-anchored to the session rather than frozen, otherwise usage would stop being counted
+        // and the allowance could never run out.
+        assertEquals(3_000L, updated.startMillis)
+        assertEquals(6_000L, updated.usageMillis)
     }
 
     private fun window(startMillis: Long = 1_000L, lengthMillis: Long = 30 * MINUTE_MILLIS, usageMillis: Long = 0L) =

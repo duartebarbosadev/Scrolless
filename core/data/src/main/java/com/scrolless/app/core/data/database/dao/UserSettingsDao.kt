@@ -45,11 +45,13 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
         UPDATE user_settings
         SET active_block_option = 'IntervalTimer',
             interval_allowance = :allowanceMillis,
-            interval_length = :intervalLengthMillis
+            interval_length = :intervalLengthMillis,
+            interval_window_start_at = :windowStart,
+            interval_usage = :usage
         WHERE id = 1
         """,
     )
-    abstract suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long)
+    abstract suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long, windowStart: Long, usage: Long)
 
     @Query("UPDATE user_settings SET interval_window_start_at = :windowStart, interval_usage = :usage WHERE id = 1")
     abstract suspend fun updateIntervalState(windowStart: Long, usage: Long)

@@ -74,11 +74,14 @@ data class IntervalUsageWindow(val startMillis: Long, val lengthMillis: Long, va
      * usage including a session still in progress, without having to save it.
      */
     fun plusSession(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsageWindow {
-        val started = if (startMillis == 0L) copy(startMillis = sessionStartMillis) else this
-        val current = started.currentAt(sessionEndMillis)
-        val countedFrom = maxOf(sessionStartMillis, current.startMillis)
+        // Nothing started the schedule yet, or the clock moved back behind it. Restarting it at the
+        // session keeps usage, so moving the clock back cannot hand out a fresh allowance.
+        val schedule = if (!isStarted || sessionEndMillis < startMillis) copy(startMillis = sessionStartMillis) else this
 
-        return current.copy(usageMillis = current.usageMillis + (sessionEndMillis - countedFrom).coerceAtLeast(0L))
+        val current = schedule.currentAt(sessionEndMillis)
+        val watched = sessionEndMillis - maxOf(sessionStartMillis, current.startMillis)
+
+        return current.copy(usageMillis = current.usageMillis + watched.coerceAtLeast(0L))
     }
 
     companion object {
