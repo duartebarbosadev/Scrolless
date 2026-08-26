@@ -676,7 +676,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             val overlaySummaryTotal = if (currentTimerOverlayEnabled) {
                 val config = blockingConfigRepository.getConfig()
                 when (config.activeOption) {
-                    is BlockOption.IntervalTimer -> config.intervalUsageWindow.usageMillis + sessionTime
+                    is BlockOption.IntervalTimer ->
+                        config.intervalUsageWindow.usageMillisAt(System.currentTimeMillis()) + sessionTime
+
                     else -> sessionTracker.getDailyUsage() + sessionTime
                 }
             } else {

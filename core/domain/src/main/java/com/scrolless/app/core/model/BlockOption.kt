@@ -20,7 +20,7 @@ package com.scrolless.app.core.model
  * The blocking mode the user selected, with the settings needed to enforce it.
  *
  * This only describes configuration. How much the user already watched lives in
- * [UsageWindow] and in the session tracker, so selecting a mode never carries usage.
+ * [IntervalUsageWindow] and in the session tracker, so selecting a mode never carries usage.
  */
 sealed interface BlockOption {
 

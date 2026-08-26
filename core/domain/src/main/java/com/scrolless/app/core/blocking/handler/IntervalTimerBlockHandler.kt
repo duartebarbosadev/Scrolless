@@ -47,7 +47,7 @@ class IntervalTimerBlockHandler(
     override suspend fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult {
         val now = timeProvider.currentTimeInMillis()
         val window = blockingConfigRepository.getCurrentIntervalWindow(now)
-        val usage = window.usageAt(sessionStartMillis = now - elapsedTime, nowMillis = now)
+        val usage = window.plusSession(sessionStartMillis = now - elapsedTime, sessionEndMillis = now).usageMillis
 
         if (usage >= allowanceMillis) {
             Timber.v("IntervalTimer.onPeriodic: usage=%d/%d -> block", usage, allowanceMillis)

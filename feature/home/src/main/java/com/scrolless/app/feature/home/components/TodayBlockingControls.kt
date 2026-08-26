@@ -84,7 +84,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingSettings
-import com.scrolless.app.core.model.UsageWindow
+import com.scrolless.app.core.model.IntervalUsageWindow
 import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
@@ -782,7 +782,7 @@ fun TodayBlockingIntervalTimerControlsPreview() {
                         intervalAllowanceMillis = 5 * 60 * 1000L,
                         intervalLengthMillis = 60 * 60 * 1000L,
                     ),
-                    intervalUsageWindow = UsageWindow(startMillis = 0L, lengthMillis = 60 * 60 * 1000L, usageMillis = 0L),
+                    intervalUsageWindow = IntervalUsageWindow(startMillis = 0L, lengthMillis = 60 * 60 * 1000L, usageMillis = 0L),
                 ),
                 isBlockingActive = false,
                 isPauseActive = true,

@@ -24,7 +24,7 @@ import androidx.room.PrimaryKey
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.BlockingSettings
-import com.scrolless.app.core.model.UsageWindow
+import com.scrolless.app.core.model.IntervalUsageWindow
 
 /**
  * The single row that holds every user setting.
@@ -65,7 +65,7 @@ fun UserSettingsEntity.toBlockingConfig(): BlockingConfig = BlockingConfig(
         intervalAllowanceMillis = intervalAllowance,
         intervalLengthMillis = intervalLength,
     ),
-    intervalUsageWindow = UsageWindow(
+    intervalUsageWindow = IntervalUsageWindow(
         startMillis = intervalWindowStartAt,
         lengthMillis = intervalLength,
         usageMillis = intervalUsage,

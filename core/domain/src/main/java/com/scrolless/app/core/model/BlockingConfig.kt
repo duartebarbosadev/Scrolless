@@ -29,7 +29,7 @@ data class BlockingConfig(
     val savedSettings: BlockingSettings = BlockingSettings(),
 
     /** How much was watched in the current interval. Only meaningful for the interval timer. */
-    val intervalUsageWindow: UsageWindow = UsageWindow.EMPTY,
+    val intervalUsageWindow: IntervalUsageWindow = IntervalUsageWindow.EMPTY,
 )
 
 /**

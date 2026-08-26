@@ -22,7 +22,7 @@ import com.scrolless.app.core.domain.BaseTest
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.BlockingResult
-import com.scrolless.app.core.model.UsageWindow
+import com.scrolless.app.core.model.IntervalUsageWindow
 import com.scrolless.app.core.repository.BlockingConfigRepository
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -116,11 +116,11 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
     }
 
     private fun window(startMillis: Long = 1_000L, lengthMillis: Long = INTERVAL_LENGTH_MILLIS, usageMillis: Long = 0L) =
-        UsageWindow(startMillis = startMillis, lengthMillis = lengthMillis, usageMillis = usageMillis)
+        IntervalUsageWindow(startMillis = startMillis, lengthMillis = lengthMillis, usageMillis = usageMillis)
 
     private class FakeBlockingConfigRepository : BlockingConfigRepository {
 
-        var window = UsageWindow(startMillis = 1_000L, lengthMillis = INTERVAL_LENGTH_MILLIS, usageMillis = 0L)
+        var window = IntervalUsageWindow(startMillis = 1_000L, lengthMillis = INTERVAL_LENGTH_MILLIS, usageMillis = 0L)
         var recordedSession: Pair<Long, Long>? = null
 
         override fun observeConfig(): Flow<BlockingConfig> = flowOf(BlockingConfig())
@@ -135,11 +135,13 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
 
         override suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long) = Unit
 
-        override suspend fun getCurrentIntervalWindow(nowMillis: Long): UsageWindow = window.windowAt(nowMillis).also { window = it }
+        override suspend fun getCurrentIntervalWindow(nowMillis: Long): IntervalUsageWindow = window.currentAt(nowMillis).also {
+            window = it
+        }
 
-        override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): UsageWindow {
+        override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsageWindow {
             recordedSession = sessionStartMillis to sessionEndMillis
-            window = window.addingSession(sessionStartMillis, sessionEndMillis)
+            window = window.plusSession(sessionStartMillis, sessionEndMillis)
 
             return window
         }

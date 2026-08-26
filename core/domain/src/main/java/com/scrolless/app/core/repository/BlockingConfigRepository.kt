@@ -18,7 +18,7 @@ package com.scrolless.app.core.repository
 
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingConfig
-import com.scrolless.app.core.model.UsageWindow
+import com.scrolless.app.core.model.IntervalUsageWindow
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -46,7 +46,7 @@ interface BlockingConfigRepository {
      * Returns the interval window containing [nowMillis], advancing and saving it when the
      * previous window has ended.
      */
-    suspend fun getCurrentIntervalWindow(nowMillis: Long): UsageWindow
+    suspend fun getCurrentIntervalWindow(nowMillis: Long): IntervalUsageWindow
 
     /**
      * Adds one finished viewing session to the interval usage and returns the updated window.
@@ -54,5 +54,5 @@ interface BlockingConfigRepository {
      * Callers pass timestamps rather than a window, so window rollover always uses the settings
      * that are saved right now.
      */
-    suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): UsageWindow
+    suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsageWindow
 }

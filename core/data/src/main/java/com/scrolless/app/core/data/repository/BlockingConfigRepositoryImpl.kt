@@ -21,7 +21,7 @@ import com.scrolless.app.core.data.database.model.toBlockOptionType
 import com.scrolless.app.core.data.database.model.toBlockingConfig
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingConfig
-import com.scrolless.app.core.model.UsageWindow
+import com.scrolless.app.core.model.IntervalUsageWindow
 import com.scrolless.app.core.repository.BlockingConfigRepository
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
@@ -71,9 +71,9 @@ class BlockingConfigRepositoryImpl @Inject constructor(private val userSettingsD
         )
     }
 
-    override suspend fun getCurrentIntervalWindow(nowMillis: Long): UsageWindow = writeMutex.withLock {
+    override suspend fun getCurrentIntervalWindow(nowMillis: Long): IntervalUsageWindow = writeMutex.withLock {
         val savedWindow = getConfig().intervalUsageWindow
-        val currentWindow = savedWindow.windowAt(nowMillis)
+        val currentWindow = savedWindow.currentAt(nowMillis)
         if (currentWindow != savedWindow) {
             saveWindow(currentWindow)
         }
@@ -81,15 +81,15 @@ class BlockingConfigRepositoryImpl @Inject constructor(private val userSettingsD
         currentWindow
     }
 
-    override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): UsageWindow = writeMutex.withLock {
+    override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsageWindow = writeMutex.withLock {
         val savedWindow = getConfig().intervalUsageWindow
-        val updatedWindow = savedWindow.addingSession(sessionStartMillis, sessionEndMillis)
+        val updatedWindow = savedWindow.plusSession(sessionStartMillis, sessionEndMillis)
         saveWindow(updatedWindow)
 
         updatedWindow
     }
 
-    private suspend fun saveWindow(window: UsageWindow) {
+    private suspend fun saveWindow(window: IntervalUsageWindow) {
         userSettingsDao.updateIntervalState(windowStart = window.startMillis, usage = window.usageMillis)
     }
 }

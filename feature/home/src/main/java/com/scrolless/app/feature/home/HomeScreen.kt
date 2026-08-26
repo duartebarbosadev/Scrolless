@@ -104,8 +104,8 @@ import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.BlockingSettings
+import com.scrolless.app.core.model.IntervalUsageWindow
 import com.scrolless.app.core.model.SessionSegment
-import com.scrolless.app.core.model.UsageWindow
 import com.scrolless.app.designsystem.theme.LocalSharedTransitionScope
 import com.scrolless.app.designsystem.theme.SETTINGS_TRANSITION_KEY
 import com.scrolless.app.designsystem.theme.ScrollessTheme
@@ -717,7 +717,7 @@ private fun UsageOverviewHeader(
                 } else {
                     0L
                 },
-                intervalUsageWindow = if (isTodayPage) uiState.intervalUsageWindow else UsageWindow.EMPTY,
+                intervalUsageWindow = if (isTodayPage) uiState.intervalUsageWindow else IntervalUsageWindow.EMPTY,
                 listSessionSegments = if (isTodayPage) uiState.listSessionSegments else pageAnalytics.sessionSegments,
                 onClick = onUsageAnalyticsTodaySelected,
             )
@@ -1066,7 +1066,7 @@ fun PreviewIntervalTimerSelected() {
                     intervalAllowanceMillis = TimeUnit.MINUTES.toMillis(5),
                     intervalLengthMillis = TimeUnit.MINUTES.toMillis(60),
                 ),
-                intervalUsageWindow = UsageWindow(
+                intervalUsageWindow = IntervalUsageWindow(
                     startMillis = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(30),
                     lengthMillis = TimeUnit.MINUTES.toMillis(60),
                     usageMillis = TimeUnit.MINUTES.toMillis(3),
@@ -1097,7 +1097,7 @@ fun PreviewIntervalTimer() {
                     intervalAllowanceMillis = TimeUnit.MINUTES.toMillis(5),
                     intervalLengthMillis = TimeUnit.MINUTES.toMillis(60),
                 ),
-                intervalUsageWindow = UsageWindow(
+                intervalUsageWindow = IntervalUsageWindow(
                     startMillis = System.currentTimeMillis() - TimeUnit.MINUTES.toMillis(45),
                     lengthMillis = TimeUnit.MINUTES.toMillis(60),
                     usageMillis = TimeUnit.MINUTES.toMillis(4),
