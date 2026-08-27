@@ -19,11 +19,16 @@ package com.scrolless.app.core.model
 import androidx.compose.runtime.Immutable
 
 /**
- * How much was watched in the interval window that started at [startMillis]. `0` means not started.
+ * Saved usage for an interval timer.
  *
- * Windows repeat every `lengthMillis`, each repeat starting over from zero. Only a session end
- * writes this, so the saved value outlives the window it describes; every function below derives
- * the window that `nowMillis` falls in rather than writing the rollover down.
+ * For example, a timer starting at 10:00 with a 30-minute length has intervals from 10:00–10:30,
+ * 10:30–11:00, and so on. [startMillis] is the start of the last interval saved after a session
+ * ended, and [usageMillis] is the time watched during that interval. `0` means the timer has not
+ * started.
+ *
+ * Time passing does not update the database by itself. If the saved interval has ended, the
+ * functions below calculate the current interval in memory with zero usage. That new interval is
+ * saved when the next viewing session ends.
  */
 @Immutable
 data class IntervalUsage(val startMillis: Long, val usageMillis: Long) {
@@ -31,39 +36,62 @@ data class IntervalUsage(val startMillis: Long, val usageMillis: Long) {
     val isStarted: Boolean
         get() = startMillis > 0L
 
-    /** Returns the repeat of this window that contains [nowMillis], with its own usage. */
-    fun currentAt(nowMillis: Long, lengthMillis: Long): IntervalUsage {
+    /**
+     * Returns the interval active at [nowMillis].
+     *
+     * If [nowMillis] is still inside the saved interval, its usage is preserved. If one or more
+     * intervals have ended, the returned value starts at the most recent boundary with zero usage.
+     *
+     * @return This same [IntervalUsage] instance when the timer has not started, the interval length
+     * is invalid, the clock moved backwards, or the saved interval is still active. Otherwise,
+     * returns a new instance for the active interval with zero usage.
+     */
+    fun activeIntervalAt(nowMillis: Long, lengthMillis: Long): IntervalUsage {
         if (!isStarted || lengthMillis <= 0L) return this
 
-        // Negative when the clock moved backwards, which must not hand out a fresh allowance.
-        val windowsPassed = ((nowMillis - startMillis) / lengthMillis).coerceAtLeast(0L)
-        if (windowsPassed == 0L) return this
+        if (nowMillis < startMillis) {
+            // The saved interval may start at 10:00 while the device clock now says 9:50. This can
+            // happen if the user manually changes the date or time, or if automatic clock sync
+            // corrects a device clock that was running ahead. Keep the saved interval and its usage;
+            // treating this as a new interval would incorrectly give the user another allowance.
+            return this
+        }
 
-        return IntervalUsage(startMillis = startMillis + windowsPassed * lengthMillis, usageMillis = 0L)
+        val elapsedMillis = nowMillis - startMillis
+        if (elapsedMillis < lengthMillis) {
+            // The saved interval is still active, so its start and usage are already correct.
+            return this
+        }
+
+        val intervalsPassed = elapsedMillis / lengthMillis
+
+        return IntervalUsage(startMillis = startMillis + intervalsPassed * lengthMillis, usageMillis = 0L)
     }
 
-    /** Milliseconds left before the window that contains [nowMillis] ends. */
+    /** Milliseconds until the interval active at [nowMillis] ends. */
     fun remainingMillisAt(nowMillis: Long, lengthMillis: Long): Long {
         if (!isStarted || lengthMillis <= 0L) return 0L
 
-        val current = currentAt(nowMillis, lengthMillis)
+        val current = activeIntervalAt(nowMillis, lengthMillis)
 
         return (current.startMillis + lengthMillis - nowMillis).coerceIn(0L, lengthMillis)
     }
 
     /**
-     * Adds the part of a session that belongs to the window containing [sessionEndMillis], so a
-     * session crossing a boundary only counts from the boundary on.
+     * Adds the part of a session watched during the interval active at [sessionEndMillis]. If the
+     * session began in an earlier interval, only time watched after the current interval started is
+     * added.
      *
      * Passing the current time as [sessionEndMillis] gives the usage including a session still in
      * progress, without having to save it.
      */
     fun plusSession(sessionStartMillis: Long, sessionEndMillis: Long, lengthMillis: Long): IntervalUsage {
-        // Nothing started the schedule yet, or the clock moved back behind it. Restarting it at the
-        // session keeps usage, so moving the clock back cannot hand out a fresh allowance.
+        // The first session starts the timer. If the device clock was changed to a time before the
+        // saved interval, move its start to this session so watched time can still be counted, but
+        // preserve the saved usage so changing the clock does not restore the allowance.
         val schedule = if (!isStarted || sessionEndMillis < startMillis) copy(startMillis = sessionStartMillis) else this
 
-        val current = schedule.currentAt(sessionEndMillis, lengthMillis)
+        val current = schedule.activeIntervalAt(sessionEndMillis, lengthMillis)
         val watched = sessionEndMillis - maxOf(sessionStartMillis, current.startMillis)
 
         return current.copy(usageMillis = current.usageMillis + watched.coerceAtLeast(0L))

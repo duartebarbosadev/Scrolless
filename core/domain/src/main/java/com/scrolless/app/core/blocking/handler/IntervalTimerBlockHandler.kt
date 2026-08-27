@@ -35,7 +35,7 @@ class IntervalTimerBlockHandler(
 ) : BlockOptionHandler {
 
     private suspend fun usageAt(nowMillis: Long) =
-        blockingConfigRepository.getConfig().intervalUsage.currentAt(nowMillis, intervalLengthMillis)
+        blockingConfigRepository.getConfig().intervalUsage.activeIntervalAt(nowMillis, intervalLengthMillis)
 
     override suspend fun onEnterContent(currentDailyUsage: Long): Boolean {
         val usage = usageAt(timeProvider.currentTimeInMillis()).usageMillis

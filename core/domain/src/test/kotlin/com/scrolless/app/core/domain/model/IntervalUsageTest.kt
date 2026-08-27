@@ -30,14 +30,14 @@ class IntervalUsageTest {
     fun `a window that is still running is left untouched`() {
         val usage = IntervalUsage(startMillis = 1_000L, usageMillis = 5_000L)
 
-        assertEquals(usage, usage.currentAt(nowMillis = 5_000L, lengthMillis = HALF_HOUR_MILLIS))
+        assertEquals(usage, usage.activeIntervalAt(nowMillis = 5_000L, lengthMillis = HALF_HOUR_MILLIS))
     }
 
     @Test
     fun `a window that ended moves to the interval containing now and clears usage`() {
         val usage = IntervalUsage(startMillis = 1_000L, usageMillis = 5_000L)
 
-        val current = usage.currentAt(nowMillis = 35_000L, lengthMillis = 10_000L)
+        val current = usage.activeIntervalAt(nowMillis = 35_000L, lengthMillis = 10_000L)
 
         assertEquals(31_000L, current.startMillis)
         assertEquals(0L, current.usageMillis)
@@ -47,8 +47,8 @@ class IntervalUsageTest {
     fun `usage of a window that ended belongs to the previous one and is dropped`() {
         val usage = IntervalUsage(startMillis = 1_000L, usageMillis = 5_000L)
 
-        assertEquals(5_000L, usage.currentAt(nowMillis = 9_000L, lengthMillis = 10_000L).usageMillis)
-        assertEquals(0L, usage.currentAt(nowMillis = 11_000L, lengthMillis = 10_000L).usageMillis)
+        assertEquals(5_000L, usage.activeIntervalAt(nowMillis = 9_000L, lengthMillis = 10_000L).usageMillis)
+        assertEquals(0L, usage.activeIntervalAt(nowMillis = 11_000L, lengthMillis = 10_000L).usageMillis)
     }
 
     @Test
@@ -120,7 +120,7 @@ class IntervalUsageTest {
         val usage = IntervalUsage(startMillis = 1_000L, usageMillis = 0L)
 
         assertEquals(0L, usage.remainingMillisAt(nowMillis = 5_000L, lengthMillis = 0L))
-        assertEquals(usage, usage.currentAt(nowMillis = 5_000L, lengthMillis = 0L))
+        assertEquals(usage, usage.activeIntervalAt(nowMillis = 5_000L, lengthMillis = 0L))
     }
 
     @Test
@@ -152,7 +152,7 @@ class IntervalUsageTest {
     fun `a clock moved backwards keeps the usage instead of handing out a fresh allowance`() {
         val usage = IntervalUsage(startMillis = 10_000L, usageMillis = 5_000L)
 
-        assertEquals(5_000L, usage.currentAt(nowMillis = 4_000L, lengthMillis = 10_000L).usageMillis)
+        assertEquals(5_000L, usage.activeIntervalAt(nowMillis = 4_000L, lengthMillis = 10_000L).usageMillis)
         assertEquals(10_000L, usage.remainingMillisAt(nowMillis = 4_000L, lengthMillis = 10_000L))
     }
 

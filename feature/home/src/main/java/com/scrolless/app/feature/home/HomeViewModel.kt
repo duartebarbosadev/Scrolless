@@ -520,16 +520,25 @@ private fun buildUsageAnalyticsDayUiState(date: LocalDate, segments: List<Sessio
 /**
  * Emits the window containing the current time, then again every time it restarts.
  *
- * A window that never started has nothing to wait for, so the flow ends after one value.
+ * The stored window is only written when a viewing session ends, but it expires on its own as time
+ * passes. Without this, the repository would emit nothing at a restart and the screen would keep
+ * showing the spent window: usage stuck at the allowance, the progress bar full, and the countdown
+ * measured from a start that already passed.
  */
 private fun IntervalUsage.emitOnEveryRestart(lengthMillis: Long): Flow<IntervalUsage> = flow {
     var usage = this@emitOnEveryRestart
 
     while (true) {
-        usage = usage.currentAt(System.currentTimeMillis(), lengthMillis)
+        // The stored window may have expired while the screen was closed, so start from the one
+        // running now rather than the one that was last saved.
+        usage = usage.activeIntervalAt(System.currentTimeMillis(), lengthMillis)
         emit(usage)
+
+        // A timer that never started, or one without a length, has no restart to wait for. Looping
+        // would emit the same value forever without ever suspending.
         if (!usage.isStarted || lengthMillis <= 0L) return@flow
 
+        // Wake up exactly when this window restarts instead of polling on a fixed tick.
         delay(usage.remainingMillisAt(System.currentTimeMillis(), lengthMillis).milliseconds)
     }
 }

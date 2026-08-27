@@ -67,7 +67,7 @@ class BlockingConfigRepositoryImpl @Inject constructor(
         // Roll the window forward with the length it was recorded under before storing the new
         // one, otherwise lengthening the interval revives an expired window and its usage.
         val config = getConfig()
-        val current = config.intervalUsage.currentAt(timeProvider.currentTimeInMillis(), config.settings.intervalLengthMillis)
+        val current = config.intervalUsage.activeIntervalAt(timeProvider.currentTimeInMillis(), config.settings.intervalLengthMillis)
 
         userSettingsDao.configureIntervalTimer(
             allowanceMillis = allowanceMillis,

@@ -146,8 +146,8 @@ class BlockingConfigRepositoryImplTest {
 
         assertEquals(1_000L, saved.startMillis)
         assertEquals(4_000L, saved.usageMillis)
-        assertEquals(21_000L, saved.currentAt(nowMillis = 25_000L, lengthMillis = 10_000L).startMillis)
-        assertEquals(0L, saved.currentAt(nowMillis = 25_000L, lengthMillis = 10_000L).usageMillis)
+        assertEquals(21_000L, saved.activeIntervalAt(nowMillis = 25_000L, lengthMillis = 10_000L).startMillis)
+        assertEquals(0L, saved.activeIntervalAt(nowMillis = 25_000L, lengthMillis = 10_000L).usageMillis)
         coVerify(exactly = 0) { dao.updateIntervalState(any(), any()) }
     }
 
