@@ -32,7 +32,7 @@ class DayLimitBlockHandler(private val timeLimit: Long) : BlockOptionHandler {
      * @param currentDailyUsage Current daily usage in milliseconds.
      * @return true if we should block immediately.
      */
-    override fun onEnterContent(currentDailyUsage: Long): Boolean {
+    override suspend fun onEnterContent(currentDailyUsage: Long): Boolean {
 
         val shouldBlock = currentDailyUsage >= timeLimit
         Timber.d("DayLimit.onEnter: daily=%d, limit=%d -> shouldBlock=%s", currentDailyUsage, timeLimit, shouldBlock)
@@ -47,7 +47,7 @@ class DayLimitBlockHandler(private val timeLimit: Long) : BlockOptionHandler {
      * @param elapsedTime Time elapsed in current session in milliseconds.
      * @return [BlockingResult.BlockNow] if should block, [BlockingResult.Continue] otherwise.
      */
-    override fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult {
+    override suspend fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult {
         val willExceed = (currentDailyUsage + elapsedTime) >= timeLimit
 
         // Check if crossing daily limit
@@ -70,9 +70,10 @@ class DayLimitBlockHandler(private val timeLimit: Long) : BlockOptionHandler {
     /**
      * No additional logic needed on exit.
      *
-     * @param sessionTime Duration of the session in milliseconds.
+     * @param sessionStartMillis Time when the session started.
+     * @param sessionEndMillis Time when the session ended.
      */
-    override fun onExitContent(sessionTime: Long) {
-        Timber.v("DayLimit.onExit: session=%d", sessionTime)
+    override suspend fun onExitContent(sessionStartMillis: Long, sessionEndMillis: Long) {
+        Timber.v("DayLimit.onExit: session=%d", sessionEndMillis - sessionStartMillis)
     }
 }

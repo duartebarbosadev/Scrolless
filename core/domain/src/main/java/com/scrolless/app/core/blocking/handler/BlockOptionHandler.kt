@@ -30,7 +30,7 @@ interface BlockOptionHandler {
      *
      * @param currentDailyUsage Current daily usage in milliseconds.
      */
-    fun onEnterContent(currentDailyUsage: Long): Boolean
+    suspend fun onEnterContent(currentDailyUsage: Long): Boolean
 
     /**
      * Called periodically while user remains in blocked content.
@@ -41,12 +41,13 @@ interface BlockOptionHandler {
      *
      * @return [BlockingResult] indicating whether to block, continue, or check later.
      */
-    fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult
+    suspend fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult
 
     /**
-     * Called when user exits blocked content to finalize any usage calculations.
+     * Called when the user exits blocked content.
      *
-     * @param sessionTime Duration of the session in milliseconds.
+     * @param sessionStartMillis Time when the session started.
+     * @param sessionEndMillis Time when the session ended.
      */
-    fun onExitContent(sessionTime: Long)
+    suspend fun onExitContent(sessionStartMillis: Long, sessionEndMillis: Long)
 }

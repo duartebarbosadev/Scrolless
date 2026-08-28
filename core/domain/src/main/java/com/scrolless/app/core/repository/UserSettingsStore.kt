@@ -16,26 +16,10 @@
  */
 package com.scrolless.app.core.repository
 
-import com.scrolless.app.core.model.BlockOption
 import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
 
 interface UserSettingsStore {
-
-    fun getActiveBlockOption(): Flow<BlockOption>
-    suspend fun setActiveBlockOption(blockOption: BlockOption)
-
-    fun getTimeLimit(): Flow<Long>
-    suspend fun setTimeLimit(timeLimit: Long)
-
-    suspend fun setIntervalLength(intervalLength: Long)
-    fun getIntervalLength(): Flow<Long>
-
-    fun getIntervalWindowStart(): Flow<Long>
-    suspend fun setIntervalWindowStart(windowStart: Long)
-    fun getIntervalUsage(): Flow<Long>
-    suspend fun setIntervalUsage(usage: Long)
-    suspend fun updateIntervalState(windowStart: Long, usage: Long)
 
     suspend fun setTimerOverlayToggle(enabled: Boolean)
     fun getTimerOverlayEnabled(): Flow<Boolean>

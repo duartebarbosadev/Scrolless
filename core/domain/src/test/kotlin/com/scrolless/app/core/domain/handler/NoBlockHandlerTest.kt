@@ -55,7 +55,7 @@ class NoBlockHandlerTest : BaseTest() {
     }
     @Test
     fun whenExitContent_resetsState() = runTest(testDispatcher) {
-        noBlockHandler.onExitContent(0L)
+        noBlockHandler.onExitContent(0L, 0L)
         // No state to verify directly, but ensure no exceptions occur
     }
 }

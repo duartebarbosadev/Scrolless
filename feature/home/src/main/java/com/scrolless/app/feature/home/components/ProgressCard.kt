@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
+import com.scrolless.app.core.model.IntervalUsage
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.component.AppUsageLegend
 import com.scrolless.app.designsystem.component.AutoResizingText
@@ -73,6 +74,7 @@ import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.designsystem.util.formatTime
 import com.scrolless.app.designsystem.util.hapticClickable
 import com.scrolless.app.feature.home.R
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 
@@ -82,10 +84,9 @@ fun ProgressCard(
     blockOption: BlockOption,
     progress: Int,
     currentUsage: Long,
-    intervalUsage: Long,
-    timeLimit: Long,
-    intervalLength: Long,
-    intervalWindowStart: Long,
+    limitMillis: Long,
+    intervalLengthMillis: Long,
+    intervalUsage: IntervalUsage,
     modifier: Modifier = Modifier,
     listSessionSegments: List<SessionSegment> = emptyList(),
     onClick: () -> Unit = {},
@@ -93,47 +94,25 @@ fun ProgressCard(
     val clampedProgress = progress.coerceIn(0, 100)
 
     val isIntervalMode = blockOption == BlockOption.IntervalTimer
-    val intervalAllowanceConfigured = isIntervalMode && timeLimit > 0L
-    val intervalRemainingMillis = if (isIntervalMode) {
-        rememberIntervalRemainingTime(
-            isRunning = intervalAllowanceConfigured && intervalLength > 0L && intervalWindowStart > 0L,
-            intervalLength = intervalLength,
-            windowStart = intervalWindowStart,
-        )
-    } else {
-        0L
-    }
-    val intervalResetReady =
-        intervalAllowanceConfigured &&
-            intervalLength > 0L &&
-            intervalWindowStart > 0L &&
-            intervalRemainingMillis <= 1_000L
-    val displayIntervalUsage = if (intervalResetReady) 0L else intervalUsage
-    val displayProgress = if (intervalResetReady) 0 else clampedProgress
+    val isIntervalRunning = isIntervalMode && limitMillis > 0L && intervalLengthMillis > 0L && intervalUsage.isStarted
+    val intervalRemainingMillis = rememberIntervalRemainingTime(
+        isRunning = isIntervalRunning,
+        startMillis = intervalUsage.startMillis,
+        lengthMillis = intervalLengthMillis,
+    )
 
     val primaryText = when {
-        isIntervalMode -> displayIntervalUsage.formatTime()
+        isIntervalMode -> intervalUsage.usageMillis.formatTime()
         else -> currentUsage.formatTime()
     }
     val limitChipText = when {
-        isIntervalMode && intervalAllowanceConfigured -> timeLimit.formatTime()
-        blockOption == BlockOption.DailyLimit && timeLimit > 0L -> timeLimit.formatTime()
+        isIntervalMode && limitMillis > 0L -> limitMillis.formatTime()
+        blockOption == BlockOption.DailyLimit && limitMillis > 0L -> limitMillis.formatTime()
         else -> null
     }
 
-    val resetText = if (isIntervalMode) {
-        when {
-            !intervalAllowanceConfigured -> null
-
-            intervalLength <= 0L || intervalWindowStart <= 0L -> null
-
-            intervalRemainingMillis <= 1_000L -> null
-
-            else -> stringResource(
-                R.string.interval_timer_next_reset_in,
-                intervalRemainingMillis.formatTime(),
-            )
-        }
+    val resetText = if (isIntervalRunning) {
+        stringResource(R.string.interval_timer_next_reset_in, intervalRemainingMillis.formatTime())
     } else {
         null
     }
@@ -152,15 +131,15 @@ fun ProgressCard(
     val legendItems = remember(progressBarSegments) { buildLegendItems(progressBarSegments) }
 
     val segmentProgressFraction = when {
-        blockOption == BlockOption.DailyLimit && timeLimit > 0L -> displayProgress / 100f
-        blockOption == BlockOption.IntervalTimer && intervalAllowanceConfigured -> displayProgress / 100f
+        blockOption == BlockOption.DailyLimit && limitMillis > 0L -> clampedProgress / 100f
+        blockOption == BlockOption.IntervalTimer && limitMillis > 0L -> clampedProgress / 100f
         progressBarSegments.isNotEmpty() -> 1f
         else -> 0f
     }
 
     val isLimitReached = when (blockOption) {
-        BlockOption.DailyLimit -> timeLimit in 1..currentUsage
-        BlockOption.IntervalTimer -> timeLimit in 1..intervalUsage && !intervalResetReady
+        BlockOption.DailyLimit -> limitMillis in 1..currentUsage
+        BlockOption.IntervalTimer -> limitMillis in 1..intervalUsage.usageMillis
         else -> false
     }
 
@@ -313,33 +292,26 @@ fun ProgressCard(
     }
 }
 
+/**
+ * Counts down to the end of the running interval, rolling over on its own when one ends.
+ *
+ * Keyed on the window schedule only, so recording usage does not restart the countdown.
+ */
 @Composable
-private fun rememberIntervalRemainingTime(isRunning: Boolean, intervalLength: Long, windowStart: Long): Long {
+private fun rememberIntervalRemainingTime(isRunning: Boolean, startMillis: Long, lengthMillis: Long): Long {
     val isInspectionMode = LocalInspectionMode.current
+    val schedule = remember(startMillis) { IntervalUsage(startMillis = startMillis, usageMillis = 0L) }
 
-    fun calculateRemaining(): Long {
-        if (intervalLength <= 0L || windowStart <= 0L) return 0L
-        val now = System.currentTimeMillis()
-        val elapsed = now - windowStart
-        if (elapsed < 0L) return intervalLength
-        val remaining = intervalLength - elapsed
-        return remaining.coerceAtLeast(0L)
+    var remaining by remember(isRunning, startMillis, lengthMillis) {
+        mutableLongStateOf(schedule.remainingMillisAt(System.currentTimeMillis(), lengthMillis))
     }
 
-    var remaining by remember(isRunning, intervalLength, windowStart) {
-        mutableLongStateOf(calculateRemaining())
-    }
+    LaunchedEffect(isRunning, schedule, lengthMillis, isInspectionMode) {
+        if (!isRunning || isInspectionMode) return@LaunchedEffect
 
-    LaunchedEffect(isRunning, intervalLength, windowStart, isInspectionMode) {
-        if (!isRunning || intervalLength <= 0L || windowStart <= 0L || isInspectionMode) {
-            remaining = calculateRemaining()
-        } else {
-            while (isActive) {
-                val nextRemaining = calculateRemaining()
-                remaining = nextRemaining
-                if (nextRemaining <= 0L) break
-                delay(1_000L)
-            }
+        while (isActive) {
+            remaining = schedule.remainingMillisAt(System.currentTimeMillis(), lengthMillis)
+            delay(1_000L.milliseconds)
         }
     }
 
@@ -397,10 +369,9 @@ fun ProgressCardPreview() {
                 blockOption = BlockOption.NothingSelected,
                 progress = 0,
                 currentUsage = 3600000L,
-                intervalUsage = 0L,
-                timeLimit = 0L,
-                intervalLength = 0L,
-                intervalWindowStart = 0L,
+                limitMillis = 0L,
+                intervalLengthMillis = 0L,
+                intervalUsage = IntervalUsage.NOT_STARTED,
                 listSessionSegments = listOf(
                     SessionSegment(BlockableApp.TIKTOK, 1800000L, java.time.LocalDateTime.now()),
                     SessionSegment(BlockableApp.REELS, 1200000L, java.time.LocalDateTime.now()),

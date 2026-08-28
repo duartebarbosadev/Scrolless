@@ -29,7 +29,7 @@ class NoBlockHandler : BlockOptionHandler {
      * @param currentDailyUsage Current daily usage in milliseconds.
      * @return false, never block.
      */
-    override fun onEnterContent(currentDailyUsage: Long): Boolean {
+    override suspend fun onEnterContent(currentDailyUsage: Long): Boolean {
         Timber.v("NothingSelected.onEnter: daily=%d -> allow", currentDailyUsage)
         // Do not block
         return false
@@ -42,7 +42,7 @@ class NoBlockHandler : BlockOptionHandler {
      * @param elapsedTime Time elapsed in current session in milliseconds.
      * @return [BlockingResult.Continue], never block.
      */
-    override fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult {
+    override suspend fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult {
         // No blocking on periodic check
         Timber.v("NothingSelected.onPeriodic: daily=%d, elapsed=%d -> allow", currentDailyUsage, elapsedTime)
         return BlockingResult.Continue
@@ -51,10 +51,11 @@ class NoBlockHandler : BlockOptionHandler {
     /**
      * No usage tracking or blocking.
      *
-     * @param sessionTime Duration of the session in milliseconds.
+     * @param sessionStartMillis Time when the session started.
+     * @param sessionEndMillis Time when the session ended.
      */
-    override fun onExitContent(sessionTime: Long) {
-        Timber.v("NothingSelected.onExit: session=%d", sessionTime)
+    override suspend fun onExitContent(sessionStartMillis: Long, sessionEndMillis: Long) {
+        Timber.v("NothingSelected.onExit: session=%d", sessionEndMillis - sessionStartMillis)
         // No usage tracking or blocking
     }
 }

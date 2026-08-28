@@ -25,6 +25,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import java.time.Duration
 import junit.framework.TestCase.assertEquals
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,7 +59,7 @@ class SessionTrackerTest : BaseTest() {
         sessionTracker.onAppOpen(app)
 
         val sessionTime = 200L
-        delay(sessionTime)
+        delay(sessionTime.milliseconds)
         sessionTracker.addToDailyUsage(sessionTime, app)
         coVerify(exactly = 1) {
             store.addSessionSegment(any())
@@ -78,9 +79,9 @@ class SessionTrackerTest : BaseTest() {
 
         val firstSessionTime = 5_000L
         val secondSessionTime = 2_000L
-        delay(firstSessionTime)
+        delay(firstSessionTime.milliseconds)
         sessionTracker.addToDailyUsage(firstSessionTime, app)
-        delay(secondSessionTime)
+        delay(secondSessionTime.milliseconds)
         sessionTracker.addToDailyUsage(secondSessionTime, app)
 
         // Make sure only 1 session is created and that session is updated once
@@ -102,16 +103,16 @@ class SessionTrackerTest : BaseTest() {
 
         val firstSessionTime = 5_000L
         val secondSessionTime = 2_000L
-        delay(firstSessionTime)
+        delay(firstSessionTime.milliseconds)
         sessionTracker.addToDailyUsage(firstSessionTime, app)
-        delay(1)
+        delay(1.milliseconds)
         sessionTracker.onAppClose()
 
         // Delay for a 1 second to pretend the user minimized and will open the app again, and it should use the same segment
-        delay(1000)
+        delay(1000.milliseconds)
 
         sessionTracker.onAppOpen(app)
-        delay(secondSessionTime)
+        delay(secondSessionTime.milliseconds)
         sessionTracker.addToDailyUsage(secondSessionTime, app)
 
         // Make sure only 1 session is created and that session is updated once
@@ -134,16 +135,16 @@ class SessionTrackerTest : BaseTest() {
 
         val firstSessionTime = 5_000L
         val secondSessionTime = 2_000L
-        delay(firstSessionTime)
+        delay(firstSessionTime.milliseconds)
         sessionTracker.addToDailyUsage(firstSessionTime, app)
-        delay(1)
+        delay(1.milliseconds)
         sessionTracker.onAppClose()
 
         // Delay for a bit to pretend the user took a while to reopen the app for it to create a new session
-        delay(40_000)
+        delay(40_000.milliseconds)
 
         sessionTracker.onAppOpen(app)
-        delay(secondSessionTime)
+        delay(secondSessionTime.milliseconds)
         sessionTracker.addToDailyUsage(secondSessionTime, app)
 
         // Make sure only 1 session is created and that session is updated once
@@ -169,16 +170,16 @@ class SessionTrackerTest : BaseTest() {
 
         val exampleSessionTimeApp1 = 5_000L
         val exampleSessionTimeApp2 = 6_000L
-        delay(exampleSessionTimeApp1)
+        delay(exampleSessionTimeApp1.milliseconds)
         sessionTracker.addToDailyUsage(exampleSessionTimeApp1, app1)
-        delay(1)
+        delay(1.milliseconds)
         sessionTracker.onAppClose()
 
         // Delay for a 1 second to pretend the user minimized and will open the app again, and it should use the same segment
-        delay(1000)
+        delay(1000.milliseconds)
 
         sessionTracker.onAppOpen(app2)
-        delay(exampleSessionTimeApp2)
+        delay(exampleSessionTimeApp2.milliseconds)
         sessionTracker.addToDailyUsage(exampleSessionTimeApp2, app2)
 
         // Make sure only 1 session is created and that session is updated once
@@ -203,14 +204,14 @@ class SessionTrackerTest : BaseTest() {
         val now = timeProvider.localDateTimeNow()
         val fiveMinutesBeforeMidnight = now.toLocalDate().atTime(23, 55)
         val millisUntil2355 = Duration.between(now, fiveMinutesBeforeMidnight).toMillis()
-        delay(millisUntil2355)
+        delay(millisUntil2355.milliseconds)
 
         val app = BlockableApp.REELS
         sessionTracker.onAppOpen(app)
 
         // 11-minute session that will go past midnight (5 mins before, 6 mins after)
         val sessionDuration = 11 * 60 * 1000L
-        delay(sessionDuration)
+        delay(sessionDuration.milliseconds)
         sessionTracker.addToDailyUsage(sessionDuration, app)
 
         // Verify that two segments were created (splitting at midnight)
@@ -239,16 +240,16 @@ class SessionTrackerTest : BaseTest() {
 
             val initialNow = timeProvider.localDateTimeNow()
             val tenMinutesBeforeMidnight = initialNow.toLocalDate().atTime(23, 50)
-            delay(Duration.between(initialNow, tenMinutesBeforeMidnight).toMillis())
+            delay(Duration.between(initialNow, tenMinutesBeforeMidnight).toMillis().milliseconds)
 
             val app = BlockableApp.REELS
             sessionTracker.onAppOpen(app)
 
             val blockedContentStart = tenMinutesBeforeMidnight.plusMinutes(15)
-            delay(Duration.between(timeProvider.localDateTimeNow(), blockedContentStart).toMillis())
+            delay(Duration.between(timeProvider.localDateTimeNow(), blockedContentStart).toMillis().milliseconds)
 
             val sessionDuration = 5 * 60 * 1000L
-            delay(sessionDuration)
+            delay(sessionDuration.milliseconds)
             sessionTracker.addToDailyUsage(sessionDuration, app)
 
             coVerify(exactly = 1) {
@@ -272,14 +273,14 @@ class SessionTrackerTest : BaseTest() {
         var now = timeProvider.localDateTimeNow()
         val firstTimeToSet = now.toLocalDate().atTime(22, 0)
         val millisUntilTimeToSet = Duration.between(now, firstTimeToSet).toMillis()
-        delay(millisUntilTimeToSet)
+        delay(millisUntilTimeToSet.milliseconds)
 
         val app = BlockableApp.REELS
         sessionTracker.onAppOpen(app)
 
         // 20-minute session that will WON'T go past midnight
         val firstSessionDuration = 20 * 60 * 1000L
-        delay(20 * 60 * 1000L)
+        delay((20 * 60 * 1000L).milliseconds)
         sessionTracker.addToDailyUsage(firstSessionDuration, app)
         sessionTracker.onAppClose()
 
@@ -287,12 +288,12 @@ class SessionTrackerTest : BaseTest() {
         now = timeProvider.localDateTimeNow()
         val secondTimeToSet = now.plusHours(26)
         val millisUntilSecondTimeToSet = Duration.between(now, secondTimeToSet).toMillis()
-        delay(millisUntilSecondTimeToSet)
+        delay(millisUntilSecondTimeToSet.milliseconds)
 
         sessionTracker.onAppOpen(app)
 
         val secondSessionDuration = 10 * 60 * 1000L
-        delay(secondSessionDuration)
+        delay(secondSessionDuration.milliseconds)
         sessionTracker.addToDailyUsage(secondSessionDuration, app)
 
         // Verify that two segments were created (splitting at midnight)

@@ -16,118 +16,141 @@
  */
 package com.scrolless.app.core.domain.handler
 
-import com.scrolless.app.core.blocking.handler.BlockOptionHandler
 import com.scrolless.app.core.blocking.handler.IntervalTimerBlockHandler
-import com.scrolless.app.core.blocking.handler.IntervalTimerState
+import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.domain.BaseTest
+import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.BlockingResult
+import com.scrolless.app.core.model.BlockingSettings
+import com.scrolless.app.core.model.IntervalUsage
+import com.scrolless.app.core.repository.BlockingConfigRepository
+import java.time.LocalDate
+import java.time.LocalDateTime
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class IntervalTimerBlockHandlerTest : BaseTest() {
 
     private val testDispatcher = StandardTestDispatcher()
+    private val repository = FakeBlockingConfigRepository()
     private var nowMillis = 0L
-    private val stateChanges = mutableListOf<IntervalTimerState>()
 
-    private fun createHandler(
-        allowanceMillis: Long = ALLOWANCE_MILLIS,
-        intervalLengthMillis: Long = INTERVAL_LENGTH_MILLIS,
-        initialState: IntervalTimerState = IntervalTimerState(windowStartMillis = NOW_START, usageMillis = 0L),
-    ): BlockOptionHandler {
-        stateChanges.clear()
-        return IntervalTimerBlockHandler(
-            allowanceMillis = allowanceMillis,
-            intervalLengthMillis = intervalLengthMillis,
-            initialState = initialState,
-            onStateChanged = { stateChanges.add(it) },
-            currentTimeProvider = { nowMillis },
-        )
+    private val timeProvider = object : TimeProvider {
+        override fun currentTimeInMillis(): Long = nowMillis
+        override fun localDateNow(): LocalDate = LocalDate.EPOCH
+        override fun localDateTimeNow(): LocalDateTime = LocalDateTime.MIN
     }
 
-    @Test
-    fun onEnterContent_whenUnderAllowance_doesNotBlock() = runTest(testDispatcher) {
-        nowMillis = 1_000L
-        val handler = createHandler(
-            initialState = IntervalTimerState(windowStartMillis = 1_000L, usageMillis = 500L),
-        )
-
-        val didBlock = handler.onEnterContent(0L)
-
-        assert(!didBlock)
-        assert(stateChanges.isEmpty())
-    }
+    private val handler = IntervalTimerBlockHandler(
+        allowanceMillis = ALLOWANCE_MILLIS,
+        intervalLengthMillis = INTERVAL_LENGTH_MILLIS,
+        blockingConfigRepository = repository,
+        timeProvider = timeProvider,
+    )
 
     @Test
-    fun onPeriodicCheck_whenProjectedUsageExceedsLimit_blocksAndClampsUsage() = runTest(testDispatcher) {
-        nowMillis = 1_000L
-        val handler = createHandler(
-            initialState = IntervalTimerState(windowStartMillis = 1_000L, usageMillis = 2_000L),
-        )
-        handler.onEnterContent(0L)
-
+    fun `entering under the allowance does not block`() = runTest(testDispatcher) {
         nowMillis = 2_000L
+        repository.usage = IntervalUsage(startMillis = 1_000L, usageMillis = 500L)
+
+        assertFalse(handler.onEnterContent(currentDailyUsage = 0L))
+    }
+
+    @Test
+    fun `entering with the allowance used up blocks`() = runTest(testDispatcher) {
+        nowMillis = 2_000L
+        repository.usage = IntervalUsage(startMillis = 1_000L, usageMillis = ALLOWANCE_MILLIS)
+
+        assertTrue(handler.onEnterContent(currentDailyUsage = 0L))
+    }
+
+    @Test
+    fun `the running session counts toward the allowance`() = runTest(testDispatcher) {
+        nowMillis = 4_500L
+        repository.usage = IntervalUsage(startMillis = 1_000L, usageMillis = 2_000L)
+
         val result = handler.onPeriodicCheck(currentDailyUsage = 0L, elapsedTime = 3_500L)
 
-        assert(result is BlockingResult.BlockNow)
-        assertEquals(ALLOWANCE_MILLIS, stateChanges.last().usageMillis)
+        assertTrue(result is BlockingResult.BlockNow)
     }
 
     @Test
-    fun onPeriodicCheck_whenAllowanceRemaining_returnsCheckLaterWithRemainingTime() = runTest(testDispatcher) {
-        nowMillis = 500L
-        val handler = createHandler(
-            initialState = IntervalTimerState(windowStartMillis = 500L, usageMillis = 1_000L),
-        )
-        handler.onEnterContent(0L)
+    fun `the next check is scheduled for the remaining allowance`() = runTest(testDispatcher) {
+        nowMillis = 2_500L
+        repository.usage = IntervalUsage(startMillis = 500L, usageMillis = 1_000L)
 
-        nowMillis = 1_000L
         val result = handler.onPeriodicCheck(currentDailyUsage = 0L, elapsedTime = 2_000L)
 
-        assert(result is BlockingResult.CheckLater)
-        val nextCheck = result as BlockingResult.CheckLater
-        assertEquals(2_000L, nextCheck.delayMillis)
-        assert(stateChanges.isEmpty())
+        assertEquals(2_000L, (result as BlockingResult.CheckLater).delayMillis)
     }
 
     @Test
-    fun onExitContent_whenSessionCompletes_updatesUsageAndState() = runTest(testDispatcher) {
-        nowMillis = 2_000L
-        val handler = createHandler(
-            initialState = IntervalTimerState(windowStartMillis = 2_000L, usageMillis = 1_500L),
-        )
-        handler.onEnterContent(0L)
+    fun `a session crossing a window boundary only counts the new window`() = runTest(testDispatcher) {
+        nowMillis = 13_000L
+        repository.usage = IntervalUsage(startMillis = 1_000L, usageMillis = 1_000L)
 
-        nowMillis = 3_000L
-        handler.onExitContent(sessionTime = 2_000L)
+        val result = handler.onPeriodicCheck(currentDailyUsage = 0L, elapsedTime = 4_000L)
 
-        assertEquals(3_500L, stateChanges.last().usageMillis)
+        assertEquals(3_000L, (result as BlockingResult.CheckLater).delayMillis)
     }
 
     @Test
-    fun onEnterContent_whenIntervalElapsed_resetsWindowAndUsage() = runTest(testDispatcher) {
-        nowMillis = 1_000L
-        val handler = createHandler(
-            initialState = IntervalTimerState(windowStartMillis = 1_000L, usageMillis = 4_000L),
-            intervalLengthMillis = 2_000L,
-        )
+    fun `exiting records the session with its timestamps`() = runTest(testDispatcher) {
+        handler.onExitContent(sessionStartMillis = 2_000L, sessionEndMillis = 4_000L)
 
-        nowMillis = 5_000L
-        val didBlock = handler.onEnterContent(0L)
-
-        assert(!didBlock)
-        val refreshedState = stateChanges.last()
-        assertEquals(5_000L, refreshedState.windowStartMillis)
-        assertEquals(0L, refreshedState.usageMillis)
+        assertEquals(2_000L to 4_000L, repository.recordedSession)
     }
 
-    companion object {
-        private const val ALLOWANCE_MILLIS = 5_000L
-        private const val INTERVAL_LENGTH_MILLIS = 10_000L
-        private const val NOW_START = 0L
+    @Test
+    fun `exiting without watched time records nothing`() = runTest(testDispatcher) {
+        handler.onExitContent(sessionStartMillis = 2_000L, sessionEndMillis = 2_000L)
+
+        assertEquals(null, repository.recordedSession)
+    }
+
+    private class FakeBlockingConfigRepository : BlockingConfigRepository {
+
+        var usage = IntervalUsage(startMillis = 1_000L, usageMillis = 0L)
+        var recordedSession: Pair<Long, Long>? = null
+
+        private fun config() = BlockingConfig(
+            activeOption = BlockOption.IntervalTimer,
+            settings = BlockingSettings(
+                intervalAllowanceMillis = ALLOWANCE_MILLIS,
+                intervalLengthMillis = INTERVAL_LENGTH_MILLIS,
+            ),
+            intervalUsage = usage,
+        )
+
+        override fun observeConfig(): Flow<BlockingConfig> = flowOf(config())
+
+        override suspend fun getConfig(): BlockingConfig = config()
+
+        override suspend fun setActiveOption(option: BlockOption) = Unit
+
+        override suspend fun configureDailyLimit(limitMillis: Long) = Unit
+
+        override suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long) = Unit
+
+        override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsage {
+            recordedSession = sessionStartMillis to sessionEndMillis
+            usage = usage.plusSession(sessionStartMillis, sessionEndMillis, INTERVAL_LENGTH_MILLIS)
+
+            return usage
+        }
+    }
+
+    private companion object {
+        const val ALLOWANCE_MILLIS = 5_000L
+        const val INTERVAL_LENGTH_MILLIS = 10_000L
     }
 }

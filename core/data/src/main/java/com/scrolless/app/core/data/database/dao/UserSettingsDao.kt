@@ -28,35 +28,41 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
 
-    @Query("SELECT active_block_option FROM user_settings WHERE id = 1")
-    abstract fun getActiveBlockOption(): Flow<BlockOption>
+    @Query("SELECT * FROM user_settings WHERE id = 1")
+    abstract fun observeUserSettings(): Flow<UserSettingsEntity>
+
+    @Query("SELECT * FROM user_settings WHERE id = 1")
+    abstract suspend fun getUserSettings(): UserSettingsEntity
 
     @Query("UPDATE user_settings SET active_block_option = :blockOption WHERE id = 1")
     abstract suspend fun setActiveBlockOption(blockOption: BlockOption)
 
-    @Query("SELECT time_limit FROM user_settings WHERE id = 1")
-    abstract fun getTimeLimit(): Flow<Long>
+    @Query("UPDATE user_settings SET active_block_option = :blockOption, daily_limit = :limitMillis WHERE id = 1")
+    protected abstract suspend fun configureDailyLimit(blockOption: BlockOption, limitMillis: Long)
 
-    @Query("UPDATE user_settings SET time_limit = :timeLimit WHERE id = 1")
-    abstract suspend fun setTimeLimit(timeLimit: Long)
+    suspend fun configureDailyLimit(limitMillis: Long) = configureDailyLimit(BlockOption.DailyLimit, limitMillis)
 
-    @Query("SELECT interval_length FROM user_settings WHERE id = 1")
-    abstract fun getIntervalLength(): Flow<Long>
+    @Query(
+        """
+        UPDATE user_settings
+        SET active_block_option = :blockOption,
+            interval_allowance = :allowanceMillis,
+            interval_length = :intervalLengthMillis,
+            interval_window_start_at = :windowStart,
+            interval_usage = :usage
+        WHERE id = 1
+        """,
+    )
+    protected abstract suspend fun configureIntervalTimer(
+        blockOption: BlockOption,
+        allowanceMillis: Long,
+        intervalLengthMillis: Long,
+        windowStart: Long,
+        usage: Long,
+    )
 
-    @Query("UPDATE user_settings SET interval_length = :intervalLength WHERE id = 1")
-    abstract suspend fun setIntervalLength(intervalLength: Long)
-
-    @Query("SELECT interval_window_start_at FROM user_settings WHERE id = 1")
-    abstract fun getIntervalWindowStart(): Flow<Long>
-
-    @Query("UPDATE user_settings SET interval_window_start_at = :windowStart WHERE id = 1")
-    abstract suspend fun setIntervalWindowStart(windowStart: Long)
-
-    @Query("SELECT interval_usage FROM user_settings WHERE id = 1")
-    abstract fun getIntervalUsage(): Flow<Long>
-
-    @Query("UPDATE user_settings SET interval_usage = :usage WHERE id = 1")
-    abstract suspend fun setIntervalUsage(usage: Long)
+    suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long, windowStart: Long, usage: Long) =
+        configureIntervalTimer(BlockOption.IntervalTimer, allowanceMillis, intervalLengthMillis, windowStart, usage)
 
     @Query("UPDATE user_settings SET interval_window_start_at = :windowStart, interval_usage = :usage WHERE id = 1")
     abstract suspend fun updateIntervalState(windowStart: Long, usage: Long)

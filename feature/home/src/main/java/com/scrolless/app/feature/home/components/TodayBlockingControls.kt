@@ -75,8 +75,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -85,6 +83,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockingSettings
+import com.scrolless.app.core.model.IntervalUsage
 import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
@@ -93,6 +93,7 @@ import com.scrolless.app.designsystem.util.toCountdownLabel
 import com.scrolless.app.designsystem.util.toIntervalLabel
 import com.scrolless.app.feature.home.HomeUiState
 import com.scrolless.app.feature.home.R
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import timber.log.Timber
 
@@ -123,7 +124,7 @@ fun TodayBlockingControls(
     // Auto-releases the button expansion animation after releaseDelay
     LaunchedEffect(lastClicked) {
         if (lastClicked != null) {
-            delay(releaseDelay)
+            delay(releaseDelay.milliseconds)
             lastClicked = null
         }
     }
@@ -190,7 +191,7 @@ fun TodayBlockingControls(
                 lastClicked = BlockingButtonType.DAILY_LIMIT
                 val isSelected = uiState.blockOption == BlockOption.DailyLimit
                 hapticFeedback.playToggle(!isSelected)
-                if (uiState.timeLimit == 0L && !isSelected) {
+                if (uiState.settings.dailyLimitMillis == 0L && !isSelected) {
                     Timber.d("DailyLimit clicked -> open TimeLimitDialog (no limit set)")
                     onConfigureDailyLimit()
                 } else {
@@ -263,8 +264,8 @@ fun TodayBlockingControls(
             ) + fadeOut(animationSpec = tween(200)),
         ) {
             IntervalTimerSettingsCard(
-                intervalLengthMillis = uiState.intervalLength,
-                allowanceMillis = uiState.timeLimit,
+                intervalLengthMillis = uiState.settings.intervalLengthMillis,
+                allowanceMillis = uiState.settings.intervalAllowanceMillis,
                 onEditClick = onIntervalTimerEdit,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -749,7 +750,10 @@ fun TodayBlockingControlsPreview() {
     ScrollessTheme(darkTheme = true) {
         Surface {
             TodayBlockingControls(
-                uiState = HomeUiState(blockOption = BlockOption.DailyLimit),
+                uiState = HomeUiState(
+                    blockOption = BlockOption.DailyLimit,
+                    settings = BlockingSettings(dailyLimitMillis = 60 * 60 * 1000L),
+                ),
                 isBlockingActive = false,
                 isPauseActive = false,
                 pauseRemainingMillis = 0L,
@@ -769,7 +773,13 @@ fun TodayBlockingIntervalTimerControlsPreview() {
     ScrollessTheme(darkTheme = true) {
         Surface {
             TodayBlockingControls(
-                uiState = HomeUiState(blockOption = BlockOption.IntervalTimer),
+                uiState = HomeUiState(
+                    blockOption = BlockOption.IntervalTimer,
+                    settings = BlockingSettings(
+                        intervalAllowanceMillis = 5 * 60 * 1000L,
+                        intervalLengthMillis = 60 * 60 * 1000L,
+                    ),
+                ),
                 isBlockingActive = false,
                 isPauseActive = true,
                 pauseRemainingMillis = 0L,

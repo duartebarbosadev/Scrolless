@@ -22,7 +22,13 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockingConfig
+import com.scrolless.app.core.model.BlockingSettings
+import com.scrolless.app.core.model.IntervalUsage
 
+/**
+ * The single row that holds every user setting.
+ */
 @Entity(
     tableName = "user_settings",
     indices = [
@@ -33,8 +39,9 @@ import com.scrolless.app.core.model.BlockOption
 data class UserSettingsEntity(
     @PrimaryKey @ColumnInfo(name = "id") val id: Int = 1, // Single row for settings
     @ColumnInfo(name = "active_block_option") val activeBlockOption: BlockOption,
-    @ColumnInfo(name = "time_limit") val timeLimit: Long,
-    @ColumnInfo(name = "interval_length") val intervalLength: Long,
+    @ColumnInfo(name = "daily_limit") val dailyLimit: Long = 0L,
+    @ColumnInfo(name = "interval_allowance") val intervalAllowance: Long = 0L,
+    @ColumnInfo(name = "interval_length") val intervalLength: Long = 0L,
     @ColumnInfo(name = "interval_window_start_at") val intervalWindowStartAt: Long = 0L,
     @ColumnInfo(name = "interval_usage") val intervalUsage: Long = 0L,
     @ColumnInfo(name = "timer_overlay_enabled") val timerOverlayEnabled: Boolean,
@@ -49,4 +56,14 @@ data class UserSettingsEntity(
     @ColumnInfo(name = "review_prompt_last_attempt_at", defaultValue = "0") val reviewPromptLastAttemptAt: Long = 0L,
     @ColumnInfo(name = "pause_duration_millis", defaultValue = "300000") val pauseDurationMillis: Long = 5 * 60 * 1000L,
     @ColumnInfo(name = "except_reels_sent_by_dm", defaultValue = "0") val exceptReelsSentByDm: Boolean = false,
+)
+
+fun UserSettingsEntity.toBlockingConfig(): BlockingConfig = BlockingConfig(
+    activeOption = activeBlockOption,
+    settings = BlockingSettings(
+        dailyLimitMillis = dailyLimit,
+        intervalAllowanceMillis = intervalAllowance,
+        intervalLengthMillis = intervalLength,
+    ),
+    intervalUsage = IntervalUsage(startMillis = intervalWindowStartAt, usageMillis = intervalUsage),
 )
