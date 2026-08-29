@@ -97,9 +97,8 @@ enum class BlockableApp(
         exitStrategy = GLOBAL_ACTION_HOME,
     ),
     TIKTOK_LITE(
-        packageIds = listOf("com.zhiliaoapp.musically.lite"),
-        // TikTok Lite shares the same player componentry as the main TikTok app
-        detectionMethod = DetectionMethod.ViewId("player_view"),
+        packageIds = listOf("com.zhiliaoapp.musically.go"),
+        detectionMethod = DetectionMethod.ViewId("h89"),
         exitStrategy = GLOBAL_ACTION_HOME,
     ),
     FACEBOOK(
