@@ -606,6 +606,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         val blockingSuppressed = isBlockingSuppressed
         serviceScope.launch(Dispatchers.IO) {
+            // If we are not suppressing blocking (it's not paused and user not in DMs), check if we should block when user enters content
+            // If not continue and show overlay timer
             if (!blockingSuppressed && blockingManager.onEnterBlockedContent()) {
                 Timber.i("Blocking on enter")
                 performBackNavigation()
@@ -631,6 +633,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         val config = blockingConfigRepository.getConfig()
         val showOverlay: () -> Unit
+        // Interval mode shows usage within the active interval; other modes show today's total.
         if (config.activeOption == BlockOption.IntervalTimer) {
             showOverlay = {
                 timerOverlayManager.showInterval(

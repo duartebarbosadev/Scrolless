@@ -101,9 +101,9 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         val dayStartMillis = currentDate.atStartOfDay(zoneId).toInstant().toEpochMilli()
         val nextDayStartMillis = currentDate.plusDays(1).atStartOfDay(zoneId).toInstant().toEpochMilli()
 
-        // This day length is reused if the overlay remains open for more than one day.
-        // A daylight-saving change during such an unusually long session could make a
-        // later reset one hour early or late. We intentionally ignore that edge case.
+        // Reset at the next midnight. Edge case: if the overlay stays open for several days
+        // during a daylight-saving clock change, a later reset may be one hour early or late.
+        // But at this point, its the users fault :p
         showOverlay(
             sessionStartAt = sessionStartAt,
             usage = IntervalUsage(dayStartMillis, dailyUsageMillis),
