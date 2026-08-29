@@ -39,11 +39,13 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowInsetsCompat
-import com.scrolless.app.R
+import com.scrolless.app.core.model.IntervalUsage
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.repository.setTimerOverlayPosition
 import com.scrolless.app.designsystem.theme.timerOverlayBackgroundColor
 import com.scrolless.app.designsystem.util.formatAsTime
+import java.time.Instant
+import java.time.ZoneId
 import javax.inject.Inject
 import kotlin.math.abs
 import kotlin.time.Duration.Companion.milliseconds
@@ -58,8 +60,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 /**
- * A View-based implementation of TimerOverlayManager.
- * Replaces the Compose-based version to resolve drag lag issues.
+ * A View-based timer overlay that shows saved usage plus the current viewing session.
+ * It uses Android Views instead of Compose because the Compose version lagged while dragging.
  */
 class TimerOverlayManager @Inject constructor(private val userSettingsStore: UserSettingsStore) {
 
@@ -75,6 +77,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
     private var sessionStartTime = 0L
+    private var usage = IntervalUsage.NOT_STARTED
+    private var windowLengthMillis = 0L
     private var timerJob: Job? = null
     private var exitAnimationJob: Job? = null
     private var screenBounds: ScreenBounds? = null
@@ -91,8 +95,28 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     }
 
+    fun showDaily(sessionStartAt: Long, dailyUsageMillis: Long) {
+        val zoneId = ZoneId.systemDefault()
+        val currentDate = Instant.ofEpochMilli(sessionStartAt).atZone(zoneId).toLocalDate()
+        val dayStartMillis = currentDate.atStartOfDay(zoneId).toInstant().toEpochMilli()
+        val nextDayStartMillis = currentDate.plusDays(1).atStartOfDay(zoneId).toInstant().toEpochMilli()
+
+        // Reset at the next midnight. Edge case: if the overlay stays open for several days
+        // during a daylight-saving clock change, a later reset may be one hour early or late.
+        // But at this point, its the users fault :p
+        showOverlay(
+            sessionStartAt = sessionStartAt,
+            usage = IntervalUsage(dayStartMillis, dailyUsageMillis),
+            windowLengthMillis = nextDayStartMillis - dayStartMillis,
+        )
+    }
+
+    fun showInterval(sessionStartAt: Long, intervalUsage: IntervalUsage, intervalLengthMillis: Long) {
+        showOverlay(sessionStartAt, intervalUsage, intervalLengthMillis)
+    }
+
     @SuppressLint("ClickableViewAccessibility")
-    fun show(sessionStartAt: Long = System.currentTimeMillis()) {
+    private fun showOverlay(sessionStartAt: Long, usage: IntervalUsage, windowLengthMillis: Long) {
         if (rootView != null) {
             cleanupView()
         }
@@ -103,10 +127,12 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         val wm = windowManager ?: return
 
         sessionStartTime = sessionStartAt
+        this.usage = usage
+        this.windowLengthMillis = windowLengthMillis
 
         // Create TextView with polished styling
         timerTextView = TextView(serviceContext).apply {
-            text = resources.getText(R.string.timer_default_value)
+            text = displayedDurationAt(System.currentTimeMillis()).formatAsTime()
             textSize = 18f // sp
             typeface = Typeface.DEFAULT_BOLD
             setTextColor(Color.WHITE)
@@ -170,7 +196,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         }
     }
 
-    fun hide(summaryTotalMillis: Long, sessionStartAt: Long) {
+    fun hide(sessionStartAt: Long, sessionEndAt: Long) {
 
         Timber.d("Hiding overlay view")
         if (sessionStartTime != sessionStartAt) {
@@ -179,8 +205,9 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         }
 
         timerJob?.cancel()
+        timerJob = null
 
-        timerTextView?.text = summaryTotalMillis.formatAsTime()
+        timerTextView?.text = displayedDurationAt(sessionEndAt).formatAsTime()
 
         startWiggleAnimation()
 
@@ -225,12 +252,17 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         timerJob?.cancel()
         timerJob = coroutineScope.launch {
             while (true) {
-                val elapsed = (System.currentTimeMillis() - sessionStartTime).coerceAtLeast(0L)
-                timerTextView?.text = elapsed.formatAsTime()
+                timerTextView?.text = displayedDurationAt(System.currentTimeMillis()).formatAsTime()
                 delay(1000.milliseconds)
             }
         }
     }
+
+    private fun displayedDurationAt(nowMillis: Long): Long = usage.plusSession(
+        sessionStartMillis = sessionStartTime,
+        sessionEndMillis = nowMillis,
+        lengthMillis = windowLengthMillis,
+    ).usageMillis
 
     private fun startEnterAnimation() {
         val view = rootView ?: return
