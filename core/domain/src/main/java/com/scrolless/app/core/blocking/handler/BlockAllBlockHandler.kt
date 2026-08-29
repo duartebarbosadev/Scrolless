@@ -63,8 +63,8 @@ class BlockAllBlockHandler(private val timeProvider: TimeProvider) : BlockOption
         return function()
     }
 
-    override suspend fun onExitContent(sessionTime: Long) {
-        Timber.v("BlockAll.onExitContent: session=%d", sessionTime)
+    override suspend fun onExitContent(sessionStartMillis: Long, sessionEndMillis: Long) {
+        Timber.v("BlockAll.onExitContent: session=%d", sessionEndMillis - sessionStartMillis)
         blockAttempts = 0
         lastBlockTime = 0L
     }

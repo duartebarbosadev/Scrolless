@@ -34,7 +34,7 @@ import com.scrolless.app.core.data.database.model.UserSettingsEntity
         UserSettingsEntity::class,
         SessionSegmentEntity::class,
     ],
-    version = 9,
+    version = 10,
     exportSchema = false,
 )
 @TypeConverters(LocalDateTypeConverters::class, BlockableAppTypeConverters::class, LocalDateTimeTypeConverters::class)
@@ -248,6 +248,60 @@ abstract class ScrollessDatabase : RoomDatabase() {
                     WHERE first_launch_at = 0
                     """.trimIndent(),
                 )
+            }
+        }
+
+        /**
+         * Gives the daily limit and the interval allowance their own columns.
+         *
+         * Version 9 kept whichever mode was active in `time_limit`, so its value seeds both new
+         * columns. From here on each mode keeps its own setting.
+         */
+        val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE user_settings RENAME TO user_settings_old")
+                db.execSQL(
+                    """
+                    CREATE TABLE user_settings (
+                        id INTEGER NOT NULL,
+                        active_block_option TEXT NOT NULL,
+                        daily_limit INTEGER NOT NULL,
+                        interval_allowance INTEGER NOT NULL,
+                        interval_length INTEGER NOT NULL,
+                        interval_window_start_at INTEGER NOT NULL,
+                        interval_usage INTEGER NOT NULL,
+                        timer_overlay_enabled INTEGER NOT NULL,
+                        timer_overlay_x INTEGER NOT NULL,
+                        timer_overlay_y INTEGER NOT NULL,
+                        waiting_for_accessibility INTEGER NOT NULL,
+                        has_seen_accessibility_explainer INTEGER NOT NULL,
+                        pause_until_at INTEGER NOT NULL,
+                        first_launch_at INTEGER NOT NULL DEFAULT 0,
+                        has_seen_review_prompt INTEGER NOT NULL DEFAULT 0,
+                        review_prompt_attempt_count INTEGER NOT NULL DEFAULT 0,
+                        review_prompt_last_attempt_at INTEGER NOT NULL DEFAULT 0,
+                        pause_duration_millis INTEGER NOT NULL DEFAULT 300000,
+                        except_reels_sent_by_dm INTEGER NOT NULL DEFAULT 0,
+                        PRIMARY KEY(id)
+                    )
+                    """.trimIndent(),
+                )
+                // The selected columns must stay in the same order as the table created above.
+                db.execSQL(
+                    """
+                    INSERT INTO user_settings
+                    SELECT id, active_block_option, time_limit, time_limit, interval_length,
+                           interval_window_start_at, interval_usage, timer_overlay_enabled,
+                           timer_overlay_x, timer_overlay_y, waiting_for_accessibility,
+                           has_seen_accessibility_explainer, pause_until_at, first_launch_at,
+                           has_seen_review_prompt, review_prompt_attempt_count,
+                           review_prompt_last_attempt_at, pause_duration_millis,
+                           except_reels_sent_by_dm
+                    FROM user_settings_old
+                    """.trimIndent(),
+                )
+                db.execSQL("DROP TABLE user_settings_old")
+                db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_user_settings_id ON user_settings (id)")
             }
         }
     }

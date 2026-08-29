@@ -17,7 +17,6 @@
 package com.scrolless.app.core.data.repository
 
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.repository.UserSettingsStore
 import java.time.Instant
 import java.time.LocalDate
@@ -38,11 +37,6 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
-    private val _activeBlockOption = MutableStateFlow(BlockOption.NothingSelected)
-    private val _timeLimit = MutableStateFlow(0L)
-    private val _intervalLength = MutableStateFlow(0L)
-    private val _intervalWindowStart = MutableStateFlow(0L)
-    private val _intervalUsage = MutableStateFlow(0L)
     private val _timerOverlayEnabled = MutableStateFlow(false)
     private val _timerOverlayPositionY = MutableStateFlow(0)
     private val _timerOverlayPositionX = MutableStateFlow(0)
@@ -58,18 +52,6 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
 
     init {
         coroutineScope.launch {
-            userSettingsDao.getActiveBlockOption().collect { _activeBlockOption.value = it }
-        }
-        coroutineScope.launch {
-            userSettingsDao.getTimeLimit().collect { _timeLimit.value = it }
-        }
-        coroutineScope.launch {
-            userSettingsDao.getIntervalLength().collect { _intervalLength.value = it }
-        }
-        coroutineScope.launch {
-            userSettingsDao.getIntervalWindowStart().collect { _intervalWindowStart.value = it }
-        }
-        coroutineScope.launch {
             userSettingsDao.getFirstLaunchAt().collect { _firstLaunchAt.value = it }
         }
         coroutineScope.launch {
@@ -80,9 +62,6 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
         }
         coroutineScope.launch {
             userSettingsDao.getReviewPromptLastAttemptAt().collect { _reviewPromptLastAttemptAt.value = it }
-        }
-        coroutineScope.launch {
-            userSettingsDao.getIntervalUsage().collect { _intervalUsage.value = it }
         }
         coroutineScope.launch {
             userSettingsDao.getTimerOverlayEnabled().collect { _timerOverlayEnabled.value = it }
@@ -108,47 +87,6 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
         coroutineScope.launch {
             userSettingsDao.getExceptReelsSentByDm().collect { _exceptReelsSentByDm.value = it }
         }
-    }
-
-    override fun getActiveBlockOption(): Flow<BlockOption> = _activeBlockOption
-
-    override suspend fun setActiveBlockOption(blockOption: BlockOption) {
-        _activeBlockOption.value = blockOption
-        userSettingsDao.setActiveBlockOption(blockOption)
-    }
-
-    override fun getTimeLimit(): Flow<Long> = _timeLimit
-
-    override suspend fun setTimeLimit(timeLimit: Long) {
-        _timeLimit.value = timeLimit
-        userSettingsDao.setTimeLimit(timeLimit)
-    }
-
-    override suspend fun setIntervalLength(intervalLength: Long) {
-        _intervalLength.value = intervalLength
-        userSettingsDao.setIntervalLength(intervalLength)
-    }
-
-    override fun getIntervalLength(): Flow<Long> = _intervalLength
-
-    override fun getIntervalWindowStart(): Flow<Long> = _intervalWindowStart
-
-    override suspend fun setIntervalWindowStart(windowStart: Long) {
-        _intervalWindowStart.value = windowStart
-        userSettingsDao.setIntervalWindowStart(windowStart)
-    }
-
-    override fun getIntervalUsage(): Flow<Long> = _intervalUsage
-
-    override suspend fun setIntervalUsage(usage: Long) {
-        _intervalUsage.value = usage
-        userSettingsDao.setIntervalUsage(usage)
-    }
-
-    override suspend fun updateIntervalState(windowStart: Long, usage: Long) {
-        _intervalWindowStart.value = windowStart
-        _intervalUsage.value = usage
-        userSettingsDao.updateIntervalState(windowStart, usage)
     }
 
     override suspend fun setTimerOverlayToggle(enabled: Boolean) {

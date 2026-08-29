@@ -70,9 +70,10 @@ class DayLimitBlockHandler(private val timeLimit: Long) : BlockOptionHandler {
     /**
      * No additional logic needed on exit.
      *
-     * @param sessionTime Duration of the session in milliseconds.
+     * @param sessionStartMillis Time when the session started.
+     * @param sessionEndMillis Time when the session ended.
      */
-    override suspend fun onExitContent(sessionTime: Long) {
-        Timber.v("DayLimit.onExit: session=%d", sessionTime)
+    override suspend fun onExitContent(sessionStartMillis: Long, sessionEndMillis: Long) {
+        Timber.v("DayLimit.onExit: session=%d", sessionEndMillis - sessionStartMillis)
     }
 }

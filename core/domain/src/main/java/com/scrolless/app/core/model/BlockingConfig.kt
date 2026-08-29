@@ -16,20 +16,19 @@
  */
 package com.scrolless.app.core.model
 
+import androidx.compose.runtime.Immutable
+
+/** The state of blocking right now, in one snapshot. */
+@Immutable
+data class BlockingConfig(
+    val activeOption: BlockOption = BlockOption.NothingSelected,
+    val settings: BlockingSettings = BlockingSettings(),
+    val intervalUsage: IntervalUsage = IntervalUsage.NOT_STARTED,
+)
+
 /**
- * The blocking mode the user selected. The values it needs to enforce live in [BlockingSettings].
+ * What every mode is configured with, kept even while another mode is selected so switching back
+ * restores it. `0` means the mode was never configured.
  */
-enum class BlockOption {
-
-    /** Closes blocked content as soon as it is opened. */
-    BlockAll,
-
-    /** Allows [BlockingSettings.dailyLimitMillis] of blocked content per day. */
-    DailyLimit,
-
-    /** Allows [BlockingSettings.intervalAllowanceMillis] per [BlockingSettings.intervalLengthMillis]. */
-    IntervalTimer,
-
-    /** Nothing is blocked. */
-    NothingSelected,
-}
+@Immutable
+data class BlockingSettings(val dailyLimitMillis: Long = 0L, val intervalAllowanceMillis: Long = 0L, val intervalLengthMillis: Long = 0L)
