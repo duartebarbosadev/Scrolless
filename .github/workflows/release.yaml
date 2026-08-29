@@ -1,115 +1,108 @@
 name: Release
 
 on:
-  push:
+  workflow_run:
+    workflows:
+      - Build
+    types:
+      - completed
     branches:
       - main
-    paths:
-      - app/build.gradle.kts
   workflow_dispatch:
+    inputs:
+      track:
+        description: Upload a new Internal release or promote Internal to Production
+        required: true
+        default: internal
+        type: choice
+        options:
+          - internal
+          - production
 
 concurrency:
-  group: "${{ github.workflow }}-global"
-  cancel-in-progress: true
+  # Never interrupt a Play deployment. GitHub keeps the running release and coalesces
+  # multiple pending runs down to the newest one.
+  group: deploy-play-store
 
 jobs:
-  build_and_release:
-    name: Build APKs and create release
+  release:
+    name: Build and release with Fastlane
+    if: >-
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push') ||
+      (github.event_name == 'workflow_dispatch' && inputs.track == 'internal')
     runs-on: ubuntu-latest
+    timeout-minutes: 60
+    environment: internal
 
     permissions:
       contents: write
 
-    timeout-minutes: 60
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout the verified commit
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
 
-      - name: Detect version update
+      - name: Determine release version
         id: version
         shell: bash
+        env:
+          RELEASE_SHA: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
         run: |
           set -euo pipefail
 
-          extract_version_code() {
-            grep -E 'versionCode\s*=\s*[0-9]+' "$1" | head -n1 | sed -E 's/.*=\s*([0-9]+).*/\1/'
-          }
-
-          extract_version_name() {
-            grep -E 'versionName\s*=\s*"[^"]+"' "$1" | head -n1 | sed -E 's/.*=\s*"([^"]+)".*/\1/'
-          }
-
-          extract_application_id() {
-            grep -E 'applicationId\s*=\s*"[^"]+"' "$1" | head -n1 | sed -E 's/.*=\s*"([^"]+)".*/\1/'
-          }
-
           current_file="app/build.gradle.kts"
-          current_version_code="$(extract_version_code "$current_file")"
-          current_version_name="$(extract_version_name "$current_file")"
-          current_application_id="$(extract_application_id "$current_file")"
-          if [[ -z "$current_version_code" || -z "$current_version_name" ]]; then
-            echo "Failed to extract versionCode/versionName from $current_file."
-            echo "current_version_code='$current_version_code' current_version_name='$current_version_name'"
-            exit 1
-          fi
-          if [[ -z "$current_application_id" ]]; then
-            echo "Failed to extract applicationId from $current_file."
+          version_code="$(grep -E 'versionCode\s*=\s*[0-9]+' "$current_file" | head -n1 | sed -E 's/.*=\s*([0-9]+).*/\1/')"
+          version_name="$(grep -E 'versionName\s*=\s*"[^"]+"' "$current_file" | head -n1 | sed -E 's/.*=\s*"([^"]+)".*/\1/')"
+
+          if [[ -z "$version_code" || -z "$version_name" ]]; then
+            echo "Failed to extract versionCode/versionName from $current_file." >&2
             exit 1
           fi
 
-          previous_version_code=""
-          previous_version_name=""
-          if [[ "${{ github.event_name }}" == "push" && -n "${{ github.event.before }}" ]]; then
-            previous_file="$(mktemp)"
-            if git show "${{ github.event.before }}:$current_file" > "$previous_file" 2>/dev/null; then
-              previous_version_code="$(extract_version_code "$previous_file" || true)"
-              previous_version_name="$(extract_version_name "$previous_file" || true)"
-            else
-              echo "Could not read previous version from commit ${{ github.event.before }}."
-            fi
-          else
-            echo "No previous commit SHA available for event '${{ github.event_name }}'."
-          fi
-
+          tag_name="v$version_name"
           should_release="true"
-          if [[ "$current_version_code" == "$previous_version_code" && "$current_version_name" == "$previous_version_name" ]]; then
+          if git ls-remote --exit-code --tags origin "refs/tags/$tag_name" >/dev/null 2>&1; then
             should_release="false"
+            echo "Tag $tag_name already exists. Nothing to release."
           fi
 
-          tag_name="v$current_version_name"
-          if git ls-remote --tags origin "refs/tags/$tag_name" | grep -q "$tag_name"; then
-            should_release="false"
-            echo "Tag $tag_name already exists. Skipping release."
-          fi
-
-          echo "should_release=$should_release" >> "$GITHUB_OUTPUT"
-          echo "version_code=$current_version_code" >> "$GITHUB_OUTPUT"
-          echo "version_name=$current_version_name" >> "$GITHUB_OUTPUT"
-          echo "application_id=$current_application_id" >> "$GITHUB_OUTPUT"
-          echo "tag_name=$tag_name" >> "$GITHUB_OUTPUT"
+          {
+            echo "release_sha=$RELEASE_SHA"
+            echo "should_release=$should_release"
+            echo "version_code=$version_code"
+            echo "version_name=$version_name"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Copy CI gradle.properties
         if: steps.version.outputs.should_release == 'true'
-        run: mkdir -p ~/.gradle ; cp .github/gradle-ci.properties ~/.gradle/gradle.properties
+        run: mkdir -p ~/.gradle && cp .github/gradle-ci.properties ~/.gradle/gradle.properties
 
       - name: Set up JDK 21
         if: steps.version.outputs.should_release == 'true'
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
-          distribution: 'zulu'
-          java-version: 21
+          distribution: zulu
+          java-version: "21"
 
       - name: Setup Gradle
         if: steps.version.outputs.should_release == 'true'
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
         with:
-          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          cache-encryption-key: ${{ secrets.GRADLEENCRYPTIONKEY }}
           build-scan-publish: true
-          build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
+          build-scan-terms-of-use-url: https://gradle.com/terms-of-service
           build-scan-terms-of-use-agree: "yes"
+
+      - name: Set up Ruby and Fastlane
+        if: steps.version.outputs.should_release == 'true'
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
 
       - name: Validate release secrets
         if: steps.version.outputs.should_release == 'true'
@@ -122,26 +115,18 @@ jobs:
           PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
         run: |
           set -euo pipefail
-          if [ -z "$ANDROID_RELEASE_KEYSTORE_B64" ]; then
-            echo "ANDROID_RELEASE_KEYSTORE_B64 is required for releases."
-            exit 1
-          fi
-          if [ -z "$ANDROID_RELEASE_STORE_PASSWORD" ]; then
-            echo "ANDROID_RELEASE_STORE_PASSWORD is required for releases."
-            exit 1
-          fi
-          if [ -z "$ANDROID_RELEASE_KEY_ALIAS" ]; then
-            echo "ANDROID_RELEASE_KEY_ALIAS is required for releases."
-            exit 1
-          fi
-          if [ -z "$ANDROID_RELEASE_KEY_PASSWORD" ]; then
-            echo "ANDROID_RELEASE_KEY_PASSWORD is required for releases."
-            exit 1
-          fi
-          if [ -z "$PLAY_SERVICE_ACCOUNT_JSON" ]; then
-            echo "PLAY_SERVICE_ACCOUNT_JSON is required for releases."
-            exit 1
-          fi
+          for name in \
+            ANDROID_RELEASE_KEYSTORE_B64 \
+            ANDROID_RELEASE_STORE_PASSWORD \
+            ANDROID_RELEASE_KEY_ALIAS \
+            ANDROID_RELEASE_KEY_PASSWORD \
+            PLAY_SERVICE_ACCOUNT_JSON
+          do
+            if [[ -z "${!name}" ]]; then
+              echo "$name is required for releases." >&2
+              exit 1
+            fi
+          done
 
       - name: Prepare release keystore
         if: steps.version.outputs.should_release == 'true'
@@ -150,71 +135,74 @@ jobs:
           ANDROID_RELEASE_KEYSTORE_B64: ${{ secrets.ANDROID_RELEASE_KEYSTORE_B64 }}
         run: |
           set -euo pipefail
+          umask 077
           keystore_path="$RUNNER_TEMP/release-signing.jks"
-          if ! printf '%s' "$ANDROID_RELEASE_KEYSTORE_B64" | base64 --decode > "$keystore_path" 2>/dev/null; then
-            echo "Failed to decode ANDROID_RELEASE_KEYSTORE_B64. Ensure it is valid base64 keystore data."
-            exit 1
-          fi
-          chmod 600 "$keystore_path"
+          printf '%s' "$ANDROID_RELEASE_KEYSTORE_B64" | base64 --decode > "$keystore_path"
           echo "ANDROID_RELEASE_KEYSTORE_PATH=$keystore_path" >> "$GITHUB_ENV"
 
-      - name: Build Play and OSS release artifacts
+      - name: Run the release quality gate for manual releases
+        if: steps.version.outputs.should_release == 'true' && github.event_name == 'workflow_dispatch'
+        env:
+          ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
+          ANDROID_RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
+          ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
+        run: bundle exec fastlane android quality
+
+      - name: Build signed release artifacts
         if: steps.version.outputs.should_release == 'true'
         env:
           ANDROID_RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_RELEASE_STORE_PASSWORD }}
           ANDROID_RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_RELEASE_KEY_ALIAS }}
           ANDROID_RELEASE_KEY_PASSWORD: ${{ secrets.ANDROID_RELEASE_KEY_PASSWORD }}
-        run: ./gradlew :app:assemblePlayRelease :app:bundlePlayRelease :app:assembleOssRelease
+        run: bundle exec fastlane android build_release
 
-      - name: Validate release outputs
+      - name: Upload release artifacts
         if: steps.version.outputs.should_release == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          shopt -s nullglob
-          play_apks=(app/build/outputs/apk/play/release/*.apk)
-          if [ "${#play_apks[@]}" -eq 0 ]; then
-            echo "No Play release APK files found."
-            exit 1
-          fi
-          oss_apks=(app/build/outputs/apk/oss/release/*.apk)
-          if [ "${#oss_apks[@]}" -eq 0 ]; then
-            echo "No OSS release APK files found."
-            exit 1
-          fi
-          aabs=(app/build/outputs/bundle/playRelease/*.aab)
-          shopt -u nullglob
-          if [ "${#aabs[@]}" -eq 0 ]; then
-            echo "No Play release AAB files found."
-            exit 1
-          fi
-          if ls app/build/outputs/apk/play/release/*-unsigned.apk >/dev/null 2>&1; then
-            echo "Found unsigned Play release APK. Configure release signing before publishing."
-            exit 1
-          fi
-          if ls app/build/outputs/apk/oss/release/*-unsigned.apk >/dev/null 2>&1; then
-            echo "Found unsigned OSS release APK. Configure release signing before publishing."
-            exit 1
-          fi
-
-      - name: Upload to Play Store (Internal Track)
-        if: steps.version.outputs.should_release == 'true'
-        uses: r0adkll/upload-google-play@v1
+        uses: actions/upload-artifact@v7
         with:
-          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-          packageName: ${{ steps.version.outputs.application_id }}
-          releaseFiles: app/build/outputs/bundle/playRelease/*.aab
-          track: internal
-          status: completed
-
-      - name: Create GitHub Release and upload APKs
-        if: steps.version.outputs.should_release == 'true'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ steps.version.outputs.tag_name }}
-          target_commitish: ${{ github.sha }}
-          name: ${{ steps.version.outputs.tag_name }}
-          generate_release_notes: true
-          files: |
+          name: release-v${{ steps.version.outputs.version_name }}
+          path: |
             app/build/outputs/apk/play/release/*.apk
             app/build/outputs/apk/oss/release/*.apk
+            app/build/outputs/bundle/playRelease/*.aab
+            app/build/outputs/mapping/playRelease/mapping.txt
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Publish Play and GitHub releases
+        if: steps.version.outputs.should_release == 'true'
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          GITHUB_TOKEN: ${{ github.token }}
+          RELEASE_COMMIT_SHA: ${{ steps.version.outputs.release_sha }}
+        run: bundle exec fastlane android publish_release
+
+      - name: Clean up release keystore
+        if: always()
+        shell: bash
+        run: rm -f "$RUNNER_TEMP/release-signing.jks"
+
+  promote:
+    name: Promote Internal to Production
+    if: github.event_name == 'workflow_dispatch' && inputs.track == 'production'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: production
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Ruby and Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Promote release with Fastlane
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: bundle exec fastlane android promote to:production

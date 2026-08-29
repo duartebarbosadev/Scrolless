@@ -17,29 +17,28 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write
-      pull-requests: write
+      contents: read
       security-events: write
 
     timeout-minutes: 60
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Copy CI gradle.properties
         run: mkdir -p ~/.gradle ; cp .github/gradle-ci.properties ~/.gradle/gradle.properties
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'zulu'
           java-version: 21
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
         with:
-          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+          cache-encryption-key: ${{ secrets.GRADLEENCRYPTIONKEY }}
           build-scan-publish: true
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
@@ -55,14 +54,14 @@ jobs:
         run: ./gradlew :app:assembleOssDebug :app:assemblePlayDebug
 
       - name: Upload build outputs (APKs)
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: APKs
           path: '**/build/outputs/apk/**/*.apk'
 
       - name: Upload JVM local results (XML)
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: local-test-results
           path: '**/build/test-results/test*UnitTest/**.xml'
@@ -72,13 +71,13 @@ jobs:
 
       - name: Upload lint reports (HTML)
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: lint-reports
           path: 'app/build/reports/lint-results-*.html'
 
       - name: Upload lint reports (SARIF)
         if: ${{ !cancelled() && hashFiles('**/*.sarif') != '' }}
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: './'
