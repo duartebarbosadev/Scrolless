@@ -604,39 +604,63 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         startPeriodicCheck()
 
-        // Only enforce blocking when neither pause nor a content-specific exception is active.
-        if (!isBlockingSuppressed) {
-            serviceScope.launch(Dispatchers.IO) {
+        val blockingSuppressed = isBlockingSuppressed
+        serviceScope.launch(Dispatchers.IO) {
+            // Always call the enter hook so every session has a matching exit hook.
+            // If blocking is suppressed, ignore the hook's blocking result.
+            val shouldBlock = blockingManager.onEnterBlockedContent()
+            if (!blockingSuppressed && shouldBlock) {
+                Timber.i("Blocking on enter")
+                performBackNavigation()
+                return@launch
+            }
 
-                val shouldBlock = blockingManager.onEnterBlockedContent()
-                if (shouldBlock) {
-                    Timber.i("Blocking on enter")
-                    performBackNavigation()
-                } else {
-                    // Only show timer overlay if we're NOT blocking immediately
-                    // (no point showing timer if user is about to be kicked out)
-                    mainHandler.post {
-                        if (currentTimerOverlayEnabled && isProcessingBlockedContent) {
-                            Timber.v("Showing timer overlay")
-                            timerOverlayManager.show(session.startedAtMillis)
-                        }
-                    }
-                    Timber.d("Content allowed on enter, will monitor usage")
-                }
+            showTimerOverlayIfEnabled(session)
+
+            if (blockingSuppressed) {
+                Timber.d(
+                    "Skipping blocking check on enter, but tracking usage (paused=%b, suppressed=%b)",
+                    isPauseActive(),
+                    isBlockingSuppressedForCurrentContent,
+                )
+            } else {
+                Timber.d("Content allowed on enter, will monitor usage")
+            }
+        }
+    }
+
+    private suspend fun showTimerOverlayIfEnabled(session: BlockedContentSession) {
+        if (!currentTimerOverlayEnabled) return
+
+        val config = blockingConfigRepository.getConfig()
+        val showOverlay: () -> Unit
+        // Interval mode shows usage within the active interval; other modes show today's total.
+        if (config.activeOption == BlockOption.IntervalTimer) {
+            showOverlay = {
+                timerOverlayManager.showInterval(
+                    sessionStartAt = session.startedAtMillis,
+                    intervalUsage = config.intervalUsage,
+                    intervalLengthMillis = config.settings.intervalLengthMillis,
+                )
             }
         } else {
-            // Paused or blocking-suppressed content still counts as watched time.
-            if (currentTimerOverlayEnabled) {
-                Timber.v("Showing timer overlay (blocking skipped)")
-                mainHandler.post {
-                    timerOverlayManager.show(session.startedAtMillis)
-                }
+            val dailyUsageMillis = sessionTracker.getDailyUsage()
+            showOverlay = {
+                timerOverlayManager.showDaily(
+                    sessionStartAt = session.startedAtMillis,
+                    dailyUsageMillis = dailyUsageMillis,
+                )
             }
-            Timber.d(
-                "Skipping blocking check on enter, but tracking usage (paused=%b, suppressed=%b)",
-                isPauseActive(),
-                isBlockingSuppressedForCurrentContent,
-            )
+        }
+
+        mainHandler.post {
+            if (
+                currentTimerOverlayEnabled &&
+                blockedContentSession?.startedAtMillis == session.startedAtMillis
+            ) {
+                Timber.v("Showing timer overlay")
+                showOverlay()
+            }
         }
     }
 
@@ -674,27 +698,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         serviceScope.launch(Dispatchers.IO) {
 
-            // Get total time spent on brainrot to show on the overlay timer before hiding
-            val overlaySummaryTotal = if (currentTimerOverlayEnabled) {
-                val config = blockingConfigRepository.getConfig()
-                when (config.activeOption) {
-                    BlockOption.IntervalTimer -> config.intervalUsage.plusSession(
-                        sessionStartMillis = session.startedAtMillis,
-                        sessionEndMillis = sessionEndMillis,
-                        lengthMillis = config.settings.intervalLengthMillis,
-                    ).usageMillis
-
-                    else -> sessionTracker.getDailyUsage() + sessionTime
-                }
-            } else {
-                null
-            }
-
-            overlaySummaryTotal?.let { total ->
-                mainHandler.post {
-                    Timber.v("Hiding timer overlay")
-                    timerOverlayManager.hide(total, session.startedAtMillis)
-                }
+            mainHandler.post {
+                Timber.v("Hiding timer overlay")
+                timerOverlayManager.hide(
+                    sessionStartAt = session.startedAtMillis,
+                    sessionEndAt = sessionEndMillis,
+                )
             }
 
             // Add to usage in memory with per-app tracking
