@@ -606,9 +606,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         val blockingSuppressed = isBlockingSuppressed
         serviceScope.launch(Dispatchers.IO) {
-            // If we are not suppressing blocking (it's not paused and user not in DMs), check if we should block when user enters content
-            // If not continue and show overlay timer
-            if (!blockingSuppressed && blockingManager.onEnterBlockedContent()) {
+            // Always call the enter hook so every session has a matching exit hook.
+            // If blocking is suppressed, ignore the hook's blocking result.
+            val shouldBlock = blockingManager.onEnterBlockedContent()
+            if (!blockingSuppressed && shouldBlock) {
                 Timber.i("Blocking on enter")
                 performBackNavigation()
                 return@launch
