@@ -61,7 +61,7 @@ import timber.log.Timber
 
 /**
  * A View-based timer overlay that shows saved usage plus the current viewing session.
- * This uses normal "old" views and not compose because for some reason it the compose version was lagging when dragging
+ * It uses Android Views instead of Compose because the Compose version lagged while dragging.
  */
 class TimerOverlayManager @Inject constructor(private val userSettingsStore: UserSettingsStore) {
 
