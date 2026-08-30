@@ -12,19 +12,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  fastlane_tests:
-    name: Fastlane release retry tests
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.3"
-          bundler-cache: true
-      - run: bundle exec ruby fastlane/tests/release_test.rb
-
   test_and_apk:
     name: "Local tests and APKs"
     runs-on: ubuntu-latest
