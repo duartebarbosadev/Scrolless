@@ -46,36 +46,18 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
 
-      - name: Determine release version
+      - name: Set up Ruby and Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Check release and APK completion
         id: version
-        shell: bash
         env:
-          RELEASE_SHA: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
-        run: |
-          set -euo pipefail
-
-          current_file="app/build.gradle.kts"
-          version_code="$(grep -E 'versionCode\s*=\s*[0-9]+' "$current_file" | head -n1 | sed -E 's/.*=\s*([0-9]+).*/\1/')"
-          version_name="$(grep -E 'versionName\s*=\s*"[^"]+"' "$current_file" | head -n1 | sed -E 's/.*=\s*"([^"]+)".*/\1/')"
-
-          if [[ -z "$version_code" || -z "$version_name" ]]; then
-            echo "Failed to extract versionCode/versionName from $current_file." >&2
-            exit 1
-          fi
-
-          tag_name="v$version_name"
-          should_release="true"
-          if git ls-remote --exit-code --tags origin "refs/tags/$tag_name" >/dev/null 2>&1; then
-            should_release="false"
-            echo "Tag $tag_name already exists. Nothing to release."
-          fi
-
-          {
-            echo "release_sha=$RELEASE_SHA"
-            echo "should_release=$should_release"
-            echo "version_code=$version_code"
-            echo "version_name=$version_name"
-          } >> "$GITHUB_OUTPUT"
+          GITHUB_TOKEN: ${{ github.token }}
+          RELEASE_COMMIT_SHA: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.sha }}
+        run: bundle exec fastlane android release_status
 
       - name: Copy CI gradle.properties
         if: steps.version.outputs.should_release == 'true'
@@ -96,13 +78,6 @@ jobs:
           build-scan-publish: true
           build-scan-terms-of-use-url: https://gradle.com/terms-of-service
           build-scan-terms-of-use-agree: "yes"
-
-      - name: Set up Ruby and Fastlane
-        if: steps.version.outputs.should_release == 'true'
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.3"
-          bundler-cache: true
 
       - name: Validate release secrets
         if: steps.version.outputs.should_release == 'true'
