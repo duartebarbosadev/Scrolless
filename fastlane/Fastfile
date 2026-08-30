@@ -147,14 +147,21 @@ def ensure_release_commit!
   expected = ENV["RELEASE_COMMIT_SHA"].to_s
   UI.user_error!("RELEASE_COMMIT_SHA does not match the checkout") unless expected.empty? || expected == head
 
-  # Resolve the remote tag, including annotated tags, instead of trusting target_commitish,
+  # The commits API returns 422 for an absent tag; the refs API returns 404.
+  tag_ref = release_github_api(
+    http_method: "GET",
+    path: "repos/#{github_repository}/git/ref/tags/#{CGI.escape("v#{current_version_name}")}",
+    allow_not_found: true
+  )
+  return head unless tag_ref
+
+  # Resolve an existing tag, including annotated tags, instead of trusting target_commitish,
   # which can be a moving branch name in the release response.
   tag_commit = release_github_api(
     http_method: "GET",
-    path: "repos/#{github_repository}/commits/#{CGI.escape("refs/tags/v#{current_version_name}")}",
-    allow_not_found: true
+    path: "repos/#{github_repository}/commits/#{CGI.escape("refs/tags/v#{current_version_name}")}"
   )
-  if tag_commit && tag_commit["sha"] != head
+  if tag_commit["sha"] != head
     UI.user_error!("Tag v#{current_version_name} points to another commit. Rerun the original release workflow to repair its assets, or bump the version for this checkout.")
   end
   head
