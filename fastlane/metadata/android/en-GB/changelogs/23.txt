@@ -1,0 +1,5 @@
+• Added support for TikTok Lite.
+• The floating timer now shows total watch time for the day or current interval.
+• Daily limits and interval timers now remember separate settings.
+• Fixed interval usage resets and countdowns.
+• Fixed Facebook Reels detection.

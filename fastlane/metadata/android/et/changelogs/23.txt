@@ -1,0 +1,5 @@
+• Lisatud on TikTok Lite'i tugi.
+• Hõljuv taimer näitab nüüd päeva või käimasoleva ajavahemiku vaatamisaega kokku.
+• Päevapiirangud ja intervalltaimerid säilitavad nüüd eraldi seaded.
+• Parandatud on ajavahemiku kasutusaja lähtestamine ja pöördloendus.
+• Parandatud on Facebook Reelsi tuvastamine.

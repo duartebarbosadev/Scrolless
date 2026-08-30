@@ -1,0 +1,5 @@
+• Se ha añadido compatibilidad con TikTok Lite.
+• El temporizador flotante ahora muestra el tiempo total de visualización del día o del intervalo actual.
+• Los límites diarios y los temporizadores por intervalos ahora guardan ajustes separados.
+• Se han corregido los reinicios del tiempo de uso por intervalo y las cuentas atrás.
+• Se ha corregido la detección de Facebook Reels.

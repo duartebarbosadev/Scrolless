@@ -1,0 +1,5 @@
+• Dukungan untuk TikTok Lite telah ditambahkan.
+• Timer mengambang kini menampilkan total waktu menonton untuk hari ini atau interval saat ini.
+• Batas harian dan timer interval kini menyimpan pengaturan masing-masing.
+• Masalah pengaturan ulang waktu penggunaan per interval dan hitung mundur telah diperbaiki.
+• Deteksi Facebook Reels telah diperbaiki.

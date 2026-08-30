@@ -1,0 +1,5 @@
+• Unterstützung für TikTok Lite wurde hinzugefügt.
+• Der schwebende Timer zeigt jetzt die gesamte Wiedergabezeit des Tages oder des aktuellen Intervalls an.
+• Tageslimits und Intervalltimer speichern jetzt getrennte Einstellungen.
+• Das Zurücksetzen der Intervallnutzung und die Countdowns wurden korrigiert.
+• Die Erkennung von Facebook Reels wurde korrigiert.

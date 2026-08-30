@@ -1,0 +1,5 @@
+• È stato aggiunto il supporto per TikTok Lite.
+• Il timer mobile ora mostra il tempo totale di visione del giorno o dell’intervallo corrente.
+• I limiti giornalieri e i timer a intervalli ora mantengono impostazioni separate.
+• Sono stati corretti l’azzeramento del tempo di utilizzo per intervallo e i conti alla rovescia.
+• È stato corretto il rilevamento di Facebook Reels.

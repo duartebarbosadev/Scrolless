@@ -1,0 +1,5 @@
+• Støtte for TikTok Lite er lagt til.
+• Den flytende timeren viser nå samlet seertid for dagen eller gjeldende intervall.
+• Daglige grenser og intervalltimere lagrer nå separate innstillinger.
+• Nullstilling av brukstid per intervall og nedtellinger er rettet.
+• Gjenkjenning av Facebook Reels er rettet.

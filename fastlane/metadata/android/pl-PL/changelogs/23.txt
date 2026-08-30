@@ -1,0 +1,5 @@
+• Dodano obsługę TikTok Lite.
+• Pływający minutnik pokazuje teraz łączny czas oglądania w danym dniu lub bieżącym interwale.
+• Limity dzienne i minutniki interwałowe zapamiętują teraz osobne ustawienia.
+• Naprawiono zerowanie czasu użycia w interwałach i odliczanie.
+• Naprawiono wykrywanie Facebook Reels.

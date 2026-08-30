@@ -1,0 +1,5 @@
+• Dodana je podrška za TikTok Lite.
+• Plutajući mjerač vremena sada prikazuje ukupno vrijeme gledanja za dan ili trenutačni interval.
+• Dnevna ograničenja i intervalni mjerači vremena sada pamte zasebne postavke.
+• Ispravljene su pogreške pri poništavanju vremena korištenja po intervalu i odbrojavanju.
+• Ispravljeno je prepoznavanje Facebook Reelsa.

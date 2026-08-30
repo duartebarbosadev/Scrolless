@@ -1,0 +1,5 @@
+• Pridaná podpora pre TikTok Lite.
+• Plávajúci časovač teraz zobrazuje celkový čas sledovania za deň alebo aktuálny interval.
+• Denné limity a intervalové časovače si teraz pamätajú samostatné nastavenia.
+• Opravené vynulovanie času používania v intervaloch a odpočítavanie.
+• Opravené rozpoznávanie Facebook Reels.
