@@ -1,0 +1,5 @@
+• A fost adăugat suport pentru TikTok Lite.
+• Temporizatorul flotant afișează acum timpul total de vizionare din ziua curentă sau din intervalul curent.
+• Limitele zilnice și temporizatoarele pe intervale păstrează acum setări separate.
+• Au fost corectate resetarea timpului de utilizare pe interval și numărătorile inverse.
+• A fost corectată detectarea Facebook Reels.

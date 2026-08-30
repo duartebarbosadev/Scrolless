@@ -1,0 +1,5 @@
+• Adicionado suporte ao TikTok Lite.
+• O temporizador flutuante agora mostra o tempo total de visualização do dia ou do intervalo atual.
+• Os limites diários e os temporizadores por intervalo agora salvam configurações separadas.
+• Corrigidos os reinícios do tempo de uso por intervalo e as contagens regressivas.
+• Corrigida a detecção de Facebook Reels.

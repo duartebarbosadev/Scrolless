@@ -1,0 +1,5 @@
+• Nagdagdag ng suporta para sa TikTok Lite.
+• Ipinapakita na ng lumulutang na timer ang kabuuang oras ng panonood sa araw o kasalukuyang pagitan.
+• Hiwalay nang sine-save ang mga setting ng pang-araw-araw na limitasyon at mga interval timer.
+• Inayos ang pag-reset ng oras ng paggamit sa bawat pagitan at ang mga countdown.
+• Inayos ang pagtukoy sa Facebook Reels.

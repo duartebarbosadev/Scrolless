@@ -1,0 +1,5 @@
+• Đã thêm hỗ trợ TikTok Lite.
+• Bộ hẹn giờ nổi giờ hiển thị tổng thời gian xem trong ngày hoặc khoảng thời gian hiện tại.
+• Giới hạn hằng ngày và bộ hẹn giờ theo khoảng thời gian giờ đây lưu cài đặt riêng biệt.
+• Đã sửa lỗi đặt lại thời gian sử dụng theo khoảng và đếm ngược.
+• Đã sửa lỗi nhận diện Facebook Reels.

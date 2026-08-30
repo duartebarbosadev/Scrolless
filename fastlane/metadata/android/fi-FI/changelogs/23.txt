@@ -1,0 +1,5 @@
+• TikTok Lite -tuki on lisätty.
+• Kelluva ajastin näyttää nyt päivän tai nykyisen aikavälin kokonaiskatseluajan.
+• Päivittäiset rajat ja intervalliajastimet muistavat nyt omat asetuksensa.
+• Aikavälin käyttöajan nollaus ja jäljellä olevan ajan laskenta on korjattu.
+• Facebook Reelsin tunnistus on korjattu.

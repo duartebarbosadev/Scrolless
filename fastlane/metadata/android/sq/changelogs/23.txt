@@ -1,0 +1,5 @@
+• U shtua mbështetja për TikTok Lite.
+• Kohëmatësi lundrues tani tregon kohën totale të shikimit për ditën ose intervalin aktual.
+• Kufijtë ditorë dhe kohëmatësit me intervale tani ruajnë cilësime të veçanta.
+• U rregulluan rivendosja në zero e kohës së përdorimit për interval dhe numërimet mbrapsht.
+• U rregullua zbulimi i Facebook Reels.

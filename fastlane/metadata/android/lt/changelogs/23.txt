@@ -1,0 +1,5 @@
+• Pridėtas TikTok Lite palaikymas.
+• Slankusis laikmatis dabar rodo bendrą dienos arba dabartinio intervalo žiūrėjimo laiką.
+• Dienos limitai ir intervalų laikmačiai dabar išsaugo atskirus nustatymus.
+• Ištaisytos intervalo naudojimo laiko nustatymo į nulį ir atgalinio skaičiavimo klaidos.
+• Ištaisytas Facebook Reels aptikimas.

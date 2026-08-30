@@ -1,0 +1,5 @@
+• Stuðningi við TikTok Lite hefur verið bætt við.
+• Fljótandi tímamælirinn sýnir nú heildaráhorfstíma dagsins eða núverandi tímabils.
+• Dagleg mörk og tímabilsmælar varðveita nú aðskildar stillingar.
+• Villur í núllstillingu notkunartíma innan tímabils og niðurtalningu hafa verið lagaðar.
+• Greining á Facebook Reels hefur verið löguð.

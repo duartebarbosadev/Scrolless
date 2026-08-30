@@ -1,0 +1,5 @@
+• TikTok Lite desteği eklendi.
+• Kayan zamanlayıcı artık günün veya geçerli aralığın toplam izleme süresini gösteriyor.
+• Günlük limitler ve aralıklı zamanlayıcılar artık ayrı ayarları saklıyor.
+• Aralıklardaki kullanım süresinin sıfırlanması ve geri sayımlar düzeltildi.
+• Facebook Reels algılama sorunu düzeltildi.

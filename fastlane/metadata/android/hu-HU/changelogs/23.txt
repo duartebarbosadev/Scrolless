@@ -1,0 +1,5 @@
+• Hozzáadtuk a TikTok Lite támogatását.
+• A lebegő időzítő most a napi vagy az aktuális időszakban összesített nézési időt mutatja.
+• A napi limitek és az intervallum-időzítők most külön beállításokat őriznek meg.
+• Javítottuk az időszakonkénti használati idő nullázását és a visszaszámlálásokat.
+• Javítottuk a Facebook Reels felismerését.

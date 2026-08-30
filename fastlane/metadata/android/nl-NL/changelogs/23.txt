@@ -1,0 +1,5 @@
+• Ondersteuning voor TikTok Lite is toegevoegd.
+• De zwevende timer toont nu de totale kijktijd van de dag of het huidige interval.
+• Daglimieten en intervaltimers onthouden nu afzonderlijke instellingen.
+• Het resetten van de gebruikstijd per interval en het aftellen zijn gecorrigeerd.
+• Problemen met de detectie van Facebook Reels zijn verholpen.

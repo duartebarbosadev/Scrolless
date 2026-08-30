@@ -1,0 +1,5 @@
+• La prise en charge de TikTok Lite a été ajoutée.
+• Le minuteur flottant affiche désormais le temps de visionnage total du jour ou de l’intervalle en cours.
+• Les limites quotidiennes et les minuteurs par intervalle conservent désormais des réglages séparés.
+• La remise à zéro du temps utilisé par intervalle et les comptes à rebours ont été corrigés.
+• La détection des Facebook Reels a été corrigée.
