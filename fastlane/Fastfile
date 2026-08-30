@@ -1,0 +1,321 @@
+require "cgi"
+require "open3"
+
+default_platform(:android)
+skip_docs
+
+ROOT_DIR = File.expand_path("..", __dir__)
+GRADLE_FILE = File.join(ROOT_DIR, "app", "build.gradle.kts")
+METADATA_DIR = File.join(ROOT_DIR, "fastlane", "metadata", "android")
+PACKAGE_NAME = "com.scrolless.app"
+RELEASE_ASSET_NAMES = %w[app-play-release.apk app-oss-release.apk].freeze
+
+def gradle_value(name)
+  match = File.read(GRADLE_FILE).match(/^\s*#{Regexp.escape(name)}\s*=\s*(?:"([^"]+)"|(\d+))/)
+  UI.user_error!("Could not read #{name} from #{GRADLE_FILE}") unless match
+  match[1] || match[2]
+end
+
+def current_version_code
+  gradle_value("versionCode").to_i
+end
+
+def current_version_name
+  gradle_value("versionName")
+end
+
+def require_environment!(*names)
+  missing = names.select { |name| ENV[name].to_s.strip.empty? }
+  UI.user_error!("Missing required environment variables: #{missing.join(', ')}") unless missing.empty?
+end
+
+def play_credentials
+  json_data = ENV["PLAY_SERVICE_ACCOUNT_JSON"].to_s.strip
+  return { json_key_data: json_data } unless json_data.empty?
+
+  json_path = ENV["PLAY_SERVICE_ACCOUNT_JSON_PATH"].to_s.strip
+  return { json_key: File.expand_path(json_path, ROOT_DIR) } unless json_path.empty?
+
+  UI.user_error!("Set PLAY_SERVICE_ACCOUNT_JSON or PLAY_SERVICE_ACCOUNT_JSON_PATH")
+end
+
+def one_artifact!(pattern, description)
+  matches = Dir[File.join(ROOT_DIR, pattern)].reject { |path| path.end_with?("-unsigned.apk") }
+  UI.user_error!("Expected one #{description}, found #{matches.length}: #{matches.join(', ')}") unless matches.length == 1
+  matches.first
+end
+
+def release_artifacts
+  {
+    play_apk: one_artifact!("app/build/outputs/apk/play/release/*.apk", "signed Play APK"),
+    oss_apk: one_artifact!("app/build/outputs/apk/oss/release/*.apk", "signed OSS APK"),
+    play_aab: one_artifact!("app/build/outputs/bundle/playRelease/*.aab", "Play AAB")
+  }
+end
+
+def ensure_release_notes!
+  version_code = current_version_code
+  english_notes = File.join(METADATA_DIR, "en-US", "changelogs", "#{version_code}.txt")
+  UI.user_error!("Add release notes for version code #{version_code} at #{english_notes}") unless File.file?(english_notes)
+
+  localized_notes = Dir[File.join(METADATA_DIR, "*", "changelogs", "#{version_code}.txt")]
+  UI.message("Found release notes for version code #{version_code} in #{localized_notes.length} locales")
+end
+
+def upload_play_release!(track:, status:)
+  ensure_release_notes!
+  credentials = play_credentials
+  version_code = current_version_code
+  existing_version_codes = google_play_track_version_codes(
+    package_name: PACKAGE_NAME,
+    track: track,
+    **credentials
+  )
+
+  if existing_version_codes.include?(version_code)
+    UI.important("Version code #{version_code} is already on Play track #{track}; skipping the AAB upload")
+    return
+  end
+
+  artifacts = release_artifacts
+  mapping = File.join(ROOT_DIR, "app", "build", "outputs", "mapping", "playRelease", "mapping.txt")
+  upload_options = {
+    package_name: PACKAGE_NAME,
+    aab: artifacts[:play_aab],
+    track: track,
+    release_status: status,
+    version_code: version_code,
+    version_name: current_version_name,
+    metadata_path: METADATA_DIR,
+    skip_upload_apk: true,
+    skip_upload_metadata: true,
+    skip_upload_changelogs: false,
+    skip_upload_images: true,
+    skip_upload_screenshots: true
+  }.merge(credentials)
+  upload_options[:mapping] = mapping if File.file?(mapping)
+
+  upload_to_play_store(**upload_options)
+end
+
+def github_repository
+  ENV.fetch("GITHUB_REPOSITORY", "duartebarbosadev/Scrolless")
+end
+
+def release_github_api(allow_not_found: false, **options)
+  require_environment!("GITHUB_TOKEN")
+  result = github_api(
+    **options,
+    api_bearer: ENV["GITHUB_TOKEN"],
+    # Handle errors explicitly: the action's default handler prints request headers.
+    error_handlers: {
+      404 => proc { UI.user_error!("GitHub resource not found") unless allow_not_found },
+      "*" => proc { |response| UI.user_error!("GitHub request failed (HTTP #{response[:status]}); retry after resolving the API error") }
+    }
+  )
+  return nil if result[:status] == 404 && allow_not_found
+
+  result[:json]
+end
+
+def github_release_for_version
+  release_github_api(
+    http_method: "GET",
+    path: "repos/#{github_repository}/releases/tags/#{CGI.escape("v#{current_version_name}")}",
+    allow_not_found: true
+  )
+end
+
+def uploaded_release_asset?(asset)
+  asset["state"] == "uploaded" && asset["size"].to_i.positive?
+end
+
+def github_release_complete?(release)
+  release && !release["draft"] && RELEASE_ASSET_NAMES.all? do |name|
+    Array(release["assets"]).any? { |asset| asset["name"] == name && uploaded_release_asset?(asset) }
+  end
+end
+
+def checkout_commit
+  output, status = Open3.capture2e("git", "-C", ROOT_DIR, "rev-parse", "HEAD")
+  UI.user_error!("Could not determine the checked-out commit") unless status.success?
+  output.strip
+end
+
+def ensure_release_commit!
+  head = checkout_commit
+  expected = ENV["RELEASE_COMMIT_SHA"].to_s
+  UI.user_error!("RELEASE_COMMIT_SHA does not match the checkout") unless expected.empty? || expected == head
+
+  # Resolve the remote tag, including annotated tags, instead of trusting target_commitish,
+  # which can be a moving branch name in the release response.
+  tag_commit = release_github_api(
+    http_method: "GET",
+    path: "repos/#{github_repository}/commits/#{CGI.escape("refs/tags/v#{current_version_name}")}",
+    allow_not_found: true
+  )
+  if tag_commit && tag_commit["sha"] != head
+    UI.user_error!("Tag v#{current_version_name} points to another commit. Rerun the original release workflow to repair its assets, or bump the version for this checkout.")
+  end
+  head
+end
+
+def finish_github_release!(release, artifacts)
+  paths = [artifacts[:play_apk], artifacts[:oss_apk]]
+  unless paths.map { |path| File.basename(path) }.sort == RELEASE_ASSET_NAMES.sort
+    UI.user_error!("Release APK filenames must match #{RELEASE_ASSET_NAMES.join(', ')}")
+  end
+
+  paths.each do |path|
+    name = File.basename(path)
+    existing = Array(release["assets"]).find { |asset| asset["name"] == name }
+    next if existing && uploaded_release_asset?(existing)
+
+    # A failed upload can leave a 'starter'/zero-byte asset that blocks the same name.
+    if existing
+      release_github_api(http_method: "DELETE", path: "repos/#{github_repository}/releases/assets/#{existing.fetch('id')}")
+    end
+    release_github_api(
+      http_method: "POST",
+      url: "https://uploads.github.com/repos/#{github_repository}/releases/#{release.fetch('id')}/assets?name=#{CGI.escape(name)}",
+      headers: { "Content-Type" => "application/vnd.android.package-archive" },
+      raw_body: File.binread(path)
+    )
+  end
+
+  if release["draft"]
+    release_github_api(http_method: "PATCH", path: "repos/#{github_repository}/releases/#{release.fetch('id')}", body: { draft: false })
+  end
+  UI.user_error!("GitHub release is still missing uploaded APK assets; rerun this release") unless github_release_complete?(github_release_for_version)
+end
+
+platform :android do
+  desc "Check whether the GitHub release and both APK assets are complete"
+  lane :release_status do
+    complete = github_release_complete?(github_release_for_version)
+    release_sha = complete ? checkout_commit : ensure_release_commit!
+    UI.message(complete ? "Release v#{current_version_name} and both APKs are complete; nothing to release" : "Release v#{current_version_name} needs publishing or asset repair")
+    if ENV["GITHUB_OUTPUT"]
+      File.open(ENV["GITHUB_OUTPUT"], "a") do |output|
+        output.puts("should_release=#{!complete}")
+        output.puts("release_sha=#{release_sha}")
+        output.puts("version_code=#{current_version_code}")
+        output.puts("version_name=#{current_version_name}")
+      end
+    end
+  end
+
+  desc "Run the release quality gate"
+  lane :quality do
+    gradle(
+      tasks: ["spotlessCheck", "test", ":app:lintOssRelease", ":app:lintPlayRelease"],
+      project_dir: ROOT_DIR
+    )
+  end
+
+  desc "Run both store-flavor unit test suites"
+  lane :test do
+    gradle(
+      tasks: [":app:testOssDebugUnitTest", ":app:testPlayDebugUnitTest"],
+      project_dir: ROOT_DIR
+    )
+  end
+
+  desc "Build and validate signed Play APK/AAB and OSS APK artifacts"
+  lane :build_release do
+    require_environment!(
+      "ANDROID_RELEASE_KEYSTORE_PATH",
+      "ANDROID_RELEASE_STORE_PASSWORD",
+      "ANDROID_RELEASE_KEY_ALIAS",
+      "ANDROID_RELEASE_KEY_PASSWORD"
+    )
+
+    gradle(
+      tasks: [":app:assemblePlayRelease", ":app:bundlePlayRelease", ":app:assembleOssRelease"],
+      project_dir: ROOT_DIR
+    )
+    release_artifacts
+  end
+
+  desc "Upload prebuilt artifacts and localized release notes to Google Play Internal"
+  lane :publish_internal do |options|
+    upload_play_release!(
+      track: options[:track] || "internal",
+      status: options[:status] || "completed"
+    )
+  end
+
+  desc "Verify, build, and upload a release to Google Play Internal"
+  lane :internal do |options|
+    quality
+    build_release
+    publish_internal(track: options[:track] || "internal", status: options[:status] || "completed")
+  end
+
+  desc "Upload store text and changelogs without a new binary"
+  lane :metadata do |options|
+    upload_to_play_store(
+      package_name: PACKAGE_NAME,
+      metadata_path: METADATA_DIR,
+      version_code: current_version_code,
+      track: options[:track] || "internal",
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      **play_credentials
+    )
+  end
+
+  desc "Promote an existing Play release from Internal to another track"
+  lane :promote do |options|
+    destination = options[:to] || "production"
+    upload_to_play_store(
+      package_name: PACKAGE_NAME,
+      track: options[:from] || "internal",
+      track_promote_to: destination,
+      track_promote_release_status: options[:status] || "completed",
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      **play_credentials
+    )
+  end
+
+  desc "Publish prebuilt artifacts to Play Internal and create the GitHub release"
+  lane :publish_release do |options|
+    require_environment!("GITHUB_TOKEN")
+    release = github_release_for_version
+    if github_release_complete?(release)
+      UI.message("Release v#{current_version_name} and both APKs are already complete")
+      next
+    end
+
+    release_sha = ensure_release_commit!
+    tag = "v#{current_version_name}"
+
+    publish_internal(track: options[:track] || "internal", status: options[:status] || "completed")
+    artifacts = release_artifacts
+
+    release ||= set_github_release(
+      repository_name: github_repository,
+      api_bearer: ENV["GITHUB_TOKEN"],
+      tag_name: tag,
+      name: tag,
+      commitish: release_sha,
+      is_generate_release_notes: true,
+      is_draft: true
+    )
+    UI.user_error!("Could not create the GitHub release; retry to resume an existing release") unless release
+    finish_github_release!(release, artifacts)
+  end
+
+
+  desc "Verify, build, publish to Play Internal, and create the GitHub release"
+  lane :release do |options|
+    quality
+    build_release
+    publish_release(track: options[:track] || "internal", status: options[:status] || "completed")
+  end
+end
