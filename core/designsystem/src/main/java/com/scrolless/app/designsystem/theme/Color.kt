@@ -244,6 +244,7 @@ val facebookLiteColor = Color(0xFF4FC3F7) // Light blue
 val instagramReelsColor = Color(0xFFE1306C) // Pink/magenta
 val snapchatColor = Color(0xFFFFFC00) // Snapchat yellow
 val tiktokColor = Color(0xFF00F2EA) // Cyan/aqua
+val tiktokLiteColor = Color(0xFF7BF5F0) // Light cyan
 val youtubeShortsColor = Color(0xFFFFB300) // Amber
 
 val timerOverlayBackgroundColor = Color(0xB3000000) // ~70% alpha black

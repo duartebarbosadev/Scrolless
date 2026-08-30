@@ -96,6 +96,11 @@ enum class BlockableApp(
         detectionMethod = DetectionMethod.ViewId("player_view"),
         exitStrategy = GLOBAL_ACTION_HOME,
     ),
+    TIKTOK_LITE(
+        packageIds = listOf("com.zhiliaoapp.musically.go"),
+        detectionMethod = DetectionMethod.ViewId("h89"),
+        exitStrategy = GLOBAL_ACTION_HOME,
+    ),
     FACEBOOK(
         packageIds = listOf("com.facebook.katana"),
         // Facebook exposes different accessibility trees depending on how a Reel is opened and changes
