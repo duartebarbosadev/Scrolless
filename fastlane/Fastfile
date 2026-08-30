@@ -304,7 +304,8 @@ platform :android do
       tag_name: tag,
       name: tag,
       commitish: release_sha,
-      is_generate_release_notes: true
+      is_generate_release_notes: true,
+      is_draft: true
     )
     UI.user_error!("Could not create the GitHub release; retry to resume an existing release") unless release
     finish_github_release!(release, artifacts)
