@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.feature.home.debug
 
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -49,6 +50,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -75,10 +77,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.scrolless.app.core.debug.DebugOverlayMode
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.util.formatMinutes
+import com.scrolless.app.feature.home.BuildConfig
 import com.scrolless.app.feature.home.components.ANALYTICS_DATE_FORMATTER
 import com.scrolless.app.feature.home.components.analyticsColor
 import com.scrolless.app.feature.home.components.analyticsDisplayName
@@ -309,6 +314,8 @@ private fun DebugDayTimelinePanel(
                 .padding(horizontal = 12.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
+            DebugOverlaySelector()
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -457,6 +464,46 @@ private fun DebugDayTimelinePanel(
             )
         }
     }
+}
+
+@Composable
+private fun DebugOverlaySelector() {
+    // Option to switch video overlay techniques
+    // Here we don't care about text translation as this is for debug only
+    val mode by DebugOverlayMode.selection.collectAsStateWithLifecycle()
+    val sdk = Build.VERSION.SDK_INT
+    val attached = mode.usesWindowAttachment(sdk, BuildConfig.DEBUG)
+
+    Text(
+        text = "Video region block overlay",
+        style = MaterialTheme.typography.titleSmall,
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colorScheme.onSurface,
+    )
+    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        DebugOverlayMode.entries.forEach { option ->
+            FilterChip(
+                selected = mode == option,
+                onClick = { DebugOverlayMode.selection.value = option },
+                // A debug choice cannot enable an Android API that the phone does not have.
+                enabled = option != DebugOverlayMode.WINDOW_ATTACHED || sdk >= 34,
+                label = {
+                    Text(
+                        when (option) {
+                            DebugOverlayMode.AUTO -> "Auto"
+                            DebugOverlayMode.LEGACY -> "Legacy"
+                            DebugOverlayMode.WINDOW_ATTACHED -> "Attached"
+                        },
+                    )
+                },
+            )
+        }
+    }
+    Text(
+        text = "Device API $sdk · ${if (attached) "Attached (API 34+)" else "Legacy (API 23–33)"}\n",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
 }
 
 @Composable

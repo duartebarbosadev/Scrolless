@@ -42,8 +42,8 @@ interface UserSettingsStore {
     fun getPauseDuration(): Flow<Long>
     suspend fun setPauseDuration(durationMillis: Long)
 
-    fun getExceptReelsSentByDm(): Flow<Boolean>
-    suspend fun setExceptReelsSentByDm(checked: Boolean)
+    fun getAllowVideosSentByDm(): Flow<Boolean>
+    suspend fun setAllowVideosSentByDm(checked: Boolean)
 
     fun getFirstLaunchAt(): Flow<Long>
     fun getFirstLaunchDate(): Flow<LocalDate?>

@@ -20,13 +20,31 @@ import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
 import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_HOME
 import androidx.compose.runtime.Immutable
 
-// DetectionMethod holds the information to find out if blocked content is visible
-// Most of the apps work by just checking if the view id is present
-//  but facebook (thanks) needs to be different and only works via content descriptions which is a nice hammer
+/**
+ * DetectionMethod describes how to recognize a video screen from its ID, labels, or layout.
+ * Each app can use the signals it exposes to detect when a user is watching reels etc.
+ */
 sealed class DetectionMethod {
+    /**
+     * Matches a known view ID, using Android's direct lookup when available.
+     */
     data class ViewId(val viewId: String) : DetectionMethod()
+
+    /**
+     * Matches known accessibility labels when a stable view ID is not available.
+     */
     data class ContentDescriptions(val contentDescriptions: Set<String>) : DetectionMethod()
+
+    /**
+     * Matches the start of a label when the rest can change, such as an unread count.
+     * Can also require selection to avoid matching an inactive tab.
+     */
     data class ContentDescriptionPrefix(val prefixes: Set<String>, val requireSelected: Boolean = false) : DetectionMethod()
+
+    /**
+     * Recognizes a video layout by view types, size, and related views inside it.
+     * Requiring the pieces to be nested avoids combining unrelated parts of the screen.
+     */
     data class NodeStructure(
         val classNames: Set<String>,
         val minScreenWidthFraction: Float = 0f,
@@ -40,14 +58,16 @@ sealed class DetectionMethod {
             require(minScreenHeightFraction in 0f..1f)
         }
     }
+
+    /**
+     * Accepts any one of several known detection rules.
+     * This supports apps that expose different screens for the same kind of video.
+     */
     data class AnyOf(val detectionMethods: List<DetectionMethod>) : DetectionMethod()
 }
 
 /**
- * The small, stable subset of an accessibility node needed by content detection.
- *
- * Keeping matching independent from [android.view.accessibility.AccessibilityNodeInfo] makes detection
- * rules deterministic and testable against captured UI-tree signals from third-party apps.
+ * A plain copy of the screen details used by detection.
  */
 @Immutable
 data class DetectionNode(
@@ -64,18 +84,38 @@ data class DetectionNode(
     val isLongClickable: Boolean = false,
 )
 
-// Declares each supported app together with the package names we match, the detection signal to look for,
-//  and the exit action to use once blocked content is found.
+/**
+ * Describes how to block detected content: navigate away or cover its video region.
+ * Detection chooses the action; the service carries it out when the user's limit is reached.
+ */
+sealed interface ContentBlockAction {
+    /**
+     * Uses an Android navigation action, such as Back or Home, to leave the video.
+     * Used to leave the current screen the user is on
+     *  (example if the user is on Reels it will press back so that he moves into the main Instagram feed)
+     */
+    data class PerformGlobalAction(val action: Int) : ContentBlockAction
+
+    /**
+     * Hides only the detected video rectangle so the rest of the app remains usable.
+     */
+    data object CoverVideoRegion : ContentBlockAction
+}
+
+/**
+ * Lists supported apps, their package variants, and their default detection and blocking action.
+ * A screen-specific cover detector can override the default action for a detected video region.
+ */
 @Immutable
 enum class BlockableApp(
     private val packageIds: List<String>,
     private val detectionMethod: DetectionMethod,
-    private val exitStrategy: Int,
+    private val blockAction: ContentBlockAction,
 ) {
     REELS(
         packageIds = listOf("com.instagram.android"),
         detectionMethod = DetectionMethod.ViewId("clips_viewer_view_pager"),
-        exitStrategy = GLOBAL_ACTION_BACK,
+        blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     SHORTS(
         packageIds = listOf(
@@ -84,8 +124,9 @@ enum class BlockableApp(
             "app.revanced.android.youtube",
         ),
         detectionMethod = DetectionMethod.ViewId("reel_player_page_container"),
-        exitStrategy = GLOBAL_ACTION_BACK,
+        blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
+    // Keep the app open so the user can reach its native tabs while the video is covered.
     TIKTOK(
         packageIds = listOf(
             "com.zhiliaoapp.musically",
@@ -94,12 +135,12 @@ enum class BlockableApp(
             "com.zhiliaoapp.musically.go",
         ),
         detectionMethod = DetectionMethod.ViewId("player_view"),
-        exitStrategy = GLOBAL_ACTION_HOME,
+        blockAction = ContentBlockAction.CoverVideoRegion,
     ),
     TIKTOK_LITE(
         packageIds = listOf("com.zhiliaoapp.musically.go"),
         detectionMethod = DetectionMethod.ViewId("h89"),
-        exitStrategy = GLOBAL_ACTION_HOME,
+        blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_HOME),
     ),
     FACEBOOK(
         packageIds = listOf("com.facebook.katana"),
@@ -141,21 +182,21 @@ enum class BlockableApp(
                 ),
             ),
         ),
-        exitStrategy = GLOBAL_ACTION_BACK,
+        blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     FACEBOOK_LITE(
         packageIds = listOf("com.facebook.lite"),
         detectionMethod = DetectionMethod.ViewId("video_view"),
-        exitStrategy = GLOBAL_ACTION_BACK,
+        blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     SNAPCHAT(
         packageIds = listOf("com.snapchat.android"),
         detectionMethod = DetectionMethod.ViewId("spotlight_container"),
-        exitStrategy = GLOBAL_ACTION_BACK,
+        blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     ;
 
-    fun getExitStrategy(): Int = exitStrategy
+    fun getBlockAction(): ContentBlockAction = blockAction
 
     fun getDetectionMethod(): DetectionMethod = detectionMethod
 
@@ -166,25 +207,30 @@ enum class BlockableApp(
     private fun matchesPackage(packageName: String): Boolean = packageIds.any { it == packageName }
 }
 
-// Represents the specific package variant
+/**
+ * Pairs a supported app with the actual package that is open.
+ * Keeping that package name lets view-ID lookups work with regional and modified app variants.
+ */
 @Immutable
 data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
     fun getDetectionMethod(): DetectionMethod = app.getDetectionMethod()
 
-    fun getExitStrategy(): Int = app.getExitStrategy()
+    fun getBlockAction(): ContentBlockAction = app.getBlockAction()
 
     fun getViewId(detectionMethod: DetectionMethod.ViewId): String = "$packageId:id/${detectionMethod.viewId}"
 
     fun matchesDetectionNodes(nodes: Collection<DetectionNode>): Boolean {
+        // Group once so nested-layout checks can find children without rescanning the whole list.
         val childrenByParentId = nodes.groupBy(DetectionNode::parentNodeId)
         return getDetectionMethod().matches(nodes, childrenByParentId)
     }
 
-    /** Returns true only for cheap, single-node rules. A false result may still match a structural rule. */
+    /** Try rules that need only one node. Layout rules still need the full set of related nodes. */
     fun matchesFastDetectionNode(node: DetectionNode): Boolean {
         return getDetectionMethod().matchesFastNode(node)
     }
 
+    // Tell the screen scanner which view types matter, so it can skip unrelated layout details.
     fun getStructuralClassNames(): Set<String> {
         return buildSet { getDetectionMethod().collectStructuralClassNames(this) }
     }
@@ -255,6 +301,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             (!requireLongClickable || node.isLongClickable)
 
         if (!matchesThisNode) return false
+        // Related pieces must be inside this matching node, not somewhere else on the screen.
         val requiredDescendant = descendant ?: return true
         return requiredDescendant.hasMatchingDescendant(node.nodeId, childrenByParentId)
     }
@@ -263,6 +310,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
         parentNodeId: Int,
         childrenByParentId: Map<Int?, List<DetectionNode>>,
     ): Boolean {
+        // Allow extra wrapper views between the required parts of the video layout.
         return childrenByParentId[parentNodeId].orEmpty().any { child ->
             matchesNode(child, childrenByParentId) || hasMatchingDescendant(child.nodeId, childrenByParentId)
         }

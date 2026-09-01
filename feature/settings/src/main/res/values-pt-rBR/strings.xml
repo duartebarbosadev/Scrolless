@@ -25,8 +25,8 @@
         <item quantity="other">%1$d minutos</item>
         <item quantity="one">%1$d minuto</item>
     </plurals>
-    <string name="settings_except_reels_sent_by_dms_description">Não bloquear Reels enviados em DMs.</string>
-    <string name="settings_except_reels_sent_by_dms_title">Reels enviados em DMs</string>
+    <string name="settings_allow_videos_sent_by_dms_description">Não bloquear vídeos enviados por mensagem direta no Instagram e no TikTok.</string>
+    <string name="settings_allow_videos_sent_by_dms_title">Vídeos enviados por mensagem direta</string>
     <string name="settings_show_onscreen_timer_description">Manter um timer flutuante visível enquanto você assiste a vídeos curtos.</string>
     <string name="settings_show_onscreen_timer_title">Mostrar timer na tela</string>
 </resources>

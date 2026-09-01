@@ -1,0 +1,111 @@
+/*
+ * Copyright (C) 2026 Scrolless
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+package com.scrolless.app.ui.overlay
+
+import android.accessibilityservice.AccessibilityService
+import android.content.Context
+import android.hardware.display.DisplayManager
+import android.os.Binder
+import android.os.Build
+import android.view.SurfaceControl
+import android.view.SurfaceControlViewHost
+import android.view.View
+import androidx.annotation.RequiresApi
+import com.scrolless.app.accessibility.ContentCoverTarget
+import com.scrolless.app.accessibility.needsUpdate
+import timber.log.Timber
+
+/**
+ * Attaches the cover to the app window, so Android moves and shrinks them together in Home/Recents.
+ * This prevents a held gesture from exposing the video underneath a screen-sized cover.
+ */
+@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+internal class WindowAttachedContentOverlay(private val service: AccessibilityService, private val createView: (Context) -> View) {
+    private var viewHost: SurfaceControlViewHost? = null
+    private var surfacePackage: SurfaceControlViewHost.SurfacePackage? = null
+    private var target: ContentCoverTarget.Window? = null
+
+    fun show(next: ContentCoverTarget.Window, refreshAttachment: Boolean): Boolean {
+        if (!next.needsUpdate(target, refreshAttachment)) return true
+        // Build a fresh host for a different window or display instead of carrying over the old one.
+        if (target?.displayId != next.displayId || target?.windowId != next.windowId) hide()
+        val bounds = next.bounds
+        try {
+            val host = viewHost ?: run {
+                val display = service.getSystemService(DisplayManager::class.java).getDisplay(next.displayId)
+                    ?: return false
+                val context = service.createDisplayContext(display)
+                // Give the view its own window token, as Android's accessibility overlay tests do.
+                SurfaceControlViewHost(context, display, Binder()).also {
+                    viewHost = it
+                    it.setView(createView(context), bounds.width, bounds.height)
+                    surfacePackage = it.surfacePackage
+                }
+            }
+            val surface = surfacePackage?.surfaceControl ?: run {
+                hide()
+                return false
+            }
+            if (target?.bounds?.width != bounds.width || target?.bounds?.height != bounds.height) {
+                host.relayout(bounds.width, bounds.height)
+            }
+            // Place the cover above the video using a position inside the app window, not the screen.
+            SurfaceControl.Transaction().use { transaction ->
+                transaction
+                    .setPosition(surface, bounds.left.toFloat(), bounds.top.toFloat())
+                    .setLayer(surface, Int.MAX_VALUE)
+                    .setVisibility(surface, true)
+                    .apply()
+            }
+            // Reattach on return from Recents, even if Android reused the window ID and size.
+            // Ordinary content updates keep the existing attachment to avoid blinking.
+            if (refreshAttachment || target?.windowId != next.windowId) {
+                service.attachAccessibilityOverlayToWindow(next.windowId, surface)
+                Timber.d("Requested content cover attachment: window=%d, refresh=%b", next.windowId, refreshAttachment)
+            }
+            target = next
+            return true
+        } catch (error: RuntimeException) {
+            hide()
+            Timber.e(error, "Unable to attach content cover")
+            return false
+        }
+    }
+
+    fun hide() {
+        val oldHost = viewHost
+        val oldPackage = surfacePackage
+        // Clear our references first, so repeated cleanup cannot reuse a half-released cover.
+        viewHost = null
+        surfacePackage = null
+        target = null
+        try {
+            oldPackage?.surfaceControl?.takeIf { it.isValid }?.let { surface ->
+                SurfaceControl.Transaction().use { transaction ->
+                    transaction.setVisibility(surface, false).reparent(surface, null).apply()
+                }
+            }
+        } finally {
+            // Release both resources even if detaching the cover or releasing the host fails.
+            try {
+                oldHost?.release()
+            } finally {
+                oldPackage?.release()
+            }
+        }
+    }
+}

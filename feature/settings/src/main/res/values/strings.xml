@@ -20,10 +20,10 @@
 
     <string name="settings">Settings</string>
 
-    <string name="settings_except_reels_sent_by_dms_description">Do not block Reels sent in DMs.</string>
+    <string name="settings_allow_videos_sent_by_dms_description">Do not block videos sent in Instagram and TikTok DMs.</string>
 
 
-    <string name="settings_except_reels_sent_by_dms_title">Reels sent in DMs</string>
+    <string name="settings_allow_videos_sent_by_dms_title">Videos sent in DMs</string>
 
     <string name="settings_pause_duration_description">How long blocking is paused when you tap Pause.</string>
 

@@ -17,7 +17,6 @@
 package com.scrolless.app.accessibility
 
 import android.accessibilityservice.AccessibilityService
-import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.annotation.SuppressLint
 import android.os.Build
@@ -26,16 +25,21 @@ import android.os.Looper
 import android.os.PowerManager
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import android.view.accessibility.AccessibilityWindowInfo
+import com.scrolless.app.BuildConfig
 import com.scrolless.app.core.blocking.BlockingManager
+import com.scrolless.app.core.debug.DebugOverlayMode
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.BlockingResult
+import com.scrolless.app.core.model.ContentBlockAction
 import com.scrolless.app.core.model.DetectionMethod
 import com.scrolless.app.core.model.DetectionNode
 import com.scrolless.app.core.model.ResolvedBlockableApp
 import com.scrolless.app.core.repository.BlockingConfigRepository
 import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
+import com.scrolless.app.ui.overlay.BlockedContentOverlayManager
 import com.scrolless.app.ui.overlay.TimerOverlayManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -51,21 +55,19 @@ import timber.log.Timber
 /**
  * Accessibility service that monitors and blocks access to "brain rot" content based on user-configured limits.
  *
- * This service uses Android's Accessibility framework to detect when the user enters specific apps
- * or UI elements (such as YouTube Shorts or Instagram Reels) and enforces blocking policies according
- * to the active [BlockOption]:
+ * Reads app screens, asks [BlockingManager] whether viewing is allowed, and applies the screen's action.
+ * A blocked video can be covered while the rest of its app stays usable.
+ * Viewing time is saved when the user leaves the video or when a cover hides it.
+ *
+ * TODO: Move the session time tracking logic to the SessionTrackerImpl
+ *
  * - [BlockOption.BlockAll]: Immediately blocks all detected content
  * - [BlockOption.DailyLimit]: Allows usage up to a configured daily time limit
  * - [BlockOption.IntervalTimer]: Allows usage within time intervals
  * - [BlockOption.NothingSelected]: No blocking is performed
  *
  * The service tracks usage time, displays an optional timer overlay, and performs automatic
- * back navigation when limits are exceeded.
- *
- * Permissions Required:
- * - Accessibility service permission must be granted by the user
- *
- * TODO: Move the session time tracking logic to the SessionTrackerImpl
+ *  back navigation when limits are exceeded.
  *
  * @see com.scrolless.app.core.blocking.BlockingManager for blocking logic
  * @see BlockOption for available blocking strategies
@@ -79,34 +81,43 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     override fun onCreate() {
         super.onCreate()
         timerOverlayManager.attachServiceContext(this)
+        blockedContentOverlayManager.attachServiceContext(this)
+
+        // Blocking a certain region of the screen uses 2 different techniques depending on the device API level
+        // In debug mode we allow testing both techniques
+        // Switching modes must clear the old cover before the next screen is measured differently.
+        if (BuildConfig.DEBUG) {
+            serviceScope.launch {
+                DebugOverlayMode.selection
+                    .map { it.usesWindowAttachment(Build.VERSION.SDK_INT, isDebug = true) }
+                    .distinctUntilChanged()
+                    .collect { attached ->
+                        if (attached == useWindowAttachedCover) return@collect
+                        if (contentSession?.content?.cover != null) {
+                            onBlockedContentExited()
+                        }
+                        // A cover can still be attached even after its viewing session ended.
+                        blockedContentOverlayManager.hide()
+                        useWindowAttachedCover = attached
+                    }
+            }
+        }
     }
 
-    /**
-     * Main thread handler for executing UI-related operations like back navigation.
-     */
+    /** Schedules overlay updates and covered-screen checks on the main thread. */
     private val mainHandler = Handler(Looper.getMainLooper())
 
-    /**
-     * Handler for scheduling periodic checks of usage time while user is in blocked content.
-     * Checks are performed every 1 second.
-     */
+    /** Schedules limit checks while a video is being viewed. */
     private val videoCheckHandler = Handler(Looper.getMainLooper())
 
-    /**
-     * Coroutine scope for the service lifecycle. Uses [SupervisorJob] to prevent child
-     * coroutine failures from cancelling the entire scope.
-     */
+    /** Keep UI work on the main thread; one failed job should not stop all service work. */
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
-    /**
-     * Tracks daily and session usage time for blocked content.
-     */
+    /** Saves viewing time and records app visits. */
     @Inject
     lateinit var sessionTracker: SessionTracker
 
-    /**
-     * Manages blocking logic and decisions based on configured [BlockOption].
-     */
+    /** Decides whether the user's current limit allows more viewing. */
     @Inject
     lateinit var blockingManager: BlockingManager
 
@@ -114,43 +125,37 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     @Inject
     lateinit var blockingConfigRepository: BlockingConfigRepository
 
-    /** Preferences that do not participate in blocking decisions. */
+    /** Supplies timer preferences, pauses, and the DM-video exemption. */
     @Inject
     lateinit var userSettingsStore: UserSettingsStore
 
-    /**
-     * Manages the display of an optional timer overlay showing current usage time.
-     */
+    /** Shows usage time; it does not decide whether to block. */
     @Inject
     lateinit var timerOverlayManager: TimerOverlayManager
 
+    @Inject
+    lateinit var blockedContentOverlayManager: BlockedContentOverlayManager
+
     private val powerManager by lazy { getSystemService(POWER_SERVICE) as PowerManager }
 
-    private data class DetectedBlockedContent(val app: ResolvedBlockableApp, val blockingSuppressed: Boolean)
+    private var contentSession: ContentSession? = null
+    private var useWindowAttachedCover = DebugOverlayMode.selection.value
+        .usesWindowAttachment(Build.VERSION.SDK_INT, BuildConfig.DEBUG)
+    // A covered session stays around for screen detection, but its viewing time has stopped.
+    private val blockedContentSession: ContentSession?
+        get() = contentSession?.takeUnless { it.isCovered }
 
-    private data class BlockedContentSession(val app: ResolvedBlockableApp, val startedAtMillis: Long, val blockingSuppressed: Boolean)
-
-    private var blockedContentSession: BlockedContentSession? = null
-
-    /**
-     * Whether the user is currently in blocked content.
-     */
+    /** Includes covered videos: their time is stopped, but their screen still needs watching. */
     private val isProcessingBlockedContent: Boolean
-        get() = blockedContentSession != null
+        get() = contentSession != null
 
-    /**
-     * Current timer overlay enabled state, updated reactively.
-     */
+    /** Latest timer preference, kept ready for the next viewing session. */
     private var currentTimerOverlayEnabled: Boolean = false
 
-    /**
-     * Whether Instagram Reels opened from a DM thread should be ignored by blocking detection.
-     */
-    private var currentExceptReelsSentByDm: Boolean = false
+    /** Allow DM videos only when an app's DM detector recognizes the screen. */
+    private var currentAllowVideosSentByDm: Boolean = false
 
-    /**
-     * Epoch millis until which blocking logic should remain paused.
-     */
+    /** Time at which the temporary pause ends. A pause still counts viewing time. */
     @Volatile
     private var pauseUntilMillis: Long = 0L
 
@@ -160,16 +165,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         get() = isPauseActive() || isBlockingSuppressedForCurrentContent
 
     private val isBlockingSuppressedForCurrentContent: Boolean
-        get() = blockedContentSession?.blockingSuppressed == true
+        get() = contentSession?.blockingSuppressed == true
 
     private var currentForegroundBrainRotApp: ResolvedBlockableApp? = null
 
-    /**
-     * Runnable that performs periodic checks (every 1 second) to determine if the user
-     * has exceeded their time limit while in blocked content.
-     *
-     * If the limit is exceeded, triggers automatic back navigation.
-     */
+    /** Check the limit without waiting for another screen event, then schedule the next check. */
     private val videoCheckRunnable: Runnable = Runnable {
 
         if (!validateTrackedAppState("Periodic check")) {
@@ -199,7 +199,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 when (val action = blockingManager.onPeriodicCheck(elapsed)) {
                     is BlockingResult.BlockNow -> {
                         Timber.i("Periodic check: limit reached (elapsed=%d). Navigating back.", elapsed)
-                        performBackNavigation()
+                        enforceBlocking(session)
                     }
 
                     is BlockingResult.CheckLater -> {
@@ -216,15 +216,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    /**
-     * Called when the accessibility service is successfully connected and ready to use.
-     *
-     * Performs initialization:
-     * - Configures accessibility service info (event types, flags)
-     * - Attaches service context to [TimerOverlayManager]
-     * - Starts observing user settings for block option changes
-     * - Performs initial daily usage reset check
-     */
+    /** Start watching settings so changes also apply to content that is already open. */
     override fun onServiceConnected() {
         super.onServiceConnected()
         Timber.i("Accessibility service connected")
@@ -232,7 +224,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // Start with restricted configuration to save battery
         refreshServiceConfig()
 
-        // Check if we need to bring the app to foreground
+        // The user may have just enabled accessibility in Android Settings; bring them back once.
         serviceScope.launch {
             val waitingForAccessibility = userSettingsStore.getWaitingForAccessibility().distinctUntilChanged()
             waitingForAccessibility.collect { waiting ->
@@ -256,6 +248,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 .collect { (option, settings) ->
                     Timber.d("Blocking option changed: %s", option)
                     blockingManager.init(option, settings)
+                    reconsiderVisibleContent()
                 }
         }
 
@@ -264,54 +257,35 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             userSettingsStore.getTimerOverlayEnabled().collect { currentTimerOverlayEnabled = it }
         }
 
-        // Observe DM-sent reels exception changes
+        // Re-detect an open video when the DM preference changes, then apply the new decision.
         serviceScope.launch {
-            userSettingsStore.getExceptReelsSentByDm().collect { currentExceptReelsSentByDm = it }
+            userSettingsStore.getAllowVideosSentByDm().collect {
+                currentAllowVideosSentByDm = it
+                refreshDetectedContent()
+                reconsiderVisibleContent()
+            }
         }
 
-        // Observe pause toggle
+        // Apply a pause immediately, even if the app has not sent a new screen event.
         serviceScope.launch {
             userSettingsStore.getPauseUntil().collect { newPauseUntil ->
-                val wasPaused = isPauseActive()
                 pauseUntilMillis = newPauseUntil
-                val nowPaused = isPauseActive()
-                if (nowPaused && !wasPaused) {
-                    Timber.i("Pause activated until %d - session tracking continues", pauseUntilMillis)
-                    // Session continues, usage still tracked, only blocking checks are skipped
-                } else if (!nowPaused && wasPaused) {
-                    Timber.i("Pause expired, resuming blocking checks")
-                    // If still in blocked content, check if we should block now
-                    if (isProcessingBlockedContent && !isBlockingSuppressed) {
-                        serviceScope.launch(Dispatchers.IO) {
-                            if (blockingManager.onEnterBlockedContent()) {
-                                Timber.i("Blocking immediately after pause expired")
-                                performBackNavigation()
-                            }
-                        }
-                    }
-                } else {
-                    Timber.v("Pause timestamp updated to %d (no state change)", pauseUntilMillis)
-                }
+                reconsiderVisibleContent()
             }
         }
     }
 
-    /**
-     * Performs a single exit transition for tracked app/session state.
-     *
-     * If no tracked app/session is active, it returns
-     * else it will call onBlockedContentExit and will update the foreground app as null
-     *
-     * @param reason Human-readable reason used for diagnostics in logs.
-     */
+    /** End tracking when the app leaves or the screen turns off. Repeated exit events are harmless. */
     private fun handleTrackedAppExit(reason: String) {
+        // A window cover can outlive tracking while its parent animates away. Screen-off clears it.
+        if (!powerManager.isInteractive) blockedContentOverlayManager.hide()
         if (!isProcessingBlockedContent && currentForegroundBrainRotApp == null) {
             return
         }
 
         Timber.i("Handling tracked app exit: %s", reason)
         if (isProcessingBlockedContent) {
-            onBlockedContentExited()
+            onBlockedContentExited(appLeft = true)
         }
 
         if (currentForegroundBrainRotApp != null) {
@@ -319,15 +293,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    /**
-     * Validates that the currently tracked app/session is still active.
-     *
-     * When the screen is not interactive or the tracked app package is no longer visible in
-     * interactive windows, this triggers [handleTrackedAppExit].
-     *
-     * @param source Diagnostic origin of the check (event path, periodic check, etc.).
-     * @return `true` when tracked state is valid and processing can continue.
-     */
+    /** Stop delayed work if the screen turned off or the app is no longer visible. */
     private fun validateTrackedAppState(source: String): Boolean {
         if (!powerManager.isInteractive) {
             if (isProcessingBlockedContent || currentForegroundBrainRotApp != null) {
@@ -345,27 +311,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         return false
     }
 
-    /**
-     * Syncs package filtering with current tracking state.
-     *
-     * If the user has one of the BlockableApps open, we need to listen to all packages (so that we accurately detect minimizes, etc.).
-     * Otherwise, restrict the service back to only listen to restricted packages
-     */
+    /** Listen beyond the target app while it is open, so Home and app-switching events reach us. */
     private fun refreshServiceConfig() {
         updateServiceConfig(isProcessingBlockedContent || currentForegroundBrainRotApp != null)
     }
 
-    /**
-     * Called when an accessibility event is received from the system.
-     *
-     * Monitors window state changes and window content changes to detect when the user
-     * enters or exits blocked content. Triggers [onBlockedContentEntered] or
-     * [onBlockedContentExited] accordingly.
-     *
-     * Note: Careful when adding logs as this can get spammed a lot
-     *
-     * @param event The accessibility event containing information about the UI change
-     */
+    /** Use screen changes to start, update, or finish tracking. These events can arrive very often. */
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
         // Skip processing if screen is off
         if (!powerManager.isInteractive) {
@@ -373,7 +324,19 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             return
         }
 
-        val packageId = event.packageName?.toString() ?: ""
+        // End tracking on focus loss. Legacy covers disappear; attached covers stay on their app.
+        contentSession?.let { session ->
+            if (!isContentWindowEligible(session.app)) {
+                handleTrackedAppExit("covered app lost foreground")
+            }
+        }
+
+        // Window-list events have no reliable source package, including when returning to a covered app.
+        val packageId = if (event.eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
+            foregroundAppPackage().orEmpty()
+        } else {
+            event.packageName?.toString().orEmpty()
+        }
         val userActiveApp = resolveForegroundBrainRotApp(packageId)
         updateForegroundAppState(userActiveApp)
 
@@ -383,25 +346,37 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             return
         }
 
-        // Get root node
-        val rootNode = rootInActiveWindow
+        // Android may return our cover as the active window. Read the app behind it instead.
+        val rootNode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE &&
+            useWindowAttachedCover &&
+            userActiveApp?.coverDetector != null
+        ) {
+            windows.firstNotNullOfOrNull { window ->
+                window.root?.takeIf { it.packageName?.toString() == userActiveApp.packageId }
+            }
+        } else {
+            rootInActiveWindow
+        }
         if (rootNode == null) {
             validateTrackedAppState("Root node missing")
             Timber.v("No root node available, skipping content detection")
             return
         }
 
-        // Detect blocked content
         val detectedContent = detectBlockedContent(packageId, rootNode)
 
-        // Only trigger changes if detection state actually changed
+        // No match means the user left the video, even if they stayed inside the same app.
         if (detectedContent != null) {
             onBlockedContentDetected(detectedContent)
-        } else if (isProcessingBlockedContent) {
-
-            // If we were processing, but now nothing detected, we exited
-            Timber.v("Brain rot content no longer detected, triggering exit")
-            onBlockedContentExited()
+        } else {
+            if (isProcessingBlockedContent) {
+                Timber.v("Brain rot content no longer detected, triggering exit")
+                onBlockedContentExited()
+            }
+            // Returning directly to an allowed screen must also clear a retained window cover.
+            if (userActiveApp?.coverDetector != null) {
+                blockedContentOverlayManager.hide()
+            }
         }
     }
 
@@ -444,9 +419,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             }
         }
 
-        // If we are processing content and we received an event,
-        //  make sure that the app is still visible as we can get events from other apps,
-        //  otherwise it means that the user has left the app.
+        // A keyboard or system event does not necessarily mean the user left the current app.
         currentForegroundBrainRotApp?.let { blockableApp ->
             if (isBlockedAppPackageVisible(blockableApp)) {
                 return blockableApp
@@ -462,13 +435,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      */
     override fun onInterrupt() = Unit
 
-    /**
-     * Called when the service is being destroyed.
-     *
-     * Performs cleanup:
-     * - Stops periodic checks
-     * - Cancels all coroutines in [serviceScope]
-     */
+    /** Remove both overlays and cancel pending work when Android destroys the service. */
     override fun onDestroy() {
         super.onDestroy()
         Timber.d(
@@ -476,85 +443,83 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             isProcessingBlockedContent, blockedContentSession?.app,
         )
         stopPeriodicCheck()
+        mainHandler.removeCallbacks(coveredContentCheck)
+        blockedContentOverlayManager.hide()
         timerOverlayManager.cleanup()
         serviceScope.cancel()
     }
 
-    /**
-     * Detects if the current window contains blocked content by inspecting the accessibility node tree.
-     *
-     * Searches for view IDs that match known blocked apps (e.g., YouTube Shorts, Instagram Reels).
-     * Optimized to exit early once a match is found.
-     *
-     * @param packageId The package that emitted the current accessibility event
-     * @param rootNode The root accessibility node of the current window
-     * @return The detected blocked content, or null if no blocked content is found
-     */
+    /** Check the current viewing app first, then try the app that sent this event. */
     private fun detectBlockedContent(packageId: String, rootNode: AccessibilityNodeInfo): DetectedBlockedContent? {
 
-        // If we are processing content and we received an event,
-        //  make sure that the app is still visible as we can get events from other apps,
-        //  otherwise it means that the user has left the app.
-        blockedContentSession?.app?.let { blockableApp ->
-            if (rootNode.matchesBlockedContent(blockableApp)) {
-                return rootNode.toDetectedBlockedContent(blockableApp)
-            } else {
-                val visibleBlockedContentRoot = findVisibleBlockedContentRoot(blockableApp)
-                if (visibleBlockedContentRoot != null) {
-                    return visibleBlockedContentRoot.toDetectedBlockedContent(blockableApp)
-                }
-                Timber.v("Blocked app is no longer visible, checking if there's any other open")
-            }
+        // A keyboard or system event does not necessarily mean the user left the current app.
+        contentSession?.app?.let { blockableApp ->
+            rootNode.detectContent(blockableApp)?.let { return it }
+            findVisibleBlockedContent(blockableApp)?.let { return it }
+            Timber.v("Blocked app is no longer visible, checking if there's any other open")
         }
 
-        // Detect if the user is inside a blockable app and watching content
+        // Try each matching variant; a shared package can expose different video IDs.
         return BlockableApp.entries.firstNotNullOfOrNull { appEnum ->
             val matchedPackage = appEnum.resolvePackage(packageId) ?: return@firstNotNullOfOrNull null
             val resolvedApp = ResolvedBlockableApp(appEnum, matchedPackage)
-            val match = rootNode.matchesBlockedContent(resolvedApp)
-
-            if (match) {
-                rootNode.toDetectedBlockedContent(resolvedApp)
-            } else {
-                null
-            }
+            rootNode.detectContent(resolvedApp)
         }
     }
 
-    private fun AccessibilityNodeInfo.toDetectedBlockedContent(blockableApp: ResolvedBlockableApp): DetectedBlockedContent {
+    private fun AccessibilityNodeInfo.detectContent(blockableApp: ResolvedBlockableApp): DetectedBlockedContent? {
+        if (!isContentWindowEligible(blockableApp)) return null
+        // A matching region uses a cover; otherwise keep this app's normal screen detector.
+        val cover = detectContentCover(blockableApp)
+        // A cover-only app must provide a rectangle. Never guess a region or press Back instead.
+        if (cover == null &&
+            (blockableApp.getBlockAction() == ContentBlockAction.CoverVideoRegion || !matchesBlockedContent(blockableApp))
+        ) return null
         return DetectedBlockedContent(
             app = blockableApp,
             blockingSuppressed = shouldSuppressBlocking(blockableApp),
+            cover = cover,
         )
     }
 
-    /**
-     * Finds a visible blocked-app window whose root still contains blocked content.
-     *
-     * This handles cases where the user interacts with SystemUI (notification shade) or keyboards,
-     * where the blocked app is still visible but not the source of the latest event.
-     */
-    private fun findVisibleBlockedContentRoot(blockableApp: ResolvedBlockableApp): AccessibilityNodeInfo? {
+    private fun AccessibilityNodeInfo.detectContentCover(app: ResolvedBlockableApp): ContentCover? {
+        val detector = app.coverDetector ?: return null
+        val bounds = detector.coverBounds(
+            nodes = coverNodes(app, detector.viewIds),
+            windowId = windowId,
+            attachedCover = blockedContentOverlayManager.attachedWindowTarget,
+        ) ?: return null
+        // Older Android positions covers on the screen. Android 14+ attaches them to an app window.
+        val target = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && useWindowAttachedCover) {
+            val targetWindow = windows.firstOrNull { it.id == windowId } ?: return null
+            ContentCoverTarget.Window(windowId, targetWindow.displayId, bounds)
+        } else {
+            ContentCoverTarget.Screen(bounds)
+        }
+        return ContentCover(target, detector.titleRes, detector.descriptionRes)
+    }
 
-        // windows returns a list of windows in z-order (top to bottom)
+    /** The latest event may come from a keyboard or system window; also check the visible app windows. */
+    private fun findVisibleBlockedContent(blockableApp: ResolvedBlockableApp): DetectedBlockedContent? {
+
+        // Android lists the frontmost window first, so use the first matching app screen.
         return windows.firstNotNullOfOrNull { window ->
-            if (window.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_APPLICATION) {
+            if (window.type == AccessibilityWindowInfo.TYPE_APPLICATION) {
                 val root = window.root ?: return@firstNotNullOfOrNull null
-                // Check if the root is blocked content (reels etc.)
-                root.takeIf { it.matchesBlockedContent(blockableApp) }
+                root.detectContent(blockableApp)
             } else {
                 null
             }
         }
     }
 
-    /**
-     * Checks if the blocked app package is still visible in any interactive application window.
-     * This is used for foreground app open/close state and should not depend on specific content view IDs.
-     */
+    /** Check the app window, not its video: Inbox still counts as an app visit, but not as video viewing. */
     private fun isBlockedAppPackageVisible(blockableApp: ResolvedBlockableApp): Boolean {
+        if (blockableApp.coverDetector != null) {
+            return isContentWindowEligible(blockableApp)
+        }
         return windows.any { window ->
-            if (window.type != android.view.accessibility.AccessibilityWindowInfo.TYPE_APPLICATION) {
+            if (window.type != AccessibilityWindowInfo.TYPE_APPLICATION) {
                 return@any false
             }
             val root = window.root ?: return@any false
@@ -563,38 +528,48 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    /**
-     * Called when blocked content is detected in the active or visible window.
-     */
-    private fun onBlockedContentDetected(detectedContent: DetectedBlockedContent) {
-        val activeSession = blockedContentSession
-        if (activeSession != null) {
-            blockedContentSession = activeSession.copy(
-                app = detectedContent.app,
-                blockingSuppressed = detectedContent.blockingSuppressed,
+    private fun foregroundAppPackage(): String? = foregroundAppPackage(
+        windows.map { window ->
+            InteractiveWindowState(
+                packageName = window.root?.packageName?.toString(),
+                isApplication = window.type == AccessibilityWindowInfo.TYPE_APPLICATION,
+                isActive = window.isActive,
+                isFocused = window.isFocused,
             )
+        },
+    )
+
+    // A remembered app window must not make us draw a screen cover over the launcher or another app.
+    private fun isContentWindowEligible(app: ResolvedBlockableApp): Boolean =
+        app.coverDetector == null || foregroundAppPackage() == app.packageId
+
+    /** Reuse the current session when only the layout changed; do not restart its timer on every event. */
+    private fun onBlockedContentDetected(detectedContent: DetectedBlockedContent) {
+        if (!isContentWindowEligible(detectedContent.app)) {
+            handleTrackedAppExit("detected app lost foreground")
             return
         }
+        val activeSession = contentSession
+        if (activeSession != null) {
+            // A cover and a Back action need separate sessions, even inside the same app.
+            if (!activeSession.content.canContinueWith(detectedContent)) {
+                onBlockedContentExited()
+            } else {
+                val suppressionChanged = activeSession.blockingSuppressed != detectedContent.blockingSuppressed
+                activeSession.content = detectedContent
+                if (activeSession.isCovered) {
+                    detectedContent.cover?.let { blockedContentOverlayManager.show(it) }
+                }
+                if (suppressionChanged) reconsiderVisibleContent()
+                return
+            }
+        }
 
-        blockedContentSession = BlockedContentSession(
-            app = detectedContent.app,
-            startedAtMillis = System.currentTimeMillis(),
-            blockingSuppressed = detectedContent.blockingSuppressed,
-        )
+        contentSession = ContentSession(detectedContent, System.currentTimeMillis())
         onBlockedContentEntered()
     }
 
-    /**
-     * Called when the user enters blocked content.
-     *
-     * Requires [blockedContentSession] to be initialized before it is called.
-     *
-     * Actions performed:
-     * - Starts periodic usage checks to enforce time limits
-     * - Shows timer overlay (if enabled) to keep user informed of usage
-     * - Checks for daily usage reset to ensure accurate daily tracking
-     * - Immediately blocks if limit already exceeded (e.g., BlockAll mode)
-     */
+    /** Check the limit immediately. If viewing is allowed, show the timer and keep checking. */
     private fun onBlockedContentEntered() {
         val session = blockedContentSession ?: return
         Timber.d("Entered blocked content at %d (app=%s, paused=%b)", session.startedAtMillis, session.app, isPauseActive())
@@ -604,20 +579,25 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         startPeriodicCheck()
 
-        val blockingSuppressed = isBlockingSuppressed
-        serviceScope.launch(Dispatchers.IO) {
-            // Always call the enter hook so every session has a matching exit hook.
-            // If blocking is suppressed, ignore the hook's blocking result.
+        serviceScope.launch {
+            // Let the blocking manager start its session even during a pause or DM exemption.
             val shouldBlock = blockingManager.onEnterBlockedContent()
-            if (!blockingSuppressed && shouldBlock) {
+            // Reading the limit may take time. Ignore the answer if the user has already left.
+            if (blockedContentSession !== session) return@launch
+            if (!isBlockingSuppressed && shouldBlock) {
                 Timber.i("Blocking on enter")
-                performBackNavigation()
+                enforceBlocking(session)
                 return@launch
+            }
+
+            // Viewing is allowed now, so remove any cover kept from an earlier visit.
+            if (session.app.coverDetector != null) {
+                blockedContentOverlayManager.hide()
             }
 
             showTimerOverlayIfEnabled(session)
 
-            if (blockingSuppressed) {
+            if (isBlockingSuppressed) {
                 Timber.d(
                     "Skipping blocking check on enter, but tracking usage (paused=%b, suppressed=%b)",
                     isPauseActive(),
@@ -629,7 +609,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    private suspend fun showTimerOverlayIfEnabled(session: BlockedContentSession) {
+    private suspend fun showTimerOverlayIfEnabled(session: ContentSession) {
         if (!currentTimerOverlayEnabled) return
 
         val config = blockingConfigRepository.getConfig()
@@ -653,10 +633,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             }
         }
 
+        // The settings lookup may finish after navigation. Only show the timer for this same session.
         mainHandler.post {
             if (
                 currentTimerOverlayEnabled &&
-                blockedContentSession?.startedAtMillis == session.startedAtMillis
+                blockedContentSession === session
             ) {
                 Timber.v("Showing timer overlay")
                 showOverlay()
@@ -664,79 +645,44 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    /**
-     * Called when the user exits blocked content.
-     *
-     * If not currently processing blocked content, this call is ignored.
-     *
-     * Actions performed:
-     * - Calculates session duration
-     * - Marks [isProcessingBlockedContent] as false
-     * - Stops periodic usage checks
-     * - Records session usage time
-     * - Notifies [BlockingManager] of exit
-     * - Hides timer overlay (if enabled)
-     */
-    private fun onBlockedContentExited() {
-        val session = blockedContentSession
-        if (session == null) {
-            Timber.v("Ignoring blocked content exit because no session is active")
-            return
-        }
-
-        val sessionEndMillis = System.currentTimeMillis()
-        val sessionTime = sessionEndMillis - session.startedAtMillis
-        Timber.d("Exited blocked content. Session=%d ms (app=%s)", sessionTime, session.app)
-
+    /** Clear tracking and save any remaining viewing time. A covered video's viewing time was already saved. */
+    private fun onBlockedContentExited(appLeft: Boolean = false) {
+        val session = contentSession
+        contentSession = null
+        val hadCover = session?.content?.cover != null
+        val finished = session?.finish(System.currentTimeMillis())
         stopPeriodicCheck()
-        blockedContentSession = null
-
-        // Restrict service scope again to save battery
-        refreshServiceConfig()
-
-        val exitedApp = session.app
-
-        serviceScope.launch(Dispatchers.IO) {
-
-            mainHandler.post {
-                Timber.v("Hiding timer overlay")
-                timerOverlayManager.hide(
-                    sessionStartAt = session.startedAtMillis,
-                    sessionEndAt = sessionEndMillis,
-                )
+        mainHandler.removeCallbacks(coveredContentCheck)
+        // Keep an attached cover during app switching, but remove it when changing screens in the app.
+        if (hadCover) {
+            if (appLeft) {
+                blockedContentOverlayManager.onAppExit(powerManager.isInteractive)
+            } else {
+                blockedContentOverlayManager.hide()
             }
-
-            // Add to usage in memory with per-app tracking
-            Timber.d("Recording session usage: %d ms for app: %s (%s)", sessionTime, exitedApp.app.name, exitedApp.packageId)
-            sessionTracker.addToDailyUsage(sessionTime, exitedApp.app)
-
-            // Let blocking manager do its logic, if needed
-            blockingManager.onExitBlockedContent(
-                sessionStartMillis = session.startedAtMillis,
-                sessionEndMillis = sessionEndMillis,
-            )
         }
-
-        Timber.d("Exit handling completed for app: %s (%s)", exitedApp.app.name, exitedApp.packageId)
+        refreshServiceConfig()
+        if (finished == null) return // A covered player already finished its viewing session.
+        timerOverlayManager.hide(finished.startedAtMillis, finished.endedAtMillis)
+        serviceScope.launch { saveViewing(finished) }
     }
 
-    /**
-     * Starts periodic checks of usage time.
-     *
-     * Schedules [videoCheckRunnable] to run every 1 second to monitor if the user
-     * has exceeded their time limit while in blocked content.
-     */
+    private suspend fun saveViewing(finished: FinishedViewing) {
+        if (finished.durationMillis > 0L) {
+            sessionTracker.addToDailyUsage(finished.durationMillis, finished.app.app)
+        }
+        // Even a video blocked immediately must close the session that the manager opened.
+        blockingManager.onExitBlockedContent(finished.startedAtMillis, finished.endedAtMillis)
+    }
+
+    /** Start with one check after a second; later checks use the blocking manager's suggested delay. */
     private fun startPeriodicCheck() {
         Timber.d("Starting periodic usage checks (every 1 second)")
         videoCheckHandler.removeCallbacks(videoCheckRunnable)
         videoCheckHandler.postDelayed(videoCheckRunnable, 1000)
     }
 
-    /**
-     * Stops periodic usage checks.
-     *
-     * Removes any pending executions of [videoCheckRunnable] from the handler queue.
-     */
+    /** Cancel the next viewing check so it cannot keep running after the user leaves. */
     private fun stopPeriodicCheck() {
         Timber.d("Stopping periodic usage checks")
         val hadCallbacks = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -752,30 +698,114 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    /**
-     * Performs automatic back navigation to exit blocked content.
-     *
-     * Uses the detected app's configured exit strategy, or defaults to [GLOBAL_ACTION_BACK].
-     * The action is posted to the main thread handler to ensure it runs on the UI thread.
-     */
-    private fun performBackNavigation() {
-        mainHandler.post {
-            val action = blockedContentSession?.app?.getExitStrategy() ?: GLOBAL_ACTION_BACK
-            Timber.d("Performing back navigation with action=%d", action)
-            val success = performGlobalAction(action)
-            Timber.d("Back navigation result: success=%b", success)
+    /** Stops viewing time at the moment the video is covered, not when the user later changes tabs. */
+    private suspend fun enforceBlocking(session: ContentSession) {
+        if (blockedContentSession !== session || isBlockingSuppressed) return
+        when (val action = session.content.blockAction) {
+            is ContentBlockAction.PerformGlobalAction -> performGlobalAction(action.action)
+
+            ContentBlockAction.CoverVideoRegion -> {
+                // The user may have switched apps while we were waiting for the blocking decision.
+                if (!isContentWindowEligible(session.app)) {
+                    handleTrackedAppExit("app lost foreground before covering")
+                    return
+                }
+                val cover = session.content.cover ?: return
+                // Returning from Recents can replace the app's drawing surface without resizing it.
+                // Reattach now; normal screen updates can keep using that attachment.
+                if (!blockedContentOverlayManager.show(cover, refreshAttachment = true)) return
+                // Stop counting only after the cover was shown successfully.
+                val finished = session.cover(System.currentTimeMillis()) ?: return
+                stopPeriodicCheck()
+                timerOverlayManager.dismissImmediately()
+                refreshServiceConfig()
+                saveViewing(finished)
+                scheduleCoveredContentCheck()
+            }
         }
     }
 
-    /**
-     * Updates the accessibility service configuration to either listen to all packages or only target packages.
-     * This is necessary to know when the user has left the application
-     *
-     * @param listenToAll If true, clears package filter to receive events from all apps (needed to detect exit).
-     *                    If false, restricts events to [BlockableApp] packages only (to save battery).
-     */
+    // Covered time does not count. Still check for screen changes, a new allowance, or a pause.
+    private val coveredContentCheck = Runnable {
+        if (validateTrackedAppState("Covered screen")) {
+            refreshDetectedContent()
+            reconsiderVisibleContent()
+        }
+    }
+
+    private fun scheduleCoveredContentCheck() {
+        mainHandler.removeCallbacks(coveredContentCheck)
+        if (contentSession?.isCovered == true) {
+            mainHandler.postDelayed(coveredContentCheck, 1000)
+        }
+    }
+
+    private fun refreshDetectedContent() {
+        val app = contentSession?.app ?: return
+        val content = findVisibleBlockedContent(app)
+        if (content == null) onBlockedContentExited() else onBlockedContentDetected(content)
+    }
+
+    /** Reapply the current settings without making the user leave and reopen the video. */
+    private fun reconsiderVisibleContent() {
+        val current = contentSession ?: return
+        if (!isContentWindowEligible(current.app)) {
+            handleTrackedAppExit("app lost foreground before reconsidering content")
+            return
+        }
+        serviceScope.launch {
+            if (!current.isCovered) {
+                if (!isBlockingSuppressed &&
+                    blockingManager.onPeriodicCheck(System.currentTimeMillis() - current.startedAtMillis) == BlockingResult.BlockNow
+                ) {
+                    enforceBlocking(current)
+                }
+            } else {
+                val now = System.currentTimeMillis()
+                val shouldBlock = blockingManager.onEnterBlockedContent()
+                // Ask whether viewing could start again. If not, close this check with zero usage.
+                if (contentSession !== current || (shouldBlock && !isBlockingSuppressed)) {
+                    blockingManager.onExitBlockedContent(now, now)
+                    scheduleCoveredContentCheck()
+                    return@launch
+                }
+                // Start counting from now, not from when the cover first appeared.
+                val viewing = ContentSession(current.content, System.currentTimeMillis())
+                contentSession = viewing
+                mainHandler.removeCallbacks(coveredContentCheck)
+                blockedContentOverlayManager.hide()
+                refreshServiceConfig()
+                startPeriodicCheck()
+                showTimerOverlayIfEnabled(viewing)
+            }
+        }
+    }
+
+    // Read only the IDs requested by this app's detector; do not walk the whole screen tree.
+    private fun AccessibilityNodeInfo.coverNodes(app: ResolvedBlockableApp, viewIds: Set<String>): List<ContentCoverNode> =
+        viewIds.flatMap { id ->
+            findAccessibilityNodeInfosByViewId("${app.packageId}:id/$id").map { node ->
+                ContentCoverNode(id, node.coverBounds(), node.isVisibleToUser, node.isSelected)
+            }
+        }
+
+    // The rectangle must use the same origin as the overlay that will draw it.
+    private fun AccessibilityNodeInfo.coverBounds(): ContentBounds {
+        val bounds = android.graphics.Rect()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && useWindowAttachedCover) {
+            getBoundsInWindow(bounds)
+        } else {
+            getBoundsInScreen(bounds)
+        }
+        return ContentBounds(bounds.left, bounds.top, bounds.right, bounds.bottom)
+    }
+
+    /** Watch all app changes while tracking; ignore unrelated apps when there is nothing to track. */
     private fun updateServiceConfig(listenToAll: Boolean) {
         val info = serviceInfo ?: return
+
+        // Do not delay Home/app-switching events while covered, or the old screen cover can linger.
+        info.notificationTimeout = if (contentSession?.isCovered == true) 0L else 250L
 
         if (listenToAll) {
             info.packageNames = null // Listen to all
@@ -790,12 +820,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         serviceInfo = info
     }
 
-    /**
-     * Brings the app to the foreground by starting the MainActivity.
-     *
-     * Uses FLAG_ACTIVITY_NEW_TASK and FLAG_ACTIVITY_REORDER_TO_FRONT to bring
-     * the existing activity to front without recreating it.
-     */
+    /** Return to Scrolless after the user enables accessibility, reusing its existing screen if possible. */
     private fun bringAppToForeground() {
         try {
             val intent = packageManager.getLaunchIntentForPackage(packageName)
@@ -808,12 +833,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    /**
-     * Accessibility detection has to match against the app's actual rendered tree, not just the package.
-     *
-     * Some apps expose stable view IDs, while others (facebook) only expose accessibility labels, so we need
-     * to support both signals here.
-     */
+    /** Default detection for screens without a cover: look for a known ID, label, or video layout. */
     private fun AccessibilityNodeInfo.matchesBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
         val detectionMethod = blockableApp.getDetectionMethod()
 
@@ -825,9 +845,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         return matchesComplexBlockedContent(blockableApp)
     }
 
+    // Only Instagram has DM-screen detection here so far; other apps do not use this exemption yet.
     private fun AccessibilityNodeInfo.shouldSuppressBlocking(blockableApp: ResolvedBlockableApp): Boolean {
         return blockableApp.app == BlockableApp.REELS &&
-            currentExceptReelsSentByDm &&
+            currentAllowVideosSentByDm &&
             isInstagramReelSentInDm(blockableApp)
     }
 
@@ -837,6 +858,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         val replyBarId = blockableApp.getViewId(DetectionMethod.ViewId(INSTAGRAM_DM_REPLY_BAR_VIEW_ID))
         val suggestedTitleId = blockableApp.getViewId(DetectionMethod.ViewId(INSTAGRAM_SUGGESTED_TITLE_VIEW_ID))
 
+        // Sender details and a reply bar identify the DM viewer; recommendations are not DM videos.
         return hasVisibleViewId(senderUsernameId) &&
             hasVisibleViewId(senderTimestampId) &&
             hasVisibleViewId(replyBarId) &&
@@ -848,8 +870,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     /**
-     * Scans the Facebook tree once. Cheap single-node rules return immediately; only node classes used
-     * by structural rules are retained for the hierarchy matcher.
+     * Scan the screen once. Return as soon as a simple label matches.
+     * For layout rules, keep only the relevant nodes and how they are nested.
      */
     private fun AccessibilityNodeInfo.matchesComplexBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
         val structuralNodes = mutableListOf<DetectionNode>()
@@ -895,6 +917,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 }
             }
 
+            // Skip irrelevant wrappers while keeping useful nodes linked to their nearest useful parent.
             val childStructuralParentId = structuralNodeId ?: parentStructuralNodeId
             for (index in 0 until node.childCount) {
                 node.getChild(index)?.let { child -> nodesToVisit.addLast(child to childStructuralParentId) }
@@ -908,10 +931,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         return if (total > 0) (toFloat() / total).coerceIn(0f, 1f) else 0f
     }
 
-    /**
-     * Accessibility can return nodes that exist in the tree but are not actually visible on screen.
-     * We filter those out so detection only reacts to content the user can currently see.
-     */
+    /** Apps keep hidden views in their trees. Only visible views with a non-empty rectangle count here. */
     private fun isNodeVisibleToTheUser(node: AccessibilityNodeInfo): Boolean {
         val rect = android.graphics.Rect()
         node.getBoundsInScreen(rect)
