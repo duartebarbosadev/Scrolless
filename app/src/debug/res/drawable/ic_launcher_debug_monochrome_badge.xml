@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M0,13 L108,32 L108,53 L0,34 Z"
+        android:strokeColor="#000000"
+        android:strokeWidth="2" />
+    <group
+        android:pivotX="54"
+        android:pivotY="33"
+        android:rotation="10">
+        <group
+            android:pivotX="54"
+            android:pivotY="80"
+            android:scaleX="0.75"
+            android:scaleY="0.7"
+            android:translateY="-47">
+            <path
+                android:fillColor="#00000000"
+                android:pathData="M23,74 V86 H28 C34,86 34,74 28,74 Z M39,74 V86 M39,74 H47 M39,80 H46 M39,86 H47 M52,80 H57 C61,80 61,74 57,74 H52 V86 H57 C61,86 61,80 57,80 M66,74 V82 C66,88 75,88 75,82 V74 M91,76 C88,72 80,74 80,80 C80,87 89,88 92,84 V80 H87"
+                android:strokeColor="#000000"
+                android:strokeLineCap="square"
+                android:strokeLineJoin="round"
+                android:strokeWidth="2.8" />
+        </group>
+    </group>
+</vector>
