@@ -25,7 +25,15 @@ import com.scrolless.app.core.model.ResolvedBlockableApp
  * Drawing the cover and tracking viewing time stay shared in the service.
  */
 internal interface ContentCoverDetector {
-    val viewIds: Set<String>
+    /** The view whose reported rectangle should be covered. */
+    val coverViewId: String
+
+    /** Additional views used to decide whether the current screen should remain covered. */
+    val supportingViewIds: Set<String>
+
+    val requiredViewIds: Set<String>
+        get() = supportingViewIds + coverViewId
+
     @get:StringRes val titleRes: Int
     @get:StringRes val descriptionRes: Int
 

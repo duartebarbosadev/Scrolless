@@ -485,7 +485,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private fun AccessibilityNodeInfo.detectContentCover(app: ResolvedBlockableApp): ContentCover? {
         val detector = app.coverDetector ?: return null
         val bounds = detector.coverBounds(
-            nodes = coverNodes(app, detector.viewIds),
+            nodes = coverNodes(app, detector.requiredViewIds),
             windowId = windowId,
             attachedCover = blockedContentOverlayManager.attachedWindowTarget,
         ) ?: return null

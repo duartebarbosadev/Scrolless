@@ -24,21 +24,25 @@ import com.scrolless.app.R
  */
 internal object TikTokScreenDetector : ContentCoverDetector {
     const val PLAYER = "player_view"
-    const val NAVIGATION = "ofk"
     const val INBOX = "ofd"
     const val PROFILE = "ofe"
     const val CREATE = "of9"
     private val nonFeedTabs = setOf(INBOX, PROFILE, CREATE)
-    override val viewIds = setOf(PLAYER, NAVIGATION) + nonFeedTabs
+    override val coverViewId = PLAYER
+    override val supportingViewIds = nonFeedTabs
     override val titleRes = R.string.tiktok_blocked_title
     override val descriptionRes = R.string.tiktok_blocked_description
 
+    /**
+     * Returns the TikTok player bounds that should be covered.
+     * A matching attached cover keeps a temporarily hidden player blocked, unless the user has
+     * selected Inbox, Profile, or Create.
+     */
     override fun coverBounds(nodes: List<ContentCoverNode>, windowId: Int?, attachedCover: ContentCoverTarget.Window?): ContentBounds? {
         val visible = nodes.filter { it.isVisible && it.bounds.isVisible }
-        val navigation = visible.firstOrNull { it.viewId == NAVIGATION }
-        val player = visible.firstOrNull { it.viewId == PLAYER }
+        val player = visible.firstOrNull { it.viewId == coverViewId }
         // A visible video is coverable even if it was opened from Inbox or Profile.
-        if (player != null) return player.bounds.above(navigation?.bounds)
+        if (player != null) return player.bounds
 
         // Android can report the player as invisible because our cover is hiding it.
         // Removing the cover then would reveal the player and cause an endless blinking loop.
@@ -46,7 +50,7 @@ internal object TikTokScreenDetector : ContentCoverDetector {
         if (visible.any { it.isSelected && it.viewId in nonFeedTabs }) return null
         // Only keep the exact player we already covered. Other hidden players must stay ignored.
         return nodes.firstOrNull {
-            it.viewId == PLAYER && it.bounds.isVisible && it.bounds.above(navigation?.bounds) == previous.bounds
-        }?.bounds?.above(navigation?.bounds)
+            it.viewId == coverViewId && it.bounds.isVisible && it.bounds == previous.bounds
+        }?.bounds
     }
 }

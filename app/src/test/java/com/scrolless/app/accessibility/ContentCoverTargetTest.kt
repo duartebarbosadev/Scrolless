@@ -73,14 +73,10 @@ class ContentCoverTargetTest {
     }
 
     @Test
-    fun `window local player bounds preserve the native navigation strip`() {
-        val localPlayer = ContentBounds(0, 0, 800, 1500)
-        val localTabs = ContentBounds(0, 1400, 800, 1500)
-        val nodes = listOf(
-            ContentCoverNode(TikTokScreenDetector.PLAYER, localPlayer, true),
-            ContentCoverNode(TikTokScreenDetector.NAVIGATION, localTabs, true),
-        )
+    fun `window local player bounds are used directly as the cover target`() {
+        val localPlayer = ContentBounds(0, 0, 800, 1400)
+        val nodes = listOf(ContentCoverNode(TikTokScreenDetector.PLAYER, localPlayer, true))
         val target = window.copy(bounds = TikTokScreenDetector.coverBounds(nodes)!!)
-        assertEquals(ContentBounds(0, 0, 800, 1400), target.bounds)
+        assertEquals(localPlayer, target.bounds)
     }
 }

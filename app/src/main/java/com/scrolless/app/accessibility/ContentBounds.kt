@@ -18,17 +18,9 @@ package com.scrolless.app.accessibility
 
 /**
  * Holds a rectangle reported by the app, such as its video or tab bar.
- * Using actual bounds keeps the cover aligned without guessing from the phone's screen size.
  */
 data class ContentBounds(val left: Int, val top: Int, val right: Int, val bottom: Int) {
     val width: Int get() = right - left
     val height: Int get() = bottom - top
     val isVisible: Boolean get() = width > 0 && height > 0
-
-    // Stop at the tab bar so Inbox and Profile remain visible and tappable.
-    fun above(navigation: ContentBounds?): ContentBounds = if (navigation != null && navigation.isVisible && navigation.top > top) {
-        copy(bottom = minOf(bottom, navigation.top))
-    } else {
-        this
-    }
 }

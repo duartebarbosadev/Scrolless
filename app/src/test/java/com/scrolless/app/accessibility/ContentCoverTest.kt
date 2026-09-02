@@ -44,9 +44,14 @@ class ContentCoverTest {
     }
 
     @Test
-    fun `TikTok owns its view IDs and translated message`() {
+    fun `TikTok identifies its cover view, supporting views, and translated message`() {
         val detector: ContentCoverDetector = TikTokScreenDetector
-        assertTrue(TikTokScreenDetector.PLAYER in detector.viewIds)
+        assertEquals(TikTokScreenDetector.PLAYER, detector.coverViewId)
+        assertEquals(
+            setOf(TikTokScreenDetector.INBOX, TikTokScreenDetector.PROFILE, TikTokScreenDetector.CREATE),
+            detector.supportingViewIds,
+        )
+        assertEquals(detector.supportingViewIds + detector.coverViewId, detector.requiredViewIds)
         assertEquals(R.string.tiktok_blocked_title, detector.titleRes)
         assertEquals(R.string.tiktok_blocked_description, detector.descriptionRes)
         val nodes = listOf(ContentCoverNode(TikTokScreenDetector.PLAYER, bounds, true))

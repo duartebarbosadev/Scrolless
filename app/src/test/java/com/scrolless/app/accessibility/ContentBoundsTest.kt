@@ -18,36 +18,16 @@ package com.scrolless.app.accessibility
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ContentBoundsTest {
     @Test
-    fun `current TikTok player ends exactly at its navigation bar`() {
-        val player = ContentBounds(0, 0, 1080, 2160)
-        val tabs = ContentBounds(0, 2160, 1080, 2298)
-        assertEquals(player, player.above(tabs))
-    }
-
-    @Test
-    fun `overlapping player is clipped above native tabs`() {
-        assertEquals(
-            ContentBounds(40, 80, 1040, 2160),
-            ContentBounds(40, 80, 1040, 2300).above(ContentBounds(0, 2160, 1080, 2298)),
-        )
-    }
-
-    @Test
-    fun `nested player without bottom tabs uses its own bounds`() {
-        val player = ContentBounds(0, 80, 1080, 2100)
-        assertEquals(player, player.above(null))
-    }
-
-    @Test
-    fun `resized or rotated window uses new node coordinates`() {
-        assertEquals(
-            ContentBounds(120, 40, 2000, 940),
-            ContentBounds(120, 40, 2000, 1000).above(ContentBounds(120, 940, 2000, 1080)),
-        )
+    fun `dimensions are derived from node coordinates`() {
+        val bounds = ContentBounds(40, 80, 1040, 2300)
+        assertEquals(1000, bounds.width)
+        assertEquals(2220, bounds.height)
+        assertTrue(bounds.isVisible)
     }
 
     @Test
