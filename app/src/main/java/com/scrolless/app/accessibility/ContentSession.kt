@@ -36,10 +36,7 @@ internal data class DetectedBlockedContent(
  * Tracks one visit to blocked content.
  * Once covered, its viewing time is finished and cannot be returned a second time.
  */
-internal class ContentSession(
-    var content: DetectedBlockedContent,
-    val startedAtMillis: Long,
-) {
+internal class ContentSession(var content: DetectedBlockedContent, val startedAtMillis: Long) {
     val app: ResolvedBlockableApp get() = content.app
     val blockingSuppressed: Boolean get() = content.blockingSuppressed
     var isCovered: Boolean = false
@@ -64,10 +61,6 @@ internal class ContentSession(
 }
 
 /** Final viewing times passed to the usage tracker after the live session has ended. */
-internal data class FinishedViewing(
-    val app: ResolvedBlockableApp,
-    val startedAtMillis: Long,
-    val endedAtMillis: Long,
-) {
+internal data class FinishedViewing(val app: ResolvedBlockableApp, val startedAtMillis: Long, val endedAtMillis: Long) {
     val durationMillis: Long get() = endedAtMillis - startedAtMillis
 }
