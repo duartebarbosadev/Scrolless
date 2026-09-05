@@ -20,10 +20,7 @@ import com.scrolless.app.core.model.ContentBlockAction
 import com.scrolless.app.core.model.ResolvedBlockableApp
 import com.scrolless.app.ui.overlay.ContentCover
 
-/**
- * Holds the blocked screen we found.
- * It exists because the same app can use a cover on one screen and navigation on another.
- */
+/** Information about blocked content detected on screen. */
 internal data class DetectedBlockedContent(
     val app: ResolvedBlockableApp,
     val blockingSuppressed: Boolean,
@@ -37,10 +34,7 @@ internal data class DetectedBlockedContent(
     fun canContinueWith(next: DetectedBlockedContent): Boolean = app == next.app && blockAction == next.blockAction
 }
 
-/**
- * Tracks one visit to blocked content.
- * Once covered, its viewing time is finished and cannot be returned a second time.
- */
+/** Tracks a viewing session while the user is inside blocked content. */
 internal class ContentSession(var content: DetectedBlockedContent, val startedAtMillis: Long) {
     val app: ResolvedBlockableApp get() = content.app
 
@@ -79,9 +73,7 @@ internal class ContentSession(var content: DetectedBlockedContent, val startedAt
     }
 }
 
-/**
- * Holds a completed viewing period for the usage tracker.
- */
+/** Completed viewing session ready to be saved to usage history. */
 internal data class FinishedViewing(val app: ResolvedBlockableApp, val startedAtMillis: Long, val endedAtMillis: Long) {
     val durationMillis: Long get() = endedAtMillis - startedAtMillis
 }

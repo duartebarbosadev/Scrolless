@@ -19,7 +19,7 @@ package com.scrolless.app.ui.overlay
 import androidx.annotation.StringRes
 import com.scrolless.app.accessibility.ContentBounds
 
-/** Rendering request independent of app-specific detection rules. */
+/** Everything needed to draw an overlay over blocked content. */
 internal data class ContentCover(
     val target: ContentCoverTarget,
     @param:StringRes val titleRes: Int,
@@ -34,8 +34,7 @@ internal data class ContentCover(
 }
 
 /**
- * Keeps a cover's rectangle together with the place it is measured from.
- * This prevents mixing up positions on the phone screen and positions inside an app window.
+ * Position and size for a cover, measured either from the whole screen or inside an app window.
  */
 internal sealed interface ContentCoverTarget {
     val bounds: ContentBounds

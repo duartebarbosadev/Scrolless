@@ -32,7 +32,7 @@ interface BlockOptionHandler {
      */
     suspend fun onEnterContent(currentDailyUsage: Long): Boolean = shouldBlockContent(currentDailyUsage)
 
-    /** Checks saved usage without starting a session or changing navigation retry state. */
+    /** Checks if content should be blocked right now without recording a new session. */
     suspend fun shouldBlockContent(currentDailyUsage: Long): Boolean
 
     /**

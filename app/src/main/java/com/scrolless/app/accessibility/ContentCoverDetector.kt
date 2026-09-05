@@ -21,38 +21,30 @@ import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.ResolvedBlockableApp
 
 /**
- * Lets each app choose which video region to cover and which message to show.
- * Drawing the cover and tracking viewing time stay shared in the service.
+ * Tells Scrolless which part of the screen to cover and what message to show.
  */
 internal interface ContentCoverDetector {
     val requiredViewIds: Set<String>
 
-    /** The message title shown instead of the covered video. */
+    /** Title shown on the overlay covering the video. */
     @get:StringRes val titleRes: Int
 
-    /** The message text that tells the user why the video is covered. */
+    /** Message explaining why the video is covered. */
     @get:StringRes val descriptionRes: Int
 
     /**
-     * Returns the rectangle to cover, or `null` when the current screen should remain usable.
+     * Returns the area to cover, or `null` if the screen shouldn't be blocked.
      *
-     * @param nodes Relevant candidate nodes found in the target window tree.
-     * @param activeCoverBounds Bounds of an already active cover, allowing detectors to keep an
-     * occluded player covered without flickering.
+     * @param nodes Views found on the current screen.
+     * @param activeCoverBounds The current cover's bounds, so an already covered player stays covered.
      */
     fun coverBounds(nodes: List<ContentCoverNode>, activeCoverBounds: ContentBounds? = null): ContentBounds?
 }
 
-/**
- * Holds the screen details a cover detector needs.
- * Plain values let us test app-specific rules without a running phone.
- */
+/** A simplified view node used to test cover rules without Android device dependencies. */
 internal data class ContentCoverNode(val viewId: String, val bounds: ContentBounds, val isVisible: Boolean)
 
-/**
- * Returns the screen-specific cover rules for this app.
- * Apps without a detector keep their existing Back or Home action.
- */
+/** Returns cover rules for this app, or null if it uses full-screen blocking (Back or Home). */
 internal val ResolvedBlockableApp.coverDetector: ContentCoverDetector?
     get() = when (app) {
         BlockableApp.TIKTOK -> TikTokScreenDetector

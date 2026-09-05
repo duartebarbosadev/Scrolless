@@ -16,10 +16,7 @@
  */
 package com.scrolless.app.accessibility
 
-/**
- * Holds the window details used to decide which app is in front.
- * Plain values let us test Home and app-switching cases without Android window objects.
- */
+/** Window state used to figure out which app is currently in front. */
 internal data class InteractiveWindowState(
     val packageName: String?,
     val isApplication: Boolean,
@@ -28,8 +25,8 @@ internal data class InteractiveWindowState(
 )
 
 /**
- * Finds the application the user can currently interact with.
- * Focus is preferred because Android can leave the previous app marked active during Home and Recents animations.
+ * Finds which app the user is actively using.
+ * Focus is checked first because Android can lag behind during Home and Recents gestures.
  */
 internal fun foregroundAppPackage(windows: List<InteractiveWindowState>): String? {
     // Ignore our overlay and system windows; we want the app behind them.

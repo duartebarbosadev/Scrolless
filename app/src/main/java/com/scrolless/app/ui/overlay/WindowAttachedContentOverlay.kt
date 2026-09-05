@@ -28,8 +28,8 @@ import androidx.annotation.RequiresApi
 import timber.log.Timber
 
 /**
- * Attaches the cover to the app window, so Android moves and shrinks them together in Home/Recents.
- * This prevents a held gesture from exposing the video underneath a screen-sized cover.
+ * Attaches the cover overlay directly to the app window (Android 14+).
+ * This ensures the cover smoothly follows the app during animations and gestures.
  */
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 internal class WindowAttachedContentOverlay(private val service: AccessibilityService, private val createView: (Context) -> View) {
@@ -37,8 +37,7 @@ internal class WindowAttachedContentOverlay(private val service: AccessibilitySe
     private var surfacePackage: SurfaceControlViewHost.SurfacePackage? = null
 
     /**
-     * Creates or moves the attached cover and reports whether it was shown.
-     * A forced refresh reconnects it after Recents replaces the app's drawing surface.
+     * Creates or repositions the window-attached cover. Returns true if successfully displayed.
      */
     fun show(next: ContentCoverTarget.Window, previous: ContentCoverTarget.Window?, refreshAttachment: Boolean): Boolean {
         // Build a fresh host for a different window or display instead of carrying over the old one.

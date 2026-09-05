@@ -30,8 +30,10 @@ import com.scrolless.app.ui.overlay.ContentCover
 import com.scrolless.app.ui.overlay.ContentCoverTarget
 
 /**
- * Reads one synchronous window snapshot at a time to determine foreground application state,
- *  detect blocked content, and compute cover bounds.
+ * Inspects visible windows to detect blocked content and compute cover bounds.
+ *
+ * Cover bounds let Scrolless block only the video player (e.g. TikTok feed)
+ * while keeping the rest of the app (like Inbox and Profile) usable.
  */
 internal class ContentScanner(
     private val service: AccessibilityService,
@@ -44,12 +46,12 @@ internal class ContentScanner(
     private val currentAllowVideosSentByDm get() = allowVideosSentByDm()
 
     /**
-     * Snapshot result of evaluating the current accessibility window tree.
+     * Scan results for the current screen.
      *
-     * @property foregroundApp The currently active target application, or null if unrelated.
-     * @property trackedAppExited True if a previously tracked target app lost foreground/focus.
-     * @property rootAvailable True if an accessible root node was available for inspection.
-     * @property content Detected blocked content metadata and cover bounds, if matched.
+     * @property foregroundApp The app currently on screen, or null if the user is elsewhere.
+     * @property trackedAppExited True if the user left the app we were tracking.
+     * @property rootAvailable True if the window layout could be inspected.
+     * @property content Details of any blocked video or screen found, or null if nothing matched.
      */
     data class Result(
         val foregroundApp: ResolvedBlockableApp?,
@@ -59,7 +61,7 @@ internal class ContentScanner(
     )
 
     /**
-     * Evaluates the current accessibility window hierarchy against known blocking rules.
+     * Checks visible windows for apps and content that should be blocked.
      *
      * @param eventPackage Package name reported by the incoming accessibility event.
      * @param windowsChanged True if triggered by [AccessibilityEvent.TYPE_WINDOWS_CHANGED].
@@ -175,16 +177,16 @@ internal class ContentScanner(
         return ContentCover(target, detector.titleRes, detector.descriptionRes)
     }
 
-    /** Searches all visible application windows for blocked content matching [blockableApp]. */
+    /** Looks for blocked content across all visible windows of [blockableApp]. */
     fun findVisibleBlockedContent(blockableApp: ResolvedBlockableApp, activeCover: ContentCover? = null): DetectedBlockedContent? {
         val appWindows = AppWindows(service.windows)
         return appWindows.roots.values.firstNotNullOfOrNull { it?.detectContent(blockableApp, appWindows, activeCover) }
     }
 
-    /** Checks whether any application window belonging to [app] is currently visible. */
+    /** Returns true if any window of [app] is currently open on screen. */
     fun isBlockedAppPackageVisible(app: ResolvedBlockableApp): Boolean = AppWindows(service.windows).isVisible(app)
 
-    /** Verifies whether [app]'s window is eligible for overlay display (async check before drawing). */
+    /** Makes sure [app] is still in the foreground before showing an overlay over it. */
     fun isContentWindowEligible(app: ResolvedBlockableApp): Boolean =
         app.coverDetector == null || AppWindows(service.windows).isEligible(app)
 

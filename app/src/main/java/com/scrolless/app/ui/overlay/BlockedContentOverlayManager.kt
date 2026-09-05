@@ -34,8 +34,8 @@ import com.scrolless.app.designsystem.theme.timerOverlayBackgroundColor
 import javax.inject.Inject
 
 /**
- * Covers only the detected region.
- * Android 14+ covers follow the parent app's window.
+ * Manages the overlay covering the blocked video or screen area.
+ * On Android 14+, covers attach directly to the app's window so they move together.
  */
 class BlockedContentOverlayManager @Inject constructor() {
     private lateinit var service: AccessibilityService
@@ -49,10 +49,7 @@ class BlockedContentOverlayManager @Inject constructor() {
         windowManager = service.getSystemService(WindowManager::class.java)
     }
 
-    /**
-     * Shows or updates a cover and returns whether Android accepted it.
-     * The result lets the service avoid ending viewing time when no cover was actually shown.
-     */
+    /** Shows or updates the cover overlay. Returns true if it was successfully displayed. */
     internal fun show(cover: ContentCover, refreshAttachment: Boolean = false): Boolean {
         val target = cover.target
         if (!target.bounds.isVisible) return false

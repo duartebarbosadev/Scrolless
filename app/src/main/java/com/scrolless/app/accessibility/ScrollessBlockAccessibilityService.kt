@@ -37,6 +37,7 @@ import com.scrolless.app.debug.DebugOverlayConfig
 import com.scrolless.app.ui.overlay.BlockedContentOverlayManager
 import com.scrolless.app.ui.overlay.TimerOverlayManager
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -46,9 +47,8 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import javax.inject.Inject
 
-/** Applies blocking policy to detected content and records each viewing period once. */
+/** Main service that detects blocked apps or videos, shows overlays, and tracks usage time. */
 @SuppressLint("AccessibilityPolicy") // Accessibility APIs are required to enforce user-configured blocking policies.
 @AndroidEntryPoint
 class ScrollessBlockAccessibilityService : AccessibilityService() {
@@ -538,7 +538,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         if (content == null) onBlockedContentExited() else onBlockedContentDetected(content)
     }
 
-    /** Reapply the current settings without making the user leave and reopen the video. */
+    /** Checks if the user's latest settings allow or block the video currently on screen. */
     private fun reconsiderVisibleContent() {
         val current = contentSession ?: return
         if (!contentScanner.isContentWindowEligible(current.app)) {
