@@ -27,7 +27,10 @@ internal data class ContentCover(
     @param:StringRes val titleRes: Int,
     @param:StringRes val descriptionRes: Int,
 ) {
-    // Moving or resizing can reuse the view. Changing its text or overlay type needs a new one.
+    /**
+     * Whether an existing cover view can display this cover.
+     * Moving or resizing can reuse the view, but different text or a different overlay type cannot.
+     */
     fun canReuseView(previous: ContentCover): Boolean = titleRes == previous.titleRes && descriptionRes == previous.descriptionRes &&
         (target is ContentCoverTarget.Window) == (previous.target is ContentCoverTarget.Window)
 }
@@ -37,6 +40,7 @@ internal data class ContentCover(
  * This prevents mixing up positions on the phone screen and positions inside an app window.
  */
 internal sealed interface ContentCoverTarget {
+    /** The rectangle to cover, measured from this target's origin. */
     val bounds: ContentBounds
 
     /**

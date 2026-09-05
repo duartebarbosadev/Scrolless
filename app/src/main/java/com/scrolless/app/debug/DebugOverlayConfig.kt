@@ -14,25 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.core.debug
+package com.scrolless.app.debug
 
 import kotlinx.coroutines.flow.MutableStateFlow
 
-/**
- * Lets the debug panel select an overlay to test on a supported phone.
- * The real Android API requirements still apply, and release builds stay in automatic mode.
- */
-enum class DebugOverlayMode {
-    AUTO,
-    LEGACY,
-    WINDOW_ATTACHED,
-    ;
-
-    // Attached covers need real API 34 support. Release builds ignore the debug choice entirely.
-    fun usesWindowAttachment(sdkInt: Int, isDebug: Boolean): Boolean = sdkInt >= 34 && (!isDebug || this != LEGACY)
-
-    companion object {
-        // Shared by the debug panel and service; resets when the app process restarts.
-        val selection = MutableStateFlow(AUTO)
-    }
+/** Debug-only switch for comparing the legacy overlay with the automatic API-level choice. */
+object DebugOverlayConfig {
+    /**
+     * Lets a debug build use the old screen overlay on a modern phone.
+     * It resets with the app process because it is a temporary test choice, not a user setting.
+     */
+    val forceLegacyOverlay = MutableStateFlow(false)
 }

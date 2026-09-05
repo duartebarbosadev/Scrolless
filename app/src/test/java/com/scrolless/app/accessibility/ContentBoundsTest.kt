@@ -16,20 +16,10 @@
  */
 package com.scrolless.app.accessibility
 
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ContentBoundsTest {
-    @Test
-    fun `dimensions are derived from node coordinates`() {
-        val bounds = ContentBounds(40, 80, 1040, 2300)
-        assertEquals(1000, bounds.width)
-        assertEquals(2220, bounds.height)
-        assertTrue(bounds.isVisible)
-    }
-
     @Test
     fun `zero sized nodes are not visible`() {
         assertFalse(ContentBounds(0, 2160, 1080, 2160).isVisible)

@@ -61,6 +61,10 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    testOptions {
+        unitTests.isIncludeAndroidResources = true
+    }
+
     flavorDimensions += "store"
 
     productFlavors {
@@ -206,6 +210,9 @@ dependencies {
     add("playImplementation", libs.android.review.ktx)
 
     testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     implementation(projects.core.data)
     implementation(projects.core.designsystem)

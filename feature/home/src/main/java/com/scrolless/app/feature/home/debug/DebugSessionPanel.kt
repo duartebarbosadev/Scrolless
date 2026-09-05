@@ -77,13 +77,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.scrolless.app.core.debug.DebugOverlayMode
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.util.formatMinutes
-import com.scrolless.app.feature.home.BuildConfig
 import com.scrolless.app.feature.home.components.ANALYTICS_DATE_FORMATTER
 import com.scrolless.app.feature.home.components.analyticsColor
 import com.scrolless.app.feature.home.components.analyticsDisplayName
@@ -97,6 +94,7 @@ import kotlin.random.Random
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val DAY_TOTAL_MINUTES = 24 * 60
 private const val DEFAULT_NEW_SESSION_MINUTES = 10
@@ -113,13 +111,15 @@ private val TIMELINE_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm")
 
 @Composable
 internal fun FloatingDebugUsagePanel(
+    modifier: Modifier = Modifier,
     sessionSegments: List<SessionSegment>,
     selectedDate: LocalDate,
     isExpanded: Boolean,
     onToggleExpanded: () -> Unit,
     onUsageChanged: (List<SessionSegment>) -> Unit,
     onReset: () -> Unit,
-    modifier: Modifier = Modifier,
+    forceLegacyOverlay: Boolean = false,
+    onForceLegacyOverlayChanged: (Boolean) -> Unit = {},
 ) {
     val density = LocalDensity.current
     val paddingPx = with(density) { 16.dp.roundToPx() }
@@ -192,6 +192,8 @@ internal fun FloatingDebugUsagePanel(
                     selectedDate = selectedDate,
                     onUsageChanged = onUsageChanged,
                     onReset = onReset,
+                    forceLegacyOverlay = forceLegacyOverlay,
+                    onForceLegacyOverlayChanged = onForceLegacyOverlayChanged,
                     modifier = Modifier
                         .fillMaxWidth()
                         .alpha(0.98f),
@@ -235,6 +237,8 @@ private fun DebugDayTimelinePanel(
     selectedDate: LocalDate,
     onUsageChanged: (List<SessionSegment>) -> Unit,
     onReset: () -> Unit,
+    forceLegacyOverlay: Boolean,
+    onForceLegacyOverlayChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val nowMinutes = LocalTime.now().hour * 60 + LocalTime.now().minute
@@ -314,7 +318,10 @@ private fun DebugDayTimelinePanel(
                 .padding(horizontal = 12.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            DebugOverlaySelector()
+            DebugOverlaySelector(
+                forceLegacyOverlay = forceLegacyOverlay,
+                onForceLegacyOverlayChanged = onForceLegacyOverlayChanged,
+            )
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -467,12 +474,8 @@ private fun DebugDayTimelinePanel(
 }
 
 @Composable
-private fun DebugOverlaySelector() {
-    // Option to switch video overlay techniques
-    // Here we don't care about text translation as this is for debug only
-    val mode by DebugOverlayMode.selection.collectAsStateWithLifecycle()
-    val sdk = Build.VERSION.SDK_INT
-    val attached = mode.usesWindowAttachment(sdk, BuildConfig.DEBUG)
+private fun DebugOverlaySelector(forceLegacyOverlay: Boolean, onForceLegacyOverlayChanged: (Boolean) -> Unit) {
+    val supportsWindowAttachment = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
 
     Text(
         text = "Video region block overlay",
@@ -481,26 +484,21 @@ private fun DebugOverlaySelector() {
         color = MaterialTheme.colorScheme.onSurface,
     )
     Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-        DebugOverlayMode.entries.forEach { option ->
-            FilterChip(
-                selected = mode == option,
-                onClick = { DebugOverlayMode.selection.value = option },
-                // A debug choice cannot enable an Android API that the phone does not have.
-                enabled = option != DebugOverlayMode.WINDOW_ATTACHED || sdk >= 34,
-                label = {
-                    Text(
-                        when (option) {
-                            DebugOverlayMode.AUTO -> "Auto"
-                            DebugOverlayMode.LEGACY -> "Legacy"
-                            DebugOverlayMode.WINDOW_ATTACHED -> "Attached"
-                        },
-                    )
-                },
-            )
-        }
+        FilterChip(
+            selected = !forceLegacyOverlay,
+            onClick = { onForceLegacyOverlayChanged(false) },
+            label = { Text("Auto") },
+        )
+        FilterChip(
+            selected = forceLegacyOverlay,
+            onClick = { onForceLegacyOverlayChanged(true) },
+            enabled = supportsWindowAttachment,
+            label = { Text("Force legacy") },
+        )
     }
+    val activeMode = if (supportsWindowAttachment && !forceLegacyOverlay) "Attached (API 34+)" else "Legacy"
     Text(
-        text = "Device API $sdk · ${if (attached) "Attached (API 34+)" else "Legacy (API 23–33)"}\n",
+        text = "Device API ${Build.VERSION.SDK_INT} · $activeMode\n",
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
@@ -580,7 +578,7 @@ private fun DayTimeline(
     LaunchedEffect(dayStart) {
         while (true) {
             nowMinutes = LocalDateTime.now().minutesSince(dayStart).coerceIn(0, DAY_TOTAL_MINUTES)
-            delay(30_000)
+            delay(30_000.milliseconds)
         }
     }
 

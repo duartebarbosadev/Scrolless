@@ -26,8 +26,8 @@
         <item quantity="few">%1$d минута</item>
         <item quantity="other">%1$d минута</item>
     </plurals>
-    <string name="settings_allow_videos_sent_by_dms_description">Не блокирај видео-снимке послате у приватним порукама на Инстаграму и ТикТоку.</string>
-    <string name="settings_allow_videos_sent_by_dms_title">Видео-снимци послати у DM-овима</string>
+    <string name="settings_allow_videos_sent_by_dms_description">Не блокирај Reels послате у DM-овима.</string>
+    <string name="settings_allow_videos_sent_by_dms_title">Reels послати у DM-овима</string>
     <string name="settings_show_onscreen_timer_description">Држи плутајући тајмер видљивим док гледаш кратке видео-записе.</string>
     <string name="settings_show_onscreen_timer_title">Прикажи тајмер на екрану</string>
 </resources>

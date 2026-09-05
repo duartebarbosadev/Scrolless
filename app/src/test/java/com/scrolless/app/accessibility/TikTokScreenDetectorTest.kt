@@ -34,7 +34,7 @@ class TikTokScreenDetectorTest {
     }
 
     @Test
-    fun `retained hidden players do not cover an allowed tab`() {
+    fun `invisible players are not covered`() {
         val nodes = fixture("home").map {
             if (it.viewId == TikTokScreenDetector.PLAYER) it.copy(isVisible = false) else it
         }
@@ -45,54 +45,6 @@ class TikTokScreenDetectorTest {
     fun `offscreen empty players do not match`() {
         val nodes = listOf(ContentCoverNode("player_view", ContentBounds(0, 2160, 1080, 2160), true))
         assertNull(TikTokScreenDetector.coverBounds(nodes))
-    }
-
-    @Test
-    fun `attached cover hiding the player does not toggle detection`() {
-        val home = fixture("home")
-        val bounds = TikTokScreenDetector.coverBounds(home)!!
-        val cover = ContentCoverTarget.Window(12, 0, bounds)
-        val occluded = home.map { if (it.viewId == TikTokScreenDetector.PLAYER) it.copy(isVisible = false) else it }
-        // Cover appears, the player becomes occluded, and subsequent events keep the same target.
-        repeat(5) {
-            assertEquals(bounds, TikTokScreenDetector.coverBounds(occluded, windowId = 12, attachedCover = cover))
-        }
-        // Removing the cover removes the exception, too.
-        assertNull(TikTokScreenDetector.coverBounds(occluded, windowId = 12))
-    }
-
-    @Test
-    fun `an attached cover cannot justify a hidden player in another window`() {
-        val home = fixture("home").map { it.copy(isVisible = false) }
-        val cover = ContentCoverTarget.Window(12, 0, ContentBounds(0, 0, 1080, 2160))
-        assertNull(TikTokScreenDetector.coverBounds(home, windowId = 13, attachedCover = cover))
-    }
-
-    @Test
-    fun `Inbox selection clears the cover even if TikTok retains a hidden player`() {
-        val player = fixture("home").first { it.viewId == TikTokScreenDetector.PLAYER }.copy(isVisible = false)
-        val inbox = fixture("inbox") + player
-        val cover = ContentCoverTarget.Window(12, 0, player.bounds)
-        assertNull(TikTokScreenDetector.coverBounds(inbox, windowId = 12, attachedCover = cover))
-    }
-
-    @Test
-    fun `Profile and Create selections also end a covered feed`() {
-        val cover = ContentCoverTarget.Window(12, 0, ContentBounds(0, 0, 1080, 2160))
-        for (tab in listOf(TikTokScreenDetector.PROFILE, TikTokScreenDetector.CREATE)) {
-            val nodes = fixture("inbox").map {
-                if (it.viewId == TikTokScreenDetector.INBOX) it.copy(viewId = tab) else it
-            } + ContentCoverNode(TikTokScreenDetector.PLAYER, cover.bounds, false)
-            assertNull(TikTokScreenDetector.coverBounds(nodes, windowId = 12, attachedCover = cover))
-        }
-    }
-
-    @Test
-    fun `a missing or differently positioned player cannot inherit an old cover`() {
-        val cover = ContentCoverTarget.Window(12, 0, ContentBounds(0, 0, 1080, 2160))
-        assertNull(TikTokScreenDetector.coverBounds(emptyList(), windowId = 12, attachedCover = cover))
-        val moved = listOf(ContentCoverNode(TikTokScreenDetector.PLAYER, ContentBounds(50, 50, 500, 500), false))
-        assertNull(TikTokScreenDetector.coverBounds(moved, windowId = 12, attachedCover = cover))
     }
 
     @Test
@@ -112,7 +64,6 @@ class TikTokScreenDetectorTest {
                 node.getAttribute("resource-id"),
                 ContentBounds(bounds[0], bounds[1], bounds[2], bounds[3]),
                 node.getAttribute("visible").toBoolean(),
-                node.getAttribute("selected").toBoolean(),
             )
         }
     }

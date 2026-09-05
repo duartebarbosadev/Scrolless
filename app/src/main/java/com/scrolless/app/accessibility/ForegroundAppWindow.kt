@@ -27,6 +27,10 @@ internal data class InteractiveWindowState(
     val isFocused: Boolean,
 )
 
+/**
+ * Finds the application the user can currently interact with.
+ * Focus is preferred because Android can leave the previous app marked active during Home and Recents animations.
+ */
 internal fun foregroundAppPackage(windows: List<InteractiveWindowState>): String? {
     // Ignore our overlay and system windows; we want the app behind them.
     val apps = windows.filter { it.isApplication }

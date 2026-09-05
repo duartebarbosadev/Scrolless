@@ -26,7 +26,6 @@ import android.view.SurfaceControlViewHost
 import android.view.View
 import androidx.annotation.RequiresApi
 import com.scrolless.app.accessibility.ContentCoverTarget
-import com.scrolless.app.accessibility.needsUpdate
 import timber.log.Timber
 
 /**
@@ -37,12 +36,14 @@ import timber.log.Timber
 internal class WindowAttachedContentOverlay(private val service: AccessibilityService, private val createView: (Context) -> View) {
     private var viewHost: SurfaceControlViewHost? = null
     private var surfacePackage: SurfaceControlViewHost.SurfacePackage? = null
-    private var target: ContentCoverTarget.Window? = null
 
-    fun show(next: ContentCoverTarget.Window, refreshAttachment: Boolean): Boolean {
-        if (!next.needsUpdate(target, refreshAttachment)) return true
+    /**
+     * Creates or moves the attached cover and reports whether it was shown.
+     * A forced refresh reconnects it after Recents replaces the app's drawing surface.
+     */
+    fun show(next: ContentCoverTarget.Window, previous: ContentCoverTarget.Window?, refreshAttachment: Boolean): Boolean {
         // Build a fresh host for a different window or display instead of carrying over the old one.
-        if (target?.displayId != next.displayId || target?.windowId != next.windowId) hide()
+        if (previous?.displayId != next.displayId || previous.windowId != next.windowId) hide()
         val bounds = next.bounds
         try {
             val host = viewHost ?: run {
@@ -60,7 +61,7 @@ internal class WindowAttachedContentOverlay(private val service: AccessibilitySe
                 hide()
                 return false
             }
-            if (target?.bounds?.width != bounds.width || target?.bounds?.height != bounds.height) {
+            if (previous?.bounds?.width != bounds.width || previous.bounds.height != bounds.height) {
                 host.relayout(bounds.width, bounds.height)
             }
             // Place the cover above the video using a position inside the app window, not the screen.
@@ -73,11 +74,10 @@ internal class WindowAttachedContentOverlay(private val service: AccessibilitySe
             }
             // Reattach on return from Recents, even if Android reused the window ID and size.
             // Ordinary content updates keep the existing attachment to avoid blinking.
-            if (refreshAttachment || target?.windowId != next.windowId) {
+            if (refreshAttachment || previous?.windowId != next.windowId || previous.displayId != next.displayId) {
                 service.attachAccessibilityOverlayToWindow(next.windowId, surface)
                 Timber.d("Requested content cover attachment: window=%d, refresh=%b", next.windowId, refreshAttachment)
             }
-            target = next
             return true
         } catch (error: RuntimeException) {
             hide()
@@ -86,13 +86,13 @@ internal class WindowAttachedContentOverlay(private val service: AccessibilitySe
         }
     }
 
+    /** Detaches and releases every Android surface owned by this cover. */
     fun hide() {
         val oldHost = viewHost
         val oldPackage = surfacePackage
         // Clear our references first, so repeated cleanup cannot reuse a half-released cover.
         viewHost = null
         surfacePackage = null
-        target = null
         try {
             oldPackage?.surfaceControl?.takeIf { it.isValid }?.let { surface ->
                 SurfaceControl.Transaction().use { transaction ->

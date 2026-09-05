@@ -29,7 +29,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.ViewCompat
-import com.scrolless.app.accessibility.ContentBounds
 import com.scrolless.app.accessibility.ContentCover
 import com.scrolless.app.accessibility.ContentCoverTarget
 import com.scrolless.app.accessibility.keepOnAppExit
@@ -45,19 +44,19 @@ class BlockedContentOverlayManager @Inject constructor() {
     private lateinit var service: AccessibilityService
     private lateinit var windowManager: WindowManager
     private var view: View? = null
-    private var shownBounds: ContentBounds? = null
     private var shownCover: ContentCover? = null
     private var windowOverlay: WindowAttachedContentOverlay? = null
 
-    // The detector needs the previous rectangle to recognize a player hidden by our own cover.
-    internal val attachedWindowTarget: ContentCoverTarget.Window?
-        get() = shownCover?.target as? ContentCoverTarget.Window
-
+    /** Gives the manager the accessibility-service context required to create either overlay type. */
     fun attachServiceContext(service: AccessibilityService) {
         this.service = service
         windowManager = service.getSystemService(WindowManager::class.java)
     }
 
+    /**
+     * Shows or updates a cover and returns whether Android accepted it.
+     * The result lets the service avoid ending viewing time when no cover was actually shown.
+     */
     internal fun show(cover: ContentCover, refreshAttachment: Boolean = false): Boolean {
         val target = cover.target
         if (!target.bounds.isVisible) return false
@@ -73,7 +72,7 @@ class BlockedContentOverlayManager @Inject constructor() {
                 val overlay = windowOverlay ?: WindowAttachedContentOverlay(service) { createCoverView(it, cover) }.also {
                     windowOverlay = it
                 }
-                if (!overlay.show(target, refreshAttachment)) {
+                if (!overlay.show(target, shownCover?.target as? ContentCoverTarget.Window, refreshAttachment)) {
                     hide()
                     return false
                 }
@@ -88,9 +87,9 @@ class BlockedContentOverlayManager @Inject constructor() {
         if (shownCover?.target?.keepOnAppExit(screenInteractive) != true) hide()
     }
 
+    /** Draws the legacy cover using screen coordinates on Android versions without window attachment. */
     private fun showScreenCover(cover: ContentCover) {
         val bounds = cover.target.bounds
-        if (!bounds.isVisible || bounds == shownBounds) return
 
         // Keep app focus and accept touches only inside this rectangle. Native tabs stay usable.
         val params = WindowManager.LayoutParams(
@@ -102,7 +101,7 @@ class BlockedContentOverlayManager @Inject constructor() {
             PixelFormat.OPAQUE,
         ).apply {
             // Accessibility gives physical left/top coordinates, even in right-to-left languages.
-            gravity = Gravity.TOP or Gravity.LEFT
+            gravity = Gravity.TOP or Gravity.START
             x = bounds.left
             y = bounds.top
             // Do not let system-bar or cutout padding shift the rectangle Android reported.
@@ -122,14 +121,13 @@ class BlockedContentOverlayManager @Inject constructor() {
         } else {
             windowManager.updateViewLayout(currentView, params)
         }
-        shownBounds = bounds
     }
 
+    /** Removes every cover and clears cached state so the next one is created safely. */
     fun hide() {
         // Remove both possible overlay types, including a cover left attached after leaving the app.
         view?.let(windowManager::removeViewImmediate)
         view = null
-        shownBounds = null
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             windowOverlay?.hide()
         }
@@ -137,6 +135,7 @@ class BlockedContentOverlayManager @Inject constructor() {
         shownCover = null
     }
 
+    /** Builds the opaque, touch-consuming message shown in place of a blocked video. */
     private fun createCoverView(context: Context, cover: ContentCover): View = LinearLayout(context).apply {
         orientation = LinearLayout.VERTICAL
         gravity = Gravity.CENTER

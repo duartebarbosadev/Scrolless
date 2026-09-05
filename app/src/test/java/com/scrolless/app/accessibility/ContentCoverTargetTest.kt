@@ -18,7 +18,6 @@ package com.scrolless.app.accessibility
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -28,27 +27,11 @@ class ContentCoverTargetTest {
     private val window = ContentCoverTarget.Window(windowId = 12, displayId = 0, bounds = bounds)
 
     @Test
-    fun `legacy screen cover is removed as soon as the app leaves`() {
+    fun `cover retention follows overlay type and screen state`() {
         assertFalse(screen.keepOnAppExit(screenInteractive = true))
-    }
-
-    @Test
-    fun `attached cover stays on its parent during a held Home gesture`() {
         assertTrue(window.keepOnAppExit(screenInteractive = true))
-        assertTrue(window.keepOnAppExit(screenInteractive = true))
-    }
-
-    @Test
-    fun `screen off removes both kinds of cover`() {
         assertFalse(screen.keepOnAppExit(screenInteractive = false))
         assertFalse(window.keepOnAppExit(screenInteractive = false))
-    }
-
-    @Test
-    fun `recreated parent window is a different target even at the same bounds`() {
-        assertNotEquals(window, window.copy(windowId = 13))
-        assertNotEquals(window, window.copy(displayId = 1))
-        assertNotEquals(screen as ContentCoverTarget, window as ContentCoverTarget)
     }
 
     @Test

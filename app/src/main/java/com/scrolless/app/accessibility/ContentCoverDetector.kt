@@ -25,30 +25,30 @@ import com.scrolless.app.core.model.ResolvedBlockableApp
  * Drawing the cover and tracking viewing time stay shared in the service.
  */
 internal interface ContentCoverDetector {
-    /** The view whose reported rectangle should be covered. */
-    val coverViewId: String
-
-    /** Additional views used to decide whether the current screen should remain covered. */
-    val supportingViewIds: Set<String>
-
     val requiredViewIds: Set<String>
-        get() = supportingViewIds + coverViewId
 
+    /** The message title shown instead of the covered video. */
     @get:StringRes val titleRes: Int
+
+    /** The message text that tells the user why the video is covered. */
     @get:StringRes val descriptionRes: Int
 
-    // Return null for an allowed screen. All rectangles use the same origin, so they can be compared.
-    fun coverBounds(nodes: List<ContentCoverNode>, windowId: Int? = null, attachedCover: ContentCoverTarget.Window? = null): ContentBounds?
+    /**
+     * Returns the rectangle to cover, or `null` when the current screen should remain usable.
+     */
+    fun coverBounds(nodes: List<ContentCoverNode>): ContentBounds?
 }
 
 /**
  * Holds the screen details a cover detector needs.
  * Plain values let us test app-specific rules without a running phone.
  */
-internal data class ContentCoverNode(val viewId: String, val bounds: ContentBounds, val isVisible: Boolean, val isSelected: Boolean = false)
+internal data class ContentCoverNode(val viewId: String, val bounds: ContentBounds, val isVisible: Boolean)
 
-// To add an app, implement the detector above and add it here. No Instagram cover is enabled yet.
-// Apps without a detector keep their existing rules and Back/Home action.
+/**
+ * Returns the screen-specific cover rules for this app.
+ * Apps without a detector keep their existing Back or Home action.
+ */
 internal val ResolvedBlockableApp.coverDetector: ContentCoverDetector?
     get() = when (app) {
         BlockableApp.TIKTOK -> TikTokScreenDetector

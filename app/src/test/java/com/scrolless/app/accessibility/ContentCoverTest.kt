@@ -16,7 +16,6 @@
  */
 package com.scrolless.app.accessibility
 
-import com.scrolless.app.R
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.ContentBlockAction
 import com.scrolless.app.core.model.ResolvedBlockableApp
@@ -41,21 +40,6 @@ class ContentCoverTest {
                 assertNull(resolved.coverDetector)
             }
         }
-    }
-
-    @Test
-    fun `TikTok identifies its cover view, supporting views, and translated message`() {
-        val detector: ContentCoverDetector = TikTokScreenDetector
-        assertEquals(TikTokScreenDetector.PLAYER, detector.coverViewId)
-        assertEquals(
-            setOf(TikTokScreenDetector.INBOX, TikTokScreenDetector.PROFILE, TikTokScreenDetector.CREATE),
-            detector.supportingViewIds,
-        )
-        assertEquals(detector.supportingViewIds + detector.coverViewId, detector.requiredViewIds)
-        assertEquals(R.string.tiktok_blocked_title, detector.titleRes)
-        assertEquals(R.string.tiktok_blocked_description, detector.descriptionRes)
-        val nodes = listOf(ContentCoverNode(TikTokScreenDetector.PLAYER, bounds, true))
-        assertEquals(bounds, detector.coverBounds(nodes))
     }
 
     @Test
