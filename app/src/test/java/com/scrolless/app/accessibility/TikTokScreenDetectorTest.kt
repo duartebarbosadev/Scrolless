@@ -34,11 +34,20 @@ class TikTokScreenDetectorTest {
     }
 
     @Test
-    fun `invisible players are not covered`() {
+    fun `invisible players are not covered without active cover`() {
         val nodes = fixture("home").map {
             if (it.viewId == TikTokScreenDetector.PLAYER) it.copy(isVisible = false) else it
         }
         assertNull(TikTokScreenDetector.coverBounds(nodes))
+    }
+
+    @Test
+    fun `invisible player occluded by active cover remains covered`() {
+        val player = fixture("home").first { it.viewId == TikTokScreenDetector.PLAYER }
+        val nodes = fixture("home").map {
+            if (it.viewId == TikTokScreenDetector.PLAYER) it.copy(isVisible = false) else it
+        }
+        assertEquals(player.bounds, TikTokScreenDetector.coverBounds(nodes, activeCoverBounds = player.bounds))
     }
 
     @Test

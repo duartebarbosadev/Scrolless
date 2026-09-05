@@ -14,8 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.accessibility
+package com.scrolless.app.ui.overlay
 
+import com.scrolless.app.accessibility.ContentBounds
+import com.scrolless.app.accessibility.ContentCoverNode
+import com.scrolless.app.accessibility.TikTokScreenDetector
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue

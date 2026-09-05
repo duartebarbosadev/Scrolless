@@ -19,6 +19,8 @@ package com.scrolless.app.accessibility
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.ContentBlockAction
 import com.scrolless.app.core.model.ResolvedBlockableApp
+import com.scrolless.app.ui.overlay.ContentCover
+import com.scrolless.app.ui.overlay.ContentCoverTarget
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull

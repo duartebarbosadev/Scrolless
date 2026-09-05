@@ -25,7 +25,6 @@ import android.view.SurfaceControl
 import android.view.SurfaceControlViewHost
 import android.view.View
 import androidx.annotation.RequiresApi
-import com.scrolless.app.accessibility.ContentCoverTarget
 import timber.log.Timber
 
 /**
@@ -86,7 +85,6 @@ internal class WindowAttachedContentOverlay(private val service: AccessibilitySe
         }
     }
 
-    /** Detaches and releases every Android surface owned by this cover. */
     fun hide() {
         val oldHost = viewHost
         val oldPackage = surfacePackage

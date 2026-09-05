@@ -35,8 +35,12 @@ internal interface ContentCoverDetector {
 
     /**
      * Returns the rectangle to cover, or `null` when the current screen should remain usable.
+     *
+     * @param nodes Relevant candidate nodes found in the target window tree.
+     * @param activeCoverBounds Bounds of an already active cover, allowing detectors to keep an
+     * occluded player covered without flickering.
      */
-    fun coverBounds(nodes: List<ContentCoverNode>): ContentBounds?
+    fun coverBounds(nodes: List<ContentCoverNode>, activeCoverBounds: ContentBounds? = null): ContentBounds?
 }
 
 /**

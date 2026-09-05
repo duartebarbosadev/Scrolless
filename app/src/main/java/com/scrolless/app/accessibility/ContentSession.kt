@@ -18,6 +18,7 @@ package com.scrolless.app.accessibility
 
 import com.scrolless.app.core.model.ContentBlockAction
 import com.scrolless.app.core.model.ResolvedBlockableApp
+import com.scrolless.app.ui.overlay.ContentCover
 
 /**
  * Holds the blocked screen we found.

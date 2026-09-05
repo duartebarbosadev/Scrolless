@@ -25,6 +25,13 @@ internal object TikTokScreenDetector : ContentCoverDetector {
     override val titleRes = R.string.tiktok_blocked_title
     override val descriptionRes = R.string.tiktok_blocked_description
 
-    override fun coverBounds(nodes: List<ContentCoverNode>): ContentBounds? =
-        nodes.firstOrNull { it.viewId == PLAYER && it.isVisible && it.bounds.isVisible }?.bounds
+    /**
+     * Returns the TikTok player bounds that should be covered.
+     * When a cover is already active over the player, Android reports the player as not visible
+     * to the user because our opaque cover occludes it. In that case, keep it covered as long
+     * as the player view remains at the covered bounds.
+     */
+    override fun coverBounds(nodes: List<ContentCoverNode>, activeCoverBounds: ContentBounds?): ContentBounds? = nodes.firstOrNull {
+        it.viewId == PLAYER && it.bounds.isVisible && (it.isVisible || it.bounds == activeCoverBounds)
+    }?.bounds
 }

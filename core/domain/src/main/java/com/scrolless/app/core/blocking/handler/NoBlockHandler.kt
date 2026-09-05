@@ -23,15 +23,8 @@ import timber.log.Timber
  * No blocking or tracking is performed. The user is free to use the content without restrictions.
  */
 class NoBlockHandler : BlockOptionHandler {
-    /**
-     * Never blocks on entry.
-     *
-     * @param currentDailyUsage Current daily usage in milliseconds.
-     * @return false, never block.
-     */
-    override suspend fun onEnterContent(currentDailyUsage: Long): Boolean {
-        Timber.v("NothingSelected.onEnter: daily=%d -> allow", currentDailyUsage)
-        // Do not block
+    override suspend fun shouldBlockContent(currentDailyUsage: Long): Boolean {
+        Timber.v("NothingSelected.shouldBlock: daily=%d -> allow", currentDailyUsage)
         return false
     }
 

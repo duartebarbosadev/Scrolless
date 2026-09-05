@@ -17,6 +17,7 @@
 package com.scrolless.app.ui.overlay
 
 import android.accessibilityservice.AccessibilityService
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PixelFormat
@@ -29,10 +30,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.ViewCompat
-import com.scrolless.app.accessibility.ContentCover
-import com.scrolless.app.accessibility.ContentCoverTarget
-import com.scrolless.app.accessibility.keepOnAppExit
-import com.scrolless.app.accessibility.needsUpdate
 import com.scrolless.app.designsystem.theme.timerOverlayBackgroundColor
 import javax.inject.Inject
 
@@ -47,7 +44,6 @@ class BlockedContentOverlayManager @Inject constructor() {
     private var shownCover: ContentCover? = null
     private var windowOverlay: WindowAttachedContentOverlay? = null
 
-    /** Gives the manager the accessibility-service context required to create either overlay type. */
     fun attachServiceContext(service: AccessibilityService) {
         this.service = service
         windowManager = service.getSystemService(WindowManager::class.java)
@@ -88,6 +84,7 @@ class BlockedContentOverlayManager @Inject constructor() {
     }
 
     /** Draws the legacy cover using screen coordinates on Android versions without window attachment. */
+    @SuppressLint("RtlHardcoded")
     private fun showScreenCover(cover: ContentCover) {
         val bounds = cover.target.bounds
 
@@ -101,7 +98,7 @@ class BlockedContentOverlayManager @Inject constructor() {
             PixelFormat.OPAQUE,
         ).apply {
             // Accessibility gives physical left/top coordinates, even in right-to-left languages.
-            gravity = Gravity.TOP or Gravity.START
+            gravity = Gravity.TOP or Gravity.LEFT
             x = bounds.left
             y = bounds.top
             // Do not let system-bar or cutout padding shift the rectangle Android reported.

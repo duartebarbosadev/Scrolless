@@ -14,14 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.accessibility
+package com.scrolless.app.ui.overlay
 
 import androidx.annotation.StringRes
+import com.scrolless.app.accessibility.ContentBounds
 
-/**
- * Describes where to draw a cover and which translated message to show.
- * The overlay can draw it without knowing the app's detection rules.
- */
+/** Rendering request independent of app-specific detection rules. */
 internal data class ContentCover(
     val target: ContentCoverTarget,
     @param:StringRes val titleRes: Int,
@@ -40,7 +38,6 @@ internal data class ContentCover(
  * This prevents mixing up positions on the phone screen and positions inside an app window.
  */
 internal sealed interface ContentCoverTarget {
-    /** The rectangle to cover, measured from this target's origin. */
     val bounds: ContentBounds
 
     /**
