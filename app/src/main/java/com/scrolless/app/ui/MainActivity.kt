@@ -22,9 +22,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.scrolless.app.accessibility.ScrollessBlockAccessibilityService
+import com.scrolless.app.debug.DebugOverlayConfig
 import com.scrolless.app.designsystem.theme.LocalSharedTransitionScope
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.feature.home.HomeScreen
@@ -41,6 +44,7 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val appState: ScrollessAppState = rememberScrollessAppState()
+            val forceLegacyOverlay by DebugOverlayConfig.forceLegacyOverlay.collectAsStateWithLifecycle()
 
             ScrollessTheme {
                 SharedTransitionLayout {
@@ -54,6 +58,10 @@ class MainActivity : ComponentActivity() {
                                         onNavigateToSettings = appState::navigateToSettings,
                                         accessibilityServiceClass = ScrollessBlockAccessibilityService::class.java,
                                         onRequestAppReview = ::requestAppReview,
+                                        forceLegacyOverlay = forceLegacyOverlay,
+                                        onForceLegacyOverlayChanged = {
+                                            DebugOverlayConfig.forceLegacyOverlay.value = it
+                                        },
                                     )
                                 }
                                 entry<ScrollessRoute.Settings> {

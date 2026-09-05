@@ -48,7 +48,7 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     private val _pauseUntil = MutableStateFlow(0L)
     private val _firstLaunchAt = MutableStateFlow(-1L)
     private val _pauseDuration = MutableStateFlow(5 * 60 * 1000L)
-    private val _exceptReelsSentByDm = MutableStateFlow(false)
+    private val _allowVideosSentByDm = MutableStateFlow(false)
 
     init {
         coroutineScope.launch {
@@ -85,7 +85,7 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
             userSettingsDao.getPauseDuration().collect { _pauseDuration.value = it }
         }
         coroutineScope.launch {
-            userSettingsDao.getExceptReelsSentByDm().collect { _exceptReelsSentByDm.value = it }
+            userSettingsDao.getAllowVideosSentByDm().collect { _allowVideosSentByDm.value = it }
         }
     }
 
@@ -138,11 +138,11 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
         userSettingsDao.setPauseDuration(durationMillis)
     }
 
-    override fun getExceptReelsSentByDm(): Flow<Boolean> = _exceptReelsSentByDm
+    override fun getAllowVideosSentByDm(): Flow<Boolean> = _allowVideosSentByDm
 
-    override suspend fun setExceptReelsSentByDm(checked: Boolean) {
-        _exceptReelsSentByDm.value = checked
-        userSettingsDao.setExceptReelsSentByDm(checked)
+    override suspend fun setAllowVideosSentByDm(checked: Boolean) {
+        _allowVideosSentByDm.value = checked
+        userSettingsDao.setAllowVideosSentByDm(checked)
     }
 
     override fun getFirstLaunchAt(): Flow<Long> = _firstLaunchAt

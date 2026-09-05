@@ -32,12 +32,12 @@ class SettingsViewModel @Inject constructor(private val userSettingsStore: UserS
 
     val uiState: StateFlow<SettingsUiState> = combine(
         userSettingsStore.getPauseDuration(),
-        userSettingsStore.getExceptReelsSentByDm(),
+        userSettingsStore.getAllowVideosSentByDm(),
         userSettingsStore.getTimerOverlayEnabled(),
-    ) { pauseDurationMillis, exceptReelsSentByDm, timerOverlayEnabled ->
+    ) { pauseDurationMillis, allowVideosSentByDm, timerOverlayEnabled ->
         SettingsUiState(
             pauseDurationMinutes = (pauseDurationMillis / 60_000L).toInt().coerceIn(1, 60),
-            exceptReelsSentByDm = exceptReelsSentByDm,
+            allowVideosSentByDm = allowVideosSentByDm,
             timerOverlayEnabled = timerOverlayEnabled,
         )
     }
@@ -53,9 +53,9 @@ class SettingsViewModel @Inject constructor(private val userSettingsStore: UserS
         }
     }
 
-    fun onExceptReelsSentByDmChange(checked: Boolean) {
+    fun onAllowVideosSentByDmChange(checked: Boolean) {
         viewModelScope.launch {
-            userSettingsStore.setExceptReelsSentByDm(checked)
+            userSettingsStore.setAllowVideosSentByDm(checked)
         }
     }
 
@@ -68,6 +68,6 @@ class SettingsViewModel @Inject constructor(private val userSettingsStore: UserS
 
 data class SettingsUiState(
     val pauseDurationMinutes: Int = 5,
-    val exceptReelsSentByDm: Boolean = false,
+    val allowVideosSentByDm: Boolean = false,
     val timerOverlayEnabled: Boolean = false,
 )

@@ -58,6 +58,19 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
     )
 
     @Test
+    fun `covered content becomes allowed in the next interval without recording a session`() = runTest(testDispatcher) {
+        nowMillis = 2_000L
+        val savedUsage = IntervalUsage(startMillis = 1_000L, usageMillis = ALLOWANCE_MILLIS)
+        repository.usage = savedUsage
+        repeat(3) { assertTrue(handler.shouldBlockContent(currentDailyUsage = 0L)) }
+        assertEquals(savedUsage, repository.usage)
+
+        nowMillis = 1_000L + INTERVAL_LENGTH_MILLIS
+        assertFalse(handler.shouldBlockContent(currentDailyUsage = 0L))
+        assertEquals(savedUsage, repository.usage)
+    }
+
+    @Test
     fun `entering under the allowance does not block`() = runTest(testDispatcher) {
         nowMillis = 2_000L
         repository.usage = IntervalUsage(startMillis = 1_000L, usageMillis = 500L)

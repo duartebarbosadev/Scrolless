@@ -41,6 +41,9 @@ interface BlockingManager {
      */
     suspend fun onEnterBlockedContent(): Boolean
 
+    /** Checks whether covered content must remain blocked, without opening a viewing session. */
+    suspend fun shouldBlockContent(): Boolean
+
     /**
      * Checks the active viewing session.
      *

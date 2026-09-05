@@ -131,8 +131,8 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
     abstract suspend fun setPauseDuration(durationMillis: Long)
 
     @Query("SELECT except_reels_sent_by_dm FROM user_settings WHERE id = 1")
-    abstract fun getExceptReelsSentByDm(): Flow<Boolean>
+    abstract fun getAllowVideosSentByDm(): Flow<Boolean>
 
     @Query("UPDATE user_settings SET except_reels_sent_by_dm = :checked WHERE id = 1")
-    abstract suspend fun setExceptReelsSentByDm(checked: Boolean)
+    abstract suspend fun setAllowVideosSentByDm(checked: Boolean)
 }
