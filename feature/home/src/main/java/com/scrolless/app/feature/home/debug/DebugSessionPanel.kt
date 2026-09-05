@@ -91,10 +91,10 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 import kotlin.random.Random
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import kotlin.time.Duration.Companion.milliseconds
 
 private const val DAY_TOTAL_MINUTES = 24 * 60
 private const val DEFAULT_NEW_SESSION_MINUTES = 10
