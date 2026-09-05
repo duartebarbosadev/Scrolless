@@ -210,7 +210,6 @@ dependencies {
     add("playImplementation", libs.android.review.ktx)
 
     testImplementation(libs.junit)
-    testImplementation(libs.robolectric)
     testImplementation(libs.mockk.android)
     testImplementation(libs.kotlinx.coroutines.test)
 
