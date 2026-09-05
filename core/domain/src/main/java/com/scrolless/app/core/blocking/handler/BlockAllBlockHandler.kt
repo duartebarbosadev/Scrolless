@@ -28,7 +28,7 @@ class BlockAllBlockHandler(private val timeProvider: TimeProvider) : BlockOption
     private var lastBlockTime = 0L
     private var blockAttempts = 0
 
-    /** Always blocks immediately without updating retry or throttling state. */
+    /** Always blocks immediately */
     override suspend fun shouldBlockContent(currentDailyUsage: Long): Boolean = true
 
     override suspend fun onEnterContent(currentDailyUsage: Long): Boolean {

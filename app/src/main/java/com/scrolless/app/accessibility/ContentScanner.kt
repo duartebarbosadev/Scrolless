@@ -240,7 +240,7 @@ internal class ContentScanner(
         return ContentBounds(bounds.left, bounds.top, bounds.right, bounds.bottom)
     }
 
-    /** Default detection for screens without a cover: look for a known ID, label, or video layout. */
+    /** Checks if the screen matches a known video layout, view ID, or label for [blockableApp]. */
     private fun AccessibilityNodeInfo.matchesBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
         val detectionMethod = blockableApp.getDetectionMethod()
 
@@ -277,8 +277,7 @@ internal class ContentScanner(
     }
 
     /**
-     * Scan the screen once. Return as soon as a simple label matches.
-     * For layout rules, keep only the relevant nodes and how they are nested.
+     * Scans the view hierarchy for complex layout patterns. Returns immediately if a fast rule matches.
      */
     private fun AccessibilityNodeInfo.matchesComplexBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
         val structuralNodes = mutableListOf<DetectionNode>()
@@ -338,7 +337,7 @@ internal class ContentScanner(
         return if (total > 0) (toFloat() / total).coerceIn(0f, 1f) else 0f
     }
 
-    /** Apps keep hidden views in their trees. Only visible views with a non-empty rectangle count here. */
+    /** Checks if a view node is actually visible on screen with non-zero dimensions. */
     private fun isNodeVisibleToTheUser(node: AccessibilityNodeInfo): Boolean {
         val rect = android.graphics.Rect()
         node.getBoundsInScreen(rect)
