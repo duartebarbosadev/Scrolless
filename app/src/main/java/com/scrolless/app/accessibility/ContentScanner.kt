@@ -77,28 +77,40 @@ internal class ContentScanner(
         activeCover: ContentCover? = null,
     ): Result {
         val appWindows = AppWindows(service.windows)
-        val exited = trackedApp != null && !appWindows.isEligible(trackedApp)
-        // TYPE_WINDOWS_CHANGED events often omit package info; fall back to the top window package.
-        val packageId = if (windowsChanged) appWindows.foregroundPackage.orEmpty() else eventPackage.orEmpty()
-        val activeApp = resolveForegroundBrainRotApp(packageId, appWindows, foregroundApp.takeUnless { exited })
-        val remainingTrackedApp = trackedApp.takeUnless { exited }
-        if (activeApp == null && remainingTrackedApp == null) return Result(null, exited, true, null)
+        val trackedAppExited = trackedApp != null && !appWindows.isEligible(trackedApp)
 
-        // A window-attached cover may be the active root; read its parent application instead.
-        val root = if (useWindowAttachedCover && activeApp?.coverDetector != null) {
-            appWindows.roots.values.firstOrNull { it?.packageName?.toString() == activeApp.packageId }
+        // TYPE_WINDOWS_CHANGED events often omit package info; fall back to the top window package.
+        val packageId = if (windowsChanged) {
+            appWindows.foregroundPackage.orEmpty()
         } else {
-            service.rootInActiveWindow
+            eventPackage.orEmpty()
         }
+
+        val currentForegroundApp = if (trackedAppExited) null else foregroundApp
+        val activeApp = resolveForegroundBrainRotApp(packageId, appWindows, currentForegroundApp)
+        val remainingTrackedApp = if (trackedAppExited) null else trackedApp
+
+        // Neither an active app nor an ongoing tracked session is on screen.
+        if (activeApp == null && remainingTrackedApp == null) {
+            return Result(null, trackedAppExited, true, null)
+        }
+
+        val root = findRootNode(appWindows, activeApp)
 
         // Prioritize activeApp.packageId so events from system UI or keyboards don't skip detection.
         val targetPackageId = activeApp?.packageId ?: packageId
-        return Result(
-            activeApp, exited, root != null,
-            root?.let {
-                detectBlockedContent(targetPackageId, it, appWindows, remainingTrackedApp, activeCover)
-            },
-        )
+        val content = root?.let {
+            detectBlockedContent(targetPackageId, it, appWindows, remainingTrackedApp, activeCover)
+        }
+        return Result(activeApp, trackedAppExited, root != null, content)
+    }
+
+    private fun findRootNode(appWindows: AppWindows, activeApp: ResolvedBlockableApp?): AccessibilityNodeInfo? {
+        // A window-attached cover may be the active root; read its parent application instead.
+        if (useWindowAttachedCover && activeApp?.coverDetector != null) {
+            return appWindows.roots.values.firstOrNull { it?.packageName?.toString() == activeApp.packageId }
+        }
+        return service.rootInActiveWindow
     }
 
     private fun resolveForegroundBrainRotApp(
