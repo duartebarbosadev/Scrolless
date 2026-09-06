@@ -22,4 +22,6 @@
     android:accessibilityFlags="flagReportViewIds|flagRetrieveInteractiveWindows"
     android:notificationTimeout="250"
     android:canRetrieveWindowContent="true"
-    android:settingsActivity="com.scrolless.app.features.main.MainActivity" />
+    android:settingsActivity="com.scrolless.app.features.main.MainActivity">
+    <!-- Default event debounce timeout is 250ms (android:notificationTimeout). If changed, also update DEFAULT_NOTIFICATION_TIMEOUT_MS in ScrollessBlockAccessibilityService.kt. -->
+</accessibility-service>

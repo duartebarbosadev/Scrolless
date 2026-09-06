@@ -653,7 +653,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         val info = serviceInfo ?: return
 
         // Do not delay Home/app-switching events while covered, or the old screen cover can linger.
-        info.notificationTimeout = if (contentSession?.isCovered == true) 0L else 250L
+        info.notificationTimeout = if (contentSession?.isCovered == true) 0L else DEFAULT_NOTIFICATION_TIMEOUT_MS
 
         if (listenToAll) {
             info.packageNames = null // Listen to all
@@ -679,5 +679,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         } catch (e: Exception) {
             Timber.e(e, "Failed to bring app to foreground")
         }
+    }
+
+    private companion object {
+        /** Default event debounce timeout in ms (matches android:notificationTimeout in accessibility_service_config.xml). */
+        const val DEFAULT_NOTIFICATION_TIMEOUT_MS = 250L
     }
 }

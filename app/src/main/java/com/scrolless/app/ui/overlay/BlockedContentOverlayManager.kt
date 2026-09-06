@@ -49,7 +49,10 @@ class BlockedContentOverlayManager @Inject constructor() {
         windowManager = service.getSystemService(WindowManager::class.java)
     }
 
-    /** Shows or updates the cover overlay. Returns true if it was successfully displayed. */
+    /**
+     * Shows or updates the cover overlay.
+     * Returns true if it was successfully displayed.
+     */
     internal fun show(cover: ContentCover, refreshAttachment: Boolean = false): Boolean {
         val target = cover.target
         if (!target.bounds.isVisible) return false
