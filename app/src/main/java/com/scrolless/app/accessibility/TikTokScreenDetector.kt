@@ -21,7 +21,7 @@ import com.scrolless.app.R
 /** Covers TikTok's visible player while leaving the rest of the app usable. */
 internal object TikTokScreenDetector : ContentCoverDetector {
     const val PLAYER = "player_view"
-    override val requiredViewIds = setOf(PLAYER)
+    override val viewIds = setOf(PLAYER)
     override val titleRes = R.string.tiktok_blocked_title
     override val descriptionRes = R.string.tiktok_blocked_description
 

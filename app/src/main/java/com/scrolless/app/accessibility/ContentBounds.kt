@@ -16,7 +16,10 @@
  */
 package com.scrolless.app.accessibility
 
-/** Position and size of a view on screen or inside a window. */
+/**
+ * The rectangular area of a view, used to position cover overlays
+ * precisely over blocked content like a video player.
+ */
 internal data class ContentBounds(val left: Int, val top: Int, val right: Int, val bottom: Int) {
     val width: Int get() = right - left
     val height: Int get() = bottom - top

@@ -166,7 +166,7 @@ internal class ContentScanner(
                 is ContentCoverTarget.Screen -> !useWindowAttachedCover
             }
         }?.bounds
-        val bounds = detector.coverBounds(coverNodes(app, detector.requiredViewIds), activeBounds) ?: return null
+        val bounds = detector.coverBounds(coverNodes(app, detector.viewIds), activeBounds) ?: return null
         // Older Android positions covers on the screen. Android 14+ attaches them to an app window.
         val target = if (useWindowAttachedCover) {
             val targetWindow = appWindows.roots.keys.firstOrNull { it.id == windowId } ?: return null

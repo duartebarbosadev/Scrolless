@@ -24,7 +24,7 @@ import com.scrolless.app.core.model.ResolvedBlockableApp
  * Tells Scrolless which part of the screen to cover and what message to show.
  */
 internal interface ContentCoverDetector {
-    val requiredViewIds: Set<String>
+    val viewIds: Set<String>
 
     /** Title shown on the overlay covering the video. */
     @get:StringRes val titleRes: Int
@@ -41,7 +41,7 @@ internal interface ContentCoverDetector {
     fun coverBounds(nodes: List<ContentCoverNode>, activeCoverBounds: ContentBounds? = null): ContentBounds?
 }
 
-/** A simplified view node used to test cover rules without Android device dependencies. */
+/** A lightweight view representation (ID, bounds, and visibility) passed to cover detectors. */
 internal data class ContentCoverNode(val viewId: String, val bounds: ContentBounds, val isVisible: Boolean)
 
 /** Returns cover rules for this app, or null if it uses full-screen blocking (Back or Home). */
