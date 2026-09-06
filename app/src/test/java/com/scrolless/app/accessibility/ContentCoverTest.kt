@@ -37,8 +37,10 @@ class ContentCoverTest {
         BlockableApp.entries.forEach { app ->
             val resolved = ResolvedBlockableApp(app, app.getPackageIds().first())
             if (app == BlockableApp.TIKTOK) {
+                assertSame(TikTokScreenDetector, app.coverDetector)
                 assertSame(TikTokScreenDetector, resolved.coverDetector)
             } else {
+                assertNull(app.coverDetector)
                 assertNull(resolved.coverDetector)
             }
         }

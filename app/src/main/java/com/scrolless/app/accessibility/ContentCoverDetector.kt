@@ -24,6 +24,9 @@ import com.scrolless.app.core.model.ResolvedBlockableApp
  * Tells Scrolless which part of the screen to cover and what message to show.
  */
 internal interface ContentCoverDetector {
+    /** The target app this cover detector is built for. */
+    val app: BlockableApp
+
     val viewIds: Set<String>
 
     /** Title shown on the overlay covering the video. */
@@ -44,9 +47,16 @@ internal interface ContentCoverDetector {
 /** A lightweight view representation (ID, bounds, and visibility) passed to cover detectors. */
 internal data class ContentCoverNode(val viewId: String, val bounds: ContentBounds, val isVisible: Boolean)
 
+/** All active cover detectors registered in the app. */
+private val coverDetectors: Map<BlockableApp, ContentCoverDetector> = listOf(
+    TikTokScreenDetector,
+    // Add future app cover detectors here (e.g. InstagramScreenDetector)
+).associateBy { it.app }
+
+/** Returns cover rules for this app, or null if it uses full-screen blocking (Back or Home). */
+internal val BlockableApp.coverDetector: ContentCoverDetector?
+    get() = coverDetectors[this]
+
 /** Returns cover rules for this app, or null if it uses full-screen blocking (Back or Home). */
 internal val ResolvedBlockableApp.coverDetector: ContentCoverDetector?
-    get() = when (app) {
-        BlockableApp.TIKTOK -> TikTokScreenDetector
-        else -> null
-    }
+    get() = app.coverDetector
