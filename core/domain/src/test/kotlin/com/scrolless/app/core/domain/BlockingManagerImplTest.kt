@@ -47,6 +47,18 @@ class BlockingManagerImplTest {
     private val manager = BlockingManagerImpl(sessionTracker, NoopBlockingConfigRepository(), timeProvider)
 
     @Test
+    fun `covered content query follows current policy without a viewing session`() = runTest {
+        manager.init(BlockOption.DailyLimit, BlockingSettings(dailyLimitMillis = 30_000L))
+        assertTrue(manager.shouldBlockContent())
+        manager.init(BlockOption.DailyLimit, BlockingSettings(dailyLimitMillis = 120_000L))
+        assertFalse(manager.shouldBlockContent())
+        manager.init(BlockOption.BlockAll, BlockingSettings())
+        assertTrue(manager.shouldBlockContent())
+        manager.init(BlockOption.NothingSelected, BlockingSettings())
+        assertFalse(manager.shouldBlockContent())
+    }
+
+    @Test
     fun `a daily limit selected before it was configured blocks nothing`() = runTest {
         manager.init(BlockOption.DailyLimit, BlockingSettings(dailyLimitMillis = 0L))
 

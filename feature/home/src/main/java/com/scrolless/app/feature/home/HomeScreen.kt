@@ -150,6 +150,8 @@ fun HomeScreen(
     onRequestAppReview: (Activity, (ReviewPromptResult) -> Unit) -> Unit = { _, onResult ->
         onResult(ReviewPromptResult.SkippedPermanent)
     },
+    forceLegacyOverlay: Boolean = false,
+    onForceLegacyOverlayChanged: (Boolean) -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -377,6 +379,8 @@ fun HomeScreen(
             onUsageAnalyticsDateSelected = viewModel::onUsageAnalyticsDateSelected,
             onUsageAnalyticsTodaySelected = viewModel::onUsageAnalyticsTodaySelected,
             onAveragePeriodSelected = viewModel::onAveragePeriodSelected,
+            forceLegacyOverlay = forceLegacyOverlay,
+            onForceLegacyOverlayChanged = onForceLegacyOverlayChanged,
         )
 
         SnackbarHost(
@@ -477,6 +481,8 @@ private fun HomeContent(
     onUsageAnalyticsDateSelected: (LocalDate) -> Unit = {},
     onUsageAnalyticsTodaySelected: () -> Unit = {},
     onAveragePeriodSelected: (UsageAveragePeriod) -> Unit = {},
+    forceLegacyOverlay: Boolean = false,
+    onForceLegacyOverlayChanged: (Boolean) -> Unit = {},
 ) {
     val pauseRemainingMillis = rememberPauseRemainingTime(uiState.pauseUntilMillis)
     val isPauseActive = pauseRemainingMillis > 0L
@@ -623,6 +629,8 @@ private fun HomeContent(
                 onReset = {
                     onDebugUsageReset()
                 },
+                forceLegacyOverlay = forceLegacyOverlay,
+                onForceLegacyOverlayChanged = onForceLegacyOverlayChanged,
                 modifier = Modifier.fillMaxSize(),
             )
         }

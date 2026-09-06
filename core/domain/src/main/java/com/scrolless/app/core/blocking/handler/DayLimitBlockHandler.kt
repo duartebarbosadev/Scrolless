@@ -26,17 +26,10 @@ import timber.log.Timber
  */
 class DayLimitBlockHandler(private val timeLimit: Long) : BlockOptionHandler {
 
-    /**
-     * Checks if daily usage already exceeds the limit on entry.
-     *
-     * @param currentDailyUsage Current daily usage in milliseconds.
-     * @return true if we should block immediately.
-     */
-    override suspend fun onEnterContent(currentDailyUsage: Long): Boolean {
+    override suspend fun shouldBlockContent(currentDailyUsage: Long): Boolean {
 
         val shouldBlock = currentDailyUsage >= timeLimit
-        Timber.d("DayLimit.onEnter: daily=%d, limit=%d -> shouldBlock=%s", currentDailyUsage, timeLimit, shouldBlock)
-        // If already exceeded, block immediately
+        Timber.d("DayLimit.shouldBlock: daily=%d, limit=%d -> shouldBlock=%s", currentDailyUsage, timeLimit, shouldBlock)
         return shouldBlock
     }
 

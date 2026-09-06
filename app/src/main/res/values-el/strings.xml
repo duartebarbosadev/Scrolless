@@ -18,4 +18,6 @@
 <resources>
     <string name="accessibility_service_description">Αυτή η υπηρεσία εντοπίζει πότε ανοίγουν τα reels/shorts/tiktok, ώστε το Scrolless να μπορεί να τα μπλοκάρει, αν έχει ρυθμιστεί.</string>
     <string name="app_name">Scrolless</string>
+    <string name="tiktok_blocked_title">Τα βίντεο του TikTok είναι αποκλεισμένα</string>
+    <string name="tiktok_blocked_description">Χρησιμοποιήστε τις καρτέλες παρακάτω για να ανοίξετε τα Εισερχόμενα ή το Προφίλ.</string>
 </resources>

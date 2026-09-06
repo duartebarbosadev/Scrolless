@@ -30,7 +30,10 @@ interface BlockOptionHandler {
      *
      * @param currentDailyUsage Current daily usage in milliseconds.
      */
-    suspend fun onEnterContent(currentDailyUsage: Long): Boolean
+    suspend fun onEnterContent(currentDailyUsage: Long): Boolean = shouldBlockContent(currentDailyUsage)
+
+    /** Checks if content should be blocked right now without recording a new session. */
+    suspend fun shouldBlockContent(currentDailyUsage: Long): Boolean
 
     /**
      * Called periodically while user remains in blocked content.

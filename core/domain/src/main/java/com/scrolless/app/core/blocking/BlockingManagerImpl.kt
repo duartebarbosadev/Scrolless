@@ -92,6 +92,10 @@ class BlockingManagerImpl @Inject constructor(
         shouldBlock
     }
 
+    override suspend fun shouldBlockContent(): Boolean = handlerMutex.withLock {
+        handler.shouldBlockContent(sessionTracker.getDailyUsage())
+    }
+
     override suspend fun onPeriodicCheck(elapsedTime: Long): BlockingResult = handlerMutex.withLock {
         val currentDailyUsage = sessionTracker.getDailyUsage()
         val result = handler.onPeriodicCheck(currentDailyUsage, elapsedTime)

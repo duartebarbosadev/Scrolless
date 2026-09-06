@@ -18,4 +18,6 @@
 <resources>
     <string name="accessibility_service_description">Ta usługa wykrywa, kiedy otwierane są rolki/shorty/tiktok, aby Scrolless mógł je zablokować, jeśli jest to skonfigurowane.</string>
     <string name="app_name">Scrolless</string>
+    <string name="tiktok_blocked_title">Filmy na TikToku są zablokowane</string>
+    <string name="tiktok_blocked_description">Użyj zakładek na dole, aby otworzyć „Skrzynkę odbiorczą” lub „Profil”.</string>
 </resources>

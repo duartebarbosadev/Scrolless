@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.feature.home.debug
 
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -49,6 +50,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -89,6 +91,7 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 import kotlin.random.Random
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -108,13 +111,15 @@ private val TIMELINE_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm")
 
 @Composable
 internal fun FloatingDebugUsagePanel(
+    modifier: Modifier = Modifier,
     sessionSegments: List<SessionSegment>,
     selectedDate: LocalDate,
     isExpanded: Boolean,
     onToggleExpanded: () -> Unit,
     onUsageChanged: (List<SessionSegment>) -> Unit,
     onReset: () -> Unit,
-    modifier: Modifier = Modifier,
+    forceLegacyOverlay: Boolean = false,
+    onForceLegacyOverlayChanged: (Boolean) -> Unit = {},
 ) {
     val density = LocalDensity.current
     val paddingPx = with(density) { 16.dp.roundToPx() }
@@ -187,6 +192,8 @@ internal fun FloatingDebugUsagePanel(
                     selectedDate = selectedDate,
                     onUsageChanged = onUsageChanged,
                     onReset = onReset,
+                    forceLegacyOverlay = forceLegacyOverlay,
+                    onForceLegacyOverlayChanged = onForceLegacyOverlayChanged,
                     modifier = Modifier
                         .fillMaxWidth()
                         .alpha(0.98f),
@@ -230,6 +237,8 @@ private fun DebugDayTimelinePanel(
     selectedDate: LocalDate,
     onUsageChanged: (List<SessionSegment>) -> Unit,
     onReset: () -> Unit,
+    forceLegacyOverlay: Boolean,
+    onForceLegacyOverlayChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val nowMinutes = LocalTime.now().hour * 60 + LocalTime.now().minute
@@ -309,6 +318,11 @@ private fun DebugDayTimelinePanel(
                 .padding(horizontal = 12.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
+            DebugOverlaySelector(
+                forceLegacyOverlay = forceLegacyOverlay,
+                onForceLegacyOverlayChanged = onForceLegacyOverlayChanged,
+            )
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -460,6 +474,37 @@ private fun DebugDayTimelinePanel(
 }
 
 @Composable
+private fun DebugOverlaySelector(forceLegacyOverlay: Boolean, onForceLegacyOverlayChanged: (Boolean) -> Unit) {
+    val supportsWindowAttachment = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE
+
+    Text(
+        text = "Video region block overlay",
+        style = MaterialTheme.typography.titleSmall,
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colorScheme.onSurface,
+    )
+    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        FilterChip(
+            selected = !forceLegacyOverlay,
+            onClick = { onForceLegacyOverlayChanged(false) },
+            label = { Text("Auto") },
+        )
+        FilterChip(
+            selected = forceLegacyOverlay,
+            onClick = { onForceLegacyOverlayChanged(true) },
+            enabled = supportsWindowAttachment,
+            label = { Text("Force legacy") },
+        )
+    }
+    val activeMode = if (supportsWindowAttachment && !forceLegacyOverlay) "Attached (API 34+)" else "Legacy"
+    Text(
+        text = "Device API ${Build.VERSION.SDK_INT} · $activeMode\n",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+}
+
+@Composable
 private fun DurationOptionChip(minutes: Int, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     DurationOptionChip(
         label = minutes.formatMinutes(),
@@ -533,7 +578,7 @@ private fun DayTimeline(
     LaunchedEffect(dayStart) {
         while (true) {
             nowMinutes = LocalDateTime.now().minutesSince(dayStart).coerceIn(0, DAY_TOTAL_MINUTES)
-            delay(30_000)
+            delay(30_000.milliseconds)
         }
     }
 

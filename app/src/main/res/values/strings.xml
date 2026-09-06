@@ -19,4 +19,6 @@
     <string name="app_name">Scrolless</string>
     <string name="accessibility_service_description">This service detects when Reels, Shorts, TikTok, and Facebook Reels are opened so that Scrolless can block them if configured.</string>
     <string name="timer_default_value" translatable="false">00:00</string>
+    <string name="tiktok_blocked_title">TikTok videos are blocked</string>
+    <string name="tiktok_blocked_description">Use the tabs below to open Inbox or Profile.</string>
 </resources>

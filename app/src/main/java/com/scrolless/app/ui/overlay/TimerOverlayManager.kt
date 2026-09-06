@@ -103,7 +103,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
         // Reset at the next midnight. Edge case: if the overlay stays open for several days
         // during a daylight-saving clock change, a later reset may be one hour early or late.
-        // But at this point, its the users fault :p
+        // This rare multi-day case is left as-is to keep the timer simple.
+        // But at this point, it's the users "fault" :p
         showOverlay(
             sessionStartAt = sessionStartAt,
             usage = IntervalUsage(dayStartMillis, dailyUsageMillis),
@@ -130,7 +131,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         this.usage = usage
         this.windowLengthMillis = windowLengthMillis
 
-        // Create TextView with polished styling
+        // Include saved usage immediately, so the timer does not briefly start at zero.
         timerTextView = TextView(serviceContext).apply {
             text = displayedDurationAt(System.currentTimeMillis()).formatAsTime()
             textSize = 18f // sp
@@ -149,7 +150,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             gravity = Gravity.CENTER
         }
 
-        // Wrap in DragInterceptFrameLayout
+        // Let the whole timer handle dragging, including touches that start on the text.
         rootView = DragInterceptFrameLayout(serviceContext).apply {
             addView(
                 timerTextView,
@@ -199,6 +200,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     fun hide(sessionStartAt: Long, sessionEndAt: Long) {
 
         Timber.d("Hiding overlay view")
+        // A delayed exit from an older session must not hide the timer for a newer session.
         if (sessionStartTime != sessionStartAt) {
             Timber.v("Ignoring stale overlay hide for session=%d, current=%d", sessionStartAt, sessionStartTime)
             return
@@ -207,6 +209,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         timerJob?.cancel()
         timerJob = null
 
+        // Freeze at the actual exit time
         timerTextView?.text = displayedDurationAt(sessionEndAt).formatAsTime()
 
         startWiggleAnimation()
@@ -218,6 +221,11 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         }
     }
 
+    /** Hide the timer when the video is covered, without leaving a summary on top of the blocker. */
+    fun dismissImmediately() {
+        cleanupView()
+    }
+
     fun cleanup() {
         cleanupView()
         coroutineScope.cancel()
@@ -225,7 +233,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
     private fun cleanupView() {
         val view = rootView
-        rootView = null // Prevent re-entry
+        rootView = null // Repeated cleanup must not try to remove the same view twice.
         timerTextView = null
 
         if (view != null) {
@@ -258,6 +266,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         }
     }
 
+    // Combine saved usage with this session, counting only the current day or interval.
     private fun displayedDurationAt(nowMillis: Long): Long = usage.plusSession(
         sessionStartMillis = sessionStartTime,
         sessionEndMillis = nowMillis,
@@ -302,13 +311,11 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
     private fun startWiggleAnimation() {
         val view = rootView ?: return
-        // Wiggle rotation targets: 8f, -8f, 5f, -5f, 3f, -3f, 0f
-        // We can use a Keyframe-based ObjectAnimator or just a sequence.
-        // PropertyValuesHolder with Keyframes is cleanest.
+        // Draw attention to the final usage total before the timer disappears.
 
         val rotation = PropertyValuesHolder.ofFloat(View.ROTATION, 0f, 8f, -8f, 5f, -5f, 3f, -3f, 0f)
         ObjectAnimator.ofPropertyValuesHolder(view, rotation).apply {
-            duration = 500 // ~71ms per keyframe (7 steps)
+            duration = 500
             start()
         }
     }
@@ -320,6 +327,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
+                // Stop any previous snap so the timer follows the new drag immediately.
                 snapAnimator?.cancel()
                 velocityTracker?.recycle()
                 velocityTracker = android.view.VelocityTracker.obtain()
@@ -338,6 +346,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                 val deltaX = (event.rawX - initialTouchX).toInt()
                 val deltaY = (event.rawY - initialTouchY).toInt()
 
+                // This drag calculation measures x from the right edge, so moving right reduces x.
                 params.x = initialX - deltaX
                 params.y = initialY + deltaY
 
@@ -373,13 +382,9 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                     var targetX = currentX
                     var targetY = currentY
 
-                    // Check for fling
+                    // A fast release continues toward an edge; a slow release snaps to the nearest one.
                     if (abs(velocityX) > flingThreshold || abs(velocityY) > flingThreshold) {
-                        // Fling detected. Calculate trajectory to find which edge is hit first.
-
-                        // Time to hit horizontal edges (X axis)
-                        // x(t) = x0 - vx * t
-                        // Target x is 0 (Right) or maxX (Left)
+                        // Work out how long this movement would take to reach a left or right edge.
                         val tX = if (velocityX > 0) {
                             currentX.toFloat() / velocityX // Time to reach 0
                         } else if (velocityX < 0) {
@@ -388,9 +393,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                             Float.POSITIVE_INFINITY
                         }
 
-                        // Time to hit vertical edges (Y axis)
-                        // y(t) = y0 + vy * t
-                        // Target y is 0 (Top) or maxY (Bottom)
+                        // Do the same for the top and bottom edges.
                         val tY = if (velocityY > 0) {
                             (maxY - currentY).toFloat() / velocityY // Time to reach maxY
                         } else if (velocityY < 0) {
@@ -399,20 +402,14 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                             Float.POSITIVE_INFINITY
                         }
 
-                        // Find the earliest impact time
-                        // We only care about positive times (future), but the formulas above guarantee positive t
-                        // for the correct direction.
+                        // Stop at whichever edge the fling would reach first.
                         val t = minOf(tX, tY)
 
-                        // Calculate intersection point at time t
-                        // x = x0 - vx * t
-                        // y = y0 + vy * t
+                        // Keep the landing point inside the screen so the timer stays reachable.
                         targetX = (currentX - velocityX * t).toInt().coerceIn(minX, maxX)
                         targetY = (currentY + velocityY * t).toInt().coerceIn(minY, maxY)
                     } else {
-                        // No fling, snap to nearest edge
-                        // Distances to edges
-                        // Remember Gravity.END: x is distance from right edge.
+                        // For a slow release, move the shortest distance to an edge.
                         val distRight = currentX // x=0
                         val distLeft = maxX - currentX // x=maxX
                         val distTop = currentY // y=0
@@ -456,7 +453,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                 try {
                     wm.updateViewLayout(rootView, params)
                 } catch (_: Exception) {
-                    // Ignore
+                    // The overlay may have been removed while this animation was still running.
                 }
             }
             addListener(
@@ -471,6 +468,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         }
     }
 
+    // Save the final resting position, not every animation frame.
     private fun persistOverlayPosition(x: Int, y: Int) {
         coroutineScope.launch {
             userSettingsStore.setTimerOverlayPosition(x, y)
@@ -500,6 +498,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val metrics = wm.currentWindowMetrics
             val windowInsets = WindowInsetsCompat.toWindowInsetsCompat(metrics.windowInsets, null)
+            // Reserve space for system bars even when hidden, so the timer stays reachable when they return.
             val insets = windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars())
             val bounds = metrics.bounds
             ScreenBounds(
@@ -520,7 +519,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     }
 
     /**
-     * Intercepts touches to ensure exclusive handling by the OnTouchListener.
+     * Keeps drag events on the timer container instead of handing them to its text view.
+     * This makes the whole timer draggable, including touches that start on the text.
      */
     private class DragInterceptFrameLayout(context: Context) : FrameLayout(context) {
         override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
@@ -528,5 +528,9 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         }
     }
 
+    /**
+     * Holds the area used to keep the timer on screen.
+     * Drag and snap calculations share these dimensions so the timer stays reachable.
+     */
     private data class ScreenBounds(val width: Int, val height: Int)
 }

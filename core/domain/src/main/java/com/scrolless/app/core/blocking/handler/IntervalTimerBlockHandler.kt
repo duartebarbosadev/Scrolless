@@ -37,11 +37,11 @@ class IntervalTimerBlockHandler(
     private suspend fun usageAt(nowMillis: Long) =
         blockingConfigRepository.getConfig().intervalUsage.activeIntervalAt(nowMillis, intervalLengthMillis)
 
-    override suspend fun onEnterContent(currentDailyUsage: Long): Boolean {
+    override suspend fun shouldBlockContent(currentDailyUsage: Long): Boolean {
         val usage = usageAt(timeProvider.currentTimeInMillis()).usageMillis
 
         val shouldBlock = usage >= allowanceMillis
-        Timber.d("IntervalTimer.onEnter: usage=%d/%d -> block=%s", usage, allowanceMillis, shouldBlock)
+        Timber.d("IntervalTimer.shouldBlock: usage=%d/%d -> block=%s", usage, allowanceMillis, shouldBlock)
         return shouldBlock
     }
 

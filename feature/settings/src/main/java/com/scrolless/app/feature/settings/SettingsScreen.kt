@@ -80,7 +80,7 @@ fun SettingsScreen(modifier: Modifier = Modifier, onNavigateBack: () -> Unit, vi
         modifier = modifier,
         uiState = uiState,
         onPauseDurationChange = viewModel::onPauseDurationChange,
-        onExceptReelsSentByDmChange = viewModel::onExceptReelsSentByDmChange,
+        onAllowVideosSentByDmChange = viewModel::onAllowVideosSentByDmChange,
         onTimerOverlayEnabledChange = viewModel::onTimerOverlayEnabledChange,
         onNavigateBack = onNavigateBack,
     )
@@ -92,7 +92,7 @@ private fun SettingsScreenContent(
     modifier: Modifier = Modifier,
     uiState: SettingsUiState,
     onPauseDurationChange: (Int) -> Unit,
-    onExceptReelsSentByDmChange: (Boolean) -> Unit,
+    onAllowVideosSentByDmChange: (Boolean) -> Unit,
     onTimerOverlayEnabledChange: (Boolean) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
@@ -171,9 +171,9 @@ private fun SettingsScreenContent(
 
                 SettingsDivider()
 
-                ExceptReelsSentByDmItem(
-                    checked = uiState.exceptReelsSentByDm,
-                    onCheckedChange = onExceptReelsSentByDmChange,
+                AllowVideosSentByDmItem(
+                    checked = uiState.allowVideosSentByDm,
+                    onCheckedChange = onAllowVideosSentByDmChange,
                 )
 
                 SettingsDivider()
@@ -303,10 +303,10 @@ private fun SettingsValuePill(text: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun ExceptReelsSentByDmItem(checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+private fun AllowVideosSentByDmItem(checked: Boolean, onCheckedChange: (Boolean) -> Unit, modifier: Modifier = Modifier) {
     SettingsSwitchItem(
-        title = stringResource(R.string.settings_except_reels_sent_by_dms_title),
-        description = stringResource(R.string.settings_except_reels_sent_by_dms_description),
+        title = stringResource(R.string.settings_allow_videos_sent_by_dms_title),
+        description = stringResource(R.string.settings_allow_videos_sent_by_dms_description),
         checked = checked,
         onCheckedChange = onCheckedChange,
         modifier = modifier,
@@ -382,7 +382,7 @@ private fun SettingsScreenPreview() {
             uiState = SettingsUiState(pauseDurationMinutes = 5, timerOverlayEnabled = true),
             onPauseDurationChange = {},
             onNavigateBack = {},
-            onExceptReelsSentByDmChange = {},
+            onAllowVideosSentByDmChange = {},
             onTimerOverlayEnabledChange = {},
         )
     }

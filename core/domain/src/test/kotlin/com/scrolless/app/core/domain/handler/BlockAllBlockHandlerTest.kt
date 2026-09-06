@@ -36,6 +36,19 @@ class BlockAllBlockHandlerTest : BaseTest() {
         BlockAllBlockHandler(TestSchedulerTimeProvider(testDispatcher.scheduler))
 
     @Test
+    fun `allowance queries do not reset navigation retry timing`() = runTest(testDispatcher) {
+        blockAllBlockHandler.onEnterContent(0L)
+        blockAllBlockHandler.onPeriodicCheck(0L, 0L)
+        blockAllBlockHandler.onPeriodicCheck(0L, 0L)
+        delay(1500.milliseconds)
+
+        org.junit.Assert.assertTrue(blockAllBlockHandler.shouldBlockContent(0L))
+        org.junit.Assert.assertEquals(BlockingResult.BlockNow, blockAllBlockHandler.onPeriodicCheck(0L, 0L))
+        repeat(3) { org.junit.Assert.assertTrue(blockAllBlockHandler.shouldBlockContent(0L)) }
+        org.junit.Assert.assertEquals(BlockingResult.Continue, blockAllBlockHandler.onPeriodicCheck(0L, 0L))
+    }
+
+    @Test
     fun whenEnterContent_alwaysBlocks() = runTest(testDispatcher) {
         val didBlock = blockAllBlockHandler.onEnterContent(0L)
         assert(didBlock)
