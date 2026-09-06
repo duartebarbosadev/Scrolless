@@ -18,4 +18,6 @@
 <resources>
     <string name="accessibility_service_description">Denna tjänst upptäcker när reels/shorts/tiktok öppnas så att Scrolless kan blockera dem om det är konfigurerat.</string>
     <string name="app_name">Scrolless</string>
+    <string name="tiktok_blocked_title">TikTok-videor är blockerade</string>
+    <string name="tiktok_blocked_description">Använd flikarna nedan för att öppna Inkorg eller Profil.</string>
 </resources>

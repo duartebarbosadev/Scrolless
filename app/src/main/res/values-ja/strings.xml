@@ -18,4 +18,6 @@
 <resources>
     <string name="accessibility_service_description">このサービスは、リール/ショート/TikTokが開かれたことを検出し、設定されている場合にScrollessがそれらをブロックできるようにします。</string>
     <string name="app_name">Scrolless</string>
+    <string name="tiktok_blocked_title">TikTokの動画はブロックされています</string>
+    <string name="tiktok_blocked_description">下のタブから「メッセージ」または「プロフィール」を開いてください。</string>
 </resources>

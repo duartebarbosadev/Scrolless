@@ -18,4 +18,6 @@
 <resources>
     <string name="accessibility_service_description">ரீல்கள்/ஷார்ட்ஸ்கள்/டிக்டாக் திறக்கப்படும்போது இந்தச் சேவை கண்டறிகிறது, இதனால் Scrolless, கட்டமைக்கப்பட்டால் அவற்றைத் தடுக்க முடியும்.</string>
     <string name="app_name">Scrolless</string>
+    <string name="tiktok_blocked_title">TikTok வீடியோக்கள் முடக்கப்பட்டுள்ளன</string>
+    <string name="tiktok_blocked_description">இன்பாக்ஸ் அல்லது சுயவிவரத்தைத் திறக்க கீழே உள்ள தாவல்களைப் பயன்படுத்தவும்.</string>
 </resources>

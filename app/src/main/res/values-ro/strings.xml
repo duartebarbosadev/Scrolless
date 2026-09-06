@@ -18,4 +18,6 @@
 <resources>
     <string name="accessibility_service_description">Acest serviciu detectează când sunt deschise reels/shorts/tiktok, astfel încât Scrolless să le poată bloca dacă este configurat.</string>
     <string name="app_name">Scrolless</string>
+    <string name="tiktok_blocked_title">Videoclipurile TikTok sunt blocate</string>
+    <string name="tiktok_blocked_description">Folosește filele de mai jos pentru a deschide Mesaje primite sau Profil.</string>
 </resources>

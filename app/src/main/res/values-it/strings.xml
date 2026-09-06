@@ -18,4 +18,6 @@
 <resources>
     <string name="accessibility_service_description">Questo servizio rileva quando vengono aperti reel/shorts/tiktok in modo che Scrolless possa bloccarli se configurato.</string>
     <string name="app_name">Scrolless</string>
+    <string name="tiktok_blocked_title">I video di TikTok sono bloccati</string>
+    <string name="tiktok_blocked_description">Usa le schede in basso per aprire In arrivo o il Profilo.</string>
 </resources>

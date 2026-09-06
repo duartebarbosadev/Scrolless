@@ -21,8 +21,9 @@ import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_HOME
 import androidx.compose.runtime.Immutable
 
 /**
- * DetectionMethod describes how to recognize a video screen from its ID, labels, or layout.
- * Each app can use the signals it exposes to detect when a user is watching reels etc.
+ * DetectionMethod holds the information to find out if blocked content is visible.
+ * Most of the apps work by just checking if the view id is present,
+ * but facebook (thanks) needs to be different and only works via content descriptions which is a nice hammer.
  */
 sealed class DetectionMethod {
     /**

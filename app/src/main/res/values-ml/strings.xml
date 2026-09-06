@@ -18,4 +18,6 @@
 <resources>
     <string name="accessibility_service_description">റീലുകൾ/ഷോർട്ട്‌സ്/ടിക്‌ടോക്ക് തുറക്കുമ്പോൾ ഈ സേവനം കണ്ടെത്തുകയും, ക്രമീകരിച്ചിട്ടുണ്ടെങ്കിൽ Scrolless-ന് അവ തടയാൻ കഴിയുകയും ചെയ്യും.</string>
     <string name="app_name">Scrolless</string>
+    <string name="tiktok_blocked_title">TikTok വീഡിയോകൾ ബ്ലോക്ക് ചെയ്‌തിരിക്കുന്നു</string>
+    <string name="tiktok_blocked_description">ഇൻബോക്സോ പ്രൊഫൈലോ തുറക്കാൻ താഴെയുള്ള ടാബുകൾ ഉപയോഗിക്കുക.</string>
 </resources>
