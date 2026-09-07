@@ -23,6 +23,7 @@ import com.scrolless.app.ui.overlay.ContentCover
 import com.scrolless.app.ui.overlay.ContentCoverTarget
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
@@ -94,5 +95,25 @@ class ContentCoverTest {
         assertFalse(cover.copy(target = ContentCoverTarget.Screen(bounds)).canReuseView(cover))
         assertTrue(cover.canReuseView(cover))
         assertTrue(cover.copy(target = ContentCoverTarget.Window(15, 1, bounds.copy(right = 900))).canReuseView(cover))
+    }
+
+    @Test
+    fun `dm exemption rules are configured on supported apps`() {
+        val reelsRule = BlockableApp.REELS.getDmExemptionRule()
+        assertNotNull(reelsRule)
+        assertTrue(reelsRule!!.requiredViewIds.contains("reply_bar_edittext"))
+        assertTrue(reelsRule.forbiddenViewIds.contains("suggested_title"))
+
+        val tiktokRule = BlockableApp.TIKTOK.getDmExemptionRule()
+        assertNotNull(tiktokRule)
+        assertTrue(tiktokRule!!.requiredViewIds.contains("tyk"))
+
+        val resolved = ResolvedBlockableApp(BlockableApp.TIKTOK, "com.zhiliaoapp.musically")
+        assertEquals("com.zhiliaoapp.musically:id/tyk", resolved.getViewId("tyk"))
+        assertEquals(tiktokRule, resolved.dmExemptionRule)
+
+        assertNull(BlockableApp.TIKTOK_LITE.getDmExemptionRule())
+        assertNull(BlockableApp.SHORTS.getDmExemptionRule())
+        assertNull(BlockableApp.FACEBOOK.getDmExemptionRule())
     }
 }
