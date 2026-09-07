@@ -104,6 +104,21 @@ sealed interface ContentBlockAction {
 }
 
 /**
+ * Rules to identify when an app is showing a video received in a direct message (DM),
+ * so blocking can be suppressed if the user allows DM videos.
+ *
+ * @property requiredViewIds All of these view IDs must be visible.
+ * @property anyOfViewIds At least one of these view IDs must be visible (if non-empty).
+ * @property forbiddenViewIds None of these view IDs may be visible.
+ */
+@Immutable
+data class DmExemptionRule(
+    val requiredViewIds: Set<String> = emptySet(),
+    val anyOfViewIds: Set<String> = emptySet(),
+    val forbiddenViewIds: Set<String> = emptySet(),
+)
+
+/**
  * Lists supported apps, their package variants, and their default detection and blocking action.
  * A screen-specific cover detector can override the default action for a detected video region.
  */
@@ -112,11 +127,22 @@ enum class BlockableApp(
     private val packageIds: List<String>,
     private val detectionMethod: DetectionMethod,
     private val blockAction: ContentBlockAction,
+    private val dmExemptionRule: DmExemptionRule? = null,
 ) {
     REELS(
         packageIds = listOf("com.instagram.android"),
         detectionMethod = DetectionMethod.ViewId("clips_viewer_view_pager"),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
+        // Instagram DM Reels display sender info and a reply bar, while algorithmic suggestion
+        // carousels introduce a "suggested_title" which must forbid the exemption.
+        dmExemptionRule = DmExemptionRule(
+            requiredViewIds = setOf(
+                "sender_username_or_fullname",
+                "sender_timestamp",
+                "reply_bar_edittext",
+            ),
+            forbiddenViewIds = setOf("suggested_title"),
+        ),
     ),
     SHORTS(
         packageIds = listOf(
@@ -137,6 +163,13 @@ enum class BlockableApp(
         ),
         detectionMethod = DetectionMethod.ViewId("player_view"),
         blockAction = ContentBlockAction.CoverVideoRegion,
+        // In TikTok DM video playback, the bottom reply bar consists of the container (l7v),
+        // the reply message button (tyk), and the quick-reaction emojis container (h9o).
+        // Requiring all three prevents accidental unblocking of the main feed if any single
+        // obfuscated ID is reused elsewhere in future updates.
+        dmExemptionRule = DmExemptionRule(
+            requiredViewIds = setOf("l7v", "tyk", "h9o"),
+        ),
     ),
     TIKTOK_LITE(
         packageIds = listOf("com.zhiliaoapp.musically.go"),
@@ -201,6 +234,8 @@ enum class BlockableApp(
 
     fun getDetectionMethod(): DetectionMethod = detectionMethod
 
+    fun getDmExemptionRule(): DmExemptionRule? = dmExemptionRule
+
     fun getPackageIds(): List<String> = packageIds
 
     fun resolvePackage(packageName: String): String? = packageName.takeIf(::matchesPackage)
@@ -214,11 +249,15 @@ enum class BlockableApp(
  */
 @Immutable
 data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
+    val dmExemptionRule: DmExemptionRule? get() = app.getDmExemptionRule()
+
     fun getDetectionMethod(): DetectionMethod = app.getDetectionMethod()
 
     fun getBlockAction(): ContentBlockAction = app.getBlockAction()
 
-    fun getViewId(detectionMethod: DetectionMethod.ViewId): String = "$packageId:id/${detectionMethod.viewId}"
+    fun getViewId(viewId: String): String = "$packageId:id/$viewId"
+
+    fun getViewId(detectionMethod: DetectionMethod.ViewId): String = getViewId(detectionMethod.viewId)
 
     fun matchesDetectionNodes(nodes: Collection<DetectionNode>): Boolean {
         // Group once so nested-layout checks can find children without rescanning the whole list.
