@@ -69,5 +69,5 @@ class SettingsViewModel @Inject constructor(private val userSettingsStore: UserS
 data class SettingsUiState(
     val pauseDurationMinutes: Int = 5,
     val allowVideosSentByDm: Boolean = false,
-    val timerOverlayEnabled: Boolean = false,
+    val timerOverlayEnabled: Boolean = true,
 )

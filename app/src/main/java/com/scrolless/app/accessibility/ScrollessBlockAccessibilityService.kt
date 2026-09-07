@@ -149,7 +149,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         get() = contentSession?.takeUnless { it.isCovered }
 
     /** Whether the user enabled the floating timer overlay in settings. */
-    private var currentTimerOverlayEnabled: Boolean = false
+    private var currentTimerOverlayEnabled: Boolean = true
 
     /** Whether videos received in direct messages are exempt from blocking. */
     private var currentAllowVideosSentByDm: Boolean = false

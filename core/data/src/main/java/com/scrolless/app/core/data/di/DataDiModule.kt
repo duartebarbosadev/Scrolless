@@ -87,7 +87,7 @@ object DataDiModule {
                                                    first_launch_at, has_seen_review_prompt,
                                                    review_prompt_attempt_count, review_prompt_last_attempt_at,
                                                    pause_duration_millis, except_reels_sent_by_dm)
-                        VALUES (1, 'NothingSelected', 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0,
+                        VALUES (1, 'NothingSelected', 0, 0, 0, 0, 0, 1, 0, 100, 0, 0, 0,
                                 CAST(strftime('%s','now') AS INTEGER) * 1000, 0, 0, 0, 300000, 0)
                         """,
                         )
