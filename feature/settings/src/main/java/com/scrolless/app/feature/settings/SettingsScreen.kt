@@ -307,6 +307,7 @@ private fun AllowVideosSentByDmItem(checked: Boolean, onCheckedChange: (Boolean)
     SettingsSwitchItem(
         title = stringResource(R.string.settings_allow_videos_sent_by_dms_title),
         description = stringResource(R.string.settings_allow_videos_sent_by_dms_description),
+        note = stringResource(R.string.settings_allow_videos_sent_by_dms_note),
         checked = checked,
         onCheckedChange = onCheckedChange,
         modifier = modifier,
@@ -324,6 +325,7 @@ private fun TimerOverlayItem(checked: Boolean, onCheckedChange: (Boolean) -> Uni
     )
 }
 
+/** Shows a toggle with its description and an optional smaller note for feature limitations. */
 @Composable
 private fun SettingsSwitchItem(
     title: String,
@@ -331,6 +333,7 @@ private fun SettingsSwitchItem(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    note: String? = null,
 ) {
     val hapticHelper = rememberHapticHelper()
     Row(
@@ -354,6 +357,13 @@ private fun SettingsSwitchItem(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            if (note != null) {
+                Text(
+                    text = note,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
         Switch(
             checked = checked,

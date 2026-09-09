@@ -27,6 +27,7 @@
         <item quantity="few">%1$d minute</item>
     </plurals>
     <string name="settings_allow_videos_sent_by_dms_description">Nu bloca videoclipurile trimise în mesaje directe.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">Funcția nu este disponibilă în TikTok Lite</string>
     <string name="settings_allow_videos_sent_by_dms_title">Videoclipuri trimise în mesaje directe</string>
     <string name="settings_show_onscreen_timer_description">Păstrează un cronometru plutitor vizibil în timp ce vizionezi videoclipuri scurte.</string>
     <string name="settings_show_onscreen_timer_title">Afișează cronometrul pe ecran</string>

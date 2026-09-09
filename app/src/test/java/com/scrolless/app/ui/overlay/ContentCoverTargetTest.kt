@@ -19,6 +19,7 @@ package com.scrolless.app.ui.overlay
 import com.scrolless.app.accessibility.ContentBounds
 import com.scrolless.app.accessibility.ContentCoverNode
 import com.scrolless.app.accessibility.TikTokScreenDetector
+import com.scrolless.app.core.model.BlockableApp
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -61,8 +62,8 @@ class ContentCoverTargetTest {
     @Test
     fun `window local player bounds are used directly as the cover target`() {
         val localPlayer = ContentBounds(0, 0, 800, 1400)
-        val nodes = listOf(ContentCoverNode(TikTokScreenDetector.PLAYER, localPlayer, true))
-        val target = window.copy(bounds = TikTokScreenDetector.coverBounds(nodes)!!)
+        val nodes = listOf(ContentCoverNode("player_view", localPlayer, true))
+        val target = window.copy(bounds = TikTokScreenDetector(BlockableApp.TIKTOK).coverBounds(nodes)!!)
         assertEquals(localPlayer, target.bounds)
     }
 }

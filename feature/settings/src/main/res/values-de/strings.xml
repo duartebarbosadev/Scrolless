@@ -26,6 +26,7 @@
         <item quantity="one">%1$d Minute</item>
     </plurals>
     <string name="settings_allow_videos_sent_by_dms_description">Videos, die in DMs gesendet wurden, nicht blockieren.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">Wird in TikTok Lite nicht unterstützt</string>
     <string name="settings_allow_videos_sent_by_dms_title">In DMs gesendete Videos</string>
     <string name="settings_show_onscreen_timer_description">Beim Ansehen von Kurzvideos einen schwebenden Timer sichtbar lassen.</string>
     <string name="settings_show_onscreen_timer_title">Bildschirmtimer anzeigen</string>

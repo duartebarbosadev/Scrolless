@@ -17,23 +17,40 @@
 package com.scrolless.app.core.domain.model
 
 import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
-import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_HOME
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.ContentBlockAction
+import com.scrolless.app.core.model.DetectionNode
+import com.scrolless.app.core.model.ResolvedBlockableApp
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ContentBlockActionTest {
     @Test
-    fun `regular TikTok covers its video without leaving the app`() {
-        assertEquals(ContentBlockAction.CoverVideoRegion, BlockableApp.TIKTOK.getBlockAction())
+    fun `both TikTok variants cover their videos without leaving the app`() {
+        for (app in listOf(BlockableApp.TIKTOK, BlockableApp.TIKTOK_LITE)) {
+            assertEquals(ContentBlockAction.CoverVideoRegion, app.getBlockAction())
+        }
     }
 
     @Test
     fun `other apps retain their existing navigation action`() {
-        for (app in BlockableApp.entries.filter { it != BlockableApp.TIKTOK }) {
-            val action = if (app == BlockableApp.TIKTOK_LITE) GLOBAL_ACTION_HOME else GLOBAL_ACTION_BACK
-            assertEquals(ContentBlockAction.PerformGlobalAction(action), app.getBlockAction())
+        for (app in BlockableApp.entries.filter { it !in setOf(BlockableApp.TIKTOK, BlockableApp.TIKTOK_LITE) }) {
+            assertEquals(ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK), app.getBlockAction())
         }
+    }
+
+    /** Keeps Lite on its own rule and rejects hidden players left behind when opening a native tab. */
+    @Test
+    fun `TikTok Lite resolves to its own visible player rule`() {
+        val packageId = "com.zhiliaoapp.musically.go"
+        val matches = BlockableApp.entries.filter { it.resolvePackage(packageId) != null }
+        assertEquals(listOf(BlockableApp.TIKTOK_LITE), matches)
+        val app = ResolvedBlockableApp(matches.single(), packageId)
+        val player = DetectionNode(nodeId = 1, viewId = "$packageId:id/simplayer_api_player_view")
+        assertTrue(app.matchesFastDetectionNode(player))
+        assertFalse(app.matchesFastDetectionNode(player.copy(isVisible = false)))
+        assertFalse(app.matchesFastDetectionNode(player.copy(viewId = "$packageId:id/player_view")))
     }
 }

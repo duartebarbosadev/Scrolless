@@ -17,7 +17,6 @@
 package com.scrolless.app.core.model
 
 import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
-import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_HOME
 import androidx.compose.runtime.Immutable
 
 /**
@@ -162,7 +161,6 @@ enum class BlockableApp(
             "com.zhiliaoapp.musically",
             "com.ss.android.ugc.trill",
             "com.ss.android.ugc.aweme",
-            "com.zhiliaoapp.musically.go",
         ),
         detectionMethod = DetectionMethod.ViewId("player_view"),
         blockAction = ContentBlockAction.CoverVideoRegion,
@@ -173,8 +171,8 @@ enum class BlockableApp(
     ),
     TIKTOK_LITE(
         packageIds = listOf("com.zhiliaoapp.musically.go"),
-        detectionMethod = DetectionMethod.ViewId("h89"),
-        blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_HOME),
+        detectionMethod = DetectionMethod.ViewId("simplayer_api_player_view"),
+        blockAction = ContentBlockAction.CoverVideoRegion,
     ),
     FACEBOOK(
         packageIds = listOf("com.facebook.katana"),

@@ -49,7 +49,8 @@ internal data class ContentCoverNode(val viewId: String, val bounds: ContentBoun
 
 /** All active cover detectors registered in the app. */
 private val coverDetectors: Map<BlockableApp, ContentCoverDetector> = listOf(
-    TikTokScreenDetector,
+    TikTokScreenDetector(BlockableApp.TIKTOK),
+    TikTokScreenDetector(BlockableApp.TIKTOK_LITE),
     // Add future app cover detectors here (e.g. InstagramScreenDetector)
 ).associateBy { it.app }
 

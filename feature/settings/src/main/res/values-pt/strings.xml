@@ -26,6 +26,7 @@
         <item quantity="one">%1$d minuto</item>
     </plurals>
     <string name="settings_allow_videos_sent_by_dms_description">Não bloquear vídeos enviados em DMs.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">Não disponível no TikTok Lite</string>
     <string name="settings_allow_videos_sent_by_dms_title">Vídeos enviados em DMs</string>
     <string name="settings_show_onscreen_timer_description">Mantenha um temporizador flutuante visível enquanto vê vídeos curtos.</string>
     <string name="settings_show_onscreen_timer_title">Mostrar temporizador no ecrã</string>
