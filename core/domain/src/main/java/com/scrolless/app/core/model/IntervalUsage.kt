@@ -21,14 +21,15 @@ import androidx.compose.runtime.Immutable
 /**
  * Saved usage for an interval timer.
  *
- * For example, a timer starting at 10:00 with a 30-minute length has intervals from 10:00–10:30,
- * 10:30–11:00, and so on. [startMillis] is the start of the last interval saved after a session
- * ended, and [usageMillis] is the time watched during that interval. `0` means the timer has not
- * started.
+ * [startMillis] is the start of the last interval saved after a viewing session ended, and
+ * [usageMillis] is the time watched during that interval. A start of `0` means the timer is idle.
  *
- * Time passing does not update the database by itself. If the saved interval has ended, the
- * functions below calculate the current interval in memory with zero usage. That new interval is
- * saved when the next viewing session ends.
+ * An expired interval stays idle until viewing resumes. For example, if a 30-minute interval ends
+ * at 10:30 and viewing resumes at 10:45, the next interval starts at 10:45. Continuous viewing
+ * across 10:30 starts the next interval at that boundary instead.
+ *
+ * These calculations do not update the database. The interval and its usage are saved when the
+ * viewing session ends.
  */
 @Immutable
 data class IntervalUsage(val startMillis: Long, val usageMillis: Long) {
@@ -43,9 +44,9 @@ data class IntervalUsage(val startMillis: Long, val usageMillis: Long) {
      * interval has ended, returns [NOT_STARTED] so the timer remains idle until the user
      * watches another video.
      *
-     * @return This same [IntervalUsage] instance when the clock moved backwards or the saved
-     * interval is still active. Returns [NOT_STARTED] when the timer has not started, the interval
-     * length is invalid, or the saved interval has elapsed.
+     * @return [NOT_STARTED] when the saved interval has elapsed. Otherwise returns this same
+     * instance, including when the timer has not started, the length is invalid, or the clock
+     * moved backwards.
      */
     fun activeIntervalAt(nowMillis: Long, lengthMillis: Long): IntervalUsage {
         if (!isStarted || lengthMillis <= 0L) return this

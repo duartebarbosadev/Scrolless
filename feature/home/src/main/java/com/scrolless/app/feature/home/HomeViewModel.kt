@@ -161,7 +161,7 @@ class HomeViewModel @Inject constructor(
     /** The blocking config, with its interval window rolled forward to the one running now. */
     private val currentBlockingConfig: Flow<BlockingConfig> = blockingConfigRepository.observeConfig()
         .flatMapLatest { config ->
-            config.intervalUsage.emitOnEveryRestart(config.settings.intervalLengthMillis)
+            config.intervalUsage.emitUntilExpired(config.settings.intervalLengthMillis)
                 .map { usage -> config.copy(intervalUsage = usage) }
         }
         .distinctUntilChanged()
@@ -525,8 +525,8 @@ private fun buildUsageAnalyticsDayUiState(date: LocalDate, segments: List<Sessio
  * showing the spent window: usage stuck at the allowance, the progress bar full, and the countdown
  * measured from a start that already passed.
  */
-private fun IntervalUsage.emitOnEveryRestart(lengthMillis: Long): Flow<IntervalUsage> = flow {
-    var usage = this@emitOnEveryRestart
+private fun IntervalUsage.emitUntilExpired(lengthMillis: Long): Flow<IntervalUsage> = flow {
+    var usage = this@emitUntilExpired
 
     while (true) {
         // If the stored window expired while the screen was closed or when its duration ended,

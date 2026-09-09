@@ -483,14 +483,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         val showOverlay: () -> Unit
         // Interval mode shows usage within the active interval; other modes show today's total.
         if (config.activeOption == BlockOption.IntervalTimer) {
-            val activeInterval = config.intervalUsage.activeIntervalAt(
-                nowMillis = session.startedAtMillis,
-                lengthMillis = config.settings.intervalLengthMillis,
-            )
             showOverlay = {
                 timerOverlayManager.showInterval(
                     sessionStartAt = session.startedAtMillis,
-                    intervalUsage = activeInterval,
+                    intervalUsage = config.intervalUsage,
                     intervalLengthMillis = config.settings.intervalLengthMillis,
                 )
             }
