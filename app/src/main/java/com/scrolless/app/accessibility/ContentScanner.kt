@@ -22,13 +22,11 @@ import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.accessibility.AccessibilityWindowInfo
 import androidx.annotation.ChecksSdkIntAtLeast
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.ContentBlockAction
 import com.scrolless.app.core.model.DetectionMethod
 import com.scrolless.app.core.model.DetectionNode
 import com.scrolless.app.core.model.DmExemptionRule
-import com.scrolless.app.core.model.ReplyLabels
 import com.scrolless.app.core.model.ResolvedBlockableApp
 import com.scrolless.app.ui.overlay.ContentCover
 import com.scrolless.app.ui.overlay.ContentCoverTarget
@@ -279,25 +277,6 @@ internal class ContentScanner(
         return isVideoSentInDm(blockableApp, rule, cover)
     }
 
-    private fun AccessibilityNodeInfo.hasReplyBelowPlayer(labels: ReplyLabels, cover: ContentCover): Boolean {
-        val pending = ArrayDeque<AccessibilityNodeInfo>()
-        pending.add(this)
-        while (pending.isNotEmpty()) {
-            val node = pending.removeFirst()
-            val isButton = node.isVisibleToUser && node.isEnabled && node.isClickable &&
-                !node.isEditable && node.className?.toString() == "android.widget.Button"
-            if (isButton) {
-                val matchesLabel = labels.matches(node.text) || labels.matches(node.contentDescription) ||
-                    labels.matches(AccessibilityNodeInfoCompat.wrap(node).hintText)
-                if (matchesLabel && node.coverBounds().isDirectlyBelow(cover.target.bounds)) return true
-            }
-            for (index in 0 until node.childCount) {
-                node.getChild(index)?.let(pending::addLast)
-            }
-        }
-        return false
-    }
-
     /**
      * Evaluates whether the current screen is a video sent in a direct message by checking
      * required, optional, and forbidden view IDs configured in [rule].
@@ -321,7 +300,7 @@ internal class ContentScanner(
         if (rule.requiredViewIds.any { !hasVisibleViewId(app.getViewId(it)) }) return false
 
         rule.replyLabelsBelowPlayer?.let { labels ->
-            if (cover == null || !hasReplyBelowPlayer(labels, cover)) return false
+            if (cover == null || !hasReplyBelowPlayer(labels, cover.target.bounds) { it.coverBounds() }) return false
         }
 
         // If any-of elements are specified, at least one must be present on screen.

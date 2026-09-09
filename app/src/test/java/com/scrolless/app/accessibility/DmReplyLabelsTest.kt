@@ -16,6 +16,9 @@
  */
 package com.scrolless.app.accessibility
 
+import android.graphics.Rect
+import android.view.accessibility.AccessibilityNodeInfo
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.DmExemptionRule
 import com.scrolless.app.core.model.ReplyLabels
@@ -23,8 +26,14 @@ import javax.xml.parsers.DocumentBuilderFactory
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
+import org.robolectric.annotation.Config
 import org.w3c.dom.Element
 
+@RunWith(RobolectricTestRunner::class)
+@Config(manifest = Config.NONE, sdk = [28])
 class DmReplyLabelsTest {
     private val labels = requireNotNull(BlockableApp.TIKTOK.getDmExemptionRule()?.replyLabelsBelowPlayer)
 
@@ -45,6 +54,47 @@ class DmReplyLabelsTest {
                 assertTrue(matchesFixture("dm", scale = scale, mirrored = mirrored))
             }
         }
+    }
+
+    @Test
+    fun `production traversal accepts text description and hint on nested buttons`() {
+        for (source in listOf("text", "description", "hint")) {
+            val root = AccessibilityNodeInfo.obtain()
+            val container = AccessibilityNodeInfo.obtain()
+            val reply = replyButton()
+            when (source) {
+                "text" -> reply.text = "Message [recipient]..."
+                "description" -> reply.contentDescription = "Message [recipient]..."
+                "hint" -> AccessibilityNodeInfoCompat.wrap(reply).hintText = "Message [recipient]..."
+            }
+            shadowOf(root).addChild(container)
+            shadowOf(container).addChild(reply)
+            assertTrue(source, root.hasReplyBelowPlayer(labels, ContentBounds(0, 0, 1000, 1800), ::screenBounds))
+        }
+    }
+
+    @Test
+    fun `production matcher rejects hidden disabled nonclickable editable and nonbutton controls`() {
+        val mutations: List<(AccessibilityNodeInfo) -> Unit> = listOf(
+            { it.isVisibleToUser = false },
+            { it.isEnabled = false },
+            { it.isClickable = false },
+            { it.isEditable = true },
+            { it.className = "android.widget.TextView" },
+        )
+        for (mutate in mutations) {
+            val reply = replyButton().apply { text = "Message [recipient]..." }
+            mutate(reply)
+            assertFalse(reply.hasReplyBelowPlayer(labels, ContentBounds(0, 0, 1000, 1800), ::screenBounds))
+        }
+    }
+
+    private fun replyButton() = AccessibilityNodeInfo.obtain().apply {
+        className = "android.widget.Button"
+        isVisibleToUser = true
+        isEnabled = true
+        isClickable = true
+        setBoundsInScreen(Rect(100, 1810, 600, 1910))
     }
 
     @Test
@@ -135,12 +185,28 @@ class DmReplyLabelsTest {
             )
         }
         val player = nodes.firstOrNull { it.getAttribute("resource-id") == "player_view" } ?: return false
-        return nodes.any {
-            it.getAttribute("class") == "android.widget.Button" && it.getAttribute("clickable") == "true" &&
-                it.getAttribute("enabled") == "true" &&
-                labels.matches(if (replaceLabels && it.hasAttribute("text")) "Message [recipient]..." else it.getAttribute("text")) &&
-                bounds(it).isDirectlyBelow(bounds(player))
+        val root = AccessibilityNodeInfo.obtain()
+        for (element in nodes) {
+            val node = AccessibilityNodeInfo.obtain().apply {
+                className = element.getAttribute("class")
+                isVisibleToUser = true
+                isEnabled = element.getAttribute("enabled") == "true"
+                isClickable = element.getAttribute("clickable") == "true"
+                isEditable = className == "android.widget.EditText"
+                text = if (replaceLabels && element.hasAttribute("text")) "Message [recipient]..." else element.getAttribute("text")
+                AccessibilityNodeInfoCompat.wrap(this).hintText = element.getAttribute("hint")
+                val b = bounds(element)
+                setBoundsInScreen(Rect(b.left, b.top, b.right, b.bottom))
+            }
+            shadowOf(root).addChild(node)
         }
+        return root.hasReplyBelowPlayer(labels, bounds(player), ::screenBounds)
+    }
+
+    private fun screenBounds(node: AccessibilityNodeInfo): ContentBounds {
+        val b = Rect()
+        node.getBoundsInScreen(b)
+        return ContentBounds(b.left, b.top, b.right, b.bottom)
     }
 
     private fun fixture(name: String): List<Element> {

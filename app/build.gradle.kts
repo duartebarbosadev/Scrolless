@@ -206,6 +206,7 @@ dependencies {
     add("playImplementation", libs.android.review.ktx)
 
     testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
 
     implementation(projects.core.data)
     implementation(projects.core.designsystem)
