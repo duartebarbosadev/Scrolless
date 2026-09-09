@@ -318,7 +318,7 @@ private fun rememberIntervalRemainingTime(isRunning: Boolean, startMillis: Long,
     return remaining
 }
 
-private fun buildProgressBarSegments(
+internal fun buildProgressBarSegments(
     sessionSegments: List<SessionSegment>,
     currentUsage: Long,
     context: Context,
@@ -333,7 +333,7 @@ private fun buildProgressBarSegments(
 
     return sessionSegments.mapNotNull { segment ->
         val rawUsageMillis = segment.durationMillis.coerceAtLeast(0L)
-        if (rawUsageMillis <= 0L) {
+        if (rawUsageMillis < 1_000L) {
             return@mapNotNull null
         }
         val usageMillis = (rawUsageMillis * scale).toLong().coerceAtLeast(1L)
@@ -346,10 +346,10 @@ private fun buildProgressBarSegments(
     }
 }
 
-private fun buildLegendItems(progressBarSegments: List<ProgressBarSegment>): List<LegendItem> =
+internal fun buildLegendItems(progressBarSegments: List<ProgressBarSegment>): List<LegendItem> =
     progressBarSegments.groupBy { it.segmentName }.mapNotNull { (segmentName, segments) ->
         val totalMillis = segments.sumOf { it.usageMillis.coerceAtLeast(0L) }
-        if (totalMillis <= 0L) {
+        if (totalMillis < 1_000L) {
             return@mapNotNull null
         }
         totalMillis to LegendItem(
