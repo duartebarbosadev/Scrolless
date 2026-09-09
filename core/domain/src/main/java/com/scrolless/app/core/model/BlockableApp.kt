@@ -171,7 +171,6 @@ enum class BlockableApp(
     ),
     TIKTOK_LITE(
         packageIds = listOf("com.zhiliaoapp.musically.go"),
-        // Target the named player view so obfuscated container-ID changes do not break detection.
         detectionMethod = DetectionMethod.ViewId("simplayer_api_player_view"),
         blockAction = ContentBlockAction.CoverVideoRegion,
     ),
