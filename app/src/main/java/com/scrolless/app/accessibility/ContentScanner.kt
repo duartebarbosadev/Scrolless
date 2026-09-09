@@ -163,7 +163,7 @@ internal class ContentScanner(
         ) return null
         return DetectedBlockedContent(
             app = blockableApp,
-            blockingSuppressed = shouldSuppressBlocking(blockableApp),
+            blockingSuppressed = shouldSuppressBlocking(blockableApp, cover),
             cover = cover,
         )
     }
@@ -267,28 +267,25 @@ internal class ContentScanner(
     }
 
     /**
-     * Returns true if blocking should be suppressed because the user allows videos sent in DMs
-     * and this screen matches the app's direct message layout rules.
+     * Checks whether the user's DM allowance applies to this screen.
+     * Skips layout checks when that setting is off or the app has no DM rule, so ordinary blocking
+     * remains unchanged. [cover] supplies player bounds only for rules that check a reply's position.
      */
-    private fun AccessibilityNodeInfo.shouldSuppressBlocking(blockableApp: ResolvedBlockableApp): Boolean {
+    private fun AccessibilityNodeInfo.shouldSuppressBlocking(blockableApp: ResolvedBlockableApp, cover: ContentCover?): Boolean {
         // Only check layout rules if the user explicitly enabled DM video allowance in settings.
         if (!currentAllowVideosSentByDm) return false
         val rule = blockableApp.dmExemptionRule ?: return false
-        return isVideoSentInDm(blockableApp, rule)
+        return isVideoSentInDm(blockableApp, rule, cover)
     }
 
     /**
-     * Evaluates whether the current screen is a video sent in a direct message by checking
-     * required, optional, and forbidden view IDs configured in [rule].
-     *
-     * To prevent accidental false-positive unblocking of the main feed:
-     * - Returns false if any [DmExemptionRule.forbiddenViewIds] are on screen.
-     * - Returns false if any [DmExemptionRule.requiredViewIds] are missing.
-     * - Requires at least one [DmExemptionRule.anyOfViewIds] to match if specified.
+     * Checks the screen against all conditions in the app's DM rule before exempting a video.
+     * Required IDs must be visible, forbidden IDs must be absent, and an any-of group needs a match.
+     * If reply labels are configured, a matching button must also sit below the player in [cover].
      */
-    private fun AccessibilityNodeInfo.isVideoSentInDm(app: ResolvedBlockableApp, rule: DmExemptionRule): Boolean {
+    private fun AccessibilityNodeInfo.isVideoSentInDm(app: ResolvedBlockableApp, rule: DmExemptionRule, cover: ContentCover?): Boolean {
         // If an app defines no DM rules, we cannot determine DM state; fail closed (do not exempt).
-        if (rule.requiredViewIds.isEmpty() && rule.anyOfViewIds.isEmpty()) return false
+        if (rule.requiredViewIds.isEmpty() && rule.anyOfViewIds.isEmpty() && rule.replyLabelsBelowPlayer == null) return false
 
         // If any feed-only or non-DM indicator is on screen (e.g. "suggested reels" title),
         // reject exemption immediately to prevent accidental unblocking of the feed.
@@ -297,6 +294,10 @@ internal class ContentScanner(
         // All required DM elements (e.g. sender username, reply input) must be simultaneously visible.
         // If even one is missing, this screen is not a confirmed DM video.
         if (rule.requiredViewIds.any { !hasVisibleViewId(app.getViewId(it)) }) return false
+
+        rule.replyLabelsBelowPlayer?.let { labels ->
+            if (cover == null || !hasReplyBelowPlayer(labels, cover.target.bounds) { it.coverBounds() }) return false
+        }
 
         // If any-of elements are specified, at least one must be present on screen.
         return rule.anyOfViewIds.isEmpty() || rule.anyOfViewIds.any { hasVisibleViewId(app.getViewId(it)) }

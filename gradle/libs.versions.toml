@@ -24,6 +24,7 @@ gradle-versions = "0.54.0"
 hilt = "2.60.1"
 jdkDesugar = "2.1.5"
 junit = "4.13.2"
+robolectric = "4.16"
 kotlin = "2.4.0"
 kotlinx_immutable = "0.5.1"
 ksp = "2.3.9"
@@ -41,6 +42,7 @@ timber = "5.0.1"
 version-catalog-update = "1.1.0"
 
 [libraries]
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 # Review Library
 android-review = { module = "com.google.android.play:review", version.ref = "review" }
 android-review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "review" }

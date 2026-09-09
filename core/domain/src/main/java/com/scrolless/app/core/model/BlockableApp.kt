@@ -110,12 +110,15 @@ sealed interface ContentBlockAction {
  * @property requiredViewIds All of these view IDs must be visible.
  * @property anyOfViewIds At least one of these view IDs must be visible (if non-empty).
  * @property forbiddenViewIds None of these view IDs may be visible.
+ * @property replyLabelsBelowPlayer App-provided labels for a visible, enabled, non-editable reply button
+ * directly below the detected player. Requires a content cover; combines with the ID rules above.
  */
 @Immutable
 data class DmExemptionRule(
     val requiredViewIds: Set<String> = emptySet(),
     val anyOfViewIds: Set<String> = emptySet(),
     val forbiddenViewIds: Set<String> = emptySet(),
+    val replyLabelsBelowPlayer: ReplyLabels? = null,
 )
 
 /**
@@ -163,12 +166,9 @@ enum class BlockableApp(
         ),
         detectionMethod = DetectionMethod.ViewId("player_view"),
         blockAction = ContentBlockAction.CoverVideoRegion,
-        // In TikTok DM video playback, the bottom reply bar consists of the container (l7v),
-        // the reply message button (tyk), and the quick-reaction emojis container (h9o).
-        // Requiring all three prevents accidental unblocking of the main feed if any single
-        // obfuscated ID is reused elsewhere in future updates.
+        // Translated recipient labels survive resource-ID renaming across TikTok builds.
         dmExemptionRule = DmExemptionRule(
-            requiredViewIds = setOf("l7v", "tyk", "h9o"),
+            replyLabelsBelowPlayer = TikTokDmReplyLabels,
         ),
     ),
     TIKTOK_LITE(
