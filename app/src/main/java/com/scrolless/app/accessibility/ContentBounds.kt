@@ -24,4 +24,9 @@ internal data class ContentBounds(val left: Int, val top: Int, val right: Int, v
     val width: Int get() = right - left
     val height: Int get() = bottom - top
     val isVisible: Boolean get() = width > 0 && height > 0
+
+    /** A reply control below the player, allowing a gap of at most the control's own height. */
+    fun isDirectlyBelow(player: ContentBounds): Boolean = isVisible && player.isVisible &&
+        top >= player.bottom && top - player.bottom <= height &&
+        left >= player.left && right <= player.right
 }

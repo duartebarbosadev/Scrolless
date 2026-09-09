@@ -104,13 +104,9 @@ class ContentCoverTest {
         assertTrue(reelsRule!!.requiredViewIds.contains("reply_bar_edittext"))
         assertTrue(reelsRule.forbiddenViewIds.contains("suggested_title"))
 
-        val tiktokRule = BlockableApp.TIKTOK.getDmExemptionRule()
-        assertNotNull(tiktokRule)
-        assertTrue(tiktokRule!!.requiredViewIds.contains("tyk"))
-
-        val resolved = ResolvedBlockableApp(BlockableApp.TIKTOK, "com.zhiliaoapp.musically")
-        assertEquals("com.zhiliaoapp.musically:id/tyk", resolved.getViewId("tyk"))
-        assertEquals(tiktokRule, resolved.dmExemptionRule)
+        val tiktokRule = requireNotNull(BlockableApp.TIKTOK.getDmExemptionRule())
+        assertTrue(tiktokRule.requiredViewIds.isEmpty())
+        assertTrue(requireNotNull(tiktokRule.replyLabelsBelowPlayer).matches("Message [recipient]..."))
 
         assertNull(BlockableApp.TIKTOK_LITE.getDmExemptionRule())
         assertNull(BlockableApp.SHORTS.getDmExemptionRule())
