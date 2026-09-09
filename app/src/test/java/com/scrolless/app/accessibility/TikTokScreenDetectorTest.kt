@@ -29,6 +29,11 @@ class TikTokScreenDetectorTest {
     }
 
     @Test
+    fun `captured DM video covers the player correctly`() {
+        assertEquals(ContentBounds(0, 97, 1080, 2160), TikTokScreenDetector.coverBounds(fixture("dm_video")))
+    }
+
+    @Test
     fun `captured Inbox contains no blockable video`() {
         assertNull(TikTokScreenDetector.coverBounds(fixture("inbox")))
     }
