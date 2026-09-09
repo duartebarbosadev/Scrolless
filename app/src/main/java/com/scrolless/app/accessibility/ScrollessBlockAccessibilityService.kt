@@ -541,11 +541,13 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Records viewing time in the session tracker and closes the session with the blocking manager. */
     private suspend fun saveViewing(finished: FinishedViewing) {
-        if (finished.durationMillis > 0L) {
+        if (finished.durationMillis >= MIN_TRACKED_DURATION_MILLIS) {
             sessionTracker.addToDailyUsage(finished.durationMillis, finished.app.app)
+            blockingManager.onExitBlockedContent(finished.startedAtMillis, finished.endedAtMillis)
+        } else {
+            // Sub-second duration (such as content immediately blocked on enter) does not count as viewed content.
+            blockingManager.onExitBlockedContent(finished.startedAtMillis, finished.startedAtMillis)
         }
-        // Even a video blocked immediately must close the session that the manager opened.
-        blockingManager.onExitBlockedContent(finished.startedAtMillis, finished.endedAtMillis)
     }
 
     /** Starts periodic checks to monitor usage limits while content is visible. */
@@ -684,5 +686,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private companion object {
         /** Default event debounce timeout in ms (matches android:notificationTimeout in accessibility_service_config.xml). */
         const val DEFAULT_NOTIFICATION_TIMEOUT_MS = 250L
+
+        /** Minimum viewing duration required to record usage. Sub-second visits (like immediate blocks) are ignored. */
+        const val MIN_TRACKED_DURATION_MILLIS = 1_000L
     }
 }

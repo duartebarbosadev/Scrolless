@@ -18,6 +18,7 @@ package com.scrolless.app.accessibility
 
 import android.accessibilityservice.AccessibilityService
 import android.os.Build
+import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.accessibility.AccessibilityWindowInfo
 import androidx.annotation.ChecksSdkIntAtLeast
@@ -25,6 +26,7 @@ import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.ContentBlockAction
 import com.scrolless.app.core.model.DetectionMethod
 import com.scrolless.app.core.model.DetectionNode
+import com.scrolless.app.core.model.DmExemptionRule
 import com.scrolless.app.core.model.ResolvedBlockableApp
 import com.scrolless.app.ui.overlay.ContentCover
 import com.scrolless.app.ui.overlay.ContentCoverTarget
@@ -161,7 +163,7 @@ internal class ContentScanner(
         ) return null
         return DetectedBlockedContent(
             app = blockableApp,
-            blockingSuppressed = shouldSuppressBlocking(blockableApp),
+            blockingSuppressed = shouldSuppressBlocking(blockableApp, cover),
             cover = cover,
         )
     }
@@ -258,32 +260,53 @@ internal class ContentScanner(
 
         // View IDs are indexed by Android, so use the platform lookup instead of walking the tree.
         if (detectionMethod is DetectionMethod.ViewId) {
-            return findAccessibilityNodeInfosByViewId(blockableApp.getViewId(detectionMethod)).any(::isNodeVisibleToTheUser)
+            return hasVisibleViewId(blockableApp.getViewId(detectionMethod))
         }
 
         return matchesComplexBlockedContent(blockableApp)
     }
 
-    // Only Instagram has DM-screen detection here so far; other apps do not use this exemption yet.
-    private fun AccessibilityNodeInfo.shouldSuppressBlocking(blockableApp: ResolvedBlockableApp): Boolean {
-        return blockableApp.app == BlockableApp.REELS &&
-            currentAllowVideosSentByDm &&
-            isInstagramReelSentInDm(blockableApp)
+    /**
+     * Checks whether the user's DM allowance applies to this screen.
+     * Skips layout checks when that setting is off or the app has no DM rule, so ordinary blocking
+     * remains unchanged. [cover] supplies player bounds only for rules that check a reply's position.
+     */
+    private fun AccessibilityNodeInfo.shouldSuppressBlocking(blockableApp: ResolvedBlockableApp, cover: ContentCover?): Boolean {
+        // Only check layout rules if the user explicitly enabled DM video allowance in settings.
+        if (!currentAllowVideosSentByDm) return false
+        val rule = blockableApp.dmExemptionRule ?: return false
+        return isVideoSentInDm(blockableApp, rule, cover)
     }
 
-    private fun AccessibilityNodeInfo.isInstagramReelSentInDm(blockableApp: ResolvedBlockableApp): Boolean {
-        val senderUsernameId = blockableApp.getViewId(DetectionMethod.ViewId(INSTAGRAM_DM_SENDER_USERNAME_VIEW_ID))
-        val senderTimestampId = blockableApp.getViewId(DetectionMethod.ViewId(INSTAGRAM_DM_SENDER_TIMESTAMP_VIEW_ID))
-        val replyBarId = blockableApp.getViewId(DetectionMethod.ViewId(INSTAGRAM_DM_REPLY_BAR_VIEW_ID))
-        val suggestedTitleId = blockableApp.getViewId(DetectionMethod.ViewId(INSTAGRAM_SUGGESTED_TITLE_VIEW_ID))
+    /**
+     * Checks the screen against all conditions in the app's DM rule before exempting a video.
+     * Required IDs must be visible, forbidden IDs must be absent, and an any-of group needs a match.
+     * If reply labels are configured, a matching button must also sit below the player in [cover].
+     */
+    private fun AccessibilityNodeInfo.isVideoSentInDm(app: ResolvedBlockableApp, rule: DmExemptionRule, cover: ContentCover?): Boolean {
+        // If an app defines no DM rules, we cannot determine DM state; fail closed (do not exempt).
+        if (rule.requiredViewIds.isEmpty() && rule.anyOfViewIds.isEmpty() && rule.replyLabelsBelowPlayer == null) return false
 
-        // Sender details and a reply bar identify the DM viewer; recommendations are not DM videos.
-        return hasVisibleViewId(senderUsernameId) &&
-            hasVisibleViewId(senderTimestampId) &&
-            hasVisibleViewId(replyBarId) &&
-            !hasVisibleViewId(suggestedTitleId)
+        // If any feed-only or non-DM indicator is on screen (e.g. "suggested reels" title),
+        // reject exemption immediately to prevent accidental unblocking of the feed.
+        if (rule.forbiddenViewIds.any { hasVisibleViewId(app.getViewId(it)) }) return false
+
+        // All required DM elements (e.g. sender username, reply input) must be simultaneously visible.
+        // If even one is missing, this screen is not a confirmed DM video.
+        if (rule.requiredViewIds.any { !hasVisibleViewId(app.getViewId(it)) }) return false
+
+        rule.replyLabelsBelowPlayer?.let { labels ->
+            if (cover == null || !hasReplyBelowPlayer(labels, cover.target.bounds) { it.coverBounds() }) return false
+        }
+
+        // If any-of elements are specified, at least one must be present on screen.
+        return rule.anyOfViewIds.isEmpty() || rule.anyOfViewIds.any { hasVisibleViewId(app.getViewId(it)) }
     }
 
+    /**
+     * Finds nodes with the given fully-qualified [viewId] and verifies at least one is visible
+     * to the user with positive screen dimensions.
+     */
     private fun AccessibilityNodeInfo.hasVisibleViewId(viewId: String): Boolean {
         return findAccessibilityNodeInfosByViewId(viewId).any(::isNodeVisibleToTheUser)
     }
@@ -354,12 +377,5 @@ internal class ContentScanner(
         val rect = android.graphics.Rect()
         node.getBoundsInScreen(rect)
         return node.isVisibleToUser && rect.width() > 0 && rect.height() > 0
-    }
-
-    private companion object {
-        const val INSTAGRAM_DM_SENDER_USERNAME_VIEW_ID = "sender_username_or_fullname"
-        const val INSTAGRAM_DM_SENDER_TIMESTAMP_VIEW_ID = "sender_timestamp"
-        const val INSTAGRAM_DM_REPLY_BAR_VIEW_ID = "reply_bar_edittext"
-        const val INSTAGRAM_SUGGESTED_TITLE_VIEW_ID = "suggested_title"
     }
 }

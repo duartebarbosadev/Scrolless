@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<hierarchy>
+  <node class="android.widget.Button" bounds="[910,1213][1080,1310]" clickable="true" enabled="true" />
+  <node class="android.widget.Button" bounds="[900,1310][1080,1479]" clickable="true" enabled="true" />
+  <node class="android.widget.Button" bounds="[900,1436][1080,1460]" clickable="true" enabled="true" text="redacted" />
+  <node class="android.widget.Button" bounds="[900,1479][1080,1648]" clickable="true" enabled="true" />
+  <node class="android.widget.Button" bounds="[908,1605][1071,1628]" clickable="true" enabled="true" text="redacted" />
+  <node class="android.widget.Button" bounds="[900,1648][1080,1817]" clickable="false" enabled="true" />
+  <node class="android.widget.Button" bounds="[900,1986][1080,2160]" clickable="true" enabled="true" />
+  <node class="android.widget.Button" bounds="[900,1817][1080,1986]" clickable="true" enabled="true" />
+  <node class="android.widget.Button" bounds="[911,1924][1080,1983]" clickable="true" enabled="true" text="redacted" />
+  <node class="android.widget.Button" bounds="[34,1951][418,2013]" clickable="true" enabled="true" text="redacted" />
+  <node class="android.widget.Button" bounds="[34,2103][373,2148]" clickable="true" enabled="true" text="redacted" />
+  <node class="android.widget.FrameLayout" bounds="[0,97][1080,2160]" clickable="false" enabled="true" resource-id="player_view" />
+  <node class="android.widget.Button" bounds="[147,2178][652,2294]" clickable="true" enabled="true" text="Message [recipient]..." hint="Message [recipient]..." />
+  <node class="android.widget.Button" bounds="[652,2192][759,2279]" clickable="true" enabled="true" text="redacted" />
+  <node class="android.widget.Button" bounds="[759,2192][894,2279]" clickable="true" enabled="true" text="redacted" />
+  <node class="android.widget.Button" bounds="[894,2192][1001,2279]" clickable="true" enabled="true" text="redacted" />
+</hierarchy>

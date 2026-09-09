@@ -74,13 +74,13 @@ class BlockingConfigRepositoryImplTest {
 
         repository.configureIntervalTimer(allowanceMillis = 2 * MINUTE_MILLIS, intervalLengthMillis = 60 * MINUTE_MILLIS)
 
-        // Rolled forward with the old length first, so the longer interval starts empty instead of
-        // measuring the stale window against it and finding it still running.
+        // Expired window returns NOT_STARTED, so the new interval starts idle at 0L instead of
+        // resurrecting the stale window or synthesizing an artificial ongoing window.
         coVerify(exactly = 1) {
             dao.configureIntervalTimer(
                 allowanceMillis = 2 * MINUTE_MILLIS,
                 intervalLengthMillis = 60 * MINUTE_MILLIS,
-                windowStart = 21_000L,
+                windowStart = 0L,
                 usage = 0L,
             )
         }
@@ -146,7 +146,7 @@ class BlockingConfigRepositoryImplTest {
 
         assertEquals(1_000L, saved.startMillis)
         assertEquals(4_000L, saved.usageMillis)
-        assertEquals(21_000L, saved.activeIntervalAt(nowMillis = 25_000L, lengthMillis = 10_000L).startMillis)
+        assertEquals(0L, saved.activeIntervalAt(nowMillis = 25_000L, lengthMillis = 10_000L).startMillis)
         assertEquals(0L, saved.activeIntervalAt(nowMillis = 25_000L, lengthMillis = 10_000L).usageMillis)
         coVerify(exactly = 0) { dao.updateIntervalState(any(), any()) }
     }

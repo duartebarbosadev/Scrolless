@@ -21,14 +21,15 @@ import androidx.compose.runtime.Immutable
 /**
  * Saved usage for an interval timer.
  *
- * For example, a timer starting at 10:00 with a 30-minute length has intervals from 10:00–10:30,
- * 10:30–11:00, and so on. [startMillis] is the start of the last interval saved after a session
- * ended, and [usageMillis] is the time watched during that interval. `0` means the timer has not
- * started.
+ * [startMillis] is the start of the last interval saved after a viewing session ended, and
+ * [usageMillis] is the time watched during that interval. A start of `0` means the timer is idle.
  *
- * Time passing does not update the database by itself. If the saved interval has ended, the
- * functions below calculate the current interval in memory with zero usage. That new interval is
- * saved when the next viewing session ends.
+ * An expired interval stays idle until viewing resumes. For example, if a 30-minute interval ends
+ * at 10:30 and viewing resumes at 10:45, the next interval starts at 10:45. Continuous viewing
+ * across 10:30 starts the next interval at that boundary instead.
+ *
+ * These calculations do not update the database. The interval and its usage are saved when the
+ * viewing session ends.
  */
 @Immutable
 data class IntervalUsage(val startMillis: Long, val usageMillis: Long) {
@@ -39,12 +40,13 @@ data class IntervalUsage(val startMillis: Long, val usageMillis: Long) {
     /**
      * Returns the interval active at [nowMillis].
      *
-     * If [nowMillis] is still inside the saved interval, its usage is preserved. If one or more
-     * intervals have ended, the returned value starts at the most recent boundary with zero usage.
+     * If [nowMillis] is still inside the saved interval, its usage is preserved. If the saved
+     * interval has ended, returns [NOT_STARTED] so the timer remains idle until the user
+     * watches another video.
      *
-     * @return This same [IntervalUsage] instance when the timer has not started, the interval length
-     * is invalid, the clock moved backwards, or the saved interval is still active. Otherwise,
-     * returns a new instance for the active interval with zero usage.
+     * @return [NOT_STARTED] when the saved interval has elapsed. Otherwise returns this same
+     * instance, including when the timer has not started, the length is invalid, or the clock
+     * moved backwards.
      */
     fun activeIntervalAt(nowMillis: Long, lengthMillis: Long): IntervalUsage {
         if (!isStarted || lengthMillis <= 0L) return this
@@ -63,38 +65,50 @@ data class IntervalUsage(val startMillis: Long, val usageMillis: Long) {
             return this
         }
 
-        val intervalsPassed = elapsedMillis / lengthMillis
-
-        return IntervalUsage(startMillis = startMillis + intervalsPassed * lengthMillis, usageMillis = 0L)
+        return NOT_STARTED
     }
 
-    /** Milliseconds until the interval active at [nowMillis] ends. */
+    /** Milliseconds until the interval active at [nowMillis] ends, or 0 if not running. */
     fun remainingMillisAt(nowMillis: Long, lengthMillis: Long): Long {
         if (!isStarted || lengthMillis <= 0L) return 0L
 
         val current = activeIntervalAt(nowMillis, lengthMillis)
+        if (!current.isStarted) return 0L
 
         return (current.startMillis + lengthMillis - nowMillis).coerceIn(0L, lengthMillis)
     }
 
     /**
-     * Adds the part of a session watched during the interval active at [sessionEndMillis]. If the
-     * session began in an earlier interval, only time watched after the current interval started is
-     * added.
+     * Adds the part of a session watched during the interval active at [sessionEndMillis].
      *
-     * Passing the current time as [sessionEndMillis] gives the usage including a session still in
-     * progress, without having to save it.
+     * If the interval timer has not started or the previous window has already ended, this
+     * session starts a fresh interval anchored at [sessionStartMillis].
+     *
+     * If a session began in an earlier active interval and crossed into the next, only time
+     * watched after the window boundary is counted in the new window.
      */
     fun plusSession(sessionStartMillis: Long, sessionEndMillis: Long, lengthMillis: Long): IntervalUsage {
-        // The first session starts the timer. If the device clock was changed to a time before the
-        // saved interval, move its start to this session so watched time can still be counted, but
-        // preserve the saved usage so changing the clock does not restore the allowance.
-        val schedule = if (!isStarted || sessionEndMillis < startMillis) copy(startMillis = sessionStartMillis) else this
+        if (lengthMillis <= 0L) return this
 
-        val current = schedule.activeIntervalAt(sessionEndMillis, lengthMillis)
-        val watched = sessionEndMillis - maxOf(sessionStartMillis, current.startMillis)
+        // If not started, or if clock moved backwards, or if the previous window ended before this session began:
+        // this session anchors a fresh interval starting at sessionStartMillis.
+        val schedule = if (!isStarted || sessionStartMillis >= startMillis + lengthMillis || sessionEndMillis < startMillis) {
+            val baseUsage = if (isStarted && sessionEndMillis < startMillis) usageMillis else 0L
+            copy(startMillis = sessionStartMillis, usageMillis = baseUsage)
+        } else {
+            this
+        }
 
-        return current.copy(usageMillis = current.usageMillis + watched.coerceAtLeast(0L))
+        val elapsedMillis = sessionEndMillis - schedule.startMillis
+        if (elapsedMillis >= lengthMillis) {
+            val intervalsPassed = elapsedMillis / lengthMillis
+            val newStart = schedule.startMillis + intervalsPassed * lengthMillis
+            val watchedInNewWindow = sessionEndMillis - maxOf(sessionStartMillis, newStart)
+            return IntervalUsage(startMillis = newStart, usageMillis = watchedInNewWindow.coerceAtLeast(0L))
+        }
+
+        val watched = sessionEndMillis - maxOf(sessionStartMillis, schedule.startMillis)
+        return schedule.copy(usageMillis = schedule.usageMillis + watched.coerceAtLeast(0L))
     }
 
     companion object {

@@ -48,7 +48,7 @@ class IntervalTimerBlockHandler(
     /** Includes the session in progress, which is not saved yet, when checking the allowance. */
     override suspend fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult {
         val now = timeProvider.currentTimeInMillis()
-        val usage = usageAt(now)
+        val usage = blockingConfigRepository.getConfig().intervalUsage
             .plusSession(sessionStartMillis = now - elapsedTime, sessionEndMillis = now, lengthMillis = intervalLengthMillis)
             .usageMillis
 
