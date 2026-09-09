@@ -64,8 +64,8 @@ class BlockingConfigRepositoryImpl @Inject constructor(
         require(allowanceMillis > 0L) { "Interval allowance must be greater than zero" }
         require(intervalLengthMillis > 0L) { "Interval length must be greater than zero" }
 
-        // Roll the window forward with the length it was recorded under before storing the new
-        // one, otherwise lengthening the interval revives an expired window and its usage.
+        // Check if the saved interval is still active with the length it was recorded under.
+        // If expired or not started, save 0L so the timer stays idle until the first video is watched.
         val config = getConfig()
         val current = config.intervalUsage.activeIntervalAt(timeProvider.currentTimeInMillis(), config.settings.intervalLengthMillis)
 

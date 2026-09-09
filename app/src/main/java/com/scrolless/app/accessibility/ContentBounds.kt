@@ -24,4 +24,13 @@ internal data class ContentBounds(val left: Int, val top: Int, val right: Int, v
     val width: Int get() = right - left
     val height: Int get() = bottom - top
     val isVisible: Boolean get() = width > 0 && height > 0
+
+    /**
+     * Checks whether this control sits below [player] and within its horizontal edges.
+     * Allows a gap up to the control's own height so spacing scales with the UI instead of relying
+     * on fixed pixels. Both rectangles must have positive dimensions and use the same coordinates.
+     */
+    fun isDirectlyBelow(player: ContentBounds): Boolean = isVisible && player.isVisible &&
+        top >= player.bottom && top - player.bottom <= height &&
+        left >= player.left && right <= player.right
 }
