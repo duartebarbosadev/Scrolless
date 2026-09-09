@@ -26,6 +26,7 @@
         <item quantity="one">%1$d मिनट</item>
     </plurals>
     <string name="settings_allow_videos_sent_by_dms_description">DMs में भेजे गए वीडियो को ब्लॉक न करें।</string>
+    <string name="settings_allow_videos_sent_by_dms_note">TikTok Lite में यह सुविधा उपलब्ध नहीं है</string>
     <string name="settings_allow_videos_sent_by_dms_title">DMs में भेजे गए वीडियो</string>
     <string name="settings_show_onscreen_timer_description">छोटे वीडियो देखते समय एक फ़्लोटिंग टाइमर दृश्यमान रखें।</string>
     <string name="settings_show_onscreen_timer_title">ऑन-स्क्रीन टाइमर दिखाएँ</string>

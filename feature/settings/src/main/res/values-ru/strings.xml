@@ -28,6 +28,7 @@
         <item quantity="other">%1$d минут</item>
     </plurals>
     <string name="settings_allow_videos_sent_by_dms_description">Не блокировать видео, отправленные в личных сообщениях.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">Не поддерживается в TikTok Lite</string>
     <string name="settings_allow_videos_sent_by_dms_title">Видео, отправленные в личных сообщениях</string>
     <string name="settings_show_onscreen_timer_description">Отображать плавающий таймер во время просмотра коротких видео.</string>
     <string name="settings_show_onscreen_timer_title">Показывать таймер на экране</string>

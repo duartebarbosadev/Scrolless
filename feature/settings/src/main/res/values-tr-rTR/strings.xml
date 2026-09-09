@@ -26,6 +26,7 @@
         <item quantity="one">%1$d dakika</item>
     </plurals>
     <string name="settings_allow_videos_sent_by_dms_description">DM\'lerde gönderilen videolar engellenmez.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">TikTok Lite uygulamasında desteklenmez</string>
     <string name="settings_allow_videos_sent_by_dms_title">DM\'lerde gönderilen videolar</string>
     <string name="settings_show_onscreen_timer_description">Kısa videolar izlerken kayan zamanlayıcıyı görünür tut.</string>
     <string name="settings_show_onscreen_timer_title">Ekran zamanlayıcısını göster</string>

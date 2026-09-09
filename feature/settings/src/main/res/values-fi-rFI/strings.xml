@@ -26,6 +26,7 @@
         <item quantity="one">%1$d minuutti</item>
     </plurals>
     <string name="settings_allow_videos_sent_by_dms_description">Älä estä DM-viesteissä lähetettyjä videoita.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">Ei tueta TikTok Litessä</string>
     <string name="settings_allow_videos_sent_by_dms_title">DM-viesteissä lähetetyt videot</string>
     <string name="settings_show_onscreen_timer_description">Pidä kelluva ajastin näkyvissä, kun katsot lyhytvideoita.</string>
     <string name="settings_show_onscreen_timer_title">Näytä ajastin näytöllä</string>

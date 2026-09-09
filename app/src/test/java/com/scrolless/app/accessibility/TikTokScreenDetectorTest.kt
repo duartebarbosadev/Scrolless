@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.accessibility
 
+import com.scrolless.app.core.model.BlockableApp
 import javax.xml.parsers.DocumentBuilderFactory
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -23,48 +24,63 @@ import org.junit.Test
 import org.w3c.dom.Element
 
 class TikTokScreenDetectorTest {
+    private val detector = TikTokScreenDetector(BlockableApp.TIKTOK)
+
     @Test
     fun `captured feed covers the player but not native navigation`() {
-        assertEquals(ContentBounds(0, 0, 1080, 2160), TikTokScreenDetector.coverBounds(fixture("home")))
+        assertEquals(ContentBounds(0, 0, 1080, 2160), detector.coverBounds(fixture("home")))
     }
 
     @Test
     fun `captured DM video covers the player correctly`() {
-        assertEquals(ContentBounds(0, 97, 1080, 2160), TikTokScreenDetector.coverBounds(fixture("dm_video")))
+        assertEquals(ContentBounds(0, 97, 1080, 2160), detector.coverBounds(fixture("dm_video")))
     }
 
     @Test
     fun `captured Inbox contains no blockable video`() {
-        assertNull(TikTokScreenDetector.coverBounds(fixture("inbox")))
+        assertNull(detector.coverBounds(fixture("inbox")))
     }
 
     @Test
     fun `invisible players are not covered without active cover`() {
         val nodes = fixture("home").map {
-            if (it.viewId == TikTokScreenDetector.PLAYER) it.copy(isVisible = false) else it
+            if (it.viewId == "player_view") it.copy(isVisible = false) else it
         }
-        assertNull(TikTokScreenDetector.coverBounds(nodes))
+        assertNull(detector.coverBounds(nodes))
     }
 
     @Test
     fun `invisible player occluded by active cover remains covered`() {
-        val player = fixture("home").first { it.viewId == TikTokScreenDetector.PLAYER }
+        val player = fixture("home").first { it.viewId == "player_view" }
         val nodes = fixture("home").map {
-            if (it.viewId == TikTokScreenDetector.PLAYER) it.copy(isVisible = false) else it
+            if (it.viewId == "player_view") it.copy(isVisible = false) else it
         }
-        assertEquals(player.bounds, TikTokScreenDetector.coverBounds(nodes, activeCoverBounds = player.bounds))
+        assertEquals(player.bounds, detector.coverBounds(nodes, activeCoverBounds = player.bounds))
     }
 
     @Test
     fun `offscreen empty players do not match`() {
         val nodes = listOf(ContentCoverNode("player_view", ContentBounds(0, 2160, 1080, 2160), true))
-        assertNull(TikTokScreenDetector.coverBounds(nodes))
+        assertNull(detector.coverBounds(nodes))
     }
 
     @Test
     fun `visible videos opened from a native tab still get detected`() {
-        val player = fixture("home").first { it.viewId == TikTokScreenDetector.PLAYER }
-        assertEquals(player.bounds, TikTokScreenDetector.coverBounds(fixture("inbox") + player))
+        val player = fixture("home").first { it.viewId == "player_view" }
+        assertEquals(player.bounds, detector.coverBounds(fixture("inbox") + player))
+    }
+
+    /** Verifies Lite uses its own player bounds and keeps the cover when it obscures that player. */
+    @Test
+    fun `Lite covers its player without matching the regular TikTok ID`() {
+        val lite = TikTokScreenDetector(BlockableApp.TIKTOK_LITE)
+        val bounds = ContentBounds(0, 97, 1080, 2160)
+        val player = ContentCoverNode("simplayer_api_player_view", bounds, true)
+        assertEquals(bounds, lite.coverBounds(listOf(player)))
+        assertEquals(bounds, lite.coverBounds(listOf(player.copy(isVisible = false)), bounds))
+        assertNull(lite.coverBounds(listOf(player.copy(isVisible = false))))
+        assertNull(lite.coverBounds(listOf(player.copy(viewId = "player_view"))))
+        assertNull(lite.coverBounds(emptyList(), bounds))
     }
 
     private fun fixture(name: String): List<ContentCoverNode> {

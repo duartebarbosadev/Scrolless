@@ -28,6 +28,7 @@
         <item quantity="other">%1$d minuty</item>
     </plurals>
     <string name="settings_allow_videos_sent_by_dms_description">Nie blokuj filmów wysyłanych w wiadomościach prywatnych.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">Ta funkcja nie jest obsługiwana w TikTok Lite</string>
     <string name="settings_allow_videos_sent_by_dms_title">Filmy wysyłane w wiadomościach prywatnych</string>
     <string name="settings_show_onscreen_timer_description">Utrzymuj widoczny pływający minutnik podczas oglądania krótkich filmów.</string>
     <string name="settings_show_onscreen_timer_title">Pokaż minutnik na ekranie</string>

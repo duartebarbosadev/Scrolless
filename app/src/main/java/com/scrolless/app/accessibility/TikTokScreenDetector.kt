@@ -18,12 +18,15 @@ package com.scrolless.app.accessibility
 
 import com.scrolless.app.R
 import com.scrolless.app.core.model.BlockableApp
+import com.scrolless.app.core.model.DetectionMethod
 
-/** Covers TikTok's visible player while leaving the rest of the app usable. */
-internal object TikTokScreenDetector : ContentCoverDetector {
-    override val app = BlockableApp.TIKTOK
-    const val PLAYER = "player_view"
-    override val viewIds = setOf(PLAYER)
+/**
+ * Covers the configured player in either TikTok variant while keeping navigation accessible.
+ * Reads the player's ID from the app rule so detection and cover placement use the same target.
+ */
+internal class TikTokScreenDetector(override val app: BlockableApp) : ContentCoverDetector {
+    private val playerViewId = (app.getDetectionMethod() as DetectionMethod.ViewId).viewId
+    override val viewIds = setOf(playerViewId)
     override val titleRes = R.string.tiktok_blocked_title
     override val descriptionRes = R.string.tiktok_blocked_description
 
@@ -34,6 +37,6 @@ internal object TikTokScreenDetector : ContentCoverDetector {
      * as the player view remains at the covered bounds.
      */
     override fun coverBounds(nodes: List<ContentCoverNode>, activeCoverBounds: ContentBounds?): ContentBounds? = nodes.firstOrNull {
-        it.viewId == PLAYER && it.bounds.isVisible && (it.isVisible || it.bounds == activeCoverBounds)
+        it.viewId == playerViewId && it.bounds.isVisible && (it.isVisible || it.bounds == activeCoverBounds)
     }?.bounds
 }

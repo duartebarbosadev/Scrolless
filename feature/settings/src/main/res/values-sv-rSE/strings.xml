@@ -26,6 +26,7 @@
         <item quantity="one">%1$d minut</item>
     </plurals>
     <string name="settings_allow_videos_sent_by_dms_description">Blockera inte videor som skickats i DM.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">Stöds inte i TikTok Lite</string>
     <string name="settings_allow_videos_sent_by_dms_title">Videor skickade i DM</string>
     <string name="settings_show_onscreen_timer_description">Håll en flytande timer synlig när du tittar på kort videoinnehåll.</string>
     <string name="settings_show_onscreen_timer_title">Visa timer på skärmen</string>
