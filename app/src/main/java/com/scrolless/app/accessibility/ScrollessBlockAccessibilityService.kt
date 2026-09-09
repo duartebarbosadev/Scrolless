@@ -101,6 +101,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     /** Main thread handler for running UI-related actions like overlays and navigation. */
     private val mainHandler = Handler(Looper.getMainLooper())
 
+    private val contentScanScheduler = ContentScanScheduler(mainHandler)
+
     /** Coroutine scope for service operations. Uses SupervisorJob so child failures don't cancel the service. */
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
@@ -282,6 +284,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * @param reason Diagnostic message for logs explaining why the session ended.
      */
     private fun handleTrackedAppExit(reason: String) {
+        contentScanScheduler.cancel()
         // A window cover can outlive tracking while its parent animates away. Screen-off clears it.
         if (!powerManager.isInteractive) blockedContentOverlayManager.hide()
         if (contentSession == null && currentForegroundBrainRotApp == null) {
@@ -330,9 +333,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     /**
-     * Processes incoming accessibility events to detect when the user enters or exits blocked content.
-     *
-     * @param event The accessibility event emitted by Android.
+     * Requests a scan when Android reports a screen change.
+     * Repeated content updates from an already covered app are grouped to reduce tree reads;
+     * window changes and events from other apps run immediately so covers do not linger after an exit.
+     * Copies the event's package and type because Android recycles the event after this callback.
      */
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
         if (!powerManager.isInteractive) {
@@ -340,9 +344,27 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             return
         }
 
+        // AccessibilityEvent is recycled after this callback; retain only its immutable fields.
+        val packageName = event.packageName?.toString()
+        val eventType = event.eventType
+        val coalesce = eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED &&
+            contentSession?.isCovered == true && packageName == contentSession?.app?.packageId
+        contentScanScheduler.submit(coalesce = coalesce) { scanAccessibilityEvent(packageName, eventType) }
+    }
+
+    /**
+     * Reads the current screen and updates its blocking session and cover on the main thread.
+     * Rechecks screen power before scanning because a scheduled request may outlive the visible screen.
+     * Uses the saved package and event type to resolve the foreground app without keeping the event alive.
+     */
+    private fun scanAccessibilityEvent(packageName: String?, eventType: Int) {
+        if (!powerManager.isInteractive) {
+            handleTrackedAppExit("screen off before pending scan")
+            return
+        }
         val scan = contentScanner.scan(
-            event.packageName?.toString(),
-            event.eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED,
+            packageName,
+            eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED,
             contentSession?.app,
             currentForegroundBrainRotApp,
             contentSession?.takeIf { it.isCovered }?.content?.cover,
@@ -396,6 +418,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Cleans up overlays, cancels handlers, and stops all background jobs when the service is destroyed. */
     override fun onDestroy() {
+        contentScanScheduler.cancel()
         super.onDestroy()
         Timber.d(
             "Service state at destroy: hasContentSession=%b, viewingApp=%s",
