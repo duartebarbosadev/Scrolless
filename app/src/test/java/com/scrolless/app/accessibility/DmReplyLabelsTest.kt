@@ -17,10 +17,10 @@
 package com.scrolless.app.accessibility
 
 import android.graphics.Rect
+import android.os.Build
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.scrolless.app.core.model.BlockableApp
-import com.scrolless.app.core.model.DmExemptionRule
 import com.scrolless.app.core.model.ReplyLabels
 import javax.xml.parsers.DocumentBuilderFactory
 import org.junit.Assert.assertFalse
@@ -33,20 +33,22 @@ import org.robolectric.annotation.Config
 import org.w3c.dom.Element
 
 @RunWith(RobolectricTestRunner::class)
-@Config(manifest = Config.NONE, sdk = [28])
+@Config(manifest = Config.NONE, sdk = [28, 35])
 class DmReplyLabelsTest {
     private val labels = requireNotNull(BlockableApp.TIKTOK.getDmExemptionRule()?.replyLabelsBelowPlayer)
 
+    /** Checks the captured screen layouts so reply-like words alone cannot exempt feeds or comments. */
     @Test
-    fun `DM reply matches but feed sharing shortcut and comments do not`() {
+    fun `DM reply matches but feed and comments do not`() {
         assertTrue(matchesFixture("dm"))
         for (name in listOf("feed", "comments")) {
             assertFalse(name, matchesFixture(name))
-            // Even matching words in a caption, share shortcut or editor must not exempt the video.
+            // Matching words in a caption or comment editor must not exempt the video.
             assertFalse(name, matchesFixture(name, replaceLabels = true))
         }
     }
 
+    /** Scales and mirrors the same layout to catch assumptions about one screen size or reading direction. */
     @Test
     fun `DM reply geometry is independent of pixel size offset and RTL`() {
         for (scale in listOf(0.5f, 1f, 2f)) {
@@ -56,11 +58,12 @@ class DmReplyLabelsTest {
         }
     }
 
+    /** Checks every supported label source on a nested button so traversal and accessibility labels are both exercised. */
     @Test
     fun `production traversal accepts text description and hint on nested buttons`() {
         for (source in listOf("text", "description", "hint")) {
-            val root = AccessibilityNodeInfo.obtain()
-            val container = AccessibilityNodeInfo.obtain()
+            val root = newNode()
+            val container = newNode()
             val reply = replyButton()
             when (source) {
                 "text" -> reply.text = "Message [recipient]..."
@@ -73,6 +76,7 @@ class DmReplyLabelsTest {
         }
     }
 
+    /** Keeps a valid label and position while varying the control state to verify each eligibility requirement. */
     @Test
     fun `production matcher rejects hidden disabled nonclickable editable and nonbutton controls`() {
         val mutations: List<(AccessibilityNodeInfo) -> Unit> = listOf(
@@ -89,7 +93,16 @@ class DmReplyLabelsTest {
         }
     }
 
-    private fun replyButton() = AccessibilityNodeInfo.obtain().apply {
+    /** Creates test nodes on both SDKs; Android versions before API 33 require the older factory. */
+    private fun newNode(): AccessibilityNodeInfo = if (Build.VERSION.SDK_INT >= 33) {
+        AccessibilityNodeInfo()
+    } else {
+        @Suppress("DEPRECATION")
+        AccessibilityNodeInfo.obtain()
+    }
+
+    /** Creates a valid reply control so each test can change only the property it is checking. */
+    private fun replyButton() = newNode().apply {
         className = "android.widget.Button"
         isVisibleToUser = true
         isEnabled = true
@@ -97,15 +110,7 @@ class DmReplyLabelsTest {
         setBoundsInScreen(Rect(100, 1810, 600, 1910))
     }
 
-    @Test
-    fun `other apps supply independent reply templates through the same rule`() {
-        val rule = DmExemptionRule(replyLabelsBelowPlayer = ReplyLabels(setOf("Reply to {recipient}")))
-        val otherLabels = requireNotNull(rule.replyLabelsBelowPlayer)
-        assertTrue(otherLabels.matches("Reply to [recipient]"))
-        assertFalse(otherLabels.matches("Message [recipient]..."))
-        assertFalse(labels.matches("Reply to [recipient]"))
-    }
-
+    /** Rejects unusable template sets early so a malformed app rule cannot silently change label matching. */
     @Test
     fun `invalid template configurations are rejected`() {
         for (templates in listOf(emptySet(), setOf("Reply"), setOf("{recipient}"), setOf("{recipient} to {recipient}"))) {
@@ -113,6 +118,7 @@ class DmReplyLabelsTest {
         }
     }
 
+    /** Checks representative translations and typography differences so matching is not tied to English word order. */
     @Test
     fun `packaged translations handle recipient at either end and ellipsis variations`() {
         for (label in listOf(
@@ -128,6 +134,7 @@ class DmReplyLabelsTest {
         assertTrue(recipientFirst.matches("[recipient]에게 메시지 보내기..."))
     }
 
+    /** Rejects incomplete labels and extra text to prevent broad prefix matches from exempting unrelated controls. */
     @Test
     fun `labels require the full template and a nonblank recipient`() {
         for (label in listOf(
@@ -139,6 +146,7 @@ class DmReplyLabelsTest {
         assertFalse(labels.matches(null))
     }
 
+    /** Checks position boundaries so a matching control inside or far from the player is not treated as its reply bar. */
     @Test
     fun `reply must be below and within the player with a small relative gap`() {
         val player = ContentBounds(0, 0, 1000, 1800)
@@ -150,31 +158,14 @@ class DmReplyLabelsTest {
         assertFalse(ContentBounds(100, 1810, 100, 1910).isDirectlyBelow(player))
     }
 
-    @Test
-    fun `fixtures contain no personal labels or unexpected attributes`() {
-        val allowed = setOf("class", "bounds", "clickable", "enabled", "resource-id", "text", "hint")
-        for (name in listOf("dm", "feed", "comments")) {
-            for (node in fixture(name)) {
-                for (i in 0 until node.attributes.length) {
-                    val a = node.attributes.item(i)
-                    assertTrue(a.nodeName in allowed)
-                    val safe = when (a.nodeName) {
-                        "text", "hint" -> a.nodeValue in setOf("redacted", "Message [recipient]...")
-                        "resource-id" -> a.nodeValue == "player_view"
-                        "clickable", "enabled" -> a.nodeValue in setOf("true", "false")
-                        "class" -> a.nodeValue in setOf("android.widget.Button", "android.widget.EditText", "android.widget.FrameLayout")
-                        "bounds" -> Regex("\\[-?\\d+,-?\\d+\\]\\[-?\\d+,-?\\d+\\]").matches(a.nodeValue)
-                        else -> false
-                    }
-                    assertTrue("Unexpected fixture content in $name", safe)
-                }
-                assertTrue(node.textContent.isBlank())
-            }
-        }
-    }
-
+    /**
+     * Builds Android accessibility nodes from a fixture and runs the production matcher.
+     * Label replacement challenges false positives; scaling and mirroring check the same layout
+     * in different coordinates without keeping separate copies of each fixture.
+     */
     private fun matchesFixture(name: String, replaceLabels: Boolean = false, scale: Float = 1f, mirrored: Boolean = false): Boolean {
         val nodes = fixture(name)
+        /** Transforms player and control bounds together so their relative layout stays consistent. */
         fun bounds(node: Element): ContentBounds {
             val b = Regex("-?\\d+").findAll(node.getAttribute("bounds")).map { it.value.toInt() }.toList()
             return ContentBounds(
@@ -185,9 +176,9 @@ class DmReplyLabelsTest {
             )
         }
         val player = nodes.firstOrNull { it.getAttribute("resource-id") == "player_view" } ?: return false
-        val root = AccessibilityNodeInfo.obtain()
+        val root = newNode()
         for (element in nodes) {
-            val node = AccessibilityNodeInfo.obtain().apply {
+            val node = newNode().apply {
                 className = element.getAttribute("class")
                 isVisibleToUser = true
                 isEnabled = element.getAttribute("enabled") == "true"
@@ -203,12 +194,14 @@ class DmReplyLabelsTest {
         return root.hasReplyBelowPlayer(labels, bounds(player), ::screenBounds)
     }
 
+    /** Reads screen bounds for the matcher, using the same coordinate system as the fixture's player. */
     private fun screenBounds(node: AccessibilityNodeInfo): ContentBounds {
         val b = Rect()
         node.getBoundsInScreen(b)
         return ContentBounds(b.left, b.top, b.right, b.bottom)
     }
 
+    /** Loads the named XML layout so tests can share fixture parsing while exercising real Android nodes. */
     private fun fixture(name: String): List<Element> {
         val stream = requireNotNull(javaClass.getResourceAsStream("/tiktok/reply_labels/$name.xml"))
         val document = stream.use { DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(it) }

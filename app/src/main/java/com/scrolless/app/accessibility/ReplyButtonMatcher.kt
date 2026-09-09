@@ -20,7 +20,15 @@ import android.view.accessibility.AccessibilityNodeInfo
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.scrolless.app.core.model.ReplyLabels
 
-/** [boundsOf] must use the same screen or window coordinates as [playerBounds]. */
+/**
+ * Searches this node and its descendants for a reply button directly below the video player.
+ * Checks the button's text, content description and hint against [labels]. Requiring an enabled,
+ * visible, clickable button outside the player helps reject captions and editable comment fields.
+ * Stops at the first match so a confirmed DM does not require scanning the rest of the tree.
+ *
+ * [boundsOf] must use the same screen or window coordinates as [playerBounds]; mixing coordinate
+ * systems would shift the button relative to the player and give an incorrect position check.
+ */
 internal fun AccessibilityNodeInfo.hasReplyBelowPlayer(
     labels: ReplyLabels,
     playerBounds: ContentBounds,

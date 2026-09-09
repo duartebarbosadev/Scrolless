@@ -32,7 +32,11 @@ class ReplyLabels(templates: Set<String>) {
         require(parts.isNotEmpty())
     }
 
-    /** Checks the label without retaining or logging the recipient. */
+    /**
+     * Checks whether [label] matches a complete translated template with a nonblank recipient.
+     * Matching both sides of the placeholder rejects unrelated text that merely shares a prefix
+     * and supports languages where the recipient comes first. Blank or multiline labels do not match.
+     */
     fun matches(label: CharSequence?): Boolean {
         if (label.isNullOrBlank()) return false
         val text = normalize(label.toString())
@@ -44,5 +48,6 @@ class ReplyLabels(templates: Set<String>) {
         }
     }
 
+    /** Treats nonbreaking spaces and the two ellipsis forms alike so typography does not break a match. */
     private fun normalize(text: String): String = text.replace('\u00a0', ' ').replace("…", "...")
 }
