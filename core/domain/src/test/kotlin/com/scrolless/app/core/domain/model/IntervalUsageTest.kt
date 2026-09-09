@@ -34,13 +34,12 @@ class IntervalUsageTest {
     }
 
     @Test
-    fun `a window that ended moves to the interval containing now and clears usage`() {
+    fun `a window that ended expires to not started`() {
         val usage = IntervalUsage(startMillis = 1_000L, usageMillis = 5_000L)
 
         val current = usage.activeIntervalAt(nowMillis = 35_000L, lengthMillis = 10_000L)
 
-        assertEquals(31_000L, current.startMillis)
-        assertEquals(0L, current.usageMillis)
+        assertEquals(IntervalUsage.NOT_STARTED, current)
     }
 
     @Test
@@ -135,17 +134,31 @@ class IntervalUsageTest {
     }
 
     @Test
-    fun `remaining time restarts with the next window instead of staying at zero`() {
+    fun `remaining time becomes zero when the window ends`() {
         val usage = IntervalUsage(startMillis = 1_000L, usageMillis = 0L)
 
         assertEquals(
-            60 * MINUTE_MILLIS,
+            0L,
             usage.remainingMillisAt(nowMillis = 1_000L + 60 * MINUTE_MILLIS, lengthMillis = 60 * MINUTE_MILLIS),
         )
         assertEquals(
-            50 * MINUTE_MILLIS,
+            0L,
             usage.remainingMillisAt(nowMillis = 1_000L + 70 * MINUTE_MILLIS, lengthMillis = 60 * MINUTE_MILLIS),
         )
+    }
+
+    @Test
+    fun `adding a session after an interval expired starts a new window at session start`() {
+        val usage = IntervalUsage(startMillis = 1_000L, usageMillis = 5_000L)
+
+        val updated = usage.plusSession(
+            sessionStartMillis = 35_000L,
+            sessionEndMillis = 37_000L,
+            lengthMillis = 10_000L,
+        )
+
+        assertEquals(35_000L, updated.startMillis)
+        assertEquals(2_000L, updated.usageMillis)
     }
 
     @Test
