@@ -37,6 +37,7 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
+    // Wait for the saved preference before allowing the overlay to appear.
     private val _timerOverlayEnabled = MutableStateFlow(false)
     private val _timerOverlayPositionY = MutableStateFlow(0)
     private val _timerOverlayPositionX = MutableStateFlow(0)

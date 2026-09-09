@@ -44,7 +44,7 @@ data class UserSettingsEntity(
     @ColumnInfo(name = "interval_length") val intervalLength: Long = 0L,
     @ColumnInfo(name = "interval_window_start_at") val intervalWindowStartAt: Long = 0L,
     @ColumnInfo(name = "interval_usage") val intervalUsage: Long = 0L,
-    @ColumnInfo(name = "timer_overlay_enabled") val timerOverlayEnabled: Boolean,
+    @ColumnInfo(name = "timer_overlay_enabled") val timerOverlayEnabled: Boolean = true,
     @ColumnInfo(name = "timer_overlay_x") val timerOverlayX: Int = 0,
     @ColumnInfo(name = "timer_overlay_y") val timerOverlayY: Int = 100,
     @ColumnInfo(name = "waiting_for_accessibility") val waitingForAccessibility: Boolean = false,
