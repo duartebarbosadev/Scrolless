@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok वीडियो ब्लॉक हैं</string>
     <string name="tiktok_blocked_description">इनबॉक्स या प्रोफ़ाइल खोलने के लिए नीचे दिए गए टैब का उपयोग करें।</string>
+    <string name="instagram_feed_blocked_title">Instagram वीडियो ब्लॉक हैं</string>
+    <string name="instagram_feed_blocked_description">इनबॉक्स या प्रोफ़ाइल खोलने के लिए नीचे दिए गए टैब का उपयोग करें।</string>
 </resources>

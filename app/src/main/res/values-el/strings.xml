@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">Τα βίντεο του TikTok είναι αποκλεισμένα</string>
     <string name="tiktok_blocked_description">Χρησιμοποιήστε τις καρτέλες παρακάτω για να ανοίξετε τα Εισερχόμενα ή το Προφίλ.</string>
+    <string name="instagram_feed_blocked_title">Τα βίντεο του Instagram είναι αποκλεισμένα</string>
+    <string name="instagram_feed_blocked_description">Χρησιμοποιήστε τις καρτέλες παρακάτω για να ανοίξετε τα Εισερχόμενα ή το Προφίλ.</string>
 </resources>
