@@ -226,6 +226,7 @@ enum class BlockableApp(
     SNAPCHAT(
         packageIds = listOf("com.snapchat.android"),
         detectionMethod = DetectionMethod.ViewId("spotlight_container"),
+        storiesDetectionMethod = DetectionMethod.ViewId("opera_viewer"),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     ;
