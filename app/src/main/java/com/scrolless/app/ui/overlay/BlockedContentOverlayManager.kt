@@ -43,6 +43,7 @@ class BlockedContentOverlayManager @Inject constructor() {
     private var view: View? = null
     private var shownCover: ContentCover? = null
     private var windowOverlay: WindowAttachedContentOverlay? = null
+    private var feedWindowOverlay: WindowAttachedFeedOverlay? = null
 
     fun attachServiceContext(service: AccessibilityService) {
         this.service = service
@@ -59,12 +60,21 @@ class BlockedContentOverlayManager @Inject constructor() {
         // Different text or a different rendering mode needs a fresh view, not a resize.
         shownCover?.let { if (!cover.canReuseView(it)) hide() }
         // Accessibility sends many identical events. Leave an unchanged cover alone.
-        if (!target.needsUpdate(shownCover?.target, refreshAttachment)) return true
+        if (!target.needsUpdate(shownCover?.target, refreshAttachment) && !cover.passThroughTouches) return true
         when (target) {
             is ContentCoverTarget.Screen -> showScreenCover(cover)
 
             is ContentCoverTarget.Window -> {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) return false
+                if (cover.passThroughTouches) {
+                    val overlay = feedWindowOverlay ?: WindowAttachedFeedOverlay(service).also { feedWindowOverlay = it }
+                    if (!overlay.show(cover, refreshAttachment)) {
+                        hide()
+                        return false
+                    }
+                    shownCover = cover
+                    return true
+                }
                 val overlay = windowOverlay ?: WindowAttachedContentOverlay(service) { createCoverView(it, cover) }.also {
                     windowOverlay = it
                 }
@@ -83,24 +93,40 @@ class BlockedContentOverlayManager @Inject constructor() {
         if (shownCover?.target?.keepOnAppExit(screenInteractive) != true) hide()
     }
 
+    internal fun onFeedScroll(deltaY: Int, eventTime: Long) {
+        (view as? FeedContentCoverView)?.onScroll(deltaY, eventTime)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) feedWindowOverlay?.onScroll(deltaY, eventTime)
+    }
+
+    internal fun stopFeedScroll() {
+        (view as? FeedContentCoverView)?.stopScroll()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) feedWindowOverlay?.stopScroll()
+    }
+
     /** Draws the legacy cover using screen coordinates on Android versions without window attachment. */
     @SuppressLint("RtlHardcoded")
     private fun showScreenCover(cover: ContentCover) {
+        val currentView = view
+        if (currentView is FeedContentCoverView) {
+            currentView.update(cover)
+            return
+        }
         val bounds = cover.target.bounds
 
         // Keep app focus and accept touches only inside this rectangle. Native tabs stay usable.
         val params = WindowManager.LayoutParams(
-            bounds.width,
-            bounds.height,
+            if (cover.passThroughTouches) WindowManager.LayoutParams.MATCH_PARENT else bounds.width,
+            if (cover.passThroughTouches) WindowManager.LayoutParams.MATCH_PARENT else bounds.height,
             WindowManager.LayoutParams.TYPE_ACCESSIBILITY_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
-            PixelFormat.OPAQUE,
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                (if (cover.passThroughTouches) WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE else 0),
+            if (cover.passThroughTouches) PixelFormat.TRANSLUCENT else PixelFormat.OPAQUE,
         ).apply {
             // Accessibility gives physical left/top coordinates, even in right-to-left languages.
             gravity = Gravity.TOP or Gravity.LEFT
-            x = bounds.left
-            y = bounds.top
+            x = if (cover.passThroughTouches) 0 else bounds.left
+            y = if (cover.passThroughTouches) 0 else bounds.top
             // Do not let system-bar or cutout padding shift the rectangle Android reported.
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 setFitInsetsTypes(0)
@@ -110,9 +136,10 @@ class BlockedContentOverlayManager @Inject constructor() {
             }
         }
 
-        val currentView = view
         if (currentView == null) {
-            val newView = createCoverView(service, cover)
+            val newView = if (cover.passThroughTouches) FeedContentCoverView(service).apply {
+                update(cover)
+            } else createCoverView(service, cover)
             windowManager.addView(newView, params)
             view = newView
         } else {
@@ -127,8 +154,10 @@ class BlockedContentOverlayManager @Inject constructor() {
         view = null
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             windowOverlay?.hide()
+            feedWindowOverlay?.hide()
         }
         windowOverlay = null
+        feedWindowOverlay = null
         shownCover = null
     }
 
@@ -140,7 +169,7 @@ class BlockedContentOverlayManager @Inject constructor() {
         setPadding(padding, padding, padding, padding)
         // The timer color may be translucent. The blocker must be fully opaque to hide the video.
         setBackgroundColor(timerOverlayBackgroundColor.toArgb() or 0xFF000000.toInt())
-        // Consume taps and swipes rather than allowing them to reach the video beneath us.
+        // Consume touches inside the covered player.
         isClickable = true
         addView(
             TextView(context).apply {

@@ -19,6 +19,7 @@ package com.scrolless.app.accessibility
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
@@ -35,6 +36,7 @@ import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.debug.DebugOverlayConfig
 import com.scrolless.app.ui.overlay.BlockedContentOverlayManager
+import com.scrolless.app.ui.overlay.FeedScrollMotion
 import com.scrolless.app.ui.overlay.TimerOverlayManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -89,6 +91,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         if (BuildConfig.DEBUG) {
             serviceScope.launch {
                 DebugOverlayConfig.forceLegacyOverlay.drop(1).collect {
+                    invalidateFeedScans()
                     if (contentSession?.content?.cover != null) {
                         onBlockedContentExited()
                     }
@@ -136,6 +139,30 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     /** Scans the window tree to find target apps, videos, and compute cover coordinates. */
     private val contentScanner by lazy {
         ContentScanner(this, { isWindowAttachedCoverAllowed }, { currentAllowVideosSentByDm })
+    }
+
+    private val feedContentScans by lazy { FeedContentScanQueue(serviceScope, ::applyContentScan) }
+    private var lastFeedScrollTime = 0L
+    private val feedScrollSettled = Runnable {
+        blockedContentOverlayManager.stopFeedScroll()
+        currentForegroundBrainRotApp?.takeIf { it.coverDetector?.passThroughTouches == true }?.let(::requestFeedScan)
+    }
+
+    private fun invalidateFeedScans() {
+        feedContentScans.invalidate()
+        mainHandler.removeCallbacks(feedScrollSettled)
+        lastFeedScrollTime = 0
+        blockedContentOverlayManager.stopFeedScroll()
+    }
+
+    private fun requestFeedScan(foregroundApp: ResolvedBlockableApp) {
+        // Capture settings and session state on main; only window/node lookups run on the worker.
+        val windowAttached = isWindowAttachedCoverAllowed
+        val allowDm = currentAllowVideosSentByDm
+        val scanner = ContentScanner(this, { windowAttached }, { allowDm })
+        val trackedApp = contentSession?.app
+        val activeCover = contentSession?.takeIf { it.isCovered }?.content?.cover
+        feedContentScans.submit { scanner.scan(foregroundApp.packageId, false, trackedApp, foregroundApp, activeCover) }
     }
 
     /**
@@ -261,6 +288,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         // Re-detect an open video when the DM preference changes, then apply the new decision.
         serviceScope.launch {
             userSettingsStore.getAllowVideosSentByDm().collect {
+                invalidateFeedScans()
                 currentAllowVideosSentByDm = it
                 refreshDetectedContent()
                 reconsiderVisibleContent()
@@ -282,6 +310,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * @param reason Diagnostic message for logs explaining why the session ended.
      */
     private fun handleTrackedAppExit(reason: String) {
+        invalidateFeedScans()
         // A window cover can outlive tracking while its parent animates away. Screen-off clears it.
         if (!powerManager.isInteractive) blockedContentOverlayManager.hide()
         if (contentSession == null && currentForegroundBrainRotApp == null) {
@@ -340,13 +369,43 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             return
         }
 
+        val packageId = event.packageName?.toString()
+        val foregroundApp = currentForegroundBrainRotApp
+        if (foregroundApp?.coverDetector?.passThroughTouches == true && packageId == foregroundApp.packageId &&
+            (event.eventType == AccessibilityEvent.TYPE_VIEW_SCROLLED || event.eventType == AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED)
+        ) {
+            if (event.eventType == AccessibilityEvent.TYPE_VIEW_SCROLLED && Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val sourceId = event.source?.viewIdResourceName
+                // Carousels and comment lists must not move covers over the Home feed.
+                if (sourceId != null && sourceId == foregroundApp.coverDetector?.scrollViewId) {
+                    blockedContentOverlayManager.onFeedScroll(event.scrollDeltaY, event.eventTime)
+                    lastFeedScrollTime = event.eventTime
+                    mainHandler.removeCallbacks(feedScrollSettled)
+                    mainHandler.postDelayed(feedScrollSettled, FeedScrollMotion.IDLE_MILLIS)
+                }
+            } else if (lastFeedScrollTime > 0 && event.eventTime - lastFeedScrollTime in 0..100) {
+                // Scrolling also emits content-change events. The scroll scan already reconciles this batch.
+                return
+            }
+            requestFeedScan(foregroundApp)
+            return
+        }
+
+        // Process navigation immediately and reject any scan started before this event.
+        invalidateFeedScans()
+
         val scan = contentScanner.scan(
-            event.packageName?.toString(),
+            packageId,
             event.eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED,
             contentSession?.app,
             currentForegroundBrainRotApp,
             contentSession?.takeIf { it.isCovered }?.content?.cover,
         )
+        applyContentScan(scan)
+    }
+
+    /** Applies a completed scan on main, where sessions, navigation and overlays are owned. */
+    private fun applyContentScan(scan: ContentScanner.Result) {
         if (scan.trackedAppExited) handleTrackedAppExit("covered app lost foreground")
         val userActiveApp = scan.foregroundApp
         updateForegroundAppState(userActiveApp)
@@ -377,6 +436,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         val previousApp = currentForegroundBrainRotApp
         if (previousApp == nextApp) return
 
+        invalidateFeedScans()
+
         if (previousApp != null) {
             Timber.v("*** User appears to have left a brain rot app: %s (%s)", previousApp.app.name, previousApp.packageId)
             sessionTracker.onAppClose()
@@ -403,6 +464,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         )
         stopPeriodicCheck()
         mainHandler.removeCallbacks(coveredContentCheck)
+        invalidateFeedScans()
         blockedContentOverlayManager.hide()
         timerOverlayManager.cleanup()
         serviceScope.cancel()
@@ -519,6 +581,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
      * @param appLeft True if the user switched away from the host app entirely.
      */
     private fun onBlockedContentExited(appLeft: Boolean = false) {
+        invalidateFeedScans()
         val session = contentSession
         contentSession = null
         val hadCover = session?.content?.cover != null
@@ -584,6 +647,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 }
                 // Stop counting only after the cover was shown successfully.
                 val finished = session.cover(System.currentTimeMillis()) ?: return
+                // Earlier scans did not know this player was covered and may report it as absent.
+                invalidateFeedScans()
                 stopPeriodicCheck()
                 timerOverlayManager.dismissImmediately()
                 refreshServiceConfig()
@@ -655,7 +720,14 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         val info = serviceInfo ?: return
 
         // Do not delay Home/app-switching events while covered, or the old screen cover can linger.
-        info.notificationTimeout = if (contentSession?.isCovered == true) 0L else DEFAULT_NOTIFICATION_TIMEOUT_MS
+        val followsFeedScroll = currentForegroundBrainRotApp?.coverDetector?.passThroughTouches == true
+        info.notificationTimeout = if (contentSession?.isCovered == true || followsFeedScroll) 0L else DEFAULT_NOTIFICATION_TIMEOUT_MS
+        // Feed videos move during scrolling even when their content does not change.
+        info.eventTypes = if (followsFeedScroll) {
+            info.eventTypes or AccessibilityEvent.TYPE_VIEW_SCROLLED
+        } else {
+            info.eventTypes and AccessibilityEvent.TYPE_VIEW_SCROLLED.inv()
+        }
 
         if (listenToAll) {
             info.packageNames = null // Listen to all

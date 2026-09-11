@@ -174,21 +174,37 @@ internal class ContentScanner(
         activeCover: ContentCover? = null,
     ): ContentCover? {
         val detector = app.coverDetector ?: return null
+        val attachToWindow = useWindowAttachedCover
         val activeBounds = activeCover?.target?.takeIf { target ->
             when (target) {
                 is ContentCoverTarget.Window -> target.windowId == windowId
-                is ContentCoverTarget.Screen -> !useWindowAttachedCover
+                is ContentCoverTarget.Screen -> !attachToWindow
             }
+        }?.let { target ->
+            when (target) {
+                is ContentCoverTarget.Screen -> target.regions
+                is ContentCoverTarget.Window -> target.regions.ifEmpty { listOf(target.bounds) }
+            }
+        }.orEmpty()
+        val nodes = coverNodes(app, detector.viewIds, attachToWindow)
+        val observedAt = android.os.SystemClock.uptimeMillis()
+        val regions = detector.coverBounds(nodes, activeBounds)
+        if (regions.isEmpty()) return null
+        val viewport = nodes.firstOrNull {
+            it.viewId == detector.scrollViewId && it.isVisible && it.bounds.isVisible
         }?.bounds
-        val bounds = detector.coverBounds(coverNodes(app, detector.viewIds), activeBounds) ?: return null
         // Older Android positions covers on the screen. Android 14+ attaches them to an app window.
-        val target = if (useWindowAttachedCover) {
+        val target = if (attachToWindow) {
             val targetWindow = appWindows.roots.keys.firstOrNull { it.id == windowId } ?: return null
-            ContentCoverTarget.Window(windowId, targetWindow.displayId, bounds)
+            if (detector.passThroughTouches) {
+                ContentCoverTarget.Window(windowId, targetWindow.displayId, viewport ?: coverBounds(true), regions)
+            } else {
+                ContentCoverTarget.Window(windowId, targetWindow.displayId, regions.single())
+            }
         } else {
-            ContentCoverTarget.Screen(bounds)
+            ContentCoverTarget.Screen(regions, viewport)
         }
-        return ContentCover(target, detector.titleRes, detector.descriptionRes)
+        return ContentCover(target, detector.titleRes, detector.descriptionRes, detector.passThroughTouches, observedAt)
     }
 
     /** Looks for blocked content across all visible windows of [blockableApp]. */
@@ -236,17 +252,21 @@ internal class ContentScanner(
     }
 
     // Read only the IDs requested by this app's detector; do not walk the whole screen tree.
-    private fun AccessibilityNodeInfo.coverNodes(app: ResolvedBlockableApp, viewIds: Set<String>): List<ContentCoverNode> =
-        viewIds.flatMap { id ->
-            findAccessibilityNodeInfosByViewId("${app.packageId}:id/$id").map { node ->
-                ContentCoverNode(id, node.coverBounds(), node.isVisibleToUser)
-            }
+    private fun AccessibilityNodeInfo.coverNodes(
+        app: ResolvedBlockableApp,
+        viewIds: Set<String>,
+        inWindow: Boolean,
+    ): List<ContentCoverNode> = viewIds.flatMap { id ->
+        val qualifiedId = if (':' in id) id else "${app.packageId}:id/$id"
+        findAccessibilityNodeInfosByViewId(qualifiedId).map { node ->
+            ContentCoverNode(id, node.coverBounds(inWindow), node.isVisibleToUser, node.isSelected)
         }
+    }
 
     // The rectangle must use the same origin as the overlay that will draw it.
-    private fun AccessibilityNodeInfo.coverBounds(): ContentBounds {
+    private fun AccessibilityNodeInfo.coverBounds(inWindow: Boolean = useWindowAttachedCover): ContentBounds {
         val bounds = android.graphics.Rect()
-        if (useWindowAttachedCover) {
+        if (inWindow && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             getBoundsInWindow(bounds)
         } else {
             getBoundsInScreen(bounds)
@@ -296,7 +316,11 @@ internal class ContentScanner(
         if (rule.requiredViewIds.any { !hasVisibleViewId(app.getViewId(it)) }) return false
 
         rule.replyLabelsBelowPlayer?.let { labels ->
-            if (cover == null || !hasReplyBelowPlayer(labels, cover.target.bounds) { it.coverBounds() }) return false
+            if (cover == null ||
+                !hasReplyBelowPlayer(labels, cover.target.bounds) {
+                    it.coverBounds(cover.target is ContentCoverTarget.Window)
+                }
+            ) return false
         }
 
         // If any-of elements are specified, at least one must be present on screen.
