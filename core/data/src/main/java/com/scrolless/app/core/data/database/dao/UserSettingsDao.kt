@@ -130,6 +130,12 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
     @Query("UPDATE user_settings SET pause_duration_millis = :durationMillis WHERE id = 1")
     abstract suspend fun setPauseDuration(durationMillis: Long)
 
+    @Query("SELECT include_stories FROM user_settings WHERE id = 1")
+    abstract fun getIncludeStories(): Flow<Boolean>
+
+    @Query("UPDATE user_settings SET include_stories = :enabled WHERE id = 1")
+    abstract suspend fun setIncludeStories(enabled: Boolean)
+
     @Query("SELECT except_reels_sent_by_dm FROM user_settings WHERE id = 1")
     abstract fun getAllowVideosSentByDm(): Flow<Boolean>
 

@@ -32,4 +32,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">Відео, надіслані в особистих повідомленнях</string>
     <string name="settings_show_onscreen_timer_description">Залишати плаваючий таймер видимим під час перегляду коротких відео.</string>
     <string name="settings_show_onscreen_timer_title">Показувати таймер на екрані</string>
+    <string name="settings_include_stories_title">Враховувати історії</string>
+    <string name="settings_include_stories_description">Враховуйте час перегляду історій і застосовуйте поточний режим блокування та часові обмеження.</string>
+    <string name="settings_include_stories_note">Наразі підтримується в Instagram.</string>
 </resources>

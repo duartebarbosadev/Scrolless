@@ -30,4 +30,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">Βίντεο που αποστέλλονται σε DM</string>
     <string name="settings_show_onscreen_timer_description">Να εμφανίζεται ένας αιωρούμενος χρονοδιακόπτης κατά την παρακολούθηση σύντομων βίντεο.</string>
     <string name="settings_show_onscreen_timer_title">Εμφάνιση χρονοδιακόπτη στην οθόνη</string>
+    <string name="settings_include_stories_title">Συμπερίληψη ιστοριών</string>
+    <string name="settings_include_stories_description">Μετρήστε τον χρόνο προβολής ιστοριών και εφαρμόστε την τρέχουσα λειτουργία αποκλεισμού και τα όριά σας.</string>
+    <string name="settings_include_stories_note">Προς το παρόν υποστηρίζεται στο Instagram.</string>
 </resources>

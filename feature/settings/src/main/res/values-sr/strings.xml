@@ -31,4 +31,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">Видео снимци послати у DM-овима</string>
     <string name="settings_show_onscreen_timer_description">Држи плутајући тајмер видљивим док гледаш кратке видео-записе.</string>
     <string name="settings_show_onscreen_timer_title">Прикажи тајмер на екрану</string>
+    <string name="settings_include_stories_title">Укључи приче</string>
+    <string name="settings_include_stories_description">Рачунај време проведено у гледању прича и примени тренутни режим блокирања и временска ограничења.</string>
+    <string name="settings_include_stories_note">Тренутно је подржано на Instagram-у.</string>
 </resources>

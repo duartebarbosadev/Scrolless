@@ -30,4 +30,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">Video inviati nei messaggi diretti</string>
     <string name="settings_show_onscreen_timer_description">Mantieni un timer mobile visibile mentre guardi contenuti brevi.</string>
     <string name="settings_show_onscreen_timer_title">Mostra timer sullo schermo</string>
+    <string name="settings_include_stories_title">Includi le storie</string>
+    <string name="settings_include_stories_description">Conteggia il tempo trascorso a guardare le storie e applica la modalità di blocco e i limiti attuali.</string>
+    <string name="settings_include_stories_note">Attualmente disponibile su Instagram.</string>
 </resources>

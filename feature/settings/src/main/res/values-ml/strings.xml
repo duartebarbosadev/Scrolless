@@ -30,4 +30,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">DM-കളിൽ അയച്ച വീഡിയോകൾ</string>
     <string name="settings_show_onscreen_timer_description">ചെറിയ വീഡിയോകൾ കാണുമ്പോൾ ഒരു ഫ്ലോട്ടിംഗ് ടൈമർ ദൃശ്യമാക്കി നിർത്തുക.</string>
     <string name="settings_show_onscreen_timer_title">ഓൺ-സ്ക്രീൻ ടൈമർ കാണിക്കുക</string>
+    <string name="settings_include_stories_title">സ്റ്റോറികൾ ഉൾപ്പെടുത്തുക</string>
+    <string name="settings_include_stories_description">സ്റ്റോറികൾ കാണാൻ ചെലവഴിക്കുന്ന സമയം കണക്കാക്കുകയും നിലവിലെ ബ്ലോക്കിംഗ് മോഡും സമയപരിധികളും പ്രയോഗിക്കുകയും ചെയ്യുക.</string>
+    <string name="settings_include_stories_note">നിലവിൽ Instagram-ൽ ലഭ്യമാണ്.</string>
 </resources>

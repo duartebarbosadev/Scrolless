@@ -29,4 +29,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">私訊中傳送的影片</string>
     <string name="settings_show_onscreen_timer_description">觀看短影音內容時，保持浮動計時器可見。</string>
     <string name="settings_show_onscreen_timer_title">顯示螢幕浮動計時器</string>
+    <string name="settings_include_stories_title">包含限時動態</string>
+    <string name="settings_include_stories_description">計算瀏覽限時動態所花的時間，並套用目前的封鎖模式和時間限制。</string>
+    <string name="settings_include_stories_note">目前支援 Instagram。</string>
 </resources>

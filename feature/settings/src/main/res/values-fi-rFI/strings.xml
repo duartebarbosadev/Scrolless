@@ -30,4 +30,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">DM-viesteissä lähetetyt videot</string>
     <string name="settings_show_onscreen_timer_description">Pidä kelluva ajastin näkyvissä, kun katsot lyhytvideoita.</string>
     <string name="settings_show_onscreen_timer_title">Näytä ajastin näytöllä</string>
+    <string name="settings_include_stories_title">Sisällytä tarinat</string>
+    <string name="settings_include_stories_description">Laske tarinoiden katseluun käytetty aika ja käytä nykyistä estotilaa ja aikarajoja.</string>
+    <string name="settings_include_stories_note">Tuettu tällä hetkellä Instagramissa.</string>
 </resources>

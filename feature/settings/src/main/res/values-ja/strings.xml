@@ -29,4 +29,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">DMで送られた動画</string>
     <string name="settings_show_onscreen_timer_description">ショート動画を視聴中にフローティングタイマーを表示します。</string>
     <string name="settings_show_onscreen_timer_title">画面タイマーを表示</string>
+    <string name="settings_include_stories_title">ストーリーズを含める</string>
+    <string name="settings_include_stories_description">ストーリーズの視聴時間をカウントし、現在のブロックモードと時間制限を適用します。</string>
+    <string name="settings_include_stories_note">現在はInstagramに対応しています。</string>
 </resources>

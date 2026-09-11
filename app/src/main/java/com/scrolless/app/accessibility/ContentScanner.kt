@@ -41,6 +41,7 @@ internal class ContentScanner(
     private val service: AccessibilityService,
     private val windowAttachedCover: () -> Boolean,
     private val allowVideosSentByDm: () -> Boolean,
+    private val includeStories: () -> Boolean,
 ) {
     @get:ChecksSdkIntAtLeast(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     private val useWindowAttachedCover
@@ -256,14 +257,24 @@ internal class ContentScanner(
 
     /** Checks if the screen matches a known video layout, view ID, or label for [blockableApp]. */
     private fun AccessibilityNodeInfo.matchesBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
-        val detectionMethod = blockableApp.getDetectionMethod()
+        return matchesDetectionMethod(blockableApp, blockableApp.getDetectionMethod(includeStories()))
+    }
+
+    private fun AccessibilityNodeInfo.matchesDetectionMethod(
+        blockableApp: ResolvedBlockableApp,
+        detectionMethod: DetectionMethod,
+    ): Boolean {
+        // Keep mixed layout rules in one tree scan; ID-only alternatives use indexed lookups.
+        if (detectionMethod is DetectionMethod.AnyOf && detectionMethod.detectionMethods.all { it is DetectionMethod.ViewId }) {
+            return detectionMethod.detectionMethods.any { matchesDetectionMethod(blockableApp, it) }
+        }
 
         // View IDs are indexed by Android, so use the platform lookup instead of walking the tree.
         if (detectionMethod is DetectionMethod.ViewId) {
             return hasVisibleViewId(blockableApp.getViewId(detectionMethod))
         }
 
-        return matchesComplexBlockedContent(blockableApp)
+        return matchesComplexBlockedContent(blockableApp, detectionMethod)
     }
 
     /**
@@ -314,9 +325,12 @@ internal class ContentScanner(
     /**
      * Scans the view hierarchy for complex layout patterns. Returns immediately if a fast rule matches.
      */
-    private fun AccessibilityNodeInfo.matchesComplexBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
+    private fun AccessibilityNodeInfo.matchesComplexBlockedContent(
+        blockableApp: ResolvedBlockableApp,
+        detectionMethod: DetectionMethod,
+    ): Boolean {
         val structuralNodes = mutableListOf<DetectionNode>()
-        val structuralClassNames = blockableApp.getStructuralClassNames()
+        val structuralClassNames = blockableApp.getStructuralClassNames(detectionMethod)
         val nodesToVisit = ArrayDeque<Pair<AccessibilityNodeInfo, Int?>>()
         val rootBounds = android.graphics.Rect().also(::getBoundsInScreen)
         var nextStructuralNodeId = 0
@@ -337,7 +351,7 @@ internal class ContentScanner(
                     isSelected = node.isSelected,
                 )
 
-                if (blockableApp.matchesFastDetectionNode(fastNode)) {
+                if (blockableApp.matchesFastDetectionNode(fastNode, detectionMethod)) {
                     return true
                 }
 
@@ -365,7 +379,7 @@ internal class ContentScanner(
             }
         }
 
-        return blockableApp.matchesDetectionNodes(structuralNodes)
+        return blockableApp.matchesDetectionNodes(structuralNodes, detectionMethod)
     }
 
     private fun Int.fractionOf(total: Int): Float {

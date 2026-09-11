@@ -30,4 +30,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">Video\'s verzonden via DM\'s</string>
     <string name="settings_show_onscreen_timer_description">Houd een zwevende timer zichtbaar tijdens het bekijken van korte video\'s.</string>
     <string name="settings_show_onscreen_timer_title">Toon timer op scherm</string>
+    <string name="settings_include_stories_title">Verhalen meetellen</string>
+    <string name="settings_include_stories_description">Tel de tijd die je besteedt aan het bekijken van verhalen mee en pas je huidige blokkeermodus en tijdslimieten toe.</string>
+    <string name="settings_include_stories_note">Momenteel ondersteund op Instagram.</string>
 </resources>

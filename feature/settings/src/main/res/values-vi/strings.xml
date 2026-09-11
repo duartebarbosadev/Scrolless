@@ -29,4 +29,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">Video được gửi trong tin nhắn trực tiếp</string>
     <string name="settings_show_onscreen_timer_description">Giữ bộ hẹn giờ nổi hiển thị khi xem video ngắn.</string>
     <string name="settings_show_onscreen_timer_title">Hiển thị bộ hẹn giờ trên màn hình</string>
+    <string name="settings_include_stories_title">Bao gồm tin</string>
+    <string name="settings_include_stories_description">Tính thời gian xem tin và áp dụng chế độ chặn cùng giới hạn thời gian hiện tại của bạn.</string>
+    <string name="settings_include_stories_note">Hiện được hỗ trợ trên Instagram.</string>
 </resources>

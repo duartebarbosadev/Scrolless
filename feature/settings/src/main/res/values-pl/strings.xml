@@ -32,4 +32,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">Filmy wysyłane w wiadomościach prywatnych</string>
     <string name="settings_show_onscreen_timer_description">Utrzymuj widoczny pływający minutnik podczas oglądania krótkich filmów.</string>
     <string name="settings_show_onscreen_timer_title">Pokaż minutnik na ekranie</string>
+    <string name="settings_include_stories_title">Uwzględniaj relacje</string>
+    <string name="settings_include_stories_description">Wliczaj czas spędzony na oglądaniu relacji i stosuj bieżący tryb blokowania oraz limity czasu.</string>
+    <string name="settings_include_stories_note">Obecnie obsługiwane na Instagramie.</string>
 </resources>

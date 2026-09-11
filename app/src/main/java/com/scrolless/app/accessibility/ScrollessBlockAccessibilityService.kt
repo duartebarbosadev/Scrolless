@@ -135,7 +135,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Scans the window tree to find target apps, videos, and compute cover coordinates. */
     private val contentScanner by lazy {
-        ContentScanner(this, { isWindowAttachedCoverAllowed }, { currentAllowVideosSentByDm })
+        ContentScanner(this, { isWindowAttachedCoverAllowed }, { currentAllowVideosSentByDm }, { currentIncludeStories })
     }
 
     /**
@@ -152,6 +152,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private var currentTimerOverlayEnabled: Boolean = false
 
     /** Whether videos received in direct messages are exempt from blocking. */
+    private var currentIncludeStories: Boolean = false
     private var currentAllowVideosSentByDm: Boolean = false
 
     /** Timestamp until which blocking is temporarily paused. */
@@ -262,6 +263,14 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         serviceScope.launch {
             userSettingsStore.getAllowVideosSentByDm().collect {
                 currentAllowVideosSentByDm = it
+                refreshDetectedContent()
+                reconsiderVisibleContent()
+            }
+        }
+
+        serviceScope.launch {
+            userSettingsStore.getIncludeStories().collect {
+                currentIncludeStories = it
                 refreshDetectedContent()
                 reconsiderVisibleContent()
             }

@@ -32,4 +32,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">Videá odoslané v DM</string>
     <string name="settings_show_onscreen_timer_description">Ponechať plávajúci časovač viditeľný pri sledovaní krátkych videí.</string>
     <string name="settings_show_onscreen_timer_title">Zobraziť časovač na obrazovke</string>
+    <string name="settings_include_stories_title">Zahrnúť príbehy</string>
+    <string name="settings_include_stories_description">Započítavať čas strávený sledovaním príbehov a používať aktuálny režim blokovania a časové limity.</string>
+    <string name="settings_include_stories_note">Zatiaľ podporované na Instagrame.</string>
 </resources>
