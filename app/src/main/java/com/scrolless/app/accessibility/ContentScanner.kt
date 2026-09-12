@@ -225,15 +225,21 @@ internal class ContentScanner(
         // Map application windows to their root accessibility nodes; ignores system bars and overlays.
         val roots = windows.filter { it.type == AccessibilityWindowInfo.TYPE_APPLICATION }.associateWith { it.root }
 
-        // Retrieves the title of the window (API 28+) or falls back to the current activity name.
-        fun windowTitle(targetWindowId: Int, fallbackActivity: String? = null): String? {
+        /**
+         * Returns every name that could identify the current screen.
+         *
+         * The window title (API 28+) is usually the activity *label* ("Facebook"), not its class
+         * name, so it can never be trusted on its own. The activity name tracked from
+         * TYPE_WINDOW_STATE_CHANGED carries the real class name, so both are reported and callers
+         * match against all of them.
+         */
+        fun screenNames(targetWindowId: Int, currentActivity: String? = null): List<String> = buildList {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val window = roots.keys.firstOrNull { it.id == targetWindowId }
                     ?: roots.keys.firstOrNull { it.isFocused || it.isActive }
-                val title = window?.title?.toString()
-                if (!title.isNullOrBlank()) return title
+                window?.title?.toString()?.takeIf { it.isNotBlank() }?.let { add(it) }
             }
-            return fallbackActivity
+            currentActivity?.takeIf { it.isNotBlank() }?.let { add(it) }
         }
 
         // Determine which package currently has user focus or active interaction.
@@ -294,8 +300,8 @@ internal class ContentScanner(
         currentActivity: String? = null,
     ): Boolean {
         if (detectionMethod is DetectionMethod.ActivityName) {
-            val activityOrTitle = appWindows.windowTitle(windowId, currentActivity)
-            return activityOrTitle?.contains(detectionMethod.activityName, ignoreCase = true) == true
+            return appWindows.screenNames(windowId, currentActivity)
+                .any { it.contains(detectionMethod.activityName, ignoreCase = true) }
         }
 
         // Keep mixed layout rules in one tree scan; ID-only alternatives use indexed lookups.

@@ -59,6 +59,18 @@ class FacebookStoriesTest {
         assertNotNull(scanner.findVisibleBlockedContent(facebook, currentActivity = "com.facebook.stories.viewer.activity.StoryViewerActivity"))
     }
 
+    /**
+     * On a real device the window title is the activity *label*, not its class name, so the
+     * tracked activity name must still be consulted even when the title is present.
+     */
+    @Test
+    fun `Stories detected when window title is the app label`() {
+        showWindow(windowTitle = "Facebook")
+        includeStories = true
+        assertNull(scanner.findVisibleBlockedContent(facebook))
+        assertNotNull(scanner.findVisibleBlockedContent(facebook, currentActivity = "com.facebook.stories.viewer.activity.StoryViewerActivity"))
+    }
+
     @Test
     fun `Reels remain detected regardless of Stories preference`() {
         showContentDescription("FbShortsComposerAttachmentComponentSpec_STICKER")
