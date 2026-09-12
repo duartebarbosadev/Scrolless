@@ -64,6 +64,11 @@ sealed class DetectionMethod {
      * This supports apps that expose different screens for the same kind of video.
      */
     data class AnyOf(val detectionMethods: List<DetectionMethod>) : DetectionMethod()
+
+    /**
+     * Matches the active activity or window title
+     */
+    data class ActivityName(val activityName: String) : DetectionMethod()
 }
 
 /**
@@ -158,6 +163,7 @@ enum class BlockableApp(
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     // Keep the app open so the user can reach its native tabs while the video is covered.
+    // TikTok Stories play through the same player_view as regular feed videos, so they are already covered by this detection.
     TIKTOK(
         packageIds = listOf(
             "com.zhiliaoapp.musically",
@@ -171,6 +177,7 @@ enum class BlockableApp(
             replyLabelsBelowPlayer = TikTokDmReplyLabels,
         ),
     ),
+    // TikTok Lite Stories share the same video player view as the feed, so they are already covered by this detection.
     TIKTOK_LITE(
         packageIds = listOf("com.zhiliaoapp.musically.go"),
         detectionMethod = DetectionMethod.ViewId("simplayer_api_player_view"),
@@ -216,6 +223,7 @@ enum class BlockableApp(
                 ),
             ),
         ),
+        storiesDetectionMethod = DetectionMethod.ActivityName("StoryViewerActivity"),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     FACEBOOK_LITE(
@@ -296,7 +304,9 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
                 prefixMatches && (!requireSelected || node.isSelected)
             }
 
-            is DetectionMethod.NodeStructure -> false
+            is DetectionMethod.NodeStructure,
+            is DetectionMethod.ActivityName,
+            -> false
 
             is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matchesFastNode(node) }
         }
@@ -314,6 +324,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             is DetectionMethod.ViewId,
             is DetectionMethod.ContentDescriptions,
             is DetectionMethod.ContentDescriptionPrefix,
+            is DetectionMethod.ActivityName,
             -> Unit
         }
     }
@@ -329,6 +340,8 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             is DetectionMethod.NodeStructure -> nodes.any { node ->
                 matchesNode(node, childrenByParentId)
             }
+
+            is DetectionMethod.ActivityName -> false
 
             is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matches(nodes, childrenByParentId) }
         }

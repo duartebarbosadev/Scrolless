@@ -40,5 +40,5 @@
 
     <string name="settings_include_stories_title">Include Stories</string>
     <string name="settings_include_stories_description">Count time spent viewing Stories and apply your current blocking mode and limits.</string>
-    <string name="settings_include_stories_note">Currently supported on Instagram and Snapchat.</string>
+    <string name="settings_include_stories_note">Currently supported on Instagram, Snapchat, and Facebook.</string>
 </resources>

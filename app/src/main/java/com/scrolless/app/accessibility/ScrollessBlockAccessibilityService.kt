@@ -167,6 +167,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Currently tracked target app in the foreground, or null if unrelated. */
     private var currentForegroundBrainRotApp: ResolvedBlockableApp? = null
+    private var currentActivityName: String? = null
 
     /** Periodically checks if the user exceeded their usage limit while watching blocked content. */
     private val videoCheckRunnable: Runnable = Runnable {
@@ -349,12 +350,20 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             return
         }
 
+        if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+            val className = event.className?.toString()
+            if (className != null && !className.startsWith("android.widget.") && !className.startsWith("android.view.")) {
+                currentActivityName = className
+            }
+        }
+
         val scan = contentScanner.scan(
             event.packageName?.toString(),
             event.eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED,
             contentSession?.app,
             currentForegroundBrainRotApp,
             contentSession?.takeIf { it.isCovered }?.content?.cover,
+            currentActivityName,
         )
         if (scan.trackedAppExited) handleTrackedAppExit("covered app lost foreground")
         val userActiveApp = scan.foregroundApp
@@ -389,6 +398,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         if (previousApp != null) {
             Timber.v("*** User appears to have left a brain rot app: %s (%s)", previousApp.app.name, previousApp.packageId)
             sessionTracker.onAppClose()
+            if (nextApp == null) {
+                currentActivityName = null
+            }
         }
 
         if (nextApp != null) {
@@ -621,7 +633,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private fun refreshDetectedContent() {
         val session = contentSession ?: return
         val activeCover = session.content.cover.takeIf { session.isCovered }
-        val content = contentScanner.findVisibleBlockedContent(session.app, activeCover)
+        val content = contentScanner.findVisibleBlockedContent(session.app, activeCover, currentActivityName)
         if (content == null) onBlockedContentExited() else onBlockedContentDetected(content)
     }
 

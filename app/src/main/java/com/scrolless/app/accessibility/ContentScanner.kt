@@ -78,6 +78,7 @@ internal class ContentScanner(
         trackedApp: ResolvedBlockableApp?,
         foregroundApp: ResolvedBlockableApp?,
         activeCover: ContentCover? = null,
+        currentActivity: String? = null,
     ): Result {
         val appWindows = AppWindows(service.windows)
         val trackedAppExited = trackedApp != null && !appWindows.isEligible(trackedApp)
@@ -103,7 +104,7 @@ internal class ContentScanner(
         // Prioritize activeApp.packageId so events from system UI or keyboards don't skip detection.
         val targetPackageId = activeApp?.packageId ?: packageId
         val content = root?.let {
-            detectBlockedContent(targetPackageId, it, appWindows, remainingTrackedApp, activeCover)
+            detectBlockedContent(targetPackageId, it, appWindows, remainingTrackedApp, activeCover, currentActivity)
         }
         return Result(activeApp, trackedAppExited, root != null, content)
     }
@@ -136,6 +137,7 @@ internal class ContentScanner(
         appWindows: AppWindows,
         trackedApp: ResolvedBlockableApp?,
         activeCover: ContentCover? = null,
+        currentActivity: String? = null,
     ): DetectedBlockedContent? {
         // Check each app/root pair once, including variants that share a package.
         val apps = buildList {
@@ -146,7 +148,7 @@ internal class ContentScanner(
         return apps.firstNotNullOfOrNull { app ->
             // Only an existing session may fall back behind a keyboard or another active window.
             val candidates = if (app == trackedApp) roots else listOf(rootNode)
-            candidates.firstNotNullOfOrNull { it.detectContent(app, appWindows, activeCover) }
+            candidates.firstNotNullOfOrNull { it.detectContent(app, appWindows, activeCover, currentActivity) }
         }
     }
 
@@ -154,14 +156,20 @@ internal class ContentScanner(
         blockableApp: ResolvedBlockableApp,
         appWindows: AppWindows,
         activeCover: ContentCover? = null,
+        currentActivity: String? = null,
     ): DetectedBlockedContent? {
         if (packageName?.toString() != blockableApp.packageId || !appWindows.isEligible(blockableApp)) return null
         // A matching region uses a cover; otherwise keep this app's normal screen detector.
         val cover = detectContentCover(blockableApp, appWindows, activeCover)
-        // A cover-only app must provide a rectangle. Never guess a region or press Back instead.
+
+        // If no video cover was found:
+        // 1. Cover-only apps (like TikTok) must fail safely—never guess bounds or press Back.
+        // 2. Navigation-based apps (like Instagram, Facebook) must match a known blocked screen or story.
         if (cover == null &&
-            (blockableApp.getBlockAction() == ContentBlockAction.CoverVideoRegion || !matchesBlockedContent(blockableApp))
+            (blockableApp.getBlockAction() == ContentBlockAction.CoverVideoRegion || !matchesBlockedContent(blockableApp, appWindows, currentActivity))
         ) return null
+
+        // Confirmed blocked content; check whether user settings (such as DM exemptions) suppress blocking.
         return DetectedBlockedContent(
             app = blockableApp,
             blockingSuppressed = shouldSuppressBlocking(blockableApp, cover),
@@ -193,9 +201,13 @@ internal class ContentScanner(
     }
 
     /** Looks for blocked content across all visible windows of [blockableApp]. */
-    fun findVisibleBlockedContent(blockableApp: ResolvedBlockableApp, activeCover: ContentCover? = null): DetectedBlockedContent? {
+    fun findVisibleBlockedContent(
+        blockableApp: ResolvedBlockableApp,
+        activeCover: ContentCover? = null,
+        currentActivity: String? = null,
+    ): DetectedBlockedContent? {
         val appWindows = AppWindows(service.windows)
-        return appWindows.roots.values.firstNotNullOfOrNull { it?.detectContent(blockableApp, appWindows, activeCover) }
+        return appWindows.roots.values.firstNotNullOfOrNull { it?.detectContent(blockableApp, appWindows, activeCover, currentActivity) }
     }
 
     /** Returns true if any window of [app] is currently open on screen. */
@@ -212,6 +224,17 @@ internal class ContentScanner(
     private class AppWindows(windows: List<AccessibilityWindowInfo>) {
         // Map application windows to their root accessibility nodes; ignores system bars and overlays.
         val roots = windows.filter { it.type == AccessibilityWindowInfo.TYPE_APPLICATION }.associateWith { it.root }
+
+        // Retrieves the title of the window (API 28+) or falls back to the current activity name.
+        fun windowTitle(targetWindowId: Int, fallbackActivity: String? = null): String? {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                val window = roots.keys.firstOrNull { it.id == targetWindowId }
+                    ?: roots.keys.firstOrNull { it.isFocused || it.isActive }
+                val title = window?.title?.toString()
+                if (!title.isNullOrBlank()) return title
+            }
+            return fallbackActivity
+        }
 
         // Determine which package currently has user focus or active interaction.
         val foregroundPackage = foregroundAppPackage(
@@ -256,17 +279,35 @@ internal class ContentScanner(
     }
 
     /** Checks if the screen matches a known video layout, view ID, or label for [blockableApp]. */
-    private fun AccessibilityNodeInfo.matchesBlockedContent(blockableApp: ResolvedBlockableApp): Boolean {
-        return matchesDetectionMethod(blockableApp, blockableApp.getDetectionMethod(includeStories()))
+    private fun AccessibilityNodeInfo.matchesBlockedContent(
+        blockableApp: ResolvedBlockableApp,
+        appWindows: AppWindows,
+        currentActivity: String? = null,
+    ): Boolean {
+        return matchesDetectionMethod(blockableApp, blockableApp.getDetectionMethod(includeStories()), appWindows, currentActivity)
     }
 
     private fun AccessibilityNodeInfo.matchesDetectionMethod(
         blockableApp: ResolvedBlockableApp,
         detectionMethod: DetectionMethod,
+        appWindows: AppWindows,
+        currentActivity: String? = null,
     ): Boolean {
+        if (detectionMethod is DetectionMethod.ActivityName) {
+            val activityOrTitle = appWindows.windowTitle(windowId, currentActivity)
+            return activityOrTitle?.contains(detectionMethod.activityName, ignoreCase = true) == true
+        }
+
         // Keep mixed layout rules in one tree scan; ID-only alternatives use indexed lookups.
-        if (detectionMethod is DetectionMethod.AnyOf && detectionMethod.detectionMethods.all { it is DetectionMethod.ViewId }) {
-            return detectionMethod.detectionMethods.any { matchesDetectionMethod(blockableApp, it) }
+        if (detectionMethod is DetectionMethod.AnyOf) {
+            val activityMatch = detectionMethod.detectionMethods
+                .filterIsInstance<DetectionMethod.ActivityName>()
+                .any { matchesDetectionMethod(blockableApp, it, appWindows, currentActivity) }
+            if (activityMatch) return true
+
+            if (detectionMethod.detectionMethods.all { it is DetectionMethod.ViewId }) {
+                return detectionMethod.detectionMethods.any { matchesDetectionMethod(blockableApp, it, appWindows, currentActivity) }
+            }
         }
 
         // View IDs are indexed by Android, so use the platform lookup instead of walking the tree.
