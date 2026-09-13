@@ -162,14 +162,13 @@ internal class ContentScanner(
         // A matching region uses a cover; otherwise keep this app's normal screen detector.
         val cover = detectContentCover(blockableApp, appWindows, activeCover)
 
-        // If no video cover was found:
-        // 1. Cover-only apps (like TikTok) must fail safely—never guess bounds or press Back.
-        // 2. Navigation-based apps (like Instagram, Facebook) must match a known blocked screen or story.
-        if (cover == null &&
-            (blockableApp.getBlockAction() == ContentBlockAction.CoverVideoRegion || !matchesBlockedContent(blockableApp, appWindows, currentActivity))
-        ) return null
+        if (cover == null) {
+            // An overlay needs the player's bounds; without them, we cannot cover the video.
+            if (blockableApp.getBlockAction() == ContentBlockAction.CoverVideoRegion) return null
+            // Before using Back, confirm this is a blocked screen so we don't close an allowed one.
+            if (!matchesBlockedContent(blockableApp, appWindows, currentActivity)) return null
+        }
 
-        // Confirmed blocked content; check whether user settings (such as DM exemptions) suppress blocking.
         return DetectedBlockedContent(
             app = blockableApp,
             blockingSuppressed = shouldSuppressBlocking(blockableApp, cover),
@@ -299,16 +298,17 @@ internal class ContentScanner(
         appWindows: AppWindows,
         currentActivity: String? = null,
     ): Boolean {
-        if (detectionMethod is DetectionMethod.ActivityName) {
-            return appWindows.screenNames(windowId, currentActivity)
-                .any { it.contains(detectionMethod.activityName, ignoreCase = true) }
-        }
+        // Check the window title and the last reported activity name. A rule such as
+        // "StoryViewerActivity" can match a full name that includes the app's package prefix.
+        fun matchesActivity(method: DetectionMethod.ActivityName): Boolean = appWindows.screenNames(windowId, currentActivity)
+            .any { it.contains(method.activityName, ignoreCase = true) }
+
+        // This rule depends only on the activity name, so no view-tree scan is needed, even if it doesn't match.
+        if (detectionMethod is DetectionMethod.ActivityName) return matchesActivity(detectionMethod)
 
         // Keep mixed layout rules in one tree scan; ID-only alternatives use indexed lookups.
         if (detectionMethod is DetectionMethod.AnyOf) {
-            val activityMatch = detectionMethod.detectionMethods
-                .filterIsInstance<DetectionMethod.ActivityName>()
-                .any { matchesDetectionMethod(blockableApp, it, appWindows, currentActivity) }
+            val activityMatch = detectionMethod.detectionMethods.any { it is DetectionMethod.ActivityName && matchesActivity(it) }
             if (activityMatch) return true
 
             if (detectionMethod.detectionMethods.all { it is DetectionMethod.ViewId }) {

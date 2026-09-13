@@ -16,12 +16,6 @@
  */
 package com.scrolless.app.accessibility
 
-import android.accessibilityservice.AccessibilityService
-import android.graphics.Rect
-import android.os.Build
-import android.view.accessibility.AccessibilityEvent
-import android.view.accessibility.AccessibilityNodeInfo
-import android.view.accessibility.AccessibilityWindowInfo
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.ResolvedBlockableApp
 import org.junit.Assert.assertNotNull
@@ -30,20 +24,20 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE, sdk = [28, 35])
 class FacebookStoriesTest {
     private var includeStories = false
-    private val service = Robolectric.buildService(TestService::class.java).create().get()
+    private val service = Robolectric.buildService(TestAccessibilityService::class.java).create().get()
     private val scanner = ContentScanner(service, { false }, { false }, { includeStories })
     private val facebook = ResolvedBlockableApp(BlockableApp.FACEBOOK, "com.facebook.katana")
+    private val storyActivity = "com.facebook.stories.viewer.activity.StoryViewerActivity"
 
     @Test
     fun `Stories opt in can be enabled and disabled during the same viewing session`() {
-        showWindow(windowTitle = "com.facebook.katana/com.facebook.stories.viewer.activity.StoryViewerActivity")
+        showWindow(windowTitle = "${facebook.packageId}/$storyActivity")
         assertNull(scanner.findVisibleBlockedContent(facebook))
         includeStories = true
         assertNotNull(scanner.findVisibleBlockedContent(facebook))
@@ -56,7 +50,7 @@ class FacebookStoriesTest {
         showWindow(windowTitle = "")
         includeStories = true
         assertNull(scanner.findVisibleBlockedContent(facebook))
-        assertNotNull(scanner.findVisibleBlockedContent(facebook, currentActivity = "com.facebook.stories.viewer.activity.StoryViewerActivity"))
+        assertNotNull(scanner.findVisibleBlockedContent(facebook, currentActivity = storyActivity))
     }
 
     /**
@@ -68,12 +62,12 @@ class FacebookStoriesTest {
         showWindow(windowTitle = "Facebook")
         includeStories = true
         assertNull(scanner.findVisibleBlockedContent(facebook))
-        assertNotNull(scanner.findVisibleBlockedContent(facebook, currentActivity = "com.facebook.stories.viewer.activity.StoryViewerActivity"))
+        assertNotNull(scanner.findVisibleBlockedContent(facebook, currentActivity = storyActivity))
     }
 
     @Test
     fun `Reels remain detected regardless of Stories preference`() {
-        showContentDescription("FbShortsComposerAttachmentComponentSpec_STICKER")
+        showWindow(contentDescription = "FbShortsComposerAttachmentComponentSpec_STICKER")
         assertNotNull(scanner.findVisibleBlockedContent(facebook))
         includeStories = true
         assertNotNull(scanner.findVisibleBlockedContent(facebook))
@@ -85,71 +79,12 @@ class FacebookStoriesTest {
         showWindow(windowTitle = "com.facebook.katana/com.facebook.katana.activity.FbMainTabActivity")
         assertNull(scanner.findVisibleBlockedContent(facebook))
         showWindow(
-            windowTitle = "com.facebook.katana/com.facebook.stories.viewer.activity.StoryViewerActivity",
+            windowTitle = "${facebook.packageId}/$storyActivity",
             packageId = "com.example.other",
         )
         assertNull(scanner.findVisibleBlockedContent(facebook))
     }
 
-    private fun newNode(): AccessibilityNodeInfo = if (Build.VERSION.SDK_INT >= 33) {
-        AccessibilityNodeInfo()
-    } else {
-        @Suppress("DEPRECATION")
-        AccessibilityNodeInfo.obtain()
-    }
-
-    private fun showWindow(
-        windowTitle: String,
-        visible: Boolean = true,
-        packageId: String = facebook.packageId,
-    ) {
-        val root = newNode().apply {
-            packageName = packageId
-            isVisibleToUser = visible
-            setBoundsInScreen(Rect(0, 97, 1080, 2298))
-        }
-        val window = AccessibilityWindowInfo.obtain()
-        shadowOf(window).apply {
-            setRoot(root)
-            setType(AccessibilityWindowInfo.TYPE_APPLICATION)
-            setActive(true)
-            setFocused(true)
-            if (Build.VERSION.SDK_INT >= 28) {
-                setTitle(windowTitle)
-            }
-        }
-        shadowOf(service).apply {
-            setRootInActiveWindow(root)
-            setWindows(listOf(window))
-        }
-    }
-
-    private fun showContentDescription(
-        contentDesc: String,
-        visible: Boolean = true,
-        packageId: String = facebook.packageId,
-    ) {
-        val root = newNode().apply {
-            packageName = packageId
-            contentDescription = contentDesc
-            isVisibleToUser = visible
-            setBoundsInScreen(Rect(0, 97, 1080, 2298))
-        }
-        val window = AccessibilityWindowInfo.obtain()
-        shadowOf(window).apply {
-            setRoot(root)
-            setType(AccessibilityWindowInfo.TYPE_APPLICATION)
-            setActive(true)
-            setFocused(true)
-        }
-        shadowOf(service).apply {
-            setRootInActiveWindow(root)
-            setWindows(listOf(window))
-        }
-    }
-
-    class TestService : AccessibilityService() {
-        override fun onAccessibilityEvent(event: AccessibilityEvent) = Unit
-        override fun onInterrupt() = Unit
-    }
+    private fun showWindow(windowTitle: String? = null, contentDescription: String? = null, packageId: String = facebook.packageId) =
+        service.showTestWindow(packageId, windowTitle = windowTitle, contentDescription = contentDescription)
 }

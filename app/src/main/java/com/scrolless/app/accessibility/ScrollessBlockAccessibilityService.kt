@@ -151,8 +151,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     /** Whether the user enabled the floating timer overlay in settings. */
     private var currentTimerOverlayEnabled: Boolean = false
 
-    /** Whether videos received in direct messages are exempt from blocking. */
+    /** Whether Stories participate in usage tracking and blocking. */
     private var currentIncludeStories: Boolean = false
+
+    /** Whether videos received in direct messages are exempt from blocking. */
     private var currentAllowVideosSentByDm: Boolean = false
 
     /** Timestamp until which blocking is temporarily paused. */
