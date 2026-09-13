@@ -46,15 +46,7 @@ class BlockAllBlockHandler(private val timeProvider: TimeProvider) : BlockOption
      * @param elapsedTime Time elapsed in current session in milliseconds.
      * @return [BlockingResult.BlockNow] to block, or [BlockingResult.Continue] for rapid re-block.
      */
-    override suspend fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult = runSafe {
-
-        lastBlockTime = timeProvider.currentTimeInMillis()
-        Timber.v("BlockAll.onPeriodicCheck: daily=%d, elapsed=%d -> blocking now", currentDailyUsage, elapsedTime)
-        return@runSafe BlockingResult.BlockNow
-    }
-
-    private fun runSafe(function: () -> BlockingResult): BlockingResult {
-
+    override suspend fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult {
         // If the third block was within 1.2 seconds, and this is not the first block attempt,
         //  ignore to prevent spam back key
         val hasBlockedTooManyTimes = (++blockAttempts > 2) && ((timeProvider.currentTimeInMillis() - lastBlockTime) < 1200)
@@ -63,7 +55,9 @@ class BlockAllBlockHandler(private val timeProvider: TimeProvider) : BlockOption
             Timber.w("BlockAll.onPeriodicCheck: Too many blocks, ignoring to prevent infinite loop")
             return BlockingResult.Continue
         }
-        return function()
+        lastBlockTime = timeProvider.currentTimeInMillis()
+        Timber.v("BlockAll.onPeriodicCheck: daily=%d, elapsed=%d -> blocking now", currentDailyUsage, elapsedTime)
+        return BlockingResult.BlockNow
     }
 
     override suspend fun onExitContent(sessionStartMillis: Long, sessionEndMillis: Long) {

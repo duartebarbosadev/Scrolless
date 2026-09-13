@@ -28,6 +28,7 @@ import com.scrolless.app.BuildConfig
 import com.scrolless.app.core.blocking.BlockingManager
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
+import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.BlockingResult
 import com.scrolless.app.core.model.ContentBlockAction
 import com.scrolless.app.core.model.ResolvedBlockableApp
@@ -42,6 +43,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
@@ -184,11 +186,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     private val videoCheckRunnable: Runnable = Runnable {
 
         if (!validateTrackedAppState("Periodic check")) {
-            return@Runnable
-        }
-
-        if (contentSession == null) {
-            Timber.v("Periodic check runnable executed but no longer processing content")
             return@Runnable
         }
 
@@ -343,14 +340,6 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     /**
-     * Updates package filtering so we listen broadly while an app is open to detect exits,
-     * or narrowly when idle to save battery.
-     */
-    private fun refreshServiceConfig() {
-        updateServiceConfig(contentSession != null || currentForegroundBrainRotApp != null)
-    }
-
-    /**
      * Processes incoming accessibility events to detect when the user enters or exits blocked content.
      *
      * @param event The accessibility event emitted by Android.
@@ -475,8 +464,11 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         startPeriodicCheck()
 
         serviceScope.launch {
-            // Let the blocking manager start its session even during a pause or DM exemption.
-            val shouldBlock = blockingManager.onEnterBlockedContent()
+            // Load timer settings alongside usage so displaying the timer does not add another wait.
+            val timerConfig = if (currentTimerOverlayEnabled) async { blockingConfigRepository.getConfig() } else null
+            val dailyUsageMillis = sessionTracker.getDailyUsage()
+            // Share this usage reading with the timer, including during a pause or DM exemption.
+            val shouldBlock = blockingManager.onEnterBlockedContent(dailyUsageMillis)
             // Reading the limit may take time. Ignore the answer if the user has already left.
             if (viewingSession !== session) return@launch
             if (!isBlockingSuppressed && shouldBlock) {
@@ -490,7 +482,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 blockedContentOverlayManager.hide()
             }
 
-            showTimerOverlayIfEnabled(session)
+            if (timerConfig != null) {
+                showTimerOverlayIfEnabled(session, timerConfig.await(), dailyUsageMillis)
+            }
 
             if (isBlockingSuppressed) {
                 Timber.d(
@@ -504,40 +498,24 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    /** Shows the floating timer overlay displaying daily or interval usage. */
-    private suspend fun showTimerOverlayIfEnabled(session: ContentSession) {
-        if (!currentTimerOverlayEnabled) return
+    /** Shows the timer using the settings and usage already loaded for this viewing session. */
+    private fun showTimerOverlayIfEnabled(session: ContentSession, config: BlockingConfig, dailyUsageMillis: Long) {
+        // Reads can finish after navigation. Only show the timer for the same viewing session.
+        if (!currentTimerOverlayEnabled || viewingSession !== session) return
 
-        val config = blockingConfigRepository.getConfig()
-        val showOverlay: () -> Unit
-        // Interval mode shows usage within the active interval; other modes show today's total.
+        Timber.v("Showing timer overlay")
+        // This coroutine already runs on the main thread, so no Handler post is needed.
         if (config.activeOption == BlockOption.IntervalTimer) {
-            showOverlay = {
-                timerOverlayManager.showInterval(
-                    sessionStartAt = session.startedAtMillis,
-                    intervalUsage = config.intervalUsage,
-                    intervalLengthMillis = config.settings.intervalLengthMillis,
-                )
-            }
+            timerOverlayManager.showInterval(
+                sessionStartAt = session.startedAtMillis,
+                intervalUsage = config.intervalUsage,
+                intervalLengthMillis = config.settings.intervalLengthMillis,
+            )
         } else {
-            val dailyUsageMillis = sessionTracker.getDailyUsage()
-            showOverlay = {
-                timerOverlayManager.showDaily(
-                    sessionStartAt = session.startedAtMillis,
-                    dailyUsageMillis = dailyUsageMillis,
-                )
-            }
-        }
-
-        // The settings lookup may finish after navigation. Only show the timer for this same session.
-        mainHandler.post {
-            if (
-                currentTimerOverlayEnabled &&
-                viewingSession === session
-            ) {
-                Timber.v("Showing timer overlay")
-                showOverlay()
-            }
+            timerOverlayManager.showDaily(
+                sessionStartAt = session.startedAtMillis,
+                dailyUsageMillis = dailyUsageMillis,
+            )
         }
     }
 
@@ -684,12 +662,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     }
 
     /**
-     * Updates accessibility event filtering.
-     *
-     * @param listenToAll If true, listens to all packages to detect exits; if false, filters to target apps to save battery.
+     * Updates package filtering so we listen broadly while an app is open to detect exits,
+     * or narrowly when idle to save battery.
      */
-    private fun updateServiceConfig(listenToAll: Boolean) {
+    private fun refreshServiceConfig() {
         val info = serviceInfo ?: return
+        val listenToAll = contentSession != null || currentForegroundBrainRotApp != null
 
         // Do not delay Home/app-switching events while covered, or the old screen cover can linger.
         info.notificationTimeout = if (contentSession?.isCovered == true) 0L else DEFAULT_NOTIFICATION_TIMEOUT_MS
