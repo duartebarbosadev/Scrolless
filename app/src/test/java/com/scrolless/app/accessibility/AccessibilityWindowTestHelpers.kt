@@ -41,6 +41,7 @@ internal fun AccessibilityService.showTestWindow(
     contentDescription: String? = null,
     windowTitle: String? = null,
     visible: Boolean = true,
+    windowId: Int = 1,
 ) {
     val root = if (Build.VERSION.SDK_INT >= 33) {
         AccessibilityNodeInfo()
@@ -49,6 +50,7 @@ internal fun AccessibilityService.showTestWindow(
         AccessibilityNodeInfo.obtain()
     }
     root.apply {
+        setSource(android.view.View(this@showTestWindow))
         packageName = packageId
         viewIdResourceName = viewId?.let { "$packageId:id/$it" }
         this.contentDescription = contentDescription
@@ -57,12 +59,14 @@ internal fun AccessibilityService.showTestWindow(
     }
     val window = AccessibilityWindowInfo.obtain()
     shadowOf(window).apply {
+        setId(windowId)
         setRoot(root)
         setType(AccessibilityWindowInfo.TYPE_APPLICATION)
         setActive(true)
         setFocused(true)
         if (windowTitle != null) setTitle(windowTitle)
     }
+    shadowOf(root).setAccessibilityWindowInfo(window)
     shadowOf(this).apply {
         setRootInActiveWindow(root)
         setWindows(listOf(window))

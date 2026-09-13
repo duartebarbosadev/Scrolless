@@ -34,5 +34,5 @@
     <string name="settings_show_onscreen_timer_title">Pokaż minutnik na ekranie</string>
     <string name="settings_include_stories_title">Uwzględniaj relacje</string>
     <string name="settings_include_stories_description">Wliczaj czas spędzony na oglądaniu relacji i stosuj bieżący tryb blokowania oraz limity czasu.</string>
-    <string name="settings_include_stories_note">Obecnie obsługiwane na Instagramie.</string>
+    <string name="settings_include_stories_note">Obecnie obsługiwane na Instagramie, Snapchacie i Facebooku.</string>
 </resources>

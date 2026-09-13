@@ -19,6 +19,7 @@ package com.scrolless.app.accessibility
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.annotation.SuppressLint
+import android.content.ComponentName
 import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
@@ -135,7 +136,13 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Scans the window tree to find target apps, videos, and compute cover coordinates. */
     private val contentScanner by lazy {
-        ContentScanner(this, { isWindowAttachedCoverAllowed }, { currentAllowVideosSentByDm }, { currentIncludeStories })
+        ContentScanner(
+            service = this,
+            windowAttachedCover = { isWindowAttachedCoverAllowed },
+            allowVideosSentByDm = { currentAllowVideosSentByDm },
+            includeStories = { currentIncludeStories },
+            currentActivity = { currentActivity },
+        )
     }
 
     /**
@@ -169,7 +176,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Currently tracked target app in the foreground, or null if unrelated. */
     private var currentForegroundBrainRotApp: ResolvedBlockableApp? = null
-    private var currentActivityName: String? = null
+
+    /** Last activity reported by a screen-change event; ordinary view events leave it unchanged. */
+    private var currentActivity: ComponentName? = null
 
     /** Periodically checks if the user exceeded their usage limit while watching blocked content. */
     private val videoCheckRunnable: Runnable = Runnable {
@@ -352,20 +361,17 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             return
         }
 
-        if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
-            val className = event.className?.toString()
-            if (className != null && !className.startsWith("android.widget.") && !className.startsWith("android.view.")) {
-                currentActivityName = className
-            }
+        // Keep activity tracking simple: dialog and keyboard class names do not end in "Activity".
+        val className = event.className?.toString()
+        if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && className?.endsWith("Activity") == true) {
+            currentActivity = event.packageName?.let { ComponentName(it.toString(), className) }
         }
 
         val scan = contentScanner.scan(
-            event.packageName?.toString(),
-            event.eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED,
+            event,
             contentSession?.app,
             currentForegroundBrainRotApp,
             contentSession?.takeIf { it.isCovered }?.content?.cover,
-            currentActivityName,
         )
         if (scan.trackedAppExited) handleTrackedAppExit("covered app lost foreground")
         val userActiveApp = scan.foregroundApp
@@ -400,8 +406,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         if (previousApp != null) {
             Timber.v("*** User appears to have left a brain rot app: %s (%s)", previousApp.app.name, previousApp.packageId)
             sessionTracker.onAppClose()
-            if (nextApp == null) {
-                currentActivityName = null
+            if (nextApp == null && currentActivity?.packageName == previousApp.packageId) {
+                currentActivity = null
             }
         }
 
@@ -631,11 +637,19 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    /** Re-scans visible windows to update the current content session. */
+    /** Re-scans the visible app, including Stories that were ignored before the setting changed. */
     private fun refreshDetectedContent() {
-        val session = contentSession ?: return
+        if (!validateTrackedAppState("Content refresh")) return
+        val session = contentSession
+        if (session == null) {
+            // A newly enabled content type has no session yet. Inspect the foreground app without waiting for another event.
+            val scan = contentScanner.scan(event = null, trackedApp = null, foregroundApp = null)
+            updateForegroundAppState(scan.foregroundApp)
+            scan.content?.let(::onBlockedContentDetected)
+            return
+        }
         val activeCover = session.content.cover.takeIf { session.isCovered }
-        val content = contentScanner.findVisibleBlockedContent(session.app, activeCover, currentActivityName)
+        val content = contentScanner.findVisibleBlockedContent(session.app, activeCover)
         if (content == null) onBlockedContentExited() else onBlockedContentDetected(content)
     }
 

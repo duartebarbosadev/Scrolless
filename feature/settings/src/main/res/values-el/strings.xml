@@ -32,5 +32,5 @@
     <string name="settings_show_onscreen_timer_title">Εμφάνιση χρονοδιακόπτη στην οθόνη</string>
     <string name="settings_include_stories_title">Συμπερίληψη ιστοριών</string>
     <string name="settings_include_stories_description">Μετρήστε τον χρόνο προβολής ιστοριών και εφαρμόστε την τρέχουσα λειτουργία αποκλεισμού και τα όριά σας.</string>
-    <string name="settings_include_stories_note">Προς το παρόν υποστηρίζεται στο Instagram.</string>
+    <string name="settings_include_stories_note">Προς το παρόν υποστηρίζεται στο Instagram, στο Snapchat και στο Facebook.</string>
 </resources>

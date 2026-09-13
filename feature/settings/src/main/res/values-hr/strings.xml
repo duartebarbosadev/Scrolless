@@ -33,5 +33,5 @@
     <string name="settings_show_onscreen_timer_title">Prikaži mjerač vremena na zaslonu</string>
     <string name="settings_include_stories_title">Uključi priče</string>
     <string name="settings_include_stories_description">Broji vrijeme provedeno gledajući priče i primijeni trenutačni način blokiranja i ograničenja.</string>
-    <string name="settings_include_stories_note">Trenutačno podržano na Instagramu.</string>
+    <string name="settings_include_stories_note">Trenutačno podržano na Instagramu, Snapchatu i Facebooku.</string>
 </resources>

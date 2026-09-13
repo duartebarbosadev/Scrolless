@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.accessibility
 
+import android.content.ComponentName
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.ResolvedBlockableApp
 import org.junit.Assert.assertNotNull
@@ -31,7 +32,8 @@ import org.robolectric.annotation.Config
 class FacebookStoriesTest {
     private var includeStories = false
     private val service = Robolectric.buildService(TestAccessibilityService::class.java).create().get()
-    private val scanner = ContentScanner(service, { false }, { false }, { includeStories })
+    private var currentActivity: ComponentName? = null
+    private val scanner = ContentScanner(service, { false }, { false }, { includeStories }, { currentActivity })
     private val facebook = ResolvedBlockableApp(BlockableApp.FACEBOOK, "com.facebook.katana")
     private val storyActivity = "com.facebook.stories.viewer.activity.StoryViewerActivity"
 
@@ -46,11 +48,12 @@ class FacebookStoriesTest {
     }
 
     @Test
-    fun `Stories detected via currentActivity even without window title`() {
+    fun `Stories detected from the activity name even without window title`() {
         showWindow(windowTitle = "")
         includeStories = true
         assertNull(scanner.findVisibleBlockedContent(facebook))
-        assertNotNull(scanner.findVisibleBlockedContent(facebook, currentActivity = storyActivity))
+        currentActivity = ComponentName(facebook.packageId, storyActivity)
+        assertNotNull(scanner.findVisibleBlockedContent(facebook))
     }
 
     /**
@@ -62,7 +65,8 @@ class FacebookStoriesTest {
         showWindow(windowTitle = "Facebook")
         includeStories = true
         assertNull(scanner.findVisibleBlockedContent(facebook))
-        assertNotNull(scanner.findVisibleBlockedContent(facebook, currentActivity = storyActivity))
+        currentActivity = ComponentName(facebook.packageId, storyActivity)
+        assertNotNull(scanner.findVisibleBlockedContent(facebook))
     }
 
     @Test
@@ -82,6 +86,14 @@ class FacebookStoriesTest {
             windowTitle = "${facebook.packageId}/$storyActivity",
             packageId = "com.example.other",
         )
+        assertNull(scanner.findVisibleBlockedContent(facebook))
+    }
+
+    @Test
+    fun `an activity from another app is not used for Facebook`() {
+        showWindow(windowTitle = "Facebook")
+        includeStories = true
+        currentActivity = ComponentName("com.example.other", storyActivity)
         assertNull(scanner.findVisibleBlockedContent(facebook))
     }
 
