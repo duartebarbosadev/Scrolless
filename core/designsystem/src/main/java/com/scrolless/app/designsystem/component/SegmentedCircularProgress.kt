@@ -136,7 +136,6 @@ fun SegmentedCircularProgressIndicator(
             value = averageSweepDegrees,
             start = GAP_SHRINK_START_AVERAGE_SWEEP_DEGREES,
             end = GAP_SHRINK_FULL_AVERAGE_SWEEP_DEGREES,
-            descending = true,
         )
         val crowdingFactor = max(countCrowdingFactor, sweepCrowdingFactor)
         val preferredGapDegrees = lerp(initialGapDegrees, DENSE_GAP_DEGREES, crowdingFactor)
@@ -177,15 +176,12 @@ fun SegmentedCircularProgressIndicator(
 /**
  * Normalizes [value] to the [0f, 1f] range between [start] and [end].
  *
- * If [descending] is true, normalization is inverted so lower values map to higher factors.
+ * [start] maps to 0 and [end] to 1. When [start] is greater than [end], lower values
+ * produce higher factors. Equal bounds return 0.
  */
-private fun normalizedRange(value: Float, start: Float, end: Float, descending: Boolean = false): Float {
+private fun normalizedRange(value: Float, start: Float, end: Float): Float {
     if (start == end) return 0f
-    val normalized = if (!descending) {
-        (value - start) / (end - start)
-    } else {
-        (start - value) / (start - end)
-    }
+    val normalized = (value - start) / (end - start)
     return normalized.coerceIn(0f, 1f)
 }
 
@@ -208,7 +204,7 @@ private fun calculateSegments(appUsageData: List<ProgressBarSegment>, totalSweep
     val maxVisualSweep = if (validSegments.size > 1) 360f - gapDegrees else 360f
     val usedDegrees = maxVisualSweep * progress
 
-    val gapCount = (validSegments.size - 1).coerceAtLeast(0)
+    val gapCount = validSegments.size - 1
 
     val effectiveGapDegrees = if (gapCount > 0) {
         min(gapDegrees, ((usedDegrees - MIN_TOTAL_SWEEP_DEGREES).coerceAtLeast(0f)) / gapCount)

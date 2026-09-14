@@ -242,9 +242,7 @@ enum class BlockableApp(
 
     fun getPackageIds(): List<String> = packageIds
 
-    fun resolvePackage(packageName: String): String? = packageName.takeIf(::matchesPackage)
-
-    private fun matchesPackage(packageName: String): Boolean = packageIds.any { it == packageName }
+    fun resolvePackage(packageName: String): String? = packageName.takeIf { it in packageIds }
 }
 
 /**
@@ -271,7 +269,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
 
     /** Try rules that need only one node. Layout rules still need the full set of related nodes. */
     fun matchesFastDetectionNode(node: DetectionNode, detectionMethod: DetectionMethod = getDetectionMethod()): Boolean {
-        return detectionMethod.matchesFastNode(node)
+        return detectionMethod.matchesSimpleNode(node)
     }
 
     // Tell the screen scanner which view types matter, so it can skip unrelated layout details.
@@ -279,7 +277,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
         return buildSet { detectionMethod.collectStructuralClassNames(this) }
     }
 
-    private fun DetectionMethod.matchesFastNode(node: DetectionNode): Boolean {
+    private fun DetectionMethod.matchesSimpleNode(node: DetectionNode): Boolean {
         if (!node.isVisible) return false
         return when (this) {
             is DetectionMethod.ViewId -> node.viewId == getViewId(this)
@@ -297,7 +295,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
 
             is DetectionMethod.NodeStructure -> false
 
-            is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matchesFastNode(node) }
+            is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matchesSimpleNode(node) }
         }
     }
 
@@ -319,21 +317,20 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
 
     private fun DetectionMethod.matches(nodes: Collection<DetectionNode>, childrenByParentId: Map<Int?, List<DetectionNode>>): Boolean {
         return when (this) {
-            is DetectionMethod.ViewId -> nodes.any { node -> matchesFastNode(node) }
-
-            is DetectionMethod.ContentDescriptions -> nodes.any { node -> matchesFastNode(node) }
-
-            is DetectionMethod.ContentDescriptionPrefix -> nodes.any { node -> matchesFastNode(node) }
+            is DetectionMethod.ViewId,
+            is DetectionMethod.ContentDescriptions,
+            is DetectionMethod.ContentDescriptionPrefix,
+            -> nodes.any { node -> matchesSimpleNode(node) }
 
             is DetectionMethod.NodeStructure -> nodes.any { node ->
-                matchesNode(node, childrenByParentId)
+                matchesStructure(node, childrenByParentId)
             }
 
             is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matches(nodes, childrenByParentId) }
         }
     }
 
-    private fun DetectionMethod.NodeStructure.matchesNode(
+    private fun DetectionMethod.NodeStructure.matchesStructure(
         node: DetectionNode,
         childrenByParentId: Map<Int?, List<DetectionNode>>,
     ): Boolean {
@@ -356,7 +353,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
     ): Boolean {
         // Allow extra wrapper views between the required parts of the video layout.
         return childrenByParentId[parentNodeId].orEmpty().any { child ->
-            matchesNode(child, childrenByParentId) || hasMatchingDescendant(child.nodeId, childrenByParentId)
+            matchesStructure(child, childrenByParentId) || hasMatchingDescendant(child.nodeId, childrenByParentId)
         }
     }
 }

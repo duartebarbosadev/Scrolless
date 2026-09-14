@@ -27,6 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -101,14 +102,14 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
 
     override fun getTimerOverlayEnabled(): Flow<Boolean> = _timerOverlayEnabled
 
-    override fun getTimerOverlayPositionY(): Flow<Int> = _timerOverlayPositionY
+    override fun getTimerOverlayPositionY(): StateFlow<Int> = _timerOverlayPositionY
 
     override suspend fun setTimerOverlayPositionY(positionY: Int) {
         _timerOverlayPositionY.value = positionY
         userSettingsDao.setTimerOverlayPositionY(positionY)
     }
 
-    override fun getTimerOverlayPositionX(): Flow<Int> = _timerOverlayPositionX
+    override fun getTimerOverlayPositionX(): StateFlow<Int> = _timerOverlayPositionX
 
     override suspend fun setTimerOverlayPositionX(positionX: Int) {
         _timerOverlayPositionX.value = positionX
