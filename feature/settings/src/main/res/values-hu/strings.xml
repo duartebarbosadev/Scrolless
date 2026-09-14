@@ -30,4 +30,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">DM-ben küldött videók</string>
     <string name="settings_show_onscreen_timer_description">Tartsa láthatóan a lebegő időzítőt rövid videók nézése közben.</string>
     <string name="settings_show_onscreen_timer_title">Képernyőn megjelenő időzítő</string>
+    <string name="settings_include_stories_title">Történetek figyelembevétele</string>
+    <string name="settings_include_stories_description">Számítsa bele a történetek megtekintésével töltött időt, és alkalmazza a jelenlegi blokkolási módot és időkorlátokat.</string>
+    <string name="settings_include_stories_note">Jelenleg az Instagramon támogatott.</string>
 </resources>

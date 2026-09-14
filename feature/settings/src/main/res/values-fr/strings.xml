@@ -30,4 +30,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">Vidéos envoyées par messages directs</string>
     <string name="settings_show_onscreen_timer_description">Garder un minuteur flottant visible en regardant des vidéos courtes.</string>
     <string name="settings_show_onscreen_timer_title">Afficher le minuteur à l\'écran</string>
+    <string name="settings_include_stories_title">Inclure les stories</string>
+    <string name="settings_include_stories_description">Comptabilisez le temps passé à regarder des stories et appliquez votre mode de blocage et vos limites actuels.</string>
+    <string name="settings_include_stories_note">Actuellement disponible sur Instagram.</string>
 </resources>

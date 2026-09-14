@@ -30,4 +30,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">Videoar sende i DM-ar</string>
     <string name="settings_show_onscreen_timer_description">Hald ein flytande tidtakar synleg medan du ser på korte videoar.</string>
     <string name="settings_show_onscreen_timer_title">Vis tidtakar på skjermen</string>
+    <string name="settings_include_stories_title">Ta med historier</string>
+    <string name="settings_include_stories_description">Tel tida du bruker på å sjå historier, og bruk gjeldande blokkeringsmodus og tidsgrenser.</string>
+    <string name="settings_include_stories_note">Førebels støtta på Instagram.</string>
 </resources>

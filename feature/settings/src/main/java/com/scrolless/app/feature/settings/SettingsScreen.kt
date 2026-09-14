@@ -82,6 +82,7 @@ fun SettingsScreen(modifier: Modifier = Modifier, onNavigateBack: () -> Unit, vi
         onPauseDurationChange = viewModel::onPauseDurationChange,
         onAllowVideosSentByDmChange = viewModel::onAllowVideosSentByDmChange,
         onTimerOverlayEnabledChange = viewModel::onTimerOverlayEnabledChange,
+        onIncludeStoriesChange = viewModel::onIncludeStoriesChange,
         onNavigateBack = onNavigateBack,
     )
 }
@@ -94,6 +95,7 @@ private fun SettingsScreenContent(
     onPauseDurationChange: (Int) -> Unit,
     onAllowVideosSentByDmChange: (Boolean) -> Unit,
     onTimerOverlayEnabledChange: (Boolean) -> Unit,
+    onIncludeStoriesChange: (Boolean) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
@@ -174,6 +176,16 @@ private fun SettingsScreenContent(
                 AllowVideosSentByDmItem(
                     checked = uiState.allowVideosSentByDm,
                     onCheckedChange = onAllowVideosSentByDmChange,
+                )
+
+                SettingsDivider()
+
+                SettingsSwitchItem(
+                    title = stringResource(R.string.settings_include_stories_title),
+                    description = stringResource(R.string.settings_include_stories_description),
+                    note = stringResource(R.string.settings_include_stories_note),
+                    checked = uiState.includeStories,
+                    onCheckedChange = onIncludeStoriesChange,
                 )
 
                 SettingsDivider()
@@ -394,6 +406,7 @@ private fun SettingsScreenPreview() {
             onNavigateBack = {},
             onAllowVideosSentByDmChange = {},
             onTimerOverlayEnabledChange = {},
+            onIncludeStoriesChange = {},
         )
     }
 }

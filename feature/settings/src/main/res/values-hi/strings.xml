@@ -30,4 +30,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">DMs में भेजे गए वीडियो</string>
     <string name="settings_show_onscreen_timer_description">छोटे वीडियो देखते समय एक फ़्लोटिंग टाइमर दृश्यमान रखें।</string>
     <string name="settings_show_onscreen_timer_title">ऑन-स्क्रीन टाइमर दिखाएँ</string>
+    <string name="settings_include_stories_title">स्टोरीज़ शामिल करें</string>
+    <string name="settings_include_stories_description">स्टोरीज़ देखने में बिताया समय गिनें और अपना मौजूदा ब्लॉकिंग मोड और समय सीमाएँ लागू करें।</string>
+    <string name="settings_include_stories_note">फ़िलहाल Instagram पर उपलब्ध है।</string>
 </resources>
