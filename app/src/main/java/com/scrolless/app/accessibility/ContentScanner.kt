@@ -46,7 +46,6 @@ internal class ContentScanner(
     @get:ChecksSdkIntAtLeast(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     private val useWindowAttachedCover
         get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && windowAttachedCover()
-    private val currentAllowVideosSentByDm get() = allowVideosSentByDm()
 
     /**
      * Scan results for the current screen.
@@ -158,10 +157,12 @@ internal class ContentScanner(
         if (packageName?.toString() != blockableApp.packageId || !appWindows.isEligible(blockableApp)) return null
         // A matching region uses a cover; otherwise keep this app's normal screen detector.
         val cover = detectContentCover(blockableApp, appWindows, activeCover)
-        // A cover-only app must provide a rectangle. Never guess a region or press Back instead.
-        if (cover == null &&
-            (blockableApp.getBlockAction() == ContentBlockAction.CoverVideoRegion || !matchesBlockedContent(blockableApp))
-        ) return null
+        if (cover == null) {
+            // This app requires a video cover, but we could not find the player's bounds.
+            if (blockableApp.getBlockAction() == ContentBlockAction.CoverVideoRegion) return null
+            // Only use the app's normal blocking action when the screen matches its detection rule.
+            if (!matchesBlockedContent(blockableApp)) return null
+        }
         return DetectedBlockedContent(
             app = blockableApp,
             blockingSuppressed = shouldSuppressBlocking(blockableApp, cover),
@@ -284,7 +285,7 @@ internal class ContentScanner(
      */
     private fun AccessibilityNodeInfo.shouldSuppressBlocking(blockableApp: ResolvedBlockableApp, cover: ContentCover?): Boolean {
         // Only check layout rules if the user explicitly enabled DM video allowance in settings.
-        if (!currentAllowVideosSentByDm) return false
+        if (!allowVideosSentByDm()) return false
         val rule = blockableApp.dmExemptionRule ?: return false
         return isVideoSentInDm(blockableApp, rule, cover)
     }
