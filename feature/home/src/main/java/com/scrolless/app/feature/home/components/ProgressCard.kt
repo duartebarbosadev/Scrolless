@@ -101,14 +101,15 @@ fun ProgressCard(
         lengthMillis = intervalLengthMillis,
     )
 
-    val primaryText = when {
-        isIntervalMode -> intervalUsage.usageMillis.formatTime()
-        else -> currentUsage.formatTime()
+    val primaryText = if (isIntervalMode) {
+        intervalUsage.usageMillis.formatTime()
+    } else {
+        currentUsage.formatTime()
     }
-    val limitChipText = when {
-        isIntervalMode && limitMillis > 0L -> limitMillis.formatTime()
-        blockOption == BlockOption.DailyLimit && limitMillis > 0L -> limitMillis.formatTime()
-        else -> null
+    val limitChipText = if (limitMillis > 0L && (isIntervalMode || blockOption == BlockOption.DailyLimit)) {
+        limitMillis.formatTime()
+    } else {
+        null
     }
 
     val resetText = if (isIntervalRunning) {
@@ -332,7 +333,7 @@ internal fun buildProgressBarSegments(
     }
 
     return sessionSegments.mapNotNull { segment ->
-        val rawUsageMillis = segment.durationMillis.coerceAtLeast(0L)
+        val rawUsageMillis = segment.durationMillis
         if (rawUsageMillis < 1_000L) {
             return@mapNotNull null
         }
