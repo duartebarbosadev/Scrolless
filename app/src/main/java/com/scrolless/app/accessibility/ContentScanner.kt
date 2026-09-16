@@ -19,7 +19,6 @@ package com.scrolless.app.accessibility
 import android.accessibilityservice.AccessibilityService
 import android.content.ComponentName
 import android.os.Build
-import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.view.accessibility.AccessibilityWindowInfo
 import androidx.annotation.ChecksSdkIntAtLeast
@@ -67,13 +66,15 @@ internal class ContentScanner(
     /**
      * Checks visible windows for apps and content that should be blocked.
      *
-     * @param event The accessibility event that triggered this scan, or null to inspect the foreground app directly.
+     * @param eventPackage Package name reported by the incoming accessibility event.
+     * @param windowsChanged True to resolve the foreground package from the current windows, including scans without an event.
      * @param trackedApp Currently active tracked session app, if any.
      * @param foregroundApp Last known foreground target app.
      * @param activeCover Currently displayed cover, allowing detectors to keep an occluded player covered.
      */
     fun scan(
-        event: AccessibilityEvent?,
+        eventPackage: String?,
+        windowsChanged: Boolean,
         trackedApp: ResolvedBlockableApp?,
         foregroundApp: ResolvedBlockableApp?,
         activeCover: ContentCover? = null,
@@ -82,10 +83,10 @@ internal class ContentScanner(
         val trackedAppExited = trackedApp != null && !appWindows.isEligible(trackedApp)
 
         // TYPE_WINDOWS_CHANGED events often omit package info; fall back to the top window package.
-        val packageId = if (event == null || event.eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED) {
+        val packageId = if (windowsChanged) {
             appWindows.foregroundPackage.orEmpty()
         } else {
-            event.packageName?.toString().orEmpty()
+            eventPackage.orEmpty()
         }
 
         val currentForegroundApp = if (trackedAppExited) null else foregroundApp
@@ -159,9 +160,9 @@ internal class ContentScanner(
         val cover = detectContentCover(blockableApp, appWindows, activeCover)
 
         if (cover == null) {
-            // An overlay needs the player's bounds; without them, we cannot cover the video.
+            // This app requires a video cover, but we could not find the player's bounds.
             if (blockableApp.getBlockAction() == ContentBlockAction.CoverVideoRegion) return null
-            // Before using Back, confirm this is a blocked screen so we don't close an allowed one.
+            // Only use the app's normal blocking action when the screen matches its detection rule.
             if (!matchesBlockedContent(blockableApp, appWindows)) return null
         }
 

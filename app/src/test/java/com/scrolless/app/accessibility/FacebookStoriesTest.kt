@@ -19,6 +19,7 @@ package com.scrolless.app.accessibility
 import android.content.ComponentName
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.ResolvedBlockableApp
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -95,6 +96,33 @@ class FacebookStoriesTest {
         includeStories = true
         currentActivity = ComponentName("com.example.other", storyActivity)
         assertNull(scanner.findVisibleBlockedContent(facebook))
+    }
+
+    @Test
+    fun `scan without an event discovers an untracked Story when preference becomes enabled`() {
+        showWindow(windowTitle = "Facebook")
+        currentActivity = ComponentName(facebook.packageId, storyActivity)
+
+        val disabled = scanner.scan(eventPackage = null, windowsChanged = true, trackedApp = null, foregroundApp = null)
+        assertEquals(facebook, disabled.foregroundApp)
+        assertNull(disabled.content)
+
+        includeStories = true
+        val enabled = scanner.scan(eventPackage = null, windowsChanged = true, trackedApp = null, foregroundApp = null)
+        assertEquals(facebook, enabled.foregroundApp)
+        assertNotNull(enabled.content)
+    }
+
+    @Test
+    fun `package events and window changes detect the same Story`() {
+        showWindow(windowTitle = "Facebook")
+        currentActivity = ComponentName(facebook.packageId, storyActivity)
+        includeStories = true
+
+        val packageScan = scanner.scan(facebook.packageId, windowsChanged = false, trackedApp = null, foregroundApp = null)
+        val windowScan = scanner.scan(eventPackage = null, windowsChanged = true, trackedApp = null, foregroundApp = null)
+        assertNotNull(packageScan.content)
+        assertEquals(packageScan.content, windowScan.content)
     }
 
     private fun showWindow(windowTitle: String? = null, contentDescription: String? = null, packageId: String = facebook.packageId) =

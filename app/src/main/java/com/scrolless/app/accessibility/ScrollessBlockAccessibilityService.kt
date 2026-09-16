@@ -368,7 +368,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
 
         val scan = contentScanner.scan(
-            event,
+            event.packageName?.toString(),
+            event.eventType == AccessibilityEvent.TYPE_WINDOWS_CHANGED,
             contentSession?.app,
             currentForegroundBrainRotApp,
             contentSession?.takeIf { it.isCovered }?.content?.cover,
@@ -637,20 +638,25 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    /** Re-scans the visible app, including Stories that were ignored before the setting changed. */
+    /** Re-scans visible windows to update the current content session. */
     private fun refreshDetectedContent() {
         if (!validateTrackedAppState("Content refresh")) return
         val session = contentSession
-        if (session == null) {
-            // A newly enabled content type has no session yet. Inspect the foreground app without waiting for another event.
-            val scan = contentScanner.scan(event = null, trackedApp = null, foregroundApp = null)
+        val app = session?.app ?: currentForegroundBrainRotApp
+        if (app == null) {
+            // Preferences can load before the first app event; discover what is already open.
+            val scan = contentScanner.scan(eventPackage = null, windowsChanged = true, trackedApp = null, foregroundApp = null)
             updateForegroundAppState(scan.foregroundApp)
             scan.content?.let(::onBlockedContentDetected)
             return
         }
-        val activeCover = session.content.cover.takeIf { session.isCovered }
-        val content = contentScanner.findVisibleBlockedContent(session.app, activeCover)
-        if (content == null) onBlockedContentExited() else onBlockedContentDetected(content)
+        val activeCover = session?.takeIf { it.isCovered }?.content?.cover
+        val content = contentScanner.findVisibleBlockedContent(app, activeCover)
+        if (content != null) {
+            onBlockedContentDetected(content)
+        } else if (session != null) {
+            onBlockedContentExited()
+        }
     }
 
     /** Checks if the user's latest settings or allowances should block or unblock the current screen. */
