@@ -34,11 +34,13 @@ class SettingsViewModel @Inject constructor(private val userSettingsStore: UserS
         userSettingsStore.getPauseDuration(),
         userSettingsStore.getAllowVideosSentByDm(),
         userSettingsStore.getTimerOverlayEnabled(),
-    ) { pauseDurationMillis, allowVideosSentByDm, timerOverlayEnabled ->
+        userSettingsStore.getIncludeStories(),
+    ) { pauseDurationMillis, allowVideosSentByDm, timerOverlayEnabled, includeStories ->
         SettingsUiState(
             pauseDurationMinutes = (pauseDurationMillis / 60_000L).toInt().coerceIn(1, 60),
             allowVideosSentByDm = allowVideosSentByDm,
             timerOverlayEnabled = timerOverlayEnabled,
+            includeStories = includeStories,
         )
     }
         .stateIn(
@@ -46,6 +48,12 @@ class SettingsViewModel @Inject constructor(private val userSettingsStore: UserS
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = SettingsUiState(),
         )
+
+    fun onIncludeStoriesChange(enabled: Boolean) {
+        viewModelScope.launch {
+            userSettingsStore.setIncludeStories(enabled)
+        }
+    }
 
     fun onPauseDurationChange(minutes: Int) {
         viewModelScope.launch {
@@ -67,6 +75,7 @@ class SettingsViewModel @Inject constructor(private val userSettingsStore: UserS
 }
 
 data class SettingsUiState(
+    val includeStories: Boolean = false,
     val pauseDurationMinutes: Int = 5,
     val allowVideosSentByDm: Boolean = false,
     val timerOverlayEnabled: Boolean = true,

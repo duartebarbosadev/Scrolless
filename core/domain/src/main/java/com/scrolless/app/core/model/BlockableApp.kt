@@ -130,10 +130,12 @@ enum class BlockableApp(
     private val detectionMethod: DetectionMethod,
     private val blockAction: ContentBlockAction,
     private val dmExemptionRule: DmExemptionRule? = null,
+    private val storiesDetectionMethod: DetectionMethod? = null,
 ) {
     REELS(
         packageIds = listOf("com.instagram.android"),
         detectionMethod = DetectionMethod.ViewId("clips_viewer_view_pager"),
+        storiesDetectionMethod = DetectionMethod.ViewId("reel_viewer_root"),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
         // Instagram DM Reels display sender info and a reply bar, while algorithmic suggestion
         // carousels introduce a "suggested_title" which must forbid the exemption.
@@ -230,7 +232,11 @@ enum class BlockableApp(
 
     fun getBlockAction(): ContentBlockAction = blockAction
 
-    fun getDetectionMethod(): DetectionMethod = detectionMethod
+    fun getDetectionMethod(includeStories: Boolean = false): DetectionMethod = if (includeStories && storiesDetectionMethod != null) {
+        DetectionMethod.AnyOf(listOf(detectionMethod, storiesDetectionMethod))
+    } else {
+        detectionMethod
+    }
 
     fun getDmExemptionRule(): DmExemptionRule? = dmExemptionRule
 
@@ -249,7 +255,7 @@ enum class BlockableApp(
 data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
     val dmExemptionRule: DmExemptionRule? get() = app.getDmExemptionRule()
 
-    fun getDetectionMethod(): DetectionMethod = app.getDetectionMethod()
+    fun getDetectionMethod(includeStories: Boolean = false): DetectionMethod = app.getDetectionMethod(includeStories)
 
     fun getBlockAction(): ContentBlockAction = app.getBlockAction()
 
@@ -257,20 +263,20 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
 
     fun getViewId(detectionMethod: DetectionMethod.ViewId): String = getViewId(detectionMethod.viewId)
 
-    fun matchesDetectionNodes(nodes: Collection<DetectionNode>): Boolean {
+    fun matchesDetectionNodes(nodes: Collection<DetectionNode>, detectionMethod: DetectionMethod = getDetectionMethod()): Boolean {
         // Group once so nested-layout checks can find children without rescanning the whole list.
         val childrenByParentId = nodes.groupBy(DetectionNode::parentNodeId)
-        return getDetectionMethod().matches(nodes, childrenByParentId)
+        return detectionMethod.matches(nodes, childrenByParentId)
     }
 
     /** Try rules that need only one node. Layout rules still need the full set of related nodes. */
-    fun matchesFastDetectionNode(node: DetectionNode): Boolean {
-        return getDetectionMethod().matchesFastNode(node)
+    fun matchesFastDetectionNode(node: DetectionNode, detectionMethod: DetectionMethod = getDetectionMethod()): Boolean {
+        return detectionMethod.matchesFastNode(node)
     }
 
     // Tell the screen scanner which view types matter, so it can skip unrelated layout details.
-    fun getStructuralClassNames(): Set<String> {
-        return buildSet { getDetectionMethod().collectStructuralClassNames(this) }
+    fun getStructuralClassNames(detectionMethod: DetectionMethod = getDetectionMethod()): Set<String> {
+        return buildSet { detectionMethod.collectStructuralClassNames(this) }
     }
 
     private fun DetectionMethod.matchesFastNode(node: DetectionNode): Boolean {

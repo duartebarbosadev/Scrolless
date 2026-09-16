@@ -30,4 +30,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">Videor skickade i DM</string>
     <string name="settings_show_onscreen_timer_description">Håll en flytande timer synlig när du tittar på kort videoinnehåll.</string>
     <string name="settings_show_onscreen_timer_title">Visa timer på skärmen</string>
+    <string name="settings_include_stories_title">Inkludera händelser</string>
+    <string name="settings_include_stories_description">Räkna tiden du lägger på att titta på händelser och tillämpa ditt nuvarande blockeringsläge och dina tidsgränser.</string>
+    <string name="settings_include_stories_note">Stöds för närvarande på Instagram.</string>
 </resources>

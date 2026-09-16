@@ -30,4 +30,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">Vídeos enviats per missatges directes</string>
     <string name="settings_show_onscreen_timer_description">Mantén visible un temporitzador flotant mentre mires vídeos curts.</string>
     <string name="settings_show_onscreen_timer_title">Mostra el temporitzador a la pantalla</string>
+    <string name="settings_include_stories_title">Inclou les històries</string>
+    <string name="settings_include_stories_description">Compta el temps que passes veient històries i aplica el mode de bloqueig i els límits actuals.</string>
+    <string name="settings_include_stories_note">Actualment disponible a Instagram.</string>
 </resources>

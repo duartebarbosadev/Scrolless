@@ -30,4 +30,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">In DMs gesendete Videos</string>
     <string name="settings_show_onscreen_timer_description">Beim Ansehen von Kurzvideos einen schwebenden Timer sichtbar lassen.</string>
     <string name="settings_show_onscreen_timer_title">Bildschirmtimer anzeigen</string>
+    <string name="settings_include_stories_title">Storys einbeziehen</string>
+    <string name="settings_include_stories_description">Erfasse die Zeit beim Ansehen von Storys und wende deinen aktuellen Blockiermodus und deine Limits an.</string>
+    <string name="settings_include_stories_note">Derzeit auf Instagram unterstützt.</string>
 </resources>

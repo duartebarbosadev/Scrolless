@@ -45,6 +45,9 @@ interface UserSettingsStore {
     fun getAllowVideosSentByDm(): Flow<Boolean>
     suspend fun setAllowVideosSentByDm(checked: Boolean)
 
+    fun getIncludeStories(): Flow<Boolean>
+    suspend fun setIncludeStories(enabled: Boolean)
+
     fun getFirstLaunchAt(): Flow<Long>
     fun getFirstLaunchDate(): Flow<LocalDate?>
 

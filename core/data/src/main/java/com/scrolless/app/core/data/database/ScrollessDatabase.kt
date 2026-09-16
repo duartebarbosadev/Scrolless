@@ -34,7 +34,7 @@ import com.scrolless.app.core.data.database.model.UserSettingsEntity
         UserSettingsEntity::class,
         SessionSegmentEntity::class,
     ],
-    version = 10,
+    version = 11,
     exportSchema = false,
 )
 @TypeConverters(LocalDateTypeConverters::class, BlockableAppTypeConverters::class, LocalDateTimeTypeConverters::class)
@@ -302,6 +302,12 @@ abstract class ScrollessDatabase : RoomDatabase() {
                 )
                 db.execSQL("DROP TABLE user_settings_old")
                 db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS index_user_settings_id ON user_settings (id)")
+            }
+        }
+
+        val MIGRATION_10_11 = object : Migration(10, 11) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE user_settings ADD COLUMN include_stories INTEGER NOT NULL DEFAULT 0")
             }
         }
     }

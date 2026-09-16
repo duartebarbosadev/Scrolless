@@ -31,4 +31,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">Videoclipuri trimise în mesaje directe</string>
     <string name="settings_show_onscreen_timer_description">Păstrează un cronometru plutitor vizibil în timp ce vizionezi videoclipuri scurte.</string>
     <string name="settings_show_onscreen_timer_title">Afișează cronometrul pe ecran</string>
+    <string name="settings_include_stories_title">Include poveștile</string>
+    <string name="settings_include_stories_description">Contorizează timpul petrecut vizionând povești și aplică modul de blocare și limitele actuale.</string>
+    <string name="settings_include_stories_note">Disponibil momentan pe Instagram.</string>
 </resources>

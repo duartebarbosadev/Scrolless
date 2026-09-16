@@ -29,4 +29,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">私信发送的视频</string>
     <string name="settings_show_onscreen_timer_description">观看短视频内容时，保持浮动计时器可见。</string>
     <string name="settings_show_onscreen_timer_title">显示屏幕悬浮计时器</string>
+    <string name="settings_include_stories_title">包含快拍</string>
+    <string name="settings_include_stories_description">统计浏览快拍所花的时间，并应用当前的屏蔽模式和时间限制。</string>
+    <string name="settings_include_stories_note">目前支持 Instagram。</string>
 </resources>

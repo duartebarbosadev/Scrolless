@@ -30,4 +30,7 @@
     <string name="settings_allow_videos_sent_by_dms_title">நேரடிச் செய்திகளில் அனுப்பப்பட்ட வீடியோக்கள்</string>
     <string name="settings_show_onscreen_timer_description">குறுகிய வீடியோக்களைப் பார்க்கும்போது மிதக்கும் டைமரைத் திரையில் தெரியும்படி வைத்திருங்கள்.</string>
     <string name="settings_show_onscreen_timer_title">திரையில் டைமரைக் காட்டு</string>
+    <string name="settings_include_stories_title">ஸ்டோரிகளைச் சேர்க்கவும்</string>
+    <string name="settings_include_stories_description">ஸ்டோரிகளைப் பார்ப்பதில் செலவிடும் நேரத்தைக் கணக்கிட்டு, தற்போதைய தடுப்பு முறையையும் நேர வரம்புகளையும் பயன்படுத்தவும்.</string>
+    <string name="settings_include_stories_note">தற்போது Instagram-இல் ஆதரிக்கப்படுகிறது.</string>
 </resources>

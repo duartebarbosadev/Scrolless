@@ -135,7 +135,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Scans the window tree to find target apps, videos, and compute cover coordinates. */
     private val contentScanner by lazy {
-        ContentScanner(this, { isWindowAttachedCoverAllowed }, { currentAllowVideosSentByDm })
+        ContentScanner(this, { isWindowAttachedCoverAllowed }, { currentAllowVideosSentByDm }, { currentIncludeStories })
     }
 
     /**
@@ -150,6 +150,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Whether the user enabled the floating timer overlay in settings. */
     private var currentTimerOverlayEnabled: Boolean = false
+
+    /** Whether Instagram Stories are included in tracking and blocking. */
+    private var currentIncludeStories: Boolean = false
 
     /** Whether videos received in direct messages are exempt from blocking. */
     private var currentAllowVideosSentByDm: Boolean = false
@@ -262,6 +265,14 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         serviceScope.launch {
             userSettingsStore.getAllowVideosSentByDm().collect {
                 currentAllowVideosSentByDm = it
+                refreshDetectedContent()
+                reconsiderVisibleContent()
+            }
+        }
+
+        serviceScope.launch {
+            userSettingsStore.getIncludeStories().collect {
+                currentIncludeStories = it
                 refreshDetectedContent()
                 reconsiderVisibleContent()
             }
@@ -610,10 +621,15 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Re-scans visible windows to update the current content session. */
     private fun refreshDetectedContent() {
-        val session = contentSession ?: return
-        val activeCover = session.content.cover.takeIf { session.isCovered }
-        val content = contentScanner.findVisibleBlockedContent(session.app, activeCover)
-        if (content == null) onBlockedContentExited() else onBlockedContentDetected(content)
+        val session = contentSession
+        val app = session?.app ?: currentForegroundBrainRotApp ?: return
+        val activeCover = session?.takeIf { it.isCovered }?.content?.cover
+        val content = contentScanner.findVisibleBlockedContent(app, activeCover)
+        if (content != null) {
+            onBlockedContentDetected(content)
+        } else if (session != null) {
+            onBlockedContentExited()
+        }
     }
 
     /** Checks if the user's latest settings or allowances should block or unblock the current screen. */
