@@ -28,9 +28,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -43,8 +40,8 @@ fun AnimatedIcon(modifier: Modifier = Modifier, @DrawableRes iconRes: Int, conte
     val isPreview = LocalInspectionMode.current
 
     // Pulse animation (disabled in preview)
-    val scale by if (isPreview) {
-        remember { mutableFloatStateOf(1f) }
+    val scale = if (isPreview) {
+        1f
     } else {
         val infiniteTransition = rememberInfiniteTransition(label = "pulse")
         infiniteTransition.animateFloat(
@@ -55,7 +52,7 @@ fun AnimatedIcon(modifier: Modifier = Modifier, @DrawableRes iconRes: Int, conte
                 repeatMode = RepeatMode.Reverse,
             ),
             label = "scale",
-        )
+        ).value
     }
 
     Box(

@@ -48,7 +48,6 @@ internal class ContentScanner(
     @get:ChecksSdkIntAtLeast(api = Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     private val useWindowAttachedCover
         get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE && windowAttachedCover()
-    private val currentAllowVideosSentByDm get() = allowVideosSentByDm()
 
     /**
      * Scan results for the current screen.
@@ -311,7 +310,7 @@ internal class ContentScanner(
      */
     private fun AccessibilityNodeInfo.shouldSuppressBlocking(blockableApp: ResolvedBlockableApp, cover: ContentCover?): Boolean {
         // Only check layout rules if the user explicitly enabled DM video allowance in settings.
-        if (!currentAllowVideosSentByDm) return false
+        if (!allowVideosSentByDm()) return false
         val rule = blockableApp.dmExemptionRule ?: return false
         return isVideoSentInDm(blockableApp, rule, cover)
     }

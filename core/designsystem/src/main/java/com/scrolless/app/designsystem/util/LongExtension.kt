@@ -86,7 +86,7 @@ fun Long.toIntervalLabel(): String {
 
 fun Long.toCountdownLabel(): String {
     if (this <= 0L) return "0:00"
-    val totalSeconds = (this / 1000L).coerceAtLeast(0L)
+    val totalSeconds = this / 1000L
     val minutes = totalSeconds / 60
     val seconds = totalSeconds % 60
     return String.format(Locale.getDefault(), "%d:%02d", minutes, seconds)

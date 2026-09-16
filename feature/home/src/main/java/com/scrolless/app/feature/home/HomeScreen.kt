@@ -45,12 +45,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -66,8 +64,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -156,8 +152,6 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
-    val featureComingSoonMessage = stringResource(R.string.feature_coming_soon)
 
     var showTimeLimitDialog by remember { mutableStateOf(false) }
     var showHelpDialog by remember { mutableStateOf(false) }
@@ -236,15 +230,6 @@ fun HomeScreen(
                     showAccessibilityExplainerPrompt()
                 }
             }
-        }
-    }
-
-    // Show snackbar when needed
-    LaunchedEffect(uiState.showComingSoonSnackBar) {
-        if (uiState.showComingSoonSnackBar) {
-            Timber.i("Showing 'feature coming soon' snackbar")
-            snackbarHostState.showSnackbar(featureComingSoonMessage)
-            viewModel.onSnackbarShown()
         }
     }
 
@@ -381,14 +366,6 @@ fun HomeScreen(
             onAveragePeriodSelected = viewModel::onAveragePeriodSelected,
             forceLegacyOverlay = forceLegacyOverlay,
             onForceLegacyOverlayChanged = onForceLegacyOverlayChanged,
-        )
-
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .windowInsetsPadding(WindowInsets.safeDrawing)
-                .padding(16.dp),
         )
     }
 

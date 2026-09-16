@@ -50,11 +50,10 @@ fun List<DailyUsageTotal>.calculateWeekdayAverages(startDate: LocalDate, endDate
 
     val dayCount = ChronoUnit.DAYS.between(startDate, endDateInclusive).toInt()
     val dates = (0..dayCount).map { offset -> startDate.plusDays(offset.toLong()) }
-    val totalsByWeekday = dates
-        .groupBy { it.dayOfWeek }
-        .mapValues { (_, dates) ->
-            dates.map { date -> totalsByDate[date] ?: 0L }
-        }
+    val totalsByWeekday = dates.groupBy(
+        keySelector = { it.dayOfWeek },
+        valueTransform = { totalsByDate[it] ?: 0L },
+    )
 
     return DayOfWeek.entries.map { dayOfWeek ->
         val totals = totalsByWeekday[dayOfWeek].orEmpty()

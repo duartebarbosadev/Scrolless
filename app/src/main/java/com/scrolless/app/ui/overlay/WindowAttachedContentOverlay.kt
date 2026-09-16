@@ -40,8 +40,9 @@ internal class WindowAttachedContentOverlay(private val service: AccessibilitySe
      * Creates or repositions the window-attached cover. Returns true if successfully displayed.
      */
     fun show(next: ContentCoverTarget.Window, previous: ContentCoverTarget.Window?, refreshAttachment: Boolean): Boolean {
+        val windowChanged = previous?.displayId != next.displayId || previous.windowId != next.windowId
         // Build a fresh host for a different window or display instead of carrying over the old one.
-        if (previous?.displayId != next.displayId || previous.windowId != next.windowId) hide()
+        if (windowChanged) hide()
         val bounds = next.bounds
         try {
             val host = viewHost ?: run {
@@ -72,7 +73,7 @@ internal class WindowAttachedContentOverlay(private val service: AccessibilitySe
             }
             // Reattach on return from Recents, even if Android reused the window ID and size.
             // Ordinary content updates keep the existing attachment to avoid blinking.
-            if (refreshAttachment || previous?.windowId != next.windowId || previous.displayId != next.displayId) {
+            if (refreshAttachment || windowChanged) {
                 service.attachAccessibilityOverlayToWindow(next.windowId, surface)
                 Timber.d("Requested content cover attachment: window=%d, refresh=%b", next.windowId, refreshAttachment)
             }
