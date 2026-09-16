@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">Videá na TikToku sú zablokované</string>
     <string name="tiktok_blocked_description">Pomocou kariet dole otvorte „Doručenú poštu“ alebo „Profil“.</string>
+    <string name="instagram_feed_blocked_title">Videá na Instagrame sú zablokované</string>
+    <string name="instagram_feed_blocked_description">Pomocou kariet dole otvorte „Doručenú poštu“ alebo „Profil“.</string>
 </resources>

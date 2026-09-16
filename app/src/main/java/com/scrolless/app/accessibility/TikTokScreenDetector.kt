@@ -36,7 +36,9 @@ internal class TikTokScreenDetector(override val app: BlockableApp) : ContentCov
      * to the user because our opaque cover occludes it. In that case, keep it covered as long
      * as the player view remains at the covered bounds.
      */
-    override fun coverBounds(nodes: List<ContentCoverNode>, activeCoverBounds: ContentBounds?): ContentBounds? = nodes.firstOrNull {
-        it.viewId == playerViewId && it.bounds.isVisible && (it.isVisible || it.bounds == activeCoverBounds)
-    }?.bounds
+    override fun coverBounds(nodes: List<ContentCoverNode>, activeCoverBounds: List<ContentBounds>): List<ContentBounds> = listOfNotNull(
+        nodes.firstOrNull {
+            it.viewId == playerViewId && it.bounds.isVisible && (it.isVisible || it.bounds in activeCoverBounds)
+        }?.bounds,
+    )
 }

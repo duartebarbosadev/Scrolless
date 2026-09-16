@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">Videoclipurile TikTok sunt blocate</string>
     <string name="tiktok_blocked_description">Folosește filele de mai jos pentru a deschide Mesaje primite sau Profil.</string>
+    <string name="instagram_feed_blocked_title">Videoclipurile Instagram sunt blocate</string>
+    <string name="instagram_feed_blocked_description">Folosește filele de mai jos pentru a deschide Mesaje primite sau Profil.</string>
 </resources>

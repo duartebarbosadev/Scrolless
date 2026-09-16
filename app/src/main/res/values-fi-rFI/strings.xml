@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok-videot on estetty</string>
     <string name="tiktok_blocked_description">Avaa Saapuneet tai Profiili alla olevista välilehdistä.</string>
+    <string name="instagram_feed_blocked_title">Instagram-videot on estetty</string>
+    <string name="instagram_feed_blocked_description">Avaa Saapuneet tai Profiili alla olevista välilehdistä.</string>
 </resources>

@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">Els vídeos de TikTok estan bloquejats</string>
     <string name="tiktok_blocked_description">Fes servir les pestanyes de sota per obrir la Safata d\'entrada o el Perfil.</string>
+    <string name="instagram_feed_blocked_title">Els vídeos d\'Instagram estan bloquejats</string>
+    <string name="instagram_feed_blocked_description">Fes servir les pestanyes de sota per obrir la Safata d\'entrada o el Perfil.</string>
 </resources>

@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok 视频已拦截</string>
     <string name="tiktok_blocked_description">使用下方的标签打开“收件箱”或“个人资料”。</string>
+    <string name="instagram_feed_blocked_title">Instagram 视频已拦截</string>
+    <string name="instagram_feed_blocked_description">使用下方的标签打开“收件箱”或“个人资料”。</string>
 </resources>

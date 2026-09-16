@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok видео-снимци су блокирани</string>
     <string name="tiktok_blocked_description">Користите картице на дну да бисте отворили „Пријемно сандуче” или „Профил”.</string>
+    <string name="instagram_feed_blocked_title">Instagram видео-снимци су блокирани</string>
+    <string name="instagram_feed_blocked_description">Користите картице на дну да бисте отворили „Пријемно сандуче” или „Профил”.</string>
 </resources>
