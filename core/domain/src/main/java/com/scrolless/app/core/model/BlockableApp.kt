@@ -66,7 +66,8 @@ sealed class DetectionMethod {
     data class AnyOf(val detectionMethods: List<DetectionMethod>) : DetectionMethod()
 
     /**
-     * Matches the active activity or window title
+     * Matches a blocked screen by checking if [activityName] is contained within the window title
+     * or activity class name (used for features that run in a dedicated viewer, such as Facebook Stories).
      */
     data class ActivityName(val activityName: String) : DetectionMethod()
 }
@@ -162,8 +163,6 @@ enum class BlockableApp(
         detectionMethod = DetectionMethod.ViewId("reel_player_page_container"),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
-    // Keep the app open so the user can reach its native tabs while the video is covered.
-    // TikTok Stories play through the same player_view as regular feed videos, so they are already covered by this detection.
     TIKTOK(
         packageIds = listOf(
             "com.zhiliaoapp.musically",
@@ -171,6 +170,8 @@ enum class BlockableApp(
             "com.ss.android.ugc.aweme",
         ),
         detectionMethod = DetectionMethod.ViewId("player_view"),
+        // Keep the app open so the user can reach its native tabs while the video is covered.
+        // TikTok Stories play through the same player_view as regular feed videos, so no need to add extra detection
         blockAction = ContentBlockAction.CoverVideoRegion,
         // Translated recipient labels survive resource-ID renaming across TikTok builds.
         dmExemptionRule = DmExemptionRule(
@@ -302,9 +303,9 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
                 prefixMatches && (!requireSelected || node.isSelected)
             }
 
-            is DetectionMethod.NodeStructure,
-            is DetectionMethod.ActivityName,
-            -> false
+            is DetectionMethod.NodeStructure -> false
+            // Activity names are resolved at the window/component level, not within individual view nodes.
+            is DetectionMethod.ActivityName -> false
 
             is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matchesSimpleNode(node) }
         }
@@ -338,6 +339,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
                 matchesStructure(node, childrenByParentId)
             }
 
+            // Activity names are resolved at the window/component level, not within the node hierarchy.
             is DetectionMethod.ActivityName -> false
 
             is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matches(nodes, childrenByParentId) }

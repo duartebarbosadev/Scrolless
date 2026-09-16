@@ -361,7 +361,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
             return
         }
 
-        // Keep activity tracking simple: dialog and keyboard class names do not end in "Activity".
+        // TYPE_WINDOW_STATE_CHANGED also triggers for dialogs, popups, and keyboards.
+        // Only record components ending in "Activity" so transient UI does not overwrite the active screen.
         val className = event.className?.toString()
         if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && className?.endsWith("Activity") == true) {
             currentActivity = event.packageName?.let { ComponentName(it.toString(), className) }
@@ -407,6 +408,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         if (previousApp != null) {
             Timber.v("*** User appears to have left a brain rot app: %s (%s)", previousApp.app.name, previousApp.packageId)
             sessionTracker.onAppClose()
+            // When exiting to an unmonitored screen (e.g. launcher or home), reset the saved activity
             if (nextApp == null && currentActivity?.packageName == previousApp.packageId) {
                 currentActivity = null
             }

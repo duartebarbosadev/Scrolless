@@ -82,7 +82,8 @@ internal class ContentScanner(
         val appWindows = AppWindows(service.windows)
         val trackedAppExited = trackedApp != null && !appWindows.isEligible(trackedApp)
 
-        // TYPE_WINDOWS_CHANGED events often omit package info; fall back to the top window package.
+        // Window-change events often omit package info, and synthetic rescans have no event.
+        // In both cases, resolve the package directly from the active foreground window.
         val packageId = if (windowsChanged) {
             appWindows.foregroundPackage.orEmpty()
         } else {
@@ -205,7 +206,11 @@ internal class ContentScanner(
     /** Returns true if any window of [app] is currently open on screen. */
     fun isBlockedAppPackageVisible(app: ResolvedBlockableApp): Boolean = AppWindows(service.windows).isVisible(app)
 
-    /** Makes sure [app] is still in the foreground before showing an overlay over it. */
+    /**
+     * Verifies that [app] is in a valid state to display an overlay before attaching it.
+     * Non-cover apps bypass window inspection to avoid unnecessary IPC calls; cover-based
+     * apps must currently be the focused foreground package to avoid misplaced overlays.
+     */
     fun isContentWindowEligible(app: ResolvedBlockableApp): Boolean =
         app.coverDetector == null || AppWindows(service.windows).isEligible(app)
 
@@ -238,10 +243,20 @@ internal class ContentScanner(
             },
         )
 
-        // For apps using video covers, the app must actually be in the foreground to show overlays.
+        /**
+         * Determines whether [app] qualifies for content detection and overlay display.
+         *
+         * Apps that draw floating video covers (e.g. Reels or TikTok) must be the active foreground window
+         * to avoid misplacing covers over background apps or recent-task thumbnails.
+         * Apps using full-screen blocking (such as Back navigation to leave the block) do not have this restriction.
+         */
         fun isEligible(app: ResolvedBlockableApp): Boolean = app.coverDetector == null || foregroundPackage == app.packageId
 
-        // Checks if an application window for this app is present on the screen.
+        /**
+         * Checks whether [app] is active on screen:
+         * - Cover-based apps must have focused foreground presence.
+         * - Non-cover apps only require a visible application window.
+         */
         fun isVisible(app: ResolvedBlockableApp): Boolean = if (app.coverDetector != null) {
             isEligible(app)
         } else {
@@ -286,11 +301,12 @@ internal class ContentScanner(
         // This rule depends only on the activity name, so no view-tree scan is needed, even if it doesn't match.
         if (detectionMethod is DetectionMethod.ActivityName) return matchesActivity(detectionMethod)
 
-        // Keep mixed layout rules in one tree scan; ID-only alternatives use indexed lookups.
         if (detectionMethod is DetectionMethod.AnyOf) {
+            // Fast-path: if any alternative is an activity rule matching the current screen, accept immediately.
             val activityMatch = detectionMethod.detectionMethods.any { it is DetectionMethod.ActivityName && matchesActivity(it) }
             if (activityMatch) return true
 
+            // ID-only alternatives can use Android's indexed view lookup instead of walking the full tree.
             if (detectionMethod.detectionMethods.all { it is DetectionMethod.ViewId }) {
                 return detectionMethod.detectionMethods.any { matchesDetectionMethod(blockableApp, it, appWindows) }
             }

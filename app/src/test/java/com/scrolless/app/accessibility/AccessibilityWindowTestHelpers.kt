@@ -78,7 +78,10 @@ class TestAccessibilityService : AccessibilityService() {
     override fun onInterrupt() = Unit
 }
 
-// Robolectric does not provide Android's indexed view-ID lookup.
+/**
+ * Shadow that emulates platform indexed view-ID lookup for Robolectric unit tests,
+ * which does not otherwise index nodes by resource ID.
+ */
 @Implements(AccessibilityNodeInfo::class)
 class IndexedTestNode : ShadowAccessibilityNodeInfo() {
     @RealObject private lateinit var node: AccessibilityNodeInfo
