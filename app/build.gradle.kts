@@ -207,7 +207,6 @@ dependencies {
 
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)
-    testImplementation(libs.mockk.android)
 
     implementation(projects.core.data)
     implementation(projects.core.designsystem)
