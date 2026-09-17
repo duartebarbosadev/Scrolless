@@ -146,7 +146,7 @@
             <circle cx="41" cy="41" r="7.5" fill="#0095F6"/>
             <rect x="40" y="37" width="2" height="8" rx="1" fill="#FFFFFF"/>
             <rect x="37" y="40" width="8" height="2" rx="1" fill="#FFFFFF"/>
-            <text x="26" y="60" fill="#71717A" font-size="9" font-weight="500" text-anchor="middle" class="sans">Your story</text>
+            <rect x="8" y="56" width="36" height="5" rx="2.5" fill="#71717A"/>
           </g>
 
           <!-- Story 2: Duarte -->
@@ -156,37 +156,37 @@
             <circle cx="26" cy="26" r="21.5" fill="#FAFAFA"/>
             <circle cx="26" cy="21" r="7" fill="#18181B"/>
             <path d="M 16 38 C 16 33 20 31 26 31 C 32 31 36 33 36 38 Z" fill="#18181B"/>
-            <text x="26" y="60" fill="#71717A" font-size="9.5" font-weight="600" text-anchor="middle" class="sans">~~~~~</text>
+            <rect x="9" y="56" width="34" height="5" rx="2.5" fill="#71717A"/>
           </g>
 
           <!-- Story 3 -->
           <g transform="translate(146 0)">
             <circle cx="26" cy="26" r="26" fill="url(#ig-gradient)"/>
             <circle cx="26" cy="26" r="23.5" fill="#FFFFFF"/>
-            <circle cx="26" cy="21.5" fill="#FAFAFA"/>
+            <circle cx="26" cy="26" r="21.5" fill="#FAFAFA"/>
             <circle cx="26" cy="21" r="7" fill="#18181B"/>
             <path d="M 16 38 C 16 33 20 31 26 31 C 32 31 36 33 36 38 Z" fill="#18181B"/>
-            <text x="26" y="60" fill="#71717A" font-size="9.5" font-weight="600" text-anchor="middle" class="sans">~~~~~</text>
+            <rect x="11" y="56" width="30" height="5" rx="2.5" fill="#71717A"/>
           </g>
 
           <!-- Story 4 -->
           <g transform="translate(212 0)">
             <circle cx="26" cy="26" r="26" fill="url(#ig-gradient)"/>
             <circle cx="26" cy="26" r="23.5" fill="#FFFFFF"/>
-            <circle cx="26" cy="21.5" fill="#FAFAFA"/>
+            <circle cx="26" cy="26" r="21.5" fill="#FAFAFA"/>
             <circle cx="26" cy="21" r="7" fill="#18181B"/>
             <path d="M 16 38 C 16 33 20 31 26 31 C 32 31 36 33 36 38 Z" fill="#18181B"/>
-            <text x="26" y="60" fill="#71717A" font-size="9.5" font-weight="600" text-anchor="middle" class="sans">~~~~~</text>
+            <rect x="8" y="56" width="36" height="5" rx="2.5" fill="#71717A"/>
           </g>
 
           <!-- Story 5 -->
           <g transform="translate(278 0)">
             <circle cx="26" cy="26" r="26" fill="url(#ig-gradient)"/>
             <circle cx="26" cy="26" r="23.5" fill="#FFFFFF"/>
-            <circle cx="26" cy="21.5" fill="#FAFAFA"/>
+            <circle cx="26" cy="26" r="21.5" fill="#FAFAFA"/>
             <circle cx="26" cy="21" r="7" fill="#18181B"/>
             <path d="M 16 38 C 16 33 20 31 26 31 C 32 31 36 33 36 38 Z" fill="#18181B"/>
-            <text x="26" y="60" fill="#71717A" font-size="9.5" font-weight="600" text-anchor="middle" class="sans">~~~~~</text>
+            <rect x="10" y="56" width="32" height="5" rx="2.5" fill="#71717A"/>
           </g>
 
           <rect x="0" y="70" width="344" height="1" fill="#F4F4F5"/>
@@ -289,7 +289,7 @@
                 <line x1="9" y1="0" x2="8" y2="4.5" stroke="#FFFFFF" stroke-width="1.1"/>
                 <polygon points="5 6.5 9 8.5 5 10.5" fill="#FFFFFF"/>
               </g>
-              <text x="26" y="15.5" fill="#FFFFFF" font-size="9" font-weight="700" class="sans">Reels</text>
+              
             </g>
 
             <!-- Bottom-Left Audio Tag -->
