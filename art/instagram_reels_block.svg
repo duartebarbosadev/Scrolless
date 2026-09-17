@@ -140,7 +140,7 @@
     <g id="feed-screen">
       <!-- 1.1 STATUS BAR -->
       <g id="status-bar-feed">
-        <text x="36" y="32" fill="#18181B" font-size="12" font-weight="700" class="sans">9:41</text>
+        <text x="36" y="32" fill="#18181B" font-size="12" font-weight="700" class="sans">4:22</text>
         <g transform="translate(288 24)">
           <rect x="0" y="6" width="2" height="4" fill="#18181B" rx="0.5"/>
           <rect x="4" y="4" width="2" height="6" fill="#18181B" rx="0.5"/>
@@ -404,7 +404,7 @@
 
       <!-- White Status Bar for Reels View -->
       <g id="status-bar-reels">
-        <text x="36" y="32" fill="#FFFFFF" font-size="12" font-weight="700" class="sans">9:41</text>
+        <text x="36" y="32" fill="#FFFFFF" font-size="12" font-weight="700" class="sans">4:22</text>
         <g transform="translate(288 24)">
           <rect x="0" y="6" width="2" height="4" fill="#FFFFFF" rx="0.5"/>
           <rect x="4" y="4" width="2" height="6" fill="#FFFFFF" rx="0.5"/>
