@@ -156,7 +156,7 @@
             <circle cx="26" cy="26" r="21.5" fill="#FAFAFA"/>
             <circle cx="26" cy="21" r="7" fill="#18181B"/>
             <path d="M 16 38 C 16 33 20 31 26 31 C 32 31 36 33 36 38 Z" fill="#18181B"/>
-            <text x="26" y="60" fill="#18181B" font-size="9" font-weight="600" text-anchor="middle" class="sans">duarte</text>
+            <text x="26" y="60" fill="#71717A" font-size="9.5" font-weight="600" text-anchor="middle" class="sans">~~~~~</text>
           </g>
 
           <!-- Story 3 -->
