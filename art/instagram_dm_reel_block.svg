@@ -94,7 +94,6 @@
     }
 
     /* Playback animations */
-    @keyframes vinylSpin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     @keyframes grooveMotion {
       0%, 100% { transform: translateY(0px) rotate(0deg) scale(1, 1); }
       25% { transform: translateY(-5px) rotate(-3.5deg) scale(0.97, 1.03); }
@@ -111,7 +110,6 @@
     .anim-reels { animation: fullscreenReelAnim 8s cubic-bezier(0.25, 1, 0.5, 1) infinite; }
     .anim-blocked-badge { animation: blockedBadgeAnim 8s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; transform-origin: 0 0; }
     .anim-blocked-pulse { animation: blockedPulseAnim 8s ease-out infinite; transform-origin: 0 0; }
-    .anim-vinyl { transform-origin: 11px 11px; animation: vinylSpin 3s linear infinite; }
     .anim-groove { transform-origin: 0px 45px; animation: grooveMotion 1.2s ease-in-out infinite; }
     .eq-1 { transform-box: fill-box; transform-origin: bottom; animation: eqWave1 0.7s ease-in-out infinite; }
     .eq-2 { transform-box: fill-box; transform-origin: bottom; animation: eqWave2 0.5s ease-in-out infinite; }
@@ -164,8 +162,8 @@
         </g>
 
         <!-- Username & Active Status -->
-        <text x="82" y="22" fill="#18181B" font-size="14" font-weight="700" class="sans">duarte</text>
-        <rect x="82" y="29" width="48" height="5" rx="2.5" fill="#A1A1AA"/>
+        <text x="82" y="22" fill="#18181B" font-size="14" font-weight="700" class="sans">scrolless</text>
+        <rect x="82" y="29" width="56" height="5" rx="2.5" fill="#A1A1AA"/>
 
         <!-- Phone & Video Call Icons -->
         <g transform="translate(268 12)">
@@ -186,7 +184,7 @@
         <rect x="122" y="6" width="100" height="18" rx="9" fill="#F4F4F5"/>
         <rect x="150" y="13" width="44" height="4" rx="2" fill="#A1A1AA"/>
 
-        <!-- Text Message from duarte -->
+        <!-- Text Message from scrolless -->
         <g transform="translate(12 36)">
           <circle cx="14" cy="14" r="14" fill="#F4F4F5"/>
           <circle cx="14" cy="11" r="4" fill="#71717A"/>
@@ -325,12 +323,12 @@
         </g>
       </g>
 
-      <!-- Top Header in DM Reel Viewer: "duarte" -->
+      <!-- Top Header in DM Reel Viewer: "scrolless" -->
       <g transform="translate(20 52)">
         <polyline points="12 4 4 12 12 20" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <text x="28" y="16" fill="#FFFFFF" font-size="13" font-weight="700" class="sans">duarte</text>
-        <circle cx="82" cy="12" r="1.5" fill="#FFFFFF" fill-opacity="0.6"/>
-        <rect x="88" y="9.5" width="20" height="5" rx="2.5" fill="#FFFFFF" fill-opacity="0.6"/>
+        <text x="28" y="16" fill="#FFFFFF" font-size="13" font-weight="700" class="sans">scrolless</text>
+        <circle cx="106" cy="12" r="1.5" fill="#FFFFFF" fill-opacity="0.6"/>
+        <rect x="112" y="9.5" width="20" height="5" rx="2.5" fill="#FFFFFF" fill-opacity="0.6"/>
       </g>
 
       <!-- Side Action Rail (Heart, Comment, Share, Audio Vinyl) -->
@@ -349,14 +347,7 @@
         <g transform="translate(0 104)">
           <polygon points="2 10 19 2 13 19 10 13" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round"/>
         </g>
-        <!-- Vinyl Record Disc -->
-        <g transform="translate(0 156)">
-          <g class="anim-vinyl">
-            <circle cx="11" cy="11" r="11" fill="#18181B" stroke="#FFFFFF" stroke-width="1.2"/>
-            <circle cx="11" cy="11" r="7" fill="none" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="0.8"/>
-            <circle cx="11" cy="11" r="3.5" fill="#E1306C"/>
-          </g>
-        </g>
+
       </g>
 
       <!-- Bottom DM Reply Bar in Fullscreen View -->
