@@ -1,0 +1,464 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 740" width="100%" height="100%">
+  <defs>
+    <!-- Authentic Instagram Story Gradient -->
+    <linearGradient id="ig-gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FEE411"/>
+      <stop offset="25%" stop-color="#FEDB1A"/>
+      <stop offset="50%" stop-color="#E1306C"/>
+      <stop offset="100%" stop-color="#833AB4"/>
+    </linearGradient>
+
+    <!-- Warm Cinematic Golden Hour Sunset Gradient for Story Card -->
+    <linearGradient id="sunset-sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#180B2B"/>
+      <stop offset="20%" stop-color="#311042"/>
+      <stop offset="38%" stop-color="#5B1647"/>
+      <stop offset="54%" stop-color="#9A2143"/>
+      <stop offset="68%" stop-color="#D94823"/>
+      <stop offset="82%" stop-color="#F59E0B"/>
+      <stop offset="94%" stop-color="#FDE047"/>
+      <stop offset="100%" stop-color="#FEF08A"/>
+    </linearGradient>
+
+    <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFFBEB" stop-opacity="1"/>
+      <stop offset="40%" stop-color="#FEF08A" stop-opacity="0.85"/>
+      <stop offset="70%" stop-color="#F59E0B" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Clip Path for Screen Content -->
+    <clipPath id="screen-clip">
+      <rect x="4" y="4" width="352" height="732" rx="44"/>
+    </clipPath>
+
+    <!-- Clip Path for Feed Post Photo -->
+    <clipPath id="photo-clip">
+      <rect x="0" y="38" width="344" height="250"/>
+    </clipPath>
+  </defs>
+
+  <style>
+    /* <![CDATA[ */
+    .sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    .script-title { font-family: cursive, sans-serif; font-weight: bold; }
+
+    /* ======================================================== */
+    /* MASTER 8.0-SECOND STORY BLOCK ANIMATION TIMELINE         */
+    /* ======================================================== */
+
+    /* 1. Finger pointer moves to Story 2 & taps */
+    @keyframes tapFinger {
+      0% { opacity: 0; transform: translate(180px, 280px) scale(0.85); }
+      10% { opacity: 1; transform: translate(150px, 200px) scale(1); }
+      20% { opacity: 1; transform: translate(114px, 124px) scale(1); }
+      24% { opacity: 1; transform: translate(114px, 124px) scale(0.82); }
+      27% { opacity: 1; transform: translate(114px, 124px) scale(1); }
+      30% { opacity: 1; transform: translate(120px, 138px) scale(0.9); }
+      34% { opacity: 0; transform: translate(128px, 152px) scale(0.8); }
+      100% { opacity: 0; transform: translate(180px, 280px) scale(0.85); }
+    }
+
+    /* 2. Story 2 Bubble Tactile Press Feedback */
+    @keyframes story2Press {
+      0%, 20% { transform: scale(1); }
+      24% { transform: scale(0.92); }
+      27% { transform: scale(1.05); }
+      30% { transform: scale(1); }
+      100% { transform: scale(1); }
+    }
+
+    /* 3. Tap Ripple Wave from Story 2 center */
+    @keyframes tapRipple {
+      0%, 20% { opacity: 0; transform: scale(0.2); }
+      24% { opacity: 0.8; transform: scale(0.65); }
+      29% { opacity: 0; transform: scale(2.2); }
+      100% { opacity: 0; transform: scale(0.2); }
+    }
+
+    /* 4. Story Viewer Expansion, Instant Block & Back to Feed */
+    @keyframes storyViewerAnim {
+      0%, 25% { opacity: 0; visibility: hidden; transform: scale(0.15); }
+      26% { visibility: visible; opacity: 0.5; transform: scale(0.35); }
+      30% { opacity: 1; transform: translate(0, 0) scale(1); visibility: visible; }
+      35% { opacity: 1; transform: translate(0, 0) scale(1); visibility: visible; }
+      37% { opacity: 0.85; transform: translate(30px, 10px) scale(0.88); }
+      40% { opacity: 0; transform: translate(114px, 124px) scale(0.15); visibility: hidden; }
+      100% { opacity: 0; transform: scale(0.15); visibility: hidden; }
+    }
+
+    /* 5. Big Center Blocked Badge Animation */
+    @keyframes blockedBadgeAnim {
+      0%, 28% { opacity: 0; transform: scale(0.3); visibility: hidden; }
+      30% { visibility: visible; opacity: 1; transform: scale(1.15); }
+      32% { opacity: 1; transform: scale(1); }
+      35% { opacity: 1; transform: scale(1.05); }
+      37% { opacity: 0.8; transform: scale(0.8); }
+      40% { opacity: 0; transform: scale(0.3); visibility: hidden; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    /* 6. Pulse shockwave expanding from blocked badge */
+    @keyframes blockedPulseAnim {
+      0%, 29% { opacity: 0; transform: scale(0.6); }
+      31% { opacity: 0.9; transform: scale(1); }
+      35% { opacity: 0; transform: scale(1.45); }
+      100% { opacity: 0; transform: scale(0.6); }
+    }
+
+    /* 7. Story Ring transitions to viewed gray after instant block */
+    @keyframes viewedRingAnim {
+      0%, 35% { opacity: 1; }
+      39% { opacity: 0; }
+      94% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* Equalizer in music sticker */
+    @keyframes eqWave1 { 0%, 100% { height: 3px; } 50% { height: 11px; } }
+    @keyframes eqWave2 { 0%, 100% { height: 10px; } 50% { height: 4px; } }
+    @keyframes eqWave3 { 0%, 100% { height: 6px; } 50% { height: 12px; } }
+
+    /* Class bindings */
+    .anim-finger { animation: tapFinger 8s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+    .anim-story2 { animation: story2Press 8s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; transform-origin: 26px 26px; }
+    .anim-ripple { animation: tapRipple 8s cubic-bezier(0, 0, 0.2, 1) infinite; transform-origin: 114px 124px; }
+    .anim-viewer { animation: storyViewerAnim 8s cubic-bezier(0.25, 1, 0.5, 1) infinite; transform-origin: 114px 124px; }
+    .anim-ring { animation: viewedRingAnim 8s ease-in-out infinite; }
+    .anim-blocked-badge { animation: blockedBadgeAnim 8s cubic-bezier(0.34, 1.56, 0.64, 1) infinite; transform-origin: 0 0; }
+    .anim-blocked-pulse { animation: blockedPulseAnim 8s ease-out infinite; transform-origin: 0 0; }
+    .eq-1 { animation: eqWave1 0.8s ease-in-out infinite; }
+    .eq-2 { animation: eqWave2 0.7s ease-in-out infinite; }
+    .eq-3 { animation: eqWave3 0.9s ease-in-out infinite; }
+    /* ]]> */
+  </style>
+
+  <!-- ============================================== -->
+  <!-- PHONE CHASSIS & SCREEN                         -->
+  <!-- ============================================== -->
+  <rect x="0" y="0" width="360" height="740" rx="48" fill="#18181B"/>
+  <rect x="4" y="4" width="352" height="732" rx="44" fill="#FFFFFF"/>
+
+  <g clip-path="url(#screen-clip)">
+
+    <!-- ============================================ -->
+    <!-- LAYER 1: BASE INSTAGRAM FEED                 -->
+    <!-- ============================================ -->
+    <g id="base-feed">
+      <!-- 1.1 STATUS BAR -->
+      <g id="status-bar">
+        <text x="36" y="32" fill="#18181B" font-size="12" font-weight="700" class="sans">9:41</text>
+        <g transform="translate(288 24)">
+          <rect x="0" y="6" width="2" height="4" fill="#18181B" rx="0.5"/>
+          <rect x="4" y="4" width="2" height="6" fill="#18181B" rx="0.5"/>
+          <rect x="8" y="2" width="2" height="8" fill="#18181B" rx="0.5"/>
+          <rect x="12" y="0" width="2" height="10" fill="#18181B" rx="0.5"/>
+          <rect x="20" y="1" width="18" height="9" rx="2.5" fill="#18181B"/>
+          <rect x="21" y="2" width="16" height="7" rx="1.5" fill="#FFFFFF"/>
+          <rect x="22.5" y="3.5" width="10" height="4" rx="1" fill="#18181B"/>
+          <rect x="38" y="3.5" width="1.5" height="4" rx="0.5" fill="#18181B"/>
+        </g>
+      </g>
+
+      <!-- 1.2 INSTAGRAM APP HEADER -->
+      <g id="ig-header" transform="translate(8 48)">
+        <g transform="translate(14 10)">
+          <rect x="0" y="2" width="22" height="22" rx="6" fill="#18181B"/>
+          <rect x="2" y="4" width="18" height="18" rx="4.5" fill="#FFFFFF"/>
+          <circle cx="11" cy="13" r="5" fill="#18181B"/>
+          <circle cx="11" cy="13" r="3.2" fill="#FFFFFF"/>
+          <circle cx="16.5" cy="7.5" r="1.2" fill="#18181B"/>
+          <text x="28" y="20" fill="#18181B" font-size="22" class="script-title" letter-spacing="-0.3">Insta</text>
+          <polygon points="84 13 89 18 94 13 93 11.5 89 15.5 85 11.5" fill="#18181B"/>
+        </g>
+        <g transform="translate(262 14)">
+          <path d="M 11 19.5 C 11 19.5 2 13.5 2 7.8 C 2 4.6 4.5 2.2 7.5 2.2 C 9.4 2.2 10.8 3.2 11 3.5 C 11.2 3.2 12.6 2.2 14.5 2.2 C 17.5 2.2 20 4.6 20 7.8 C 20 13.5 11 19.5 11 19.5 Z" fill="#18181B"/>
+          <path d="M 11 16.8 C 11 16.8 4 11.8 4 7.8 C 4 5.6 5.6 4 7.5 4 C 8.8 4 10 4.8 11 6 C 12 4.8 13.2 4 14.5 4 C 16.4 4 18 5.6 18 7.8 C 18 11.8 11 16.8 11 16.8 Z" fill="#FFFFFF"/>
+        </g>
+        <g transform="translate(298 14)">
+          <polygon points="1 11 20 2 13 20 10 13" fill="#18181B"/>
+          <polygon points="3 10.5 17 3.5 11.8 12.5" fill="#FFFFFF"/>
+          <circle cx="19" cy="2" r="3.5" fill="#EF4444"/>
+        </g>
+        <rect x="0" y="40" width="344" height="1" fill="#F4F4F5"/>
+      </g>
+
+      <!-- 1.3 STORIES TRAY -->
+      <g id="stories-tray" transform="translate(8 98)">
+        <!-- Story 1: Your Story -->
+        <g transform="translate(14 0)">
+          <circle cx="26" cy="26" r="26" fill="#E4E4E7"/>
+          <circle cx="26" cy="26" r="24.5" fill="#FFFFFF"/>
+          <circle cx="26" cy="26" r="22" fill="#F4F4F5"/>
+          <circle cx="26" cy="21" r="7" fill="#71717A"/>
+          <path d="M 16 38 C 16 33 20 31 26 31 C 32 31 36 33 36 38 Z" fill="#71717A"/>
+          <circle cx="41" cy="41" r="7.5" fill="#0095F6"/>
+          <rect x="40" y="37" width="2" height="8" rx="1" fill="#FFFFFF"/>
+          <rect x="37" y="40" width="8" height="2" rx="1" fill="#FFFFFF"/>
+          <text x="26" y="60" fill="#71717A" font-size="9" font-weight="500" text-anchor="middle" class="sans">Your story</text>
+        </g>
+
+        <!-- Story 2: Clickable Target (Duarte) -->
+        <g transform="translate(80 0)">
+          <g class="anim-story2">
+            <!-- Permanent Viewed Gray Ring Behind -->
+            <circle cx="26" cy="26" r="26" fill="#D4D4D8"/>
+            <!-- Vibrant Gradient Ring (fades after 1-second story block) -->
+            <circle cx="26" cy="26" r="26" fill="url(#ig-gradient)" class="anim-ring"/>
+            <circle cx="26" cy="26" r="23.5" fill="#FFFFFF"/>
+            <circle cx="26" cy="26" r="21.5" fill="#FAFAFA"/>
+            <circle cx="26" cy="21" r="7" fill="#18181B"/>
+            <path d="M 16 38 C 16 33 20 31 26 31 C 32 31 36 33 36 38 Z" fill="#18181B"/>
+          </g>
+          <text x="26" y="60" fill="#18181B" font-size="9" font-weight="600" text-anchor="middle" class="sans">duarte</text>
+        </g>
+
+        <!-- Story 3 -->
+        <g transform="translate(146 0)">
+          <circle cx="26" cy="26" r="26" fill="url(#ig-gradient)"/>
+          <circle cx="26" cy="26" r="23.5" fill="#FFFFFF"/>
+          <circle cx="26" cy="26" r="21.5" fill="#FAFAFA"/>
+          <circle cx="26" cy="21" r="7" fill="#18181B"/>
+          <path d="M 16 38 C 16 33 20 31 26 31 C 32 31 36 33 36 38 Z" fill="#18181B"/>
+          <text x="26" y="60" fill="#71717A" font-size="9.5" font-weight="600" text-anchor="middle" class="sans">~~~~~</text>
+        </g>
+
+        <!-- Story 4 -->
+        <g transform="translate(212 0)">
+          <circle cx="26" cy="26" r="26" fill="url(#ig-gradient)"/>
+          <circle cx="26" cy="26" r="23.5" fill="#FFFFFF"/>
+          <circle cx="26" cy="26" r="21.5" fill="#FAFAFA"/>
+          <circle cx="26" cy="21" r="7" fill="#18181B"/>
+          <path d="M 16 38 C 16 33 20 31 26 31 C 32 31 36 33 36 38 Z" fill="#18181B"/>
+          <text x="26" y="60" fill="#71717A" font-size="9.5" font-weight="600" text-anchor="middle" class="sans">~~~~~</text>
+        </g>
+
+        <!-- Story 5 -->
+        <g transform="translate(278 0)">
+          <circle cx="26" cy="26" r="26" fill="url(#ig-gradient)"/>
+          <circle cx="26" cy="26" r="23.5" fill="#FFFFFF"/>
+          <circle cx="26" cy="26" r="21.5" fill="#FAFAFA"/>
+          <circle cx="26" cy="21" r="7" fill="#18181B"/>
+          <path d="M 16 38 C 16 33 20 31 26 31 C 32 31 36 33 36 38 Z" fill="#18181B"/>
+          <text x="26" y="60" fill="#71717A" font-size="9.5" font-weight="600" text-anchor="middle" class="sans">~~~~~</text>
+        </g>
+
+        <rect x="0" y="70" width="344" height="1" fill="#F4F4F5"/>
+      </g>
+
+      <!-- 1.4 MAIN FEED POST -->
+      <g id="feed-post" transform="translate(8 178)">
+        <g transform="translate(16 0)">
+          <circle cx="16" cy="16" r="16" fill="url(#ig-gradient)"/>
+          <circle cx="16" cy="16" r="14" fill="#FFFFFF"/>
+          <circle cx="16" cy="16" r="12" fill="#F4F4F5"/>
+          <circle cx="16" cy="13" r="4" fill="#18181B"/>
+          <path d="M 10 23 C 10 20 12.5 19 16 19 C 19.5 19 22 20 22 23 Z" fill="#18181B"/>
+          <rect x="40" y="8" width="80" height="7" rx="3.5" fill="#18181B"/>
+          <rect x="40" y="20" width="50" height="5" rx="2.5" fill="#A1A1AA"/>
+          <circle cx="298" cy="16" r="2" fill="#18181B"/>
+          <circle cx="304" cy="16" r="2" fill="#18181B"/>
+          <circle cx="310" cy="16" r="2" fill="#18181B"/>
+        </g>
+
+        <g clip-path="url(#photo-clip)">
+          <rect x="0" y="38" width="344" height="250" fill="#F8FAFC"/>
+          <rect x="0" y="38" width="344" height="1" fill="#E4E4E7"/>
+          <rect x="0" y="287" width="344" height="1" fill="#E4E4E7"/>
+          <circle cx="248" cy="100" r="26" fill="#E4E4E7"/>
+          <polygon points="30 240 130 125 210 240" fill="#D4D4D8"/>
+          <polygon points="100 159 130 125 155 160 140 165 125 155 110 165" fill="#FFFFFF"/>
+          <polygon points="150 240 240 145 315 240" fill="#94A3B8"/>
+          <polygon points="215 170 240 145 260 170" fill="#FFFFFF"/>
+          <rect x="0" y="240" width="344" height="2" fill="#64748B"/>
+          <rect x="120" y="215" width="60" height="2" rx="1" fill="#CBD5E1"/>
+          <rect x="140" y="225" width="70" height="2" rx="1" fill="#CBD5E1"/>
+        </g>
+
+        <g transform="translate(16 298)">
+          <path d="M 9 16 C 9 16 1.5 10.5 1.5 6 C 1.5 3.5 3.5 1.5 6 1.5 C 7.5 1.5 8.7 2.3 9 2.5 C 9.3 2.3 10.5 1.5 12 1.5 C 14.5 1.5 16.5 3.5 16.5 6 C 16.5 10.5 9 16 9 16 Z" fill="none" stroke="#18181B" stroke-width="1.8" stroke-linejoin="round"/>
+          <path d="M 37 8.4 C 37 4.1 40.5 1.3 44.8 1.3 C 49 1.3 52.5 4.1 52.5 8.4 C 52.5 12.7 49 15.4 44.8 15.4 C 43.6 15.4 42.4 15 41.5 14.6 L 37 16.2 L 38.1 12.7 C 37.3 11.3 37 9.9 37 8.4 Z" fill="none" stroke="#18181B" stroke-width="1.8" stroke-linejoin="round"/>
+          <polygon points="72 2 89 9 72 16 76 9" fill="none" stroke="#18181B" stroke-width="1.6" stroke-linejoin="round"/>
+          <polygon points="300 0 314 0 314 18 307 13 300 18" fill="none" stroke="#18181B" stroke-width="1.8" stroke-linejoin="round"/>
+        </g>
+
+        <g transform="translate(16 330)">
+          <rect x="0" y="0" width="105" height="7" rx="3.5" fill="#18181B"/>
+          <rect x="0" y="14" width="210" height="6" rx="3" fill="#71717A"/>
+          <rect x="0" y="26" width="150" height="6" rx="3" fill="#71717A"/>
+          <rect x="0" y="38" width="88" height="5" rx="2.5" fill="#A1A1AA"/>
+          <rect x="0" y="50" width="52" height="4" rx="2" fill="#D4D4D8"/>
+        </g>
+      </g>
+
+      <!-- 1.5 BOTTOM NAVIGATION BAR -->
+      <g id="bottom-nav" transform="translate(8 684)">
+        <rect x="0" y="0" width="344" height="1" fill="#F4F4F5"/>
+        <g transform="translate(32 10)">
+          <path d="M 2 10 L 10 2 L 18 10 L 18 20 L 13 20 L 13 14 L 7 14 L 7 20 L 2 20 Z" fill="#18181B"/>
+        </g>
+        <g transform="translate(94 10)">
+          <circle cx="9" cy="9" r="6.5" fill="none" stroke="#18181B" stroke-width="2"/>
+          <line x1="14" y1="14" x2="19" y2="19" stroke="#18181B" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <g transform="translate(157 10)">
+          <rect x="0" y="0" width="20" height="20" rx="6" fill="none" stroke="#18181B" stroke-width="2"/>
+          <line x1="10" y1="5" x2="10" y2="15" stroke="#18181B" stroke-width="2" stroke-linecap="round"/>
+          <line x1="5" y1="10" x2="15" y2="10" stroke="#18181B" stroke-width="2" stroke-linecap="round"/>
+        </g>
+        <g transform="translate(219 10)">
+          <rect x="0" y="1" width="21" height="19" rx="5" fill="none" stroke="#18181B" stroke-width="1.8"/>
+          <line x1="0" y1="7" x2="21" y2="7" stroke="#18181B" stroke-width="1.5"/>
+          <line x1="7" y1="1" x2="5" y2="7" stroke="#18181B" stroke-width="1.5"/>
+          <line x1="14" y1="1" x2="12" y2="7" stroke="#18181B" stroke-width="1.5"/>
+          <polygon points="9 10 14 13 9 16" fill="#18181B"/>
+        </g>
+        <g transform="translate(283 10)">
+          <circle cx="10" cy="10" r="10" fill="#18181B"/>
+          <circle cx="10" cy="8.5" fill="#FFFFFF"/>
+          <circle cx="10" cy="8" r="3" fill="#18181B"/>
+          <path d="M 5 16 C 5 13 7 12 10 12 C 13 12 15 13 15 16 Z" fill="#18181B"/>
+        </g>
+        <rect x="112" y="44" width="120" height="4" rx="2" fill="#18181B"/>
+      </g>
+    </g>
+
+    <!-- ============================================ -->
+    <!-- LAYER 2: TAP RIPPLE EFFECT ON STORY 2        -->
+    <!-- ============================================ -->
+    <circle cx="114" cy="124" r="26" fill="#E1306C" opacity="0" class="anim-ripple"/>
+
+    <!-- ============================================ -->
+    <!-- LAYER 3: INSTAGRAM STORY VIEWER              -->
+    <!-- ============================================ -->
+    <g id="story-viewer" transform="translate(0 800)" opacity="0" class="anim-viewer">
+      <!-- 3.1 STORY BACKGROUND (Sunset in Porto, Portugal) -->
+      <rect x="0" y="0" width="360" height="740" fill="url(#sunset-sky)"/>
+      <circle cx="235" cy="340" r="80" fill="url(#sun-glow)"/>
+      <circle cx="235" cy="340" r="34" fill="#FFFBEB"/>
+      <polygon points="-20 620 110 460 250 620" fill="#311042" fill-opacity="0.95"/>
+      <polygon points="130 620 255 490 380 620" fill="#1F082F" fill-opacity="0.95"/>
+      <path d="M 360 160 Q 240 200 190 280 Q 250 250 360 230 Z" fill="#0D0318" fill-opacity="0.85"/>
+      <path d="M 360 210 Q 230 260 170 360 Q 240 330 360 300 Z" fill="#0D0318" fill-opacity="0.9"/>
+      <line x1="175" y1="460" x2="285" y2="460" stroke="#FDE047" stroke-width="2" stroke-opacity="0.6"/>
+      <line x1="195" y1="468" x2="275" y2="468" stroke="#FDE047" stroke-width="1.8" stroke-opacity="0.5"/>
+
+      <!-- 3.2 STORY TOP SEGMENT PROGRESS BARS -->
+      <g id="story-progress-bars" transform="translate(0 48)">
+        <rect x="20" y="0" width="103" height="2.5" rx="1.25" fill="#FFFFFF" fill-opacity="0.35"/>
+        <rect x="20" y="0" width="12" height="2.5" rx="1.25" fill="#FFFFFF"/>
+        <rect x="128.5" y="0" width="103" height="2.5" rx="1.25" fill="#FFFFFF" fill-opacity="0.35"/>
+        <rect x="237" y="0" width="103" height="2.5" rx="1.25" fill="#FFFFFF" fill-opacity="0.35"/>
+      </g>
+
+      <!-- 3.3 STORY HEADER -->
+      <g id="story-header" transform="translate(20 58)">
+        <circle cx="16" cy="16" r="16" fill="url(#ig-gradient)"/>
+        <circle cx="16" cy="16" r="14.5" fill="#FFFFFF"/>
+        <circle cx="16" cy="16" r="13" fill="#F4F4F5"/>
+        <circle cx="16" cy="13" r="4.5" fill="#18181B"/>
+        <path d="M 9 23 C 9 19 12 18 16 18 C 20 18 23 19 23 23 Z" fill="#18181B"/>
+
+        <text x="38" y="14" fill="#FFFFFF" font-size="12" font-weight="700" class="sans">duarte</text>
+        <text x="88" y="14" fill="#FFFFFF" fill-opacity="0.75" font-size="11" font-weight="400" class="sans">3h</text>
+        <text x="38" y="27" fill="#FFFFFF" fill-opacity="0.85" font-size="9" class="sans">♫ Sunset Reverie · Original Audio</text>
+
+        <circle cx="274" cy="16" r="2" fill="#FFFFFF"/>
+        <circle cx="280" cy="16" r="2" fill="#FFFFFF"/>
+        <circle cx="286" cy="16" r="2" fill="#FFFFFF"/>
+        <polygon points="307 10 309 8 314 13 319 8 321 10 316 15 321 20 319 22 314 17 309 22 307 20 312 15" fill="#FFFFFF"/>
+      </g>
+
+      <!-- 3.4 STORY STICKERS -->
+      <!-- Sticker 1: Location Tag (Porto, Portugal) -->
+      <g transform="translate(24 122) rotate(-3)">
+        <rect x="0" y="0" width="162" height="28" rx="14" fill="#FFFFFF" fill-opacity="0.22"/>
+        <rect x="0" y="0" width="162" height="28" rx="14" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="0.8"/>
+        <circle cx="16" cy="14" r="4" fill="#EF4444"/>
+        <circle cx="16" cy="14" r="1.8" fill="#FFFFFF"/>
+        <text x="27" y="18" fill="#FFFFFF" font-size="10.5" font-weight="700" letter-spacing="0.5" class="sans">PORTO, PORTUGAL</text>
+      </g>
+
+      <!-- Sticker 2: Music Capsule with Equalizer -->
+      <g transform="translate(24 162) rotate(1.5)">
+        <rect x="0" y="0" width="170" height="26" rx="13" fill="#000000" fill-opacity="0.45"/>
+        <rect x="0" y="0" width="170" height="26" rx="13" fill="none" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="0.8"/>
+        <rect x="4" y="4" width="18" height="18" rx="4" fill="#EC4899"/>
+        <circle cx="13" cy="15" r="2.5" fill="#FFFFFF"/>
+        <rect x="14" y="8" width="1.5" height="7" fill="#FFFFFF"/>
+        <polygon points="15.5 8 19 10 19 8.5 15.5 7" fill="#FFFFFF"/>
+        <text x="28" y="17" fill="#FFFFFF" font-size="9.5" font-weight="600" class="sans">Golden Hour · JVKE</text>
+        <g transform="translate(140 7)">
+          <rect x="0" y="0" width="2" height="6" rx="1" fill="#FFFFFF" class="eq-1"/>
+          <rect x="4" y="0" width="2" height="10" rx="1" fill="#FFFFFF" class="eq-2"/>
+          <rect x="8" y="0" width="2" height="4" rx="1" fill="#FFFFFF" class="eq-3"/>
+          <rect x="12" y="0" width="2" height="8" rx="1" fill="#FFFFFF" class="eq-1"/>
+          <rect x="16" y="0" width="2" height="5" rx="1" fill="#FFFFFF" class="eq-2"/>
+        </g>
+      </g>
+
+      <!-- 3.5 BIG SCROLLESS BLOCKED INDICATOR (Center of Screen, Zero Text) -->
+      <g transform="translate(180 360)">
+        <g id="scrolless-blocked-indicator" opacity="0" class="anim-blocked-badge">
+          <!-- Ambient Glow Backdrop -->
+          <circle cx="0" cy="0" r="70" fill="#EF4444" fill-opacity="0.22"/>
+          <!-- Dynamic Shockwave Pulse Ring -->
+          <circle cx="0" cy="0" r="54" fill="none" stroke="#EF4444" stroke-width="2" stroke-opacity="0.75" class="anim-blocked-pulse"/>
+          <!-- Solid Frosted Dark Medallion -->
+          <circle cx="0" cy="0" r="48" fill="#18181B" fill-opacity="0.95" stroke="#EF4444" stroke-width="2" stroke-opacity="0.5"/>
+          <circle cx="0" cy="0" r="44" fill="none" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="1"/>
+
+          <!-- Clean Minimalist Prohibition Blocked Symbol (🚫) -->
+          <circle cx="0" cy="0" r="22" fill="none" stroke="#EF4444" stroke-width="4.5"/>
+          <line x1="-15.5" y1="-15.5" x2="15.5" y2="15.5" stroke="#EF4444" stroke-width="4.5" stroke-linecap="round"/>
+        </g>
+      </g>
+
+      <!-- 3.6 STORY FOOTER (REPLY BAR & REACTIONS) -->
+      <g id="story-footer" transform="translate(20 672)">
+        <rect x="0" y="0" width="228" height="44" rx="22" fill="#000000" fill-opacity="0.35"/>
+        <rect x="0" y="0" width="228" height="44" rx="22" fill="none" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1"/>
+        <text x="20" y="27" fill="#FFFFFF" fill-opacity="0.8" font-size="13" class="sans">Send message...</text>
+        <g transform="translate(242 8)">
+          <path d="M 11 19.5 C 11 19.5 2 13.5 2 7.8 C 2 4.6 4.5 2.2 7.5 2.2 C 9.4 2.2 10.8 3.2 11 3.5 C 11.2 3.2 12.6 2.2 14.5 2.2 C 17.5 2.2 20 4.6 20 7.8 C 20 13.5 11 19.5 11 19.5 Z" fill="#FFFFFF"/>
+          <path d="M 11 16.8 C 11 16.8 4 11.8 4 7.8 C 4 5.6 5.6 4 7.5 4 C 8.8 4 10 4.8 11 6 C 12 4.8 13.2 4 14.5 4 C 16.4 4 18 5.6 18 7.8 C 18 11.8 11 16.8 11 16.8 Z" fill="#130724"/>
+        </g>
+        <g transform="translate(282 8)">
+          <polygon points="1 11 20 2 13 20 10 13" fill="#FFFFFF"/>
+          <polygon points="3 10.5 17 3.5 11.8 12.5" fill="#130724"/>
+        </g>
+      </g>
+
+      <!-- Bottom Gesture Bar in Story View -->
+      <rect x="120" y="722" width="120" height="4" rx="2" fill="#FFFFFF"/>
+    </g> <!-- /story-viewer -->
+
+    <!-- ============================================ -->
+    <!-- LAYER 4: TOUCH CURSOR / POINTER              -->
+    <!-- ============================================ -->
+    <g id="touch-cursor" transform="translate(0 900)" opacity="0" class="anim-finger">
+      <circle cx="0" cy="0" r="28" fill="#E1306C" opacity="0.3"/>
+      <circle cx="0" cy="0" r="14" fill="#E1306C" opacity="0.2"/>
+
+      <path d="M 0 0 C -6 -6 -12 -2 -14 4 C -16 10 -8 16 -2 18 L 16 54 C 20 62 32 64 38 58 L 50 46 C 56 40 54 28 46 24 L 18 8 C 12 2 6 -2 0 0 Z"
+            fill="#18181B" transform="translate(4 4)"/>
+
+      <path d="M 0 0 C -4 -4 -9 -1 -11 3 C -13 8 -6 13 -1 15 L 17 51 C 20 57 29 59 34 54 L 46 42 C 51 37 49 28 42 24 L 16 8 C 11 3 5 0 0 0 Z"
+            fill="#FFFFFF" transform="translate(5 5)"/>
+
+      <circle cx="0" cy="0" r="14" fill="#18181B"/>
+      <circle cx="0" cy="0" r="11" fill="#FFFFFF"/>
+      <circle cx="0" cy="0" r="4.5" fill="#E1306C"/>
+    </g>
+
+    <!-- ============================================ -->
+    <!-- LAYER 5: HARDWARE PUNCH-HOLE CAMERA          -->
+    <!-- ============================================ -->
+    <g id="hardware-overlay">
+      <circle cx="180" cy="28" r="6.5" fill="#18181B"/>
+      <circle cx="180" cy="28" r="3" fill="#27272A"/>
+      <circle cx="181" cy="27" r="1" fill="#52525B"/>
+    </g>
+
+  </g> <!-- /screen-clip -->
+</svg>
