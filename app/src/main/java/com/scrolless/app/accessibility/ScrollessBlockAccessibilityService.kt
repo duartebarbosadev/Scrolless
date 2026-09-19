@@ -319,22 +319,15 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    /**
-     * Confirms the tracked app is still in the foreground and the screen is interactive.
-     *
-     * @param source Name of the caller (event, periodic check, etc.) for logging.
-     * @return True if tracking can safely continue, or false if the app exited.
-     */
+    /** Ends tracking when the screen turns off or the tracked app is no longer visible. */
     private fun validateTrackedAppState(source: String): Boolean {
         if (!powerManager.isInteractive) {
-            if (contentSession != null || currentForegroundBrainRotApp != null) {
-                handleTrackedAppExit("$source - screen is off")
-            }
+            handleTrackedAppExit("$source - screen is off")
             return false
         }
 
         val trackedForegroundApp = currentForegroundBrainRotApp ?: return true
-        if (contentScanner.isBlockedAppPackageVisible(trackedForegroundApp)) {
+        if (contentScanner.isAppVisible(trackedForegroundApp)) {
             return true
         }
 
@@ -603,7 +596,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
             ContentBlockAction.CoverVideoRegion -> {
                 // The user may have switched apps while we were waiting for the blocking decision.
-                if (!contentScanner.isContentWindowEligible(session.app)) {
+                if (!contentScanner.isAppVisible(session.app)) {
                     handleTrackedAppExit("app lost foreground before covering")
                     return
                 }
@@ -662,7 +655,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     /** Checks if the user's latest settings or allowances should block or unblock the current screen. */
     private fun reconsiderVisibleContent() {
         val current = contentSession ?: return
-        if (!contentScanner.isContentWindowEligible(current.app)) {
+        if (current.app.coverDetector != null && !contentScanner.isAppVisible(current.app)) {
             handleTrackedAppExit("app lost foreground before reconsidering content")
             return
         }

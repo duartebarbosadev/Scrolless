@@ -80,7 +80,7 @@ internal class ContentScanner(
         activeCover: ContentCover? = null,
     ): Result {
         val appWindows = AppWindows(service.windows)
-        val trackedAppExited = trackedApp != null && !appWindows.isEligible(trackedApp)
+        val trackedAppExited = trackedApp?.coverDetector != null && !appWindows.isVisible(trackedApp)
 
         // Window-change events often omit package info, and synthetic rescans have no event.
         // In both cases, resolve the package directly from the active foreground window.
@@ -151,22 +151,39 @@ internal class ContentScanner(
         }
     }
 
+    /**
+     * Checks whether this node belongs to content we should track in [blockableApp].
+     * Looks for a video area to cover, or a screen the app's normal blocking rule matches.
+     * This only detects content; the service decides whether the user's limits require blocking it.
+     *
+     * @param appWindows Current app windows, used to check focus and locate the video window.
+     * @param activeCover Existing cover, so we can still recognize a player hidden behind it.
+     * @return The detected content and any DM exemption, or null if no content matches.
+     */
     private fun AccessibilityNodeInfo.detectContent(
         blockableApp: ResolvedBlockableApp,
         appWindows: AppWindows,
         activeCover: ContentCover? = null,
     ): DetectedBlockedContent? {
-        if (packageName?.toString() != blockableApp.packageId || !appWindows.isEligible(blockableApp)) return null
-        // A matching region uses a cover; otherwise keep this app's normal screen detector.
+
+        // We inspect several windows, so first make sure this node belongs to the app we want.
+        if (packageName?.toString() != blockableApp.packageId) return null
+
+        // Covers need foreground focus so they don't appear over another app after switching away.
+        if (blockableApp.coverDetector != null && !appWindows.isVisible(blockableApp)) return null
+
+        // If we can locate the video, we can cover just that area and leave the app's controls usable.
         val cover = detectContentCover(blockableApp, appWindows, activeCover)
 
         if (cover == null) {
-            // This app requires a video cover, but we could not find the player's bounds.
+            // Cover-only apps need a known video area. Without one, there is nowhere safe to put a cover.
             if (blockableApp.getBlockAction() == ContentBlockAction.CoverVideoRegion) return null
-            // Only use the app's normal blocking action when the screen matches its detection rule.
+
+            // Other apps can use Back to leave content, but only if this screen matches their detection rule.
             if (!matchesBlockedContent(blockableApp, appWindows)) return null
         }
 
+        // Keep tracking detected content even when the user's DM setting allows it through.
         return DetectedBlockedContent(
             app = blockableApp,
             blockingSuppressed = shouldSuppressBlocking(blockableApp, cover),
@@ -203,12 +220,8 @@ internal class ContentScanner(
         return appWindows.roots.values.firstNotNullOfOrNull { it?.detectContent(blockableApp, appWindows, activeCover) }
     }
 
-    /** Returns true if any window of [app] is currently open on screen. */
-    fun isBlockedAppPackageVisible(app: ResolvedBlockableApp): Boolean = AppWindows(service.windows).isVisible(app)
-
-    /** Cover-based apps must be in the foreground before attaching an overlay. */
-    fun isContentWindowEligible(app: ResolvedBlockableApp): Boolean =
-        app.coverDetector == null || AppWindows(service.windows).isEligible(app)
+    /** Checks for an app window; cover-based apps must also have foreground focus. */
+    fun isAppVisible(app: ResolvedBlockableApp): Boolean = AppWindows(service.windows).isVisible(app)
 
     /**
      * Captures a synchronous snapshot of application windows.
@@ -243,12 +256,9 @@ internal class ContentScanner(
             },
         )
 
-        // Covers require foreground focus to avoid drawing over another app.
-        fun isEligible(app: ResolvedBlockableApp): Boolean = app.coverDetector == null || foregroundPackage == app.packageId
-
-        /** Non-cover apps only require a visible application window. */
+        // Covers require foreground focus; other apps only need a visible window.
         fun isVisible(app: ResolvedBlockableApp): Boolean = if (app.coverDetector != null) {
-            isEligible(app)
+            foregroundPackage == app.packageId
         } else {
             roots.values.any { it?.packageName?.toString() == app.packageId }
         }
