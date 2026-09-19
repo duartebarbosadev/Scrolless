@@ -304,6 +304,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             }
 
             is DetectionMethod.NodeStructure -> false
+
             // Activity names are resolved at the window/component level, not within individual view nodes.
             is DetectionMethod.ActivityName -> false
 
