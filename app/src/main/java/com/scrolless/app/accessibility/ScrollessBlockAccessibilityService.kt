@@ -627,10 +627,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Periodically checks whether a covered video is still on screen or if new allowance is available. */
     private val coveredContentCheck = Runnable {
-        if (validateTrackedAppState("Covered screen")) {
-            refreshDetectedContent()
-            reconsiderVisibleContent()
-        }
+        refreshDetectedContent()
+        reconsiderVisibleContent()
     }
 
     private fun scheduleCoveredContentCheck() {
