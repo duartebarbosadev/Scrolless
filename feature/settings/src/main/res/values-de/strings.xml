@@ -32,5 +32,5 @@
     <string name="settings_show_onscreen_timer_title">Bildschirmtimer anzeigen</string>
     <string name="settings_include_stories_title">Storys einbeziehen</string>
     <string name="settings_include_stories_description">Erfasse die Zeit beim Ansehen von Storys und wende deinen aktuellen Blockiermodus und deine Limits an.</string>
-    <string name="settings_include_stories_note">Derzeit auf Instagram unterstützt.</string>
+    <string name="settings_include_stories_note">Derzeit auf Instagram, Snapchat und Facebook unterstützt.</string>
 </resources>

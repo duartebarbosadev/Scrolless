@@ -32,5 +32,5 @@
     <string name="settings_show_onscreen_timer_title">Visa timer på skärmen</string>
     <string name="settings_include_stories_title">Inkludera händelser</string>
     <string name="settings_include_stories_description">Räkna tiden du lägger på att titta på händelser och tillämpa ditt nuvarande blockeringsläge och dina tidsgränser.</string>
-    <string name="settings_include_stories_note">Stöds för närvarande på Instagram.</string>
+    <string name="settings_include_stories_note">Stöds för närvarande på Instagram, Snapchat och Facebook.</string>
 </resources>

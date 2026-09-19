@@ -28,41 +28,39 @@ import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
 @Config(manifest = Config.NONE, sdk = [28, 35], shadows = [IndexedTestNode::class])
-class InstagramStoriesTest {
+class SnapchatStoriesTest {
     private var includeStories = false
     private val service = Robolectric.buildService(TestAccessibilityService::class.java).create().get()
     private val scanner = ContentScanner(service, { false }, { false }, { includeStories })
-    private val instagram = ResolvedBlockableApp(BlockableApp.REELS, "com.instagram.android")
+    private val snapchat = ResolvedBlockableApp(BlockableApp.SNAPCHAT, "com.snapchat.android")
 
     @Test
     fun `Stories opt in can be enabled and disabled during the same viewing session`() {
-        show("reel_viewer_root")
-        assertNull(scanner.findVisibleBlockedContent(instagram))
+        show("opera_viewer")
+        assertNull(scanner.findVisibleBlockedContent(snapchat))
         includeStories = true
-        assertNotNull(scanner.findVisibleBlockedContent(instagram))
+        assertNotNull(scanner.findVisibleBlockedContent(snapchat))
         includeStories = false
-        assertNull(scanner.findVisibleBlockedContent(instagram))
+        assertNull(scanner.findVisibleBlockedContent(snapchat))
     }
 
     @Test
-    fun `Reels remain detected regardless of Stories preference`() {
-        show("clips_viewer_view_pager")
-        assertNotNull(scanner.findVisibleBlockedContent(instagram))
+    fun `Spotlight remains detected regardless of Stories preference`() {
+        show("spotlight_container")
+        assertNotNull(scanner.findVisibleBlockedContent(snapchat))
         includeStories = true
-        assertNotNull(scanner.findVisibleBlockedContent(instagram))
+        assertNotNull(scanner.findVisibleBlockedContent(snapchat))
     }
 
     @Test
-    fun `story tray hidden viewer and another app are not counted`() {
+    fun `hidden viewer and another app are not counted`() {
         includeStories = true
-        show("reel_viewer_profile_picture")
-        assertNull(scanner.findVisibleBlockedContent(instagram))
-        show("reel_viewer_root", visible = false)
-        assertNull(scanner.findVisibleBlockedContent(instagram))
-        show("reel_viewer_root", packageId = "com.example.other")
-        assertNull(scanner.findVisibleBlockedContent(instagram))
+        show("opera_viewer", visible = false)
+        assertNull(scanner.findVisibleBlockedContent(snapchat))
+        show("opera_viewer", packageId = "com.example.other")
+        assertNull(scanner.findVisibleBlockedContent(snapchat))
     }
 
-    private fun show(viewId: String, visible: Boolean = true, packageId: String = instagram.packageId) =
+    private fun show(viewId: String, visible: Boolean = true, packageId: String = snapchat.packageId) =
         service.showTestWindow(packageId, viewId = viewId, visible = visible)
 }
