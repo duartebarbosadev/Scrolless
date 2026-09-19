@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Dalej</string>
+    <string name="onboarding_skip">Pomiń</string>
+    <string name="onboarding_step">KROK %1$d Z %2$d</string>
+    <string name="onboarding_reels_title">Zachowaj aplikację. Przestań przewijać.</string>
+    <string name="onboarding_reels_body">Zobacz, jak Scrolless cofa Cię po otwarciu Reels. Wiadomości i zwykłe posty pozostają dostępne.</string>
+    <string name="onboarding_reels_tab">Karta Reels</string>
+    <string name="onboarding_feed_tab">Z aktualności</string>
+    <string name="onboarding_feed_title">Mniej rozpraszające aktualności.</string>
+    <string name="onboarding_feed_body">Reels są też zasłaniane w aktualnościach na Instagramie. Nadal możesz przeglądać pozostałe posty.</string>
+    <string name="onboarding_feed_included">Uwzględnione przy aktywnej blokadzie</string>
+    <string name="onboarding_dm_title">Zachowaj filmy od znajomych.</string>
+    <string name="onboarding_dm_body">Wybierz, czy filmy z wiadomości mogą być odtwarzane. Użyj przełącznika, aby zobaczyć różnicę.</string>
+    <string name="onboarding_dm_toggle">Zezwalaj na filmy w wiadomościach</string>
+    <string name="onboarding_stories_title">Ty decydujesz o relacjach.</string>
+    <string name="onboarding_stories_body">Uwzględnij relacje w trybie blokowania i limitach czasu lub pozostaw je dostępne.</string>
+    <string name="onboarding_finish_title">Znajdź równowagę.</string>
+    <string name="onboarding_finish_body">Wybierz tryb dla wszystkich obsługiwanych aplikacji. Jeśli potrzebny będzie dostęp do ułatwień dostępu, pomożemy w następnym kroku.</string>
+    <string name="onboarding_mode_off">Blokowanie wyłączone</string>
+    <string name="onboarding_finish">Zakończ konfigurację</string>
+    <string name="onboarding_change_later">Możesz zmienić te opcje w dowolnej chwili.</string>
+    <string name="onboarding_demo">Animowany przykład wybranego działania na Instagramie</string>
+    <string name="onboarding_error">Nie udało się zapisać opcji. Spróbuj ponownie.</string>
+    <string name="onboarding_retry">Spróbuj ponownie</string>
+    <string name="onboarding_block_reels">Blokuj krótkie filmy</string>
+</resources>

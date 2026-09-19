@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Продовжити</string>
+    <string name="onboarding_skip">Пропустити</string>
+    <string name="onboarding_step">КРОК %1$d ІЗ %2$d</string>
+    <string name="onboarding_reels_title">Залиште застосунок. Приберіть гортання.</string>
+    <string name="onboarding_reels_body">Подивіться, як Scrolless повертає вас назад після відкриття Reels. Повідомлення та звичайні дописи залишаються доступними.</string>
+    <string name="onboarding_reels_tab">Вкладка Reels</string>
+    <string name="onboarding_feed_tab">Зі стрічки</string>
+    <string name="onboarding_feed_title">Стрічка без зайвих відволікань.</string>
+    <string name="onboarding_feed_body">Reels також закриваються безпосередньо у стрічці Instagram. Інші дописи можна переглядати далі.</string>
+    <string name="onboarding_feed_included">Включено за активного блокування</string>
+    <string name="onboarding_dm_title">Залиште відео від друзів.</string>
+    <string name="onboarding_dm_body">Виберіть, чи можна відтворювати відео з повідомлень. Перемкніть налаштування, щоб побачити різницю.</string>
+    <string name="onboarding_dm_toggle">Дозволити відео з особистих повідомлень</string>
+    <string name="onboarding_stories_title">Ви вирішуєте щодо історій.</string>
+    <string name="onboarding_stories_body">Включіть історії до режиму блокування та часових обмежень або залиште їх доступними.</string>
+    <string name="onboarding_finish_title">Знайдіть свій баланс.</string>
+    <string name="onboarding_finish_body">Виберіть режим для всіх підтримуваних застосунків. Якщо потрібен доступ до спеціальних можливостей, допоможемо налаштувати його далі.</string>
+    <string name="onboarding_mode_off">Блокування вимкнено</string>
+    <string name="onboarding_finish">Завершити налаштування</string>
+    <string name="onboarding_change_later">Ці налаштування можна змінити будь-коли.</string>
+    <string name="onboarding_demo">Анімований приклад вибраної поведінки в Instagram</string>
+    <string name="onboarding_error">Не вдалося зберегти налаштування. Спробуйте ще раз.</string>
+    <string name="onboarding_retry">Повторити</string>
+    <string name="onboarding_block_reels">Блокувати короткі відео</string>
+</resources>

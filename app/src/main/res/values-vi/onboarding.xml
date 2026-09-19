@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Tiếp tục</string>
+    <string name="onboarding_skip">Bỏ qua</string>
+    <string name="onboarding_step">BƯỚC %1$d / %2$d</string>
+    <string name="onboarding_reels_title">Giữ ứng dụng. Bớt cuộn mãi.</string>
+    <string name="onboarding_reels_body">Xem cách Scrolless đưa bạn quay lại khi mở Reels. Tin nhắn và bài đăng thông thường vẫn truy cập được.</string>
+    <string name="onboarding_reels_tab">Thẻ Reels</string>
+    <string name="onboarding_feed_tab">Từ bảng tin</string>
+    <string name="onboarding_feed_title">Bảng tin ít gây xao nhãng hơn.</string>
+    <string name="onboarding_feed_body">Reels cũng được che ngay trong bảng tin Instagram. Bạn vẫn có thể xem các bài đăng khác.</string>
+    <string name="onboarding_feed_included">Được áp dụng khi tính năng chặn bật</string>
+    <string name="onboarding_dm_title">Giữ video từ bạn bè.</string>
+    <string name="onboarding_dm_body">Chọn có cho phép phát video gửi qua tin nhắn hay không. Đổi công tắc để xem sự khác biệt.</string>
+    <string name="onboarding_dm_toggle">Cho phép video gửi qua tin nhắn riêng</string>
+    <string name="onboarding_stories_title">Bạn quyết định về Tin.</string>
+    <string name="onboarding_stories_body">Áp dụng chế độ chặn và giới hạn thời gian cho Tin hoặc để Tin luôn khả dụng.</string>
+    <string name="onboarding_finish_title">Tìm sự cân bằng của bạn.</string>
+    <string name="onboarding_finish_body">Chọn chế độ cho mọi ứng dụng được hỗ trợ. Nếu cần quyền trợ năng, chúng tôi sẽ hướng dẫn ở bước tiếp theo.</string>
+    <string name="onboarding_mode_off">Tắt chặn</string>
+    <string name="onboarding_finish">Hoàn tất thiết lập</string>
+    <string name="onboarding_change_later">Bạn có thể thay đổi các lựa chọn bất cứ lúc nào.</string>
+    <string name="onboarding_demo">Ví dụ động về hành vi đã chọn trên Instagram</string>
+    <string name="onboarding_error">Không thể lưu lựa chọn. Vui lòng thử lại.</string>
+    <string name="onboarding_retry">Thử lại</string>
+    <string name="onboarding_block_reels">Chặn video ngắn</string>
+</resources>

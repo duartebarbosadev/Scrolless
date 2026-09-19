@@ -33,4 +33,5 @@
     <string name="settings_include_stories_title">Hikâyeleri dahil et</string>
     <string name="settings_include_stories_description">Hikâyeleri izlerken geçirilen süreyi say ve mevcut engelleme modunu ve süre sınırlarını uygula.</string>
     <string name="settings_include_stories_note">Şu anda Instagram, Snapchat ve Facebook desteklenmektedir.</string>
+    <string name="settings_onboarding">Özellikleri keşfet ve yapılandır</string>
 </resources>

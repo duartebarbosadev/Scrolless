@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Doorgaan</string>
+    <string name="onboarding_skip">Overslaan</string>
+    <string name="onboarding_step">STAP %1$d VAN %2$d</string>
+    <string name="onboarding_reels_title">Behoud de app. Stop het scrollen.</string>
+    <string name="onboarding_reels_body">Bekijk hoe Scrolless je terugbrengt wanneer je Reels opent. Berichten en gewone posts blijven bereikbaar.</string>
+    <string name="onboarding_reels_tab">Reels-tabblad</string>
+    <string name="onboarding_feed_tab">Vanuit de feed</string>
+    <string name="onboarding_feed_title">Een feed met minder afleiding.</string>
+    <string name="onboarding_feed_body">Reels worden ook direct in je Instagram-feed afgedekt. Je kunt de andere posts blijven bekijken.</string>
+    <string name="onboarding_feed_included">Inbegrepen wanneer blokkeren actief is</string>
+    <string name="onboarding_dm_title">Behoud video\'s van vrienden.</string>
+    <string name="onboarding_dm_body">Kies of video\'s uit berichten mogen afspelen. Gebruik de schakelaar om het verschil te zien.</string>
+    <string name="onboarding_dm_toggle">Video\'s uit privéberichten toestaan</string>
+    <string name="onboarding_stories_title">Jij beslist over Stories.</string>
+    <string name="onboarding_stories_body">Neem Stories op in je blokkeermodus en tijdslimieten, of laat ze beschikbaar.</string>
+    <string name="onboarding_finish_title">Vind je balans.</string>
+    <string name="onboarding_finish_body">Kies een modus voor alle ondersteunde apps. Als toegankelijkheidstoegang nodig is, helpen we je daar hierna bij.</string>
+    <string name="onboarding_mode_off">Blokkeren uit</string>
+    <string name="onboarding_finish">Instellen afronden</string>
+    <string name="onboarding_change_later">Je kunt deze keuzes altijd wijzigen.</string>
+    <string name="onboarding_demo">Animatie van het gekozen gedrag op Instagram</string>
+    <string name="onboarding_error">Je keuzes konden niet worden opgeslagen. Probeer het opnieuw.</string>
+    <string name="onboarding_retry">Opnieuw proberen</string>
+    <string name="onboarding_block_reels">Korte video\'s blokkeren</string>
+</resources>

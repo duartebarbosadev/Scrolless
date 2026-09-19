@@ -217,3 +217,16 @@ dependencies {
 
     coreLibraryDesugaring(libs.core.jdk.desugaring)
 }
+
+// Package the original animated artwork without maintaining a second copy.
+val prepareOnboardingAnimations = tasks.register<Sync>("prepareOnboardingAnimations") {
+    from(rootProject.file("art")) {
+        include("instagram_reels_block.svg", "instagram_feed_reel_block.svg", "instagram_feed_reel_cover.svg")
+        include("instagram_dm_reel_allowed.svg", "instagram_dm_reel_block.svg", "instagram_story_block.svg")
+    }
+    into(layout.buildDirectory.dir("generated/onboardingAssets/onboarding"))
+}
+android.sourceSets.getByName("main").assets.directories.add(
+    layout.buildDirectory.dir("generated/onboardingAssets").get().asFile.path,
+)
+tasks.named("preBuild").configure { dependsOn(prepareOnboardingAnimations) }

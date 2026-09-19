@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">தொடரவும்</string>
+    <string name="onboarding_skip">தவிர்க்கவும்</string>
+    <string name="onboarding_step">படி %1$d / %2$d</string>
+    <string name="onboarding_reels_title">செயலியை வைத்திருங்கள். ஸ்க்ரோலைக் குறையுங்கள்.</string>
+    <string name="onboarding_reels_body">Reels திறக்கும்போது Scrolless உங்களைத் திருப்பி அனுப்புவதைப் பாருங்கள். செய்திகள் மற்றும் வழக்கமான பதிவுகள் கிடைக்கும்.</string>
+    <string name="onboarding_reels_tab">Reels தாவல்</string>
+    <string name="onboarding_feed_tab">ஊட்டத்திலிருந்து</string>
+    <string name="onboarding_feed_title">கவனச்சிதறல் குறைந்த ஊட்டம்.</string>
+    <string name="onboarding_feed_body">Instagram ஊட்டத்திலும் Reels மறைக்கப்படும். மற்ற பதிவுகளைத் தொடர்ந்து பார்க்கலாம்.</string>
+    <string name="onboarding_feed_included">தடுப்பு செயல்படும்போது சேர்க்கப்படும்</string>
+    <string name="onboarding_dm_title">நண்பர்களின் வீடியோக்களை வைத்திருங்கள்.</string>
+    <string name="onboarding_dm_body">செய்திகளில் வரும் வீடியோக்களை இயக்கலாமா எனத் தேர்ந்தெடுக்கவும். வித்தியாசத்தைப் பார்க்க சுவிட்சை மாற்றவும்.</string>
+    <string name="onboarding_dm_toggle">தனிப்பட்ட செய்திகளின் வீடியோக்களை அனுமதி</string>
+    <string name="onboarding_stories_title">ஸ்டோரிகள் உங்கள் விருப்பம்.</string>
+    <string name="onboarding_stories_body">ஸ்டோரிகளைத் தடுப்பு முறையிலும் நேர வரம்பிலும் சேர்க்கவும் அல்லது கிடைக்கும்படி விடவும்.</string>
+    <string name="onboarding_finish_title">உங்கள் சமநிலையைக் கண்டறியுங்கள்.</string>
+    <string name="onboarding_finish_body">ஆதரிக்கப்படும் அனைத்து செயலிகளுக்கும் ஒரு முறையைத் தேர்ந்தெடுக்கவும். அணுகல்தன்மை அனுமதி தேவைப்பட்டால் அடுத்த படியில் உதவுவோம்.</string>
+    <string name="onboarding_mode_off">தடுப்பு முடக்கப்பட்டது</string>
+    <string name="onboarding_finish">அமைப்பை முடிக்கவும்</string>
+    <string name="onboarding_change_later">இந்தத் தேர்வுகளை எப்போது வேண்டுமானாலும் மாற்றலாம்.</string>
+    <string name="onboarding_demo">Instagram-இல் தேர்ந்தெடுத்த செயல்பாட்டின் அனிமேஷன்</string>
+    <string name="onboarding_error">தேர்வுகளைச் சேமிக்க முடியவில்லை. மீண்டும் முயலவும்.</string>
+    <string name="onboarding_retry">மீண்டும் முயலவும்</string>
+    <string name="onboarding_block_reels">குறுகிய வீடியோக்களைத் தடு</string>
+</resources>

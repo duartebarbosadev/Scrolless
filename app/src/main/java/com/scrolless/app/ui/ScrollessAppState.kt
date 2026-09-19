@@ -48,6 +48,9 @@ sealed interface ScrollessRoute : NavKey {
 
     @Serializable
     data object Settings : ScrollessRoute
+
+    @Serializable
+    data object Onboarding : ScrollessRoute
 }
 
 @Composable
@@ -61,6 +64,15 @@ class ScrollessAppState(val backStack: NavBackStack<NavKey>) {
         if (backStack.lastOrNull() != ScrollessRoute.Settings) {
             backStack.add(ScrollessRoute.Settings)
         }
+    }
+
+    fun navigateToOnboarding() {
+        if (backStack.lastOrNull() != ScrollessRoute.Onboarding) backStack.add(ScrollessRoute.Onboarding)
+    }
+
+    fun finishOnboarding() {
+        backStack.clear()
+        backStack.add(ScrollessRoute.Home)
     }
 
     fun navigateBack() {

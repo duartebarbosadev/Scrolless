@@ -21,10 +21,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.scrolless.app.accessibility.ScrollessBlockAccessibilityService
 import com.scrolless.app.debug.DebugOverlayConfig
@@ -32,6 +41,8 @@ import com.scrolless.app.designsystem.theme.LocalSharedTransitionScope
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.feature.home.HomeScreen
 import com.scrolless.app.feature.settings.SettingsScreen
+import com.scrolless.app.ui.onboarding.OnboardingGateViewModel
+import com.scrolless.app.ui.onboarding.OnboardingScreen
 import com.scrolless.app.util.requestAppReview
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,31 +57,50 @@ class MainActivity : ComponentActivity() {
             val appState: ScrollessAppState = rememberScrollessAppState()
             val forceLegacyOverlay by DebugOverlayConfig.forceLegacyOverlay.collectAsStateWithLifecycle()
 
+            val onboardingGate: OnboardingGateViewModel = hiltViewModel()
+            val onboardingCompleted by onboardingGate.completed.collectAsStateWithLifecycle()
+
             ScrollessTheme {
-                SharedTransitionLayout {
-                    CompositionLocalProvider(LocalSharedTransitionScope provides this) {
-                        NavDisplay(
-                            appState.backStack,
-                            onBack = { appState.navigateBack() },
-                            entryProvider = entryProvider {
-                                entry<ScrollessRoute.Home> {
-                                    HomeScreen(
-                                        onNavigateToSettings = appState::navigateToSettings,
-                                        accessibilityServiceClass = ScrollessBlockAccessibilityService::class.java,
-                                        onRequestAppReview = ::requestAppReview,
-                                        forceLegacyOverlay = forceLegacyOverlay,
-                                        onForceLegacyOverlayChanged = {
-                                            DebugOverlayConfig.forceLegacyOverlay.value = it
-                                        },
-                                    )
-                                }
-                                entry<ScrollessRoute.Settings> {
-                                    SettingsScreen(
-                                        onNavigateBack = appState::navigateBack,
-                                    )
-                                }
-                            },
-                        )
+                if (onboardingCompleted == null) {
+                    Surface(Modifier.fillMaxSize()) {
+                        Box(contentAlignment = Alignment.Center) { CircularProgressIndicator() }
+                    }
+                } else if (onboardingCompleted == false) {
+                    OnboardingScreen(onFinished = appState::finishOnboarding)
+                } else {
+                    SharedTransitionLayout {
+                        CompositionLocalProvider(LocalSharedTransitionScope provides this) {
+                            NavDisplay(
+                                appState.backStack,
+                                onBack = { appState.navigateBack() },
+                                entryDecorators = listOf(
+                                    rememberSaveableStateHolderNavEntryDecorator(),
+                                    rememberViewModelStoreNavEntryDecorator(),
+                                ),
+                                entryProvider = entryProvider {
+                                    entry<ScrollessRoute.Home> {
+                                        HomeScreen(
+                                            onNavigateToSettings = appState::navigateToSettings,
+                                            accessibilityServiceClass = ScrollessBlockAccessibilityService::class.java,
+                                            onRequestAppReview = ::requestAppReview,
+                                            forceLegacyOverlay = forceLegacyOverlay,
+                                            onForceLegacyOverlayChanged = {
+                                                DebugOverlayConfig.forceLegacyOverlay.value = it
+                                            },
+                                        )
+                                    }
+                                    entry<ScrollessRoute.Onboarding> {
+                                        OnboardingScreen(onFinished = appState::finishOnboarding, replay = true)
+                                    }
+                                    entry<ScrollessRoute.Settings> {
+                                        SettingsScreen(
+                                            onNavigateBack = appState::navigateBack,
+                                            onOpenOnboarding = appState::navigateToOnboarding,
+                                        )
+                                    }
+                                },
+                            )
+                        }
                     }
                 }
             }

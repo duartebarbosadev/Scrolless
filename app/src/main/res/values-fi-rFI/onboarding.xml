@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Jatka</string>
+    <string name="onboarding_skip">Ohita</string>
+    <string name="onboarding_step">VAIHE %1$d / %2$d</string>
+    <string name="onboarding_reels_title">Pidä sovellus. Lopeta selaaminen.</string>
+    <string name="onboarding_reels_body">Katso, miten Scrolless palauttaa sinut takaisin avatessasi Reelsin. Viestit ja tavalliset julkaisut pysyvät käytettävissä.</string>
+    <string name="onboarding_reels_tab">Reels-välilehti</string>
+    <string name="onboarding_feed_tab">Syötteestä</string>
+    <string name="onboarding_feed_title">Syöte, jossa on vähemmän häiriöitä.</string>
+    <string name="onboarding_feed_body">Reels-videot peitetään myös Instagram-syötteessä. Voit jatkaa muiden julkaisujen selaamista.</string>
+    <string name="onboarding_feed_included">Sisältyy aktiiviseen estoon</string>
+    <string name="onboarding_dm_title">Säilytä ystävien videot.</string>
+    <string name="onboarding_dm_body">Valitse, saako viesteissä lähetettyjä videoita toistaa. Näet eron vaihtamalla asetusta.</string>
+    <string name="onboarding_dm_toggle">Salli yksityisviestien videot</string>
+    <string name="onboarding_stories_title">Sinä päätät tarinoista.</string>
+    <string name="onboarding_stories_body">Sisällytä tarinat estotilaan ja aikarajoihin tai jätä ne saataville.</string>
+    <string name="onboarding_finish_title">Löydä tasapainosi.</string>
+    <string name="onboarding_finish_body">Valitse tila kaikille tuetuille sovelluksille. Jos esteettömyyslupa tarvitaan, opastamme sen myöntämisessä seuraavaksi.</string>
+    <string name="onboarding_mode_off">Esto pois</string>
+    <string name="onboarding_finish">Viimeistele asetukset</string>
+    <string name="onboarding_change_later">Voit muuttaa valintojasi milloin tahansa.</string>
+    <string name="onboarding_demo">Animoitu esimerkki valitusta toiminnasta Instagramissa</string>
+    <string name="onboarding_error">Valintoja ei voitu tallentaa. Yritä uudelleen.</string>
+    <string name="onboarding_retry">Yritä uudelleen</string>
+    <string name="onboarding_block_reels">Estä lyhyet videot</string>
+</resources>

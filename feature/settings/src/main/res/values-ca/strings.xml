@@ -33,4 +33,5 @@
     <string name="settings_include_stories_title">Inclou les històries</string>
     <string name="settings_include_stories_description">Compta el temps que passes veient històries i aplica el mode de bloqueig i els límits actuals.</string>
     <string name="settings_include_stories_note">Actualment compatible amb Instagram, Snapchat i Facebook.</string>
+    <string name="settings_onboarding">Explora funcions i configura</string>
 </resources>

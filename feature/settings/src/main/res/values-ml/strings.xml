@@ -33,4 +33,5 @@
     <string name="settings_include_stories_title">സ്റ്റോറികൾ ഉൾപ്പെടുത്തുക</string>
     <string name="settings_include_stories_description">സ്റ്റോറികൾ കാണാൻ ചെലവഴിക്കുന്ന സമയം കണക്കാക്കുകയും നിലവിലെ ബ്ലോക്കിംഗ് മോഡും സമയപരിധികളും പ്രയോഗിക്കുകയും ചെയ്യുക.</string>
     <string name="settings_include_stories_note">നിലവിൽ Instagram, Snapchat, Facebook എന്നിവയിൽ പിന്തുണയ്ക്കുന്നു.</string>
+    <string name="settings_onboarding">സവിശേഷതകളും സജ്ജീകരണവും കാണുക</string>
 </resources>

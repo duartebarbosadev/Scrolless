@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">തുടരുക</string>
+    <string name="onboarding_skip">ഒഴിവാക്കുക</string>
+    <string name="onboarding_step">ഘട്ടം %1$d / %2$d</string>
+    <string name="onboarding_reels_title">ആപ്പ് നിലനിർത്തൂ. സ്ക്രോളിങ് കുറയ്ക്കൂ.</string>
+    <string name="onboarding_reels_body">Reels തുറക്കുമ്പോൾ Scrolless നിങ്ങളെ തിരികെ കൊണ്ടുവരുന്നത് കാണൂ. സന്ദേശങ്ങളും സാധാരണ പോസ്റ്റുകളും ലഭ്യമായിരിക്കും.</string>
+    <string name="onboarding_reels_tab">Reels ടാബ്</string>
+    <string name="onboarding_feed_tab">ഫീഡിൽ നിന്ന്</string>
+    <string name="onboarding_feed_title">ശ്രദ്ധ തിരിക്കൽ കുറഞ്ഞ ഫീഡ്.</string>
+    <string name="onboarding_feed_body">Instagram ഫീഡിലെ Reels-ഉം മറയ്ക്കപ്പെടും. മറ്റു പോസ്റ്റുകൾ തുടർന്നും കാണാം.</string>
+    <string name="onboarding_feed_included">തടയൽ സജീവമാകുമ്പോൾ ഉൾപ്പെടും</string>
+    <string name="onboarding_dm_title">സുഹൃത്തുക്കളുടെ വീഡിയോകൾ നിലനിർത്തൂ.</string>
+    <string name="onboarding_dm_body">സന്ദേശങ്ങളിലെ വീഡിയോകൾ പ്ലേ ചെയ്യാമോ എന്ന് തിരഞ്ഞെടുക്കൂ. വ്യത്യാസം കാണാൻ സ്വിച്ച് മാറ്റൂ.</string>
+    <string name="onboarding_dm_toggle">സ്വകാര്യ സന്ദേശങ്ങളിലെ വീഡിയോകൾ അനുവദിക്കുക</string>
+    <string name="onboarding_stories_title">സ്റ്റോറികൾ നിങ്ങളുടെ ഇഷ്ടം.</string>
+    <string name="onboarding_stories_body">സ്റ്റോറികളെ തടയൽ മോഡിലും സമയപരിധിയിലും ഉൾപ്പെടുത്തൂ, അല്ലെങ്കിൽ ലഭ്യമായി വിടൂ.</string>
+    <string name="onboarding_finish_title">നിങ്ങളുടെ സന്തുലനം കണ്ടെത്തൂ.</string>
+    <string name="onboarding_finish_body">പിന്തുണയ്ക്കുന്ന എല്ലാ ആപ്പുകൾക്കും ഒരു മോഡ് തിരഞ്ഞെടുക്കൂ. പ്രവേശനക്ഷമതാ അനുമതി ആവശ്യമെങ്കിൽ അടുത്ത ഘട്ടത്തിൽ സഹായിക്കാം.</string>
+    <string name="onboarding_mode_off">തടയൽ ഓഫ്</string>
+    <string name="onboarding_finish">സജ്ജീകരണം പൂർത്തിയാക്കുക</string>
+    <string name="onboarding_change_later">ഈ തിരഞ്ഞെടുപ്പുകൾ എപ്പോൾ വേണമെങ്കിലും മാറ്റാം.</string>
+    <string name="onboarding_demo">Instagram-ലെ തിരഞ്ഞെടുത്ത പെരുമാറ്റത്തിന്റെ ആനിമേഷൻ</string>
+    <string name="onboarding_error">തിരഞ്ഞെടുപ്പുകൾ സംരക്ഷിക്കാനായില്ല. വീണ്ടും ശ്രമിക്കൂ.</string>
+    <string name="onboarding_retry">വീണ്ടും ശ്രമിക്കുക</string>
+    <string name="onboarding_block_reels">ഹ്രസ്വ വീഡിയോകൾ തടയുക</string>
+</resources>

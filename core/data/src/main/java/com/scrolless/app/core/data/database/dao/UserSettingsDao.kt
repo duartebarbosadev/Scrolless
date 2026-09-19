@@ -141,4 +141,26 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
 
     @Query("UPDATE user_settings SET except_reels_sent_by_dm = :checked WHERE id = 1")
     abstract suspend fun setAllowVideosSentByDm(checked: Boolean)
+
+    @Query("UPDATE user_settings SET has_completed_onboarding = 1, has_seen_accessibility_explainer = 1 WHERE id = 1")
+    abstract suspend fun skipOnboarding()
+
+    // Save the draft and completion together, preserving usage, pauses and unrelated preferences.
+    @Query(
+        """
+        UPDATE user_settings SET active_block_option = :option, daily_limit = :dailyLimit,
+            interval_allowance = :allowance, interval_length = :intervalLength,
+            except_reels_sent_by_dm = :allowDm, include_stories = :includeStories,
+            has_completed_onboarding = 1, has_seen_accessibility_explainer = 1
+        WHERE id = 1
+        """,
+    )
+    abstract suspend fun completeOnboarding(
+        option: BlockOption,
+        dailyLimit: Long,
+        allowance: Long,
+        intervalLength: Long,
+        allowDm: Boolean,
+        includeStories: Boolean,
+    )
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Tovább</string>
+    <string name="onboarding_skip">Kihagyás</string>
+    <string name="onboarding_step">%1$d. LÉPÉS / %2$d</string>
+    <string name="onboarding_reels_title">Tartsd meg az appot. Hagyd a görgetést.</string>
+    <string name="onboarding_reels_body">Nézd meg, hogyan léptet vissza a Scrolless a Reels megnyitásakor. Az üzenetek és a bejegyzések elérhetők maradnak.</string>
+    <string name="onboarding_reels_tab">Reels lap</string>
+    <string name="onboarding_feed_tab">A hírfolyamból</string>
+    <string name="onboarding_feed_title">Kevesebb zavaró tartalom.</string>
+    <string name="onboarding_feed_body">A Reels-videókat az Instagram hírfolyamában is letakarjuk. A többi bejegyzést tovább böngészheted.</string>
+    <string name="onboarding_feed_included">Aktív blokkoláskor automatikus</string>
+    <string name="onboarding_dm_title">Tartsd meg a barátok videóit.</string>
+    <string name="onboarding_dm_body">Válaszd ki, lejátszhatók-e az üzenetben kapott videók. A kapcsolóval láthatod a különbséget.</string>
+    <string name="onboarding_dm_toggle">Üzenetben küldött videók engedélyezése</string>
+    <string name="onboarding_stories_title">Te döntesz a történetekről.</string>
+    <string name="onboarding_stories_body">Vond be a történeteket a blokkolásba és az időkorlátokba, vagy hagyd őket elérhetően.</string>
+    <string name="onboarding_finish_title">Találd meg az egyensúlyt.</string>
+    <string name="onboarding_finish_body">Válassz módot minden támogatott apphoz. Ha kisegítő lehetőségekhez való hozzáférés kell, a következő lépésben segítünk.</string>
+    <string name="onboarding_mode_off">Blokkolás kikapcsolva</string>
+    <string name="onboarding_finish">Beállítás befejezése</string>
+    <string name="onboarding_change_later">Ezeket a választásokat bármikor módosíthatod.</string>
+    <string name="onboarding_demo">Animált példa a kiválasztott működésre az Instagramon</string>
+    <string name="onboarding_error">Nem sikerült menteni a választásokat. Próbáld újra.</string>
+    <string name="onboarding_retry">Újrapróbálás</string>
+    <string name="onboarding_block_reels">Rövid videók blokkolása</string>
+</resources>

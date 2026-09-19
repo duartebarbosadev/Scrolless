@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Συνέχεια</string>
+    <string name="onboarding_skip">Παράλειψη</string>
+    <string name="onboarding_step">ΒΗΜΑ %1$d ΑΠΟ %2$d</string>
+    <string name="onboarding_reels_title">Κράτα την εφαρμογή. Άφησε την κύλιση.</string>
+    <string name="onboarding_reels_body">Δες πώς το Scrolless σε επιστρέφει όταν ανοίγεις Reels. Τα μηνύματα και οι κανονικές αναρτήσεις παραμένουν διαθέσιμα.</string>
+    <string name="onboarding_reels_tab">Καρτέλα Reels</string>
+    <string name="onboarding_feed_tab">Από τη ροή</string>
+    <string name="onboarding_feed_title">Ροή με λιγότερους περισπασμούς.</string>
+    <string name="onboarding_feed_body">Τα Reels καλύπτονται και μέσα στη ροή του Instagram. Μπορείς να συνεχίσεις να βλέπεις τις άλλες αναρτήσεις.</string>
+    <string name="onboarding_feed_included">Περιλαμβάνεται όταν ο αποκλεισμός είναι ενεργός</string>
+    <string name="onboarding_dm_title">Κράτα τα βίντεο των φίλων σου.</string>
+    <string name="onboarding_dm_body">Επίλεξε αν θα παίζουν τα βίντεο από μηνύματα. Άλλαξε τον διακόπτη για να δεις τη διαφορά.</string>
+    <string name="onboarding_dm_toggle">Να επιτρέπονται βίντεο από προσωπικά μηνύματα</string>
+    <string name="onboarding_stories_title">Εσύ αποφασίζεις για τις ιστορίες.</string>
+    <string name="onboarding_stories_body">Συμπερίλαβε τις ιστορίες στον αποκλεισμό και στα χρονικά όρια ή άφησέ τες διαθέσιμες.</string>
+    <string name="onboarding_finish_title">Βρες την ισορροπία σου.</string>
+    <string name="onboarding_finish_body">Επίλεξε λειτουργία για όλες τις υποστηριζόμενες εφαρμογές. Αν χρειάζεται πρόσβαση προσβασιμότητας, θα σε καθοδηγήσουμε μετά.</string>
+    <string name="onboarding_mode_off">Αποκλεισμός ανενεργός</string>
+    <string name="onboarding_finish">Ολοκλήρωση ρύθμισης</string>
+    <string name="onboarding_change_later">Μπορείς να αλλάξεις τις επιλογές όποτε θέλεις.</string>
+    <string name="onboarding_demo">Κινούμενο παράδειγμα της επιλεγμένης συμπεριφοράς στο Instagram</string>
+    <string name="onboarding_error">Δεν αποθηκεύτηκαν οι επιλογές. Δοκίμασε ξανά.</string>
+    <string name="onboarding_retry">Δοκίμασε ξανά</string>
+    <string name="onboarding_block_reels">Αποκλεισμός σύντομων βίντεο</string>
+</resources>

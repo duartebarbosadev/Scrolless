@@ -73,7 +73,13 @@ import com.scrolless.app.designsystem.util.rememberHapticHelper
 import kotlin.math.roundToInt
 
 @Composable
-fun SettingsScreen(modifier: Modifier = Modifier, onNavigateBack: () -> Unit, viewModel: SettingsViewModel = hiltViewModel()) {
+fun SettingsScreen(
+    modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit,
+    onOpenOnboarding: () -> Unit = {
+    },
+    viewModel: SettingsViewModel = hiltViewModel(),
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     SettingsScreenContent(
@@ -84,6 +90,7 @@ fun SettingsScreen(modifier: Modifier = Modifier, onNavigateBack: () -> Unit, vi
         onTimerOverlayEnabledChange = viewModel::onTimerOverlayEnabledChange,
         onIncludeStoriesChange = viewModel::onIncludeStoriesChange,
         onNavigateBack = onNavigateBack,
+        onOpenOnboarding = onOpenOnboarding,
     )
 }
 
@@ -97,6 +104,7 @@ private fun SettingsScreenContent(
     onTimerOverlayEnabledChange: (Boolean) -> Unit,
     onIncludeStoriesChange: (Boolean) -> Unit,
     onNavigateBack: () -> Unit,
+    onOpenOnboarding: () -> Unit = {},
 ) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
 
@@ -161,6 +169,14 @@ private fun SettingsScreenContent(
                 .padding(horizontal = 20.dp)
                 .padding(top = 22.dp, bottom = 28.dp),
         ) {
+            androidx.compose.material3.OutlinedButton(
+                onClick = onOpenOnboarding,
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp),
+            ) {
+                Text(stringResource(R.string.settings_onboarding), modifier = Modifier.padding(vertical = 8.dp))
+            }
+            Spacer(Modifier.height(24.dp))
             SettingsSectionLabel(stringResource(R.string.settings_section_blocking))
 
             Spacer(modifier = Modifier.height(10.dp))

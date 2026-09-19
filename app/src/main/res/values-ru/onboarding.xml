@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Продолжить</string>
+    <string name="onboarding_skip">Пропустить</string>
+    <string name="onboarding_step">ШАГ %1$d ИЗ %2$d</string>
+    <string name="onboarding_reels_title">Оставьте приложение. Уберите прокрутку.</string>
+    <string name="onboarding_reels_body">Посмотрите, как Scrolless возвращает вас назад при открытии Reels. Сообщения и обычные публикации остаются доступны.</string>
+    <string name="onboarding_reels_tab">Вкладка Reels</string>
+    <string name="onboarding_feed_tab">Из ленты</string>
+    <string name="onboarding_feed_title">Лента без лишних отвлечений.</string>
+    <string name="onboarding_feed_body">Reels также закрываются прямо в ленте Instagram. Другие публикации можно просматривать дальше.</string>
+    <string name="onboarding_feed_included">Включено при активной блокировке</string>
+    <string name="onboarding_dm_title">Сохраните видео от друзей.</string>
+    <string name="onboarding_dm_body">Выберите, можно ли смотреть видео из сообщений. Переключите настройку, чтобы увидеть разницу.</string>
+    <string name="onboarding_dm_toggle">Разрешить видео из личных сообщений</string>
+    <string name="onboarding_stories_title">Вы решаете, что делать с историями.</string>
+    <string name="onboarding_stories_body">Включите истории в режим блокировки и лимиты времени или оставьте их доступными.</string>
+    <string name="onboarding_finish_title">Найдите свой баланс.</string>
+    <string name="onboarding_finish_body">Выберите режим для всех поддерживаемых приложений. Если нужен доступ к специальным возможностям, мы поможем включить его далее.</string>
+    <string name="onboarding_mode_off">Блокировка выключена</string>
+    <string name="onboarding_finish">Завершить настройку</string>
+    <string name="onboarding_change_later">Эти настройки можно изменить в любое время.</string>
+    <string name="onboarding_demo">Анимация выбранного поведения в Instagram</string>
+    <string name="onboarding_error">Не удалось сохранить настройки. Попробуйте ещё раз.</string>
+    <string name="onboarding_retry">Повторить</string>
+    <string name="onboarding_block_reels">Блокировать короткие видео</string>
+</resources>

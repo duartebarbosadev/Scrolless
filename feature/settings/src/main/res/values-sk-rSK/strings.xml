@@ -35,4 +35,5 @@
     <string name="settings_include_stories_title">Zahrnúť príbehy</string>
     <string name="settings_include_stories_description">Započítavať čas strávený sledovaním príbehov a používať aktuálny režim blokovania a časové limity.</string>
     <string name="settings_include_stories_note">Zatiaľ podporované na Instagrame, Snapchate a Facebooku.</string>
+    <string name="settings_onboarding">Preskúmať funkcie a nastavenia</string>
 </resources>

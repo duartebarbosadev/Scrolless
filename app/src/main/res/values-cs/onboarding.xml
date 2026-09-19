@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Pokračovat</string>
+    <string name="onboarding_skip">Přeskočit</string>
+    <string name="onboarding_step">KROK %1$d Z %2$d</string>
+    <string name="onboarding_reels_title">Nechte si aplikaci. Omezte rolování.</string>
+    <string name="onboarding_reels_body">Podívejte se, jak vás Scrolless vrátí zpět po otevření Reels. Zprávy a běžné příspěvky zůstávají dostupné.</string>
+    <string name="onboarding_reels_tab">Karta Reels</string>
+    <string name="onboarding_feed_tab">Z kanálu</string>
+    <string name="onboarding_feed_title">Kanál s méně rozptýleními.</string>
+    <string name="onboarding_feed_body">Reels se zakryjí také přímo v kanálu Instagramu. Ostatní příspěvky můžete dál prohlížet.</string>
+    <string name="onboarding_feed_included">Zahrnuto při aktivním blokování</string>
+    <string name="onboarding_dm_title">Nechte si videa od přátel.</string>
+    <string name="onboarding_dm_body">Zvolte, zda lze přehrávat videa zaslaná ve zprávách. Přepnutím uvidíte rozdíl.</string>
+    <string name="onboarding_dm_toggle">Povolit videa v soukromých zprávách</string>
+    <string name="onboarding_stories_title">O příbězích rozhodujete vy.</string>
+    <string name="onboarding_stories_body">Zahrňte příběhy do režimu blokování a časových limitů, nebo je nechte dostupné.</string>
+    <string name="onboarding_finish_title">Najděte rovnováhu.</string>
+    <string name="onboarding_finish_body">Vyberte režim pro všechny podporované aplikace. Pokud bude potřeba oprávnění přístupnosti, provedeme vás dalším krokem.</string>
+    <string name="onboarding_mode_off">Blokování vypnuto</string>
+    <string name="onboarding_finish">Dokončit nastavení</string>
+    <string name="onboarding_change_later">Tyto volby můžete kdykoli změnit.</string>
+    <string name="onboarding_demo">Animovaná ukázka zvoleného chování na Instagramu</string>
+    <string name="onboarding_error">Volby se nepodařilo uložit. Zkuste to znovu.</string>
+    <string name="onboarding_retry">Zkusit znovu</string>
+    <string name="onboarding_block_reels">Blokovat krátká videa</string>
+</resources>

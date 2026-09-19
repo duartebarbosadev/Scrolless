@@ -35,4 +35,5 @@
     <string name="settings_include_stories_title">Враховувати історії</string>
     <string name="settings_include_stories_description">Враховуйте час перегляду історій і застосовуйте поточний режим блокування та часові обмеження.</string>
     <string name="settings_include_stories_note">Наразі підтримується в Instagram, Snapchat і Facebook.</string>
+    <string name="settings_onboarding">Огляд функцій і налаштування</string>
 </resources>

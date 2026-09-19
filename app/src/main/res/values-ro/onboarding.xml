@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Continuă</string>
+    <string name="onboarding_skip">Omite</string>
+    <string name="onboarding_step">PASUL %1$d DIN %2$d</string>
+    <string name="onboarding_reels_title">Păstrează aplicația. Renunță la derulare.</string>
+    <string name="onboarding_reels_body">Vezi cum Scrolless te trimite înapoi când deschizi Reels. Mesajele și postările obișnuite rămân accesibile.</string>
+    <string name="onboarding_reels_tab">Fila Reels</string>
+    <string name="onboarding_feed_tab">Din flux</string>
+    <string name="onboarding_feed_title">Un flux cu mai puține distrageri.</string>
+    <string name="onboarding_feed_body">Reels sunt acoperite și direct în fluxul Instagram. Poți continua să vezi celelalte postări.</string>
+    <string name="onboarding_feed_included">Inclus când blocarea este activă</string>
+    <string name="onboarding_dm_title">Păstrează clipurile de la prieteni.</string>
+    <string name="onboarding_dm_body">Alege dacă se pot reda clipurile primite prin mesaje. Schimbă comutatorul pentru a vedea diferența.</string>
+    <string name="onboarding_dm_toggle">Permite clipurile din mesaje directe</string>
+    <string name="onboarding_stories_title">Tu decizi asupra poveștilor.</string>
+    <string name="onboarding_stories_body">Include poveștile în modul de blocare și limitele de timp sau lasă-le disponibile.</string>
+    <string name="onboarding_finish_title">Găsește-ți echilibrul.</string>
+    <string name="onboarding_finish_body">Alege un mod pentru toate aplicațiile acceptate. Dacă este necesar accesul de accesibilitate, te vom ghida la pasul următor.</string>
+    <string name="onboarding_mode_off">Blocare dezactivată</string>
+    <string name="onboarding_finish">Finalizează configurarea</string>
+    <string name="onboarding_change_later">Poți schimba aceste alegeri oricând.</string>
+    <string name="onboarding_demo">Exemplu animat al comportamentului ales pe Instagram</string>
+    <string name="onboarding_error">Alegerile nu au putut fi salvate. Încearcă din nou.</string>
+    <string name="onboarding_retry">Încearcă din nou</string>
+    <string name="onboarding_block_reels">Blochează clipurile scurte</string>
+</resources>

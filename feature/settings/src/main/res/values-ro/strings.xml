@@ -34,4 +34,5 @@
     <string name="settings_include_stories_title">Include poveștile</string>
     <string name="settings_include_stories_description">Contorizează timpul petrecut vizionând povești și aplică modul de blocare și limitele actuale.</string>
     <string name="settings_include_stories_note">Disponibil momentan pe Instagram, Snapchat și Facebook.</string>
+    <string name="settings_onboarding">Explorează funcțiile și configurarea</string>
 </resources>

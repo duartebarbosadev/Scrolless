@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Fortsätt</string>
+    <string name="onboarding_skip">Hoppa över</string>
+    <string name="onboarding_step">STEG %1$d AV %2$d</string>
+    <string name="onboarding_reels_title">Behåll appen. Sluta scrolla.</string>
+    <string name="onboarding_reels_body">Se hur Scrolless tar dig tillbaka när du öppnar Reels. Meddelanden och vanliga inlägg finns kvar.</string>
+    <string name="onboarding_reels_tab">Reels-fliken</string>
+    <string name="onboarding_feed_tab">Från flödet</string>
+    <string name="onboarding_feed_title">Ett flöde med färre distraktioner.</string>
+    <string name="onboarding_feed_body">Reels täcks också direkt i ditt Instagram-flöde. Du kan fortsätta se andra inlägg.</string>
+    <string name="onboarding_feed_included">Ingår när blockering är aktiv</string>
+    <string name="onboarding_dm_title">Behåll videor från vänner.</string>
+    <string name="onboarding_dm_body">Välj om videor i meddelanden får spelas upp. Växla reglaget för att se skillnaden.</string>
+    <string name="onboarding_dm_toggle">Tillåt videor i direktmeddelanden</string>
+    <string name="onboarding_stories_title">Du bestämmer om Stories.</string>
+    <string name="onboarding_stories_body">Inkludera Stories i blockeringsläget och tidsgränserna, eller låt dem vara tillgängliga.</string>
+    <string name="onboarding_finish_title">Hitta din balans.</string>
+    <string name="onboarding_finish_body">Välj ett läge för alla appar som stöds. Om tillgänglighetsåtkomst behövs hjälper vi dig med det härnäst.</string>
+    <string name="onboarding_mode_off">Blockering av</string>
+    <string name="onboarding_finish">Slutför inställningen</string>
+    <string name="onboarding_change_later">Du kan ändra dina val när som helst.</string>
+    <string name="onboarding_demo">Animerat exempel på valt beteende på Instagram</string>
+    <string name="onboarding_error">Det gick inte att spara dina val. Försök igen.</string>
+    <string name="onboarding_retry">Försök igen</string>
+    <string name="onboarding_block_reels">Blockera korta videor</string>
+</resources>

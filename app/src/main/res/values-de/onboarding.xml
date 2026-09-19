@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Weiter</string>
+    <string name="onboarding_skip">Überspringen</string>
+    <string name="onboarding_step">SCHRITT %1$d VON %2$d</string>
+    <string name="onboarding_reels_title">Behalte die App. Lass das Scrollen.</string>
+    <string name="onboarding_reels_body">Sieh, wie Scrolless dich beim Öffnen von Reels zurückbringt. Nachrichten und normale Beiträge bleiben erreichbar.</string>
+    <string name="onboarding_reels_tab">Reels-Tab</string>
+    <string name="onboarding_feed_tab">Aus dem Feed</string>
+    <string name="onboarding_feed_title">Ein Feed mit weniger Ablenkung.</string>
+    <string name="onboarding_feed_body">Reels werden auch direkt im Instagram-Feed abgedeckt. Andere Beiträge kannst du weiterhin ansehen.</string>
+    <string name="onboarding_feed_included">Bei aktivem Blockieren enthalten</string>
+    <string name="onboarding_dm_title">Behalte Videos von Freunden.</string>
+    <string name="onboarding_dm_body">Wähle, ob Videos aus Nachrichten abgespielt werden dürfen. Betätige den Schalter und sieh den Unterschied.</string>
+    <string name="onboarding_dm_toggle">Videos aus Direktnachrichten erlauben</string>
+    <string name="onboarding_stories_title">Du entscheidest über Stories.</string>
+    <string name="onboarding_stories_body">Beziehe Stories in deinen Blockiermodus und deine Zeitlimits ein oder lasse sie verfügbar.</string>
+    <string name="onboarding_finish_title">Finde deine Balance.</string>
+    <string name="onboarding_finish_body">Wähle einen Modus für alle unterstützten Apps. Falls der Zugriff auf Bedienungshilfen nötig ist, helfen wir dir im nächsten Schritt.</string>
+    <string name="onboarding_mode_off">Blockieren aus</string>
+    <string name="onboarding_finish">Einrichtung abschließen</string>
+    <string name="onboarding_change_later">Du kannst diese Auswahl jederzeit ändern.</string>
+    <string name="onboarding_demo">Animiertes Beispiel des gewählten Verhaltens auf Instagram</string>
+    <string name="onboarding_error">Deine Auswahl konnte nicht gespeichert werden. Versuche es erneut.</string>
+    <string name="onboarding_retry">Erneut versuchen</string>
+    <string name="onboarding_block_reels">Kurzvideos blockieren</string>
+</resources>

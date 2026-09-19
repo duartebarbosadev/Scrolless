@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">次へ</string>
+    <string name="onboarding_skip">スキップ</string>
+    <string name="onboarding_step">ステップ %1$d / %2$d</string>
+    <string name="onboarding_reels_title">アプリはそのまま。スクロールは控えめに。</string>
+    <string name="onboarding_reels_body">リールを開くとScrollessが前の画面に戻す様子をご覧ください。メッセージや通常の投稿は引き続き利用できます。</string>
+    <string name="onboarding_reels_tab">リールタブ</string>
+    <string name="onboarding_feed_tab">フィードから</string>
+    <string name="onboarding_feed_title">気が散りにくいフィードに。</string>
+    <string name="onboarding_feed_body">Instagramのフィード内でもリールを覆います。他の投稿は引き続き閲覧できます。</string>
+    <string name="onboarding_feed_included">ブロックが有効な場合に適用</string>
+    <string name="onboarding_dm_title">友達からの動画はそのまま。</string>
+    <string name="onboarding_dm_body">メッセージで届いた動画を再生できるか選べます。スイッチを切り替えて違いを確認しましょう。</string>
+    <string name="onboarding_dm_toggle">DMで届いた動画を許可</string>
+    <string name="onboarding_stories_title">ストーリーズはあなた次第。</string>
+    <string name="onboarding_stories_body">ストーリーズをブロックや時間制限の対象にするか、いつでも見られるようにするか選べます。</string>
+    <string name="onboarding_finish_title">自分に合ったバランスを。</string>
+    <string name="onboarding_finish_body">対応するすべてのアプリに適用するモードを選びます。ユーザー補助の権限が必要な場合は、次の手順でご案内します。</string>
+    <string name="onboarding_mode_off">ブロックしない</string>
+    <string name="onboarding_finish">設定を完了</string>
+    <string name="onboarding_change_later">これらの設定はいつでも変更できます。</string>
+    <string name="onboarding_demo">Instagramで選択した動作を示すアニメーション</string>
+    <string name="onboarding_error">設定を保存できませんでした。もう一度お試しください。</string>
+    <string name="onboarding_retry">再試行</string>
+    <string name="onboarding_block_reels">ショート動画をブロック</string>
+</resources>

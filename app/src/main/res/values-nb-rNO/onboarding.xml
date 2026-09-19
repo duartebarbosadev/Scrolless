@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Fortsett</string>
+    <string name="onboarding_skip">Hopp over</string>
+    <string name="onboarding_step">TRINN %1$d AV %2$d</string>
+    <string name="onboarding_reels_title">Behold appen. Slutt å scrolle.</string>
+    <string name="onboarding_reels_body">Se hvordan Scrolless tar deg tilbake når du åpner Reels. Meldinger og vanlige innlegg er fortsatt tilgjengelige.</string>
+    <string name="onboarding_reels_tab">Reels-fanen</string>
+    <string name="onboarding_feed_tab">Fra feeden</string>
+    <string name="onboarding_feed_title">En feed med færre distraksjoner.</string>
+    <string name="onboarding_feed_body">Reels dekkes også direkte i Instagram-feeden. Du kan fortsette å se andre innlegg.</string>
+    <string name="onboarding_feed_included">Inkludert når blokkering er aktiv</string>
+    <string name="onboarding_dm_title">Behold videoer fra venner.</string>
+    <string name="onboarding_dm_body">Velg om videoer i meldinger kan spilles av. Bruk bryteren for å se forskjellen.</string>
+    <string name="onboarding_dm_toggle">Tillat videoer i direktemeldinger</string>
+    <string name="onboarding_stories_title">Du bestemmer over Stories.</string>
+    <string name="onboarding_stories_body">Inkluder Stories i blokkeringsmodus og tidsgrenser, eller la dem være tilgjengelige.</string>
+    <string name="onboarding_finish_title">Finn balansen din.</string>
+    <string name="onboarding_finish_body">Velg en modus for alle støttede apper. Hvis tilgjengelighetstilgang trengs, hjelper vi deg med det etterpå.</string>
+    <string name="onboarding_mode_off">Blokkering av</string>
+    <string name="onboarding_finish">Fullfør oppsett</string>
+    <string name="onboarding_change_later">Du kan endre valgene når som helst.</string>
+    <string name="onboarding_demo">Animert eksempel på valgt atferd på Instagram</string>
+    <string name="onboarding_error">Kunne ikke lagre valgene. Prøv igjen.</string>
+    <string name="onboarding_retry">Prøv igjen</string>
+    <string name="onboarding_block_reels">Blokker korte videoer</string>
+</resources>

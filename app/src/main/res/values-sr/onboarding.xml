@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Настави</string>
+    <string name="onboarding_skip">Прескочи</string>
+    <string name="onboarding_step">КОРАК %1$d ОД %2$d</string>
+    <string name="onboarding_reels_title">Задржи апликацију. Престани да листаш.</string>
+    <string name="onboarding_reels_body">Погледај како те Scrolless враћа када отвориш Reels. Поруке и обичне објаве остају доступне.</string>
+    <string name="onboarding_reels_tab">Картица Reels</string>
+    <string name="onboarding_feed_tab">Из фида</string>
+    <string name="onboarding_feed_title">Мање ометања у фиду.</string>
+    <string name="onboarding_feed_body">Reels се прекривају и директно у Instagram фиду. Остале објаве можеш наставити да прегледаш.</string>
+    <string name="onboarding_feed_included">Укључено док је блокирање активно</string>
+    <string name="onboarding_dm_title">Задржи снимке од пријатеља.</string>
+    <string name="onboarding_dm_body">Изабери да ли снимци из порука могу да се репродукују. Промени прекидач да видиш разлику.</string>
+    <string name="onboarding_dm_toggle">Дозволи снимке из директних порука</string>
+    <string name="onboarding_stories_title">Ти одлучујеш о причама.</string>
+    <string name="onboarding_stories_body">Укључи приче у режим блокирања и временска ограничења или их остави доступним.</string>
+    <string name="onboarding_finish_title">Пронађи равнотежу.</string>
+    <string name="onboarding_finish_body">Изабери режим за све подржане апликације. Ако је потребан приступ приступачности, помоћи ћемо ти у следећем кораку.</string>
+    <string name="onboarding_mode_off">Блокирање искључено</string>
+    <string name="onboarding_finish">Заврши подешавање</string>
+    <string name="onboarding_change_later">Ове изборе можеш да промениш било када.</string>
+    <string name="onboarding_demo">Анимирани пример изабраног понашања на Instagram-у</string>
+    <string name="onboarding_error">Избори нису сачувани. Покушај поново.</string>
+    <string name="onboarding_retry">Покушај поново</string>
+    <string name="onboarding_block_reels">Блокирај кратке снимке</string>
+</resources>

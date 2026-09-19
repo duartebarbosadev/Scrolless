@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">繼續</string>
+    <string name="onboarding_skip">略過</string>
+    <string name="onboarding_step">第 %1$d 步，共 %2$d 步</string>
+    <string name="onboarding_reels_title">保留應用程式，告別無盡滑動。</string>
+    <string name="onboarding_reels_body">看看開啟 Reels 時，Scrolless 如何帶你返回。訊息和一般貼文仍可正常存取。</string>
+    <string name="onboarding_reels_tab">Reels 分頁</string>
+    <string name="onboarding_feed_tab">從動態開啟</string>
+    <string name="onboarding_feed_title">讓動態少些干擾。</string>
+    <string name="onboarding_feed_body">Instagram 動態中的 Reels 也會被遮住。你仍可繼續瀏覽其他貼文。</string>
+    <string name="onboarding_feed_included">啟用封鎖時自動生效</string>
+    <string name="onboarding_dm_title">保留朋友傳來的影片。</string>
+    <string name="onboarding_dm_body">選擇是否允許播放訊息中分享的影片。切換開關，看看差別。</string>
+    <string name="onboarding_dm_toggle">允許播放私訊中的影片</string>
+    <string name="onboarding_stories_title">限時動態由你決定。</string>
+    <string name="onboarding_stories_body">將限時動態納入封鎖模式與時間限制，或保持可用。</string>
+    <string name="onboarding_finish_title">找到適合你的平衡。</string>
+    <string name="onboarding_finish_body">為所有支援的應用程式選擇模式。如果需要無障礙權限，我們將在下一步引導你開啟。</string>
+    <string name="onboarding_mode_off">關閉封鎖</string>
+    <string name="onboarding_finish">完成設定</string>
+    <string name="onboarding_change_later">你可以隨時變更這些選項。</string>
+    <string name="onboarding_demo">所選 Instagram 行為的動畫示範</string>
+    <string name="onboarding_error">無法儲存選項，請重試。</string>
+    <string name="onboarding_retry">重試</string>
+    <string name="onboarding_block_reels">封鎖短影片</string>
+</resources>

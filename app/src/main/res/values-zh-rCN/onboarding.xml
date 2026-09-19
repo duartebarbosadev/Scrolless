@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">继续</string>
+    <string name="onboarding_skip">跳过</string>
+    <string name="onboarding_step">第 %1$d 步，共 %2$d 步</string>
+    <string name="onboarding_reels_title">保留应用，告别无尽刷屏。</string>
+    <string name="onboarding_reels_body">看看打开 Reels 时，Scrolless 如何带你返回。消息和普通帖子仍可正常访问。</string>
+    <string name="onboarding_reels_tab">Reels 标签页</string>
+    <string name="onboarding_feed_tab">从动态打开</string>
+    <string name="onboarding_feed_title">让动态少些干扰。</string>
+    <string name="onboarding_feed_body">Instagram 动态中的 Reels 也会被遮挡。你仍可继续浏览其他帖子。</string>
+    <string name="onboarding_feed_included">开启拦截时自动生效</string>
+    <string name="onboarding_dm_title">保留朋友发来的视频。</string>
+    <string name="onboarding_dm_body">选择是否允许播放消息中分享的视频。切换开关，看看区别。</string>
+    <string name="onboarding_dm_toggle">允许播放私信中的视频</string>
+    <string name="onboarding_stories_title">快拍由你决定。</string>
+    <string name="onboarding_stories_body">将快拍纳入拦截模式和时间限制，或保持可用。</string>
+    <string name="onboarding_finish_title">找到适合你的平衡。</string>
+    <string name="onboarding_finish_body">为所有支持的应用选择模式。如果需要无障碍权限，我们将在下一步引导你开启。</string>
+    <string name="onboarding_mode_off">关闭拦截</string>
+    <string name="onboarding_finish">完成设置</string>
+    <string name="onboarding_change_later">你可以随时更改这些选项。</string>
+    <string name="onboarding_demo">所选 Instagram 行为的动画演示</string>
+    <string name="onboarding_error">无法保存选项，请重试。</string>
+    <string name="onboarding_retry">重试</string>
+    <string name="onboarding_block_reels">拦截短视频</string>
+</resources>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Continua</string>
+    <string name="onboarding_skip">Omet</string>
+    <string name="onboarding_step">PAS %1$d DE %2$d</string>
+    <string name="onboarding_reels_title">Conserva l’app. Deixa de desplaçar-te.</string>
+    <string name="onboarding_reels_body">Mira com Scrolless et fa tornar enrere quan obres Reels. Els missatges i les publicacions continuen accessibles.</string>
+    <string name="onboarding_reels_tab">Pestanya Reels</string>
+    <string name="onboarding_feed_tab">Des del canal</string>
+    <string name="onboarding_feed_title">Un canal amb menys distraccions.</string>
+    <string name="onboarding_feed_body">Els Reels també queden tapats al canal d’Instagram. Pots continuar veient les altres publicacions.</string>
+    <string name="onboarding_feed_included">Inclòs quan el bloqueig està actiu</string>
+    <string name="onboarding_dm_title">Conserva els vídeos dels amics.</string>
+    <string name="onboarding_dm_body">Tria si es poden reproduir els vídeos rebuts per missatge. Canvia l’interruptor per veure la diferència.</string>
+    <string name="onboarding_dm_toggle">Permet vídeos rebuts per missatge</string>
+    <string name="onboarding_stories_title">Tu decideixes sobre les històries.</string>
+    <string name="onboarding_stories_body">Inclou les històries al mode de bloqueig i als límits de temps, o deixa-les disponibles.</string>
+    <string name="onboarding_finish_title">Troba el teu equilibri.</string>
+    <string name="onboarding_finish_body">Tria un mode per a totes les apps compatibles. Si cal accés d’accessibilitat, t’ajudarem al pas següent.</string>
+    <string name="onboarding_mode_off">Bloqueig desactivat</string>
+    <string name="onboarding_finish">Finalitza la configuració</string>
+    <string name="onboarding_change_later">Pots canviar aquestes opcions quan vulguis.</string>
+    <string name="onboarding_demo">Exemple animat del comportament triat a Instagram</string>
+    <string name="onboarding_error">No s’han pogut desar les opcions. Torna-ho a provar.</string>
+    <string name="onboarding_retry">Torna-ho a provar</string>
+    <string name="onboarding_block_reels">Bloqueja vídeos curts</string>
+</resources>

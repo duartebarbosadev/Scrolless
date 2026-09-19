@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">आगे बढ़ें</string>
+    <string name="onboarding_skip">छोड़ें</string>
+    <string name="onboarding_step">चरण %1$d / %2$d</string>
+    <string name="onboarding_reels_title">ऐप रखें। लगातार स्क्रॉल छोड़ें।</string>
+    <string name="onboarding_reels_body">देखें कि Reels खोलने पर Scrolless आपको कैसे वापस ले आता है। संदेश और सामान्य पोस्ट उपलब्ध रहते हैं।</string>
+    <string name="onboarding_reels_tab">Reels टैब</string>
+    <string name="onboarding_feed_tab">फ़ीड से</string>
+    <string name="onboarding_feed_title">कम भटकाव वाली फ़ीड।</string>
+    <string name="onboarding_feed_body">Instagram फ़ीड में भी Reels ढक दिए जाते हैं। आप बाकी पोस्ट देखना जारी रख सकते हैं।</string>
+    <string name="onboarding_feed_included">ब्लॉकिंग चालू होने पर शामिल</string>
+    <string name="onboarding_dm_title">दोस्तों के वीडियो उपलब्ध रखें।</string>
+    <string name="onboarding_dm_body">चुनें कि संदेशों में आए वीडियो चल सकें या नहीं। फ़र्क देखने के लिए स्विच बदलें।</string>
+    <string name="onboarding_dm_toggle">निजी संदेशों के वीडियो की अनुमति दें</string>
+    <string name="onboarding_stories_title">स्टोरीज़ आपकी पसंद हैं।</string>
+    <string name="onboarding_stories_body">स्टोरीज़ को ब्लॉकिंग मोड और समय सीमा में शामिल करें या उपलब्ध रहने दें।</string>
+    <string name="onboarding_finish_title">अपना संतुलन पाएँ।</string>
+    <string name="onboarding_finish_body">सभी समर्थित ऐप्स के लिए मोड चुनें। अगर सुलभता की अनुमति चाहिए, तो अगले चरण में हम मदद करेंगे।</string>
+    <string name="onboarding_mode_off">ब्लॉकिंग बंद</string>
+    <string name="onboarding_finish">सेटअप पूरा करें</string>
+    <string name="onboarding_change_later">आप इन विकल्पों को कभी भी बदल सकते हैं।</string>
+    <string name="onboarding_demo">Instagram पर चुने गए व्यवहार का ऐनिमेटेड उदाहरण</string>
+    <string name="onboarding_error">विकल्प सेव नहीं हो सके। फिर कोशिश करें।</string>
+    <string name="onboarding_retry">फिर कोशिश करें</string>
+    <string name="onboarding_block_reels">छोटे वीडियो ब्लॉक करें</string>
+</resources>

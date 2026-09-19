@@ -33,4 +33,5 @@
     <string name="settings_include_stories_title">Sisällytä tarinat</string>
     <string name="settings_include_stories_description">Laske tarinoiden katseluun käytetty aika ja käytä nykyistä estotilaa ja aikarajoja.</string>
     <string name="settings_include_stories_note">Tuettu tällä hetkellä Instagramissa, Snapchatissa ja Facebookissa.</string>
+    <string name="settings_onboarding">Tutustu toimintoihin ja asetuksiin</string>
 </resources>

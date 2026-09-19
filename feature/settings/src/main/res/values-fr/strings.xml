@@ -33,4 +33,5 @@
     <string name="settings_include_stories_title">Inclure les stories</string>
     <string name="settings_include_stories_description">Comptabilisez le temps passé à regarder des stories et appliquez votre mode de blocage et vos limites actuels.</string>
     <string name="settings_include_stories_note">Actuellement disponible sur Instagram, Snapchat et Facebook.</string>
+    <string name="settings_onboarding">Découvrir les fonctions et configurer</string>
 </resources>

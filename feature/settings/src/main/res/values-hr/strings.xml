@@ -34,4 +34,5 @@
     <string name="settings_include_stories_title">Uključi priče</string>
     <string name="settings_include_stories_description">Broji vrijeme provedeno gledajući priče i primijeni trenutačni način blokiranja i ograničenja.</string>
     <string name="settings_include_stories_note">Trenutačno podržano na Instagramu, Snapchatu i Facebooku.</string>
+    <string name="settings_onboarding">Istraži značajke i postavljanje</string>
 </resources>

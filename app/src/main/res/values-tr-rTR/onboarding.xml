@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<resources>
+    <string name="onboarding_next">Devam</string>
+    <string name="onboarding_skip">Atla</string>
+    <string name="onboarding_step">ADIM %1$d / %2$d</string>
+    <string name="onboarding_reels_title">Uygulama kalsın. Kaydırma bitsin.</string>
+    <string name="onboarding_reels_body">Reels açtığınızda Scrolless’in sizi nasıl geri götürdüğünü görün. Mesajlarınız ve normal gönderileriniz erişilebilir kalır.</string>
+    <string name="onboarding_reels_tab">Reels sekmesi</string>
+    <string name="onboarding_feed_tab">Akıştan</string>
+    <string name="onboarding_feed_title">Daha az dikkat dağıtan bir akış.</string>
+    <string name="onboarding_feed_body">Reels videoları Instagram akışında da örtülür. Diğer gönderilere göz atmaya devam edebilirsiniz.</string>
+    <string name="onboarding_feed_included">Engelleme etkinken dahildir</string>
+    <string name="onboarding_dm_title">Arkadaşlarınızın videoları kalsın.</string>
+    <string name="onboarding_dm_body">Mesajla gelen videoların oynatılıp oynatılmayacağını seçin. Farkı görmek için anahtarı değiştirin.</string>
+    <string name="onboarding_dm_toggle">Özel mesajlardaki videolara izin ver</string>
+    <string name="onboarding_stories_title">Hikâyeler sizin seçiminiz.</string>
+    <string name="onboarding_stories_body">Hikâyeleri engelleme moduna ve süre sınırlarına dahil edin veya erişilebilir bırakın.</string>
+    <string name="onboarding_finish_title">Dengenizi bulun.</string>
+    <string name="onboarding_finish_body">Desteklenen tüm uygulamalar için bir mod seçin. Erişilebilirlik izni gerekiyorsa bir sonraki adımda yardımcı olacağız.</string>
+    <string name="onboarding_mode_off">Engelleme kapalı</string>
+    <string name="onboarding_finish">Kurulumu tamamla</string>
+    <string name="onboarding_change_later">Bu seçimleri istediğiniz zaman değiştirebilirsiniz.</string>
+    <string name="onboarding_demo">Instagram’da seçilen davranışın animasyonlu örneği</string>
+    <string name="onboarding_error">Seçimleriniz kaydedilemedi. Tekrar deneyin.</string>
+    <string name="onboarding_retry">Tekrar dene</string>
+    <string name="onboarding_block_reels">Kısa videoları engelle</string>
+</resources>
