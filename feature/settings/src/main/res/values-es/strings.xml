@@ -32,5 +32,5 @@
     <string name="settings_show_onscreen_timer_title">Mostrar temporizador en pantalla</string>
     <string name="settings_include_stories_title">Incluir historias</string>
     <string name="settings_include_stories_description">Cuenta el tiempo que pasas viendo historias y aplica el modo de bloqueo y los límites actuales.</string>
-    <string name="settings_include_stories_note">Actualmente disponible en Instagram.</string>
+    <string name="settings_include_stories_note">Actualmente disponible en Instagram, Snapchat y Facebook.</string>
 </resources>

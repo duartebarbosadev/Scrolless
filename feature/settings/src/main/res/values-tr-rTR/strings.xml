@@ -32,5 +32,5 @@
     <string name="settings_show_onscreen_timer_title">Ekran zamanlayıcısını göster</string>
     <string name="settings_include_stories_title">Hikâyeleri dahil et</string>
     <string name="settings_include_stories_description">Hikâyeleri izlerken geçirilen süreyi say ve mevcut engelleme modunu ve süre sınırlarını uygula.</string>
-    <string name="settings_include_stories_note">Şu anda Instagram desteklenmektedir.</string>
+    <string name="settings_include_stories_note">Şu anda Instagram, Snapchat ve Facebook desteklenmektedir.</string>
 </resources>

@@ -19,6 +19,7 @@ package com.scrolless.app.accessibility
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.annotation.SuppressLint
+import android.content.ComponentName
 import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
@@ -135,7 +136,13 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Scans the window tree to find target apps, videos, and compute cover coordinates. */
     private val contentScanner by lazy {
-        ContentScanner(this, { isWindowAttachedCoverAllowed }, { currentAllowVideosSentByDm }, { currentIncludeStories })
+        ContentScanner(
+            service = this,
+            windowAttachedCover = { isWindowAttachedCoverAllowed },
+            allowVideosSentByDm = { currentAllowVideosSentByDm },
+            includeStories = { currentIncludeStories },
+            currentActivity = { currentActivity },
+        )
     }
 
     /**
@@ -151,7 +158,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     /** Whether the user enabled the floating timer overlay in settings. */
     private var currentTimerOverlayEnabled: Boolean = false
 
-    /** Whether Instagram Stories are included in tracking and blocking. */
+    /** Whether Stories participate in usage tracking and blocking. */
     private var currentIncludeStories: Boolean = false
 
     /** Whether videos received in direct messages are exempt from blocking. */
@@ -169,6 +176,9 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Currently tracked target app in the foreground, or null if unrelated. */
     private var currentForegroundBrainRotApp: ResolvedBlockableApp? = null
+
+    /** Last activity reported by a screen-change event; ordinary view events leave it unchanged. */
+    private var currentActivity: ComponentName? = null
 
     /** Periodically checks if the user exceeded their usage limit while watching blocked content. */
     private val videoCheckRunnable: Runnable = Runnable {
@@ -309,22 +319,15 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
     }
 
-    /**
-     * Confirms the tracked app is still in the foreground and the screen is interactive.
-     *
-     * @param source Name of the caller (event, periodic check, etc.) for logging.
-     * @return True if tracking can safely continue, or false if the app exited.
-     */
+    /** Ends tracking when the screen turns off or the tracked app is no longer visible. */
     private fun validateTrackedAppState(source: String): Boolean {
         if (!powerManager.isInteractive) {
-            if (contentSession != null || currentForegroundBrainRotApp != null) {
-                handleTrackedAppExit("$source - screen is off")
-            }
+            handleTrackedAppExit("$source - screen is off")
             return false
         }
 
         val trackedForegroundApp = currentForegroundBrainRotApp ?: return true
-        if (contentScanner.isBlockedAppPackageVisible(trackedForegroundApp)) {
+        if (contentScanner.isAppVisible(trackedForegroundApp)) {
             return true
         }
 
@@ -349,6 +352,13 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         if (!powerManager.isInteractive) {
             handleTrackedAppExit("screen is off while receiving accessibility event")
             return
+        }
+
+        // TYPE_WINDOW_STATE_CHANGED also triggers for dialogs, popups, and keyboards.
+        // Only record components ending in "Activity" so transient UI does not overwrite the active screen.
+        val className = event.className?.toString()
+        if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED && className?.endsWith("Activity") == true) {
+            currentActivity = event.packageName?.let { ComponentName(it.toString(), className) }
         }
 
         val scan = contentScanner.scan(
@@ -391,6 +401,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         if (previousApp != null) {
             Timber.v("*** User appears to have left a brain rot app: %s (%s)", previousApp.app.name, previousApp.packageId)
             sessionTracker.onAppClose()
+            // When exiting to an unmonitored screen (e.g. launcher or home), reset the saved activity
+            if (nextApp == null && currentActivity?.packageName == previousApp.packageId) {
+                currentActivity = null
+            }
         }
 
         if (nextApp != null) {
@@ -582,7 +596,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
             ContentBlockAction.CoverVideoRegion -> {
                 // The user may have switched apps while we were waiting for the blocking decision.
-                if (!contentScanner.isContentWindowEligible(session.app)) {
+                if (!contentScanner.isAppVisible(session.app)) {
                     handleTrackedAppExit("app lost foreground before covering")
                     return
                 }
@@ -606,10 +620,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Periodically checks whether a covered video is still on screen or if new allowance is available. */
     private val coveredContentCheck = Runnable {
-        if (validateTrackedAppState("Covered screen")) {
-            refreshDetectedContent()
-            reconsiderVisibleContent()
-        }
+        refreshDetectedContent()
+        reconsiderVisibleContent()
     }
 
     private fun scheduleCoveredContentCheck() {
@@ -621,8 +633,16 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Re-scans visible windows to update the current content session. */
     private fun refreshDetectedContent() {
+        if (!validateTrackedAppState("Content refresh")) return
         val session = contentSession
-        val app = session?.app ?: currentForegroundBrainRotApp ?: return
+        val app = session?.app ?: currentForegroundBrainRotApp
+        if (app == null) {
+            // Preferences can load before the first app event; discover what is already open.
+            val scan = contentScanner.scan(eventPackage = null, windowsChanged = true, trackedApp = null, foregroundApp = null)
+            updateForegroundAppState(scan.foregroundApp)
+            scan.content?.let(::onBlockedContentDetected)
+            return
+        }
         val activeCover = session?.takeIf { it.isCovered }?.content?.cover
         val content = contentScanner.findVisibleBlockedContent(app, activeCover)
         if (content != null) {
@@ -635,7 +655,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     /** Checks if the user's latest settings or allowances should block or unblock the current screen. */
     private fun reconsiderVisibleContent() {
         val current = contentSession ?: return
-        if (!contentScanner.isContentWindowEligible(current.app)) {
+        if (current.app.coverDetector != null && !contentScanner.isAppVisible(current.app)) {
             handleTrackedAppExit("app lost foreground before reconsidering content")
             return
         }

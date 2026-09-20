@@ -64,6 +64,12 @@ sealed class DetectionMethod {
      * This supports apps that expose different screens for the same kind of video.
      */
     data class AnyOf(val detectionMethods: List<DetectionMethod>) : DetectionMethod()
+
+    /**
+     * Matches a blocked screen by checking if [activityName] is contained within the window title
+     * or activity class name (used for features that run in a dedicated viewer, such as Facebook Stories).
+     */
+    data class ActivityName(val activityName: String) : DetectionMethod()
 }
 
 /**
@@ -157,7 +163,6 @@ enum class BlockableApp(
         detectionMethod = DetectionMethod.ViewId("reel_player_page_container"),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
-    // Keep the app open so the user can reach its native tabs while the video is covered.
     TIKTOK(
         packageIds = listOf(
             "com.zhiliaoapp.musically",
@@ -165,12 +170,14 @@ enum class BlockableApp(
             "com.ss.android.ugc.aweme",
         ),
         detectionMethod = DetectionMethod.ViewId("player_view"),
+        // TikTok Stories play through the same player_view as regular feed videos, so no need to add extra detection
         blockAction = ContentBlockAction.CoverVideoRegion,
         // Translated recipient labels survive resource-ID renaming across TikTok builds.
         dmExemptionRule = DmExemptionRule(
             replyLabelsBelowPlayer = TikTokDmReplyLabels,
         ),
     ),
+    // TikTok Lite Stories share the same video player view as the feed, so they are already covered by this detection.
     TIKTOK_LITE(
         packageIds = listOf("com.zhiliaoapp.musically.go"),
         detectionMethod = DetectionMethod.ViewId("simplayer_api_player_view"),
@@ -216,6 +223,7 @@ enum class BlockableApp(
                 ),
             ),
         ),
+        storiesDetectionMethod = DetectionMethod.ActivityName("StoryViewerActivity"),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     FACEBOOK_LITE(
@@ -226,6 +234,7 @@ enum class BlockableApp(
     SNAPCHAT(
         packageIds = listOf("com.snapchat.android"),
         detectionMethod = DetectionMethod.ViewId("spotlight_container"),
+        storiesDetectionMethod = DetectionMethod.ViewId("opera_viewer"),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     ;
@@ -295,6 +304,9 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
 
             is DetectionMethod.NodeStructure -> false
 
+            // Activity names are resolved at the window/component level, not within individual view nodes.
+            is DetectionMethod.ActivityName -> false
+
             is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matchesSimpleNode(node) }
         }
     }
@@ -311,6 +323,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             is DetectionMethod.ViewId,
             is DetectionMethod.ContentDescriptions,
             is DetectionMethod.ContentDescriptionPrefix,
+            is DetectionMethod.ActivityName,
             -> Unit
         }
     }
@@ -325,6 +338,9 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             is DetectionMethod.NodeStructure -> nodes.any { node ->
                 matchesStructure(node, childrenByParentId)
             }
+
+            // Activity names are resolved at the window/component level, not within the node hierarchy.
+            is DetectionMethod.ActivityName -> false
 
             is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matches(nodes, childrenByParentId) }
         }

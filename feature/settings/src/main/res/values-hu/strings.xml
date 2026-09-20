@@ -32,5 +32,5 @@
     <string name="settings_show_onscreen_timer_title">Képernyőn megjelenő időzítő</string>
     <string name="settings_include_stories_title">Történetek figyelembevétele</string>
     <string name="settings_include_stories_description">Számítsa bele a történetek megtekintésével töltött időt, és alkalmazza a jelenlegi blokkolási módot és időkorlátokat.</string>
-    <string name="settings_include_stories_note">Jelenleg az Instagramon támogatott.</string>
+    <string name="settings_include_stories_note">Jelenleg az Instagramon, a Snapchaten és a Facebookon támogatott.</string>
 </resources>
