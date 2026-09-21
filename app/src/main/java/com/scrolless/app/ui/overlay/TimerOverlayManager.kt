@@ -120,7 +120,6 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         showOverlay(sessionStartAt, intervalUsage, intervalLengthMillis)
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun showOverlay(sessionStartAt: Long, usage: IntervalUsage, windowLengthMillis: Long) {
         if (!::serviceContext.isInitialized) {
             Timber.w("Timer overlay requested before service context was attached")
@@ -132,23 +131,37 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         this.usage = usage
         this.windowLengthMillis = windowLengthMillis
 
-        val existingView = rootView
-        if (existingView != null) {
-            // Resume the visible timer instead of removing it and playing its entrance again.
-            stopOverlayAnimations(existingView)
-            existingView.rotation = 0f
-            existingView.translationX = 0f
-            existingView.alpha = 1f
-            screenBounds = calculateScreenBounds()
-            timerTextView?.text = displayedDurationAt(System.currentTimeMillis()).formatAsTime()
-            keepTimerInAllowedArea()
-            startTimer()
-            return
-        }
+        val isNewView = rootView == null
+        if (isNewView) createOverlayView()
+        val view = rootView ?: return
 
-        // Include saved usage immediately, so the timer does not briefly start at zero.
+        // New and reused timers start the session with the same text and position checks.
+        stopOverlayAnimations(view)
+        view.rotation = 0f
+        view.translationX = 0f
+        view.alpha = if (isNewView) 0f else 1f
+        timerTextView?.text = displayedDurationAt(System.currentTimeMillis()).formatAsTime()
+        screenBounds = calculateScreenBounds()
+        if (isNewView) {
+            // Measure before attaching so saved positions respect the timer's full height.
+            val measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            view.measure(measureSpec, measureSpec)
+        }
+        keepTimerInAllowedArea()
+
+        try {
+            if (isNewView) wm.addView(view, layoutParams)
+            startTimer()
+            if (isNewView) view.post(enterAnimationRunnable)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to show overlay")
+            cleanupView()
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun createOverlayView() {
         timerTextView = TextView(serviceContext).apply {
-            text = displayedDurationAt(System.currentTimeMillis()).formatAsTime()
             textSize = 18f // sp
             typeface = Typeface.DEFAULT_BOLD
             setTextColor(Color.WHITE)
@@ -181,10 +194,6 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> keepTimerInAllowedArea() }
         }
 
-        // Get saved position
-        val positionX = userSettingsStore.getTimerOverlayPositionX().value
-        val positionY = userSettingsStore.getTimerOverlayPositionY().value
-
         layoutParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -193,28 +202,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             PixelFormat.TRANSLUCENT,
         ).apply {
             gravity = Gravity.TOP or Gravity.END
-            x = positionX
-            y = positionY
-        }
-
-        // Cache current screen bounds to avoid querying on every drag/update.
-        screenBounds = calculateScreenBounds()
-
-        // Check saved positions before attaching the window, so an old position cannot hide it.
-        val measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-        rootView?.measure(measureSpec, measureSpec)
-        layoutParams?.let { it.y = it.y.coerceIn(0, maximumTimerY(rootView?.measuredHeight ?: 0)) }
-
-        try {
-            // Start invisible for enter animation
-            rootView?.alpha = 0f
-            wm.addView(rootView, layoutParams)
-
-            startTimer()
-            rootView?.post(enterAnimationRunnable)
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to show overlay")
-            cleanupView()
+            x = userSettingsStore.getTimerOverlayPositionX().value
+            y = userSettingsStore.getTimerOverlayPositionY().value
         }
     }
 
@@ -257,9 +246,9 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         rootView = null // Repeated cleanup must not try to remove the same view twice.
         timerTextView = null
 
+        stopOverlayAnimations(view)
         if (view != null) {
             try {
-                stopOverlayAnimations(view)
                 view.visibility = View.GONE
                 windowManager?.removeView(view)
             } catch (e: Exception) {
@@ -269,8 +258,6 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
         timerJob?.cancel()
         timerJob = null
-        exitAnimationJob?.cancel()
-        exitAnimationJob = null
         snapAnimator?.cancel()
         snapAnimator = null
         resetDragState()
@@ -287,11 +274,12 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         }
     }
 
-    private fun stopOverlayAnimations(view: View) {
+    private fun stopOverlayAnimations(view: View?) {
         exitAnimationJob?.cancel()
         exitAnimationJob = null
         wiggleAnimator?.cancel()
         wiggleAnimator = null
+        if (view == null) return
         view.removeCallbacks(enterAnimationRunnable)
         // Cancelling an exit animation also calls onAnimationEnd. Detach it before cancelling
         // so it cannot remove the timer we are about to reuse.
@@ -355,7 +343,6 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
     private fun handleTouch(event: MotionEvent): Boolean {
         val params = layoutParams ?: return false
-        val wm = windowManager ?: return false
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 // Stop any previous snap so the timer follows the new drag immediately.
@@ -384,14 +371,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                 isDragging = true
 
                 // This drag calculation measures x from the right edge, so moving right reduces x.
-                params.x = initialX - deltaX
-                params.y = (initialY + deltaY).coerceIn(0, maximumTimerY(rootView?.height ?: 0))
-
-                try {
-                    wm.updateViewLayout(rootView, params)
-                } catch (e: Exception) {
-                    Timber.e(e)
-                }
+                moveTimerTo(initialX - deltaX, initialY + deltaY)
                 return true
             }
 
@@ -502,7 +482,6 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
     private fun snapToPosition(targetX: Int, targetY: Int) {
         val params = layoutParams ?: return
-        val wm = windowManager ?: return
         val startX = params.x
         val startY = params.y
 
@@ -512,14 +491,10 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             interpolator = DecelerateInterpolator()
             addUpdateListener { animation ->
                 val fraction = animation.animatedValue as Float
-                params.x = (startX + (targetX - startX) * fraction).toInt()
-                params.y = (startY + (targetY - startY) * fraction).toInt()
-                    .coerceIn(0, maximumTimerY(rootView?.height ?: 0))
-                try {
-                    wm.updateViewLayout(rootView, params)
-                } catch (_: Exception) {
-                    // The overlay may have been removed while this animation was still running.
-                }
+                moveTimerTo(
+                    x = (startX + (targetX - startX) * fraction).toInt(),
+                    y = (startY + (targetY - startY) * fraction).toInt(),
+                )
             }
             addListener(
                 object : AnimatorListenerAdapter() {
@@ -540,15 +515,26 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     }
 
     private fun keepTimerInAllowedArea() {
+        val params = layoutParams ?: return
+        moveTimerTo(params.x, params.y)
+    }
+
+    /** Every position change applies the same vertical limit, including before attachment. */
+    private fun moveTimerTo(x: Int, y: Int) {
         val view = rootView ?: return
         val params = layoutParams ?: return
         val height = view.height.takeIf { it > 0 } ?: view.measuredHeight
-        val allowedY = params.y.coerceIn(0, maximumTimerY(height))
-        if (params.y == allowedY) return
+        val allowedY = y.coerceIn(0, maximumTimerY(height))
+        if (params.x == x && params.y == allowedY) return
 
+        params.x = x
         params.y = allowedY
         if (view.isAttachedToWindow) {
-            windowManager?.updateViewLayout(view, params)
+            try {
+                windowManager?.updateViewLayout(view, params)
+            } catch (e: Exception) {
+                Timber.w(e, "Could not move timer overlay")
+            }
         }
     }
 
