@@ -22,6 +22,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.Typeface
@@ -140,6 +141,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             existingView.alpha = 1f
             screenBounds = calculateScreenBounds()
             timerTextView?.text = displayedDurationAt(System.currentTimeMillis()).formatAsTime()
+            keepTimerInAllowedArea()
             startTimer()
             return
         }
@@ -176,6 +178,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             setOnTouchListener { _, event ->
                 handleTouch(event)
             }
+            addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> keepTimerInAllowedArea() }
         }
 
         // Get saved position
@@ -196,6 +199,11 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
         // Cache current screen bounds to avoid querying on every drag/update.
         screenBounds = calculateScreenBounds()
+
+        // Check saved positions before attaching the window, so an old position cannot hide it.
+        val measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        rootView?.measure(measureSpec, measureSpec)
+        layoutParams?.let { it.y = it.y.coerceIn(0, maximumTimerY(rootView?.measuredHeight ?: 0)) }
 
         try {
             // Start invisible for enter animation
@@ -355,8 +363,9 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                 resetDragState()
                 // Rotation or resizing may have changed the available space since the timer appeared.
                 screenBounds = calculateScreenBounds()
+                keepTimerInAllowedArea()
                 velocityTracker = android.view.VelocityTracker.obtain()
-                velocityTracker?.addMovement(event)
+                trackScreenMovement(event)
 
                 initialX = params.x
                 initialY = params.y
@@ -366,7 +375,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             }
 
             MotionEvent.ACTION_MOVE -> {
-                velocityTracker?.addMovement(event)
+                trackScreenMovement(event)
                 val deltaX = (event.rawX - initialTouchX).toInt()
                 val deltaY = (event.rawY - initialTouchY).toInt()
 
@@ -376,7 +385,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
                 // This drag calculation measures x from the right edge, so moving right reduces x.
                 params.x = initialX - deltaX
-                params.y = initialY + deltaY
+                params.y = (initialY + deltaY).coerceIn(0, maximumTimerY(rootView?.height ?: 0))
 
                 try {
                     wm.updateViewLayout(rootView, params)
@@ -387,7 +396,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             }
 
             MotionEvent.ACTION_UP -> {
-                velocityTracker?.addMovement(event)
+                trackScreenMovement(event)
                 velocityTracker?.computeCurrentVelocity(1000)
 
                 if (isDragging) {
@@ -410,6 +419,16 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         return false
     }
 
+    private fun trackScreenMovement(event: MotionEvent) {
+        val tracker = velocityTracker ?: return
+        // The window follows the finger, so local coordinates hide most of its movement.
+        // Measure velocity on the screen, just like the drag position above.
+        val screenEvent = MotionEvent.obtain(event)
+        screenEvent.offsetLocation(event.rawX - event.x, event.rawY - event.y)
+        tracker.addMovement(screenEvent)
+        screenEvent.recycle()
+    }
+
     private fun resetDragState() {
         isDragging = false
         velocityTracker?.recycle()
@@ -425,7 +444,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         val minX = 0
         val maxX = (bounds.width - viewWidth).coerceAtLeast(0)
         val minY = 0
-        val maxY = (bounds.height - viewHeight).coerceAtLeast(0)
+        val maxY = maximumTimerY(viewHeight)
 
         val currentX = params.x.coerceIn(minX, maxX)
         val currentY = params.y.coerceIn(minY, maxY)
@@ -495,6 +514,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                 val fraction = animation.animatedValue as Float
                 params.x = (startX + (targetX - startX) * fraction).toInt()
                 params.y = (startY + (targetY - startY) * fraction).toInt()
+                    .coerceIn(0, maximumTimerY(rootView?.height ?: 0))
                 try {
                     wm.updateViewLayout(rootView, params)
                 } catch (_: Exception) {
@@ -510,6 +530,25 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                 },
             )
             start()
+        }
+    }
+
+    /** Keep the bottom of the timer above the reserved lower fifth of the usable screen. */
+    private fun maximumTimerY(timerHeight: Int): Int {
+        val screenHeight = screenBounds?.height ?: return 0
+        return ((screenHeight * TIMER_ALLOWED_HEIGHT_FRACTION).toInt() - timerHeight).coerceAtLeast(0)
+    }
+
+    private fun keepTimerInAllowedArea() {
+        val view = rootView ?: return
+        val params = layoutParams ?: return
+        val height = view.height.takeIf { it > 0 } ?: view.measuredHeight
+        val allowedY = params.y.coerceIn(0, maximumTimerY(height))
+        if (params.y == allowedY) return
+
+        params.y = allowedY
+        if (view.isAttachedToWindow) {
+            windowManager?.updateViewLayout(view, params)
         }
     }
 
@@ -561,13 +600,20 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     companion object {
         private const val EXIT_ANIMATION_DURATION_MS = 250L
         private const val SUMMARY_DISPLAY_DURATION_MS = 1200L
+        private const val TIMER_ALLOWED_HEIGHT_FRACTION = 0.8f
     }
 
     /**
      * Keeps drag events on the timer container instead of handing them to its text view.
      * This makes the whole timer draggable, including touches that start on the text.
      */
-    private class DragInterceptFrameLayout(context: Context) : FrameLayout(context) {
+    private inner class DragInterceptFrameLayout(context: Context) : FrameLayout(context) {
+        override fun onConfigurationChanged(newConfig: Configuration) {
+            super.onConfigurationChanged(newConfig)
+            screenBounds = calculateScreenBounds()
+            keepTimerInAllowedArea()
+        }
+
         override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
             return true
         }
