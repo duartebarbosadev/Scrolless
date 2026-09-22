@@ -16,56 +16,29 @@
  */
 package com.scrolless.app.core.data.repository
 
-import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
-import com.scrolless.app.core.model.BlockOption
 import java.io.Serializable
 import javax.inject.Inject
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
-class OnboardingRepository @Inject constructor(private val dao: UserSettingsDao, private val timeProvider: TimeProvider) {
+class OnboardingRepository @Inject constructor(private val dao: UserSettingsDao) {
     val completed = dao.observeUserSettings().map { it.hasCompletedOnboarding }.distinctUntilChanged()
 
     suspend fun load(): OnboardingPreferences {
         val settings = dao.getUserSettings()
         return OnboardingPreferences(
-            option = if (!settings.hasCompletedOnboarding && settings.activeBlockOption == BlockOption.NothingSelected) {
-                BlockOption.BlockAll
-            } else {
-                settings.activeBlockOption
-            },
-            dailyLimit = settings.dailyLimit,
-            allowance = settings.intervalAllowance,
-            intervalLength = settings.intervalLength,
             allowDm = settings.allowVideosSentByDm,
             includeStories = settings.includeStories,
         )
     }
 
     suspend fun save(preferences: OnboardingPreferences) {
-        require(preferences.option != BlockOption.DailyLimit || preferences.dailyLimit > 0)
-        require(preferences.option != BlockOption.IntervalTimer || (preferences.allowance > 0 && preferences.intervalLength > 0))
-        dao.completeOnboarding(
-            preferences.option,
-            preferences.dailyLimit,
-            preferences.allowance,
-            preferences.intervalLength,
-            preferences.allowDm,
-            preferences.includeStories,
-            timeProvider.currentTimeInMillis(),
-        )
+        dao.completeOnboarding(preferences.allowDm, preferences.includeStories)
     }
 
     suspend fun skip() = dao.skipOnboarding()
 }
 
 // Serializable so the unfinished draft survives process recreation through SavedStateHandle.
-data class OnboardingPreferences(
-    val option: BlockOption = BlockOption.BlockAll,
-    val dailyLimit: Long = 0L,
-    val allowance: Long = 0L,
-    val intervalLength: Long = 0L,
-    val allowDm: Boolean = false,
-    val includeStories: Boolean = false,
-) : Serializable
+data class OnboardingPreferences(val allowDm: Boolean = false, val includeStories: Boolean = false) : Serializable

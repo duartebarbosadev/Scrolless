@@ -16,7 +16,6 @@
  */
 package com.scrolless.app.core.data.repository
 
-import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.data.database.model.UserSettingsEntity
 import com.scrolless.app.core.model.BlockOption
@@ -36,23 +35,19 @@ import org.junit.Test
 @Suppress("UnusedFlow")
 class OnboardingRepositoryTest {
     private val dao = mockk<UserSettingsDao>(relaxed = true)
-    private val timeProvider = mockk<TimeProvider> {
-        every { currentTimeInMillis() } returns 25_000L
-    }
-
     private fun repository(
         settings: UserSettingsEntity = UserSettingsEntity(activeBlockOption = BlockOption.NothingSelected),
     ): OnboardingRepository {
         every { dao.observeUserSettings() } returns flowOf(settings)
         coEvery { dao.getUserSettings() } returns settings
-        return OnboardingRepository(dao, timeProvider)
+        return OnboardingRepository(dao)
     }
 
     @Test
-    fun `new setup proposes blocking without applying the draft`() = runTest {
+    fun `new setup loads optional preferences without applying them`() = runTest {
         val repository = repository(UserSettingsEntity(activeBlockOption = BlockOption.NothingSelected))
 
-        assertEquals(BlockOption.BlockAll, repository.load().option)
+        assertEquals(OnboardingPreferences(), repository.load())
         coVerify(exactly = 1) { dao.getUserSettings() }
         verify(exactly = 1) { dao.observeUserSettings() }
         confirmVerified(dao)
@@ -73,19 +68,19 @@ class OnboardingRepositoryTest {
         )
 
         assertEquals(
-            OnboardingPreferences(BlockOption.NothingSelected, 900_000L, 300_000L, 3_600_000L, true, true),
+            OnboardingPreferences(allowDm = true, includeStories = true),
             repository.load(),
         )
     }
 
     @Test
-    fun `finishing passes all choices to one completion update`() = runTest {
+    fun `finishing only writes the optional preferences and completion`() = runTest {
         val repository = repository()
 
-        repository.save(OnboardingPreferences(BlockOption.DailyLimit, 900_000L, 300_000L, 3_600_000L, true, true))
+        repository.save(OnboardingPreferences(allowDm = true, includeStories = true))
 
         coVerify(exactly = 1) {
-            dao.completeOnboarding(BlockOption.DailyLimit, 900_000L, 300_000L, 3_600_000L, true, true, 25_000L)
+            dao.completeOnboarding(allowDm = true, includeStories = true)
         }
         verify(exactly = 1) { dao.observeUserSettings() }
         confirmVerified(dao)
@@ -103,27 +98,6 @@ class OnboardingRepositoryTest {
     }
 
     @Test
-    fun `invalid timers do not finish onboarding`() = runTest {
-        val repository = repository()
-        val invalidChoices = listOf(
-            OnboardingPreferences(option = BlockOption.DailyLimit),
-            OnboardingPreferences(option = BlockOption.IntervalTimer, intervalLength = 3_600_000L),
-            OnboardingPreferences(option = BlockOption.IntervalTimer, allowance = 300_000L),
-        )
-
-        for (preferences in invalidChoices) {
-            try {
-                repository.save(preferences)
-                throw AssertionError("Expected invalid timer to be rejected")
-            } catch (_: IllegalArgumentException) {
-                // Validation must reject the draft before writing settings.
-            }
-        }
-        verify(exactly = 1) { dao.observeUserSettings() }
-        confirmVerified(dao)
-    }
-
-    @Test
     fun `completion only emits when onboarding status changes`() = runTest {
         val settings = UserSettingsEntity(activeBlockOption = BlockOption.NothingSelected, hasCompletedOnboarding = false)
         every { dao.observeUserSettings() } returns flowOf(
@@ -132,6 +106,6 @@ class OnboardingRepositoryTest {
             settings.copy(hasCompletedOnboarding = true),
         )
 
-        assertEquals(listOf(false, true), OnboardingRepository(dao, timeProvider).completed.toList())
+        assertEquals(listOf(false, true), OnboardingRepository(dao).completed.toList())
     }
 }
