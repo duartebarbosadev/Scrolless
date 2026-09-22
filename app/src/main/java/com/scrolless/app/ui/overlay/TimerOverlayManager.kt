@@ -427,10 +427,12 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         val bounds = screenBounds ?: return
         val viewWidth = rootView?.width ?: 0
         val viewHeight = rootView?.height ?: 0
-        val minX = 0
-        val maxX = (bounds.width - viewWidth).coerceAtLeast(0)
-        val minY = 0
-        val maxY = maximumTimerY(viewHeight)
+        val horizontalRange = timerPositionRange(bounds.width - viewWidth)
+        val verticalRange = timerPositionRange(maximumTimerY(viewHeight))
+        val minX = horizontalRange.first
+        val maxX = horizontalRange.last
+        val minY = verticalRange.first
+        val maxY = verticalRange.last
 
         val currentX = params.x.coerceIn(minX, maxX)
         val currentY = params.y.coerceIn(minY, maxY)
@@ -444,7 +446,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         if (abs(velocityX) > flingThreshold || abs(velocityY) > flingThreshold) {
             // Work out how long this movement would take to reach a left or right edge.
             val tX = if (velocityX > 0) {
-                currentX.toFloat() / velocityX // Time to reach 0
+                (currentX - minX).toFloat() / velocityX
             } else if (velocityX < 0) {
                 (currentX - maxX).toFloat() / velocityX // Time to reach maxX
             } else {
@@ -455,7 +457,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             val tY = if (velocityY > 0) {
                 (maxY - currentY).toFloat() / velocityY // Time to reach maxY
             } else if (velocityY < 0) {
-                -currentY.toFloat() / velocityY // Time to reach 0
+                (minY - currentY).toFloat() / velocityY
             } else {
                 Float.POSITIVE_INFINITY
             }
@@ -468,10 +470,10 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             targetY = (currentY + velocityY * t).toInt().coerceIn(minY, maxY)
         } else {
             // For a slow release, move the shortest distance to an edge.
-            val distRight = currentX // x=0
-            val distLeft = maxX - currentX // x=maxX
-            val distTop = currentY // y=0
-            val distBottom = maxY - currentY // y=maxY
+            val distRight = currentX - minX
+            val distLeft = maxX - currentX
+            val distTop = currentY - minY
+            val distBottom = maxY - currentY
 
             val minDist = minOf(distRight, distLeft, distTop, distBottom)
 
@@ -520,6 +522,13 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         return ((screenHeight * TIMER_ALLOWED_HEIGHT_FRACTION).toInt() - timerHeight).coerceAtLeast(0)
     }
 
+    private fun timerPositionRange(maxPosition: Int): IntRange {
+        val availableSpace = maxPosition.coerceAtLeast(0)
+        // Reduce the margin when the timer nearly fills the available area.
+        val margin = dpToPx(TIMER_EDGE_MARGIN_DP).coerceAtMost(availableSpace / 2)
+        return margin..(availableSpace - margin)
+    }
+
     private fun keepTimerInAllowedArea() {
         val params = layoutParams ?: return
         moveTimerTo(params.x, params.y)
@@ -532,8 +541,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         val bounds = screenBounds ?: return
         val width = view.width.takeIf { it > 0 } ?: view.measuredWidth
         val height = view.height.takeIf { it > 0 } ?: view.measuredHeight
-        val allowedX = x.coerceIn(0, (bounds.width - width).coerceAtLeast(0))
-        val allowedY = y.coerceIn(0, maximumTimerY(height))
+        val allowedX = x.coerceIn(timerPositionRange(bounds.width - width))
+        val allowedY = y.coerceIn(timerPositionRange(maximumTimerY(height)))
         if (params.x == allowedX && params.y == allowedY) return
 
         params.x = allowedX
@@ -596,6 +605,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         private const val EXIT_ANIMATION_DURATION_MS = 250L
         private const val SUMMARY_DISPLAY_DURATION_MS = 1200L
         private const val TIMER_ALLOWED_HEIGHT_FRACTION = 0.8f
+        private const val TIMER_EDGE_MARGIN_DP = 2f
     }
 
     /**
