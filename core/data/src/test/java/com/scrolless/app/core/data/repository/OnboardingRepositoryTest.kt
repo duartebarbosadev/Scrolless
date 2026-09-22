@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.core.data.repository
 
+import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.data.database.model.UserSettingsEntity
 import com.scrolless.app.core.model.BlockOption
@@ -35,13 +36,16 @@ import org.junit.Test
 @Suppress("UnusedFlow")
 class OnboardingRepositoryTest {
     private val dao = mockk<UserSettingsDao>(relaxed = true)
+    private val timeProvider = mockk<TimeProvider> {
+        every { currentTimeInMillis() } returns 25_000L
+    }
 
     private fun repository(
         settings: UserSettingsEntity = UserSettingsEntity(activeBlockOption = BlockOption.NothingSelected),
     ): OnboardingRepository {
         every { dao.observeUserSettings() } returns flowOf(settings)
         coEvery { dao.getUserSettings() } returns settings
-        return OnboardingRepository(dao)
+        return OnboardingRepository(dao, timeProvider)
     }
 
     @Test
@@ -81,7 +85,7 @@ class OnboardingRepositoryTest {
         repository.save(OnboardingPreferences(BlockOption.DailyLimit, 900_000L, 300_000L, 3_600_000L, true, true))
 
         coVerify(exactly = 1) {
-            dao.completeOnboarding(BlockOption.DailyLimit, 900_000L, 300_000L, 3_600_000L, true, true)
+            dao.completeOnboarding(BlockOption.DailyLimit, 900_000L, 300_000L, 3_600_000L, true, true, 25_000L)
         }
         verify(exactly = 1) { dao.observeUserSettings() }
         confirmVerified(dao)
@@ -128,6 +132,6 @@ class OnboardingRepositoryTest {
             settings.copy(hasCompletedOnboarding = true),
         )
 
-        assertEquals(listOf(false, true), OnboardingRepository(dao).completed.toList())
+        assertEquals(listOf(false, true), OnboardingRepository(dao, timeProvider).completed.toList())
     }
 }

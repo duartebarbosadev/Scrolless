@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.core.data.repository
 
+import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.model.BlockOption
 import java.io.Serializable
@@ -23,7 +24,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
-class OnboardingRepository @Inject constructor(private val dao: UserSettingsDao) {
+class OnboardingRepository @Inject constructor(private val dao: UserSettingsDao, private val timeProvider: TimeProvider) {
     val completed = dao.observeUserSettings().map { it.hasCompletedOnboarding }.distinctUntilChanged()
 
     suspend fun load(): OnboardingPreferences {
@@ -52,6 +53,7 @@ class OnboardingRepository @Inject constructor(private val dao: UserSettingsDao)
             preferences.intervalLength,
             preferences.allowDm,
             preferences.includeStories,
+            timeProvider.currentTimeInMillis(),
         )
     }
 

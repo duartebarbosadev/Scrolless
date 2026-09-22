@@ -18,8 +18,10 @@ package com.scrolless.app.core.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Query
+import androidx.room.Transaction
 import com.scrolless.app.core.data.database.model.UserSettingsEntity
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.IntervalUsage
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -145,11 +147,33 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
     @Query("UPDATE user_settings SET has_completed_onboarding = 1, has_seen_accessibility_explainer = 1 WHERE id = 1")
     abstract suspend fun skipOnboarding()
 
-    // Save the draft and completion together, preserving usage, pauses and unrelated preferences.
+    @Transaction
+    open suspend fun completeOnboarding(
+        option: BlockOption,
+        dailyLimit: Long,
+        allowance: Long,
+        intervalLength: Long,
+        allowDm: Boolean,
+        includeStories: Boolean,
+        nowMillis: Long,
+    ) {
+        val settings = getUserSettings()
+        // Check expiry using the old length so extending it cannot revive an expired window.
+        val interval = IntervalUsage(settings.intervalWindowStartAt, settings.intervalUsage)
+            .activeIntervalAt(nowMillis, settings.intervalLength)
+        completeOnboarding(
+            option, dailyLimit, allowance, intervalLength, allowDm, includeStories,
+            windowStart = interval.startMillis,
+            usage = interval.usageMillis,
+        )
+    }
+
+    // Save the draft and completion together, preserving active usage, pauses and unrelated preferences.
     @Query(
         """
         UPDATE user_settings SET active_block_option = :option, daily_limit = :dailyLimit,
             interval_allowance = :allowance, interval_length = :intervalLength,
+            interval_window_start_at = :windowStart, interval_usage = :usage,
             except_reels_sent_by_dm = :allowDm, include_stories = :includeStories,
             has_completed_onboarding = 1, has_seen_accessibility_explainer = 1
         WHERE id = 1
@@ -162,5 +186,7 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
         intervalLength: Long,
         allowDm: Boolean,
         includeStories: Boolean,
+        windowStart: Long,
+        usage: Long,
     )
 }
