@@ -37,9 +37,10 @@ interface BlockingManager {
     /**
      * Starts a viewing session.
      *
+     * @param dailyUsageMillis Saved daily usage, also used by the viewing timer.
      * @return `true` when the content should be closed immediately.
      */
-    suspend fun onEnterBlockedContent(): Boolean
+    suspend fun onEnterBlockedContent(dailyUsageMillis: Long): Boolean
 
     /** Checks whether covered content must remain blocked, without opening a viewing session. */
     suspend fun shouldBlockContent(): Boolean

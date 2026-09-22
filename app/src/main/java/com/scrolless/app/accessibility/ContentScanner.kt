@@ -80,7 +80,7 @@ internal class ContentScanner(
         activeCover: ContentCover? = null,
     ): Result {
         val appWindows = AppWindows(service.windows)
-        val trackedAppExited = trackedApp != null && !appWindows.isEligible(trackedApp)
+        val trackedAppExited = trackedApp?.coverDetector != null && !appWindows.isVisible(trackedApp)
 
         // Window-change events often omit package info, and synthetic rescans have no event.
         // In both cases, resolve the package directly from the active foreground window.
@@ -151,22 +151,39 @@ internal class ContentScanner(
         }
     }
 
+    /**
+     * Checks whether this node belongs to content we should track in [blockableApp].
+     * Looks for a video area to cover, or a screen the app's normal blocking rule matches.
+     * This only detects content; the service decides whether the user's limits require blocking it.
+     *
+     * @param appWindows Current app windows, used to check focus and locate the video window.
+     * @param activeCover Existing cover, so we can still recognize a player hidden behind it.
+     * @return The detected content and any DM exemption, or null if no content matches.
+     */
     private fun AccessibilityNodeInfo.detectContent(
         blockableApp: ResolvedBlockableApp,
         appWindows: AppWindows,
         activeCover: ContentCover? = null,
     ): DetectedBlockedContent? {
-        if (packageName?.toString() != blockableApp.packageId || !appWindows.isEligible(blockableApp)) return null
-        // A matching region uses a cover; otherwise keep this app's normal screen detector.
+
+        // We inspect several windows, so first make sure this node belongs to the app we want.
+        if (packageName?.toString() != blockableApp.packageId) return null
+
+        // Covers need foreground focus so they don't appear over another app after switching away.
+        if (blockableApp.coverDetector != null && !appWindows.isVisible(blockableApp)) return null
+
+        // If we can locate the video, we can cover just that area and leave the app's controls usable.
         val cover = detectContentCover(blockableApp, appWindows, activeCover)
 
         if (cover == null) {
-            // This app requires a video cover, but we could not find the player's bounds.
+            // Cover-only apps need a known video area. Without one, there is nowhere safe to put a cover.
             if (blockableApp.getBlockAction() == ContentBlockAction.CoverVideoRegion) return null
-            // Only use the app's normal blocking action when the screen matches its detection rule.
+
+            // Other apps can use Back to leave content, but only if this screen matches their detection rule.
             if (!matchesBlockedContent(blockableApp, appWindows)) return null
         }
 
+        // Keep tracking detected content even when the user's DM setting allows it through.
         return DetectedBlockedContent(
             app = blockableApp,
             blockingSuppressed = shouldSuppressBlocking(blockableApp, cover),
@@ -203,16 +220,8 @@ internal class ContentScanner(
         return appWindows.roots.values.firstNotNullOfOrNull { it?.detectContent(blockableApp, appWindows, activeCover) }
     }
 
-    /** Returns true if any window of [app] is currently open on screen. */
-    fun isBlockedAppPackageVisible(app: ResolvedBlockableApp): Boolean = AppWindows(service.windows).isVisible(app)
-
-    /**
-     * Verifies that [app] is in a valid state to display an overlay before attaching it.
-     * Non-cover apps bypass window inspection to avoid unnecessary IPC calls; cover-based
-     * apps must currently be the focused foreground package to avoid misplaced overlays.
-     */
-    fun isContentWindowEligible(app: ResolvedBlockableApp): Boolean =
-        app.coverDetector == null || AppWindows(service.windows).isEligible(app)
+    /** Checks for an app window; cover-based apps must also have foreground focus. */
+    fun isAppVisible(app: ResolvedBlockableApp): Boolean = AppWindows(service.windows).isVisible(app)
 
     /**
      * Captures a synchronous snapshot of application windows.
@@ -222,13 +231,17 @@ internal class ContentScanner(
         // Map application windows to their root accessibility nodes; ignores system bars and overlays.
         val roots = windows.filter { it.type == AccessibilityWindowInfo.TYPE_APPLICATION }.associateWith { it.root }
 
-        /** Returns the window title and the last activity name reported for its app. */
-        fun screenNames(targetWindowId: Int): List<String> = buildList {
-            val (window, root) = roots.entries.firstOrNull { it.key.id == targetWindowId } ?: return@buildList
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                window.title?.toString()?.takeIf { it.isNotBlank() }?.let { add(it) }
+        /** Matches the window title or the last activity reported for the same package. */
+        fun matchesActivity(targetWindowId: Int, activityName: String): Boolean {
+            val (window, root) = roots.entries.firstOrNull { it.key.id == targetWindowId } ?: return false
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P &&
+                window.title?.toString()?.contains(activityName, ignoreCase = true) == true
+            ) {
+                return true
             }
-            currentActivity()?.takeIf { it.packageName == root?.packageName?.toString() }?.className?.let { add(it) }
+            val activity = currentActivity() ?: return false
+            return activity.packageName == root?.packageName?.toString() &&
+                activity.className.contains(activityName, ignoreCase = true)
         }
 
         // Determine which package currently has user focus or active interaction.
@@ -243,22 +256,9 @@ internal class ContentScanner(
             },
         )
 
-        /**
-         * Determines whether [app] qualifies for content detection and overlay display.
-         *
-         * Apps that draw floating video covers (e.g. Reels or TikTok) must be the active foreground window
-         * to avoid misplacing covers over background apps or recent-task thumbnails.
-         * Apps using full-screen blocking (such as Back navigation to leave the block) do not have this restriction.
-         */
-        fun isEligible(app: ResolvedBlockableApp): Boolean = app.coverDetector == null || foregroundPackage == app.packageId
-
-        /**
-         * Checks whether [app] is active on screen:
-         * - Cover-based apps must have focused foreground presence.
-         * - Non-cover apps only require a visible application window.
-         */
+        // Covers require foreground focus; other apps only need a visible window.
         fun isVisible(app: ResolvedBlockableApp): Boolean = if (app.coverDetector != null) {
-            isEligible(app)
+            foregroundPackage == app.packageId
         } else {
             roots.values.any { it?.packageName?.toString() == app.packageId }
         }
@@ -293,18 +293,17 @@ internal class ContentScanner(
         detectionMethod: DetectionMethod,
         appWindows: AppWindows,
     ): Boolean {
-        // Check the window title and the last tracked activity name. A rule such as
-        // "StoryViewerActivity" can match a full name that includes the app's package prefix.
-        fun matchesActivity(method: DetectionMethod.ActivityName): Boolean = appWindows.screenNames(windowId)
-            .any { it.contains(method.activityName, ignoreCase = true) }
-
-        // This rule depends only on the activity name, so no view-tree scan is needed, even if it doesn't match.
-        if (detectionMethod is DetectionMethod.ActivityName) return matchesActivity(detectionMethod)
+        if (detectionMethod is DetectionMethod.ActivityName) {
+            return appWindows.matchesActivity(windowId, detectionMethod.activityName)
+        }
 
         if (detectionMethod is DetectionMethod.AnyOf) {
-            // Fast-path: if any alternative is an activity rule matching the current screen, accept immediately.
-            val activityMatch = detectionMethod.detectionMethods.any { it is DetectionMethod.ActivityName && matchesActivity(it) }
-            if (activityMatch) return true
+            if (detectionMethod.detectionMethods.any {
+                    it is DetectionMethod.ActivityName && appWindows.matchesActivity(windowId, it.activityName)
+                }
+            ) {
+                return true
+            }
 
             // ID-only alternatives can use Android's indexed view lookup instead of walking the full tree.
             if (detectionMethod.detectionMethods.all { it is DetectionMethod.ViewId }) {

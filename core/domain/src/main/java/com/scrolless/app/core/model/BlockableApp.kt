@@ -170,7 +170,6 @@ enum class BlockableApp(
             "com.ss.android.ugc.aweme",
         ),
         detectionMethod = DetectionMethod.ViewId("player_view"),
-        // Keep the app open so the user can reach its native tabs while the video is covered.
         // TikTok Stories play through the same player_view as regular feed videos, so no need to add extra detection
         blockAction = ContentBlockAction.CoverVideoRegion,
         // Translated recipient labels survive resource-ID renaming across TikTok builds.
@@ -304,6 +303,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             }
 
             is DetectionMethod.NodeStructure -> false
+
             // Activity names are resolved at the window/component level, not within individual view nodes.
             is DetectionMethod.ActivityName -> false
 
