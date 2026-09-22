@@ -258,8 +258,6 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
         timerJob?.cancel()
         timerJob = null
-        snapAnimator?.cancel()
-        snapAnimator = null
         resetDragState()
     }
 
@@ -279,12 +277,20 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         exitAnimationJob = null
         wiggleAnimator?.cancel()
         wiggleAnimator = null
+        cancelSnapAnimation()
         if (view == null) return
         view.removeCallbacks(enterAnimationRunnable)
         // Cancelling an exit animation also calls onAnimationEnd. Detach it before cancelling
         // so it cannot remove the timer we are about to reuse.
         view.animate().setListener(null)
         view.animate().cancel()
+    }
+
+    private fun cancelSnapAnimation() {
+        // cancel() also calls onAnimationEnd; an interrupted snap must not save or vibrate.
+        snapAnimator?.removeAllListeners()
+        snapAnimator?.cancel()
+        snapAnimator = null
     }
 
     // Combine saved usage with this session, counting only the current day or interval.
@@ -346,7 +352,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 // Stop any previous snap so the timer follows the new drag immediately.
-                snapAnimator?.cancel()
+                cancelSnapAnimation()
                 resetDragState()
                 // Rotation or resizing may have changed the available space since the timer appeared.
                 screenBounds = calculateScreenBounds()
@@ -485,7 +491,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         val startX = params.x
         val startY = params.y
 
-        snapAnimator?.cancel()
+        cancelSnapAnimation()
         snapAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
             duration = 300
             interpolator = DecelerateInterpolator()
@@ -519,15 +525,18 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         moveTimerTo(params.x, params.y)
     }
 
-    /** Every position change applies the same vertical limit, including before attachment. */
+    /** Every position change stays within the allowed area, including before attachment. */
     private fun moveTimerTo(x: Int, y: Int) {
         val view = rootView ?: return
         val params = layoutParams ?: return
+        val bounds = screenBounds ?: return
+        val width = view.width.takeIf { it > 0 } ?: view.measuredWidth
         val height = view.height.takeIf { it > 0 } ?: view.measuredHeight
+        val allowedX = x.coerceIn(0, (bounds.width - width).coerceAtLeast(0))
         val allowedY = y.coerceIn(0, maximumTimerY(height))
-        if (params.x == x && params.y == allowedY) return
+        if (params.x == allowedX && params.y == allowedY) return
 
-        params.x = x
+        params.x = allowedX
         params.y = allowedY
         if (view.isAttachedToWindow) {
             try {
