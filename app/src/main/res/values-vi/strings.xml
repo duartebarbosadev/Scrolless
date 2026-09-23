@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">Video TikTok đã bị chặn</string>
     <string name="tiktok_blocked_description">Sử dụng các tab bên dưới để mở Hộp thư hoặc Hồ sơ.</string>
+    <string name="instagram_feed_blocked_title">Video Instagram đã bị chặn</string>
+    <string name="instagram_feed_blocked_description">Sử dụng các tab bên dưới để mở Hộp thư hoặc Hồ sơ.</string>
 </resources>

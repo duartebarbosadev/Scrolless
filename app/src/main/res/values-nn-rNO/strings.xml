@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok-videoar er blokkerte</string>
     <string name="tiktok_blocked_description">Bruk fanene nedanfor til å opne Innboks eller Profil.</string>
+    <string name="instagram_feed_blocked_title">Instagram-videoar er blokkerte</string>
+    <string name="instagram_feed_blocked_description">Bruk fanene nedanfor til å opne Innboks eller Profil.</string>
 </resources>
