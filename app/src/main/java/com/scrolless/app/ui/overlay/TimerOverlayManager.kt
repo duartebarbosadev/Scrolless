@@ -22,6 +22,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.graphics.Typeface
@@ -32,6 +33,7 @@ import android.view.Gravity
 import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
@@ -69,6 +71,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     private var layoutParams: WindowManager.LayoutParams? = null
 
     private var snapAnimator: ValueAnimator? = null
+    private var wiggleAnimator: ObjectAnimator? = null
+    private val enterAnimationRunnable = Runnable { startEnterAnimation() }
     private var velocityTracker: android.view.VelocityTracker? = null
 
     private lateinit var serviceContext: Context
@@ -87,9 +91,11 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     private var initialTouchX = 0f
     private var initialTouchY = 0f
     private var isDragging = false
+    private var touchSlop = 0
 
     fun attachServiceContext(context: Context) {
         serviceContext = context
+        touchSlop = ViewConfiguration.get(context).scaledTouchSlop
         windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     }
 
@@ -114,11 +120,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         showOverlay(sessionStartAt, intervalUsage, intervalLengthMillis)
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun showOverlay(sessionStartAt: Long, usage: IntervalUsage, windowLengthMillis: Long) {
-        if (rootView != null) {
-            cleanupView()
-        }
         if (!::serviceContext.isInitialized) {
             Timber.w("Timer overlay requested before service context was attached")
             return
@@ -129,9 +131,37 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         this.usage = usage
         this.windowLengthMillis = windowLengthMillis
 
-        // Include saved usage immediately, so the timer does not briefly start at zero.
+        val isNewView = rootView == null
+        if (isNewView) createOverlayView()
+        val view = rootView ?: return
+
+        // New and reused timers start the session with the same text and position checks.
+        stopOverlayAnimations(view)
+        view.rotation = 0f
+        view.translationX = 0f
+        view.alpha = if (isNewView) 0f else 1f
+        timerTextView?.text = displayedDurationAt(System.currentTimeMillis()).formatAsTime()
+        screenBounds = calculateScreenBounds()
+        if (isNewView) {
+            // Measure before attaching so saved positions respect the timer's full height.
+            val measureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            view.measure(measureSpec, measureSpec)
+        }
+        keepTimerInAllowedArea()
+
+        try {
+            if (isNewView) wm.addView(view, layoutParams)
+            startTimer()
+            if (isNewView) view.post(enterAnimationRunnable)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to show overlay")
+            cleanupView()
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun createOverlayView() {
         timerTextView = TextView(serviceContext).apply {
-            text = displayedDurationAt(System.currentTimeMillis()).formatAsTime()
             textSize = 18f // sp
             typeface = Typeface.DEFAULT_BOLD
             setTextColor(Color.WHITE)
@@ -161,11 +191,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             setOnTouchListener { _, event ->
                 handleTouch(event)
             }
+            addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> keepTimerInAllowedArea() }
         }
-
-        // Get saved position
-        val positionX = userSettingsStore.getTimerOverlayPositionX().value
-        val positionY = userSettingsStore.getTimerOverlayPositionY().value
 
         layoutParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -175,23 +202,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
             PixelFormat.TRANSLUCENT,
         ).apply {
             gravity = Gravity.TOP or Gravity.END
-            x = positionX
-            y = positionY
-        }
-
-        // Cache current screen bounds to avoid querying on every drag/update.
-        screenBounds = calculateScreenBounds()
-
-        try {
-            // Start invisible for enter animation
-            rootView?.alpha = 0f
-            wm.addView(rootView, layoutParams)
-
-            startTimer()
-            rootView?.post { startEnterAnimation() }
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to show overlay")
-            cleanupView()
+            x = userSettingsStore.getTimerOverlayPositionX().value
+            y = userSettingsStore.getTimerOverlayPositionY().value
         }
     }
 
@@ -234,9 +246,9 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         rootView = null // Repeated cleanup must not try to remove the same view twice.
         timerTextView = null
 
+        stopOverlayAnimations(view)
         if (view != null) {
             try {
-                view.animate().cancel()
                 view.visibility = View.GONE
                 windowManager?.removeView(view)
             } catch (e: Exception) {
@@ -246,22 +258,39 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
         timerJob?.cancel()
         timerJob = null
-        exitAnimationJob?.cancel()
-        exitAnimationJob = null
-        snapAnimator?.cancel()
-        snapAnimator = null
-        velocityTracker?.recycle()
-        velocityTracker = null
+        resetDragState()
     }
 
     private fun startTimer() {
         timerJob?.cancel()
         timerJob = coroutineScope.launch {
             while (true) {
-                timerTextView?.text = displayedDurationAt(System.currentTimeMillis()).formatAsTime()
+                // showOverlay already displayed the current total.
                 delay(1000.milliseconds)
+                timerTextView?.text = displayedDurationAt(System.currentTimeMillis()).formatAsTime()
             }
         }
+    }
+
+    private fun stopOverlayAnimations(view: View?) {
+        exitAnimationJob?.cancel()
+        exitAnimationJob = null
+        wiggleAnimator?.cancel()
+        wiggleAnimator = null
+        cancelSnapAnimation()
+        if (view == null) return
+        view.removeCallbacks(enterAnimationRunnable)
+        // Cancelling an exit animation also calls onAnimationEnd. Detach it before cancelling
+        // so it cannot remove the timer we are about to reuse.
+        view.animate().setListener(null)
+        view.animate().cancel()
+    }
+
+    private fun cancelSnapAnimation() {
+        // cancel() also calls onAnimationEnd; an interrupted snap must not save or vibrate.
+        snapAnimator?.removeAllListeners()
+        snapAnimator?.cancel()
+        snapAnimator = null
     }
 
     // Combine saved usage with this session, counting only the current day or interval.
@@ -311,7 +340,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         val view = rootView ?: return
         // Draw attention to the final usage total before the timer disappears.
 
-        ObjectAnimator.ofFloat(view, View.ROTATION, 0f, 8f, -8f, 5f, -5f, 3f, -3f, 0f).apply {
+        wiggleAnimator?.cancel()
+        wiggleAnimator = ObjectAnimator.ofFloat(view, View.ROTATION, 0f, 8f, -8f, 5f, -5f, 3f, -3f, 0f).apply {
             duration = 500
             start()
         }
@@ -319,139 +349,160 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
 
     private fun handleTouch(event: MotionEvent): Boolean {
         val params = layoutParams ?: return false
-        val wm = windowManager ?: return false
-        val bounds = screenBounds ?: calculateScreenBounds().also { screenBounds = it } ?: return false
-
-        when (event.action) {
+        when (event.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
                 // Stop any previous snap so the timer follows the new drag immediately.
-                snapAnimator?.cancel()
-                velocityTracker?.recycle()
+                cancelSnapAnimation()
+                resetDragState()
+                // Rotation or resizing may have changed the available space since the timer appeared.
+                screenBounds = calculateScreenBounds()
+                keepTimerInAllowedArea()
                 velocityTracker = android.view.VelocityTracker.obtain()
-                velocityTracker?.addMovement(event)
+                trackScreenMovement(event)
 
                 initialX = params.x
                 initialY = params.y
                 initialTouchX = event.rawX
                 initialTouchY = event.rawY
-                isDragging = false
                 return true
             }
 
             MotionEvent.ACTION_MOVE -> {
-                velocityTracker?.addMovement(event)
+                trackScreenMovement(event)
                 val deltaX = (event.rawX - initialTouchX).toInt()
                 val deltaY = (event.rawY - initialTouchY).toInt()
 
-                // This drag calculation measures x from the right edge, so moving right reduces x.
-                params.x = initialX - deltaX
-                params.y = initialY + deltaY
-
-                try {
-                    wm.updateViewLayout(rootView, params)
-                } catch (e: Exception) {
-                    Timber.e(e)
-                }
+                // Ignore small finger movements until the user clearly starts dragging.
+                if (!isDragging && abs(deltaX) <= touchSlop && abs(deltaY) <= touchSlop) return true
                 isDragging = true
+
+                // This drag calculation measures x from the right edge, so moving right reduces x.
+                moveTimerTo(initialX - deltaX, initialY + deltaY)
                 return true
             }
 
             MotionEvent.ACTION_UP -> {
-                velocityTracker?.addMovement(event)
+                trackScreenMovement(event)
                 velocityTracker?.computeCurrentVelocity(1000)
 
                 if (isDragging) {
                     val velocityX = velocityTracker?.xVelocity ?: 0f
                     val velocityY = velocityTracker?.yVelocity ?: 0f
 
-                    val viewWidth = rootView?.width ?: 0
-                    val viewHeight = rootView?.height ?: 0
-                    val minX = 0
-                    val maxX = (bounds.width - viewWidth).coerceAtLeast(0)
-                    val minY = 0
-                    val maxY = (bounds.height - viewHeight).coerceAtLeast(0)
-
-                    val currentX = params.x.coerceIn(minX, maxX)
-                    val currentY = params.y.coerceIn(minY, maxY)
-
-                    val flingThreshold = 1000f // pixels/sec
-
-                    var targetX = currentX
-                    var targetY = currentY
-
-                    // A fast release continues toward an edge; a slow release snaps to the nearest one.
-                    if (abs(velocityX) > flingThreshold || abs(velocityY) > flingThreshold) {
-                        // Work out how long this movement would take to reach a left or right edge.
-                        val tX = if (velocityX > 0) {
-                            currentX.toFloat() / velocityX // Time to reach 0
-                        } else if (velocityX < 0) {
-                            (currentX - maxX).toFloat() / velocityX // Time to reach maxX
-                        } else {
-                            Float.POSITIVE_INFINITY
-                        }
-
-                        // Do the same for the top and bottom edges.
-                        val tY = if (velocityY > 0) {
-                            (maxY - currentY).toFloat() / velocityY // Time to reach maxY
-                        } else if (velocityY < 0) {
-                            -currentY.toFloat() / velocityY // Time to reach 0
-                        } else {
-                            Float.POSITIVE_INFINITY
-                        }
-
-                        // Stop at whichever edge the fling would reach first.
-                        val t = minOf(tX, tY)
-
-                        // Keep the landing point inside the screen so the timer stays reachable.
-                        targetX = (currentX - velocityX * t).toInt().coerceIn(minX, maxX)
-                        targetY = (currentY + velocityY * t).toInt().coerceIn(minY, maxY)
-                    } else {
-                        // For a slow release, move the shortest distance to an edge.
-                        val distRight = currentX // x=0
-                        val distLeft = maxX - currentX // x=maxX
-                        val distTop = currentY // y=0
-                        val distBottom = maxY - currentY // y=maxY
-
-                        val minDist = minOf(distRight, distLeft, distTop, distBottom)
-
-                        when (minDist) {
-                            distRight -> targetX = minX
-                            distLeft -> targetX = maxX
-                            distTop -> targetY = minY
-                            distBottom -> targetY = maxY
-                        }
-                    }
-
-                    snapToPosition(targetX, targetY)
+                    snapAfterDrag(velocityX, velocityY)
                 }
 
-                velocityTracker?.recycle()
-                velocityTracker = null
+                resetDragState()
+                return true
+            }
+
+            MotionEvent.ACTION_CANCEL -> {
+                // Android interrupted the gesture; discard its velocity instead of flinging.
+                resetDragState()
                 return true
             }
         }
         return false
     }
 
+    private fun trackScreenMovement(event: MotionEvent) {
+        val tracker = velocityTracker ?: return
+        // The window follows the finger, so local coordinates hide most of its movement.
+        // Measure velocity on the screen, just like the drag position above.
+        val screenEvent = MotionEvent.obtain(event)
+        screenEvent.offsetLocation(event.rawX - event.x, event.rawY - event.y)
+        tracker.addMovement(screenEvent)
+        screenEvent.recycle()
+    }
+
+    private fun resetDragState() {
+        isDragging = false
+        velocityTracker?.recycle()
+        velocityTracker = null
+    }
+
+    /** Keeps the existing fling direction or chooses the nearest edge for a slow release. */
+    private fun snapAfterDrag(velocityX: Float, velocityY: Float) {
+        val params = layoutParams ?: return
+        val bounds = screenBounds ?: return
+        val viewWidth = rootView?.width ?: 0
+        val viewHeight = rootView?.height ?: 0
+        val horizontalRange = timerPositionRange(bounds.width - viewWidth)
+        val verticalRange = timerPositionRange(maximumTimerY(viewHeight))
+        val minX = horizontalRange.first
+        val maxX = horizontalRange.last
+        val minY = verticalRange.first
+        val maxY = verticalRange.last
+
+        val currentX = params.x.coerceIn(minX, maxX)
+        val currentY = params.y.coerceIn(minY, maxY)
+
+        val flingThreshold = 1000f // pixels/sec
+
+        var targetX = currentX
+        var targetY = currentY
+
+        // A fast release continues toward an edge; a slow release snaps to the nearest one.
+        if (abs(velocityX) > flingThreshold || abs(velocityY) > flingThreshold) {
+            // Work out how long this movement would take to reach a left or right edge.
+            val tX = if (velocityX > 0) {
+                (currentX - minX).toFloat() / velocityX
+            } else if (velocityX < 0) {
+                (currentX - maxX).toFloat() / velocityX // Time to reach maxX
+            } else {
+                Float.POSITIVE_INFINITY
+            }
+
+            // Do the same for the top and bottom edges.
+            val tY = if (velocityY > 0) {
+                (maxY - currentY).toFloat() / velocityY // Time to reach maxY
+            } else if (velocityY < 0) {
+                (minY - currentY).toFloat() / velocityY
+            } else {
+                Float.POSITIVE_INFINITY
+            }
+
+            // Stop at whichever edge the fling would reach first.
+            val t = minOf(tX, tY)
+
+            // Keep the landing point inside the screen so the timer stays reachable.
+            targetX = (currentX - velocityX * t).toInt().coerceIn(minX, maxX)
+            targetY = (currentY + velocityY * t).toInt().coerceIn(minY, maxY)
+        } else {
+            // For a slow release, move the shortest distance to an edge.
+            val distRight = currentX - minX
+            val distLeft = maxX - currentX
+            val distTop = currentY - minY
+            val distBottom = maxY - currentY
+
+            val minDist = minOf(distRight, distLeft, distTop, distBottom)
+
+            when (minDist) {
+                distRight -> targetX = minX
+                distLeft -> targetX = maxX
+                distTop -> targetY = minY
+                distBottom -> targetY = maxY
+            }
+        }
+
+        snapToPosition(targetX, targetY)
+    }
+
     private fun snapToPosition(targetX: Int, targetY: Int) {
         val params = layoutParams ?: return
-        val wm = windowManager ?: return
         val startX = params.x
         val startY = params.y
 
-        snapAnimator?.cancel()
+        cancelSnapAnimation()
         snapAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
             duration = 300
             interpolator = DecelerateInterpolator()
             addUpdateListener { animation ->
                 val fraction = animation.animatedValue as Float
-                params.x = (startX + (targetX - startX) * fraction).toInt()
-                params.y = (startY + (targetY - startY) * fraction).toInt()
-                try {
-                    wm.updateViewLayout(rootView, params)
-                } catch (_: Exception) {
-                    // The overlay may have been removed while this animation was still running.
-                }
+                moveTimerTo(
+                    x = (startX + (targetX - startX) * fraction).toInt(),
+                    y = (startY + (targetY - startY) * fraction).toInt(),
+                )
             }
             addListener(
                 object : AnimatorListenerAdapter() {
@@ -462,6 +513,46 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
                 },
             )
             start()
+        }
+    }
+
+    /** Keep the bottom of the timer above the reserved lower fifth of the usable screen. */
+    private fun maximumTimerY(timerHeight: Int): Int {
+        val screenHeight = screenBounds?.height ?: return 0
+        return ((screenHeight * TIMER_ALLOWED_HEIGHT_FRACTION).toInt() - timerHeight).coerceAtLeast(0)
+    }
+
+    private fun timerPositionRange(maxPosition: Int): IntRange {
+        val availableSpace = maxPosition.coerceAtLeast(0)
+        // Reduce the margin when the timer nearly fills the available area.
+        val margin = dpToPx(TIMER_EDGE_MARGIN_DP).coerceAtMost(availableSpace / 2)
+        return margin..(availableSpace - margin)
+    }
+
+    private fun keepTimerInAllowedArea() {
+        val params = layoutParams ?: return
+        moveTimerTo(params.x, params.y)
+    }
+
+    /** Every position change stays within the allowed area, including before attachment. */
+    private fun moveTimerTo(x: Int, y: Int) {
+        val view = rootView ?: return
+        val params = layoutParams ?: return
+        val bounds = screenBounds ?: return
+        val width = view.width.takeIf { it > 0 } ?: view.measuredWidth
+        val height = view.height.takeIf { it > 0 } ?: view.measuredHeight
+        val allowedX = x.coerceIn(timerPositionRange(bounds.width - width))
+        val allowedY = y.coerceIn(timerPositionRange(maximumTimerY(height)))
+        if (params.x == allowedX && params.y == allowedY) return
+
+        params.x = allowedX
+        params.y = allowedY
+        if (view.isAttachedToWindow) {
+            try {
+                windowManager?.updateViewLayout(view, params)
+            } catch (e: Exception) {
+                Timber.w(e, "Could not move timer overlay")
+            }
         }
     }
 
@@ -513,13 +604,21 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
     companion object {
         private const val EXIT_ANIMATION_DURATION_MS = 250L
         private const val SUMMARY_DISPLAY_DURATION_MS = 1200L
+        private const val TIMER_ALLOWED_HEIGHT_FRACTION = 0.8f
+        private const val TIMER_EDGE_MARGIN_DP = 2f
     }
 
     /**
      * Keeps drag events on the timer container instead of handing them to its text view.
      * This makes the whole timer draggable, including touches that start on the text.
      */
-    private class DragInterceptFrameLayout(context: Context) : FrameLayout(context) {
+    private inner class DragInterceptFrameLayout(context: Context) : FrameLayout(context) {
+        override fun onConfigurationChanged(newConfig: Configuration) {
+            super.onConfigurationChanged(newConfig)
+            screenBounds = calculateScreenBounds()
+            keepTimerInAllowedArea()
+        }
+
         override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
             return true
         }
