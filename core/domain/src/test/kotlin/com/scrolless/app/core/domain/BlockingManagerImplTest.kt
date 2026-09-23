@@ -62,7 +62,7 @@ class BlockingManagerImplTest {
     fun `a daily limit selected before it was configured blocks nothing`() = runTest {
         manager.init(BlockOption.DailyLimit, BlockingSettings(dailyLimitMillis = 0L))
 
-        assertFalse(manager.onEnterBlockedContent())
+        assertFalse(manager.onEnterBlockedContent(dailyUsageMillis = 60_000L))
         assertEquals(BlockingResult.Continue, manager.onPeriodicCheck(elapsedTime = 60_000L))
     }
 
@@ -70,7 +70,7 @@ class BlockingManagerImplTest {
     fun `an interval timer selected before it was configured blocks nothing`() = runTest {
         manager.init(BlockOption.IntervalTimer, BlockingSettings(intervalAllowanceMillis = 0L, intervalLengthMillis = 0L))
 
-        assertFalse(manager.onEnterBlockedContent())
+        assertFalse(manager.onEnterBlockedContent(dailyUsageMillis = 60_000L))
         assertEquals(BlockingResult.Continue, manager.onPeriodicCheck(elapsedTime = 60_000L))
     }
 
@@ -78,7 +78,15 @@ class BlockingManagerImplTest {
     fun `a configured daily limit blocks once it is reached`() = runTest {
         manager.init(BlockOption.DailyLimit, BlockingSettings(dailyLimitMillis = 30_000L))
 
-        assertTrue(manager.onEnterBlockedContent())
+        assertTrue(manager.onEnterBlockedContent(dailyUsageMillis = 60_000L))
+    }
+
+    @Test
+    fun `entry uses the supplied usage shared with the timer`() = runTest {
+        manager.init(BlockOption.DailyLimit, BlockingSettings(dailyLimitMillis = 30_000L))
+
+        assertFalse(manager.onEnterBlockedContent(dailyUsageMillis = 10_000L))
+        assertTrue(manager.onEnterBlockedContent(dailyUsageMillis = 30_000L))
     }
 
     private class FakeSessionTracker(private val dailyUsageMillis: Long) : SessionTracker {

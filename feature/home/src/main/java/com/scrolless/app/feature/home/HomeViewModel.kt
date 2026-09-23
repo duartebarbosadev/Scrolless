@@ -36,7 +36,6 @@ import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.math.min
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
@@ -67,7 +66,6 @@ class HomeViewModel @Inject constructor(
     private val sessionSegmentStore: SessionSegmentStore,
 ) : ViewModel() {
 
-    private val _showComingSoonSnackBar = MutableStateFlow(false)
     private val _selectedAveragePeriod = MutableStateFlow(UsageAveragePeriod.LAST_WEEK)
     private val selectedAnalyticsDate = MutableStateFlow(ZonedDateTime.now().toLocalDate())
     private val currentDate = currentDayFlow().stateIn(
@@ -181,7 +179,6 @@ class HomeViewModel @Inject constructor(
     val uiState: StateFlow<HomeUiState> = combine(
         usageSnapshot,
         userSettingsStore.getPauseUntil(),
-        _showComingSoonSnackBar,
         requestReview,
         userSettingsStore.getHasSeenAccessibilityExplainer(),
         userSettingsStore.getPauseDuration(),
@@ -190,7 +187,6 @@ class HomeViewModel @Inject constructor(
     ) {
             usage,
             pauseUntil,
-            showComingSoonSnackBar,
             requestReview,
             hasSeenAccessibilityExplainer,
             pauseDuration,
@@ -213,7 +209,6 @@ class HomeViewModel @Inject constructor(
             progress = progress,
             pauseUntilMillis = pauseUntil,
             pauseDurationMillis = pauseDuration,
-            showComingSoonSnackBar = showComingSoonSnackBar,
             requestReview = requestReview,
             hasSeenAccessibilityExplainer = hasSeenAccessibilityExplainer,
             hasLoadedSettings = true,
@@ -302,12 +297,7 @@ class HomeViewModel @Inject constructor(
         if (usage >= limit) return PROGRESS_MAX
 
         val rawProgress = ((usage.toDouble() / limit.toDouble()) * PROGRESS_MAX).toInt()
-        return min(PROGRESS_MAX - 1, rawProgress.coerceAtLeast(1))
-    }
-
-    fun onSnackbarShown() {
-        Timber.v("Snackbar dismissed")
-        _showComingSoonSnackBar.value = false
+        return rawProgress.coerceIn(1, PROGRESS_MAX - 1)
     }
 
     fun onReviewRequestHandled() {
@@ -413,10 +403,7 @@ data class HomeUiState(
     val intervalUsage: IntervalUsage = IntervalUsage.NOT_STARTED,
     val currentUsage: Long = 0L,
     val progress: Int = 0,
-    val showComingSoonSnackBar: Boolean = false,
     val requestReview: Boolean = false,
-    val isDevMode: Boolean = false,
-    val playStoreUrl: String? = null,
     val pauseUntilMillis: Long = 0L,
     val pauseDurationMillis: Long = 5 * 60 * 1000L,
     val hasSeenAccessibilityExplainer: Boolean = false,

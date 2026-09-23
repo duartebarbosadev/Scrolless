@@ -19,7 +19,6 @@ package com.scrolless.app.ui.overlay
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
-import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
@@ -55,7 +54,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -166,8 +164,8 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         }
 
         // Get saved position
-        val positionX = (userSettingsStore.getTimerOverlayPositionX() as StateFlow<Int>).value
-        val positionY = (userSettingsStore.getTimerOverlayPositionY() as StateFlow<Int>).value
+        val positionX = userSettingsStore.getTimerOverlayPositionX().value
+        val positionY = userSettingsStore.getTimerOverlayPositionY().value
 
         layoutParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -313,8 +311,7 @@ class TimerOverlayManager @Inject constructor(private val userSettingsStore: Use
         val view = rootView ?: return
         // Draw attention to the final usage total before the timer disappears.
 
-        val rotation = PropertyValuesHolder.ofFloat(View.ROTATION, 0f, 8f, -8f, 5f, -5f, 3f, -3f, 0f)
-        ObjectAnimator.ofPropertyValuesHolder(view, rotation).apply {
+        ObjectAnimator.ofFloat(view, View.ROTATION, 0f, 8f, -8f, 5f, -5f, 3f, -3f, 0f).apply {
             duration = 500
             start()
         }

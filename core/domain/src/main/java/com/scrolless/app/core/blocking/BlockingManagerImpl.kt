@@ -84,11 +84,10 @@ class BlockingManagerImpl @Inject constructor(
         BlockOption.NothingSelected -> NoBlockHandler()
     }
 
-    override suspend fun onEnterBlockedContent(): Boolean = handlerMutex.withLock {
-        val currentDailyUsage = sessionTracker.getDailyUsage()
-        val shouldBlock = handler.onEnterContent(currentDailyUsage)
+    override suspend fun onEnterBlockedContent(dailyUsageMillis: Long): Boolean = handlerMutex.withLock {
+        val shouldBlock = handler.onEnterContent(dailyUsageMillis)
 
-        Timber.d("onEnterBlockedContent: daily=%d -> shouldBlock=%s", currentDailyUsage, shouldBlock)
+        Timber.d("onEnterBlockedContent: daily=%d -> shouldBlock=%s", dailyUsageMillis, shouldBlock)
         shouldBlock
     }
 

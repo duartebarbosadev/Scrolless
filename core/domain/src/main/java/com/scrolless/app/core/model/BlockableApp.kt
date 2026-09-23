@@ -64,6 +64,12 @@ sealed class DetectionMethod {
      * This supports apps that expose different screens for the same kind of video.
      */
     data class AnyOf(val detectionMethods: List<DetectionMethod>) : DetectionMethod()
+
+    /**
+     * Matches a blocked screen by checking if [activityName] is contained within the window title
+     * or activity class name (used for features that run in a dedicated viewer, such as Facebook Stories).
+     */
+    data class ActivityName(val activityName: String) : DetectionMethod()
 }
 
 /**
@@ -130,10 +136,12 @@ enum class BlockableApp(
     private val detectionMethod: DetectionMethod,
     private val blockAction: ContentBlockAction,
     private val dmExemptionRule: DmExemptionRule? = null,
+    private val storiesDetectionMethod: DetectionMethod? = null,
 ) {
     REELS(
         packageIds = listOf("com.instagram.android"),
         detectionMethod = DetectionMethod.ViewId("clips_viewer_view_pager"),
+        storiesDetectionMethod = DetectionMethod.ViewId("reel_viewer_root"),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
         // Instagram DM Reels display sender info and a reply bar, while algorithmic suggestion
         // carousels introduce a "suggested_title" which must forbid the exemption.
@@ -155,7 +163,6 @@ enum class BlockableApp(
         detectionMethod = DetectionMethod.ViewId("reel_player_page_container"),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
-    // Keep the app open so the user can reach its native tabs while the video is covered.
     TIKTOK(
         packageIds = listOf(
             "com.zhiliaoapp.musically",
@@ -163,12 +170,14 @@ enum class BlockableApp(
             "com.ss.android.ugc.aweme",
         ),
         detectionMethod = DetectionMethod.ViewId("player_view"),
+        // TikTok Stories play through the same player_view as regular feed videos, so no need to add extra detection
         blockAction = ContentBlockAction.CoverVideoRegion,
         // Translated recipient labels survive resource-ID renaming across TikTok builds.
         dmExemptionRule = DmExemptionRule(
             replyLabelsBelowPlayer = TikTokDmReplyLabels,
         ),
     ),
+    // TikTok Lite Stories share the same video player view as the feed, so they are already covered by this detection.
     TIKTOK_LITE(
         packageIds = listOf("com.zhiliaoapp.musically.go"),
         detectionMethod = DetectionMethod.ViewId("simplayer_api_player_view"),
@@ -214,6 +223,7 @@ enum class BlockableApp(
                 ),
             ),
         ),
+        storiesDetectionMethod = DetectionMethod.ActivityName("StoryViewerActivity"),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     FACEBOOK_LITE(
@@ -224,21 +234,24 @@ enum class BlockableApp(
     SNAPCHAT(
         packageIds = listOf("com.snapchat.android"),
         detectionMethod = DetectionMethod.ViewId("spotlight_container"),
+        storiesDetectionMethod = DetectionMethod.ViewId("opera_viewer"),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     ;
 
     fun getBlockAction(): ContentBlockAction = blockAction
 
-    fun getDetectionMethod(): DetectionMethod = detectionMethod
+    fun getDetectionMethod(includeStories: Boolean = false): DetectionMethod = if (includeStories && storiesDetectionMethod != null) {
+        DetectionMethod.AnyOf(listOf(detectionMethod, storiesDetectionMethod))
+    } else {
+        detectionMethod
+    }
 
     fun getDmExemptionRule(): DmExemptionRule? = dmExemptionRule
 
     fun getPackageIds(): List<String> = packageIds
 
-    fun resolvePackage(packageName: String): String? = packageName.takeIf(::matchesPackage)
-
-    private fun matchesPackage(packageName: String): Boolean = packageIds.any { it == packageName }
+    fun resolvePackage(packageName: String): String? = packageName.takeIf { it in packageIds }
 }
 
 /**
@@ -249,7 +262,7 @@ enum class BlockableApp(
 data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
     val dmExemptionRule: DmExemptionRule? get() = app.getDmExemptionRule()
 
-    fun getDetectionMethod(): DetectionMethod = app.getDetectionMethod()
+    fun getDetectionMethod(includeStories: Boolean = false): DetectionMethod = app.getDetectionMethod(includeStories)
 
     fun getBlockAction(): ContentBlockAction = app.getBlockAction()
 
@@ -257,23 +270,23 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
 
     fun getViewId(detectionMethod: DetectionMethod.ViewId): String = getViewId(detectionMethod.viewId)
 
-    fun matchesDetectionNodes(nodes: Collection<DetectionNode>): Boolean {
+    fun matchesDetectionNodes(nodes: Collection<DetectionNode>, detectionMethod: DetectionMethod = getDetectionMethod()): Boolean {
         // Group once so nested-layout checks can find children without rescanning the whole list.
         val childrenByParentId = nodes.groupBy(DetectionNode::parentNodeId)
-        return getDetectionMethod().matches(nodes, childrenByParentId)
+        return detectionMethod.matches(nodes, childrenByParentId)
     }
 
     /** Try rules that need only one node. Layout rules still need the full set of related nodes. */
-    fun matchesFastDetectionNode(node: DetectionNode): Boolean {
-        return getDetectionMethod().matchesFastNode(node)
+    fun matchesFastDetectionNode(node: DetectionNode, detectionMethod: DetectionMethod = getDetectionMethod()): Boolean {
+        return detectionMethod.matchesSimpleNode(node)
     }
 
     // Tell the screen scanner which view types matter, so it can skip unrelated layout details.
-    fun getStructuralClassNames(): Set<String> {
-        return buildSet { getDetectionMethod().collectStructuralClassNames(this) }
+    fun getStructuralClassNames(detectionMethod: DetectionMethod = getDetectionMethod()): Set<String> {
+        return buildSet { detectionMethod.collectStructuralClassNames(this) }
     }
 
-    private fun DetectionMethod.matchesFastNode(node: DetectionNode): Boolean {
+    private fun DetectionMethod.matchesSimpleNode(node: DetectionNode): Boolean {
         if (!node.isVisible) return false
         return when (this) {
             is DetectionMethod.ViewId -> node.viewId == getViewId(this)
@@ -291,7 +304,10 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
 
             is DetectionMethod.NodeStructure -> false
 
-            is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matchesFastNode(node) }
+            // Activity names are resolved at the window/component level, not within individual view nodes.
+            is DetectionMethod.ActivityName -> false
+
+            is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matchesSimpleNode(node) }
         }
     }
 
@@ -307,27 +323,30 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             is DetectionMethod.ViewId,
             is DetectionMethod.ContentDescriptions,
             is DetectionMethod.ContentDescriptionPrefix,
+            is DetectionMethod.ActivityName,
             -> Unit
         }
     }
 
     private fun DetectionMethod.matches(nodes: Collection<DetectionNode>, childrenByParentId: Map<Int?, List<DetectionNode>>): Boolean {
         return when (this) {
-            is DetectionMethod.ViewId -> nodes.any { node -> matchesFastNode(node) }
-
-            is DetectionMethod.ContentDescriptions -> nodes.any { node -> matchesFastNode(node) }
-
-            is DetectionMethod.ContentDescriptionPrefix -> nodes.any { node -> matchesFastNode(node) }
+            is DetectionMethod.ViewId,
+            is DetectionMethod.ContentDescriptions,
+            is DetectionMethod.ContentDescriptionPrefix,
+            -> nodes.any { node -> matchesSimpleNode(node) }
 
             is DetectionMethod.NodeStructure -> nodes.any { node ->
-                matchesNode(node, childrenByParentId)
+                matchesStructure(node, childrenByParentId)
             }
+
+            // Activity names are resolved at the window/component level, not within the node hierarchy.
+            is DetectionMethod.ActivityName -> false
 
             is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matches(nodes, childrenByParentId) }
         }
     }
 
-    private fun DetectionMethod.NodeStructure.matchesNode(
+    private fun DetectionMethod.NodeStructure.matchesStructure(
         node: DetectionNode,
         childrenByParentId: Map<Int?, List<DetectionNode>>,
     ): Boolean {
@@ -350,7 +369,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
     ): Boolean {
         // Allow extra wrapper views between the required parts of the video layout.
         return childrenByParentId[parentNodeId].orEmpty().any { child ->
-            matchesNode(child, childrenByParentId) || hasMatchingDescendant(child.nodeId, childrenByParentId)
+            matchesStructure(child, childrenByParentId) || hasMatchingDescendant(child.nodeId, childrenByParentId)
         }
     }
 }

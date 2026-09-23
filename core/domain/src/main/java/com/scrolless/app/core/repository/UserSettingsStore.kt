@@ -18,16 +18,17 @@ package com.scrolless.app.core.repository
 
 import java.time.LocalDate
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 interface UserSettingsStore {
 
     suspend fun setTimerOverlayToggle(enabled: Boolean)
     fun getTimerOverlayEnabled(): Flow<Boolean>
 
-    fun getTimerOverlayPositionY(): Flow<Int>
+    fun getTimerOverlayPositionY(): StateFlow<Int>
     suspend fun setTimerOverlayPositionY(positionY: Int)
 
-    fun getTimerOverlayPositionX(): Flow<Int>
+    fun getTimerOverlayPositionX(): StateFlow<Int>
     suspend fun setTimerOverlayPositionX(positionX: Int)
 
     fun getWaitingForAccessibility(): Flow<Boolean>
@@ -44,6 +45,9 @@ interface UserSettingsStore {
 
     fun getAllowVideosSentByDm(): Flow<Boolean>
     suspend fun setAllowVideosSentByDm(checked: Boolean)
+
+    fun getIncludeStories(): Flow<Boolean>
+    suspend fun setIncludeStories(enabled: Boolean)
 
     fun getFirstLaunchAt(): Flow<Long>
     fun getFirstLaunchDate(): Flow<LocalDate?>
