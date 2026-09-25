@@ -43,7 +43,7 @@
 
         <activity
             android:name="com.scrolless.app.ui.MainActivity"
-            android:theme="@style/Theme.Scrolless"
+            android:theme="@style/Theme.Scrolless.Starting"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

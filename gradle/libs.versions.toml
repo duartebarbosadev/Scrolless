@@ -12,6 +12,7 @@ androidx-lifecycle-compose = "2.11.0"
 androidx-lifecycle-runtime-compose = "2.11.0"
 androidx-navigation3 = "1.1.4"
 androidx-palette = "1.0.0"
+androidx-splashscreen = "1.2.0"
 androidx-window = "1.5.1"
 androidxHiltNavigationCompose = "1.4.0"
 animationCore = "1.11.4"
@@ -73,6 +74,7 @@ androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runt
 androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "androidx-navigation3" }
 androidx-navigation3-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "androidx-lifecycle-compose" }
 androidx-palette = { module = "androidx.palette:palette", version.ref = "androidx-palette" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashscreen" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }

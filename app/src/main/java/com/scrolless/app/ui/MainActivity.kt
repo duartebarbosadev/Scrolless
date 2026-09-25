@@ -17,12 +17,15 @@
 package com.scrolless.app.ui
 
 import android.os.Bundle
+import android.os.SystemClock
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
@@ -39,7 +42,17 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalSharedTransitionApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+        // Hold the splash until Home has its persisted state, so the first visible frame
+        // is the real content instead of defaults that immediately jump (seen as flicker).
+        var isContentReady = false
+        val splashStartedAt = SystemClock.uptimeMillis()
+        splashScreen.setKeepOnScreenCondition {
+            !isContentReady && SystemClock.uptimeMillis() - splashStartedAt < MAX_SPLASH_HOLD_MILLIS
+        }
 
         setContent {
 
@@ -58,6 +71,7 @@ class MainActivity : ComponentActivity() {
                                         onNavigateToSettings = appState::navigateToSettings,
                                         accessibilityServiceClass = ScrollessBlockAccessibilityService::class.java,
                                         onRequestAppReview = ::requestAppReview,
+                                        onContentReady = { isContentReady = true },
                                         forceLegacyOverlay = forceLegacyOverlay,
                                         onForceLegacyOverlayChanged = {
                                             DebugOverlayConfig.forceLegacyOverlay.value = it
@@ -75,5 +89,9 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private companion object {
+        const val MAX_SPLASH_HOLD_MILLIS = 1_500L
     }
 }
