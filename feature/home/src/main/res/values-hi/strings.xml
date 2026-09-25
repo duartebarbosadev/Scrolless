@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">हमें एक्सेसिबिलिटी एक्सेस की आवश्यकता है</string>
     <string name="accessibility_success_description">Scrolless अब तैयार है!</string>
     <string name="accessibility_success_title">सब तैयार है!</string>
+    <string name="background_instruction_generic">Scrolless को बैकग्राउंड में चलने दें और इसके बैटरी उपयोग को \"अप्रतिबंधित\" या \"कोई प्रतिबंध नहीं\" पर सेट करें।</string>
+    <string name="background_instruction_huawei">सेटिंग्स &gt; ऐप्स &gt; ऐप लॉन्च खोलें, Scrolless ढूंढें और ऑटो-लॉन्च और बैकग्राउंड में चलाएं चालू रखते हुए इसे \"मैन्युअल रूप से प्रबंधित करें\" पर सेट करें।</string>
+    <string name="background_instruction_oneplus">Scrolless को ऑटो-लॉन्च करने दें और इसके बैटरी उपयोग को \"अप्रतिबंधित\" पर सेट करें (सेटिंग्स &gt; ऐप्स &gt; Scrolless &gt; बैटरी)।</string>
+    <string name="background_instruction_oppo">Scrolless के लिए \"ऑटो लॉन्च की अनुमति दें\" और \"बैकग्राउंड गतिविधि की अनुमति दें\" चालू करें (सेटिंग्स &gt; ऐप्स &gt; Scrolless &gt; बैटरी उपयोग)।</string>
+    <string name="background_instruction_samsung">Scrolless के बैटरी उपयोग को \"अप्रतिबंधित\" पर सेट करें और सुनिश्चित करें कि यह \"स्लीपिंग ऐप्स\" या \"डीप स्लीपिंग ऐप्स\" में न हो (सेटिंग्स &gt; बैटरी &gt; बैकग्राउंड उपयोग सीमाएं)।</string>
+    <string name="background_instruction_vivo">i Manager या सेटिंग्स &gt; बैटरी में Scrolless के लिए \"ऑटो-स्टार्ट\" और \"बैकग्राउंड में अधिक बिजली खपत की अनुमति दें\" चालू करें।</string>
+    <string name="background_instruction_xiaomi">Scrolless के लिए \"ऑटोस्टार्ट\" चालू करें और बैटरी सेवर को \"कोई प्रतिबंध नहीं\" पर सेट करें (सेटिंग्स &gt; ऐप्स &gt; ऐप्स प्रबंधित करें &gt; Scrolless)।</string>
+    <string name="background_settings_button">बैकग्राउंड सेटिंग्स खोलें</string>
+    <string name="background_step_description">हाल के ऐप्स साफ़ करने पर आपका फ़ोन Scrolless को बंद कर सकता है। ब्लॉकिंग चालू रखने के लिए:</string>
+    <string name="background_step_title">Scrolless को चालू रखें</string>
     <string name="block_all">सभी\nब्लॉक करें</string>
     <string name="close">बंद करें</string>
     <string name="daily_limit">दैनिक\nसीमा</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless काम नहीं कर रहा है\?</string>
     <string name="help_step1_description">मुख्य स्क्रीन से ब्लॉकिंग विकल्पों में से एक चुनें</string>
     <string name="help_step1_title">अपना ब्लॉक विकल्प चुनें</string>
-    <string name="help_step2_description">यदि ब्लॉकिंग काम नहीं कर रही है, तो एक्सेसिबिलिटी सेवा को अक्षम करें और फिर सक्षम करें और Scrolless के लिए बैटरी ऑप्टिमाइज़ेशन को अक्षम करने का प्रयास करें।</string>
+    <string name="help_step2_description">यदि ब्लॉकिंग काम नहीं कर रही है, तो एक्सेसिबिलिटी सेवा को अक्षम करें और फिर सक्षम करें। साथ ही Scrolless को बैकग्राउंड में चलने दें: ऑटोस्टार्ट चालू करें (Xiaomi, POCO, Redmi और इसी तरह के फ़ोन) और इसके बैटरी उपयोग को \"अप्रतिबंधित\" पर सेट करें।</string>
     <string name="help_step2_title">समस्या निवारण</string>
     <string name="help_step3_description">अभी भी समस्याएँ आ रही हैं\? हम मदद के लिए यहाँ हैं! हमारे GitHub रेपो पर पहुँचने के लिए नीचे दिए गए बटन का उपयोग करें।</string>
     <string name="help_step3_title">सहायता से संपर्क करें</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">%1$d मिनट के लिए ब्लॉकिंग रोकता है</string>
     <string name="pause_resumes_in">%1$s में फिर से शुरू होगा</string>
     <string name="resume">फिर से शुरू करें</string>
+    <string name="service_not_running_description">Android ने Scrolless को बैकग्राउंड में बंद कर दिया, इसलिए ब्लॉकिंग रुकी हुई है। ऐसा आमतौर पर तब होता है जब ऐप को हाल के ऐप्स से हटा दिया जाता है।</string>
+    <string name="service_not_running_step_background">Scrolless को बैकग्राउंड में चलने दें ताकि ऐसा दोबारा न हो।</string>
+    <string name="service_not_running_step_restart">एक्सेसिबिलिटी सेटिंग्स खोलें, Scrolless को बंद करें और फिर से चालू करें।</string>
+    <string name="service_not_running_title">Scrolless बंद हो गया</string>
     <string name="settings">सेटिंग्स</string>
     <string name="success_icon_description">सफलता चेक मार्क आइकन</string>
     <string name="time_interval">समय\nअंतराल</string>

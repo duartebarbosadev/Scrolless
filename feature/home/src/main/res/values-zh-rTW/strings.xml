@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">我們需要無障礙服務權限</string>
     <string name="accessibility_success_description">Scrolless 已準備就緒！</string>
     <string name="accessibility_success_title">一切就緒！</string>
+    <string name="background_instruction_generic">允許 Scrolless 在背景執行，並將其電池用量設為「不受限制」。</string>
+    <string name="background_instruction_huawei">開啟 設定 &gt; 應用程式 &gt; 應用程式啟動，找到 Scrolless 並設為「手動管理」，同時開啟「自動啟動」和「在背景執行」。</string>
+    <string name="background_instruction_oneplus">允許 Scrolless 自動啟動，並將其電池用量設為「不受限制」（設定 &gt; 應用程式 &gt; Scrolless &gt; 電池）。</string>
+    <string name="background_instruction_oppo">為 Scrolless 開啟「允許自動啟動」和「允許背景活動」（設定 &gt; 應用程式 &gt; Scrolless &gt; 電池用量）。</string>
+    <string name="background_instruction_samsung">將 Scrolless 的電池用量設為「不受限制」，並確認它不在「休眠中的應用程式」或「深度休眠中的應用程式」中（設定 &gt; 電池 &gt; 背景使用限制）。</string>
+    <string name="background_instruction_vivo">在 i Manager 或 設定 &gt; 電池 中為 Scrolless 開啟「自動啟動」和「允許背景高耗電」。</string>
+    <string name="background_instruction_xiaomi">為 Scrolless 開啟「自動啟動」，並將省電策略設為「無限制」（設定 &gt; 應用程式 &gt; 管理應用程式 &gt; Scrolless）。</string>
+    <string name="background_settings_button">開啟背景設定</string>
+    <string name="background_step_description">清除最近使用的應用程式時，手機可能會停止 Scrolless。若要讓封鎖持續運作：</string>
+    <string name="background_step_title">讓 Scrolless 保持執行</string>
     <string name="block_all">全部\n封鎖</string>
     <string name="close">關閉</string>
     <string name="daily_limit">每日\n限制</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless 無法運作？</string>
     <string name="help_step1_description">從主畫面選擇其中一個封鎖選項</string>
     <string name="help_step1_title">選擇您的封鎖選項</string>
-    <string name="help_step2_description">如果封鎖無效，請停用然後重新啟用無障礙服務，並嘗試停用 Scrolless 的電池最佳化。</string>
+    <string name="help_step2_description">如果封鎖無效，請停用然後重新啟用無障礙服務。同時允許 Scrolless 在背景執行：開啟自動啟動（小米、POCO、紅米及類似手機），並將其電池用量設為「不受限制」。</string>
     <string name="help_step2_title">疑難排解</string>
     <string name="help_step3_description">仍然有問題？我們隨時為您提供協助！使用下方按鈕在我們的 GitHub 儲存庫上與我們聯繫。</string>
     <string name="help_step3_title">聯絡支援</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">暫停封鎖 %1$d 分鐘</string>
     <string name="pause_resumes_in">將於 %1$s 後恢復</string>
     <string name="resume">恢復</string>
+    <string name="service_not_running_description">Android 已在背景停止 Scrolless，因此封鎖已暫停。這通常發生在從最近使用的應用程式中清除此應用程式時。</string>
+    <string name="service_not_running_step_background">允許 Scrolless 在背景執行，以免再次發生。</string>
+    <string name="service_not_running_step_restart">開啟無障礙設定，關閉 Scrolless 後再重新開啟。</string>
+    <string name="service_not_running_title">Scrolless 已被停止</string>
     <string name="settings">設定</string>
     <string name="success_icon_description">成功打勾圖示</string>
     <string name="time_interval">時間\n間隔</string>

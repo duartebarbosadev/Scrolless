@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">Potrebujeme prístup k funkciám zjednodušenia ovládania</string>
     <string name="accessibility_success_description">Scrolless je teraz pripravený!</string>
     <string name="accessibility_success_title">Všetko nastavené!</string>
+    <string name="background_instruction_generic">Povoľte aplikácii Scrolless beh na pozadí a nastavte jej využitie batérie na \"Neobmedzené\" alebo \"Bez obmedzení\".</string>
+    <string name="background_instruction_huawei">Otvorte Nastavenia &gt; Aplikácie &gt; Spúšťanie aplikácií, nájdite Scrolless a nastavte \"Spravovať manuálne\" so zapnutým Automatickým spúšťaním a Spustením na pozadí.</string>
+    <string name="background_instruction_oneplus">Povoľte automatické spúšťanie aplikácie Scrolless a nastavte jej využitie batérie na \"Neobmedzené\" (Nastavenia &gt; Aplikácie &gt; Scrolless &gt; Batéria).</string>
+    <string name="background_instruction_oppo">Zapnite \"Povoliť automatické spúšťanie\" a \"Povoliť aktivitu na pozadí\" pre Scrolless (Nastavenia &gt; Aplikácie &gt; Scrolless &gt; Využitie batérie).</string>
+    <string name="background_instruction_samsung">Nastavte využitie batérie aplikácie Scrolless na \"Neobmedzené\" a uistite sa, že nie je v zozname \"Uspané aplikácie\" ani \"Hlboko uspané aplikácie\" (Nastavenia &gt; Batéria &gt; Obmedzenia využitia na pozadí).</string>
+    <string name="background_instruction_vivo">Zapnite \"Automatické spúšťanie\" a \"Povoliť vysokú spotrebu energie na pozadí\" pre Scrolless v i Manageri alebo v Nastavenia &gt; Batéria.</string>
+    <string name="background_instruction_xiaomi">Zapnite \"Automatické spúšťanie\" pre Scrolless a nastavte Šetrič batérie na \"Bez obmedzení\" (Nastavenia &gt; Aplikácie &gt; Spravovať aplikácie &gt; Scrolless).</string>
+    <string name="background_settings_button">Otvoriť nastavenia behu na pozadí</string>
+    <string name="background_step_description">Telefón môže aplikáciu Scrolless zastaviť, keď vymažete nedávne aplikácie. Aby blokovanie naďalej fungovalo:</string>
+    <string name="background_step_title">Nechajte Scrolless bežať</string>
     <string name="block_all">Blokovať\nVšetko</string>
     <string name="close">Zavrieť</string>
     <string name="daily_limit">Denný\nLimit</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless nefunguje\?</string>
     <string name="help_step1_description">Vyberte jednu z možností blokovania na hlavnej obrazovke</string>
     <string name="help_step1_title">Vyberte si možnosť blokovania</string>
-    <string name="help_step2_description">Ak blokovanie nefunguje, vypnite a potom zapnite službu prístupnosti a skúste vypnúť optimalizáciu batérie pre Scrolless.</string>
+    <string name="help_step2_description">Ak blokovanie nefunguje, vypnite a potom zapnite službu prístupnosti. Povoľte tiež aplikácii Scrolless beh na pozadí: zapnite Automatické spúšťanie (Xiaomi, POCO, Redmi a podobné telefóny) a nastavte jej využitie batérie na \"Neobmedzené\".</string>
     <string name="help_step2_title">Riešenie problémov</string>
     <string name="help_step3_description">Stále máte problémy\? Sme tu, aby sme vám pomohli! Použite tlačidlo nižšie a kontaktujte nás na našom GitHub repo.</string>
     <string name="help_step3_title">Kontaktujte podporu</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">Pozastaví blokovanie na %1$d min</string>
     <string name="pause_resumes_in">Pokračuje o %1$s</string>
     <string name="resume">Pokračovať</string>
+    <string name="service_not_running_description">Android zastavil aplikáciu Scrolless na pozadí, takže blokovanie je pozastavené. Zvyčajne sa to stane, keď aplikáciu vymažete z nedávnych aplikácií.</string>
+    <string name="service_not_running_step_background">Povoľte aplikácii Scrolless beh na pozadí, aby sa to neopakovalo.</string>
+    <string name="service_not_running_step_restart">Otvorte nastavenia prístupnosti, vypnite Scrolless a potom ho znova zapnite.</string>
+    <string name="service_not_running_title">Scrolless bol zastavený</string>
     <string name="settings">Nastavenia</string>
     <string name="success_icon_description">Ikona začiarknutia úspechu</string>
     <string name="time_interval">Časový\nInterval</string>

@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">Necessitem accés d\'accessibilitat</string>
     <string name="accessibility_success_description">Scrolless ja està a punt!</string>
     <string name="accessibility_success_title">Tot a punt!</string>
+    <string name="background_instruction_generic">Permet que Scrolless s\'executi en segon pla i configura el seu ús de bateria com a \"Sense restriccions\".</string>
+    <string name="background_instruction_huawei">Obre Configuració &gt; Aplicacions &gt; Inici d\'aplicacions, cerca Scrolless i configura\'l a \"Gestiona manualment\" amb Inici automàtic i Execució en segon pla activats.</string>
+    <string name="background_instruction_oneplus">Permet l\'inici automàtic de Scrolless i configura el seu ús de bateria com a \"Sense restriccions\" (Configuració &gt; Aplicacions &gt; Scrolless &gt; Bateria).</string>
+    <string name="background_instruction_oppo">Activa \"Permet l\'inici automàtic\" i \"Permet l\'activitat en segon pla\" per a Scrolless (Configuració &gt; Aplicacions &gt; Scrolless &gt; Ús de la bateria).</string>
+    <string name="background_instruction_samsung">Configura l\'ús de bateria de Scrolless com a \"Sense restriccions\" i assegura\'t que no estigui a \"Aplicacions inactives\" o \"Aplicacions en repòs profund\" (Configuració &gt; Bateria &gt; Límits d\'ús en segon pla).</string>
+    <string name="background_instruction_vivo">Activa \"Inici automàtic\" i \"Permet un consum elevat en segon pla\" per a Scrolless a i Manager o a Configuració &gt; Bateria.</string>
+    <string name="background_instruction_xiaomi">Activa l\'\"Inici automàtic\" de Scrolless i configura l\'Estalvi de bateria a \"Sense restriccions\" (Configuració &gt; Aplicacions &gt; Gestiona les aplicacions &gt; Scrolless).</string>
+    <string name="background_settings_button">Obre la configuració en segon pla</string>
+    <string name="background_step_description">El telèfon pot aturar Scrolless quan esborres les aplicacions recents. Perquè el bloqueig continuï funcionant:</string>
+    <string name="background_step_title">Mantén Scrolless en execució</string>
     <string name="block_all">Bloqueja-ho\nTot</string>
     <string name="close">Tancar</string>
     <string name="daily_limit">Límit\nDiari</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless no funciona\?</string>
     <string name="help_step1_description">Selecciona una de les opcions de bloqueig des de la pantalla principal</string>
     <string name="help_step1_title">Tria la teva opció de bloqueig</string>
-    <string name="help_step2_description">Si el bloqueig no funciona, desactiva i torna a activar el servei d\'accessibilitat i intenta desactivar l\'optimització de la bateria per a Scrolless.</string>
+    <string name="help_step2_description">Si el bloqueig no funciona, desactiva i torna a activar el servei d\'accessibilitat. Permet també que Scrolless s\'executi en segon pla: activa l\'Inici automàtic (Xiaomi, POCO, Redmi i telèfons similars) i configura el seu ús de bateria com a \"Sense restriccions\".</string>
     <string name="help_step2_title">Resolució de problemes</string>
     <string name="help_step3_description">Encara tens problemes\? Estem aquí per ajudar-te! Utilitza el botó següent per contactar-nos al nostre repositori de GitHub.</string>
     <string name="help_step3_title">Contacta amb el suport</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">Pausa el bloqueig durant %1$d min</string>
     <string name="pause_resumes_in">Es reprèn en %1$s</string>
     <string name="resume">Reprendre</string>
+    <string name="service_not_running_description">Android ha aturat Scrolless en segon pla, de manera que el bloqueig està en pausa. Normalment passa quan l\'aplicació s\'esborra de les aplicacions recents.</string>
+    <string name="service_not_running_step_background">Permet que Scrolless s\'executi en segon pla perquè no torni a passar.</string>
+    <string name="service_not_running_step_restart">Obre la configuració d\'accessibilitat, desactiva Scrolless i torna\'l a activar.</string>
+    <string name="service_not_running_title">Scrolless s\'ha aturat</string>
     <string name="settings">Configuració</string>
     <string name="success_icon_description">Icona de confirmació correcta</string>
     <string name="time_interval">Interval\nde Temps</string>

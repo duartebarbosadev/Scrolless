@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">Chúng tôi cần quyền truy cập trợ năng</string>
     <string name="accessibility_success_description">Scrolless đã sẵn sàng!</string>
     <string name="accessibility_success_title">Tất cả đã sẵn sàng!</string>
+    <string name="background_instruction_generic">Cho phép Scrolless chạy trong nền và đặt mức sử dụng pin thành \"Không hạn chế\".</string>
+    <string name="background_instruction_huawei">Mở Cài đặt &gt; Ứng dụng &gt; Khởi chạy ứng dụng, tìm Scrolless và đặt thành \"Quản lý thủ công\" với Tự động khởi chạy và Chạy trong nền được bật.</string>
+    <string name="background_instruction_oneplus">Cho phép Scrolless tự khởi chạy và đặt mức sử dụng pin thành \"Không hạn chế\" (Cài đặt &gt; Ứng dụng &gt; Scrolless &gt; Pin).</string>
+    <string name="background_instruction_oppo">Bật \"Cho phép tự khởi chạy\" và \"Cho phép hoạt động trong nền\" cho Scrolless (Cài đặt &gt; Ứng dụng &gt; Scrolless &gt; Sử dụng pin).</string>
+    <string name="background_instruction_samsung">Đặt mức sử dụng pin của Scrolless thành \"Không hạn chế\" và đảm bảo ứng dụng không nằm trong \"Ứng dụng ngủ\" hoặc \"Ứng dụng ngủ sâu\" (Cài đặt &gt; Pin &gt; Giới hạn sử dụng nền).</string>
+    <string name="background_instruction_vivo">Bật \"Tự khởi động\" và \"Cho phép tiêu thụ nhiều điện năng trong nền\" cho Scrolless trong i Manager hoặc Cài đặt &gt; Pin.</string>
+    <string name="background_instruction_xiaomi">Bật \"Tự khởi động\" cho Scrolless và đặt Tiết kiệm pin thành \"Không hạn chế\" (Cài đặt &gt; Ứng dụng &gt; Quản lý ứng dụng &gt; Scrolless).</string>
+    <string name="background_settings_button">Mở cài đặt chạy nền</string>
+    <string name="background_step_description">Điện thoại có thể dừng Scrolless khi bạn xóa các ứng dụng gần đây. Để việc chặn tiếp tục hoạt động:</string>
+    <string name="background_step_title">Giữ Scrolless luôn chạy</string>
     <string name="block_all">Chặn\nTất Cả</string>
     <string name="close">Đóng</string>
     <string name="daily_limit">Giới Hạn\nHàng Ngày</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless không hoạt động\?</string>
     <string name="help_step1_description">Chọn một trong các tùy chọn chặn từ màn hình chính</string>
     <string name="help_step1_title">Chọn Tùy chọn Chặn của Bạn</string>
-    <string name="help_step2_description">Nếu chặn không hoạt động, hãy tắt rồi bật lại dịch vụ trợ năng và thử tắt tối ưu hóa pin cho Scrolless.</string>
+    <string name="help_step2_description">Nếu chặn không hoạt động, hãy tắt rồi bật lại dịch vụ trợ năng. Đồng thời cho phép Scrolless chạy trong nền: bật Tự khởi động (Xiaomi, POCO, Redmi và các điện thoại tương tự) và đặt mức sử dụng pin thành \"Không hạn chế\".</string>
     <string name="help_step2_title">Khắc phục sự cố</string>
     <string name="help_step3_description">Vẫn gặp sự cố\? Chúng tôi ở đây để giúp đỡ! Sử dụng nút bên dưới để liên hệ trên kho GitHub của chúng tôi.</string>
     <string name="help_step3_title">Liên hệ Hỗ trợ</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">Tạm dừng chặn trong %1$d phút</string>
     <string name="pause_resumes_in">Tiếp tục sau %1$s</string>
     <string name="resume">Tiếp tục</string>
+    <string name="service_not_running_description">Android đã dừng Scrolless trong nền nên việc chặn đang tạm dừng. Điều này thường xảy ra khi ứng dụng bị xóa khỏi danh sách ứng dụng gần đây.</string>
+    <string name="service_not_running_step_background">Cho phép Scrolless chạy trong nền để điều này không xảy ra nữa.</string>
+    <string name="service_not_running_step_restart">Mở Cài đặt Trợ năng, tắt Scrolless rồi bật lại.</string>
+    <string name="service_not_running_title">Scrolless đã bị dừng</string>
     <string name="settings">Cài đặt</string>
     <string name="success_icon_description">Biểu tượng dấu kiểm thành công</string>
     <string name="time_interval">Khoảng\nThời Gian</string>

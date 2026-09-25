@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">எங்களுக்கு அணுகல்தன்மை அணுகல் தேவை</string>
     <string name="accessibility_success_description">Scrolless இப்போது தயாராக உள்ளது!</string>
     <string name="accessibility_success_title">அனைத்தும் தயார்!</string>
+    <string name="background_instruction_generic">Scrolless பின்னணியில் இயங்க அனுமதித்து, அதன் பேட்டரி பயன்பாட்டை \"கட்டுப்பாடற்றது\" அல்லது \"கட்டுப்பாடுகள் இல்லை\" என அமைக்கவும்.</string>
+    <string name="background_instruction_huawei">அமைப்புகள் &gt; ஆப்ஸ் &gt; ஆப் தொடக்கம் என்பதைத் திறந்து, Scrolless-ஐக் கண்டறிந்து, தானியங்கு தொடக்கம் மற்றும் பின்னணியில் இயக்கு ஆகியவற்றை இயக்கி \"கைமுறையாக நிர்வகி\" என அமைக்கவும்.</string>
+    <string name="background_instruction_oneplus">Scrolless தானாகத் தொடங்க அனுமதித்து, அதன் பேட்டரி பயன்பாட்டை \"கட்டுப்பாடற்றது\" என அமைக்கவும் (அமைப்புகள் &gt; ஆப்ஸ் &gt; Scrolless &gt; பேட்டரி).</string>
+    <string name="background_instruction_oppo">Scrolless-க்கு \"தானியங்கு தொடக்கத்தை அனுமதி\" மற்றும் \"பின்னணி செயல்பாட்டை அனுமதி\" ஆகியவற்றை இயக்கவும் (அமைப்புகள் &gt; ஆப்ஸ் &gt; Scrolless &gt; பேட்டரி பயன்பாடு).</string>
+    <string name="background_instruction_samsung">Scrolless-இன் பேட்டரி பயன்பாட்டை \"கட்டுப்பாடற்றது\" என அமைத்து, அது \"உறங்கும் ஆப்ஸ்\" அல்லது \"ஆழ்ந்து உறங்கும் ஆப்ஸ்\" பட்டியலில் இல்லை என்பதை உறுதிசெய்யவும் (அமைப்புகள் &gt; பேட்டரி &gt; பின்னணி பயன்பாட்டு வரம்புகள்).</string>
+    <string name="background_instruction_vivo">i Manager அல்லது அமைப்புகள் &gt; பேட்டரி என்பதில் Scrolless-க்கு \"தானியங்கு தொடக்கம்\" மற்றும் \"பின்னணியில் அதிக மின் நுகர்வை அனுமதி\" ஆகியவற்றை இயக்கவும்.</string>
+    <string name="background_instruction_xiaomi">Scrolless-க்கு \"ஆட்டோஸ்டார்ட்\" இயக்கி, பேட்டரி சேமிப்பானை \"கட்டுப்பாடுகள் இல்லை\" என அமைக்கவும் (அமைப்புகள் &gt; ஆப்ஸ் &gt; ஆப்ஸை நிர்வகி &gt; Scrolless).</string>
+    <string name="background_settings_button">பின்னணி அமைப்புகளைத் திற</string>
+    <string name="background_step_description">சமீபத்திய ஆப்ஸை அழிக்கும்போது உங்கள் ஃபோன் Scrolless-ஐ நிறுத்தக்கூடும். தடுப்பது தொடர்ந்து வேலை செய்ய:</string>
+    <string name="background_step_title">Scrolless-ஐ இயக்கத்தில் வைத்திருங்கள்</string>
     <string name="block_all">அனைத்தையும்\nதடு</string>
     <string name="close">மூடு</string>
     <string name="daily_limit">தினசரி\nவரம்பு</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless வேலை செய்யவில்லையா\?</string>
     <string name="help_step1_description">முக்கிய திரையில் இருந்து தடுக்கும் விருப்பங்களில் ஒன்றைத் தேர்ந்தெடுக்கவும்</string>
     <string name="help_step1_title">உங்கள் தடுக்கும் விருப்பத்தைத் தேர்வு செய்யவும்</string>
-    <string name="help_step2_description">தடுப்பது வேலை செய்யவில்லை என்றால், அணுகல்தன்மை சேவையை முடக்கி பின்னர் இயக்கவும் மற்றும் Scrolless க்கான பேட்டரி மேம்படுத்தலை முடக்க முயற்சிக்கவும்.</string>
+    <string name="help_step2_description">தடுப்பது வேலை செய்யவில்லை என்றால், அணுகல்தன்மை சேவையை முடக்கி பின்னர் இயக்கவும். மேலும் Scrolless பின்னணியில் இயங்க அனுமதிக்கவும்: ஆட்டோஸ்டார்ட்டை இயக்கி (Xiaomi, POCO, Redmi மற்றும் இதுபோன்ற ஃபோன்கள்), அதன் பேட்டரி பயன்பாட்டை \"கட்டுப்பாடற்றது\" என அமைக்கவும்.</string>
     <string name="help_step2_title">சிக்கல் தீர்க்கும்</string>
     <string name="help_step3_description">இன்னும் சிக்கல்கள் உள்ளதா\? நாங்கள் உதவ இங்கே இருக்கிறோம்! எங்கள் GitHub repo இல் தொடர்பு கொள்ள கீழே உள்ள பொத்தானைப் பயன்படுத்தவும்.</string>
     <string name="help_step3_title">ஆதரவைத் தொடர்பு கொள்ளவும்</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">%1$d நிமிடங்களுக்குத் தடுப்பதை இடைநிறுத்துகிறது</string>
     <string name="pause_resumes_in">%1$s இல் மீண்டும் தொடங்குகிறது</string>
     <string name="resume">மீண்டும் தொடங்கு</string>
+    <string name="service_not_running_description">Android பின்னணியில் Scrolless-ஐ நிறுத்தியது, எனவே தடுப்பது இடைநிறுத்தப்பட்டுள்ளது. சமீபத்திய ஆப்ஸிலிருந்து ஆப் அழிக்கப்படும்போது இது பொதுவாக நடக்கும்.</string>
+    <string name="service_not_running_step_background">இது மீண்டும் நடக்காமல் இருக்க Scrolless பின்னணியில் இயங்க அனுமதிக்கவும்.</string>
+    <string name="service_not_running_step_restart">அணுகல்தன்மை அமைப்புகளைத் திறந்து, Scrolless-ஐ முடக்கி மீண்டும் இயக்கவும்.</string>
+    <string name="service_not_running_title">Scrolless நிறுத்தப்பட்டது</string>
     <string name="settings">அமைப்புகள்</string>
     <string name="success_icon_description">வெற்றி சரிபார்ப்பு ஐகான்</string>
     <string name="time_interval">நேர\nஇடைவெளி</string>

@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">Nous avons besoin d\'un accès à l\'accessibilité</string>
     <string name="accessibility_success_description">Scrolless est maintenant prêt !</string>
     <string name="accessibility_success_title">Tout est prêt !</string>
+    <string name="background_instruction_generic">Autorisez Scrolless à s\'exécuter en arrière-plan et définissez son utilisation de la batterie sur \"Non restreinte\" ou \"Aucune restriction\".</string>
+    <string name="background_instruction_huawei">Ouvrez Paramètres &gt; Applications &gt; Lancement d\'applications, trouvez Scrolless et réglez-le sur \"Gérer manuellement\" avec Lancement automatique et Exécution en arrière-plan activés.</string>
+    <string name="background_instruction_oneplus">Autorisez le lancement automatique de Scrolless et définissez son utilisation de la batterie sur \"Sans restriction\" (Paramètres &gt; Applications &gt; Scrolless &gt; Batterie).</string>
+    <string name="background_instruction_oppo">Activez \"Autoriser le démarrage automatique\" et \"Autoriser l\'activité en arrière-plan\" pour Scrolless (Paramètres &gt; Applications &gt; Scrolless &gt; Utilisation de la batterie).</string>
+    <string name="background_instruction_samsung">Définissez l\'utilisation de la batterie de Scrolless sur \"Non restreinte\" et assurez-vous qu\'elle ne figure pas dans \"Applications en veille\" ou \"Applications en veille prolongée\" (Paramètres &gt; Batterie &gt; Limites d\'utilisation en arrière-plan).</string>
+    <string name="background_instruction_vivo">Activez \"Démarrage automatique\" et \"Autoriser une consommation élevée en arrière-plan\" pour Scrolless dans i Manager ou dans Paramètres &gt; Batterie.</string>
+    <string name="background_instruction_xiaomi">Activez le \"Démarrage automatique\" pour Scrolless et réglez l\'économiseur de batterie sur \"Aucune restriction\" (Paramètres &gt; Applications &gt; Gérer les applications &gt; Scrolless).</string>
+    <string name="background_settings_button">Ouvrir les paramètres d\'arrière-plan</string>
+    <string name="background_step_description">Votre téléphone peut arrêter Scrolless lorsque vous effacez les applications récentes. Pour que le blocage continue de fonctionner :</string>
+    <string name="background_step_title">Garder Scrolless actif</string>
     <string name="block_all">Bloquer\nTout</string>
     <string name="close">Fermer</string>
     <string name="daily_limit">Limite\nQuotidienne</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless ne fonctionne pas \?</string>
     <string name="help_step1_description">Sélectionnez l\'une des options de blocage depuis l\'écran principal</string>
     <string name="help_step1_title">Choisissez votre option de blocage</string>
-    <string name="help_step2_description">Si le blocage ne fonctionne pas, désactivez puis réactivez le service d\'accessibilité et essayez de désactiver l\'optimisation de la batterie pour Scrolless.</string>
+    <string name="help_step2_description">Si le blocage ne fonctionne pas, désactivez puis réactivez le service d\'accessibilité. Autorisez aussi Scrolless à s\'exécuter en arrière-plan : activez le démarrage automatique (Xiaomi, POCO, Redmi et téléphones similaires) et définissez son utilisation de la batterie sur \"Non restreinte\".</string>
     <string name="help_step2_title">Dépannage</string>
     <string name="help_step3_description">Vous rencontrez toujours des problèmes \? Nous sommes là pour vous aider ! Utilisez le bouton ci-dessous pour nous contacter sur notre dépôt GitHub.</string>
     <string name="help_step3_title">Contacter le support</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">Met en pause le blocage pendant %1$d min</string>
     <string name="pause_resumes_in">Reprend dans %1$s</string>
     <string name="resume">Reprendre</string>
+    <string name="service_not_running_description">Android a arrêté Scrolless en arrière-plan, le blocage est donc en pause. Cela se produit généralement lorsque l\'application est supprimée des applications récentes.</string>
+    <string name="service_not_running_step_background">Autorisez Scrolless à s\'exécuter en arrière-plan pour que cela ne se reproduise pas.</string>
+    <string name="service_not_running_step_restart">Ouvrez les paramètres d\'accessibilité, désactivez Scrolless puis réactivez-le.</string>
+    <string name="service_not_running_title">Scrolless a été arrêté</string>
     <string name="settings">Paramètres</string>
     <string name="success_icon_description">Icône de validation</string>
     <string name="time_interval">Intervalle\nde Temps</string>

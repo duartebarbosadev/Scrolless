@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">Нам потрібен доступ до функцій доступності</string>
     <string name="accessibility_success_description">Scrolless готовий до роботи!</string>
     <string name="accessibility_success_title">Все налаштовано!</string>
+    <string name="background_instruction_generic">Дозвольте Scrolless працювати у фоновому режимі та встановіть для нього використання батареї «Без обмежень».</string>
+    <string name="background_instruction_huawei">Відкрийте Налаштування &gt; Застосунки &gt; Запуск застосунків, знайдіть Scrolless і виберіть «Керувати вручну», увімкнувши Автозапуск і Роботу у фоновому режимі.</string>
+    <string name="background_instruction_oneplus">Дозвольте автозапуск Scrolless і встановіть використання батареї «Без обмежень» (Налаштування &gt; Застосунки &gt; Scrolless &gt; Батарея).</string>
+    <string name="background_instruction_oppo">Увімкніть «Дозволити автозапуск» і «Дозволити роботу у фоновому режимі» для Scrolless (Налаштування &gt; Застосунки &gt; Scrolless &gt; Використання батареї).</string>
+    <string name="background_instruction_samsung">Встановіть для Scrolless використання батареї «Без обмежень» і переконайтеся, що застосунок не входить до списків «Сплячі застосунки» або «Застосунки в глибокому сні» (Налаштування &gt; Батарея &gt; Обмеження використання у фоні).</string>
+    <string name="background_instruction_vivo">Увімкніть «Автозапуск» і «Дозволити високе енергоспоживання у фоні» для Scrolless в i Manager або в розділі Налаштування &gt; Батарея.</string>
+    <string name="background_instruction_xiaomi">Увімкніть «Автозапуск» для Scrolless і встановіть для Економії заряду значення «Без обмежень» (Налаштування &gt; Застосунки &gt; Керування застосунками &gt; Scrolless).</string>
+    <string name="background_settings_button">Відкрити налаштування фонової роботи</string>
+    <string name="background_step_description">Телефон може зупинити Scrolless, коли ви очищаєте нещодавні застосунки. Щоб блокування й надалі працювало:</string>
+    <string name="background_step_title">Не дайте Scrolless зупинитися</string>
     <string name="block_all">Блокувати\nВсе</string>
     <string name="close">Закрити</string>
     <string name="daily_limit">Денний\nЛіміт</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless не працює\?</string>
     <string name="help_step1_description">Виберіть один з варіантів блокування на головному екрані</string>
     <string name="help_step1_title">Виберіть варіант блокування</string>
-    <string name="help_step2_description">Якщо блокування не працює, вимкніть, а потім увімкніть службу доступності та спробуйте вимкнути оптимізацію батареї для Scrolless.</string>
+    <string name="help_step2_description">Якщо блокування не працює, вимкніть, а потім увімкніть службу доступності. Також дозвольте Scrolless працювати у фоновому режимі: увімкніть Автозапуск (Xiaomi, POCO, Redmi та подібні телефони) і встановіть використання батареї «Без обмежень».</string>
     <string name="help_step2_title">Вирішення проблем</string>
     <string name="help_step3_description">Все ще є проблеми\? Ми тут, щоб допомогти! Використовуйте кнопку нижче, щоб зв\'язатися з нами на нашому репозиторії GitHub.</string>
     <string name="help_step3_title">Зв\'язатися зі службою підтримки</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">Призупиняє блокування на %1$d хв</string>
     <string name="pause_resumes_in">Відновиться через %1$s</string>
     <string name="resume">Відновити</string>
+    <string name="service_not_running_description">Android зупинив Scrolless у фоновому режимі, тому блокування призупинено. Зазвичай це стається, коли застосунок видаляють зі списку нещодавніх.</string>
+    <string name="service_not_running_step_background">Дозвольте Scrolless працювати у фоновому режимі, щоб це не повторилося.</string>
+    <string name="service_not_running_step_restart">Відкрийте налаштування доступності, вимкніть Scrolless, а потім увімкніть знову.</string>
+    <string name="service_not_running_title">Scrolless зупинено</string>
     <string name="settings">Налаштування</string>
     <string name="success_icon_description">Іконка успішної позначки</string>
     <string name="time_interval">Часовий\nІнтервал</string>

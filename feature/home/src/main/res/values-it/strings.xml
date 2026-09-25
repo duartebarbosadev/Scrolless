@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">Abbiamo bisogno dell\'accesso all\'accessibilità</string>
     <string name="accessibility_success_description">Scrolless è pronto!</string>
     <string name="accessibility_success_title">Tutto pronto!</string>
+    <string name="background_instruction_generic">Consenti a Scrolless di funzionare in background e imposta l\'utilizzo della batteria su \"Senza restrizioni\" o \"Nessuna restrizione\".</string>
+    <string name="background_instruction_huawei">Apri Impostazioni &gt; App &gt; Avvio app, trova Scrolless e impostalo su \"Gestisci manualmente\" con Avvio automatico ed Esecuzione in background attivati.</string>
+    <string name="background_instruction_oneplus">Consenti l\'avvio automatico di Scrolless e imposta l\'utilizzo della batteria su \"Senza restrizioni\" (Impostazioni &gt; App &gt; Scrolless &gt; Batteria).</string>
+    <string name="background_instruction_oppo">Attiva \"Consenti avvio automatico\" e \"Consenti attività in background\" per Scrolless (Impostazioni &gt; App &gt; Scrolless &gt; Utilizzo batteria).</string>
+    <string name="background_instruction_samsung">Imposta l\'utilizzo della batteria di Scrolless su \"Senza restrizioni\" e assicurati che non sia in \"App in sospensione\" o \"App in sospensione profonda\" (Impostazioni &gt; Batteria &gt; Limiti di utilizzo in background).</string>
+    <string name="background_instruction_vivo">Attiva \"Avvio automatico\" e \"Consenti consumo elevato in background\" per Scrolless in i Manager o in Impostazioni &gt; Batteria.</string>
+    <string name="background_instruction_xiaomi">Attiva l\'\"Avvio automatico\" per Scrolless e imposta Risparmio batteria su \"Nessuna restrizione\" (Impostazioni &gt; App &gt; Gestisci app &gt; Scrolless).</string>
+    <string name="background_settings_button">Apri impostazioni in background</string>
+    <string name="background_step_description">Il telefono potrebbe interrompere Scrolless quando cancelli le app recenti. Per continuare a bloccare:</string>
+    <string name="background_step_title">Mantieni Scrolless attivo</string>
     <string name="block_all">Blocca\nTutto</string>
     <string name="close">Chiudi</string>
     <string name="daily_limit">Limite\nGiornaliero</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless non funziona\?</string>
     <string name="help_step1_description">Seleziona una delle opzioni di blocco dalla schermata principale</string>
     <string name="help_step1_title">Scegli la tua opzione di blocco</string>
-    <string name="help_step2_description">Se il blocco non funziona, disabilita e poi abilita il servizio di accessibilità e prova a disabilitare l\'ottimizzazione della batteria per Scrolless.</string>
+    <string name="help_step2_description">Se il blocco non funziona, disabilita e poi abilita il servizio di accessibilità. Consenti inoltre a Scrolless di funzionare in background: attiva l\'Avvio automatico (Xiaomi, POCO, Redmi e telefoni simili) e imposta l\'utilizzo della batteria su \"Senza restrizioni\".</string>
     <string name="help_step2_title">Risoluzione dei problemi</string>
     <string name="help_step3_description">Hai ancora problemi\? Siamo qui per aiutarti! Usa il pulsante qui sotto per contattarci sul nostro repository GitHub.</string>
     <string name="help_step3_title">Contatta il supporto</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">Mette in pausa il blocco per %1$d min</string>
     <string name="pause_resumes_in">Riprende tra %1$s</string>
     <string name="resume">Riprendi</string>
+    <string name="service_not_running_description">Android ha interrotto Scrolless in background, quindi il blocco è in pausa. Di solito succede quando l\'app viene rimossa dalle app recenti.</string>
+    <string name="service_not_running_step_background">Consenti a Scrolless di funzionare in background per evitare che succeda di nuovo.</string>
+    <string name="service_not_running_step_restart">Apri le impostazioni di accessibilità, disattiva Scrolless e poi riattivalo.</string>
+    <string name="service_not_running_title">Scrolless è stato interrotto</string>
     <string name="settings">Impostazioni</string>
     <string name="success_icon_description">Icona di conferma</string>
     <string name="time_interval">Intervallo\ndi Tempo</string>

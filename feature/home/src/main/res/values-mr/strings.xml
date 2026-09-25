@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">आम्हाला ॲक्सेसिबिलिटी ॲक्सेसची आवश्यकता आहे</string>
     <string name="accessibility_success_description">स्क्रोललेस आता तयार आहे!</string>
     <string name="accessibility_success_title">सर्व सेट झाले!</string>
+    <string name="background_instruction_generic">Scrolless ला बॅकग्राउंडमध्ये चालू राहू द्या आणि त्याचा बॅटरी वापर \"अप्रतिबंधित\" किंवा \"कोणतेही निर्बंध नाहीत\" वर सेट करा.</string>
+    <string name="background_instruction_huawei">सेटिंग्ज &gt; ॲप्स &gt; ॲप लाँच उघडा, Scrolless शोधा आणि ऑटो-लाँच व बॅकग्राउंडमध्ये चालवा चालू ठेवून ते \"मॅन्युअली व्यवस्थापित करा\" वर सेट करा.</string>
+    <string name="background_instruction_oneplus">Scrolless ला ऑटो-लाँच होऊ द्या आणि त्याचा बॅटरी वापर \"अप्रतिबंधित\" वर सेट करा (सेटिंग्ज &gt; ॲप्स &gt; Scrolless &gt; बॅटरी).</string>
+    <string name="background_instruction_oppo">Scrolless साठी \"ऑटो लाँचला अनुमती द्या\" आणि \"बॅकग्राउंड ॲक्टिव्हिटीला अनुमती द्या\" चालू करा (सेटिंग्ज &gt; ॲप्स &gt; Scrolless &gt; बॅटरी वापर).</string>
+    <string name="background_instruction_samsung">Scrolless चा बॅटरी वापर \"अप्रतिबंधित\" वर सेट करा आणि ते \"स्लीपिंग ॲप्स\" किंवा \"डीप स्लीपिंग ॲप्स\" मध्ये नाही याची खात्री करा (सेटिंग्ज &gt; बॅटरी &gt; बॅकग्राउंड वापर मर्यादा).</string>
+    <string name="background_instruction_vivo">i Manager किंवा सेटिंग्ज &gt; बॅटरी मध्ये Scrolless साठी \"ऑटो-स्टार्ट\" आणि \"बॅकग्राउंडमध्ये जास्त वीज वापराला अनुमती द्या\" चालू करा.</string>
+    <string name="background_instruction_xiaomi">Scrolless साठी \"ऑटोस्टार्ट\" चालू करा आणि बॅटरी सेव्हर \"कोणतेही निर्बंध नाहीत\" वर सेट करा (सेटिंग्ज &gt; ॲप्स &gt; ॲप्स व्यवस्थापित करा &gt; Scrolless).</string>
+    <string name="background_settings_button">बॅकग्राउंड सेटिंग्ज उघडा</string>
+    <string name="background_step_description">अलीकडील ॲप्स साफ केल्यावर तुमचा फोन Scrolless बंद करू शकतो. ब्लॉकिंग सुरू ठेवण्यासाठी:</string>
+    <string name="background_step_title">Scrolless चालू ठेवा</string>
     <string name="block_all">सर्व\nब्लॉक करा</string>
     <string name="close">बंद करा</string>
     <string name="daily_limit">दैनिक\nमर्यादा</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">स्क्रोललेस काम करत नाहीये\?</string>
     <string name="help_step1_description">मुख्य स्क्रीनमधून ब्लॉकिंग पर्यायांपैकी एक निवडा</string>
     <string name="help_step1_title">तुमचा ब्लॉक पर्याय निवडा</string>
-    <string name="help_step2_description">ब्लॉकिंग काम करत नसल्यास, ॲक्सेसिबिलिटी सेवा अक्षम करा आणि नंतर सक्षम करा आणि स्क्रोललेससाठी बॅटरी ऑप्टिमायझेशन अक्षम करण्याचा प्रयत्न करा.</string>
+    <string name="help_step2_description">ब्लॉकिंग काम करत नसल्यास, ॲक्सेसिबिलिटी सेवा अक्षम करा आणि नंतर सक्षम करा. तसेच Scrolless ला बॅकग्राउंडमध्ये चालू राहू द्या: ऑटोस्टार्ट चालू करा (Xiaomi, POCO, Redmi आणि तत्सम फोन) आणि त्याचा बॅटरी वापर \"अप्रतिबंधित\" वर सेट करा.</string>
     <string name="help_step2_title">समस्यानिवारण</string>
     <string name="help_step3_description">अजूनही समस्या येत आहेत\? आम्ही मदतीसाठी येथे आहोत! आमच्या GitHub रेपोवर पोहोचण्यासाठी खालील बटण वापरा.</string>
     <string name="help_step3_title">सहाय्याशी संपर्क साधा</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">%1$d मिनिटांसाठी ब्लॉकिंग थांबवते</string>
     <string name="pause_resumes_in">%1$s मध्ये पुन्हा सुरू होईल</string>
     <string name="resume">पुन्हा सुरू करा</string>
+    <string name="service_not_running_description">Android ने Scrolless बॅकग्राउंडमध्ये बंद केले, त्यामुळे ब्लॉकिंग थांबवले आहे. ॲप अलीकडील ॲप्समधून साफ केल्यावर हे सहसा घडते.</string>
+    <string name="service_not_running_step_background">हे पुन्हा होऊ नये म्हणून Scrolless ला बॅकग्राउंडमध्ये चालू राहू द्या.</string>
+    <string name="service_not_running_step_restart">ॲक्सेसिबिलिटी सेटिंग्ज उघडा, Scrolless बंद करा आणि नंतर पुन्हा चालू करा.</string>
+    <string name="service_not_running_title">Scrolless बंद झाले</string>
     <string name="settings">सेटिंग्ज</string>
     <string name="success_icon_description">यशस्वी चेक मार्क आयकॉन</string>
     <string name="time_interval">वेळ\nअंतर</string>

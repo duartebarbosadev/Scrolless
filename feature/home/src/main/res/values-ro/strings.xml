@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">Avem nevoie de accesibilitate</string>
     <string name="accessibility_success_description">Scrolless este gata.</string>
     <string name="accessibility_success_title">Totul este pregătit</string>
+    <string name="background_instruction_generic">Permite aplicației Scrolless să ruleze în fundal și setează utilizarea bateriei la \"Nerestricționat\" sau \"Fără restricții\".</string>
+    <string name="background_instruction_huawei">Deschide Setări &gt; Aplicații &gt; Lansare aplicații, găsește Scrolless și setează-l la \"Gestionare manuală\", cu Lansare automată și Rulare în fundal activate.</string>
+    <string name="background_instruction_oneplus">Permite lansarea automată a Scrolless și setează utilizarea bateriei la \"Nerestricționat\" (Setări &gt; Aplicații &gt; Scrolless &gt; Baterie).</string>
+    <string name="background_instruction_oppo">Activează \"Permite lansarea automată\" și \"Permite activitatea în fundal\" pentru Scrolless (Setări &gt; Aplicații &gt; Scrolless &gt; Utilizare baterie).</string>
+    <string name="background_instruction_samsung">Setează utilizarea bateriei pentru Scrolless la \"Nerestricționat\" și asigură-te că nu se află în \"Aplicații în repaus\" sau \"Aplicații în repaus profund\" (Setări &gt; Baterie &gt; Limite utilizare în fundal).</string>
+    <string name="background_instruction_vivo">Activează \"Pornire automată\" și \"Permite consum ridicat de energie în fundal\" pentru Scrolless în i Manager sau în Setări &gt; Baterie.</string>
+    <string name="background_instruction_xiaomi">Activează \"Pornire automată\" pentru Scrolless și setează Economisire baterie la \"Fără restricții\" (Setări &gt; Aplicații &gt; Gestionează aplicații &gt; Scrolless).</string>
+    <string name="background_settings_button">Deschide setările de fundal</string>
+    <string name="background_step_description">Telefonul poate opri Scrolless când ștergi aplicațiile recente. Pentru ca blocarea să funcționeze în continuare:</string>
+    <string name="background_step_title">Menține Scrolless activ</string>
     <string name="block_all">Blochează\nTot</string>
     <string name="close">Închide</string>
     <string name="daily_limit">Limită\nZilnică</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless nu funcționează?</string>
     <string name="help_step1_description">Selectează una dintre opțiunile de blocare din ecranul principal</string>
     <string name="help_step1_title">Alege o opțiune de blocare</string>
-    <string name="help_step2_description">Dacă blocarea nu funcționează, dezactivează și reactivează serviciul de accesibilitate, apoi încearcă să dezactivezi optimizarea bateriei pentru Scrolless.</string>
+    <string name="help_step2_description">Dacă blocarea nu funcționează, dezactivează și reactivează serviciul de accesibilitate. De asemenea, permite aplicației Scrolless să ruleze în fundal: activează Pornirea automată (Xiaomi, POCO, Redmi și telefoane similare) și setează utilizarea bateriei la \"Nerestricționat\".</string>
     <string name="help_step2_title">Depanare</string>
     <string name="help_step3_description">Încă ai probleme? Suntem aici să te ajutăm. Folosește butonul de mai jos pentru a ne contacta în depozitul nostru GitHub.</string>
     <string name="help_step3_title">Contactează suportul</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">Pune blocarea pe pauză timp de %1$d min</string>
     <string name="pause_resumes_in">Se reia în %1$s</string>
     <string name="resume">Reia</string>
+    <string name="service_not_running_description">Android a oprit Scrolless în fundal, așa că blocarea este întreruptă. De obicei se întâmplă când aplicația este ștearsă din aplicațiile recente.</string>
+    <string name="service_not_running_step_background">Permite aplicației Scrolless să ruleze în fundal ca să nu se mai întâmple.</string>
+    <string name="service_not_running_step_restart">Deschide setările de accesibilitate, dezactivează Scrolless și apoi activează-l din nou.</string>
+    <string name="service_not_running_title">Scrolless a fost oprit</string>
     <string name="settings">Setări</string>
     <string name="success_icon_description">Pictogramă bifă de succes</string>
     <string name="time_interval">Interval\nde Timp</string>

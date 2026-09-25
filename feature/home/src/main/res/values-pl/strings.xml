@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">Potrzebujemy dostępu do ułatwień dostępu</string>
     <string name="accessibility_success_description">Scrolless jest teraz gotowy!</string>
     <string name="accessibility_success_title">Wszystko gotowe!</string>
+    <string name="background_instruction_generic">Zezwól aplikacji Scrolless na działanie w tle i ustaw jej zużycie baterii na \"Bez ograniczeń\".</string>
+    <string name="background_instruction_huawei">Otwórz Ustawienia &gt; Aplikacje &gt; Uruchamianie aplikacji, znajdź Scrolless i ustaw \"Zarządzaj ręcznie\" z włączonymi opcjami Autouruchamianie i Działanie w tle.</string>
+    <string name="background_instruction_oneplus">Zezwól na automatyczne uruchamianie Scrolless i ustaw zużycie baterii na \"Bez ograniczeń\" (Ustawienia &gt; Aplikacje &gt; Scrolless &gt; Bateria).</string>
+    <string name="background_instruction_oppo">Włącz \"Zezwalaj na automatyczne uruchamianie\" i \"Zezwalaj na aktywność w tle\" dla Scrolless (Ustawienia &gt; Aplikacje &gt; Scrolless &gt; Zużycie baterii).</string>
+    <string name="background_instruction_samsung">Ustaw zużycie baterii Scrolless na \"Bez ograniczeń\" i upewnij się, że aplikacja nie znajduje się w \"Uśpionych aplikacjach\" ani w \"Aplikacjach w głębokim uśpieniu\" (Ustawienia &gt; Bateria &gt; Limity użycia w tle).</string>
+    <string name="background_instruction_vivo">Włącz \"Autostart\" i \"Zezwalaj na wysokie zużycie energii w tle\" dla Scrolless w i Manager lub w Ustawienia &gt; Bateria.</string>
+    <string name="background_instruction_xiaomi">Włącz \"Autostart\" dla Scrolless i ustaw Oszczędzanie baterii na \"Bez ograniczeń\" (Ustawienia &gt; Aplikacje &gt; Zarządzaj aplikacjami &gt; Scrolless).</string>
+    <string name="background_settings_button">Otwórz ustawienia działania w tle</string>
+    <string name="background_step_description">Telefon może zatrzymać Scrolless po wyczyszczeniu ostatnich aplikacji. Aby blokowanie nadal działało:</string>
+    <string name="background_step_title">Utrzymaj Scrolless w działaniu</string>
     <string name="block_all">Zablokuj\nWszystko</string>
     <string name="close">Zamknij</string>
     <string name="daily_limit">Dzienny\nLimit</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless nie działa\?</string>
     <string name="help_step1_description">Wybierz jedną z opcji blokowania z ekranu głównego</string>
     <string name="help_step1_title">Wybierz opcję blokowania</string>
-    <string name="help_step2_description">Jeśli blokowanie nie działa, wyłącz, a następnie włącz usługę ułatwień dostępu i spróbuj wyłączyć optymalizację baterii dla Scrolless.</string>
+    <string name="help_step2_description">Jeśli blokowanie nie działa, wyłącz, a następnie włącz usługę ułatwień dostępu. Zezwól też aplikacji Scrolless na działanie w tle: włącz Autostart (Xiaomi, POCO, Redmi i podobne telefony) i ustaw jej zużycie baterii na \"Bez ograniczeń\".</string>
     <string name="help_step2_title">Rozwiązywanie problemów</string>
     <string name="help_step3_description">Nadal masz problemy\? Jesteśmy tutaj, aby pomóc! Użyj przycisku poniżej, aby skontaktować się z nami w naszym repozytorium GitHub.</string>
     <string name="help_step3_title">Skontaktuj się z pomocą techniczną</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">Wstrzymuje blokowanie na %1$d min</string>
     <string name="pause_resumes_in">Wznowienie za %1$s</string>
     <string name="resume">Wznów</string>
+    <string name="service_not_running_description">Android zatrzymał Scrolless w tle, więc blokowanie jest wstrzymane. Zwykle dzieje się tak, gdy aplikacja zostanie usunięta z ostatnich aplikacji.</string>
+    <string name="service_not_running_step_background">Zezwól aplikacji Scrolless na działanie w tle, aby to się nie powtórzyło.</string>
+    <string name="service_not_running_step_restart">Otwórz ustawienia ułatwień dostępu, wyłącz Scrolless, a następnie włącz ponownie.</string>
+    <string name="service_not_running_title">Scrolless został zatrzymany</string>
     <string name="settings">Ustawienia</string>
     <string name="success_icon_description">Ikona znacznika sukcesu</string>
     <string name="time_interval">Interwał\nCzasowy</string>

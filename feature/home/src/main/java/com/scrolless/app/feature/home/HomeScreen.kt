@@ -72,6 +72,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -125,6 +126,7 @@ import com.scrolless.app.feature.home.dialogs.AccessibilitySuccessBottomSheet
 import com.scrolless.app.feature.home.dialogs.AccessibilitySuccessBottomSheetPreview
 import com.scrolless.app.feature.home.dialogs.HelpDialog
 import com.scrolless.app.feature.home.dialogs.IntervalTimerDialog
+import com.scrolless.app.feature.home.dialogs.ServiceNotRunningBottomSheet
 import com.scrolless.app.feature.home.dialogs.TimeLimitDialog
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -139,6 +141,7 @@ import timber.log.Timber
 
 private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
 private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)
+private const val SERVICE_BIND_GRACE_MILLIS = 1_500L
 
 @Composable
 fun HomeScreen(
@@ -159,6 +162,8 @@ fun HomeScreen(
     var showHelpDialog by remember { mutableStateOf(false) }
     var showAccessibilityExplainer by remember { mutableStateOf(false) }
     var showAccessibilitySuccess by remember { mutableStateOf(false) }
+    var showServiceNotRunning by remember { mutableStateOf(false) }
+    var resumeCount by remember { mutableIntStateOf(0) }
     var debugBypassAccessibilityCheck by remember { mutableStateOf(false) }
     var showIntervalTimerDialog by remember { mutableStateOf(false) }
     var pendingIntervalBreak by remember { mutableLongStateOf(DEFAULT_INTERVAL_BREAK_MILLIS) }
@@ -187,6 +192,7 @@ fun HomeScreen(
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 Timber.d("HomeScreen resumed")
+                resumeCount++
                 val isAccessibilityEnabled = context.isAccessibilityServiceEnabled(accessibilityServiceClass)
                 if (isAccessibilityEnabled) {
                     if (showAccessibilityExplainer) {
@@ -430,6 +436,32 @@ fun HomeScreen(
                 Timber.d("AccessibilityExplainer: Dismiss from home screen")
                 showAccessibilityExplainer = false
                 viewModel.setWaitingForAccessibility(false)
+            },
+        )
+    }
+
+    // An OEM battery manager may kill the process while the service stays "enabled" in settings.
+    // Android then shows it as not working and won't rebind it until it is toggled.
+    LaunchedEffect(resumeCount) {
+        if (resumeCount == 0) return@LaunchedEffect
+        // Give the system a moment to (re)bind the service after returning from settings.
+        delay(SERVICE_BIND_GRACE_MILLIS)
+        when (context.accessibilityServiceStatus(accessibilityServiceClass)) {
+            AccessibilityServiceStatus.EnabledNotRunning -> {
+                if (!showAccessibilityExplainer && !showAccessibilitySuccess && !showServiceNotRunning) {
+                    Timber.w("Accessibility service enabled but not running - showing recovery sheet")
+                    showServiceNotRunning = true
+                }
+            }
+
+            else -> showServiceNotRunning = false
+        }
+    }
+
+    if (showServiceNotRunning) {
+        ServiceNotRunningBottomSheet(
+            onDismiss = {
+                showServiceNotRunning = false
             },
         )
     }

@@ -17,10 +17,20 @@
 package com.scrolless.app.feature.home
 
 import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.provider.Settings
+import android.view.accessibility.AccessibilityManager
+
+internal enum class AccessibilityServiceStatus {
+    Disabled,
+    Running,
+
+    /** Enabled in settings, but the system is not bound to it (e.g. its process was killed by the OEM). */
+    EnabledNotRunning,
+}
 
 internal fun Context.isAccessibilityServiceEnabled(service: Class<out AccessibilityService>?): Boolean {
     if (service == null) return false
@@ -32,6 +42,23 @@ internal fun Context.isAccessibilityServiceEnabled(service: Class<out Accessibil
     ) ?: return false
 
     return enabledServicesSetting.split(':').any { it.equals(expectedComponentName, ignoreCase = true) }
+}
+
+internal fun Context.accessibilityServiceStatus(service: Class<out AccessibilityService>?): AccessibilityServiceStatus {
+    if (!isAccessibilityServiceEnabled(service) || service == null) return AccessibilityServiceStatus.Disabled
+    return if (isAccessibilityServiceRunning(service)) {
+        AccessibilityServiceStatus.Running
+    } else {
+        AccessibilityServiceStatus.EnabledNotRunning
+    }
+}
+
+private fun Context.isAccessibilityServiceRunning(service: Class<out AccessibilityService>): Boolean {
+    val manager = getSystemService(AccessibilityManager::class.java) ?: return true
+    return manager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK).any { info ->
+        val serviceInfo = info.resolveInfo?.serviceInfo ?: return@any false
+        serviceInfo.packageName == packageName && serviceInfo.name == service.name
+    }
 }
 
 internal fun Context.openActivityAccessibilitySettings() {

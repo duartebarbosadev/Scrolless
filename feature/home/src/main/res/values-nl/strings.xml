@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">We hebben toegankelijkheidstoegang nodig</string>
     <string name="accessibility_success_description">Scrolless is nu klaar!</string>
     <string name="accessibility_success_title">Alles klaar!</string>
+    <string name="background_instruction_generic">Sta toe dat Scrolless op de achtergrond draait en stel het batterijgebruik in op \"Onbeperkt\" of \"Geen beperkingen\".</string>
+    <string name="background_instruction_huawei">Open Instellingen &gt; Apps &gt; App-start, zoek Scrolless en stel het in op \"Handmatig beheren\" met Automatisch starten en Op achtergrond uitvoeren ingeschakeld.</string>
+    <string name="background_instruction_oneplus">Sta automatisch starten toe voor Scrolless en stel het batterijgebruik in op \"Onbeperkt\" (Instellingen &gt; Apps &gt; Scrolless &gt; Batterij).</string>
+    <string name="background_instruction_oppo">Schakel \"Automatisch starten toestaan\" en \"Achtergrondactiviteit toestaan\" in voor Scrolless (Instellingen &gt; Apps &gt; Scrolless &gt; Batterijgebruik).</string>
+    <string name="background_instruction_samsung">Stel het batterijgebruik van Scrolless in op \"Onbeperkt\" en zorg dat de app niet in \"Slapende apps\" of \"Diep slapende apps\" staat (Instellingen &gt; Batterij &gt; Limieten voor achtergrondgebruik).</string>
+    <string name="background_instruction_vivo">Schakel \"Automatisch starten\" en \"Hoog energieverbruik op achtergrond toestaan\" in voor Scrolless in i Manager of via Instellingen &gt; Batterij.</string>
+    <string name="background_instruction_xiaomi">Schakel \"Autostart\" in voor Scrolless en stel Batterijbesparing in op \"Geen beperkingen\" (Instellingen &gt; Apps &gt; Apps beheren &gt; Scrolless).</string>
+    <string name="background_settings_button">Achtergrondinstellingen openen</string>
+    <string name="background_step_description">Je telefoon kan Scrolless stoppen wanneer je recente apps wist. Zo blijft het blokkeren werken:</string>
+    <string name="background_step_title">Houd Scrolless actief</string>
     <string name="block_all">Alles\nBlokkeren</string>
     <string name="close">Sluiten</string>
     <string name="daily_limit">Dagelijkse\nLimiet</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless werkt niet\?</string>
     <string name="help_step1_description">Kies een van de blokkeeropties op het hoofdscherm</string>
     <string name="help_step1_title">Kies uw blokkeeroptie</string>
-    <string name="help_step2_description">Als het blokkeren niet werkt, schakel dan de toegankelijkheidsservice uit en weer in en probeer de batterijoptimalisatie voor Scrolless uit te schakelen.</string>
+    <string name="help_step2_description">Als het blokkeren niet werkt, schakel dan de toegankelijkheidsservice uit en weer in. Sta Scrolless ook toe op de achtergrond te draaien: schakel Autostart in (Xiaomi, POCO, Redmi en vergelijkbare telefoons) en stel het batterijgebruik in op \"Onbeperkt\".</string>
     <string name="help_step2_title">Probleemoplossing</string>
     <string name="help_step3_description">Nog steeds problemen\? We helpen u graag! Gebruik de onderstaande knop om contact op te nemen via onze GitHub-repository.</string>
     <string name="help_step3_title">Contact opnemen met ondersteuning</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">Pauzeert blokkering voor %1$d min</string>
     <string name="pause_resumes_in">Hervat over %1$s</string>
     <string name="resume">Hervatten</string>
+    <string name="service_not_running_description">Android heeft Scrolless op de achtergrond gestopt, dus het blokkeren is gepauzeerd. Dit gebeurt meestal wanneer de app uit de recente apps wordt gewist.</string>
+    <string name="service_not_running_step_background">Sta toe dat Scrolless op de achtergrond draait zodat dit niet opnieuw gebeurt.</string>
+    <string name="service_not_running_step_restart">Open de toegankelijkheidsinstellingen en zet Scrolless uit en weer aan.</string>
+    <string name="service_not_running_title">Scrolless is gestopt</string>
     <string name="settings">Instellingen</string>
     <string name="success_icon_description">Vinkje voor succes</string>
     <string name="time_interval">Tijds\nInterval</string>

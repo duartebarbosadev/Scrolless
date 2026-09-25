@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">Trebamo pristup pristupačnosti</string>
     <string name="accessibility_success_description">Scrolless je sada spreman!</string>
     <string name="accessibility_success_title">Sve spremno!</string>
+    <string name="background_instruction_generic">Dopustite aplikaciji Scrolless rad u pozadini i postavite njezinu potrošnju baterije na \"Neograničeno\" ili \"Bez ograničenja\".</string>
+    <string name="background_instruction_huawei">Otvorite Postavke &gt; Aplikacije &gt; Pokretanje aplikacija, pronađite Scrolless i postavite ga na \"Upravljaj ručno\" s uključenim Automatskim pokretanjem i Radom u pozadini.</string>
+    <string name="background_instruction_oneplus">Dopustite automatsko pokretanje aplikacije Scrolless i postavite njezinu potrošnju baterije na \"Neograničeno\" (Postavke &gt; Aplikacije &gt; Scrolless &gt; Baterija).</string>
+    <string name="background_instruction_oppo">Uključite \"Dopusti automatsko pokretanje\" i \"Dopusti aktivnost u pozadini\" za Scrolless (Postavke &gt; Aplikacije &gt; Scrolless &gt; Potrošnja baterije).</string>
+    <string name="background_instruction_samsung">Postavite potrošnju baterije aplikacije Scrolless na \"Neograničeno\" i provjerite da nije među \"Aplikacijama u stanju mirovanja\" ili \"Aplikacijama u dubokom mirovanju\" (Postavke &gt; Baterija &gt; Ograničenja korištenja u pozadini).</string>
+    <string name="background_instruction_vivo">Uključite \"Automatsko pokretanje\" i \"Dopusti visoku potrošnju energije u pozadini\" za Scrolless u i Manageru ili u Postavke &gt; Baterija.</string>
+    <string name="background_instruction_xiaomi">Uključite \"Automatsko pokretanje\" za Scrolless i postavite Štednju baterije na \"Bez ograničenja\" (Postavke &gt; Aplikacije &gt; Upravljanje aplikacijama &gt; Scrolless).</string>
+    <string name="background_settings_button">Otvori postavke rada u pozadini</string>
+    <string name="background_step_description">Telefon može zaustaviti Scrolless kada očistite nedavne aplikacije. Kako bi blokiranje nastavilo raditi:</string>
+    <string name="background_step_title">Neka Scrolless radi</string>
     <string name="block_all">Blokiraj\nSve</string>
     <string name="close">Zatvori</string>
     <string name="daily_limit">Dnevno\nOgraničenje</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless ne radi\?</string>
     <string name="help_step1_description">Odaberite jednu od opcija blokiranja s glavnog zaslona</string>
     <string name="help_step1_title">Odaberite opciju blokiranja</string>
-    <string name="help_step2_description">Ako blokiranje ne radi, onemogućite, a zatim omogućite uslugu pristupačnosti i pokušajte onemogućiti optimizaciju baterije za Scrolless.</string>
+    <string name="help_step2_description">Ako blokiranje ne radi, onemogućite, a zatim omogućite uslugu pristupačnosti. Također dopustite aplikaciji Scrolless rad u pozadini: uključite Automatsko pokretanje (Xiaomi, POCO, Redmi i slični telefoni) i postavite njezinu potrošnju baterije na \"Neograničeno\".</string>
     <string name="help_step2_title">Rješavanje problema</string>
     <string name="help_step3_description">I dalje imate problema\? Ovdje smo da vam pomognemo! Koristite gumb ispod da nas kontaktirate na našem GitHub repozitoriju.</string>
     <string name="help_step3_title">Kontaktirajte podršku</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">Pauzira blokiranje na %1$d min</string>
     <string name="pause_resumes_in">Nastavlja se za %1$s</string>
     <string name="resume">Nastavi</string>
+    <string name="service_not_running_description">Android je zaustavio Scrolless u pozadini pa je blokiranje pauzirano. To se obično događa kada se aplikacija ukloni iz nedavnih aplikacija.</string>
+    <string name="service_not_running_step_background">Dopustite aplikaciji Scrolless rad u pozadini kako se to ne bi ponovilo.</string>
+    <string name="service_not_running_step_restart">Otvorite postavke pristupačnosti, isključite Scrolless, a zatim ga ponovno uključite.</string>
+    <string name="service_not_running_title">Scrolless je zaustavljen</string>
     <string name="settings">Postavke</string>
     <string name="success_icon_description">Ikona kvačice uspjeha</string>
     <string name="time_interval">Vremenski\nInterval</string>

@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">Vi trenger tilgang til tilgjengelighetstjenester</string>
     <string name="accessibility_success_description">Scrolless er nå klar!</string>
     <string name="accessibility_success_title">Alt klart!</string>
+    <string name="background_instruction_generic">Tillat Scrolless å kjøre i bakgrunnen, og sett batteribruken til \"Ubegrenset\" eller \"Ingen begrensninger\".</string>
+    <string name="background_instruction_huawei">Åpne Innstillinger &gt; Apper &gt; Appstart, finn Scrolless og sett den til \"Administrer manuelt\" med Automatisk start og Kjør i bakgrunnen slått på.</string>
+    <string name="background_instruction_oneplus">Tillat Scrolless å starte automatisk, og sett batteribruken til \"Ubegrenset\" (Innstillinger &gt; Apper &gt; Scrolless &gt; Batteri).</string>
+    <string name="background_instruction_oppo">Slå på \"Tillat automatisk start\" og \"Tillat bakgrunnsaktivitet\" for Scrolless (Innstillinger &gt; Apper &gt; Scrolless &gt; Batteribruk).</string>
+    <string name="background_instruction_samsung">Sett batteribruken for Scrolless til \"Ubegrenset\", og sørg for at den ikke er i \"Apper i hvilemodus\" eller \"Apper i dyp hvilemodus\" (Innstillinger &gt; Batteri &gt; Grenser for bakgrunnsbruk).</string>
+    <string name="background_instruction_vivo">Slå på \"Autostart\" og \"Tillat høyt strømforbruk i bakgrunnen\" for Scrolless i i Manager eller under Innstillinger &gt; Batteri.</string>
+    <string name="background_instruction_xiaomi">Slå på \"Autostart\" for Scrolless, og sett Batterisparing til \"Ingen begrensninger\" (Innstillinger &gt; Apper &gt; Administrer apper &gt; Scrolless).</string>
+    <string name="background_settings_button">Åpne bakgrunnsinnstillinger</string>
+    <string name="background_step_description">Telefonen kan stoppe Scrolless når du fjerner nylige apper. Slik fortsetter blokkeringen å fungere:</string>
+    <string name="background_step_title">Hold Scrolless i gang</string>
     <string name="block_all">Blokker\nAlt</string>
     <string name="close">Lukk</string>
     <string name="daily_limit">Daglig\nGrense</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless fungerer ikke\?</string>
     <string name="help_step1_description">Velg ett av blokkeringsalternativene fra hovedskjermen</string>
     <string name="help_step1_title">Velg blokkeringsalternativ</string>
-    <string name="help_step2_description">Hvis blokkering ikke fungerer, deaktiver og aktiver deretter tilgjengelighetstjenesten og prøv å deaktivere batterioptimalisering for Scrolless.</string>
+    <string name="help_step2_description">Hvis blokkering ikke fungerer, deaktiver og aktiver deretter tilgjengelighetstjenesten. Tillat også Scrolless å kjøre i bakgrunnen: slå på Autostart (Xiaomi, POCO, Redmi og lignende telefoner), og sett batteribruken til \"Ubegrenset\".</string>
     <string name="help_step2_title">Feilsøking</string>
     <string name="help_step3_description">Har du fortsatt problemer\? Vi er her for å hjelpe! Bruk knappen nedenfor for å kontakte oss på vårt GitHub-repo.</string>
     <string name="help_step3_title">Kontakt brukerstøtte</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">Pauser blokkering i %1$d min</string>
     <string name="pause_resumes_in">Gjenopptas om %1$s</string>
     <string name="resume">Gjenoppta</string>
+    <string name="service_not_running_description">Android stoppet Scrolless i bakgrunnen, så blokkeringen er satt på pause. Dette skjer vanligvis når appen fjernes fra nylige apper.</string>
+    <string name="service_not_running_step_background">Tillat Scrolless å kjøre i bakgrunnen, slik at det ikke skjer igjen.</string>
+    <string name="service_not_running_step_restart">Åpne tilgjengelighetsinnstillingene, slå av Scrolless og deretter på igjen.</string>
+    <string name="service_not_running_title">Scrolless ble stoppet</string>
     <string name="settings">Innstillinger</string>
     <string name="success_icon_description">Suksess-ikon</string>
     <string name="time_interval">Tids\nIntervall</string>

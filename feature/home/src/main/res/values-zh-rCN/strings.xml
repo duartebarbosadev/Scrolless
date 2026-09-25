@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">我们需要无障碍访问权限</string>
     <string name="accessibility_success_description">Scrolless 已准备就绪！</string>
     <string name="accessibility_success_title">一切就绪！</string>
+    <string name="background_instruction_generic">允许 Scrolless 在后台运行，并将其电池用量设置为“无限制”。</string>
+    <string name="background_instruction_huawei">打开 设置 &gt; 应用 &gt; 应用启动管理，找到 Scrolless 并设置为“手动管理”，同时开启“允许自启动”和“允许后台活动”。</string>
+    <string name="background_instruction_oneplus">允许 Scrolless 自启动，并将其电池用量设置为“不受限制”（设置 &gt; 应用 &gt; Scrolless &gt; 电池）。</string>
+    <string name="background_instruction_oppo">为 Scrolless 开启“允许自启动”和“允许后台行为”（设置 &gt; 应用 &gt; Scrolless &gt; 耗电管理）。</string>
+    <string name="background_instruction_samsung">将 Scrolless 的电池用量设置为“不受限制”，并确保它不在“休眠应用”或“深度休眠应用”中（设置 &gt; 电池 &gt; 后台使用限制）。</string>
+    <string name="background_instruction_vivo">在 i管家 或 设置 &gt; 电池 中为 Scrolless 开启“自启动”和“允许后台高耗电”。</string>
+    <string name="background_instruction_xiaomi">为 Scrolless 开启“自启动”，并将省电策略设置为“无限制”（设置 &gt; 应用设置 &gt; 应用管理 &gt; Scrolless）。</string>
+    <string name="background_settings_button">打开后台设置</string>
+    <string name="background_step_description">清除最近任务时，手机可能会停止 Scrolless。要让屏蔽持续生效：</string>
+    <string name="background_step_title">保持 Scrolless 运行</string>
     <string name="block_all">全部\n屏蔽</string>
     <string name="close">关闭</string>
     <string name="daily_limit">每日\n限制</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrolless 不工作？</string>
     <string name="help_step1_description">从主屏幕选择一个屏蔽选项</string>
     <string name="help_step1_title">选择您的屏蔽选项</string>
-    <string name="help_step2_description">如果屏蔽不工作，请禁用然后启用无障碍服务，并尝试禁用 Scrolless 的电池优化。</string>
+    <string name="help_step2_description">如果屏蔽不工作，请禁用然后启用无障碍服务。同时允许 Scrolless 在后台运行：开启自启动（小米、POCO、红米及类似手机），并将其电池用量设置为“无限制”。</string>
     <string name="help_step2_title">故障排除</string>
     <string name="help_step3_description">仍然有问题？我们随时为您提供帮助！使用下面的按钮在我们的 GitHub 仓库上联系我们。</string>
     <string name="help_step3_title">联系支持</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">暂停屏蔽 %1$d 分钟</string>
     <string name="pause_resumes_in">%1$s 后恢复</string>
     <string name="resume">恢复</string>
+    <string name="service_not_running_description">Android 在后台停止了 Scrolless，因此屏蔽已暂停。这通常发生在从最近任务中清除该应用时。</string>
+    <string name="service_not_running_step_background">允许 Scrolless 在后台运行，以免再次发生这种情况。</string>
+    <string name="service_not_running_step_restart">打开无障碍设置，关闭 Scrolless 后再重新开启。</string>
+    <string name="service_not_running_title">Scrolless 已被停止</string>
     <string name="settings">设置</string>
     <string name="success_icon_description">成功勾选图标</string>
     <string name="time_interval">时间\n间隔</string>

@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">Χρειαζόμαστε Πρόσβαση στην Προσβασιμότητα</string>
     <string name="accessibility_success_description">Το Scrolless είναι τώρα έτοιμο!</string>
     <string name="accessibility_success_title">Όλα έτοιμα!</string>
+    <string name="background_instruction_generic">Επιτρέψτε στο Scrolless να εκτελείται στο παρασκήνιο και ορίστε τη χρήση μπαταρίας του σε \"Χωρίς περιορισμούς\".</string>
+    <string name="background_instruction_huawei">Ανοίξτε Ρυθμίσεις &gt; Εφαρμογές &gt; Εκκίνηση εφαρμογών, βρείτε το Scrolless και ορίστε το σε \"Μη αυτόματη διαχείριση\" με ενεργοποιημένες τις επιλογές Αυτόματη εκκίνηση και Εκτέλεση στο παρασκήνιο.</string>
+    <string name="background_instruction_oneplus">Επιτρέψτε την αυτόματη εκκίνηση του Scrolless και ορίστε τη χρήση μπαταρίας του σε \"Χωρίς περιορισμούς\" (Ρυθμίσεις &gt; Εφαρμογές &gt; Scrolless &gt; Μπαταρία).</string>
+    <string name="background_instruction_oppo">Ενεργοποιήστε τις επιλογές \"Να επιτρέπεται η αυτόματη εκκίνηση\" και \"Να επιτρέπεται η δραστηριότητα στο παρασκήνιο\" για το Scrolless (Ρυθμίσεις &gt; Εφαρμογές &gt; Scrolless &gt; Χρήση μπαταρίας).</string>
+    <string name="background_instruction_samsung">Ορίστε τη χρήση μπαταρίας του Scrolless σε \"Χωρίς περιορισμούς\" και βεβαιωθείτε ότι δεν βρίσκεται στις \"Εφαρμογές σε αδράνεια\" ή στις \"Εφαρμογές σε βαθιά αδράνεια\" (Ρυθμίσεις &gt; Μπαταρία &gt; Όρια χρήσης στο παρασκήνιο).</string>
+    <string name="background_instruction_vivo">Ενεργοποιήστε την \"Αυτόματη εκκίνηση\" και την επιλογή \"Να επιτρέπεται υψηλή κατανάλωση ενέργειας στο παρασκήνιο\" για το Scrolless στο i Manager ή στις Ρυθμίσεις &gt; Μπαταρία.</string>
+    <string name="background_instruction_xiaomi">Ενεργοποιήστε την \"Αυτόματη εκκίνηση\" για το Scrolless και ορίστε την Εξοικονόμηση μπαταρίας σε \"Χωρίς περιορισμούς\" (Ρυθμίσεις &gt; Εφαρμογές &gt; Διαχείριση εφαρμογών &gt; Scrolless).</string>
+    <string name="background_settings_button">Άνοιγμα ρυθμίσεων παρασκηνίου</string>
+    <string name="background_step_description">Το τηλέφωνό σας μπορεί να σταματήσει το Scrolless όταν διαγράφετε τις πρόσφατες εφαρμογές. Για να συνεχίσει να λειτουργεί ο αποκλεισμός:</string>
+    <string name="background_step_title">Διατηρήστε το Scrolless σε λειτουργία</string>
     <string name="block_all">Αποκλεισμός\nΌλων</string>
     <string name="close">Κλείσιμο</string>
     <string name="daily_limit">Ημερήσιο\nΌριο</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Το Scrolless δεν λειτουργεί;</string>
     <string name="help_step1_description">Επιλέξτε μία από τις επιλογές αποκλεισμού από την κύρια οθόνη</string>
     <string name="help_step1_title">Επιλέξτε την Επιλογή Αποκλεισμού</string>
-    <string name="help_step2_description">Εάν ο αποκλεισμός δεν λειτουργεί, απενεργοποιήστε και μετά ενεργοποιήστε την υπηρεσία προσβασιμότητας και δοκιμάστε να απενεργοποιήσετε τη βελτιστοποίηση μπαταρίας για το Scrolless.</string>
+    <string name="help_step2_description">Εάν ο αποκλεισμός δεν λειτουργεί, απενεργοποιήστε και μετά ενεργοποιήστε την υπηρεσία προσβασιμότητας. Επιτρέψτε επίσης στο Scrolless να εκτελείται στο παρασκήνιο: ενεργοποιήστε την Αυτόματη εκκίνηση (Xiaomi, POCO, Redmi και παρόμοια τηλέφωνα) και ορίστε τη χρήση μπαταρίας του σε \"Χωρίς περιορισμούς\".</string>
     <string name="help_step2_title">Αντιμετώπιση προβλημάτων</string>
     <string name="help_step3_description">Έχετε ακόμα προβλήματα; Είμαστε εδώ για να βοηθήσουμε! Χρησιμοποιήστε το παρακάτω κουμπί για να επικοινωνήσετε μαζί μας στο αποθετήριο GitHub.</string>
     <string name="help_step3_title">Επικοινωνία με την Υποστήριξη</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">Παύει τον αποκλεισμό για %1$d λεπτά</string>
     <string name="pause_resumes_in">Συνεχίζεται σε %1$s</string>
     <string name="resume">Συνέχιση</string>
+    <string name="service_not_running_description">Το Android σταμάτησε το Scrolless στο παρασκήνιο, οπότε ο αποκλεισμός έχει τεθεί σε παύση. Αυτό συμβαίνει συνήθως όταν η εφαρμογή διαγράφεται από τις πρόσφατες εφαρμογές.</string>
+    <string name="service_not_running_step_background">Επιτρέψτε στο Scrolless να εκτελείται στο παρασκήνιο ώστε να μην ξανασυμβεί.</string>
+    <string name="service_not_running_step_restart">Ανοίξτε τις ρυθμίσεις προσβασιμότητας, απενεργοποιήστε το Scrolless και ενεργοποιήστε το ξανά.</string>
+    <string name="service_not_running_title">Το Scrolless σταμάτησε</string>
     <string name="settings">Ρυθμίσεις</string>
     <string name="success_icon_description">Εικονίδιο επιτυχίας</string>
     <string name="time_interval">Χρονικό\nΔιάστημα</string>

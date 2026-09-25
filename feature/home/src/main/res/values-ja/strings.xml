@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">ユーザー補助機能へのアクセスが必要です</string>
     <string name="accessibility_success_description">Scrollessの準備ができました！</string>
     <string name="accessibility_success_title">すべて設定完了！</string>
+    <string name="background_instruction_generic">Scrolless のバックグラウンド実行を許可し、バッテリー使用量を「制限なし」に設定してください。</string>
+    <string name="background_instruction_huawei">設定 &gt; アプリ &gt; アプリ起動 を開き、Scrolless を探して「手動で管理」に設定し、自動起動とバックグラウンドで実行をオンにしてください。</string>
+    <string name="background_instruction_oneplus">Scrolless の自動起動を許可し、バッテリー使用量を「制限なし」に設定してください（設定 &gt; アプリ &gt; Scrolless &gt; バッテリー）。</string>
+    <string name="background_instruction_oppo">Scrolless の「自動起動を許可」と「バックグラウンドアクティビティを許可」をオンにしてください（設定 &gt; アプリ &gt; Scrolless &gt; バッテリー使用量）。</string>
+    <string name="background_instruction_samsung">Scrolless のバッテリー使用量を「制限なし」に設定し、「スリープ中のアプリ」や「ディープスリープ中のアプリ」に含まれていないことを確認してください（設定 &gt; バッテリー &gt; バックグラウンドでの使用制限）。</string>
+    <string name="background_instruction_vivo">i Manager または 設定 &gt; バッテリー で、Scrolless の「自動起動」と「バックグラウンドでの高い電力消費を許可」をオンにしてください。</string>
+    <string name="background_instruction_xiaomi">Scrolless の「自動起動」をオンにし、バッテリーセーバーを「制限なし」に設定してください（設定 &gt; アプリ &gt; アプリを管理 &gt; Scrolless）。</string>
+    <string name="background_settings_button">バックグラウンド設定を開く</string>
+    <string name="background_step_description">最近使ったアプリを消去すると、端末が Scrolless を停止することがあります。ブロックを継続するには：</string>
+    <string name="background_step_title">Scrolless を実行し続ける</string>
     <string name="block_all">すべて\nブロック</string>
     <string name="close">閉じる</string>
     <string name="daily_limit">1日の\n制限</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Scrollessが動作しませんか？</string>
     <string name="help_step1_description">メイン画面からブロックオプションのいずれかを選択してください</string>
     <string name="help_step1_title">ブロックオプションを選択</string>
-    <string name="help_step2_description">ブロックが機能しない場合は、ユーザー補助サービスを無効にしてから有効にし、Scrollessのバッテリー最適化を無効にしてみてください。</string>
+    <string name="help_step2_description">ブロックが機能しない場合は、ユーザー補助サービスを無効にしてから有効にしてください。また、Scrolless のバックグラウンド実行を許可してください：自動起動をオンにし（Xiaomi、POCO、Redmi などの端末）、バッテリー使用量を「制限なし」に設定してください。</string>
     <string name="help_step2_title">トラブルシューティング</string>
     <string name="help_step3_description">まだ問題がありますか？喜んでお手伝いします！以下のボタンを使用して、GitHubリポジトリでお問い合わせください。</string>
     <string name="help_step3_title">サポートに連絡</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">ブロックを%1$d分一時停止します</string>
     <string name="pause_resumes_in">%1$s後に再開</string>
     <string name="resume">再開</string>
+    <string name="service_not_running_description">Android がバックグラウンドで Scrolless を停止したため、ブロックが一時停止しています。通常、最近使ったアプリからアプリを消去したときに発生します。</string>
+    <string name="service_not_running_step_background">再発を防ぐため、Scrolless のバックグラウンド実行を許可してください。</string>
+    <string name="service_not_running_step_restart">ユーザー補助設定を開き、Scrolless をオフにしてから再度オンにしてください。</string>
+    <string name="service_not_running_title">Scrolless が停止されました</string>
     <string name="settings">設定</string>
     <string name="success_icon_description">成功チェックマークアイコン</string>
     <string name="time_interval">時間\n間隔</string>

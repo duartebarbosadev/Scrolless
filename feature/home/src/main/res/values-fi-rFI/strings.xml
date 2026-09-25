@@ -28,6 +28,16 @@
     <string name="accessibility_explainer_title">Tarvitsemme esteettömyysoikeudet</string>
     <string name="accessibility_success_description">Scrolless on nyt valmis!</string>
     <string name="accessibility_success_title">Kaikki valmista!</string>
+    <string name="background_instruction_generic">Salli Scrollessin toimia taustalla ja aseta sen akun käyttö tilaan \"Rajoittamaton\" tai \"Ei rajoituksia\".</string>
+    <string name="background_instruction_huawei">Avaa Asetukset &gt; Sovellukset &gt; Sovelluksen käynnistys, etsi Scrolless ja valitse \"Hallinnoi manuaalisesti\", niin että Automaattinen käynnistys ja Suorita taustalla ovat käytössä.</string>
+    <string name="background_instruction_oneplus">Salli Scrollessin automaattinen käynnistys ja aseta sen akun käyttö tilaan \"Rajoittamaton\" (Asetukset &gt; Sovellukset &gt; Scrolless &gt; Akku).</string>
+    <string name="background_instruction_oppo">Ota käyttöön \"Salli automaattinen käynnistys\" ja \"Salli taustatoiminta\" Scrollessille (Asetukset &gt; Sovellukset &gt; Scrolless &gt; Akun käyttö).</string>
+    <string name="background_instruction_samsung">Aseta Scrollessin akun käyttö tilaan \"Rajoittamaton\" ja varmista, ettei se ole kohdassa \"Lepotilassa olevat sovellukset\" tai \"Syvässä lepotilassa olevat sovellukset\" (Asetukset &gt; Akku &gt; Taustakäytön rajoitukset).</string>
+    <string name="background_instruction_vivo">Ota käyttöön \"Automaattinen käynnistys\" ja \"Salli suuri virrankulutus taustalla\" Scrollessille i Managerissa tai kohdassa Asetukset &gt; Akku.</string>
+    <string name="background_instruction_xiaomi">Ota käyttöön \"Autostart\" Scrollessille ja aseta Virransäästö tilaan \"Ei rajoituksia\" (Asetukset &gt; Sovellukset &gt; Hallinnoi sovelluksia &gt; Scrolless).</string>
+    <string name="background_settings_button">Avaa taustatoiminnan asetukset</string>
+    <string name="background_step_description">Puhelimesi voi pysäyttää Scrollessin, kun tyhjennät viimeisimmät sovellukset. Jotta esto toimii jatkossakin:</string>
+    <string name="background_step_title">Pidä Scrolless käynnissä</string>
     <string name="block_all">Estä\nKaikki</string>
     <string name="close">Sulje</string>
     <string name="daily_limit">Päivittäinen\nRaja</string>
@@ -38,7 +48,7 @@
     <string name="help_dialog_title">Eikö Scrolless toimi\?</string>
     <string name="help_step1_description">Valitse jokin estovaihtoehdoista päänäytöltä</string>
     <string name="help_step1_title">Valitse estovaihtoehto</string>
-    <string name="help_step2_description">Jos esto ei toimi, poista käytöstä ja ota sitten käyttöön esteettömyyspalvelu ja yritä poistaa akun optimointi Scrollessilta.</string>
+    <string name="help_step2_description">Jos esto ei toimi, poista esteettömyyspalvelu käytöstä ja ota se sitten uudelleen käyttöön. Salli myös Scrollessin toimia taustalla: ota Autostart käyttöön (Xiaomi, POCO, Redmi ja vastaavat puhelimet) ja aseta sen akun käyttö tilaan \"Rajoittamaton\".</string>
     <string name="help_step2_title">Vianmääritys</string>
     <string name="help_step3_description">Onko sinulla edelleen ongelmia\? Olemme täällä auttamassa! Käytä alla olevaa painiketta ottaaksesi meihin yhteyttä GitHub-repositoriossamme.</string>
     <string name="help_step3_title">Ota yhteyttä tukeen</string>
@@ -67,6 +77,10 @@
     <string name="pause_duration_hint">Keskeyttää eston %1$d minuutiksi</string>
     <string name="pause_resumes_in">Jatkuu %1$s kuluttua</string>
     <string name="resume">Jatka</string>
+    <string name="service_not_running_description">Android pysäytti Scrollessin taustalla, joten esto on keskeytetty. Näin käy yleensä, kun sovellus poistetaan viimeisimmistä sovelluksista.</string>
+    <string name="service_not_running_step_background">Salli Scrollessin toimia taustalla, jotta näin ei käy uudelleen.</string>
+    <string name="service_not_running_step_restart">Avaa esteettömyysasetukset, poista Scrolless käytöstä ja ota se sitten uudelleen käyttöön.</string>
+    <string name="service_not_running_title">Scrolless pysäytettiin</string>
     <string name="settings">Asetukset</string>
     <string name="success_icon_description">Onnistumisen valintamerkkikuvake</string>
     <string name="time_interval">Aika\nVäli</string>
