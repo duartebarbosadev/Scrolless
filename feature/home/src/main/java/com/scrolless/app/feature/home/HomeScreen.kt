@@ -150,7 +150,6 @@ fun HomeScreen(
     },
     forceLegacyOverlay: Boolean = false,
     onForceLegacyOverlayChanged: (Boolean) -> Unit = {},
-    onContentReady: () -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -241,7 +240,6 @@ fun HomeScreen(
     LaunchedEffect(uiState.hasLoadedSettings) {
         if (uiState.hasLoadedSettings) {
             hasShownLoadedState = true
-            onContentReady()
         }
     }
     val accentAnimationSpec: AnimationSpec<Float> = if (hasShownLoadedState) tween(durationMillis = 900) else snap()
