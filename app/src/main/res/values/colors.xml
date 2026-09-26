@@ -17,7 +17,7 @@
 -->
 <resources>
     <color name="ic_launcher_background">#ffffff</color>
-    <!-- Matches the Compose colorScheme.background so there is no flash on startup. -->
+    <!-- Keep in sync with backgroundLight in core/designsystem Color.kt to avoid a flash on startup. -->
     <color name="window_background">#FFF9F9FF</color>
     <color name="splash_icon_background">#FFFFFFFF</color>
 

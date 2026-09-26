@@ -16,6 +16,8 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
+    <!-- Keep in sync with backgroundDark in core/designsystem Color.kt to avoid a flash on startup. -->
     <color name="window_background">#FF111318</color>
+    <!-- surfaceContainerDark: a subtle circle instead of a bright white one on the dark splash. -->
     <color name="splash_icon_background">#FF1D2024</color>
 </resources>
