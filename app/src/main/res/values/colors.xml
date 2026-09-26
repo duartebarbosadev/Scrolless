@@ -19,6 +19,7 @@
     <color name="ic_launcher_background">#ffffff</color>
     <!-- Matches the Compose colorScheme.background so there is no flash on startup. -->
     <color name="window_background">#FFF9F9FF</color>
+    <color name="splash_icon_background">#FFFFFFFF</color>
 
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>

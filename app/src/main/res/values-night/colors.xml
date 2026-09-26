@@ -17,4 +17,5 @@
 -->
 <resources>
     <color name="window_background">#FF111318</color>
+    <color name="splash_icon_background">#FF1D2024</color>
 </resources>
