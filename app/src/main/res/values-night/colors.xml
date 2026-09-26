@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2025 Scrolless
+  ~ Copyright (C) 2026 Scrolless
   ~
   ~ This program is free software: you can redistribute it and/or modify
   ~ it under the terms of the GNU General Public License as published by
@@ -16,11 +16,8 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
-    <color name="ic_launcher_background">#ffffff</color>
-    <!-- Keep in sync with backgroundLight in core/designsystem Color.kt to avoid a flash on startup. -->
-    <color name="window_background">#FFF9F9FF</color>
-    <color name="splash_icon_background">#FFFFFFFF</color>
-
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <!-- Keep in sync with backgroundDark in core/designsystem Color.kt to avoid a flash on startup. -->
+    <color name="window_background">#FF111318</color>
+    <!-- surfaceContainerDark: a subtle circle instead of a bright white one on the dark splash. -->
+    <color name="splash_icon_background">#FF1D2024</color>
 </resources>

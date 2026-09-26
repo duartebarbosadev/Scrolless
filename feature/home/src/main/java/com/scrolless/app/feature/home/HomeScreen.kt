@@ -22,7 +22,9 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -233,6 +235,16 @@ fun HomeScreen(
         }
     }
 
+    // Snap (don't animate) from the placeholder state to the first loaded state to avoid a visible jump.
+    var hasShownLoadedState by remember { mutableStateOf(false) }
+    LaunchedEffect(uiState.hasLoadedSettings) {
+        if (uiState.hasLoadedSettings) {
+            hasShownLoadedState = true
+        }
+    }
+    val accentAnimationSpec: AnimationSpec<Float> = if (hasShownLoadedState) tween(durationMillis = 900) else snap()
+    val accentColorAnimationSpec: AnimationSpec<Color> = if (hasShownLoadedState) tween(durationMillis = 900) else snap()
+
     val hasLimitTimer =
         (uiState.blockOption == BlockOption.DailyLimit && uiState.settings.dailyLimitMillis > 0L) ||
             (uiState.blockOption == BlockOption.IntervalTimer && uiState.settings.intervalAllowanceMillis > 0L)
@@ -247,7 +259,7 @@ fun HomeScreen(
             uiState.progress < 100 -> progressbar_orange_use
             else -> progressbar_red_use
         },
-        animationSpec = tween(durationMillis = 900),
+        animationSpec = accentColorAnimationSpec,
         label = "limitAccentColor",
     )
     val shouldShowHealthyBackground = uiState.blockOption == BlockOption.BlockAll && !isPauseActive
@@ -259,7 +271,7 @@ fun HomeScreen(
     }
     val backgroundAccentColor by animateColorAsState(
         targetValue = backgroundAccentTargetColor,
-        animationSpec = tween(durationMillis = 900),
+        animationSpec = accentColorAnimationSpec,
         label = "backgroundAccentColor",
     )
     val backgroundAccentStrength by animateFloatAsState(
@@ -269,7 +281,7 @@ fun HomeScreen(
             hasLimitTimer -> limitProgressFraction
             else -> 0f
         },
-        animationSpec = tween(durationMillis = 900),
+        animationSpec = accentAnimationSpec,
         label = "backgroundAccentStrength",
     )
 

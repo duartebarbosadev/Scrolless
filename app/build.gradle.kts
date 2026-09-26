@@ -169,6 +169,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.core)
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.palette)
 
     // Dependency injection
