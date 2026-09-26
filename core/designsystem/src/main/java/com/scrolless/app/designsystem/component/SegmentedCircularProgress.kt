@@ -16,7 +16,7 @@
  */
 package com.scrolless.app.designsystem.component
 
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -30,7 +30,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -103,13 +107,20 @@ fun SegmentedCircularProgressIndicator(
     val isPreview = LocalInspectionMode.current
 
     val clampedProgress = progressFraction.coerceIn(0f, 1f)
-    val animatedProgressFraction by animateFloatAsState(
-        targetValue = clampedProgress,
-        animationSpec = tween(durationMillis = if (isPreview) 0 else 800),
-        label = "totalProgress",
-    )
+
+    // Start filling only once the ring is actually drawn. While a splash screen holds the first
+    // frame, animations keep running off-screen, so the fill would otherwise finish unseen.
+    var hasBeenDrawn by remember { mutableStateOf(false) }
+    val progressAnimatable = remember { Animatable(0f) }
+    LaunchedEffect(clampedProgress, hasBeenDrawn) {
+        if (hasBeenDrawn) {
+            progressAnimatable.animateTo(clampedProgress, tween(durationMillis = 800))
+        }
+    }
+    val animatedProgressFraction = if (isPreview) clampedProgress else progressAnimatable.value
 
     Canvas(modifier = modifier) {
+        if (!hasBeenDrawn) hasBeenDrawn = true
         val strokeWidthPx = strokeWidth.toPx()
         val diameter = (min(size.width, size.height) - strokeWidthPx).coerceAtLeast(0f)
         val radius = (diameter / 2f).coerceAtLeast(0.001f)
