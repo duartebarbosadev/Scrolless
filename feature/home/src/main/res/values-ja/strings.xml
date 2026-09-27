@@ -31,6 +31,7 @@
     <string name="background_allow_button">許可</string>
     <string name="background_autostart_step">自動起動をオンにする</string>
     <string name="background_battery_step">バックグラウンドアクティビティを許可</string>
+    <string name="background_continue_button">続ける</string>
     <string name="background_open_button">開く</string>
     <string name="background_settings_button">バックグラウンド設定を開く</string>
     <string name="background_step_description">一部の端末ではバックグラウンドで Scrolless が終了され、ブロックが停止します。</string>

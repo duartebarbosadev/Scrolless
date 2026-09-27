@@ -64,6 +64,8 @@
 
     <string name="background_battery_step">Allow background activity</string>
 
+    <string name="background_continue_button">Continue</string>
+
     <string name="background_open_button">Open</string>
 
     <string name="background_settings_button">Open Background Settings</string>

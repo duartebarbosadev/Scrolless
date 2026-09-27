@@ -124,6 +124,7 @@ import com.scrolless.app.feature.home.debug.FloatingDebugUsagePanel
 import com.scrolless.app.feature.home.dialogs.AccessibilityExplainerBottomSheet
 import com.scrolless.app.feature.home.dialogs.AccessibilitySuccessBottomSheet
 import com.scrolless.app.feature.home.dialogs.AccessibilitySuccessBottomSheetPreview
+import com.scrolless.app.feature.home.dialogs.BackgroundSetupBottomSheet
 import com.scrolless.app.feature.home.dialogs.HelpDialog
 import com.scrolless.app.feature.home.dialogs.IntervalTimerDialog
 import com.scrolless.app.feature.home.dialogs.ServiceNotRunningBottomSheet
@@ -163,6 +164,7 @@ fun HomeScreen(
     var showAccessibilityExplainer by remember { mutableStateOf(false) }
     var showAccessibilitySuccess by remember { mutableStateOf(false) }
     var showServiceNotRunning by remember { mutableStateOf(false) }
+    var showBackgroundSetup by remember { mutableStateOf(false) }
     var resumeCount by remember { mutableIntStateOf(0) }
     var debugBypassAccessibilityCheck by remember { mutableStateOf(false) }
     var showIntervalTimerDialog by remember { mutableStateOf(false) }
@@ -186,7 +188,7 @@ fun HomeScreen(
     }
 
     // Observe lifecycle resume events so we can react when the user returns from settings:
-    // - If accessibility is now enabled, flip the success sheet on once.
+    // - If accessibility is now enabled, show the background setup step (if needed) and then the success sheet.
     // - If it is still disabled while a block option is active (or first launch), re-open the explainer.
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -196,9 +198,14 @@ fun HomeScreen(
                 val isAccessibilityEnabled = context.isAccessibilityServiceEnabled(accessibilityServiceClass)
                 if (isAccessibilityEnabled) {
                     if (showAccessibilityExplainer) {
-                        Timber.i("Accessibility service enabled - showing success dialog")
                         showAccessibilityExplainer = false
-                        showAccessibilitySuccess = true
+                        if (context.needsBackgroundSetup()) {
+                            Timber.i("Accessibility service enabled - showing background setup")
+                            showBackgroundSetup = true
+                        } else {
+                            Timber.i("Accessibility service enabled - showing success dialog")
+                            showAccessibilitySuccess = true
+                        }
                         viewModel.setWaitingForAccessibility(false)
                     }
                 } else if (latestUiState.hasLoadedSettings) {
@@ -448,7 +455,8 @@ fun HomeScreen(
         delay(SERVICE_BIND_GRACE_MILLIS.milliseconds)
         when (context.accessibilityServiceStatus(accessibilityServiceClass)) {
             AccessibilityServiceStatus.EnabledNotRunning -> {
-                if (!showAccessibilityExplainer && !showAccessibilitySuccess && !showServiceNotRunning) {
+                val isOnboarding = showAccessibilityExplainer || showBackgroundSetup || showAccessibilitySuccess
+                if (!isOnboarding && !showServiceNotRunning) {
                     Timber.w("Accessibility service enabled but not running - showing recovery sheet")
                     showServiceNotRunning = true
                 }
@@ -456,6 +464,15 @@ fun HomeScreen(
 
             else -> showServiceNotRunning = false
         }
+    }
+
+    if (showBackgroundSetup) {
+        BackgroundSetupBottomSheet(
+            onContinue = {
+                showBackgroundSetup = false
+                showAccessibilitySuccess = true
+            },
+        )
     }
 
     if (showServiceNotRunning) {

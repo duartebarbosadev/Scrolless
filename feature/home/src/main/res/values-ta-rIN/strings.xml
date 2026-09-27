@@ -31,6 +31,7 @@
     <string name="background_allow_button">அனுமதி</string>
     <string name="background_autostart_step">ஆட்டோஸ்டார்ட்டை இயக்கு</string>
     <string name="background_battery_step">பின்னணி செயல்பாட்டை அனுமதி</string>
+    <string name="background_continue_button">தொடரவும்</string>
     <string name="background_open_button">திற</string>
     <string name="background_settings_button">பின்னணி அமைப்புகளைத் திற</string>
     <string name="background_step_description">சில ஃபோன்கள் Scrolless-ஐப் பின்னணியில் மூடுகின்றன, இதனால் தடுப்பது நின்றுவிடும்.</string>

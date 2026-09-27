@@ -75,6 +75,7 @@ internal fun BackgroundGuidanceCard(
     oem: BackgroundRestrictionOem?,
     isIgnoringBatteryOptimizations: Boolean,
     modifier: Modifier = Modifier,
+    showHeader: Boolean = true,
 ) {
     val context = LocalContext.current
     Card(
@@ -83,19 +84,21 @@ internal fun BackgroundGuidanceCard(
         shape = RoundedCornerShape(16.dp),
     ) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
-            Text(
-                text = stringResource(R.string.background_step_title),
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = stringResource(R.string.background_step_description),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+            if (showHeader) {
+                Text(
+                    text = stringResource(R.string.background_step_title),
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = stringResource(R.string.background_step_description),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
             GuidanceAction(
                 label = stringResource(R.string.background_battery_step),
                 actionLabel = stringResource(R.string.background_allow_button),

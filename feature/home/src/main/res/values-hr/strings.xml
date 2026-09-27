@@ -31,6 +31,7 @@
     <string name="background_allow_button">Dopusti</string>
     <string name="background_autostart_step">Uključi Automatsko pokretanje</string>
     <string name="background_battery_step">Dopusti aktivnost u pozadini</string>
+    <string name="background_continue_button">Nastavi</string>
     <string name="background_open_button">Otvori</string>
     <string name="background_settings_button">Otvori postavke rada u pozadini</string>
     <string name="background_step_description">Neki telefoni zatvaraju Scrolless u pozadini, što zaustavlja blokiranje.</string>

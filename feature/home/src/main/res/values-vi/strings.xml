@@ -31,6 +31,7 @@
     <string name="background_allow_button">Cho phép</string>
     <string name="background_autostart_step">Bật Tự khởi động</string>
     <string name="background_battery_step">Cho phép hoạt động trong nền</string>
+    <string name="background_continue_button">Tiếp tục</string>
     <string name="background_open_button">Mở</string>
     <string name="background_settings_button">Mở cài đặt chạy nền</string>
     <string name="background_step_description">Một số điện thoại đóng Scrolless trong nền, khiến việc chặn bị dừng.</string>

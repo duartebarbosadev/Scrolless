@@ -101,6 +101,10 @@ internal enum class BackgroundRestrictionOem(val settingsComponents: List<Settin
 internal fun Context.isIgnoringBatteryOptimizations(): Boolean =
     getSystemService(PowerManager::class.java)?.isIgnoringBatteryOptimizations(packageName) ?: true
 
+/** True on phones known to kill background apps while something is still left for the user to allow. */
+internal fun Context.needsBackgroundSetup(oem: BackgroundRestrictionOem? = BackgroundRestrictionOem.current()): Boolean =
+    oem != null && (oem.hasAutostartManager || !isIgnoringBatteryOptimizations())
+
 /**
  * Shows the system "Stop optimizing battery usage?" dialog, falling back to the battery
  * optimization list when the dialog isn't available.

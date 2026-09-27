@@ -31,6 +31,7 @@
     <string name="background_allow_button">Engedélyezés</string>
     <string name="background_autostart_step">Automatikus indítás bekapcsolása</string>
     <string name="background_battery_step">Háttértevékenység engedélyezése</string>
+    <string name="background_continue_button">Tovább</string>
     <string name="background_open_button">Megnyitás</string>
     <string name="background_settings_button">Háttérbeállítások megnyitása</string>
     <string name="background_step_description">Egyes telefonok bezárják a Scrolless alkalmazást a háttérben, ami leállítja a blokkolást.</string>

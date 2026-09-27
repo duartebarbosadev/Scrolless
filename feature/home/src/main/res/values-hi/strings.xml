@@ -31,6 +31,7 @@
     <string name="background_allow_button">अनुमति दें</string>
     <string name="background_autostart_step">ऑटोस्टार्ट चालू करें</string>
     <string name="background_battery_step">बैकग्राउंड गतिविधि की अनुमति दें</string>
+    <string name="background_continue_button">जारी रखें</string>
     <string name="background_open_button">खोलें</string>
     <string name="background_settings_button">बैकग्राउंड सेटिंग्स खोलें</string>
     <string name="background_step_description">कुछ फ़ोन Scrolless को बैकग्राउंड में बंद कर देते हैं, जिससे ब्लॉकिंग रुक जाती है।</string>

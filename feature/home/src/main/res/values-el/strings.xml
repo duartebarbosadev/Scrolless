@@ -31,6 +31,7 @@
     <string name="background_allow_button">Να επιτρέπεται</string>
     <string name="background_autostart_step">Ενεργοποίηση αυτόματης εκκίνησης</string>
     <string name="background_battery_step">Να επιτρέπεται η δραστηριότητα στο παρασκήνιο</string>
+    <string name="background_continue_button">Συνέχεια</string>
     <string name="background_open_button">Άνοιγμα</string>
     <string name="background_settings_button">Άνοιγμα ρυθμίσεων παρασκηνίου</string>
     <string name="background_step_description">Ορισμένα τηλέφωνα κλείνουν το Scrolless στο παρασκήνιο, με αποτέλεσμα να σταματά ο αποκλεισμός.</string>

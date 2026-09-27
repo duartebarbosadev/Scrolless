@@ -31,6 +31,7 @@
     <string name="background_allow_button">Autoriser</string>
     <string name="background_autostart_step">Activer le démarrage automatique</string>
     <string name="background_battery_step">Autoriser l\'activité en arrière-plan</string>
+    <string name="background_continue_button">Continuer</string>
     <string name="background_open_button">Ouvrir</string>
     <string name="background_settings_button">Ouvrir les paramètres d\'arrière-plan</string>
     <string name="background_step_description">Certains téléphones ferment Scrolless en arrière-plan, ce qui arrête le blocage.</string>

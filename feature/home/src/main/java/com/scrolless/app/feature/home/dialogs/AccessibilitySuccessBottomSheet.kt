@@ -57,7 +57,6 @@ import com.scrolless.app.designsystem.component.AnimatedButton
 import com.scrolless.app.designsystem.component.PopupCircleIcon
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
-import com.scrolless.app.feature.home.BackgroundRestrictionOem
 import com.scrolless.app.feature.home.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -100,11 +99,6 @@ fun AccessibilitySuccessBottomSheet(onDismiss: () -> Unit) {
 @Composable
 private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
     val isPreview = LocalInspectionMode.current
-    val backgroundOem = remember { BackgroundRestrictionOem.current() }
-    val isIgnoringBatteryOptimizations = rememberIsIgnoringBatteryOptimizations()
-    // Only nag on phones known to kill background apps, and only while something is left to fix.
-    val showBackgroundGuidance =
-        backgroundOem != null && (!isIgnoringBatteryOptimizations || backgroundOem.hasAutostartManager)
 
     // Content card animation
     val cardAlpha = remember { Animatable(0f) }
@@ -217,14 +211,6 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
                             delay = 300L,
                         )
                     }
-                }
-
-                if (showBackgroundGuidance) {
-                    Spacer(modifier = Modifier.height(12.dp))
-                    BackgroundGuidanceCard(
-                        oem = backgroundOem,
-                        isIgnoringBatteryOptimizations = isIgnoringBatteryOptimizations,
-                    )
                 }
             }
 

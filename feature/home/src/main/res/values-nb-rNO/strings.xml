@@ -31,6 +31,7 @@
     <string name="background_allow_button">Tillat</string>
     <string name="background_autostart_step">Slå på Autostart</string>
     <string name="background_battery_step">Tillat bakgrunnsaktivitet</string>
+    <string name="background_continue_button">Fortsett</string>
     <string name="background_open_button">Åpne</string>
     <string name="background_settings_button">Åpne bakgrunnsinnstillinger</string>
     <string name="background_step_description">Noen telefoner lukker Scrolless i bakgrunnen, noe som stopper blokkeringen.</string>

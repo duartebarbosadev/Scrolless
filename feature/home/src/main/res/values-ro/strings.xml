@@ -31,6 +31,7 @@
     <string name="background_allow_button">Permite</string>
     <string name="background_autostart_step">Activează Pornirea automată</string>
     <string name="background_battery_step">Permite activitatea în fundal</string>
+    <string name="background_continue_button">Continuă</string>
     <string name="background_open_button">Deschide</string>
     <string name="background_settings_button">Deschide setările de fundal</string>
     <string name="background_step_description">Unele telefoane închid Scrolless în fundal, ceea ce oprește blocarea.</string>

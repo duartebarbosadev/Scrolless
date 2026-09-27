@@ -31,6 +31,7 @@
     <string name="background_allow_button">Permitir</string>
     <string name="background_autostart_step">Ativar Início automático</string>
     <string name="background_battery_step">Permitir atividade em segundo plano</string>
+    <string name="background_continue_button">Continuar</string>
     <string name="background_open_button">Abrir</string>
     <string name="background_settings_button">Abrir definições de segundo plano</string>
     <string name="background_step_description">Alguns telemóveis fecham o Scrolless em segundo plano, o que interrompe o bloqueio.</string>
