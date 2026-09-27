@@ -84,6 +84,8 @@ import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.util.formatMinutes
+import com.scrolless.app.feature.home.BackgroundRestrictionOem
+import com.scrolless.app.feature.home.DebugPhoneBrand
 import com.scrolless.app.feature.home.components.ANALYTICS_DATE_FORMATTER
 import com.scrolless.app.feature.home.components.analyticsColor
 import com.scrolless.app.feature.home.components.analyticsDisplayName
@@ -328,6 +330,8 @@ private fun DebugDayTimelinePanel(
                 onForceLegacyOverlayChanged = onForceLegacyOverlayChanged,
             )
 
+            DebugPhoneBrandSelector()
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -504,6 +508,49 @@ private fun DebugOverlaySelector(forceLegacyOverlay: Boolean, onForceLegacyOverl
     val activeMode = if (supportsWindowAttachment && !forceLegacyOverlay) "Attached (API 34+)" else "Legacy"
     Text(
         text = "Device API ${Build.VERSION.SDK_INT} · $activeMode\n",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+}
+
+@Composable
+private fun DebugPhoneBrandSelector() {
+    Text(
+        text = "Phone brand (background setup)",
+        style = MaterialTheme.typography.titleSmall,
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colorScheme.onSurface,
+    )
+    Row(
+        modifier = Modifier.horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        FilterChip(
+            selected = !DebugPhoneBrand.isSimulating,
+            onClick = { DebugPhoneBrand.isSimulating = false },
+            label = { Text("This phone") },
+        )
+        FilterChip(
+            selected = DebugPhoneBrand.isSimulating && DebugPhoneBrand.simulatedOem == null,
+            onClick = {
+                DebugPhoneBrand.simulatedOem = null
+                DebugPhoneBrand.isSimulating = true
+            },
+            label = { Text("Pixel") },
+        )
+        BackgroundRestrictionOem.entries.forEach { oem ->
+            FilterChip(
+                selected = DebugPhoneBrand.isSimulating && DebugPhoneBrand.simulatedOem == oem,
+                onClick = {
+                    DebugPhoneBrand.simulatedOem = oem
+                    DebugPhoneBrand.isSimulating = true
+                },
+                label = { Text(oem.name) },
+            )
+        }
+    }
+    Text(
+        text = "Device ${Build.MANUFACTURER} / ${Build.BRAND} · using ${BackgroundRestrictionOem.current()?.name ?: "none"}\n",
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )

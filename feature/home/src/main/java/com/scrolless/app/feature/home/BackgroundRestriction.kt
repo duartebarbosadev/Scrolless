@@ -26,6 +26,9 @@ import android.content.Intent
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.core.net.toUri
 import timber.log.Timber
 
@@ -96,8 +99,21 @@ internal enum class BackgroundRestrictionOem(val settingsComponents: List<Settin
             }
         }
 
-        fun current(): BackgroundRestrictionOem? = from(Build.MANUFACTURER, Build.BRAND)
+        fun current(): BackgroundRestrictionOem? = if (BuildConfig.DEBUG && DebugPhoneBrand.isSimulating) {
+            DebugPhoneBrand.simulatedOem
+        } else {
+            from(Build.MANUFACTURER, Build.BRAND)
+        }
     }
+}
+
+/**
+ * Debug builds only: pretend to be another phone brand so each OEM flow can be tried on any device.
+ * OEM settings screens that don't exist on this phone fall back to the app details page.
+ */
+internal object DebugPhoneBrand {
+    var isSimulating by mutableStateOf(false)
+    var simulatedOem by mutableStateOf<BackgroundRestrictionOem?>(null)
 }
 
 internal fun Context.isIgnoringBatteryOptimizations(): Boolean =
