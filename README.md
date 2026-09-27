@@ -48,7 +48,7 @@ Since the app requires accessibility permissions, which can have sketchy uses, S
 Some phones stop apps running in the background when you clear them from recent apps. This takes the accessibility service down with them. Scrolless shows a warning when this happens. To fix it:
 
 1. Open Accessibility settings, then turn Scrolless off and on again.
-2. Allow Scrolless to run in the background:
+2. Tap **Allow background activity** in Scrolless and confirm the system popup. On some phones you also need to allow background activity in the phone's own settings:
    - **Xiaomi / Redmi / POCO (MIUI, HyperOS):** turn on **Autostart** and set Battery saver to **No restrictions**.
    - **Huawei / Honor:** in App launch, set Scrolless to **Manage manually** with Auto-launch and Run in background turned on.
    - **Oppo / Realme / OnePlus:** turn on **Allow auto launch** and **Allow background activity**.

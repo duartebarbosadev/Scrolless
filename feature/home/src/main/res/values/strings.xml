@@ -58,25 +58,19 @@
 
     <string name="block_all">Block\nAll</string>
 
-    <string name="background_instruction_huawei">Open Settings &gt; Apps &gt; App launch, find Scrolless and set it to \"Manage manually\" with Auto-launch and Run in background turned on.</string>
+    <string name="background_allow_button">Allow</string>
 
-    <string name="background_instruction_generic">Allow Scrolless to run in the background and set its battery usage to \"Unrestricted\" or \"No restrictions\".</string>
+    <string name="background_autostart_step">Turn on Autostart</string>
 
-    <string name="background_instruction_oneplus">Allow Scrolless to auto-launch and set its battery usage to \"Unrestricted\" (Settings &gt; Apps &gt; Scrolless &gt; Battery).</string>
+    <string name="background_battery_step">Allow background activity</string>
 
-    <string name="background_instruction_oppo">Turn on \"Allow auto launch\" and \"Allow background activity\" for Scrolless (Settings &gt; Apps &gt; Scrolless &gt; Battery usage).</string>
-
-    <string name="background_instruction_samsung">Set Scrolless battery usage to \"Unrestricted\" and make sure it is not in \"Sleeping apps\" or \"Deep sleeping apps\" (Settings &gt; Battery &gt; Background usage limits).</string>
-
-    <string name="background_instruction_vivo">Turn on \"Auto-start\" and \"Allow high background power consumption\" for Scrolless in i Manager or Settings &gt; Battery.</string>
-
-    <string name="background_instruction_xiaomi">Turn on \"Autostart\" for Scrolless and set Battery saver to \"No restrictions\" (Settings &gt; Apps &gt; Manage apps &gt; Scrolless).</string>
+    <string name="background_open_button">Open</string>
 
     <string name="background_settings_button">Open Background Settings</string>
 
     <string name="background_step_title">Keep Scrolless Running</string>
 
-    <string name="background_step_description">Your phone may stop Scrolless when you clear recent apps. To keep blocking working:</string>
+    <string name="background_step_description">Some phones close Scrolless in the background, which stops blocking.</string>
 
     <string name="close">Close</string>
 

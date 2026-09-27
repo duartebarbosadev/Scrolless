@@ -16,96 +16,137 @@
  */
 package com.scrolless.app.feature.home.dialogs
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.scrolless.app.feature.home.BackgroundRestrictionOem
 import com.scrolless.app.feature.home.R
+import com.scrolless.app.feature.home.isIgnoringBatteryOptimizations
 import com.scrolless.app.feature.home.openBackgroundSettings
+import com.scrolless.app.feature.home.requestIgnoreBatteryOptimizations
 import timber.log.Timber
 
-internal val BackgroundRestrictionOem?.guidanceInstructionRes: Int
-    get() = this?.instructionRes ?: R.string.background_instruction_generic
-
-/** Card telling the user how to let Scrolless keep running in the background on their phone. */
+/** Tracks whether Scrolless is still subject to battery optimization, refreshed on every resume. */
 @Composable
-internal fun BackgroundGuidanceCard(oem: BackgroundRestrictionOem?, modifier: Modifier = Modifier, showDescription: Boolean = true) {
+internal fun rememberIsIgnoringBatteryOptimizations(): Boolean {
+    val context = LocalContext.current
+    val isPreview = LocalInspectionMode.current
+    var isIgnoring by remember { mutableStateOf(isPreview || context.isIgnoringBatteryOptimizations()) }
+    if (!isPreview) {
+        LifecycleResumeEffect(context) {
+            isIgnoring = context.isIgnoringBatteryOptimizations()
+            onPauseOrDispose { }
+        }
+    }
+    return isIgnoring
+}
+
+/** Compact card with one-tap actions that let Scrolless keep running in the background. */
+@Composable
+internal fun BackgroundGuidanceCard(
+    oem: BackgroundRestrictionOem?,
+    isIgnoringBatteryOptimizations: Boolean,
+    modifier: Modifier = Modifier,
+) {
     val context = LocalContext.current
     Card(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.35f),
-        ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = RoundedCornerShape(16.dp),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Filled.Warning,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.tertiary,
-                    modifier = Modifier.size(20.dp),
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = stringResource(R.string.background_step_title),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            if (showDescription) {
-                Text(
-                    text = stringResource(R.string.background_step_description),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-            }
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
             Text(
-                text = stringResource(oem.guidanceInstructionRes),
-                style = MaterialTheme.typography.bodySmall,
-                fontWeight = FontWeight.SemiBold,
+                text = stringResource(R.string.background_step_title),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface,
             )
-            Spacer(modifier = Modifier.height(12.dp))
-            OutlinedButton(
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = stringResource(R.string.background_step_description),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            GuidanceAction(
+                label = stringResource(R.string.background_battery_step),
+                actionLabel = stringResource(R.string.background_allow_button),
+                isDone = isIgnoringBatteryOptimizations,
                 onClick = {
-                    Timber.i("BackgroundGuidance: open background settings (oem=%s)", oem)
-                    context.openBackgroundSettings(oem)
+                    Timber.i("BackgroundGuidance: request battery optimization exemption")
+                    context.requestIgnoreBatteryOptimizations()
                 },
-                modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-            ) {
-                Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = stringResource(R.string.background_settings_button),
-                        fontWeight = FontWeight.Bold,
-                    )
-                }
+            )
+            if (oem?.hasAutostartManager == true) {
+                GuidanceAction(
+                    label = stringResource(R.string.background_autostart_step),
+                    actionLabel = stringResource(R.string.background_open_button),
+                    isDone = false,
+                    onClick = {
+                        Timber.i("BackgroundGuidance: open autostart settings (oem=%s)", oem)
+                        context.openBackgroundSettings(oem)
+                    },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun GuidanceAction(label: String, actionLabel: String, isDone: Boolean, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 48.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.weight(1f),
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        if (isDone) {
+            Icon(
+                imageVector = Icons.Filled.Check,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .size(24.dp),
+            )
+        } else {
+            FilledTonalButton(onClick = onClick) {
+                Text(text = actionLabel, fontWeight = FontWeight.Bold)
             }
         }
     }

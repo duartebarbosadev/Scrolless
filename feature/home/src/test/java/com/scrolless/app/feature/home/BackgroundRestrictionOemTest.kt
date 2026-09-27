@@ -52,4 +52,11 @@ class BackgroundRestrictionOemTest {
         assertEquals("com.miui.securitycenter", first.packageName)
         assertTrue(first.className.endsWith("AutoStartManagementActivity"))
     }
+
+    @Test
+    fun `only samsung relies on battery optimization alone`() {
+        BackgroundRestrictionOem.entries.forEach { oem ->
+            assertEquals(oem != BackgroundRestrictionOem.Samsung, oem.hasAutostartManager)
+        }
+    }
 }

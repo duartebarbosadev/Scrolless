@@ -445,7 +445,7 @@ fun HomeScreen(
     LaunchedEffect(resumeCount) {
         if (resumeCount == 0) return@LaunchedEffect
         // Give the system a moment to (re)bind the service after returning from settings.
-        delay(SERVICE_BIND_GRACE_MILLIS)
+        delay(SERVICE_BIND_GRACE_MILLIS.milliseconds)
         when (context.accessibilityServiceStatus(accessibilityServiceClass)) {
             AccessibilityServiceStatus.EnabledNotRunning -> {
                 if (!showAccessibilityExplainer && !showAccessibilitySuccess && !showServiceNotRunning) {

@@ -101,6 +101,10 @@ fun AccessibilitySuccessBottomSheet(onDismiss: () -> Unit) {
 private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
     val isPreview = LocalInspectionMode.current
     val backgroundOem = remember { BackgroundRestrictionOem.current() }
+    val isIgnoringBatteryOptimizations = rememberIsIgnoringBatteryOptimizations()
+    // Only nag on phones known to kill background apps, and only while something is left to fix.
+    val showBackgroundGuidance =
+        backgroundOem != null && (!isIgnoringBatteryOptimizations || backgroundOem.hasAutostartManager)
 
     // Content card animation
     val cardAlpha = remember { Animatable(0f) }
@@ -215,9 +219,12 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
                     }
                 }
 
-                if (backgroundOem != null) {
+                if (showBackgroundGuidance) {
                     Spacer(modifier = Modifier.height(12.dp))
-                    BackgroundGuidanceCard(oem = backgroundOem)
+                    BackgroundGuidanceCard(
+                        oem = backgroundOem,
+                        isIgnoringBatteryOptimizations = isIgnoringBatteryOptimizations,
+                    )
                 }
             }
 

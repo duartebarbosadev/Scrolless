@@ -16,13 +16,14 @@
  */
 package com.scrolless.app.feature.home
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.PowerManager
 import android.provider.Settings
-import androidx.annotation.StringRes
 import androidx.core.net.toUri
 import timber.log.Timber
 
@@ -32,30 +33,26 @@ internal data class SettingsComponent(val packageName: String, val className: St
  * OEM skins that kill background apps (and with them the accessibility service) unless the
  * user explicitly allows autostart / background activity for the app.
  */
-internal enum class BackgroundRestrictionOem(@StringRes val instructionRes: Int, val settingsComponents: List<SettingsComponent>) {
+internal enum class BackgroundRestrictionOem(val settingsComponents: List<SettingsComponent>) {
     Xiaomi(
-        instructionRes = R.string.background_instruction_xiaomi,
         settingsComponents = listOf(
             SettingsComponent("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"),
             SettingsComponent("com.miui.securitycenter", "com.miui.powercenter.PowerSettings"),
         ),
     ),
     Huawei(
-        instructionRes = R.string.background_instruction_huawei,
         settingsComponents = listOf(
             SettingsComponent("com.huawei.systemmanager", "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity"),
             SettingsComponent("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"),
         ),
     ),
     Honor(
-        instructionRes = R.string.background_instruction_huawei,
         settingsComponents = listOf(
             SettingsComponent("com.hihonor.systemmanager", "com.hihonor.systemmanager.startupmgr.ui.StartupNormalAppListActivity"),
             SettingsComponent("com.huawei.systemmanager", "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity"),
         ),
     ),
     Oppo(
-        instructionRes = R.string.background_instruction_oppo,
         settingsComponents = listOf(
             SettingsComponent("com.coloros.safecenter", "com.coloros.safecenter.permission.startup.StartupAppListActivity"),
             SettingsComponent("com.coloros.safecenter", "com.coloros.safecenter.startupapp.StartupAppListActivity"),
@@ -63,25 +60,23 @@ internal enum class BackgroundRestrictionOem(@StringRes val instructionRes: Int,
         ),
     ),
     OnePlus(
-        instructionRes = R.string.background_instruction_oneplus,
         settingsComponents = listOf(
             SettingsComponent("com.oneplus.security", "com.oneplus.security.chainlaunch.view.ChainLaunchAppListActivity"),
             SettingsComponent("com.coloros.safecenter", "com.coloros.safecenter.startupapp.StartupAppListActivity"),
         ),
     ),
     Vivo(
-        instructionRes = R.string.background_instruction_vivo,
         settingsComponents = listOf(
             SettingsComponent("com.vivo.permissionmanager", "com.vivo.permissionmanager.activity.BgStartUpManagerActivity"),
             SettingsComponent("com.iqoo.secure", "com.iqoo.secure.ui.phoneoptimize.BgStartUpManager"),
             SettingsComponent("com.iqoo.secure", "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity"),
         ),
     ),
-    Samsung(
-        instructionRes = R.string.background_instruction_samsung,
-        settingsComponents = emptyList(),
-    ),
+    Samsung(settingsComponents = emptyList()),
     ;
+
+    /** Whether this OEM has its own autostart switch on top of Android's battery optimization. */
+    val hasAutostartManager: Boolean get() = settingsComponents.isNotEmpty()
 
     companion object {
         fun from(manufacturer: String?, brand: String?): BackgroundRestrictionOem? {
@@ -103,6 +98,31 @@ internal enum class BackgroundRestrictionOem(@StringRes val instructionRes: Int,
     }
 }
 
+internal fun Context.isIgnoringBatteryOptimizations(): Boolean =
+    getSystemService(PowerManager::class.java)?.isIgnoringBatteryOptimizations(packageName) ?: true
+
+/**
+ * Shows the system "Stop optimizing battery usage?" dialog, falling back to the battery
+ * optimization list when the dialog isn't available.
+ */
+@SuppressLint("BatteryLife")
+internal fun Context.requestIgnoreBatteryOptimizations() {
+    val candidates = listOf(
+        Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, "package:$packageName".toUri()),
+        Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS),
+    )
+    if (!startFirstAvailable(candidates)) openBackgroundSettings(oem = null)
+}
+
+/** Fixes the most important remaining background restriction with a single action. */
+internal fun Context.fixBackgroundRestrictions(oem: BackgroundRestrictionOem? = BackgroundRestrictionOem.current()) {
+    if (!isIgnoringBatteryOptimizations()) {
+        requestIgnoreBatteryOptimizations()
+    } else {
+        openBackgroundSettings(oem)
+    }
+}
+
 /**
  * Opens the best available screen for letting Scrolless run in the background: the OEM autostart
  * manager when present, otherwise the app details page (battery / background settings).
@@ -112,16 +132,20 @@ internal fun Context.openBackgroundSettings(oem: BackgroundRestrictionOem? = Bac
         Intent().setComponent(ComponentName(component.packageName, component.className))
     } + Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, "package:$packageName".toUri())
 
+    if (!startFirstAvailable(candidates)) Timber.w("No background settings screen could be opened")
+}
+
+private fun Context.startFirstAvailable(candidates: List<Intent>): Boolean {
     for (intent in candidates) {
         try {
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
             Timber.i("Opened background settings: %s", intent.component ?: intent.action)
-            return
+            return true
         } catch (e: ActivityNotFoundException) {
-            Timber.d("Background settings not available: %s", intent.component)
+            Timber.d("Background settings not available: %s", intent.component ?: intent.action)
         } catch (e: SecurityException) {
-            Timber.d(e, "Background settings not accessible: %s", intent.component)
+            Timber.d(e, "Background settings not accessible: %s", intent.component ?: intent.action)
         }
     }
-    Timber.w("No background settings screen could be opened")
+    return false
 }

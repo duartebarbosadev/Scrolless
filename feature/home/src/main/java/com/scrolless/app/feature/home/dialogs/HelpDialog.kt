@@ -64,8 +64,8 @@ import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.feature.home.R
+import com.scrolless.app.feature.home.fixBackgroundRestrictions
 import com.scrolless.app.feature.home.openActivityAccessibilitySettings
-import com.scrolless.app.feature.home.openBackgroundSettings
 import timber.log.Timber
 
 @Composable
@@ -215,7 +215,7 @@ private fun HelpDialogContent(onDismiss: () -> Unit) {
             OutlinedButton(
                 onClick = {
                     Timber.i("HelpDialog: open background settings")
-                    context.openBackgroundSettings()
+                    context.fixBackgroundRestrictions()
                     onDismiss()
                 },
                 modifier = Modifier

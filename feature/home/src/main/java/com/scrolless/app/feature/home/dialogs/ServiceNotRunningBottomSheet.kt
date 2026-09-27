@@ -119,7 +119,7 @@ private fun ServiceNotRunningContent(onDismiss: () -> Unit) {
         Spacer(modifier = Modifier.height(20.dp))
         NumberedLine(number = stringResource(R.string.step_two), text = stringResource(R.string.service_not_running_step_background))
         Spacer(modifier = Modifier.height(12.dp))
-        BackgroundGuidanceCard(oem = oem, showDescription = false)
+        BackgroundGuidanceCard(oem = oem, isIgnoringBatteryOptimizations = rememberIsIgnoringBatteryOptimizations())
 
         Spacer(modifier = Modifier.height(12.dp))
         TextButton(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) {
