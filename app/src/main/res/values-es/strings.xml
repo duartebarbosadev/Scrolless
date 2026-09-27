@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">Los vídeos de TikTok están bloqueados</string>
     <string name="tiktok_blocked_description">Usa las pestañas de abajo para abrir la Bandeja de entrada o el Perfil.</string>
+    <string name="instagram_feed_blocked_title">Los vídeos de Instagram están bloqueados</string>
+    <string name="instagram_feed_blocked_description">Usa las pestañas de abajo para abrir la Bandeja de entrada o el Perfil.</string>
 </resources>

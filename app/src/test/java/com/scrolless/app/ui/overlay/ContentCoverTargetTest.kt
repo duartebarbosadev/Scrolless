@@ -63,7 +63,16 @@ class ContentCoverTargetTest {
     fun `window local player bounds are used directly as the cover target`() {
         val localPlayer = ContentBounds(0, 0, 800, 1400)
         val nodes = listOf(ContentCoverNode("player_view", localPlayer, true))
-        val target = window.copy(bounds = TikTokScreenDetector(BlockableApp.TIKTOK).coverBounds(nodes)!!)
+        val target = window.copy(bounds = TikTokScreenDetector(BlockableApp.TIKTOK).coverBounds(nodes).single())
         assertEquals(localPlayer, target.bounds)
+    }
+    @Test
+    fun `moving or removing a second video updates the screen cover`() {
+        val first = ContentBounds(0, 100, 1080, 700)
+        val second = ContentBounds(0, 1000, 1080, 2100)
+        val previous = ContentCoverTarget.Screen(listOf(first, second))
+        assertFalse(previous.needsUpdate(previous, refreshAttachment = false))
+        assertTrue(ContentCoverTarget.Screen(listOf(first, second.copy(top = 900))).needsUpdate(previous, false))
+        assertTrue(ContentCoverTarget.Screen(first).needsUpdate(previous, false))
     }
 }

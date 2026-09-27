@@ -24,12 +24,16 @@ internal data class ContentCover(
     val target: ContentCoverTarget,
     @param:StringRes val titleRes: Int,
     @param:StringRes val descriptionRes: Int,
+    val passThroughTouches: Boolean = false,
+    /** Uptime when these rectangles were read; prediction never changes the measured geometry. */
+    val observedAtMillis: Long = 0,
 ) {
     /**
      * Whether an existing cover view can display this cover.
-     * Moving or resizing can reuse the view, but different text or a different overlay type cannot.
+     * Moving or resizing can reuse the view, but different text, touch behavior or a different overlay type cannot.
      */
     fun canReuseView(previous: ContentCover): Boolean = titleRes == previous.titleRes && descriptionRes == previous.descriptionRes &&
+        passThroughTouches == previous.passThroughTouches &&
         (target is ContentCoverTarget.Window) == (previous.target is ContentCoverTarget.Window)
 }
 
@@ -43,13 +47,28 @@ internal sealed interface ContentCoverTarget {
      * Positions the cover from the phone screen's top-left corner.
      * Used by the legacy overlay, which must be removed when the user leaves the app.
      */
-    data class Screen(override val bounds: ContentBounds) : ContentCoverTarget
+    data class Screen(val regions: List<ContentBounds>, val viewport: ContentBounds? = null) : ContentCoverTarget {
+        constructor(bounds: ContentBounds) : this(listOf(bounds))
+
+        init {
+            require(regions.isNotEmpty())
+        }
+
+        // Single-player overlays and DM checks use the first region.
+        override val bounds: ContentBounds get() = regions.first()
+    }
 
     /**
      * Positions the cover from an app window's top-left corner on Android 14+.
      * Attaching it to that window lets Android move them together during app switching.
      */
-    data class Window(val windowId: Int, val displayId: Int, override val bounds: ContentBounds) : ContentCoverTarget
+    data class Window(
+        val windowId: Int,
+        val displayId: Int,
+        override val bounds: ContentBounds,
+        /** Separate video rectangles inside a feed viewport; empty for a single-player cover. */
+        val regions: List<ContentBounds> = emptyList(),
+    ) : ContentCoverTarget
 }
 
 /** Keep attached covers during Home/Recents gestures. Remove screen covers so they do not cover the launcher. */

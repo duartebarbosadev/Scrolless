@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok 影片已被封鎖</string>
     <string name="tiktok_blocked_description">使用下方的分頁開啟「收件匣」或「個人資料」。</string>
+    <string name="instagram_feed_blocked_title">Instagram 影片已被封鎖</string>
+    <string name="instagram_feed_blocked_description">使用下方的分頁開啟「收件匣」或「個人資料」。</string>
 </resources>
