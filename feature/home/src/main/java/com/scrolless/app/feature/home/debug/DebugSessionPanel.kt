@@ -545,7 +545,7 @@ private fun DebugPhoneBrandSelector() {
                     DebugPhoneBrand.simulatedOem = oem
                     DebugPhoneBrand.isSimulating = true
                 },
-                label = { Text(oem.name) },
+                label = { Text(oem.debugLabel) },
             )
         }
     }
@@ -555,6 +555,14 @@ private fun DebugPhoneBrandSelector() {
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 }
+
+private val BackgroundRestrictionOem.debugLabel: String
+    get() = when (this) {
+        BackgroundRestrictionOem.Xiaomi -> "Xiaomi / POCO / Redmi"
+        BackgroundRestrictionOem.Oppo -> "Oppo / Realme"
+        BackgroundRestrictionOem.Vivo -> "Vivo / iQOO"
+        else -> name
+    }
 
 @Composable
 private fun DurationOptionChip(minutes: Int, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
