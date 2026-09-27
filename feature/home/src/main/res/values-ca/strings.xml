@@ -33,7 +33,7 @@
     <string name="background_battery_step">Permet l\'activitat en segon pla</string>
     <string name="background_continue_button">Continua</string>
     <string name="background_open_button">Obre</string>
-    <string name="background_settings_button">Obre la configuració en segon pla</string>
+    <string name="background_settings_button">Obre la configuració de segon pla</string>
     <string name="background_step_description">Alguns telèfons tanquen Scrolless en segon pla, cosa que atura el bloqueig.</string>
     <string name="background_step_title">Mantén Scrolless en execució</string>
     <string name="block_all">Bloqueja-ho\nTot</string>

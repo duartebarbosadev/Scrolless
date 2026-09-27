@@ -33,7 +33,7 @@
     <string name="background_battery_step">Permitir actividad en segundo plano</string>
     <string name="background_continue_button">Continuar</string>
     <string name="background_open_button">Abrir</string>
-    <string name="background_settings_button">Abrir ajustes en segundo plano</string>
+    <string name="background_settings_button">Abrir ajustes de segundo plano</string>
     <string name="background_step_description">Algunos teléfonos cierran Scrolless en segundo plano, lo que detiene el bloqueo.</string>
     <string name="background_step_title">Mantén Scrolless en ejecución</string>
     <string name="block_all">Bloquear\nTodo</string>

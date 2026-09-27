@@ -35,7 +35,7 @@
     <string name="background_open_button">Открыть</string>
     <string name="background_settings_button">Открыть настройки фоновой работы</string>
     <string name="background_step_description">Некоторые телефоны закрывают Scrolless в фоновом режиме, и блокировка перестаёт работать.</string>
-    <string name="background_step_title">Не давайте Scrolless останавливаться</string>
+    <string name="background_step_title">Не дайте Scrolless остановиться</string>
     <string name="block_all">Блокировать\nВсе</string>
     <string name="close">Закрыть</string>
     <string name="daily_limit">Дневной\nЛимит</string>

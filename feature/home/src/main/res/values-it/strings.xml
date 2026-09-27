@@ -33,7 +33,7 @@
     <string name="background_battery_step">Consenti attività in background</string>
     <string name="background_continue_button">Continua</string>
     <string name="background_open_button">Apri</string>
-    <string name="background_settings_button">Apri impostazioni in background</string>
+    <string name="background_settings_button">Apri impostazioni attività in background</string>
     <string name="background_step_description">Alcuni telefoni chiudono Scrolless in background, interrompendo il blocco.</string>
     <string name="background_step_title">Mantieni Scrolless attivo</string>
     <string name="block_all">Blocca\nTutto</string>

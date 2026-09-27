@@ -29,7 +29,7 @@
     <string name="accessibility_success_description">Scrolless on nyt valmis!</string>
     <string name="accessibility_success_title">Kaikki valmista!</string>
     <string name="background_allow_button">Salli</string>
-    <string name="background_autostart_step">Ota Autostart käyttöön</string>
+    <string name="background_autostart_step">Ota automaattinen käynnistys käyttöön</string>
     <string name="background_battery_step">Salli taustatoiminta</string>
     <string name="background_continue_button">Jatka</string>
     <string name="background_open_button">Avaa</string>
@@ -46,7 +46,7 @@
     <string name="help_dialog_title">Eikö Scrolless toimi\?</string>
     <string name="help_step1_description">Valitse jokin estovaihtoehdoista päänäytöltä</string>
     <string name="help_step1_title">Valitse estovaihtoehto</string>
-    <string name="help_step2_description">Jos esto ei toimi, poista esteettömyyspalvelu käytöstä ja ota se sitten uudelleen käyttöön. Salli myös Scrollessin toimia taustalla: ota Autostart käyttöön (Xiaomi, POCO, Redmi ja vastaavat puhelimet) ja aseta sen akun käyttö tilaan \"Rajoittamaton\".</string>
+    <string name="help_step2_description">Jos esto ei toimi, poista esteettömyyspalvelu käytöstä ja ota se sitten uudelleen käyttöön. Salli myös Scrollessin toimia taustalla: ota automaattinen käynnistys käyttöön (Xiaomi, POCO, Redmi ja vastaavat puhelimet) ja aseta sen akun käyttö tilaan \"Rajoittamaton\".</string>
     <string name="help_step2_title">Vianmääritys</string>
     <string name="help_step3_description">Onko sinulla edelleen ongelmia\? Olemme täällä auttamassa! Käytä alla olevaa painiketta ottaaksesi meihin yhteyttä GitHub-repositoriossamme.</string>
     <string name="help_step3_title">Ota yhteyttä tukeen</string>
