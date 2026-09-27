@@ -17,9 +17,11 @@
 package com.scrolless.app.feature.home
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.ComponentName
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Build
 import android.os.PowerManager
@@ -140,9 +142,14 @@ internal fun Context.openBackgroundSettings(oem: BackgroundRestrictionOem? = Bac
 }
 
 private fun Context.startFirstAvailable(candidates: List<Intent>): Boolean {
+    // Launch inside our own task when possible. With NEW_TASK these settings screens join the
+    // Settings app's task, which brings back whatever settings page was open there before.
+    val activity = findActivity()
+    val launcher: Context = activity ?: this
     for (intent in candidates) {
+        if (activity == null) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         try {
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            launcher.startActivity(intent)
             Timber.i("Opened background settings: %s", intent.component ?: intent.action)
             return true
         } catch (e: ActivityNotFoundException) {
@@ -152,4 +159,10 @@ private fun Context.startFirstAvailable(candidates: List<Intent>): Boolean {
         }
     }
     return false
+}
+
+private tailrec fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }
