@@ -17,12 +17,11 @@
 package com.scrolless.app.feature.home
 
 import android.accessibilityservice.AccessibilityService
-import android.accessibilityservice.AccessibilityServiceInfo
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.provider.Settings
-import android.view.accessibility.AccessibilityManager
+import com.scrolless.app.core.accessibility.AccessibilityServiceConnection
 
 internal enum class AccessibilityServiceStatus {
     Disabled,
@@ -46,18 +45,10 @@ internal fun Context.isAccessibilityServiceEnabled(service: Class<out Accessibil
 
 internal fun Context.accessibilityServiceStatus(service: Class<out AccessibilityService>?): AccessibilityServiceStatus {
     if (!isAccessibilityServiceEnabled(service) || service == null) return AccessibilityServiceStatus.Disabled
-    return if (isAccessibilityServiceRunning(service)) {
+    return if (AccessibilityServiceConnection.isConnected) {
         AccessibilityServiceStatus.Running
     } else {
         AccessibilityServiceStatus.EnabledNotRunning
-    }
-}
-
-private fun Context.isAccessibilityServiceRunning(service: Class<out AccessibilityService>): Boolean {
-    val manager = getSystemService(AccessibilityManager::class.java) ?: return true
-    return manager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK).any { info ->
-        val serviceInfo = info.resolveInfo?.serviceInfo ?: return@any false
-        serviceInfo.packageName == packageName && serviceInfo.name == service.name
     }
 }
 

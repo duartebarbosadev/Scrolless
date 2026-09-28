@@ -25,6 +25,7 @@ import android.os.Looper
 import android.os.PowerManager
 import android.view.accessibility.AccessibilityEvent
 import com.scrolless.app.BuildConfig
+import com.scrolless.app.core.accessibility.AccessibilityServiceConnection
 import com.scrolless.app.core.blocking.BlockingManager
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
@@ -239,6 +240,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     override fun onServiceConnected() {
         super.onServiceConnected()
         Timber.i("Accessibility service connected")
+        AccessibilityServiceConnection.onConnected()
 
         // Start with restricted configuration to save battery
         refreshServiceConfig()
@@ -424,6 +426,7 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
     /** Cleans up overlays, cancels handlers, and stops all background jobs when the service is destroyed. */
     override fun onDestroy() {
+        AccessibilityServiceConnection.onDisconnected()
         super.onDestroy()
         Timber.d(
             "Service state at destroy: hasContentSession=%b, viewingApp=%s",
