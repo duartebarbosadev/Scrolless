@@ -116,6 +116,11 @@ internal object DebugPhoneBrand {
     var simulatedOem by mutableStateOf<BackgroundRestrictionOem?>(null)
 }
 
+/** Debug-only: pretends the accessibility service was killed so the recovery sheet can be tested. */
+internal object DebugServiceState {
+    var simulateStopped by mutableStateOf(false)
+}
+
 internal fun Context.isIgnoringBatteryOptimizations(): Boolean =
     getSystemService(PowerManager::class.java)?.isIgnoringBatteryOptimizations(packageName) ?: true
 
@@ -169,7 +174,7 @@ private fun Context.startFirstAvailable(candidates: List<Intent>): Boolean {
             Timber.i("Opened background settings: %s", intent.component ?: intent.action)
             return true
         } catch (e: ActivityNotFoundException) {
-            Timber.d("Background settings not available: %s", intent.component ?: intent.action)
+            Timber.d(e,"Background settings not available: %s", intent.component ?: intent.action)
         } catch (e: SecurityException) {
             Timber.d(e, "Background settings not accessible: %s", intent.component ?: intent.action)
         }

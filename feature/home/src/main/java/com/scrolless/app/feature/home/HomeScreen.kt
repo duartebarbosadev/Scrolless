@@ -100,6 +100,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import com.scrolless.app.core.accessibility.AccessibilityServiceConnection
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.BlockingSettings
@@ -449,10 +450,13 @@ fun HomeScreen(
 
     // An OEM battery manager may kill the process while the service stays "enabled" in settings.
     // Android then shows it as not working and won't rebind it until it is toggled.
-    LaunchedEffect(resumeCount) {
+    val serviceConnected by AccessibilityServiceConnection.isConnectedFlow.collectAsStateWithLifecycle()
+    LaunchedEffect(resumeCount, serviceConnected, DebugServiceState.simulateStopped) {
         if (resumeCount == 0) return@LaunchedEffect
         // Give the system a moment to (re)bind the service after returning from settings.
-        delay(SERVICE_BIND_GRACE_MILLIS.milliseconds)
+        if (context.accessibilityServiceStatus(accessibilityServiceClass) == AccessibilityServiceStatus.EnabledNotRunning) {
+            delay(SERVICE_BIND_GRACE_MILLIS.milliseconds)
+        }
         when (context.accessibilityServiceStatus(accessibilityServiceClass)) {
             AccessibilityServiceStatus.EnabledNotRunning -> {
                 val isOnboarding = showAccessibilityExplainer || showBackgroundSetup || showAccessibilitySuccess
@@ -479,6 +483,7 @@ fun HomeScreen(
         ServiceNotRunningBottomSheet(
             onDismiss = {
                 showServiceNotRunning = false
+                DebugServiceState.simulateStopped = false
             },
         )
     }

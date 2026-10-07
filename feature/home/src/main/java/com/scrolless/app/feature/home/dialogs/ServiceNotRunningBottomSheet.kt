@@ -16,18 +16,20 @@
  */
 package com.scrolless.app.feature.home.dialogs
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -35,17 +37,22 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.scrolless.app.designsystem.component.PopupCircleIcon
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.feature.home.BackgroundRestrictionOem
 import com.scrolless.app.feature.home.R
 import com.scrolless.app.feature.home.openActivityAccessibilitySettings
+import com.scrolless.app.feature.home.openBackgroundSettings
+import com.scrolless.app.feature.home.requestIgnoreBatteryOptimizations
 import timber.log.Timber
 
 /**
@@ -62,86 +69,106 @@ fun ServiceNotRunningBottomSheet(onDismiss: () -> Unit) {
             onDismiss()
         },
         sheetState = sheetState,
+        containerColor = Color.Transparent,
     ) {
-        ServiceNotRunningContent(onDismiss = onDismiss)
+        ServiceNotRunningContent(oem = remember { BackgroundRestrictionOem.current() }, onDismiss = onDismiss)
     }
 }
 
 @Composable
-private fun ServiceNotRunningContent(onDismiss: () -> Unit) {
+private fun ServiceNotRunningContent(oem: BackgroundRestrictionOem?, onDismiss: () -> Unit) {
     val context = LocalContext.current
-    val oem = remember { BackgroundRestrictionOem.current() }
+    val isIgnoringBatteryOptimizations = rememberIsIgnoringBatteryOptimizations()
+    // Once everything we can check is done, the card would only show a lone checkmark.
+    val showGuidance = !isIgnoringBatteryOptimizations || oem?.hasAutostartManager == true
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp)
-            .padding(bottom = 24.dp),
+            .background(
+                color = MaterialTheme.colorScheme.surfaceContainer,
+                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+            ),
     ) {
-        Text(
-            text = stringResource(R.string.service_not_running_title),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth(),
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = stringResource(R.string.service_not_running_description),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth(),
-        )
-
-        Spacer(modifier = Modifier.height(20.dp))
-        NumberedLine(number = stringResource(R.string.step_one), text = stringResource(R.string.service_not_running_step_restart))
-        Spacer(modifier = Modifier.height(12.dp))
-        Button(
-            onClick = {
-                Timber.i("ServiceNotRunning: open accessibility settings")
-                try {
-                    context.openActivityAccessibilitySettings()
-                } catch (e: Exception) {
-                    Timber.e(e, "ServiceNotRunning: failed to open accessibility settings")
-                }
-            },
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp),
-            shape = RoundedCornerShape(12.dp),
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 20.dp)
+                .padding(top = 16.dp, bottom = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(text = stringResource(R.string.go_to_accessibility_settings), fontWeight = FontWeight.Bold)
+            // Room for the floating icon
+            Spacer(modifier = Modifier.height(116.dp))
+
+            Text(
+                text = stringResource(R.string.service_not_running_title),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(R.string.service_not_running_description),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)) {
+                    GuidanceAction(
+                        label = stringResource(R.string.service_not_running_step_restart),
+                        actionLabel = stringResource(R.string.background_open_button),
+                        isDone = false,
+                        primary = true,
+                        onClick = {
+                            Timber.i("ServiceNotRunning: open accessibility settings")
+                            try {
+                                context.openActivityAccessibilitySettings()
+                            } catch (e: Exception) {
+                                Timber.e(e, "ServiceNotRunning: failed to open accessibility settings")
+                            }
+                        },
+                    )
+                    if (showGuidance) {
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        GuidanceAction(
+                            label = stringResource(R.string.background_battery_step),
+                            actionLabel = stringResource(R.string.background_allow_button),
+                            isDone = isIgnoringBatteryOptimizations,
+                            onClick = { context.requestIgnoreBatteryOptimizations() },
+                        )
+                    }
+                    if (oem?.hasAutostartManager == true) {
+                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                        GuidanceAction(
+                            label = stringResource(R.string.background_autostart_step),
+                            actionLabel = stringResource(R.string.background_open_button),
+                            isDone = false,
+                            onClick = { context.openBackgroundSettings(oem) },
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+            TextButton(onClick = onDismiss) {
+                Text(text = stringResource(R.string.close))
+            }
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
-        NumberedLine(number = stringResource(R.string.step_two), text = stringResource(R.string.service_not_running_step_background))
-        Spacer(modifier = Modifier.height(12.dp))
-        BackgroundGuidanceCard(oem = oem, isIgnoringBatteryOptimizations = rememberIsIgnoringBatteryOptimizations())
-
-        Spacer(modifier = Modifier.height(12.dp))
-        TextButton(onClick = onDismiss, modifier = Modifier.fillMaxWidth()) {
-            Text(text = stringResource(R.string.close))
-        }
-    }
-}
-
-@Composable
-private fun NumberedLine(number: String, text: String) {
-    Row {
-        Text(
-            text = "$number.",
-            style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary,
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
+        PopupCircleIcon(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = 16.dp),
+            iconRes = R.drawable.ic_circle_battery,
+            contentDescription = stringResource(R.string.service_not_running_title),
         )
     }
 }
@@ -150,6 +177,6 @@ private fun NumberedLine(number: String, text: String) {
 @Composable
 private fun ServiceNotRunningContentPreview() {
     ScrollessTheme(darkTheme = true) {
-        ServiceNotRunningContent(onDismiss = {})
+        ServiceNotRunningContent(oem = BackgroundRestrictionOem.Xiaomi, onDismiss = {})
     }
 }

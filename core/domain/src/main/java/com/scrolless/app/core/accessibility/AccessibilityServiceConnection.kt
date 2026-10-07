@@ -16,23 +16,30 @@
  */
 package com.scrolless.app.core.accessibility
 
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+
 /**
  * Whether the blocking accessibility service is currently connected in this process.
  *
  * The enabled-services setting keeps listing a service after an OEM battery manager kills its
- * process, so this in-memory flag is the only reliable liveness signal. It resets to `false`
+ * process, so this in-memory state is the only reliable liveness signal. It resets to `false`
  * whenever the process restarts and becomes `true` again once the system rebinds the service.
  */
 object AccessibilityServiceConnection {
-    @Volatile
-    var isConnected: Boolean = false
-        private set
+    private val connected = MutableStateFlow(false)
+
+    val isConnectedFlow: StateFlow<Boolean> = connected.asStateFlow()
+
+    val isConnected: Boolean
+        get() = connected.value
 
     fun onConnected() {
-        isConnected = true
+        connected.value = true
     }
 
     fun onDisconnected() {
-        isConnected = false
+        connected.value = false
     }
 }

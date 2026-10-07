@@ -55,6 +55,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -86,6 +87,7 @@ import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.util.formatMinutes
 import com.scrolless.app.feature.home.BackgroundRestrictionOem
 import com.scrolless.app.feature.home.DebugPhoneBrand
+import com.scrolless.app.feature.home.DebugServiceState
 import com.scrolless.app.feature.home.components.ANALYTICS_DATE_FORMATTER
 import com.scrolless.app.feature.home.components.analyticsColor
 import com.scrolless.app.feature.home.components.analyticsDisplayName
@@ -331,6 +333,10 @@ private fun DebugDayTimelinePanel(
             )
 
             DebugPhoneBrandSelector()
+
+            OutlinedButton(onClick = { DebugServiceState.simulateStopped = !DebugServiceState.simulateStopped }) {
+                Text(if (DebugServiceState.simulateStopped) "Stop simulating stopped service" else "Simulate stopped service")
+            }
 
             Row(
                 modifier = Modifier.fillMaxWidth(),

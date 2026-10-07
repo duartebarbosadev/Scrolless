@@ -141,7 +141,7 @@ private fun BackgroundSetupContent(oem: BackgroundRestrictionOem?, onContinue: (
                 .align(Alignment.TopCenter)
                 .padding(top = 16.dp),
             iconRes = R.drawable.ic_circle_battery,
-            contentDescription = stringResource(R.string.background_step_title),
+            contentDescription = stringResource(R.string.background_settings_button),
         )
     }
 }

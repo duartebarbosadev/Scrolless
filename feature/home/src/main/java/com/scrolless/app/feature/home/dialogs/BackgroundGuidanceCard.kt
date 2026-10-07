@@ -25,9 +25,11 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledTonalButton
@@ -53,6 +55,8 @@ import com.scrolless.app.feature.home.isIgnoringBatteryOptimizations
 import com.scrolless.app.feature.home.openBackgroundSettings
 import com.scrolless.app.feature.home.requestIgnoreBatteryOptimizations
 import timber.log.Timber
+
+private val ActionButtonMinWidth = 104.dp
 
 /** Tracks whether Scrolless is still subject to battery optimization, refreshed on every resume. */
 @Composable
@@ -124,11 +128,12 @@ internal fun BackgroundGuidanceCard(
 }
 
 @Composable
-private fun GuidanceAction(label: String, actionLabel: String, isDone: Boolean, onClick: () -> Unit) {
+internal fun GuidanceAction(label: String, actionLabel: String, isDone: Boolean, onClick: () -> Unit, primary: Boolean = false) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 48.dp),
+            .heightIn(min = 48.dp)
+            .padding(vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -148,8 +153,14 @@ private fun GuidanceAction(label: String, actionLabel: String, isDone: Boolean, 
                     .size(24.dp),
             )
         } else {
-            FilledTonalButton(onClick = onClick) {
-                Text(text = actionLabel, fontWeight = FontWeight.Bold)
+            if (primary) {
+                Button(onClick = onClick, modifier = Modifier.widthIn(min = ActionButtonMinWidth)) {
+                    Text(text = actionLabel, fontWeight = FontWeight.Bold)
+                }
+            } else {
+                FilledTonalButton(onClick = onClick, modifier = Modifier.widthIn(min = ActionButtonMinWidth)) {
+                    Text(text = actionLabel, fontWeight = FontWeight.Bold)
+                }
             }
         }
     }
