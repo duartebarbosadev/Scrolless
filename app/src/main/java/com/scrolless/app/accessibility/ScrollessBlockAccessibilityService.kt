@@ -41,6 +41,7 @@ import com.scrolless.app.ui.overlay.BlockedContentOverlayManager
 import com.scrolless.app.ui.overlay.TimerOverlayManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,8 +50,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import timber.log.Timber
 
 /**
@@ -246,17 +249,18 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         refreshServiceConfig()
 
         // The user may have just enabled accessibility in Android Settings; bring them back once.
+        // Only honored right after connecting (the window covers a cold start loading the flag
+        // from the database), so setting the flag while already running doesn't consume it early.
         serviceScope.launch {
-            val waitingForAccessibility = userSettingsStore.getWaitingForAccessibility().distinctUntilChanged()
-            waitingForAccessibility.collect { waiting ->
-                // If app is waiting for accessibility, bring it to foreground
-                if (waiting) {
-                    Timber.i("Bringing app to foreground")
-                    bringAppToForeground()
-                    userSettingsStore.setWaitingForAccessibility(false)
-                } else {
-                    Timber.i("Skipping bringing app to foreground")
-                }
+            val waiting = withTimeoutOrNull(WAITING_FOR_ACCESSIBILITY_WINDOW) {
+                userSettingsStore.getWaitingForAccessibility().first { it }
+            }
+            if (waiting == true) {
+                Timber.i("Bringing app to foreground")
+                bringAppToForeground()
+                userSettingsStore.setWaitingForAccessibility(false)
+            } else {
+                Timber.i("Skipping bringing app to foreground")
             }
         }
 
@@ -734,5 +738,8 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
 
         /** Minimum viewing duration required to record usage. Sub-second visits (like immediate blocks) are ignored. */
         const val MIN_TRACKED_DURATION_MILLIS = 1_000L
+
+        /** How long after connecting the service will bring the app back if it was waiting. */
+        val WAITING_FOR_ACCESSIBILITY_WINDOW = 5.seconds
     }
 }

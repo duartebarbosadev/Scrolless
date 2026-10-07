@@ -35,8 +35,14 @@ object AccessibilityServiceConnection {
     val isConnected: Boolean
         get() = connected.value
 
+    private val connections = MutableStateFlow(0)
+
+    /** How many times the service has connected in this process; lets callers detect a restart. */
+    val connectionCountFlow: StateFlow<Int> = connections.asStateFlow()
+
     fun onConnected() {
         connected.value = true
+        connections.value++
     }
 
     fun onDisconnected() {

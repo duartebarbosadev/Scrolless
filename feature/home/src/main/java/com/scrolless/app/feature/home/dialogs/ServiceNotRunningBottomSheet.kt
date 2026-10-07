@@ -62,7 +62,7 @@ import timber.log.Timber
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ServiceNotRunningBottomSheet(onDismiss: () -> Unit) {
+fun ServiceNotRunningBottomSheet(onRestartClick: () -> Unit, onDismiss: () -> Unit) {
     val sheetState = rememberBottomSheetState(
         initialValue = SheetValue.Hidden,
         enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded),
@@ -75,12 +75,16 @@ fun ServiceNotRunningBottomSheet(onDismiss: () -> Unit) {
         sheetState = sheetState,
         containerColor = Color.Transparent,
     ) {
-        ServiceNotRunningContent(oem = remember { BackgroundRestrictionOem.current() }, onDismiss = onDismiss)
+        ServiceNotRunningContent(
+            oem = remember { BackgroundRestrictionOem.current() },
+            onRestartClick = onRestartClick,
+            onDismiss = onDismiss,
+        )
     }
 }
 
 @Composable
-private fun ServiceNotRunningContent(oem: BackgroundRestrictionOem?, onDismiss: () -> Unit) {
+private fun ServiceNotRunningContent(oem: BackgroundRestrictionOem?, onRestartClick: () -> Unit, onDismiss: () -> Unit) {
     val context = LocalContext.current
     val isIgnoringBatteryOptimizations = rememberIsIgnoringBatteryOptimizations()
     // Once everything we can check is done, the card would only show a lone checkmark.
@@ -133,6 +137,7 @@ private fun ServiceNotRunningContent(oem: BackgroundRestrictionOem?, onDismiss: 
                         primary = true,
                         onClick = {
                             Timber.i("ServiceNotRunning: open accessibility settings")
+                            onRestartClick()
                             try {
                                 context.openActivityAccessibilitySettings()
                             } catch (e: Exception) {
@@ -181,6 +186,6 @@ private fun ServiceNotRunningContent(oem: BackgroundRestrictionOem?, onDismiss: 
 @Composable
 private fun ServiceNotRunningContentPreview() {
     ScrollessTheme(darkTheme = true) {
-        ServiceNotRunningContent(oem = BackgroundRestrictionOem.Xiaomi, onDismiss = {})
+        ServiceNotRunningContent(oem = BackgroundRestrictionOem.Xiaomi, onRestartClick = {}, onDismiss = {})
     }
 }
