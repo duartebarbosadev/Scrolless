@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Pausa el bloqueig durant %1$d min</string>
     <string name="pause_resumes_in">Es reprèn en %1$s</string>
     <string name="resume">Reprendre</string>
-    <string name="service_not_running_description">Android ha aturat Scrolless en segon pla, de manera que el bloqueig està en pausa. Normalment passa quan l\'aplicació s\'esborra de les aplicacions recents.</string>
-    <string name="service_not_running_step_background">Permet que Scrolless s\'executi en segon pla perquè no torni a passar.</string>
-    <string name="service_not_running_step_restart">Obre la configuració d\'accessibilitat, desactiva Scrolless i torna\'l a activar.</string>
+    <string name="service_not_running_description">El bloqueig està en pausa perquè Android ha aturat Scrolless en segon pla. Pot passar quan s\'esborra de les aplicacions recents o es restringeix per estalviar bateria.</string>
+    <string name="service_not_running_step_restart">Desactiva i torna a activar Scrolless a la configuració d\'accessibilitat.</string>
     <string name="service_not_running_title">Scrolless s\'ha aturat</string>
     <string name="settings">Configuració</string>
     <string name="success_icon_description">Icona de confirmació correcta</string>

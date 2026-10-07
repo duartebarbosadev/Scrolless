@@ -160,11 +160,10 @@
 
     <string name="settings">Settings</string>
 
-    <string name="service_not_running_description">Android stopped Scrolless in the background, so blocking is paused. This usually happens when the app is cleared from recent apps.</string>
+    <string name="service_not_running_description">Blocking is paused because Android stopped Scrolless in the background. This can happen when it\'s cleared from recent apps or restricted to save battery.</string>
 
-    <string name="service_not_running_step_background">Allow Scrolless to run in the background so it doesn\'t happen again.</string>
 
-    <string name="service_not_running_step_restart">Open Accessibility settings, turn Scrolless off and then on again.</string>
+    <string name="service_not_running_step_restart">Turn Scrolless off and on in Accessibility settings.</string>
 
     <string name="service_not_running_title">Scrolless Was Stopped</string>
 

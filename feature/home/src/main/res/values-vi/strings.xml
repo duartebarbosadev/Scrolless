@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Tạm dừng chặn trong %1$d phút</string>
     <string name="pause_resumes_in">Tiếp tục sau %1$s</string>
     <string name="resume">Tiếp tục</string>
-    <string name="service_not_running_description">Android đã dừng Scrolless trong nền nên việc chặn đang tạm dừng. Điều này thường xảy ra khi ứng dụng bị xóa khỏi danh sách ứng dụng gần đây.</string>
-    <string name="service_not_running_step_background">Cho phép Scrolless chạy trong nền để điều này không xảy ra nữa.</string>
-    <string name="service_not_running_step_restart">Mở Cài đặt Trợ năng, tắt Scrolless rồi bật lại.</string>
+    <string name="service_not_running_description">Việc chặn đang tạm dừng vì Android đã dừng Scrolless trong nền. Điều này có thể xảy ra khi ứng dụng bị xóa khỏi danh sách ứng dụng gần đây hoặc bị hạn chế để tiết kiệm pin.</string>
+    <string name="service_not_running_step_restart">Tắt rồi bật lại Scrolless trong Cài đặt Trợ năng.</string>
     <string name="service_not_running_title">Scrolless đã bị dừng</string>
     <string name="settings">Cài đặt</string>
     <string name="success_icon_description">Biểu tượng dấu kiểm thành công</string>

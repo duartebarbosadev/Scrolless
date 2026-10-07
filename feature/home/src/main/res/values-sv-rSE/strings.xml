@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Pausar blockering i %1$d min</string>
     <string name="pause_resumes_in">Återupptas om %1$s</string>
     <string name="resume">Återuppta</string>
-    <string name="service_not_running_description">Android stoppade Scrolless i bakgrunden, så blockeringen är pausad. Det händer oftast när appen rensas från senaste appar.</string>
-    <string name="service_not_running_step_background">Tillåt Scrolless att köras i bakgrunden så att det inte händer igen.</string>
-    <string name="service_not_running_step_restart">Öppna tillgänglighetsinställningarna och stäng av Scrolless och slå sedan på det igen.</string>
+    <string name="service_not_running_description">Blockeringen är pausad eftersom Android stoppade Scrolless i bakgrunden. Det kan hända när appen rensas från senaste appar eller begränsas för att spara batteri.</string>
+    <string name="service_not_running_step_restart">Stäng av och slå på Scrolless igen i tillgänglighetsinställningarna.</string>
     <string name="service_not_running_title">Scrolless stoppades</string>
     <string name="settings">Inställningar</string>
     <string name="success_icon_description">Ikon för lyckad bockmarkering</string>

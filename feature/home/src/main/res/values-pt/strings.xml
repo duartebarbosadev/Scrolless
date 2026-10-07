@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Pausa o bloqueio por %1$d min</string>
     <string name="pause_resumes_in">Retoma em %1$s</string>
     <string name="resume">Retomar</string>
-    <string name="service_not_running_description">O Android parou o Scrolless em segundo plano, por isso o bloqueio está em pausa. Isto costuma acontecer quando a aplicação é removida das aplicações recentes.</string>
-    <string name="service_not_running_step_background">Permita que o Scrolless seja executado em segundo plano para que isto não volte a acontecer.</string>
-    <string name="service_not_running_step_restart">Abra as definições de acessibilidade, desative o Scrolless e volte a ativá-lo.</string>
+    <string name="service_not_running_description">O bloqueio está em pausa porque o Android parou o Scrolless em segundo plano. Isto pode acontecer quando é removido das aplicações recentes ou restringido para poupar bateria.</string>
+    <string name="service_not_running_step_restart">Desative e volte a ativar o Scrolless nas definições de acessibilidade.</string>
     <string name="service_not_running_title">O Scrolless foi parado</string>
     <string name="settings">Definições</string>
     <string name="success_icon_description">Ícone de confirmação</string>

@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">暂停屏蔽 %1$d 分钟</string>
     <string name="pause_resumes_in">%1$s 后恢复</string>
     <string name="resume">恢复</string>
-    <string name="service_not_running_description">Android 在后台停止了 Scrolless，因此屏蔽已暂停。这通常发生在从最近任务中清除该应用时。</string>
-    <string name="service_not_running_step_background">允许 Scrolless 在后台运行，以免再次发生这种情况。</string>
-    <string name="service_not_running_step_restart">打开无障碍设置，关闭 Scrolless 后再重新开启。</string>
+    <string name="service_not_running_description">屏蔽已暂停，因为 Android 在后台停止了 Scrolless。从最近任务中清除或为省电而受到限制时，可能会发生这种情况。</string>
+    <string name="service_not_running_step_restart">在无障碍设置中关闭 Scrolless，然后重新开启。</string>
     <string name="service_not_running_title">Scrolless 已被停止</string>
     <string name="settings">设置</string>
     <string name="success_icon_description">成功勾选图标</string>

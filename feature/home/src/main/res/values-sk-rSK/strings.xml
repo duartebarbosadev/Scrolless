@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Pozastaví blokovanie na %1$d min</string>
     <string name="pause_resumes_in">Pokračuje o %1$s</string>
     <string name="resume">Pokračovať</string>
-    <string name="service_not_running_description">Android zastavil aplikáciu Scrolless na pozadí, takže blokovanie je pozastavené. Zvyčajne sa to stane, keď aplikáciu vymažete z nedávnych aplikácií.</string>
-    <string name="service_not_running_step_background">Povoľte aplikácii Scrolless beh na pozadí, aby sa to neopakovalo.</string>
-    <string name="service_not_running_step_restart">Otvorte nastavenia prístupnosti, vypnite Scrolless a potom ho znova zapnite.</string>
+    <string name="service_not_running_description">Blokovanie je pozastavené, pretože Android zastavil Scrolless na pozadí. Môže sa to stať, keď ho vymažete z nedávnych aplikácií alebo je obmedzený kvôli šetreniu batérie.</string>
+    <string name="service_not_running_step_restart">Vypnite a znova zapnite Scrolless v nastaveniach prístupnosti.</string>
     <string name="service_not_running_title">Scrolless bol zastavený</string>
     <string name="settings">Nastavenia</string>
     <string name="success_icon_description">Ikona začiarknutia úspechu</string>

@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">%1$d நிமிடங்களுக்குத் தடுப்பதை இடைநிறுத்துகிறது</string>
     <string name="pause_resumes_in">%1$s இல் மீண்டும் தொடங்குகிறது</string>
     <string name="resume">மீண்டும் தொடங்கு</string>
-    <string name="service_not_running_description">Android பின்னணியில் Scrolless-ஐ நிறுத்தியது, எனவே தடுப்பது இடைநிறுத்தப்பட்டுள்ளது. சமீபத்திய ஆப்ஸிலிருந்து ஆப் அழிக்கப்படும்போது இது பொதுவாக நடக்கும்.</string>
-    <string name="service_not_running_step_background">இது மீண்டும் நடக்காமல் இருக்க Scrolless பின்னணியில் இயங்க அனுமதிக்கவும்.</string>
-    <string name="service_not_running_step_restart">அணுகல்தன்மை அமைப்புகளைத் திறந்து, Scrolless-ஐ முடக்கி மீண்டும் இயக்கவும்.</string>
+    <string name="service_not_running_description">Android பின்னணியில் Scrolless-ஐ நிறுத்தியதால் தடுப்பது இடைநிறுத்தப்பட்டுள்ளது. சமீபத்திய ஆப்ஸிலிருந்து அழிக்கப்படும்போது அல்லது பேட்டரியை சேமிக்க கட்டுப்படுத்தப்படும்போது இது நிகழலாம்.</string>
+    <string name="service_not_running_step_restart">அணுகல்தன்மை அமைப்புகளில் Scrolless-ஐ முடக்கி மீண்டும் இயக்கவும்.</string>
     <string name="service_not_running_title">Scrolless நிறுத்தப்பட்டது</string>
     <string name="settings">அமைப்புகள்</string>
     <string name="success_icon_description">வெற்றி சரிபார்ப்பு ஐகான்</string>

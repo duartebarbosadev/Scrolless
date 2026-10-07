@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Приостанавливает блокировку на %1$d мин</string>
     <string name="pause_resumes_in">Возобновится через %1$s</string>
     <string name="resume">Возобновить</string>
-    <string name="service_not_running_description">Android остановил Scrolless в фоновом режиме, поэтому блокировка приостановлена. Обычно это происходит, когда приложение удаляют из списка недавних.</string>
-    <string name="service_not_running_step_background">Разрешите Scrolless работать в фоновом режиме, чтобы это не повторилось.</string>
-    <string name="service_not_running_step_restart">Откройте настройки доступности, выключите Scrolless и включите снова.</string>
+    <string name="service_not_running_description">Блокировка приостановлена, потому что Android остановил Scrolless в фоновом режиме. Это может произойти, если приложение удалили из списка недавних или ограничили для экономии заряда батареи.</string>
+    <string name="service_not_running_step_restart">Выключите и снова включите Scrolless в настройках доступности.</string>
     <string name="service_not_running_title">Scrolless остановлен</string>
     <string name="settings">Настройки</string>
     <string name="success_icon_description">Значок галочки успеха</string>

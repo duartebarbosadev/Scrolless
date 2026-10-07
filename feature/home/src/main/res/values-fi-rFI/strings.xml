@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Keskeyttää eston %1$d minuutiksi</string>
     <string name="pause_resumes_in">Jatkuu %1$s kuluttua</string>
     <string name="resume">Jatka</string>
-    <string name="service_not_running_description">Android pysäytti Scrollessin taustalla, joten esto on keskeytetty. Näin käy yleensä, kun sovellus poistetaan viimeisimmistä sovelluksista.</string>
-    <string name="service_not_running_step_background">Salli Scrollessin toimia taustalla, jotta näin ei käy uudelleen.</string>
-    <string name="service_not_running_step_restart">Avaa esteettömyysasetukset, poista Scrolless käytöstä ja ota se sitten uudelleen käyttöön.</string>
+    <string name="service_not_running_description">Esto on keskeytetty, koska Android pysäytti Scrollessin taustalla. Näin voi käydä, kun sovellus poistetaan viimeisimmistä sovelluksista tai sitä rajoitetaan akun säästämiseksi.</string>
+    <string name="service_not_running_step_restart">Poista Scrolless käytöstä ja ota se uudelleen käyttöön esteettömyysasetuksissa.</string>
     <string name="service_not_running_title">Scrolless pysäytettiin</string>
     <string name="settings">Asetukset</string>
     <string name="success_icon_description">Onnistumisen valintamerkkikuvake</string>

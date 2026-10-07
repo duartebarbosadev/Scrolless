@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Wstrzymuje blokowanie na %1$d min</string>
     <string name="pause_resumes_in">Wznowienie za %1$s</string>
     <string name="resume">Wznów</string>
-    <string name="service_not_running_description">Android zatrzymał Scrolless w tle, więc blokowanie jest wstrzymane. Zwykle dzieje się tak, gdy aplikacja zostanie usunięta z ostatnich aplikacji.</string>
-    <string name="service_not_running_step_background">Zezwól aplikacji Scrolless na działanie w tle, aby to się nie powtórzyło.</string>
-    <string name="service_not_running_step_restart">Otwórz ustawienia ułatwień dostępu, wyłącz Scrolless, a następnie włącz ponownie.</string>
+    <string name="service_not_running_description">Blokowanie jest wstrzymane, ponieważ Android zatrzymał Scrolless w tle. Może się tak zdarzyć, gdy aplikacja zostanie usunięta z ostatnich aplikacji lub ograniczona w celu oszczędzania baterii.</string>
+    <string name="service_not_running_step_restart">Wyłącz i ponownie włącz Scrolless w ustawieniach ułatwień dostępu.</string>
     <string name="service_not_running_title">Scrolless został zatrzymany</string>
     <string name="settings">Ustawienia</string>
     <string name="success_icon_description">Ikona znacznika sukcesu</string>

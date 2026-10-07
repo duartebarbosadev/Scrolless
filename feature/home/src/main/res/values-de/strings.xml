@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Blockierung für %1$d Min. pausieren</string>
     <string name="pause_resumes_in">Wird in %1$s fortgesetzt</string>
     <string name="resume">Fortsetzen</string>
-    <string name="service_not_running_description">Android hat Scrolless im Hintergrund beendet, daher ist die Blockierung pausiert. Das passiert meist, wenn die App aus den zuletzt verwendeten Apps entfernt wird.</string>
-    <string name="service_not_running_step_background">Erlauben Sie Scrolless, im Hintergrund zu laufen, damit das nicht erneut passiert.</string>
-    <string name="service_not_running_step_restart">Öffnen Sie die Bedienungshilfen-Einstellungen und schalten Sie Scrolless aus und wieder ein.</string>
+    <string name="service_not_running_description">Die Blockierung ist pausiert, weil Android Scrolless im Hintergrund beendet hat. Das kann passieren, wenn die App aus den zuletzt verwendeten Apps entfernt oder zum Akkusparen eingeschränkt wird.</string>
+    <string name="service_not_running_step_restart">Schalten Sie Scrolless in den Bedienungshilfen-Einstellungen aus und wieder ein.</string>
     <string name="service_not_running_title">Scrolless wurde beendet</string>
     <string name="settings">Einstellungen</string>
     <string name="success_icon_description">Häkchen-Symbol für Erfolg</string>

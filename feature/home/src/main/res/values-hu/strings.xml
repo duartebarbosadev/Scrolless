@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Blokkolás szüneteltetése %1$d percre</string>
     <string name="pause_resumes_in">Folytatás %1$s múlva</string>
     <string name="resume">Folytatás</string>
-    <string name="service_not_running_description">Az Android leállította a Scrolless alkalmazást a háttérben, ezért a blokkolás szünetel. Ez általában akkor történik, amikor az alkalmazást törlik a legutóbbi alkalmazások közül.</string>
-    <string name="service_not_running_step_background">Engedélyezze, hogy a Scrolless a háttérben fusson, hogy ez ne forduljon elő újra.</string>
-    <string name="service_not_running_step_restart">Nyissa meg a Kisegítő lehetőségek beállításait, kapcsolja ki a Scrolless alkalmazást, majd kapcsolja be újra.</string>
+    <string name="service_not_running_description">A blokkolás szünetel, mert az Android leállította a Scrolless alkalmazást a háttérben. Ez akkor fordulhat elő, ha törlik a legutóbbi alkalmazások közül, vagy akkumulátor-takarékosság miatt korlátozzák.</string>
+    <string name="service_not_running_step_restart">Kapcsolja ki, majd újra be a Scrolless alkalmazást a Kisegítő lehetőségek beállításaiban.</string>
     <string name="service_not_running_title">A Scrolless leállt</string>
     <string name="settings">Beállítások</string>
     <string name="success_icon_description">Siker jelölő ikon</string>

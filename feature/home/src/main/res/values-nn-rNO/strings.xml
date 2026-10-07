@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Pauser blokkering i %1$d min</string>
     <string name="pause_resumes_in">Gjenopptar om %1$s</string>
     <string name="resume">Gjenoppta</string>
-    <string name="service_not_running_description">Android stoppa Scrolless i bakgrunnen, så blokkeringa er sett på pause. Dette skjer vanlegvis når appen vert fjerna frå nylege appar.</string>
-    <string name="service_not_running_step_background">Tillat Scrolless å køyre i bakgrunnen, slik at det ikkje skjer igjen.</string>
-    <string name="service_not_running_step_restart">Opne tilgjengelegheitsinnstillingane, slå av Scrolless og deretter på igjen.</string>
+    <string name="service_not_running_description">Blokkeringa er sett på pause fordi Android stoppa Scrolless i bakgrunnen. Det kan skje når appen vert fjerna frå nylege appar eller avgrensa for å spare batteri.</string>
+    <string name="service_not_running_step_restart">Slå Scrolless av og på igjen i tilgjengelegheitsinnstillingane.</string>
     <string name="service_not_running_title">Scrolless vart stoppa</string>
     <string name="settings">Innstillingar</string>
     <string name="success_icon_description">Suksess-hakeikon</string>

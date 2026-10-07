@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Pauzeert blokkering voor %1$d min</string>
     <string name="pause_resumes_in">Hervat over %1$s</string>
     <string name="resume">Hervatten</string>
-    <string name="service_not_running_description">Android heeft Scrolless op de achtergrond gestopt, dus het blokkeren is gepauzeerd. Dit gebeurt meestal wanneer de app uit de recente apps wordt gewist.</string>
-    <string name="service_not_running_step_background">Sta toe dat Scrolless op de achtergrond draait zodat dit niet opnieuw gebeurt.</string>
-    <string name="service_not_running_step_restart">Open de toegankelijkheidsinstellingen en zet Scrolless uit en weer aan.</string>
+    <string name="service_not_running_description">Het blokkeren is gepauzeerd omdat Android Scrolless op de achtergrond heeft gestopt. Dit kan gebeuren als de app uit de recente apps wordt gewist of wordt beperkt om batterij te besparen.</string>
+    <string name="service_not_running_step_restart">Zet Scrolless uit en weer aan in de toegankelijkheidsinstellingen.</string>
     <string name="service_not_running_title">Scrolless is gestopt</string>
     <string name="settings">Instellingen</string>
     <string name="success_icon_description">Vinkje voor succes</string>

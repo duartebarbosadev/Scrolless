@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Паузира блокирање на %1$d мин</string>
     <string name="pause_resumes_in">Наставља се за %1$s</string>
     <string name="resume">Настави</string>
-    <string name="service_not_running_description">Android је зауставио Scrolless у позадини, па је блокирање паузирано. То се обично дешава када се апликација уклони из недавних апликација.</string>
-    <string name="service_not_running_step_background">Дозволите апликацији Scrolless да ради у позадини како се то не би поновило.</string>
-    <string name="service_not_running_step_restart">Отворите подешавања приступачности, искључите Scrolless, а затим га поново укључите.</string>
+    <string name="service_not_running_description">Блокирање је паузирано јер је Android зауставио Scrolless у позадини. То се може десити када се уклони из недавних апликација или ограничи ради уштеде батерије.</string>
+    <string name="service_not_running_step_restart">Искључите и поново укључите Scrolless у подешавањима приступачности.</string>
     <string name="service_not_running_title">Scrolless је заустављен</string>
     <string name="settings">Подешавања</string>
     <string name="success_icon_description">Икона успешне потврде</string>

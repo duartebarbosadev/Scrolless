@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">%1$d मिनट के लिए ब्लॉकिंग रोकता है</string>
     <string name="pause_resumes_in">%1$s में फिर से शुरू होगा</string>
     <string name="resume">फिर से शुरू करें</string>
-    <string name="service_not_running_description">Android ने Scrolless को बैकग्राउंड में बंद कर दिया, इसलिए ब्लॉकिंग रुकी हुई है। ऐसा आमतौर पर तब होता है जब ऐप को हाल के ऐप्स से हटा दिया जाता है।</string>
-    <string name="service_not_running_step_background">Scrolless को बैकग्राउंड में चलने दें ताकि ऐसा दोबारा न हो।</string>
-    <string name="service_not_running_step_restart">एक्सेसिबिलिटी सेटिंग्स खोलें, Scrolless को बंद करें और फिर से चालू करें।</string>
+    <string name="service_not_running_description">ब्लॉकिंग रुकी हुई है क्योंकि Android ने Scrolless को बैकग्राउंड में बंद कर दिया। ऐसा तब हो सकता है जब इसे हाल के ऐप्स से हटाया जाए या बैटरी बचाने के लिए प्रतिबंधित किया जाए।</string>
+    <string name="service_not_running_step_restart">एक्सेसिबिलिटी सेटिंग्स में Scrolless को बंद करके फिर से चालू करें।</string>
     <string name="service_not_running_title">Scrolless बंद हो गया</string>
     <string name="settings">सेटिंग्स</string>
     <string name="success_icon_description">सफलता चेक मार्क आइकन</string>

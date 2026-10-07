@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">暫停封鎖 %1$d 分鐘</string>
     <string name="pause_resumes_in">將於 %1$s 後恢復</string>
     <string name="resume">恢復</string>
-    <string name="service_not_running_description">Android 已在背景停止 Scrolless，因此封鎖已暫停。這通常發生在從最近使用的應用程式中清除此應用程式時。</string>
-    <string name="service_not_running_step_background">允許 Scrolless 在背景執行，以免再次發生。</string>
-    <string name="service_not_running_step_restart">開啟無障礙設定，關閉 Scrolless 後再重新開啟。</string>
+    <string name="service_not_running_description">封鎖已暫停，因為 Android 在背景停止了 Scrolless。從最近使用的應用程式中清除，或為省電而受到限制時，可能會發生這種情況。</string>
+    <string name="service_not_running_step_restart">在無障礙設定中關閉 Scrolless，然後重新開啟。</string>
     <string name="service_not_running_title">Scrolless 已被停止</string>
     <string name="settings">設定</string>
     <string name="success_icon_description">成功打勾圖示</string>

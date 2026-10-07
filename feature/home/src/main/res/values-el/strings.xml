@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Παύει τον αποκλεισμό για %1$d λεπτά</string>
     <string name="pause_resumes_in">Συνεχίζεται σε %1$s</string>
     <string name="resume">Συνέχιση</string>
-    <string name="service_not_running_description">Το Android σταμάτησε το Scrolless στο παρασκήνιο, οπότε ο αποκλεισμός έχει τεθεί σε παύση. Αυτό συμβαίνει συνήθως όταν η εφαρμογή διαγράφεται από τις πρόσφατες εφαρμογές.</string>
-    <string name="service_not_running_step_background">Επιτρέψτε στο Scrolless να εκτελείται στο παρασκήνιο ώστε να μην ξανασυμβεί.</string>
-    <string name="service_not_running_step_restart">Ανοίξτε τις ρυθμίσεις προσβασιμότητας, απενεργοποιήστε το Scrolless και ενεργοποιήστε το ξανά.</string>
+    <string name="service_not_running_description">Ο αποκλεισμός έχει τεθεί σε παύση επειδή το Android σταμάτησε το Scrolless στο παρασκήνιο. Αυτό μπορεί να συμβεί όταν διαγράφεται από τις πρόσφατες εφαρμογές ή περιορίζεται για εξοικονόμηση μπαταρίας.</string>
+    <string name="service_not_running_step_restart">Απενεργοποιήστε και ενεργοποιήστε ξανά το Scrolless στις ρυθμίσεις προσβασιμότητας.</string>
     <string name="service_not_running_title">Το Scrolless σταμάτησε</string>
     <string name="settings">Ρυθμίσεις</string>
     <string name="success_icon_description">Εικονίδιο επιτυχίας</string>

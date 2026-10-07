@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Engellemeyi %1$d dakika duraklatır</string>
     <string name="pause_resumes_in">%1$s içinde devam eder</string>
     <string name="resume">Devam et</string>
-    <string name="service_not_running_description">Android, Scrolless\'ı arka planda durdurdu, bu yüzden engelleme duraklatıldı. Bu genellikle uygulama son uygulamalardan temizlendiğinde olur.</string>
-    <string name="service_not_running_step_background">Bunun tekrar olmaması için Scrolless\'ın arka planda çalışmasına izin verin.</string>
-    <string name="service_not_running_step_restart">Erişilebilirlik ayarlarını açın, Scrolless\'ı kapatıp tekrar açın.</string>
+    <string name="service_not_running_description">Android, Scrolless\'ı arka planda durdurduğu için engelleme duraklatıldı. Bu, uygulama son uygulamalardan temizlendiğinde veya pil tasarrufu için kısıtlandığında olabilir.</string>
+    <string name="service_not_running_step_restart">Erişilebilirlik ayarlarında Scrolless\'ı kapatıp tekrar açın.</string>
     <string name="service_not_running_title">Scrolless durduruldu</string>
     <string name="settings">Ayarlar</string>
     <string name="success_icon_description">Başarılı onay işareti simgesi</string>

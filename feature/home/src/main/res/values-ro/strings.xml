@@ -75,9 +75,8 @@
     <string name="pause_duration_hint">Pune blocarea pe pauză timp de %1$d min</string>
     <string name="pause_resumes_in">Se reia în %1$s</string>
     <string name="resume">Reia</string>
-    <string name="service_not_running_description">Android a oprit Scrolless în fundal, așa că blocarea este întreruptă. De obicei se întâmplă când aplicația este ștearsă din aplicațiile recente.</string>
-    <string name="service_not_running_step_background">Permite aplicației Scrolless să ruleze în fundal ca să nu se mai întâmple.</string>
-    <string name="service_not_running_step_restart">Deschide setările de accesibilitate, dezactivează Scrolless și apoi activează-l din nou.</string>
+    <string name="service_not_running_description">Blocarea este întreruptă pentru că Android a oprit Scrolless în fundal. Se poate întâmpla când este ștearsă din aplicațiile recente sau restricționată pentru a economisi bateria.</string>
+    <string name="service_not_running_step_restart">Dezactivează și reactivează Scrolless în setările de accesibilitate.</string>
     <string name="service_not_running_title">Scrolless a fost oprit</string>
     <string name="settings">Setări</string>
     <string name="success_icon_description">Pictogramă bifă de succes</string>
