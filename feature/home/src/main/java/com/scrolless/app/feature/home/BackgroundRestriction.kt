@@ -174,7 +174,7 @@ private fun Context.startFirstAvailable(candidates: List<Intent>): Boolean {
             Timber.i("Opened background settings: %s", intent.component ?: intent.action)
             return true
         } catch (e: ActivityNotFoundException) {
-            Timber.d(e,"Background settings not available: %s", intent.component ?: intent.action)
+            Timber.d(e, "Background settings not available: %s", intent.component ?: intent.action)
         } catch (e: SecurityException) {
             Timber.d(e, "Background settings not accessible: %s", intent.component ?: intent.action)
         }
