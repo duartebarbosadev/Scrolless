@@ -72,7 +72,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -99,6 +98,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.compose.currentStateAsState
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.scrolless.app.core.accessibility.AccessibilityServiceConnection
 import com.scrolless.app.core.model.BlockOption
@@ -165,10 +165,9 @@ fun HomeScreen(
     var showAccessibilityExplainer by remember { mutableStateOf(false) }
     var showAccessibilitySuccess by remember { mutableStateOf(false) }
     var showServiceNotRunning by remember { mutableStateOf(false) }
-    // Service connection count when the user started a restart from the stopped sheet.
-    var restartFromConnectionCount by remember { mutableStateOf<Int?>(null) }
+    // Set when the user heads to Accessibility settings from the stopped sheet to restart the service.
+    var isRestartingService by remember { mutableStateOf(false) }
     var showBackgroundSetup by remember { mutableStateOf(false) }
-    var resumeCount by remember { mutableIntStateOf(0) }
     var debugBypassAccessibilityCheck by remember { mutableStateOf(false) }
     var showIntervalTimerDialog by remember { mutableStateOf(false) }
     var pendingIntervalBreak by remember { mutableLongStateOf(DEFAULT_INTERVAL_BREAK_MILLIS) }
@@ -197,7 +196,6 @@ fun HomeScreen(
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 Timber.d("HomeScreen resumed")
-                resumeCount++
                 val isAccessibilityEnabled = context.isAccessibilityServiceEnabled(accessibilityServiceClass)
                 if (isAccessibilityEnabled) {
                     if (showAccessibilityExplainer) {
@@ -452,21 +450,10 @@ fun HomeScreen(
 
     // An OEM battery manager may kill the process while the service stays "enabled" in settings.
     // Android then shows it as not working and won't rebind it until it is toggled.
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateAsState()
     val serviceConnected by AccessibilityServiceConnection.isConnectedFlow.collectAsStateWithLifecycle()
-    val serviceConnectionCount by AccessibilityServiceConnection.connectionCountFlow.collectAsStateWithLifecycle()
-    LaunchedEffect(resumeCount, serviceConnected, serviceConnectionCount, DebugServiceState.simulateStopped) {
-        if (resumeCount == 0) return@LaunchedEffect
-        // The service reconnected after the user restarted it from the stopped sheet.
-        val restartStartCount = restartFromConnectionCount
-        if (restartStartCount != null && serviceConnected && serviceConnectionCount > restartStartCount) {
-            Timber.i("Accessibility service restarted - showing background setup or success")
-            restartFromConnectionCount = null
-            DebugServiceState.simulateStopped = false
-            showServiceNotRunning = false
-            if (context.needsBackgroundSetup()) showBackgroundSetup = true else showAccessibilitySuccess = true
-            viewModel.setWaitingForAccessibility(false)
-            return@LaunchedEffect
-        }
+    LaunchedEffect(lifecycleState, serviceConnected) {
+        if (lifecycleState != Lifecycle.State.RESUMED) return@LaunchedEffect
         // Give the system a moment to (re)bind the service after returning from settings.
         if (context.accessibilityServiceStatus(accessibilityServiceClass) == AccessibilityServiceStatus.EnabledNotRunning) {
             delay(SERVICE_BIND_GRACE_MILLIS.milliseconds)
@@ -484,13 +471,14 @@ fun HomeScreen(
                 if (showServiceNotRunning) {
                     Timber.i("Accessibility service running again - showing background setup or success")
                     showServiceNotRunning = false
+                    isRestartingService = false
                     if (context.needsBackgroundSetup()) showBackgroundSetup = true else showAccessibilitySuccess = true
                     viewModel.setWaitingForAccessibility(false)
                 }
             }
 
             // Turning it off is the first half of a restart, so keep the sheet until it's back on.
-            AccessibilityServiceStatus.Disabled -> if (restartFromConnectionCount == null) showServiceNotRunning = false
+            AccessibilityServiceStatus.Disabled -> if (!isRestartingService) showServiceNotRunning = false
         }
     }
 
@@ -507,13 +495,12 @@ fun HomeScreen(
         ServiceNotRunningBottomSheet(
             // Lets the service bring the app back to the front once it is restarted.
             onRestartClick = {
-                restartFromConnectionCount = AccessibilityServiceConnection.connectionCountFlow.value
+                isRestartingService = true
                 viewModel.setWaitingForAccessibility(true)
             },
             onDismiss = {
                 showServiceNotRunning = false
-                restartFromConnectionCount = null
-                DebugServiceState.simulateStopped = false
+                isRestartingService = false
                 viewModel.setWaitingForAccessibility(false)
             },
         )

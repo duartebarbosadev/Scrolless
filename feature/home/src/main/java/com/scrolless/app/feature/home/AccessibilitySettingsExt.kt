@@ -46,9 +46,7 @@ internal fun Context.isAccessibilityServiceEnabled(service: Class<out Accessibil
 
 internal fun Context.accessibilityServiceStatus(service: Class<out AccessibilityService>?): AccessibilityServiceStatus {
     if (!isAccessibilityServiceEnabled(service)) return AccessibilityServiceStatus.Disabled
-    val connected = AccessibilityServiceConnection.isConnected &&
-        !(BuildConfig.DEBUG && DebugServiceState.simulateStopped)
-    return if (connected) {
+    return if (AccessibilityServiceConnection.isConnected) {
         AccessibilityServiceStatus.Running
     } else {
         AccessibilityServiceStatus.EnabledNotRunning

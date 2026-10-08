@@ -81,13 +81,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.scrolless.app.core.accessibility.AccessibilityServiceConnection
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.util.formatMinutes
 import com.scrolless.app.feature.home.BackgroundRestrictionOem
 import com.scrolless.app.feature.home.DebugPhoneBrand
-import com.scrolless.app.feature.home.DebugServiceState
+import com.scrolless.app.feature.home.SimulatedBrand
 import com.scrolless.app.feature.home.components.ANALYTICS_DATE_FORMATTER
 import com.scrolless.app.feature.home.components.analyticsColor
 import com.scrolless.app.feature.home.components.analyticsDisplayName
@@ -334,9 +336,7 @@ private fun DebugDayTimelinePanel(
 
             DebugPhoneBrandSelector()
 
-            OutlinedButton(onClick = { DebugServiceState.simulateStopped = !DebugServiceState.simulateStopped }) {
-                Text(if (DebugServiceState.simulateStopped) "Stop simulating stopped service" else "Simulate stopped service")
-            }
+            DebugServiceConnectionToggle()
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -532,25 +532,19 @@ private fun DebugPhoneBrandSelector() {
         horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
         FilterChip(
-            selected = !DebugPhoneBrand.isSimulating,
-            onClick = { DebugPhoneBrand.isSimulating = false },
+            selected = DebugPhoneBrand.simulated == null,
+            onClick = { DebugPhoneBrand.simulated = null },
             label = { Text("This phone") },
         )
         FilterChip(
-            selected = DebugPhoneBrand.isSimulating && DebugPhoneBrand.simulatedOem == null,
-            onClick = {
-                DebugPhoneBrand.simulatedOem = null
-                DebugPhoneBrand.isSimulating = true
-            },
+            selected = DebugPhoneBrand.simulated == SimulatedBrand(oem = null),
+            onClick = { DebugPhoneBrand.simulated = SimulatedBrand(oem = null) },
             label = { Text("Pixel") },
         )
         BackgroundRestrictionOem.entries.forEach { oem ->
             FilterChip(
-                selected = DebugPhoneBrand.isSimulating && DebugPhoneBrand.simulatedOem == oem,
-                onClick = {
-                    DebugPhoneBrand.simulatedOem = oem
-                    DebugPhoneBrand.isSimulating = true
-                },
+                selected = DebugPhoneBrand.simulated == SimulatedBrand(oem),
+                onClick = { DebugPhoneBrand.simulated = SimulatedBrand(oem) },
                 label = { Text(oem.debugLabel) },
             )
         }
@@ -560,6 +554,22 @@ private fun DebugPhoneBrandSelector() {
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
+}
+
+/**
+ * Marks the service as disconnected, as if an OEM battery manager had killed it, so the stopped
+ * sheet can be tested. Turning the service off and on in settings reconnects it like on a real phone.
+ */
+@Composable
+private fun DebugServiceConnectionToggle() {
+    val connected by AccessibilityServiceConnection.isConnectedFlow.collectAsStateWithLifecycle()
+    OutlinedButton(
+        onClick = {
+            if (connected) AccessibilityServiceConnection.onDisconnected() else AccessibilityServiceConnection.onConnected()
+        },
+    ) {
+        Text(if (connected) "Simulate stopped service" else "Mark service as running")
+    }
 }
 
 private val BackgroundRestrictionOem.debugLabel: String

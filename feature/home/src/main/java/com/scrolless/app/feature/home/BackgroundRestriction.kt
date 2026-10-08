@@ -99,10 +99,9 @@ internal enum class BackgroundRestrictionOem(val settingsComponents: List<Settin
             }
         }
 
-        fun current(): BackgroundRestrictionOem? = if (BuildConfig.DEBUG && DebugPhoneBrand.isSimulating) {
-            DebugPhoneBrand.simulatedOem
-        } else {
-            from(Build.MANUFACTURER, Build.BRAND)
+        fun current(): BackgroundRestrictionOem? {
+            val simulated = DebugPhoneBrand.simulated.takeIf { BuildConfig.DEBUG }
+            return if (simulated != null) simulated.oem else from(Build.MANUFACTURER, Build.BRAND)
         }
     }
 }
@@ -112,14 +111,12 @@ internal enum class BackgroundRestrictionOem(val settingsComponents: List<Settin
  * OEM settings screens that don't exist on this phone fall back to the app details page.
  */
 internal object DebugPhoneBrand {
-    var isSimulating by mutableStateOf(false)
-    var simulatedOem by mutableStateOf<BackgroundRestrictionOem?>(null)
+    /** The brand to pretend to be, or null to use this phone's real brand. */
+    var simulated by mutableStateOf<SimulatedBrand?>(null)
 }
 
-/** Debug-only: pretends the accessibility service was killed so the recovery sheet can be tested. */
-internal object DebugServiceState {
-    var simulateStopped by mutableStateOf(false)
-}
+/** A simulated phone brand; [oem] is null for a stock Android phone such as a Pixel. */
+internal data class SimulatedBrand(val oem: BackgroundRestrictionOem?)
 
 internal fun Context.isIgnoringBatteryOptimizations(): Boolean =
     getSystemService(PowerManager::class.java)?.isIgnoringBatteryOptimizations(packageName) ?: true
