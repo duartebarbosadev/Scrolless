@@ -192,7 +192,8 @@ fun HomeScreen(
     }
 
     fun showBackgroundSetupOrSuccess() {
-        if (!viewModel.hasSeenBackgroundSetup.value && context.needsBackgroundSetup()) {
+        val state = latestUiState
+        if (state.hasLoadedSettings && !state.hasSeenBackgroundSetup && context.needsBackgroundSetup()) {
             Timber.i("Accessibility service running - showing background setup")
             showBackgroundSetup = true
             viewModel.onBackgroundSetupShown()
