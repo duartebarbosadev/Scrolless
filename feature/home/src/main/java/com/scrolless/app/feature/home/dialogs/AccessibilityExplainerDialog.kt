@@ -111,12 +111,8 @@ fun AccessibilityExplainerBottomSheet(onDismiss: () -> Unit) {
                     onDismiss()
                 },
                 onOpenSettings = {
-                    try {
-                        Timber.i("AccessibilityExplainer: Open accessibility settings")
-                        context.openActivityAccessibilitySettings()
-                    } catch (e: Exception) {
-                        Timber.e(e, "Failed to open accessibility settings")
-                    }
+                    Timber.i("AccessibilityExplainer: Open accessibility settings")
+                    context.openActivityAccessibilitySettings()
                 },
             )
         }

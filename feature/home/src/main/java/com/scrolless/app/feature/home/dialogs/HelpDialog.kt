@@ -171,13 +171,8 @@ private fun HelpDialogContent(onDismiss: () -> Unit) {
 
             Button(
                 onClick = {
-                    try {
-                        Timber.i("HelpDialog: open accessibility settings")
-                        context.openActivityAccessibilitySettings()
-                        onDismiss()
-                    } catch (e: Exception) {
-                        Timber.e(e, "HelpDialog: failed to open accessibility settings")
-                    }
+                    Timber.i("HelpDialog: open accessibility settings")
+                    if (context.openActivityAccessibilitySettings()) onDismiss()
                 },
                 modifier = Modifier
                     .fillMaxWidth()

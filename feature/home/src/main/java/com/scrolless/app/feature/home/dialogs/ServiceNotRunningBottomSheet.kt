@@ -26,8 +26,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
@@ -52,8 +50,6 @@ import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.feature.home.BackgroundRestrictionOem
 import com.scrolless.app.feature.home.R
 import com.scrolless.app.feature.home.openActivityAccessibilitySettings
-import com.scrolless.app.feature.home.openBackgroundSettings
-import com.scrolless.app.feature.home.requestIgnoreBatteryOptimizations
 import timber.log.Timber
 
 /**
@@ -87,7 +83,7 @@ fun ServiceNotRunningBottomSheet(onRestartClick: () -> Unit, onDismiss: () -> Un
 private fun ServiceNotRunningContent(oem: BackgroundRestrictionOem?, onRestartClick: () -> Unit, onDismiss: () -> Unit) {
     val context = LocalContext.current
     val isIgnoringBatteryOptimizations = rememberIsIgnoringBatteryOptimizations()
-    // Once everything we can check is done, the card would only show a lone checkmark.
+    // Skip the background steps when all they would show is a checkmark.
     val showGuidance = !isIgnoringBatteryOptimizations || oem?.hasAutostartManager == true
 
     Box(
@@ -124,45 +120,21 @@ private fun ServiceNotRunningContent(oem: BackgroundRestrictionOem?, onRestartCl
                 textAlign = TextAlign.Center,
             )
             Spacer(modifier = Modifier.height(20.dp))
-            Card(
-                modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-                shape = RoundedCornerShape(16.dp),
-            ) {
-                Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp)) {
-                    GuidanceAction(
-                        label = stringResource(R.string.service_not_running_step_restart),
-                        actionLabel = stringResource(R.string.background_open_button),
-                        isDone = false,
-                        primary = true,
-                        onClick = {
-                            Timber.i("ServiceNotRunning: open accessibility settings")
-                            onRestartClick()
-                            try {
-                                context.openActivityAccessibilitySettings()
-                            } catch (e: Exception) {
-                                Timber.e(e, "ServiceNotRunning: failed to open accessibility settings")
-                            }
-                        },
-                    )
-                    if (showGuidance) {
-                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                        GuidanceAction(
-                            label = stringResource(R.string.background_battery_step),
-                            actionLabel = stringResource(R.string.background_allow_button),
-                            isDone = isIgnoringBatteryOptimizations,
-                            onClick = { context.requestIgnoreBatteryOptimizations() },
-                        )
-                    }
-                    if (oem?.hasAutostartManager == true) {
-                        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                        GuidanceAction(
-                            label = stringResource(R.string.background_autostart_step),
-                            actionLabel = stringResource(R.string.background_open_button),
-                            isDone = false,
-                            onClick = { context.openBackgroundSettings(oem) },
-                        )
-                    }
+            BackgroundGuidanceCard {
+                GuidanceAction(
+                    label = stringResource(R.string.service_not_running_step_restart),
+                    actionLabel = stringResource(R.string.background_open_button),
+                    isDone = false,
+                    primary = true,
+                    onClick = {
+                        Timber.i("ServiceNotRunning: open accessibility settings")
+                        onRestartClick()
+                        context.openActivityAccessibilitySettings()
+                    },
+                )
+                if (showGuidance) {
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                    BackgroundGuidanceSteps(oem = oem, isIgnoringBatteryOptimizations = isIgnoringBatteryOptimizations)
                 }
             }
 

@@ -17,10 +17,10 @@
 package com.scrolless.app.feature.home.dialogs
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,6 +33,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -73,57 +74,42 @@ internal fun rememberIsIgnoringBatteryOptimizations(): Boolean {
     return isIgnoring
 }
 
-/** Compact card with one-tap actions that let Scrolless keep running in the background. */
+/** Card container used by the background setup and service-stopped sheets. */
 @Composable
-internal fun BackgroundGuidanceCard(
-    oem: BackgroundRestrictionOem?,
-    isIgnoringBatteryOptimizations: Boolean,
-    modifier: Modifier = Modifier,
-    showHeader: Boolean = true,
-) {
-    val context = LocalContext.current
+internal fun BackgroundGuidanceCard(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) {
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
         shape = RoundedCornerShape(16.dp),
     ) {
-        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
-            if (showHeader) {
-                Text(
-                    text = stringResource(R.string.background_step_title),
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                Spacer(modifier = Modifier.height(2.dp))
-                Text(
-                    text = stringResource(R.string.background_step_description),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-            GuidanceAction(
-                label = stringResource(R.string.background_battery_step),
-                actionLabel = stringResource(R.string.background_allow_button),
-                isDone = isIgnoringBatteryOptimizations,
-                onClick = {
-                    Timber.i("BackgroundGuidance: request battery optimization exemption")
-                    context.requestIgnoreBatteryOptimizations()
-                },
-            )
-            if (oem?.hasAutostartManager == true) {
-                GuidanceAction(
-                    label = stringResource(R.string.background_autostart_step),
-                    actionLabel = stringResource(R.string.background_open_button),
-                    isDone = false,
-                    onClick = {
-                        Timber.i("BackgroundGuidance: open autostart settings (oem=%s)", oem)
-                        context.openBackgroundSettings(oem)
-                    },
-                )
-            }
-        }
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp), content = content)
+    }
+}
+
+/** One-tap actions that let Scrolless keep running in the background. */
+@Composable
+internal fun BackgroundGuidanceSteps(oem: BackgroundRestrictionOem?, isIgnoringBatteryOptimizations: Boolean) {
+    val context = LocalContext.current
+    GuidanceAction(
+        label = stringResource(R.string.background_battery_step),
+        actionLabel = stringResource(R.string.background_allow_button),
+        isDone = isIgnoringBatteryOptimizations,
+        onClick = {
+            Timber.i("BackgroundGuidance: request battery optimization exemption")
+            context.requestIgnoreBatteryOptimizations()
+        },
+    )
+    if (oem?.hasAutostartManager == true) {
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+        GuidanceAction(
+            label = stringResource(R.string.background_autostart_step),
+            actionLabel = stringResource(R.string.background_open_button),
+            isDone = false,
+            onClick = {
+                Timber.i("BackgroundGuidance: open autostart settings (oem=%s)", oem)
+                context.openBackgroundSettings(oem)
+            },
+        )
     }
 }
 

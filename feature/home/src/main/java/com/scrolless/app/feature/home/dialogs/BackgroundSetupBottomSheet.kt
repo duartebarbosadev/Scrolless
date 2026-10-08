@@ -123,11 +123,9 @@ private fun BackgroundSetupContent(oem: BackgroundRestrictionOem?, onContinue: (
             )
 
             Spacer(modifier = Modifier.height(20.dp))
-            BackgroundGuidanceCard(
-                oem = oem,
-                isIgnoringBatteryOptimizations = isIgnoringBatteryOptimizations,
-                showHeader = false,
-            )
+            BackgroundGuidanceCard {
+                BackgroundGuidanceSteps(oem = oem, isIgnoringBatteryOptimizations = isIgnoringBatteryOptimizations)
+            }
 
             Spacer(modifier = Modifier.height(24.dp))
             AnimatedButton(
@@ -145,7 +143,7 @@ private fun BackgroundSetupContent(oem: BackgroundRestrictionOem?, onContinue: (
                 .align(Alignment.TopCenter)
                 .padding(top = 16.dp),
             iconRes = R.drawable.ic_circle_battery,
-            contentDescription = stringResource(R.string.background_settings_button),
+            contentDescription = stringResource(R.string.background_step_title),
         )
     }
 }

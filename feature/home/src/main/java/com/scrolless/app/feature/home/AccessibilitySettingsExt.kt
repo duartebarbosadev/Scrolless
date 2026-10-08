@@ -22,6 +22,7 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.provider.Settings
 import com.scrolless.app.core.accessibility.AccessibilityServiceConnection
+import timber.log.Timber
 
 internal enum class AccessibilityServiceStatus {
     Disabled,
@@ -44,7 +45,7 @@ internal fun Context.isAccessibilityServiceEnabled(service: Class<out Accessibil
 }
 
 internal fun Context.accessibilityServiceStatus(service: Class<out AccessibilityService>?): AccessibilityServiceStatus {
-    if (!isAccessibilityServiceEnabled(service) || service == null) return AccessibilityServiceStatus.Disabled
+    if (!isAccessibilityServiceEnabled(service)) return AccessibilityServiceStatus.Disabled
     val connected = AccessibilityServiceConnection.isConnected &&
         !(BuildConfig.DEBUG && DebugServiceState.simulateStopped)
     return if (connected) {
@@ -54,13 +55,20 @@ internal fun Context.accessibilityServiceStatus(service: Class<out Accessibility
     }
 }
 
-internal fun Context.openActivityAccessibilitySettings() {
+/** Opens Accessibility settings, returning false (and logging) if the screen couldn't be opened. */
+internal fun Context.openActivityAccessibilitySettings(): Boolean {
     val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
     if (isDebuggable) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
     }
-    startActivity(intent)
+    return try {
+        startActivity(intent)
+        true
+    } catch (e: Exception) {
+        Timber.e(e, "Failed to open accessibility settings")
+        false
+    }
 }
 
 private val Context.isDebuggable: Boolean
