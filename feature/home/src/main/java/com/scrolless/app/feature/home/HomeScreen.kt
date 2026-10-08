@@ -180,12 +180,25 @@ fun HomeScreen(
     val latestUiState by rememberUpdatedState(uiState)
 
     fun showAccessibilityExplainerPrompt() {
-        if (showAccessibilityExplainer) return
+        // Mid-restart the service is briefly off; the stopped sheet already guides the user.
+        if (showAccessibilityExplainer || isRestartingService) return
         Timber.d("Set waiting for accessibility for app auto open")
         viewModel.setWaitingForAccessibility(true)
+        showServiceNotRunning = false
         showAccessibilityExplainer = true
         if (!uiState.hasSeenAccessibilityExplainer) {
             viewModel.onAccessibilityExplainerShown()
+        }
+    }
+
+    fun showBackgroundSetupOrSuccess() {
+        if (!viewModel.hasSeenBackgroundSetup.value && context.needsBackgroundSetup()) {
+            Timber.i("Accessibility service running - showing background setup")
+            showBackgroundSetup = true
+            viewModel.onBackgroundSetupShown()
+        } else {
+            Timber.i("Accessibility service running - showing success dialog")
+            showAccessibilitySuccess = true
         }
     }
 
@@ -200,13 +213,7 @@ fun HomeScreen(
                 if (isAccessibilityEnabled) {
                     if (showAccessibilityExplainer) {
                         showAccessibilityExplainer = false
-                        if (context.needsBackgroundSetup()) {
-                            Timber.i("Accessibility service enabled - showing background setup")
-                            showBackgroundSetup = true
-                        } else {
-                            Timber.i("Accessibility service enabled - showing success dialog")
-                            showAccessibilitySuccess = true
-                        }
+                        showBackgroundSetupOrSuccess()
                         viewModel.setWaitingForAccessibility(false)
                     }
                 } else if (latestUiState.hasLoadedSettings) {
@@ -458,7 +465,13 @@ fun HomeScreen(
         if (context.accessibilityServiceStatus(accessibilityServiceClass) == AccessibilityServiceStatus.EnabledNotRunning) {
             delay(SERVICE_BIND_GRACE_MILLIS.milliseconds)
         }
-        when (context.accessibilityServiceStatus(accessibilityServiceClass)) {
+        val status = context.accessibilityServiceStatus(accessibilityServiceClass)
+        if (status != AccessibilityServiceStatus.Running && isRestartingService) {
+            // Back from settings without finishing the restart. Clear the flag so a later reconnect
+            // (e.g. after a reboot) doesn't pull the app to the front; "Open" sets it again.
+            viewModel.setWaitingForAccessibility(false)
+        }
+        when (status) {
             AccessibilityServiceStatus.EnabledNotRunning -> {
                 val isOnboarding = showAccessibilityExplainer || showBackgroundSetup || showAccessibilitySuccess
                 if (!isOnboarding && !showServiceNotRunning) {
@@ -468,11 +481,11 @@ fun HomeScreen(
             }
 
             AccessibilityServiceStatus.Running -> {
-                if (showServiceNotRunning) {
-                    Timber.i("Accessibility service running again - showing background setup or success")
-                    showServiceNotRunning = false
+                showServiceNotRunning = false
+                // Only celebrate a restart the user did; on a slow cold start the sheet just closes.
+                if (isRestartingService) {
                     isRestartingService = false
-                    if (context.needsBackgroundSetup()) showBackgroundSetup = true else showAccessibilitySuccess = true
+                    showBackgroundSetupOrSuccess()
                     viewModel.setWaitingForAccessibility(false)
                 }
             }

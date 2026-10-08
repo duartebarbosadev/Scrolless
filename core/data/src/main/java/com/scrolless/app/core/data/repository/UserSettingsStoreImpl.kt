@@ -44,6 +44,7 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     private val _timerOverlayPositionX = MutableStateFlow(0)
     private val _waitingForAccessibility = MutableStateFlow(false)
     private val _hasSeenAccessibilityExplainer = MutableStateFlow(false)
+    private val _hasSeenBackgroundSetup = MutableStateFlow(false)
     private val _hasSeenReviewPrompt = MutableStateFlow(false)
     private val _reviewPromptAttemptCount = MutableStateFlow(0)
     private val _reviewPromptLastAttemptAt = MutableStateFlow(0L)
@@ -83,6 +84,9 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
         }
         coroutineScope.launch {
             userSettingsDao.getHasSeenAccessibilityExplainer().collect { _hasSeenAccessibilityExplainer.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getHasSeenBackgroundSetup().collect { _hasSeenBackgroundSetup.value = it }
         }
         coroutineScope.launch {
             userSettingsDao.getPauseUntil().collect { _pauseUntil.value = it }
@@ -128,6 +132,13 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     override suspend fun setHasSeenAccessibilityExplainer(seen: Boolean) {
         _hasSeenAccessibilityExplainer.value = seen
         userSettingsDao.setHasSeenAccessibilityExplainer(seen)
+    }
+
+    override fun getHasSeenBackgroundSetup(): Flow<Boolean> = _hasSeenBackgroundSetup
+
+    override suspend fun setHasSeenBackgroundSetup(seen: Boolean) {
+        _hasSeenBackgroundSetup.value = seen
+        userSettingsDao.setHasSeenBackgroundSetup(seen)
     }
 
     override fun getPauseUntil(): Flow<Long> = _pauseUntil

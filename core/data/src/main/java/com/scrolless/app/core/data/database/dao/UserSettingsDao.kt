@@ -97,6 +97,12 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
     @Query("UPDATE user_settings SET has_seen_accessibility_explainer = :seen WHERE id = 1")
     abstract suspend fun setHasSeenAccessibilityExplainer(seen: Boolean)
 
+    @Query("SELECT has_seen_background_setup FROM user_settings WHERE id = 1")
+    abstract fun getHasSeenBackgroundSetup(): Flow<Boolean>
+
+    @Query("UPDATE user_settings SET has_seen_background_setup = :seen WHERE id = 1")
+    abstract suspend fun setHasSeenBackgroundSetup(seen: Boolean)
+
     @Query("SELECT pause_until_at FROM user_settings WHERE id = 1")
     abstract fun getPauseUntil(): Flow<Long>
 

@@ -350,6 +350,20 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Whether the background setup step was already shown. It is only shown once because some of
+     * its steps (like Xiaomi's Autostart) can't be detected, so it would otherwise show every time.
+     */
+    val hasSeenBackgroundSetup: StateFlow<Boolean> = userSettingsStore.getHasSeenBackgroundSetup()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = false)
+
+    fun onBackgroundSetupShown() {
+        Timber.d("Background setup shown")
+        viewModelScope.launch {
+            userSettingsStore.setHasSeenBackgroundSetup(true)
+        }
+    }
+
     fun onAccessibilityExplainerShown() {
         Timber.d("Accessibility explainer shown")
         viewModelScope.launch {

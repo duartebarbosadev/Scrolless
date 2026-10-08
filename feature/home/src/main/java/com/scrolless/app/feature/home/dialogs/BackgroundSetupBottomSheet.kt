@@ -52,7 +52,7 @@ import com.scrolless.app.feature.home.R
 import timber.log.Timber
 
 /**
- * Setup step shown right after accessibility is enabled, on phones known to kill background apps.
+ * Setup step shown once, right after accessibility is enabled, on phones known to kill background apps.
  * [onContinue] is called when the user finishes or skips it.
  */
 @OptIn(ExperimentalMaterial3Api::class)
