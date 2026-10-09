@@ -32,6 +32,7 @@ import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.feature.home.BackgroundRestrictionOem
 import com.scrolless.app.feature.home.R
+import com.scrolless.app.feature.home.hasPendingBackgroundSteps
 import com.scrolless.app.feature.home.openActivityAccessibilitySettings
 import timber.log.Timber
 
@@ -41,7 +42,7 @@ import timber.log.Timber
  */
 @Composable
 fun ServiceNotRunningBottomSheet(onRestartClick: () -> Unit, onDismiss: () -> Unit) {
-    GuidanceBottomSheet(
+    ExpandedModalBottomSheet(
         onDismissRequest = {
             Timber.d("ServiceNotRunning: dismiss")
             onDismiss()
@@ -60,7 +61,7 @@ private fun ServiceNotRunningContent(oem: BackgroundRestrictionOem?, onRestartCl
     val context = LocalContext.current
     val isIgnoringBatteryOptimizations = rememberIsIgnoringBatteryOptimizations()
     // Skip the background steps when all they would show is a checkmark.
-    val showGuidance = !isIgnoringBatteryOptimizations || oem?.hasAutostartManager == true
+    val showGuidance = oem.hasPendingBackgroundSteps(isIgnoringBatteryOptimizations)
 
     GuidanceSheetContent(
         title = stringResource(R.string.service_not_running_title),
@@ -70,7 +71,6 @@ private fun ServiceNotRunningContent(oem: BackgroundRestrictionOem?, onRestartCl
             GuidanceAction(
                 label = stringResource(R.string.service_not_running_step_restart),
                 actionLabel = stringResource(R.string.background_open_button),
-                isDone = false,
                 primary = true,
                 onClick = {
                     Timber.i("ServiceNotRunning: open accessibility settings")

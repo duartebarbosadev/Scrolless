@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -86,10 +87,10 @@ internal fun rememberIsIgnoringBatteryOptimizations(): Boolean {
     return isIgnoring
 }
 
-/** Modal sheet shared by the background setup and service-stopped flows. */
+/** Fully expanded modal sheet with a transparent container, shared by the home screen sheets. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun GuidanceBottomSheet(onDismissRequest: () -> Unit, content: @Composable () -> Unit) {
+internal fun ExpandedModalBottomSheet(onDismissRequest: () -> Unit, content: @Composable () -> Unit) {
     val sheetState = rememberBottomSheetState(
         initialValue = SheetValue.Hidden,
         enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded),
@@ -183,7 +184,6 @@ internal fun BackgroundGuidanceSteps(oem: BackgroundRestrictionOem?, isIgnoringB
         GuidanceAction(
             label = stringResource(R.string.background_autostart_step),
             actionLabel = stringResource(R.string.background_open_button),
-            isDone = false,
             onClick = {
                 Timber.i("BackgroundGuidance: open autostart settings (oem=%s)", oem)
                 context.openBackgroundSettings(oem)
@@ -193,7 +193,7 @@ internal fun BackgroundGuidanceSteps(oem: BackgroundRestrictionOem?, isIgnoringB
 }
 
 @Composable
-internal fun GuidanceAction(label: String, actionLabel: String, isDone: Boolean, onClick: () -> Unit, primary: Boolean = false) {
+internal fun GuidanceAction(label: String, actionLabel: String, onClick: () -> Unit, isDone: Boolean = false, primary: Boolean = false) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -218,14 +218,12 @@ internal fun GuidanceAction(label: String, actionLabel: String, isDone: Boolean,
                     .size(24.dp),
             )
         } else {
+            val modifier = Modifier.widthIn(min = ActionButtonMinWidth)
+            val content: @Composable RowScope.() -> Unit = { Text(text = actionLabel, fontWeight = FontWeight.Bold) }
             if (primary) {
-                Button(onClick = onClick, modifier = Modifier.widthIn(min = ActionButtonMinWidth)) {
-                    Text(text = actionLabel, fontWeight = FontWeight.Bold)
-                }
+                Button(onClick = onClick, modifier = modifier, content = content)
             } else {
-                FilledTonalButton(onClick = onClick, modifier = Modifier.widthIn(min = ActionButtonMinWidth)) {
-                    Text(text = actionLabel, fontWeight = FontWeight.Bold)
-                }
+                FilledTonalButton(onClick = onClick, modifier = modifier, content = content)
             }
         }
     }

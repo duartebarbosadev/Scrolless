@@ -458,15 +458,16 @@ fun HomeScreen(
     val serviceConnected by AccessibilityServiceConnection.isConnectedFlow.collectAsStateWithLifecycle()
     LaunchedEffect(lifecycleState, serviceConnected) {
         if (lifecycleState != Lifecycle.State.RESUMED) return@LaunchedEffect
+        var status = context.accessibilityServiceStatus(accessibilityServiceClass)
         // Give the system a moment to (re)bind the service after returning from settings.
-        if (context.accessibilityServiceStatus(accessibilityServiceClass) == AccessibilityServiceStatus.EnabledNotRunning) {
+        if (status == AccessibilityServiceStatus.EnabledNotRunning) {
             delay(SERVICE_BIND_GRACE)
+            status = context.accessibilityServiceStatus(accessibilityServiceClass)
         }
-        val status = context.accessibilityServiceStatus(accessibilityServiceClass)
         val isRestarting = setupSheet == SetupSheet.RestartingService
-        if (status != AccessibilityServiceStatus.Running && isRestarting) {
-            // Back from settings without finishing the restart. Clear the flag so a later reconnect
-            // (e.g. after a reboot) doesn't pull the app to the front; "Open" sets it again.
+        if (isRestarting) {
+            // Back from settings, restarted or not. Clear the flag so a later reconnect (e.g. after
+            // a reboot) doesn't pull the app to the front; "Open" sets it again.
             viewModel.setWaitingForAccessibility(false)
         }
         when (status) {
@@ -478,7 +479,6 @@ fun HomeScreen(
             // Only celebrate a restart the user did; on a slow cold start the sheet just closes.
             AccessibilityServiceStatus.Running -> if (isRestarting) {
                 showBackgroundSetupOrSuccess()
-                viewModel.setWaitingForAccessibility(false)
             } else if (setupSheet == SetupSheet.ServiceStopped) {
                 setupSheet = null
             }

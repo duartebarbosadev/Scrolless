@@ -22,7 +22,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.scrolless.app.designsystem.component.AnimatedButton
@@ -30,6 +29,7 @@ import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.feature.home.BackgroundRestrictionOem
 import com.scrolless.app.feature.home.R
+import com.scrolless.app.feature.home.hasPendingBackgroundSteps
 import timber.log.Timber
 
 /**
@@ -38,7 +38,7 @@ import timber.log.Timber
  */
 @Composable
 fun BackgroundSetupBottomSheet(onContinue: () -> Unit) {
-    GuidanceBottomSheet(
+    ExpandedModalBottomSheet(
         onDismissRequest = {
             Timber.d("BackgroundSetup: dismissed")
             onContinue()
@@ -53,12 +53,10 @@ private fun BackgroundSetupContent(oem: BackgroundRestrictionOem?, onContinue: (
     val isIgnoringBatteryOptimizations = rememberIsIgnoringBatteryOptimizations()
 
     // Nothing else can be checked on phones without an autostart manager, so move on by ourselves.
-    if (!LocalInspectionMode.current) {
-        LaunchedEffect(isIgnoringBatteryOptimizations) {
-            if (isIgnoringBatteryOptimizations && oem?.hasAutostartManager != true) {
-                Timber.i("BackgroundSetup: battery optimization disabled - continuing")
-                onContinue()
-            }
+    LaunchedEffect(isIgnoringBatteryOptimizations) {
+        if (!oem.hasPendingBackgroundSteps(isIgnoringBatteryOptimizations)) {
+            Timber.i("BackgroundSetup: battery optimization disabled - continuing")
+            onContinue()
         }
     }
 

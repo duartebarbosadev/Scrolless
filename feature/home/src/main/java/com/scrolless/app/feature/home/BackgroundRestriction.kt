@@ -108,9 +108,15 @@ internal enum class BackgroundRestrictionOem(val settingsComponents: List<Settin
 internal fun Context.isIgnoringBatteryOptimizations(): Boolean =
     getSystemService(PowerManager::class.java)?.isIgnoringBatteryOptimizations(packageName) ?: true
 
+/** Whether any background step is left for the user: the battery exemption or the OEM autostart switch. */
+internal fun BackgroundRestrictionOem?.hasPendingBackgroundSteps(isIgnoringBatteryOptimizations: Boolean): Boolean =
+    !isIgnoringBatteryOptimizations || this?.hasAutostartManager == true
+
 /** True on phones known to kill background apps while something is still left for the user to allow. */
-internal fun Context.needsBackgroundSetup(oem: BackgroundRestrictionOem? = BackgroundRestrictionOem.current()): Boolean =
-    oem != null && (oem.hasAutostartManager || !isIgnoringBatteryOptimizations())
+internal fun Context.needsBackgroundSetup(): Boolean {
+    val oem = BackgroundRestrictionOem.current() ?: return false
+    return oem.hasPendingBackgroundSteps(isIgnoringBatteryOptimizations())
+}
 
 /**
  * Shows the system "Stop optimizing battery usage?" dialog, falling back to the battery
@@ -126,11 +132,11 @@ internal fun Context.requestIgnoreBatteryOptimizations() {
 }
 
 /** Fixes the most important remaining background restriction with a single action. */
-internal fun Context.fixBackgroundRestrictions(oem: BackgroundRestrictionOem? = BackgroundRestrictionOem.current()) {
+internal fun Context.fixBackgroundRestrictions() {
     if (!isIgnoringBatteryOptimizations()) {
         requestIgnoreBatteryOptimizations()
     } else {
-        openBackgroundSettings(oem)
+        openBackgroundSettings(BackgroundRestrictionOem.current())
     }
 }
 
@@ -138,7 +144,7 @@ internal fun Context.fixBackgroundRestrictions(oem: BackgroundRestrictionOem? = 
  * Opens the best available screen for letting Scrolless run in the background: the OEM autostart
  * manager when present, otherwise the app details page (battery / background settings).
  */
-internal fun Context.openBackgroundSettings(oem: BackgroundRestrictionOem? = BackgroundRestrictionOem.current()) {
+internal fun Context.openBackgroundSettings(oem: BackgroundRestrictionOem?) {
     val candidates = oem?.settingsComponents.orEmpty().map { component ->
         Intent().setComponent(ComponentName(component.packageName, component.className))
     } + Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, "package:$packageName".toUri())
