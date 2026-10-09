@@ -54,10 +54,10 @@ import com.scrolless.app.designsystem.component.PopupCircleIcon
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.feature.home.R
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun AccessibilitySuccessBottomSheet(onDismiss: () -> Unit) {

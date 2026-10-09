@@ -18,6 +18,9 @@ package com.scrolless.app.feature.home
 
 import android.accessibilityservice.AccessibilityService
 import android.app.Activity
+import android.os.Build
+import android.os.Process
+import android.os.SystemClock
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -77,6 +80,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -136,6 +140,7 @@ import java.time.LocalDateTime
 import java.time.format.TextStyle
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
+import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
@@ -147,6 +152,9 @@ private val DEFAULT_INTERVAL_BREAK_MILLIS = TimeUnit.MINUTES.toMillis(60)
 private val DEFAULT_INTERVAL_ALLOWANCE_MILLIS = TimeUnit.MINUTES.toMillis(5)
 private val SERVICE_BIND_GRACE = 1.5.seconds
 
+/** How long after the process starts the system gets to bind the service on a cold start. */
+private val COLD_START_BIND_GRACE = 5.seconds
+
 /** The onboarding / recovery sheet currently shown on the home screen. */
 private enum class SetupSheet {
     Explainer,
@@ -156,6 +164,27 @@ private enum class SetupSheet {
 
     /** The stopped sheet, after the user headed to Accessibility settings to restart the service. */
     RestartingService,
+}
+
+/**
+ * Drops [SetupSheet.ServiceStopped] when saving, so a restored process re-checks the service (with
+ * its cold start grace) instead of flashing the sheet before the service reconnects.
+ */
+private val SetupSheetSaver = Saver<SetupSheet?, String>(
+    save = { sheet -> sheet?.takeIf { it != SetupSheet.ServiceStopped }?.name.orEmpty() },
+    restore = { name -> SetupSheet.entries.firstOrNull { it.name == name } },
+)
+
+/** How long to wait for the system to (re)bind the service before treating it as stopped. */
+private fun serviceBindGrace(): Duration {
+    // On a cold start the process (and the service connection flag) is brand new, and the system
+    // may take a few seconds to bind the service, so measure that window from the process start.
+    val coldStartRemaining = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        COLD_START_BIND_GRACE - (SystemClock.uptimeMillis() - Process.getStartUptimeMillis()).milliseconds
+    } else {
+        COLD_START_BIND_GRACE
+    }
+    return maxOf(SERVICE_BIND_GRACE, coldStartRemaining)
 }
 
 @Composable
@@ -175,7 +204,7 @@ fun HomeScreen(
 
     var showTimeLimitDialog by remember { mutableStateOf(false) }
     var showHelpDialog by remember { mutableStateOf(false) }
-    var setupSheet by rememberSaveable { mutableStateOf<SetupSheet?>(null) }
+    var setupSheet by rememberSaveable(stateSaver = SetupSheetSaver) { mutableStateOf<SetupSheet?>(null) }
     var debugBypassAccessibilityCheck by remember { mutableStateOf(false) }
     var showIntervalTimerDialog by remember { mutableStateOf(false) }
     var pendingIntervalBreak by remember { mutableLongStateOf(DEFAULT_INTERVAL_BREAK_MILLIS) }
@@ -459,9 +488,10 @@ fun HomeScreen(
     LaunchedEffect(lifecycleState, serviceConnected) {
         if (lifecycleState != Lifecycle.State.RESUMED) return@LaunchedEffect
         var status = context.accessibilityServiceStatus(accessibilityServiceClass)
-        // Give the system a moment to (re)bind the service after returning from settings.
+        // Give the system a moment to (re)bind the service after a cold start or returning from
+        // settings. If it connects meanwhile, serviceConnected restarts this effect and cancels the wait.
         if (status == AccessibilityServiceStatus.EnabledNotRunning) {
-            delay(SERVICE_BIND_GRACE)
+            delay(serviceBindGrace())
             status = context.accessibilityServiceStatus(accessibilityServiceClass)
         }
         val isRestarting = setupSheet == SetupSheet.RestartingService
@@ -476,7 +506,8 @@ fun HomeScreen(
                 setupSheet = SetupSheet.ServiceStopped
             }
 
-            // Only celebrate a restart the user did; on a slow cold start the sheet just closes.
+            // Only celebrate a restart the user did. If the service connects after the grace (a very slow
+            // cold start), the stopped sheet just closes.
             AccessibilityServiceStatus.Running -> if (isRestarting) {
                 showBackgroundSetupOrSuccess()
             } else if (setupSheet == SetupSheet.ServiceStopped) {
