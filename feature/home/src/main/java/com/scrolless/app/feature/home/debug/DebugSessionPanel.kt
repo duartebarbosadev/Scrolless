@@ -55,7 +55,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -81,15 +80,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.scrolless.app.core.accessibility.AccessibilityServiceConnection
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.util.formatMinutes
 import com.scrolless.app.feature.home.BackgroundRestrictionOem
-import com.scrolless.app.feature.home.DebugPhoneBrand
-import com.scrolless.app.feature.home.SimulatedBrand
 import com.scrolless.app.feature.home.components.ANALYTICS_DATE_FORMATTER
 import com.scrolless.app.feature.home.components.analyticsColor
 import com.scrolless.app.feature.home.components.analyticsDisplayName
@@ -336,8 +331,6 @@ private fun DebugDayTimelinePanel(
 
             DebugPhoneBrandSelector()
 
-            DebugServiceConnectionToggle()
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -519,6 +512,27 @@ private fun DebugOverlaySelector(forceLegacyOverlay: Boolean, onForceLegacyOverl
     )
 }
 
+/**
+ * Debug builds only: pretend to be another phone brand so each OEM flow can be tried on any device.
+ * OEM settings screens that don't exist on this phone fall back to the app details page.
+ */
+internal object DebugPhoneBrand {
+    /** Manufacturer to pretend to be, or null to use this phone's real one. */
+    var simulated by mutableStateOf<String?>(null)
+}
+
+private val debugPhoneBrands = listOf(
+    null to "This phone",
+    "google" to "Pixel",
+    "xiaomi" to "Xiaomi / POCO / Redmi",
+    "huawei" to "Huawei",
+    "honor" to "Honor",
+    "oppo" to "Oppo / Realme",
+    "oneplus" to "OnePlus",
+    "vivo" to "Vivo / iQOO",
+    "samsung" to "Samsung",
+)
+
 @Composable
 private fun DebugPhoneBrandSelector() {
     Text(
@@ -531,21 +545,11 @@ private fun DebugPhoneBrandSelector() {
         modifier = Modifier.horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(6.dp),
     ) {
-        FilterChip(
-            selected = DebugPhoneBrand.simulated == null,
-            onClick = { DebugPhoneBrand.simulated = null },
-            label = { Text("This phone") },
-        )
-        FilterChip(
-            selected = DebugPhoneBrand.simulated == SimulatedBrand(oem = null),
-            onClick = { DebugPhoneBrand.simulated = SimulatedBrand(oem = null) },
-            label = { Text("Pixel") },
-        )
-        BackgroundRestrictionOem.entries.forEach { oem ->
+        debugPhoneBrands.forEach { (brand, label) ->
             FilterChip(
-                selected = DebugPhoneBrand.simulated == SimulatedBrand(oem),
-                onClick = { DebugPhoneBrand.simulated = SimulatedBrand(oem) },
-                label = { Text(oem.debugLabel) },
+                selected = DebugPhoneBrand.simulated == brand,
+                onClick = { DebugPhoneBrand.simulated = brand },
+                label = { Text(label) },
             )
         }
     }
@@ -555,30 +559,6 @@ private fun DebugPhoneBrandSelector() {
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 }
-
-/**
- * Marks the service as disconnected, as if an OEM battery manager had killed it, so the stopped
- * sheet can be tested. Turning the service off and on in settings reconnects it like on a real phone.
- */
-@Composable
-private fun DebugServiceConnectionToggle() {
-    val connected by AccessibilityServiceConnection.isConnectedFlow.collectAsStateWithLifecycle()
-    OutlinedButton(
-        onClick = {
-            if (connected) AccessibilityServiceConnection.onDisconnected() else AccessibilityServiceConnection.onConnected()
-        },
-    ) {
-        Text(if (connected) "Simulate stopped service" else "Mark service as running")
-    }
-}
-
-private val BackgroundRestrictionOem.debugLabel: String
-    get() = when (this) {
-        BackgroundRestrictionOem.Xiaomi -> "Xiaomi / POCO / Redmi"
-        BackgroundRestrictionOem.Oppo -> "Oppo / Realme"
-        BackgroundRestrictionOem.Vivo -> "Vivo / iQOO"
-        else -> name
-    }
 
 @Composable
 private fun DurationOptionChip(minutes: Int, selected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {

@@ -32,9 +32,6 @@ object AccessibilityServiceConnection {
 
     val isConnectedFlow: StateFlow<Boolean> = connected.asStateFlow()
 
-    val isConnected: Boolean
-        get() = connected.value
-
     fun onConnected() {
         connected.value = true
     }

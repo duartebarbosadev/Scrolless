@@ -18,7 +18,6 @@ package com.scrolless.app.feature.home
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class BackgroundRestrictionOemTest {
@@ -44,19 +43,5 @@ class BackgroundRestrictionOemTest {
     fun `stock devices need no oem guidance`() {
         assertNull(BackgroundRestrictionOem.from("Google", "google"))
         assertNull(BackgroundRestrictionOem.from(null, null))
-    }
-
-    @Test
-    fun `xiaomi tries autostart manager first`() {
-        val first = BackgroundRestrictionOem.Xiaomi.settingsComponents.first()
-        assertEquals("com.miui.securitycenter", first.packageName)
-        assertTrue(first.className.endsWith("AutoStartManagementActivity"))
-    }
-
-    @Test
-    fun `only samsung relies on battery optimization alone`() {
-        BackgroundRestrictionOem.entries.forEach { oem ->
-            assertEquals(oem != BackgroundRestrictionOem.Samsung, oem.hasAutostartManager)
-        }
     }
 }

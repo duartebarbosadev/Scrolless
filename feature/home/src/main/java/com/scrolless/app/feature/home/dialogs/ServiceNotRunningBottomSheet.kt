@@ -16,35 +16,18 @@
  */
 package com.scrolless.app.feature.home.dialogs
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.scrolless.app.designsystem.component.PopupCircleIcon
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.feature.home.BackgroundRestrictionOem
@@ -56,20 +39,13 @@ import timber.log.Timber
  * Shown when the accessibility service is enabled in settings but the system is no longer bound to
  * it, which typically means an OEM battery manager killed the app process.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ServiceNotRunningBottomSheet(onRestartClick: () -> Unit, onDismiss: () -> Unit) {
-    val sheetState = rememberBottomSheetState(
-        initialValue = SheetValue.Hidden,
-        enabledValues = setOf(SheetValue.Hidden, SheetValue.Expanded),
-    )
-    ModalBottomSheet(
+    GuidanceBottomSheet(
         onDismissRequest = {
             Timber.d("ServiceNotRunning: dismiss")
             onDismiss()
         },
-        sheetState = sheetState,
-        containerColor = Color.Transparent,
     ) {
         ServiceNotRunningContent(
             oem = remember { BackgroundRestrictionOem.current() },
@@ -86,71 +62,32 @@ private fun ServiceNotRunningContent(oem: BackgroundRestrictionOem?, onRestartCl
     // Skip the background steps when all they would show is a checkmark.
     val showGuidance = !isIgnoringBatteryOptimizations || oem?.hasAutostartManager == true
 
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                color = MaterialTheme.colorScheme.surfaceContainer,
-                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
-            ),
+    GuidanceSheetContent(
+        title = stringResource(R.string.service_not_running_title),
+        description = stringResource(R.string.service_not_running_description),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp)
-                .padding(top = 16.dp, bottom = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            // Room for the floating icon
-            Spacer(modifier = Modifier.height(116.dp))
-
-            Text(
-                text = stringResource(R.string.service_not_running_title),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
+        BackgroundGuidanceCard {
+            GuidanceAction(
+                label = stringResource(R.string.service_not_running_step_restart),
+                actionLabel = stringResource(R.string.background_open_button),
+                isDone = false,
+                primary = true,
+                onClick = {
+                    Timber.i("ServiceNotRunning: open accessibility settings")
+                    onRestartClick()
+                    context.openActivityAccessibilitySettings()
+                },
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(R.string.service_not_running_description),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-            )
-            Spacer(modifier = Modifier.height(20.dp))
-            BackgroundGuidanceCard {
-                GuidanceAction(
-                    label = stringResource(R.string.service_not_running_step_restart),
-                    actionLabel = stringResource(R.string.background_open_button),
-                    isDone = false,
-                    primary = true,
-                    onClick = {
-                        Timber.i("ServiceNotRunning: open accessibility settings")
-                        onRestartClick()
-                        context.openActivityAccessibilitySettings()
-                    },
-                )
-                if (showGuidance) {
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                    BackgroundGuidanceSteps(oem = oem, isIgnoringBatteryOptimizations = isIgnoringBatteryOptimizations)
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-            TextButton(onClick = onDismiss) {
-                Text(text = stringResource(R.string.close))
+            if (showGuidance) {
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
+                BackgroundGuidanceSteps(oem = oem, isIgnoringBatteryOptimizations = isIgnoringBatteryOptimizations)
             }
         }
 
-        PopupCircleIcon(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 16.dp),
-            iconRes = R.drawable.ic_circle_battery,
-            contentDescription = stringResource(R.string.service_not_running_title),
-        )
+        Spacer(modifier = Modifier.height(8.dp))
+        TextButton(onClick = onDismiss) {
+            Text(text = stringResource(R.string.close))
+        }
     }
 }
 

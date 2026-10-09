@@ -46,7 +46,7 @@ internal fun Context.isAccessibilityServiceEnabled(service: Class<out Accessibil
 
 internal fun Context.accessibilityServiceStatus(service: Class<out AccessibilityService>?): AccessibilityServiceStatus {
     if (!isAccessibilityServiceEnabled(service)) return AccessibilityServiceStatus.Disabled
-    return if (AccessibilityServiceConnection.isConnected) {
+    return if (AccessibilityServiceConnection.isConnectedFlow.value) {
         AccessibilityServiceStatus.Running
     } else {
         AccessibilityServiceStatus.EnabledNotRunning

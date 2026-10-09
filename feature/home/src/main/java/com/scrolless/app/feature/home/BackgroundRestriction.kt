@@ -26,10 +26,8 @@ import android.content.Intent
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.core.net.toUri
+import com.scrolless.app.feature.home.debug.DebugPhoneBrand
 import timber.log.Timber
 
 internal data class SettingsComponent(val packageName: String, val className: String)
@@ -101,22 +99,11 @@ internal enum class BackgroundRestrictionOem(val settingsComponents: List<Settin
 
         fun current(): BackgroundRestrictionOem? {
             val simulated = DebugPhoneBrand.simulated.takeIf { BuildConfig.DEBUG }
-            return if (simulated != null) simulated.oem else from(Build.MANUFACTURER, Build.BRAND)
+                ?: return from(Build.MANUFACTURER, Build.BRAND)
+            return from(simulated, simulated)
         }
     }
 }
-
-/**
- * Debug builds only: pretend to be another phone brand so each OEM flow can be tried on any device.
- * OEM settings screens that don't exist on this phone fall back to the app details page.
- */
-internal object DebugPhoneBrand {
-    /** The brand to pretend to be, or null to use this phone's real brand. */
-    var simulated by mutableStateOf<SimulatedBrand?>(null)
-}
-
-/** A simulated phone brand; [oem] is null for a stock Android phone such as a Pixel. */
-internal data class SimulatedBrand(val oem: BackgroundRestrictionOem?)
 
 internal fun Context.isIgnoringBatteryOptimizations(): Boolean =
     getSystemService(PowerManager::class.java)?.isIgnoringBatteryOptimizations(packageName) ?: true
