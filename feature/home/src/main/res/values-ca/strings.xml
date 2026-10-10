@@ -31,6 +31,7 @@
     <string name="background_allow_button">Permet</string>
     <string name="background_autostart_step">Activa l\'Inici automàtic</string>
     <string name="background_battery_step">Permet l\'activitat en segon pla</string>
+    <string name="background_step_done">Fet</string>
     <string name="background_continue_button">Continua</string>
     <string name="background_open_button">Obre</string>
     <string name="background_settings_button">Obre la configuració de segon pla</string>

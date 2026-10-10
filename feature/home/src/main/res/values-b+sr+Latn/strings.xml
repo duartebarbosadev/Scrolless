@@ -31,6 +31,7 @@
     <string name="background_allow_button">Dozvoli</string>
     <string name="background_autostart_step">Uključi Automatsko pokretanje</string>
     <string name="background_battery_step">Dozvoli aktivnost u pozadini</string>
+    <string name="background_step_done">Gotovo</string>
     <string name="background_continue_button">Nastavi</string>
     <string name="background_open_button">Otvori</string>
     <string name="background_settings_button">Otvori podešavanja rada u pozadini</string>

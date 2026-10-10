@@ -211,7 +211,7 @@ internal fun GuidanceAction(label: String, actionLabel: String, onClick: () -> U
         if (isDone) {
             Icon(
                 imageVector = Icons.Filled.Check,
-                contentDescription = null,
+                contentDescription = stringResource(R.string.background_step_done),
                 tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)

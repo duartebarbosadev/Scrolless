@@ -31,6 +31,7 @@
     <string name="background_allow_button">Povoliť</string>
     <string name="background_autostart_step">Zapnúť Automatické spúšťanie</string>
     <string name="background_battery_step">Povoliť aktivitu na pozadí</string>
+    <string name="background_step_done">Hotovo</string>
     <string name="background_continue_button">Pokračovať</string>
     <string name="background_open_button">Otvoriť</string>
     <string name="background_settings_button">Otvoriť nastavenia behu na pozadí</string>

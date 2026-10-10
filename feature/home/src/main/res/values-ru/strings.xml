@@ -31,6 +31,7 @@
     <string name="background_allow_button">Разрешить</string>
     <string name="background_autostart_step">Включить автозапуск</string>
     <string name="background_battery_step">Разрешить работу в фоне</string>
+    <string name="background_step_done">Готово</string>
     <string name="background_continue_button">Продолжить</string>
     <string name="background_open_button">Открыть</string>
     <string name="background_settings_button">Открыть настройки фоновой работы</string>

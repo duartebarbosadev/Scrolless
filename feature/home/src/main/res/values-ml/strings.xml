@@ -31,6 +31,7 @@
     <string name="background_allow_button">അനുവദിക്കുക</string>
     <string name="background_autostart_step">ഓട്ടോസ്റ്റാർട്ട് ഓണാക്കുക</string>
     <string name="background_battery_step">പശ്ചാത്തല പ്രവർത്തനം അനുവദിക്കുക</string>
+    <string name="background_step_done">പൂർത്തിയായി</string>
     <string name="background_continue_button">തുടരുക</string>
     <string name="background_open_button">തുറക്കുക</string>
     <string name="background_settings_button">പശ്ചാത്തല ക്രമീകരണങ്ങൾ തുറക്കുക</string>

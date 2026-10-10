@@ -31,6 +31,7 @@
     <string name="background_allow_button">Дозволити</string>
     <string name="background_autostart_step">Увімкнути автозапуск</string>
     <string name="background_battery_step">Дозволити роботу у фоні</string>
+    <string name="background_step_done">Готово</string>
     <string name="background_continue_button">Продовжити</string>
     <string name="background_open_button">Відкрити</string>
     <string name="background_settings_button">Відкрити налаштування фонової роботи</string>

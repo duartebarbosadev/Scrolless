@@ -31,6 +31,7 @@
     <string name="background_allow_button">允许</string>
     <string name="background_autostart_step">开启自启动</string>
     <string name="background_battery_step">允许后台活动</string>
+    <string name="background_step_done">已完成</string>
     <string name="background_continue_button">继续</string>
     <string name="background_open_button">打开</string>
     <string name="background_settings_button">打开后台设置</string>

@@ -31,6 +31,7 @@
     <string name="background_allow_button">Erlauben</string>
     <string name="background_autostart_step">Autostart aktivieren</string>
     <string name="background_battery_step">Hintergrundaktivität erlauben</string>
+    <string name="background_step_done">Erledigt</string>
     <string name="background_continue_button">Weiter</string>
     <string name="background_open_button">Öffnen</string>
     <string name="background_settings_button">Hintergrundeinstellungen öffnen</string>

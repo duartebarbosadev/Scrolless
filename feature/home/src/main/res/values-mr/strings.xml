@@ -31,6 +31,7 @@
     <string name="background_allow_button">अनुमती द्या</string>
     <string name="background_autostart_step">ऑटोस्टार्ट चालू करा</string>
     <string name="background_battery_step">बॅकग्राउंड ॲक्टिव्हिटीला अनुमती द्या</string>
+    <string name="background_step_done">पूर्ण झाले</string>
     <string name="background_continue_button">पुढे सुरू ठेवा</string>
     <string name="background_open_button">उघडा</string>
     <string name="background_settings_button">बॅकग्राउंड सेटिंग्ज उघडा</string>

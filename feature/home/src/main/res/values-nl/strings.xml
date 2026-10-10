@@ -31,6 +31,7 @@
     <string name="background_allow_button">Toestaan</string>
     <string name="background_autostart_step">Autostart inschakelen</string>
     <string name="background_battery_step">Achtergrondactiviteit toestaan</string>
+    <string name="background_step_done">Klaar</string>
     <string name="background_continue_button">Doorgaan</string>
     <string name="background_open_button">Openen</string>
     <string name="background_settings_button">Achtergrondinstellingen openen</string>
