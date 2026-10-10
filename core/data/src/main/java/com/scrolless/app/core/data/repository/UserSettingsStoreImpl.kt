@@ -28,6 +28,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -44,6 +45,8 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     private val _timerOverlayPositionX = MutableStateFlow(0)
     private val _waitingForAccessibility = MutableStateFlow(false)
     private val _hasSeenAccessibilityExplainer = MutableStateFlow(false)
+    // Null until loaded, so "not seen yet" is never reported before the saved value is read.
+    private val _hasSeenBackgroundSetup = MutableStateFlow<Boolean?>(null)
     private val _hasSeenReviewPrompt = MutableStateFlow(false)
     private val _reviewPromptAttemptCount = MutableStateFlow(0)
     private val _reviewPromptLastAttemptAt = MutableStateFlow(0L)
@@ -83,6 +86,9 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
         }
         coroutineScope.launch {
             userSettingsDao.getHasSeenAccessibilityExplainer().collect { _hasSeenAccessibilityExplainer.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getHasSeenBackgroundSetup().collect { _hasSeenBackgroundSetup.value = it }
         }
         coroutineScope.launch {
             userSettingsDao.getPauseUntil().collect { _pauseUntil.value = it }
@@ -128,6 +134,13 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     override suspend fun setHasSeenAccessibilityExplainer(seen: Boolean) {
         _hasSeenAccessibilityExplainer.value = seen
         userSettingsDao.setHasSeenAccessibilityExplainer(seen)
+    }
+
+    override fun getHasSeenBackgroundSetup(): Flow<Boolean> = _hasSeenBackgroundSetup.filterNotNull()
+
+    override suspend fun setHasSeenBackgroundSetup(seen: Boolean) {
+        _hasSeenBackgroundSetup.value = seen
+        userSettingsDao.setHasSeenBackgroundSetup(seen)
     }
 
     override fun getPauseUntil(): Flow<Long> = _pauseUntil

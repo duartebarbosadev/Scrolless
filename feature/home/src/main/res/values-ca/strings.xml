@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">Necessitem accés d\'accessibilitat</string>
     <string name="accessibility_success_description">Scrolless ja està a punt!</string>
     <string name="accessibility_success_title">Tot a punt!</string>
+    <string name="background_allow_button">Permet</string>
+    <string name="background_autostart_step">Activa l\'Inici automàtic</string>
+    <string name="background_battery_step">Permet l\'activitat en segon pla</string>
+    <string name="background_step_done">Fet</string>
+    <string name="background_continue_button">Continua</string>
+    <string name="background_open_button">Obre</string>
+    <string name="background_settings_button">Obre la configuració de segon pla</string>
+    <string name="background_step_description">Alguns telèfons tanquen Scrolless en segon pla, cosa que atura el bloqueig.</string>
+    <string name="background_step_title">Mantén Scrolless en execució</string>
     <string name="block_all">Bloqueja-ho\nTot</string>
     <string name="close">Tancar</string>
     <string name="daily_limit">Límit\nDiari</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">Scrolless no funciona\?</string>
     <string name="help_step1_description">Selecciona una de les opcions de bloqueig des de la pantalla principal</string>
     <string name="help_step1_title">Tria la teva opció de bloqueig</string>
-    <string name="help_step2_description">Si el bloqueig no funciona, desactiva i torna a activar el servei d\'accessibilitat i intenta desactivar l\'optimització de la bateria per a Scrolless.</string>
+    <string name="help_step2_description">Si el bloqueig no funciona, desactiva i torna a activar el servei d\'accessibilitat. Permet també que Scrolless s\'executi en segon pla: activa l\'Inici automàtic (Xiaomi, POCO, Redmi i telèfons similars) i configura el seu ús de bateria com a \"Sense restriccions\".</string>
     <string name="help_step2_title">Resolució de problemes</string>
     <string name="help_step3_description">Encara tens problemes\? Estem aquí per ajudar-te! Utilitza el botó següent per contactar-nos al nostre repositori de GitHub.</string>
     <string name="help_step3_title">Contacta amb el suport</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">Pausa el bloqueig durant %1$d min</string>
     <string name="pause_resumes_in">Es reprèn en %1$s</string>
     <string name="resume">Reprendre</string>
+    <string name="service_not_running_description">El bloqueig està en pausa perquè Android ha aturat Scrolless en segon pla. Pot passar quan s\'esborra de les aplicacions recents o es restringeix per estalviar bateria.</string>
+    <string name="service_not_running_step_restart">Desactiva i torna a activar Scrolless a la configuració d\'accessibilitat.</string>
+    <string name="service_not_running_title">Scrolless s\'ha aturat</string>
     <string name="settings">Configuració</string>
     <string name="success_icon_description">Icona de confirmació correcta</string>
     <string name="time_interval">Interval\nde Temps</string>

@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">Hozzáférés szükséges a kisegítő lehetőségekhez</string>
     <string name="accessibility_success_description">A Scrolless készen áll!</string>
     <string name="accessibility_success_title">Minden beállítva!</string>
+    <string name="background_allow_button">Engedélyezés</string>
+    <string name="background_autostart_step">Automatikus indítás bekapcsolása</string>
+    <string name="background_battery_step">Háttértevékenység engedélyezése</string>
+    <string name="background_step_done">Kész</string>
+    <string name="background_continue_button">Tovább</string>
+    <string name="background_open_button">Megnyitás</string>
+    <string name="background_settings_button">Háttérbeállítások megnyitása</string>
+    <string name="background_step_description">Egyes telefonok bezárják a Scrolless alkalmazást a háttérben, ami leállítja a blokkolást.</string>
+    <string name="background_step_title">Tartsa futásban a Scrolless alkalmazást</string>
     <string name="block_all">Összes\nBlokkolása</string>
     <string name="close">Bezárás</string>
     <string name="daily_limit">Napi\nLimit</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">A Scrolless nem működik\?</string>
     <string name="help_step1_description">Válasszon egy blokkolási lehetőséget a főképernyőről</string>
     <string name="help_step1_title">Válassza ki a blokkolási lehetőséget</string>
-    <string name="help_step2_description">Ha a blokkolás nem működik, tiltsa le, majd engedélyezze a kisegítő lehetőségek szolgáltatást, és próbálja meg letiltani az akkumulátor-optimalizálást a Scrolless számára.</string>
+    <string name="help_step2_description">Ha a blokkolás nem működik, tiltsa le, majd engedélyezze a kisegítő lehetőségek szolgáltatást. Engedélyezze azt is, hogy a Scrolless a háttérben fusson: kapcsolja be az Automatikus indítást (Xiaomi, POCO, Redmi és hasonló telefonok), és állítsa az akkumulátorhasználatát \"Korlátlan\" értékre.</string>
     <string name="help_step2_title">Hibaelhárítás</string>
     <string name="help_step3_description">Még mindig problémái vannak\? Itt vagyunk, hogy segítsünk! Használja az alábbi gombot, hogy felvegye velünk a kapcsolatot a GitHub repónkon.</string>
     <string name="help_step3_title">Kapcsolatfelvétel az ügyfélszolgálattal</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">Blokkolás szüneteltetése %1$d percre</string>
     <string name="pause_resumes_in">Folytatás %1$s múlva</string>
     <string name="resume">Folytatás</string>
+    <string name="service_not_running_description">A blokkolás szünetel, mert az Android leállította a Scrolless alkalmazást a háttérben. Ez akkor fordulhat elő, ha törlik a legutóbbi alkalmazások közül, vagy akkumulátor-takarékosság miatt korlátozzák.</string>
+    <string name="service_not_running_step_restart">Kapcsolja ki, majd újra be a Scrolless alkalmazást a Kisegítő lehetőségek beállításaiban.</string>
+    <string name="service_not_running_title">A Scrolless leállt</string>
     <string name="settings">Beállítások</string>
     <string name="success_icon_description">Siker jelölő ikon</string>
     <string name="time_interval">Idő\nIntervallum</string>

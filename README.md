@@ -41,6 +41,22 @@ Since the app requires accessibility permissions, which can have sketchy uses, S
 
 <img src="art/Scrolless.png" alt="Scrolless app" width="250">
 
+## Troubleshooting
+
+**Scrolless stops working or Android says the service is "not working"**
+
+Some phones stop apps running in the background when you clear them from recent apps. This takes the accessibility service down with them. Scrolless shows a warning when this happens. To fix it:
+
+1. Open Accessibility settings, then turn Scrolless off and on again.
+2. Tap **Allow background activity** in Scrolless and confirm the system popup. On some phones you also need to allow background activity in the phone's own settings:
+   - **Xiaomi / Redmi / POCO (MIUI, HyperOS):** turn on **Autostart** and set Battery saver to **No restrictions**.
+   - **Huawei / Honor:** in App launch, set Scrolless to **Manage manually** with Auto-launch and Run in background turned on.
+   - **Oppo / Realme / OnePlus:** turn on **Allow auto launch** and **Allow background activity**.
+   - **Vivo / iQOO:** turn on **Auto-start** and **Allow high background power consumption**.
+   - **Samsung:** set battery usage to **Unrestricted** and remove Scrolless from **Sleeping apps**.
+
+More device-specific tips are at [dontkillmyapp.com](https://dontkillmyapp.com).
+
 # Architecture
 
 Scrolless app architecture is inspired by the Google open source project [Jetcaster](https://github.com/android/compose-samples/tree/main/Jetcaster), published under the [Apache License](https://github.com/android/compose-samples/blob/main/LICENSE).

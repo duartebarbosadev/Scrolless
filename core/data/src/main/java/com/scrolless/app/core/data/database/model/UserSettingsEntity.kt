@@ -57,6 +57,7 @@ data class UserSettingsEntity(
     @ColumnInfo(name = "pause_duration_millis", defaultValue = "300000") val pauseDurationMillis: Long = 5 * 60 * 1000L,
     @ColumnInfo(name = "include_stories", defaultValue = "0") val includeStories: Boolean = false,
     @ColumnInfo(name = "except_reels_sent_by_dm", defaultValue = "0") val allowVideosSentByDm: Boolean = false,
+    @ColumnInfo(name = "has_seen_background_setup", defaultValue = "0") val hasSeenBackgroundSetup: Boolean = false,
 )
 
 fun UserSettingsEntity.toBlockingConfig(): BlockingConfig = BlockingConfig(

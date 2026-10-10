@@ -64,6 +64,7 @@ import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.feature.home.R
+import com.scrolless.app.feature.home.fixBackgroundRestrictions
 import com.scrolless.app.feature.home.openActivityAccessibilitySettings
 import timber.log.Timber
 
@@ -170,13 +171,8 @@ private fun HelpDialogContent(onDismiss: () -> Unit) {
 
             Button(
                 onClick = {
-                    try {
-                        Timber.i("HelpDialog: open accessibility settings")
-                        context.openActivityAccessibilitySettings()
-                        onDismiss()
-                    } catch (e: Exception) {
-                        Timber.e(e, "HelpDialog: failed to open accessibility settings")
-                    }
+                    Timber.i("HelpDialog: open accessibility settings")
+                    if (context.openActivityAccessibilitySettings()) onDismiss()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -207,6 +203,29 @@ private fun HelpDialogContent(onDismiss: () -> Unit) {
                         minFontSize = 10.sp,
                     )
                 }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            OutlinedButton(
+                onClick = {
+                    Timber.i("HelpDialog: open background settings")
+                    context.fixBackgroundRestrictions()
+                    onDismiss()
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp),
+                shape = RoundedCornerShape(12.dp),
+            ) {
+                AutoResizingText(
+                    text = stringResource(R.string.background_settings_button),
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp),
+                    maxLines = 1,
+                    minFontSize = 10.sp,
+                )
             }
 
             Spacer(modifier = Modifier.height(8.dp))

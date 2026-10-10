@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">ഞങ്ങൾക്ക് പ്രവേശനക്ഷമത ആവശ്യമാണ്</string>
     <string name="accessibility_success_description">സ്ക്രോളസ് ഇപ്പോൾ തയ്യാറാണ്!</string>
     <string name="accessibility_success_title">എല്ലാം തയ്യാർ!</string>
+    <string name="background_allow_button">അനുവദിക്കുക</string>
+    <string name="background_autostart_step">ഓട്ടോസ്റ്റാർട്ട് ഓണാക്കുക</string>
+    <string name="background_battery_step">പശ്ചാത്തല പ്രവർത്തനം അനുവദിക്കുക</string>
+    <string name="background_step_done">പൂർത്തിയായി</string>
+    <string name="background_continue_button">തുടരുക</string>
+    <string name="background_open_button">തുറക്കുക</string>
+    <string name="background_settings_button">പശ്ചാത്തല ക്രമീകരണങ്ങൾ തുറക്കുക</string>
+    <string name="background_step_description">ചില ഫോണുകൾ പശ്ചാത്തലത്തിൽ Scrolless അടയ്ക്കുന്നു, ഇത് ബ്ലോക്കിംഗ് നിർത്തുന്നു.</string>
+    <string name="background_step_title">Scrolless പ്രവർത്തനത്തിൽ നിലനിർത്തുക</string>
     <string name="block_all">എല്ലാം\nതടയുക</string>
     <string name="close">അടയ്ക്കുക</string>
     <string name="daily_limit">പ്രതിദിന\nപരിധി</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">സ്ക്രോളസ് പ്രവർത്തിക്കുന്നില്ലേ\?</string>
     <string name="help_step1_description">പ്രധാന സ്ക്രീനിൽ നിന്ന് ബ്ലോക്കിംഗ് ഓപ്ഷനുകളിലൊന്ന് തിരഞ്ഞെടുക്കുക</string>
     <string name="help_step1_title">നിങ്ങളുടെ ബ്ലോക്ക് ഓപ്ഷൻ തിരഞ്ഞെടുക്കുക</string>
-    <string name="help_step2_description">ബ്ലോക്കിംഗ് പ്രവർത്തിക്കുന്നില്ലെങ്കിൽ, പ്രവേശനക്ഷമത സേവനം പ്രവർത്തനരഹിതമാക്കുകയും തുടർന്ന് പ്രവർത്തനക്ഷമമാക്കുകയും ചെയ്യുക, കൂടാതെ സ്ക്രോളസിനായുള്ള ബാറ്ററി ഒപ്റ്റിമൈസേഷൻ പ്രവർത്തനരഹിതമാക്കാൻ ശ്രമിക്കുക.</string>
+    <string name="help_step2_description">ബ്ലോക്കിംഗ് പ്രവർത്തിക്കുന്നില്ലെങ്കിൽ, പ്രവേശനക്ഷമത സേവനം പ്രവർത്തനരഹിതമാക്കി വീണ്ടും പ്രവർത്തനക്ഷമമാക്കുക. കൂടാതെ Scrolless-നെ പശ്ചാത്തലത്തിൽ പ്രവർത്തിക്കാൻ അനുവദിക്കുക: ഓട്ടോസ്റ്റാർട്ട് ഓണാക്കുക (Xiaomi, POCO, Redmi പോലുള്ള ഫോണുകൾ), അതിന്റെ ബാറ്ററി ഉപയോഗം \"നിയന്ത്രണമില്ലാത്തത്\" ആയി സജ്ജമാക്കുക.</string>
     <string name="help_step2_title">പ്രശ്നപരിഹാരം</string>
     <string name="help_step3_description">ഇപ്പോഴും പ്രശ്നങ്ങളുണ്ടോ\? ഞങ്ങൾ സഹായിക്കാൻ ഇവിടെയുണ്ട്! ഞങ്ങളുടെ GitHub റിപ്പോയിൽ ബന്ധപ്പെടാൻ താഴെയുള്ള ബട്ടൺ ഉപയോഗിക്കുക.</string>
     <string name="help_step3_title">പിന്തുണയുമായി ബന്ധപ്പെടുക</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">%1$d മിനിറ്റിന് ബ്ലോക്കിംഗ് താൽക്കാലികമായി നിർത്തുന്നു</string>
     <string name="pause_resumes_in">%1$s-ൽ പുനരാരംഭിക്കുന്നു</string>
     <string name="resume">പുനരാരംഭിക്കുക</string>
+    <string name="service_not_running_description">Android പശ്ചാത്തലത്തിൽ Scrolless നിർത്തിയതിനാൽ ബ്ലോക്കിംഗ് താൽക്കാലികമായി നിർത്തിയിരിക്കുന്നു. സമീപകാല ആപ്പുകളിൽ നിന്ന് മായ്ക്കുമ്പോഴോ ബാറ്ററി ലാഭിക്കാൻ നിയന്ത്രിക്കുമ്പോഴോ ഇത് സംഭവിക്കാം.</string>
+    <string name="service_not_running_step_restart">പ്രവേശനക്ഷമത ക്രമീകരണങ്ങളിൽ Scrolless ഓഫാക്കി വീണ്ടും ഓണാക്കുക.</string>
+    <string name="service_not_running_title">Scrolless നിർത്തി</string>
     <string name="settings">ക്രമീകരണങ്ങൾ</string>
     <string name="success_icon_description">വിജയകരമായ ചെക്ക്മാർക്ക് ഐക്കൺ</string>
     <string name="time_interval">സമയ\nഇടവേള</string>

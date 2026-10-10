@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">ユーザー補助機能へのアクセスが必要です</string>
     <string name="accessibility_success_description">Scrollessの準備ができました！</string>
     <string name="accessibility_success_title">すべて設定完了！</string>
+    <string name="background_allow_button">許可</string>
+    <string name="background_autostart_step">自動起動をオンにする</string>
+    <string name="background_battery_step">バックグラウンドアクティビティを許可</string>
+    <string name="background_step_done">完了</string>
+    <string name="background_continue_button">続ける</string>
+    <string name="background_open_button">開く</string>
+    <string name="background_settings_button">バックグラウンド設定を開く</string>
+    <string name="background_step_description">一部の端末ではバックグラウンドで Scrolless が終了され、ブロックが停止します。</string>
+    <string name="background_step_title">Scrolless を実行し続ける</string>
     <string name="block_all">すべて\nブロック</string>
     <string name="close">閉じる</string>
     <string name="daily_limit">1日の\n制限</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">Scrollessが動作しませんか？</string>
     <string name="help_step1_description">メイン画面からブロックオプションのいずれかを選択してください</string>
     <string name="help_step1_title">ブロックオプションを選択</string>
-    <string name="help_step2_description">ブロックが機能しない場合は、ユーザー補助サービスを無効にしてから有効にし、Scrollessのバッテリー最適化を無効にしてみてください。</string>
+    <string name="help_step2_description">ブロックが機能しない場合は、ユーザー補助サービスを無効にしてから有効にしてください。また、Scrolless のバックグラウンド実行を許可してください：自動起動をオンにし（Xiaomi、POCO、Redmi などの端末）、バッテリー使用量を「制限なし」に設定してください。</string>
     <string name="help_step2_title">トラブルシューティング</string>
     <string name="help_step3_description">まだ問題がありますか？喜んでお手伝いします！以下のボタンを使用して、GitHubリポジトリでお問い合わせください。</string>
     <string name="help_step3_title">サポートに連絡</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">ブロックを%1$d分一時停止します</string>
     <string name="pause_resumes_in">%1$s後に再開</string>
     <string name="resume">再開</string>
+    <string name="service_not_running_description">Android がバックグラウンドで Scrolless を停止したため、ブロックが一時停止しています。最近使ったアプリから消去したときや、バッテリー節約のために制限されたときに起こることがあります。</string>
+    <string name="service_not_running_step_restart">ユーザー補助設定で Scrolless をオフにしてから、もう一度オンにしてください。</string>
+    <string name="service_not_running_title">Scrolless が停止されました</string>
     <string name="settings">設定</string>
     <string name="success_icon_description">成功チェックマークアイコン</string>
     <string name="time_interval">時間\n間隔</string>

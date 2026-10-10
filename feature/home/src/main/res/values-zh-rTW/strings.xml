@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">我們需要無障礙服務權限</string>
     <string name="accessibility_success_description">Scrolless 已準備就緒！</string>
     <string name="accessibility_success_title">一切就緒！</string>
+    <string name="background_allow_button">允許</string>
+    <string name="background_autostart_step">開啟自動啟動</string>
+    <string name="background_battery_step">允許背景活動</string>
+    <string name="background_step_done">已完成</string>
+    <string name="background_continue_button">繼續</string>
+    <string name="background_open_button">開啟</string>
+    <string name="background_settings_button">開啟背景設定</string>
+    <string name="background_step_description">部分手機會在背景關閉 Scrolless，導致封鎖停止。</string>
+    <string name="background_step_title">讓 Scrolless 保持執行</string>
     <string name="block_all">全部\n封鎖</string>
     <string name="close">關閉</string>
     <string name="daily_limit">每日\n限制</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">Scrolless 無法運作？</string>
     <string name="help_step1_description">從主畫面選擇其中一個封鎖選項</string>
     <string name="help_step1_title">選擇您的封鎖選項</string>
-    <string name="help_step2_description">如果封鎖無效，請停用然後重新啟用無障礙服務，並嘗試停用 Scrolless 的電池最佳化。</string>
+    <string name="help_step2_description">如果封鎖無效，請停用然後重新啟用無障礙服務。同時允許 Scrolless 在背景執行：開啟自動啟動（小米、POCO、紅米及類似手機），並將其電池用量設為「不受限制」。</string>
     <string name="help_step2_title">疑難排解</string>
     <string name="help_step3_description">仍然有問題？我們隨時為您提供協助！使用下方按鈕在我們的 GitHub 儲存庫上與我們聯繫。</string>
     <string name="help_step3_title">聯絡支援</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">暫停封鎖 %1$d 分鐘</string>
     <string name="pause_resumes_in">將於 %1$s 後恢復</string>
     <string name="resume">恢復</string>
+    <string name="service_not_running_description">封鎖已暫停，因為 Android 在背景停止了 Scrolless。從最近使用的應用程式中清除，或為省電而受到限制時，可能會發生這種情況。</string>
+    <string name="service_not_running_step_restart">在無障礙設定中關閉 Scrolless，然後重新開啟。</string>
+    <string name="service_not_running_title">Scrolless 已被停止</string>
     <string name="settings">設定</string>
     <string name="success_icon_description">成功打勾圖示</string>
     <string name="time_interval">時間\n間隔</string>

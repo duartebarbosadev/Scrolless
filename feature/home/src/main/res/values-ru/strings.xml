@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">Нам нужен доступ к специальным возможностям</string>
     <string name="accessibility_success_description">Scrolless готов к работе!</string>
     <string name="accessibility_success_title">Все готово!</string>
+    <string name="background_allow_button">Разрешить</string>
+    <string name="background_autostart_step">Включить автозапуск</string>
+    <string name="background_battery_step">Разрешить работу в фоне</string>
+    <string name="background_step_done">Готово</string>
+    <string name="background_continue_button">Продолжить</string>
+    <string name="background_open_button">Открыть</string>
+    <string name="background_settings_button">Открыть настройки фоновой работы</string>
+    <string name="background_step_description">Некоторые телефоны закрывают Scrolless в фоновом режиме, и блокировка перестаёт работать.</string>
+    <string name="background_step_title">Не дайте Scrolless остановиться</string>
     <string name="block_all">Блокировать\nВсе</string>
     <string name="close">Закрыть</string>
     <string name="daily_limit">Дневной\nЛимит</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">Scrolless не работает\?</string>
     <string name="help_step1_description">Выберите один из вариантов блокировки на главном экране</string>
     <string name="help_step1_title">Выберите вариант блокировки</string>
-    <string name="help_step2_description">Если блокировка не работает, отключите, а затем включите службу доступности и попробуйте отключить оптимизацию батареи для Scrolless.</string>
+    <string name="help_step2_description">Если блокировка не работает, отключите, а затем включите службу доступности. Также разрешите Scrolless работать в фоновом режиме: включите Автозапуск (Xiaomi, POCO, Redmi и похожие телефоны) и установите расход батареи «Без ограничений».</string>
     <string name="help_step2_title">Устранение неполадок</string>
     <string name="help_step3_description">Все еще есть проблемы\? Мы здесь, чтобы помочь! Используйте кнопку ниже, чтобы связаться с нами на нашем репозитории GitHub.</string>
     <string name="help_step3_title">Связаться со службой поддержки</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">Приостанавливает блокировку на %1$d мин</string>
     <string name="pause_resumes_in">Возобновится через %1$s</string>
     <string name="resume">Возобновить</string>
+    <string name="service_not_running_description">Блокировка приостановлена, потому что Android остановил Scrolless в фоновом режиме. Это может произойти, если приложение удалили из списка недавних или ограничили для экономии заряда батареи.</string>
+    <string name="service_not_running_step_restart">Выключите и снова включите Scrolless в настройках доступности.</string>
+    <string name="service_not_running_title">Scrolless остановлен</string>
     <string name="settings">Настройки</string>
     <string name="success_icon_description">Значок галочки успеха</string>
     <string name="time_interval">Временной\nИнтервал</string>

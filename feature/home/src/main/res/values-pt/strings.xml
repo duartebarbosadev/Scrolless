@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">Precisamos de acesso à acessibilidade</string>
     <string name="accessibility_success_description">O Scrolless está pronto!</string>
     <string name="accessibility_success_title">Tudo pronto!</string>
+    <string name="background_allow_button">Permitir</string>
+    <string name="background_autostart_step">Ativar Início automático</string>
+    <string name="background_battery_step">Permitir atividade em segundo plano</string>
+    <string name="background_step_done">Concluído</string>
+    <string name="background_continue_button">Continuar</string>
+    <string name="background_open_button">Abrir</string>
+    <string name="background_settings_button">Abrir definições de segundo plano</string>
+    <string name="background_step_description">Alguns telemóveis fecham o Scrolless em segundo plano, o que interrompe o bloqueio.</string>
+    <string name="background_step_title">Manter o Scrolless em execução</string>
     <string name="block_all">Bloquear\nTudo</string>
     <string name="close">Fechar</string>
     <string name="daily_limit">Limite\nDiário</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">O Scrolless não está a funcionar\?</string>
     <string name="help_step1_description">Selecione uma das opções de bloqueio no ecrã principal</string>
     <string name="help_step1_title">Escolha a sua opção de bloqueio</string>
-    <string name="help_step2_description">Se o bloqueio não estiver a funcionar, desative e reative o serviço de acessibilidade e tente desativar a otimização da bateria para o Scrolless.</string>
+    <string name="help_step2_description">Se o bloqueio não estiver a funcionar, desative e reative o serviço de acessibilidade. Permita também que o Scrolless seja executado em segundo plano: ative o Início automático (Xiaomi, POCO, Redmi e telemóveis semelhantes) e defina a utilização da bateria como \"Sem restrições\".</string>
     <string name="help_step2_title">Resolução de problemas</string>
     <string name="help_step3_description">Ainda com problemas\? Estamos aqui para ajudar! Use o botão abaixo para entrar em contacto no nosso repositório do GitHub.</string>
     <string name="help_step3_title">Contactar suporte</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">Pausa o bloqueio por %1$d min</string>
     <string name="pause_resumes_in">Retoma em %1$s</string>
     <string name="resume">Retomar</string>
+    <string name="service_not_running_description">O bloqueio está em pausa porque o Android parou o Scrolless em segundo plano. Isto pode acontecer quando é removido das aplicações recentes ou restringido para poupar bateria.</string>
+    <string name="service_not_running_step_restart">Desative e volte a ativar o Scrolless nas definições de acessibilidade.</string>
+    <string name="service_not_running_title">O Scrolless foi parado</string>
     <string name="settings">Definições</string>
     <string name="success_icon_description">Ícone de confirmação</string>
     <string name="time_interval">Intervalo\nde Tempo</string>

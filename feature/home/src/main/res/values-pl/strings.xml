@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">Potrzebujemy dostępu do ułatwień dostępu</string>
     <string name="accessibility_success_description">Scrolless jest teraz gotowy!</string>
     <string name="accessibility_success_title">Wszystko gotowe!</string>
+    <string name="background_allow_button">Zezwól</string>
+    <string name="background_autostart_step">Włącz Autostart</string>
+    <string name="background_battery_step">Zezwól na aktywność w tle</string>
+    <string name="background_step_done">Gotowe</string>
+    <string name="background_continue_button">Dalej</string>
+    <string name="background_open_button">Otwórz</string>
+    <string name="background_settings_button">Otwórz ustawienia działania w tle</string>
+    <string name="background_step_description">Niektóre telefony zamykają Scrolless w tle, co zatrzymuje blokowanie.</string>
+    <string name="background_step_title">Utrzymaj Scrolless w działaniu</string>
     <string name="block_all">Zablokuj\nWszystko</string>
     <string name="close">Zamknij</string>
     <string name="daily_limit">Dzienny\nLimit</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">Scrolless nie działa\?</string>
     <string name="help_step1_description">Wybierz jedną z opcji blokowania z ekranu głównego</string>
     <string name="help_step1_title">Wybierz opcję blokowania</string>
-    <string name="help_step2_description">Jeśli blokowanie nie działa, wyłącz, a następnie włącz usługę ułatwień dostępu i spróbuj wyłączyć optymalizację baterii dla Scrolless.</string>
+    <string name="help_step2_description">Jeśli blokowanie nie działa, wyłącz, a następnie włącz usługę ułatwień dostępu. Zezwól też aplikacji Scrolless na działanie w tle: włącz Autostart (Xiaomi, POCO, Redmi i podobne telefony) i ustaw jej zużycie baterii na \"Bez ograniczeń\".</string>
     <string name="help_step2_title">Rozwiązywanie problemów</string>
     <string name="help_step3_description">Nadal masz problemy\? Jesteśmy tutaj, aby pomóc! Użyj przycisku poniżej, aby skontaktować się z nami w naszym repozytorium GitHub.</string>
     <string name="help_step3_title">Skontaktuj się z pomocą techniczną</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">Wstrzymuje blokowanie na %1$d min</string>
     <string name="pause_resumes_in">Wznowienie za %1$s</string>
     <string name="resume">Wznów</string>
+    <string name="service_not_running_description">Blokowanie jest wstrzymane, ponieważ Android zatrzymał Scrolless w tle. Może się tak zdarzyć, gdy aplikacja zostanie usunięta z ostatnich aplikacji lub ograniczona w celu oszczędzania baterii.</string>
+    <string name="service_not_running_step_restart">Wyłącz i ponownie włącz Scrolless w ustawieniach ułatwień dostępu.</string>
+    <string name="service_not_running_title">Scrolless został zatrzymany</string>
     <string name="settings">Ustawienia</string>
     <string name="success_icon_description">Ikona znacznika sukcesu</string>
     <string name="time_interval">Interwał\nCzasowy</string>

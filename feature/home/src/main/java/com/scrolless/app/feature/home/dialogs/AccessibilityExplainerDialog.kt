@@ -45,13 +45,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -60,7 +57,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
@@ -79,7 +75,6 @@ import com.scrolless.app.feature.home.R
 import com.scrolless.app.feature.home.openActivityAccessibilitySettings
 import timber.log.Timber
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AccessibilityExplainerBottomSheet(onDismiss: () -> Unit) {
     val context = LocalContext.current
@@ -95,15 +90,11 @@ fun AccessibilityExplainerBottomSheet(onDismiss: () -> Unit) {
             onOpenSettings = {},
         )
     } else {
-        val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-        ModalBottomSheet(
+        ExpandedModalBottomSheet(
             onDismissRequest = {
                 Timber.d("AccessibilityExplainer: Dismiss")
                 onDismiss()
             },
-            sheetState = sheetState,
-            containerColor = Color.Transparent,
         ) {
             AccessibilityExplainerContent(
                 onDismiss = {
@@ -111,12 +102,8 @@ fun AccessibilityExplainerBottomSheet(onDismiss: () -> Unit) {
                     onDismiss()
                 },
                 onOpenSettings = {
-                    try {
-                        Timber.i("AccessibilityExplainer: Open accessibility settings")
-                        context.openActivityAccessibilitySettings()
-                    } catch (e: Exception) {
-                        Timber.e(e, "Failed to open accessibility settings")
-                    }
+                    Timber.i("AccessibilityExplainer: Open accessibility settings")
+                    context.openActivityAccessibilitySettings()
                 },
             )
         }

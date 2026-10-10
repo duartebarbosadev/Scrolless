@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">Erişilebilirlik erişimi gerekiyor</string>
     <string name="accessibility_success_description">Scrolless artık hazır!</string>
     <string name="accessibility_success_title">Her şey hazır!</string>
+    <string name="background_allow_button">İzin ver</string>
+    <string name="background_autostart_step">Otomatik başlatmayı aç</string>
+    <string name="background_battery_step">Arka plan etkinliğine izin ver</string>
+    <string name="background_step_done">Tamamlandı</string>
+    <string name="background_continue_button">Devam</string>
+    <string name="background_open_button">Aç</string>
+    <string name="background_settings_button">Arka plan ayarlarını aç</string>
+    <string name="background_step_description">Bazı telefonlar Scrolless\'ı arka planda kapatır ve bu da engellemeyi durdurur.</string>
+    <string name="background_step_title">Scrolless\'ı çalışır durumda tutun</string>
     <string name="block_all">Tümünü\nEngelle</string>
     <string name="close">Kapat</string>
     <string name="daily_limit">Günlük\nSınır</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">Scrolless çalışmıyor mu\?</string>
     <string name="help_step1_description">Ana ekrandan engelleme seçeneklerinden birini seçin</string>
     <string name="help_step1_title">Engelleme seçeneğinizi belirleyin</string>
-    <string name="help_step2_description">Engelleme çalışmıyorsa, erişilebilirlik hizmetini devre dışı bırakıp tekrar etkinleştirin ve Scrolless için pil optimizasyonunu devre dışı bırakmayı deneyin.</string>
+    <string name="help_step2_description">Engelleme çalışmıyorsa, erişilebilirlik hizmetini devre dışı bırakıp tekrar etkinleştirin. Ayrıca Scrolless\'ın arka planda çalışmasına izin verin: Otomatik başlatmayı açın (Xiaomi, POCO, Redmi ve benzeri telefonlar) ve pil kullanımını \"Kısıtlanmamış\" olarak ayarlayın.</string>
     <string name="help_step2_title">Sorun giderme</string>
     <string name="help_step3_description">Hala sorun mu yaşıyorsunuz\? Yardım etmek için buradayız! GitHub depomuzdan bize ulaşmak için aşağıdaki düğmeyi kullanın.</string>
     <string name="help_step3_title">Destekle iletişime geçin</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">Engellemeyi %1$d dakika duraklatır</string>
     <string name="pause_resumes_in">%1$s içinde devam eder</string>
     <string name="resume">Devam et</string>
+    <string name="service_not_running_description">Android, Scrolless\'ı arka planda durdurduğu için engelleme duraklatıldı. Bu, uygulama son uygulamalardan temizlendiğinde veya pil tasarrufu için kısıtlandığında olabilir.</string>
+    <string name="service_not_running_step_restart">Erişilebilirlik ayarlarında Scrolless\'ı kapatıp tekrar açın.</string>
+    <string name="service_not_running_title">Scrolless durduruldu</string>
     <string name="settings">Ayarlar</string>
     <string name="success_icon_description">Başarılı onay işareti simgesi</string>
     <string name="time_interval">Zaman\nAralığı</string>

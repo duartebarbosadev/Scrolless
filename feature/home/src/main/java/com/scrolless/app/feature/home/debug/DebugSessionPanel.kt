@@ -55,6 +55,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -80,10 +81,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.scrolless.app.core.accessibility.AccessibilityServiceConnection
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.util.formatMinutes
+import com.scrolless.app.feature.home.BackgroundRestrictionOem
 import com.scrolless.app.feature.home.components.ANALYTICS_DATE_FORMATTER
 import com.scrolless.app.feature.home.components.analyticsColor
 import com.scrolless.app.feature.home.components.analyticsDisplayName
@@ -328,6 +332,10 @@ private fun DebugDayTimelinePanel(
                 onForceLegacyOverlayChanged = onForceLegacyOverlayChanged,
             )
 
+            DebugPhoneBrandSelector()
+
+            DebugServiceConnectionToggle()
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -507,6 +515,71 @@ private fun DebugOverlaySelector(forceLegacyOverlay: Boolean, onForceLegacyOverl
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
+}
+
+/**
+ * Debug builds only: pretend to be another phone brand so each OEM flow can be tried on any device.
+ * OEM settings screens that don't exist on this phone fall back to the app details page.
+ */
+internal object DebugPhoneBrand {
+    /** Manufacturer to pretend to be, or null to use this phone's real one. */
+    var simulated by mutableStateOf<String?>(null)
+}
+
+private val debugPhoneBrands = listOf(
+    null to "This phone",
+    "google" to "Pixel",
+    "xiaomi" to "Xiaomi / POCO / Redmi",
+    "huawei" to "Huawei",
+    "honor" to "Honor",
+    "oppo" to "Oppo / Realme",
+    "oneplus" to "OnePlus",
+    "vivo" to "Vivo / iQOO",
+    "samsung" to "Samsung",
+)
+
+@Composable
+private fun DebugPhoneBrandSelector() {
+    Text(
+        text = "Phone brand (background setup)",
+        style = MaterialTheme.typography.titleSmall,
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colorScheme.onSurface,
+    )
+    Row(
+        modifier = Modifier.horizontalScroll(rememberScrollState()),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+    ) {
+        debugPhoneBrands.forEach { (brand, label) ->
+            FilterChip(
+                selected = DebugPhoneBrand.simulated == brand,
+                onClick = { DebugPhoneBrand.simulated = brand },
+                label = { Text(label) },
+            )
+        }
+    }
+    Text(
+        text = "Device ${Build.MANUFACTURER} / ${Build.BRAND} · using ${BackgroundRestrictionOem.current()?.name ?: "none"}\n",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+    )
+}
+
+/**
+ * Marks the service as disconnected, like an OEM battery manager killing it. Android restarts a
+ * really killed service on its own, so this is the reliable way to see the stopped sheet. Turning
+ * the service off and on in settings reconnects it as on a real phone.
+ */
+@Composable
+private fun DebugServiceConnectionToggle() {
+    val connected by AccessibilityServiceConnection.isConnectedFlow.collectAsStateWithLifecycle()
+    OutlinedButton(
+        onClick = {
+            if (connected) AccessibilityServiceConnection.onDisconnected() else AccessibilityServiceConnection.onConnected()
+        },
+    ) {
+        Text(if (connected) "Simulate stopped service" else "Mark service as running")
+    }
 }
 
 @Composable

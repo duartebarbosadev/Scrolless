@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">我们需要无障碍访问权限</string>
     <string name="accessibility_success_description">Scrolless 已准备就绪！</string>
     <string name="accessibility_success_title">一切就绪！</string>
+    <string name="background_allow_button">允许</string>
+    <string name="background_autostart_step">开启自启动</string>
+    <string name="background_battery_step">允许后台活动</string>
+    <string name="background_step_done">已完成</string>
+    <string name="background_continue_button">继续</string>
+    <string name="background_open_button">打开</string>
+    <string name="background_settings_button">打开后台设置</string>
+    <string name="background_step_description">部分手机会在后台关闭 Scrolless，导致屏蔽停止。</string>
+    <string name="background_step_title">保持 Scrolless 运行</string>
     <string name="block_all">全部\n屏蔽</string>
     <string name="close">关闭</string>
     <string name="daily_limit">每日\n限制</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">Scrolless 不工作？</string>
     <string name="help_step1_description">从主屏幕选择一个屏蔽选项</string>
     <string name="help_step1_title">选择您的屏蔽选项</string>
-    <string name="help_step2_description">如果屏蔽不工作，请禁用然后启用无障碍服务，并尝试禁用 Scrolless 的电池优化。</string>
+    <string name="help_step2_description">如果屏蔽不工作，请禁用然后启用无障碍服务。同时允许 Scrolless 在后台运行：开启自启动（小米、POCO、红米及类似手机），并将其电池用量设置为“无限制”。</string>
     <string name="help_step2_title">故障排除</string>
     <string name="help_step3_description">仍然有问题？我们随时为您提供帮助！使用下面的按钮在我们的 GitHub 仓库上联系我们。</string>
     <string name="help_step3_title">联系支持</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">暂停屏蔽 %1$d 分钟</string>
     <string name="pause_resumes_in">%1$s 后恢复</string>
     <string name="resume">恢复</string>
+    <string name="service_not_running_description">屏蔽已暂停，因为 Android 在后台停止了 Scrolless。从最近任务中清除或为省电而受到限制时，可能会发生这种情况。</string>
+    <string name="service_not_running_step_restart">在无障碍设置中关闭 Scrolless，然后重新开启。</string>
+    <string name="service_not_running_title">Scrolless 已被停止</string>
     <string name="settings">设置</string>
     <string name="success_icon_description">成功勾选图标</string>
     <string name="time_interval">时间\n间隔</string>

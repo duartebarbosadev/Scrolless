@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">हमें एक्सेसिबिलिटी एक्सेस की आवश्यकता है</string>
     <string name="accessibility_success_description">Scrolless अब तैयार है!</string>
     <string name="accessibility_success_title">सब तैयार है!</string>
+    <string name="background_allow_button">अनुमति दें</string>
+    <string name="background_autostart_step">ऑटोस्टार्ट चालू करें</string>
+    <string name="background_battery_step">बैकग्राउंड गतिविधि की अनुमति दें</string>
+    <string name="background_step_done">हो गया</string>
+    <string name="background_continue_button">जारी रखें</string>
+    <string name="background_open_button">खोलें</string>
+    <string name="background_settings_button">बैकग्राउंड सेटिंग्स खोलें</string>
+    <string name="background_step_description">कुछ फ़ोन Scrolless को बैकग्राउंड में बंद कर देते हैं, जिससे ब्लॉकिंग रुक जाती है।</string>
+    <string name="background_step_title">Scrolless को चालू रखें</string>
     <string name="block_all">सभी\nब्लॉक करें</string>
     <string name="close">बंद करें</string>
     <string name="daily_limit">दैनिक\nसीमा</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">Scrolless काम नहीं कर रहा है\?</string>
     <string name="help_step1_description">मुख्य स्क्रीन से ब्लॉकिंग विकल्पों में से एक चुनें</string>
     <string name="help_step1_title">अपना ब्लॉक विकल्प चुनें</string>
-    <string name="help_step2_description">यदि ब्लॉकिंग काम नहीं कर रही है, तो एक्सेसिबिलिटी सेवा को अक्षम करें और फिर सक्षम करें और Scrolless के लिए बैटरी ऑप्टिमाइज़ेशन को अक्षम करने का प्रयास करें।</string>
+    <string name="help_step2_description">यदि ब्लॉकिंग काम नहीं कर रही है, तो एक्सेसिबिलिटी सेवा को अक्षम करें और फिर सक्षम करें। साथ ही Scrolless को बैकग्राउंड में चलने दें: ऑटोस्टार्ट चालू करें (Xiaomi, POCO, Redmi और इसी तरह के फ़ोन) और इसके बैटरी उपयोग को \"अप्रतिबंधित\" पर सेट करें।</string>
     <string name="help_step2_title">समस्या निवारण</string>
     <string name="help_step3_description">अभी भी समस्याएँ आ रही हैं\? हम मदद के लिए यहाँ हैं! हमारे GitHub रेपो पर पहुँचने के लिए नीचे दिए गए बटन का उपयोग करें।</string>
     <string name="help_step3_title">सहायता से संपर्क करें</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">%1$d मिनट के लिए ब्लॉकिंग रोकता है</string>
     <string name="pause_resumes_in">%1$s में फिर से शुरू होगा</string>
     <string name="resume">फिर से शुरू करें</string>
+    <string name="service_not_running_description">ब्लॉकिंग रुकी हुई है क्योंकि Android ने Scrolless को बैकग्राउंड में बंद कर दिया। ऐसा तब हो सकता है जब इसे हाल के ऐप्स से हटाया जाए या बैटरी बचाने के लिए प्रतिबंधित किया जाए।</string>
+    <string name="service_not_running_step_restart">एक्सेसिबिलिटी सेटिंग्स में Scrolless को बंद करके फिर से चालू करें।</string>
+    <string name="service_not_running_title">Scrolless बंद हो गया</string>
     <string name="settings">सेटिंग्स</string>
     <string name="success_icon_description">सफलता चेक मार्क आइकन</string>
     <string name="time_interval">समय\nअंतराल</string>

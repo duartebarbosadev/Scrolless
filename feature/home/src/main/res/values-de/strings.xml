@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">Wir benötigen Zugriff auf Bedienungshilfen</string>
     <string name="accessibility_success_description">Scrolless ist jetzt bereit!</string>
     <string name="accessibility_success_title">Alles bereit!</string>
+    <string name="background_allow_button">Erlauben</string>
+    <string name="background_autostart_step">Autostart aktivieren</string>
+    <string name="background_battery_step">Hintergrundaktivität erlauben</string>
+    <string name="background_step_done">Erledigt</string>
+    <string name="background_continue_button">Weiter</string>
+    <string name="background_open_button">Öffnen</string>
+    <string name="background_settings_button">Hintergrundeinstellungen öffnen</string>
+    <string name="background_step_description">Manche Telefone beenden Scrolless im Hintergrund, wodurch die Blockierung stoppt.</string>
+    <string name="background_step_title">Scrolless aktiv halten</string>
     <string name="block_all">Alle\nBlockieren</string>
     <string name="close">Schließen</string>
     <string name="daily_limit">Tages-\nLimit</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">Scrolless funktioniert nicht\?</string>
     <string name="help_step1_description">Wählen Sie eine der Blockierungsoptionen auf dem Hauptbildschirm aus</string>
     <string name="help_step1_title">Wählen Sie Ihre Blockierungsoption</string>
-    <string name="help_step2_description">Wenn die Blockierung nicht funktioniert, deaktivieren und aktivieren Sie den Barrierefreiheitsdienst und versuchen Sie, die Batterieoptimierung für Scrolless zu deaktivieren.</string>
+    <string name="help_step2_description">Wenn die Blockierung nicht funktioniert, deaktivieren und aktivieren Sie den Barrierefreiheitsdienst erneut. Erlauben Sie Scrolless außerdem, im Hintergrund zu laufen: Aktivieren Sie Autostart (Xiaomi, POCO, Redmi und ähnliche Telefone) und setzen Sie die Akkunutzung auf \"Nicht eingeschränkt\".</string>
     <string name="help_step2_title">Fehlerbehebung</string>
     <string name="help_step3_description">Haben Sie immer noch Probleme\? Wir helfen Ihnen gerne! Nutzen Sie die Schaltfläche unten, um uns in unserem GitHub-Repo zu kontaktieren.</string>
     <string name="help_step3_title">Support kontaktieren</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">Blockierung für %1$d Min. pausieren</string>
     <string name="pause_resumes_in">Wird in %1$s fortgesetzt</string>
     <string name="resume">Fortsetzen</string>
+    <string name="service_not_running_description">Die Blockierung ist pausiert, weil Android Scrolless im Hintergrund beendet hat. Das kann passieren, wenn die App aus den zuletzt verwendeten Apps entfernt oder zum Akkusparen eingeschränkt wird.</string>
+    <string name="service_not_running_step_restart">Schalten Sie Scrolless in den Bedienungshilfen-Einstellungen aus und wieder ein.</string>
+    <string name="service_not_running_title">Scrolless wurde beendet</string>
     <string name="settings">Einstellungen</string>
     <string name="success_icon_description">Häkchen-Symbol für Erfolg</string>
     <string name="time_interval">Zeit-\nIntervall</string>

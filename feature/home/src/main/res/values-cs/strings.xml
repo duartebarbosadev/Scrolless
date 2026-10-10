@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">Potřebujeme přístup k usnadnění přístupu</string>
     <string name="accessibility_success_description">Scrolless je nyní připraven!</string>
     <string name="accessibility_success_title">Vše nastaveno!</string>
+    <string name="background_allow_button">Povolit</string>
+    <string name="background_autostart_step">Zapnout Automatické spouštění</string>
+    <string name="background_battery_step">Povolit aktivitu na pozadí</string>
+    <string name="background_step_done">Hotovo</string>
+    <string name="background_continue_button">Pokračovat</string>
+    <string name="background_open_button">Otevřít</string>
+    <string name="background_settings_button">Otevřít nastavení běhu na pozadí</string>
+    <string name="background_step_description">Některé telefony zavírají Scrolless na pozadí, čímž se blokování zastaví.</string>
+    <string name="background_step_title">Nechte Scrolless běžet</string>
     <string name="block_all">Blokovat\nVše</string>
     <string name="close">Zavřít</string>
     <string name="daily_limit">Denní\nLimit</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">Scrolless nefunguje\?</string>
     <string name="help_step1_description">Vyberte jednu z možností blokování z hlavní obrazovky</string>
     <string name="help_step1_title">Vyberte možnost blokování</string>
-    <string name="help_step2_description">Pokud blokování nefunguje, vypněte a poté zapněte službu usnadnění přístupu a zkuste zakázat optimalizaci baterie pro Scrolless.</string>
+    <string name="help_step2_description">Pokud blokování nefunguje, vypněte a poté zapněte službu usnadnění přístupu. Povolte také aplikaci Scrolless běh na pozadí: zapněte Automatické spouštění (Xiaomi, POCO, Redmi a podobné telefony) a nastavte její využití baterie na \"Neomezeno\".</string>
     <string name="help_step2_title">Odstraňování problémů</string>
     <string name="help_step3_description">Stále máte problémy\? Jsme tu, abychom vám pomohli! Použijte tlačítko níže a kontaktujte nás na našem GitHub repozitáři.</string>
     <string name="help_step3_title">Kontaktujte podporu</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">Pozastaví blokování na %1$d min</string>
     <string name="pause_resumes_in">Pokračuje za %1$s</string>
     <string name="resume">Pokračovat</string>
+    <string name="service_not_running_description">Blokování je pozastaveno, protože Android zastavil Scrolless na pozadí. Může se to stát, když ho vymažete z nedávných aplikací nebo když je omezen kvůli úspoře baterie.</string>
+    <string name="service_not_running_step_restart">Vypněte a znovu zapněte Scrolless v nastavení usnadnění přístupu.</string>
+    <string name="service_not_running_title">Scrolless byl zastaven</string>
     <string name="settings">Nastavení</string>
     <string name="success_icon_description">Ikona zaškrtnutí úspěchu</string>
     <string name="time_interval">Časový\nInterval</string>

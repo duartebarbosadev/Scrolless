@@ -28,6 +28,15 @@
     <string name="accessibility_explainer_title">Vi behöver tillgänglighetsåtkomst</string>
     <string name="accessibility_success_description">Scrolless är nu redo!</string>
     <string name="accessibility_success_title">Allt klart!</string>
+    <string name="background_allow_button">Tillåt</string>
+    <string name="background_autostart_step">Aktivera Autostart</string>
+    <string name="background_battery_step">Tillåt bakgrundsaktivitet</string>
+    <string name="background_step_done">Klart</string>
+    <string name="background_continue_button">Fortsätt</string>
+    <string name="background_open_button">Öppna</string>
+    <string name="background_settings_button">Öppna bakgrundsinställningar</string>
+    <string name="background_step_description">Vissa telefoner stänger Scrolless i bakgrunden, vilket stoppar blockeringen.</string>
+    <string name="background_step_title">Håll Scrolless igång</string>
     <string name="block_all">Blockera\nAlla</string>
     <string name="close">Stäng</string>
     <string name="daily_limit">Daglig\nGräns</string>
@@ -38,7 +47,7 @@
     <string name="help_dialog_title">Scrolless fungerar inte\?</string>
     <string name="help_step1_description">Välj ett av blockeringsalternativen från huvudskärmen</string>
     <string name="help_step1_title">Välj ditt blockeringsalternativ</string>
-    <string name="help_step2_description">Om blockeringen inte fungerar, inaktivera och aktivera sedan tillgänglighetstjänsten och försök att inaktivera batterioptimering för Scrolless.</string>
+    <string name="help_step2_description">Om blockeringen inte fungerar, inaktivera och aktivera sedan tillgänglighetstjänsten. Tillåt också Scrolless att köras i bakgrunden: aktivera Autostart (Xiaomi, POCO, Redmi och liknande telefoner) och ställ in batterianvändningen på \"Obegränsad\".</string>
     <string name="help_step2_title">Felsökning</string>
     <string name="help_step3_description">Har du fortfarande problem\? Vi är här för att hjälpa till! Använd knappen nedan för att kontakta oss på vårt GitHub-repo.</string>
     <string name="help_step3_title">Kontakta support</string>
@@ -67,6 +76,9 @@
     <string name="pause_duration_hint">Pausar blockering i %1$d min</string>
     <string name="pause_resumes_in">Återupptas om %1$s</string>
     <string name="resume">Återuppta</string>
+    <string name="service_not_running_description">Blockeringen är pausad eftersom Android stoppade Scrolless i bakgrunden. Det kan hända när appen rensas från senaste appar eller begränsas för att spara batteri.</string>
+    <string name="service_not_running_step_restart">Stäng av och slå på Scrolless igen i tillgänglighetsinställningarna.</string>
+    <string name="service_not_running_title">Scrolless stoppades</string>
     <string name="settings">Inställningar</string>
     <string name="success_icon_description">Ikon för lyckad bockmarkering</string>
     <string name="time_interval">Tids-\nIntervall</string>

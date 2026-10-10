@@ -21,6 +21,16 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.provider.Settings
+import com.scrolless.app.core.accessibility.AccessibilityServiceConnection
+import timber.log.Timber
+
+internal enum class AccessibilityServiceStatus {
+    Disabled,
+    Running,
+
+    /** Enabled in settings, but the system is not bound to it (e.g. its process was killed by the OEM). */
+    EnabledNotRunning,
+}
 
 internal fun Context.isAccessibilityServiceEnabled(service: Class<out AccessibilityService>?): Boolean {
     if (service == null) return false
@@ -34,13 +44,29 @@ internal fun Context.isAccessibilityServiceEnabled(service: Class<out Accessibil
     return enabledServicesSetting.split(':').any { it.equals(expectedComponentName, ignoreCase = true) }
 }
 
-internal fun Context.openActivityAccessibilitySettings() {
+internal fun Context.accessibilityServiceStatus(service: Class<out AccessibilityService>?): AccessibilityServiceStatus {
+    if (!isAccessibilityServiceEnabled(service)) return AccessibilityServiceStatus.Disabled
+    return if (AccessibilityServiceConnection.isConnectedFlow.value) {
+        AccessibilityServiceStatus.Running
+    } else {
+        AccessibilityServiceStatus.EnabledNotRunning
+    }
+}
+
+/** Opens Accessibility settings, returning false (and logging) if the screen couldn't be opened. */
+internal fun Context.openActivityAccessibilitySettings(): Boolean {
     val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
     if (isDebuggable) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
     }
-    startActivity(intent)
+    return try {
+        startActivity(intent)
+        true
+    } catch (e: Exception) {
+        Timber.e(e, "Failed to open accessibility settings")
+        false
+    }
 }
 
 private val Context.isDebuggable: Boolean

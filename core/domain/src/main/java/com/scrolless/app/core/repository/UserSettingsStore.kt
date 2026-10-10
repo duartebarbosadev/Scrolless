@@ -37,6 +37,9 @@ interface UserSettingsStore {
     fun getHasSeenAccessibilityExplainer(): Flow<Boolean>
     suspend fun setHasSeenAccessibilityExplainer(seen: Boolean)
 
+    fun getHasSeenBackgroundSetup(): Flow<Boolean>
+    suspend fun setHasSeenBackgroundSetup(seen: Boolean)
+
     fun getPauseUntil(): Flow<Long>
     suspend fun setPauseUntil(pauseUntil: Long)
 

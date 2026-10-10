@@ -35,17 +35,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
@@ -58,11 +54,11 @@ import com.scrolless.app.designsystem.component.PopupCircleIcon
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.feature.home.R
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AccessibilitySuccessBottomSheet(onDismiss: () -> Unit) {
     val isPreview = LocalInspectionMode.current
@@ -76,15 +72,11 @@ fun AccessibilitySuccessBottomSheet(onDismiss: () -> Unit) {
             },
         )
     } else {
-        val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-        ModalBottomSheet(
+        ExpandedModalBottomSheet(
             onDismissRequest = {
                 Timber.d("AccessibilitySuccess: Dismiss")
                 onDismiss()
             },
-            sheetState = sheetState,
-            containerColor = Color.Transparent,
         ) {
             AccessibilitySuccessContent(
                 onDismiss = {
@@ -247,7 +239,7 @@ private fun NextStep(stepNumber: String, text: String, delay: Long) {
 
     LaunchedEffect(Unit) {
         if (!isPreview) {
-            delay(delay)
+            delay(delay.milliseconds)
             launch {
                 alpha.animateTo(
                     targetValue = 1f,

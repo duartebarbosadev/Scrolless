@@ -176,11 +176,17 @@ class HomeViewModel @Inject constructor(
         )
     }
 
+    private val onboardingFlags = combine(
+        userSettingsStore.getHasSeenAccessibilityExplainer(),
+        userSettingsStore.getHasSeenBackgroundSetup(),
+        ::Pair,
+    )
+
     val uiState: StateFlow<HomeUiState> = combine(
         usageSnapshot,
         userSettingsStore.getPauseUntil(),
         requestReview,
-        userSettingsStore.getHasSeenAccessibilityExplainer(),
+        onboardingFlags,
         userSettingsStore.getPauseDuration(),
         analyticsSnapshot,
         _selectedAveragePeriod,
@@ -188,7 +194,7 @@ class HomeViewModel @Inject constructor(
             usage,
             pauseUntil,
             requestReview,
-            hasSeenAccessibilityExplainer,
+            (hasSeenAccessibilityExplainer, hasSeenBackgroundSetup),
             pauseDuration,
             analytics,
             averagePeriod,
@@ -211,6 +217,7 @@ class HomeViewModel @Inject constructor(
             pauseDurationMillis = pauseDuration,
             requestReview = requestReview,
             hasSeenAccessibilityExplainer = hasSeenAccessibilityExplainer,
+            hasSeenBackgroundSetup = hasSeenBackgroundSetup,
             hasLoadedSettings = true,
             listSessionSegments = usage.sessionSegment,
             usageAnalytics = analytics,
@@ -350,6 +357,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun onBackgroundSetupShown() {
+        Timber.d("Background setup shown")
+        viewModelScope.launch {
+            userSettingsStore.setHasSeenBackgroundSetup(true)
+        }
+    }
+
     fun onAccessibilityExplainerShown() {
         Timber.d("Accessibility explainer shown")
         viewModelScope.launch {
@@ -407,6 +421,12 @@ data class HomeUiState(
     val pauseUntilMillis: Long = 0L,
     val pauseDurationMillis: Long = 5 * 60 * 1000L,
     val hasSeenAccessibilityExplainer: Boolean = false,
+
+    /**
+     * Whether the background setup step was already shown. It is only shown once because some of
+     * its steps (like Xiaomi's Autostart) can't be detected, so it would otherwise show every time.
+     */
+    val hasSeenBackgroundSetup: Boolean = false,
 
     /**
      * `true` after the app has loaded the user's settings for the first time.
