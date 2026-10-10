@@ -239,20 +239,14 @@ fun HomeScreen(
         }
     }
 
-    // Observe lifecycle resume events so we can react when the user returns from settings:
-    // - If accessibility is now enabled, show the background setup step (if needed) and then the success sheet.
-    // - If it is still disabled while a block option is active (or first launch), re-open the explainer.
+    // Observe lifecycle resume events so we can react when the user returns from settings: if accessibility
+    // is still disabled while a block option is active (or first launch), re-open the explainer.
+    // Once it is enabled, the service liveness check below moves the explainer on.
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 Timber.d("HomeScreen resumed")
-                val isAccessibilityEnabled = context.isAccessibilityServiceEnabled(accessibilityServiceClass)
-                if (isAccessibilityEnabled) {
-                    if (setupSheet == SetupSheet.Explainer) {
-                        showBackgroundSetupOrSuccess()
-                        viewModel.setWaitingForAccessibility(false)
-                    }
-                } else if (latestUiState.hasLoadedSettings) {
+                if (!context.isAccessibilityServiceEnabled(accessibilityServiceClass) && latestUiState.hasLoadedSettings) {
                     val hasBlockSelection = latestUiState.blockOption != BlockOption.NothingSelected
                     val hasSeenExplainer = latestUiState.hasSeenAccessibilityExplainer
                     if ((!hasSeenExplainer || hasBlockSelection) && setupSheet != SetupSheet.Explainer) {
@@ -494,21 +488,34 @@ fun HomeScreen(
             delay(serviceBindGrace())
             status = context.accessibilityServiceStatus(accessibilityServiceClass)
         }
-        val isRestarting = setupSheet == SetupSheet.RestartingService
-        if (isRestarting) {
+        // The user is coming back from enabling the service (explainer) or restarting it (stopped sheet).
+        val isAwaitingService = setupSheet == SetupSheet.RestartingService ||
+            (setupSheet == SetupSheet.Explainer && status != AccessibilityServiceStatus.Disabled)
+        if (isAwaitingService) {
             // Back from settings, restarted or not. Clear the flag so a later reconnect (e.g. after
             // a reboot) doesn't pull the app to the front; "Open" sets it again.
             viewModel.setWaitingForAccessibility(false)
         }
         when (status) {
-            AccessibilityServiceStatus.EnabledNotRunning -> if (setupSheet == null) {
-                Timber.w("Accessibility service enabled but not running - showing recovery sheet")
-                setupSheet = SetupSheet.ServiceStopped
+            AccessibilityServiceStatus.EnabledNotRunning -> when (setupSheet) {
+                null -> {
+                    Timber.w("Accessibility service enabled but not running - showing recovery sheet")
+                    setupSheet = SetupSheet.ServiceStopped
+                }
+
+                // Enabled but never connected, so it needs the same off and on toggle as a stopped
+                // service. Restarting (not Stopped) still celebrates if it connects later.
+                SetupSheet.Explainer -> {
+                    Timber.w("Accessibility service enabled but not connected - showing restart sheet")
+                    setupSheet = SetupSheet.RestartingService
+                }
+
+                else -> Unit
             }
 
-            // Only celebrate a restart the user did. If the service connects after the grace (a very slow
-            // cold start), the stopped sheet just closes.
-            AccessibilityServiceStatus.Running -> if (isRestarting) {
+            // Only celebrate a setup or restart the user did. If the service connects after the grace
+            // (a very slow cold start), the stopped sheet just closes.
+            AccessibilityServiceStatus.Running -> if (isAwaitingService) {
                 showBackgroundSetupOrSuccess()
             } else if (setupSheet == SetupSheet.ServiceStopped) {
                 setupSheet = null

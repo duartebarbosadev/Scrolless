@@ -17,7 +17,9 @@
 package com.scrolless.app.feature.home
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class BackgroundRestrictionOemTest {
@@ -43,5 +45,24 @@ class BackgroundRestrictionOemTest {
     fun `stock devices need no oem guidance`() {
         assertNull(BackgroundRestrictionOem.from("Google", "google"))
         assertNull(BackgroundRestrictionOem.from(null, null))
+    }
+
+    @Test
+    fun `stock devices only need the battery exemption`() {
+        val oem: BackgroundRestrictionOem? = null
+        assertTrue(oem.hasPendingBackgroundSteps(isIgnoringBatteryOptimizations = false))
+        assertFalse(oem.hasPendingBackgroundSteps(isIgnoringBatteryOptimizations = true))
+    }
+
+    @Test
+    fun `samsung is done once exempt from battery optimization`() {
+        assertTrue(BackgroundRestrictionOem.Samsung.hasPendingBackgroundSteps(isIgnoringBatteryOptimizations = false))
+        assertFalse(BackgroundRestrictionOem.Samsung.hasPendingBackgroundSteps(isIgnoringBatteryOptimizations = true))
+    }
+
+    @Test
+    fun `oems with an autostart manager stay pending after the battery exemption`() {
+        assertTrue(BackgroundRestrictionOem.Xiaomi.hasPendingBackgroundSteps(isIgnoringBatteryOptimizations = false))
+        assertTrue(BackgroundRestrictionOem.Xiaomi.hasPendingBackgroundSteps(isIgnoringBatteryOptimizations = true))
     }
 }
