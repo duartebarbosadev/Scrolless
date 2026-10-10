@@ -227,9 +227,11 @@ fun HomeScreen(
         }
     }
 
-    fun showBackgroundSetupOrSuccess() {
+    /** [afterRestart]: the phone just killed the service, so offer any step left even if it was seen before. */
+    fun showBackgroundSetupOrSuccess(afterRestart: Boolean) {
         val state = latestUiState
-        if (state.hasLoadedSettings && !state.hasSeenBackgroundSetup && context.needsBackgroundSetup()) {
+        val shouldOffer = afterRestart || (state.hasLoadedSettings && !state.hasSeenBackgroundSetup)
+        if (shouldOffer && context.needsBackgroundSetup()) {
             Timber.i("Accessibility service running - showing background setup")
             setupSheet = SetupSheet.BackgroundSetup
             viewModel.onBackgroundSetupShown()
@@ -516,7 +518,7 @@ fun HomeScreen(
             // Only celebrate a setup or restart the user did. If the service connects after the grace
             // (a very slow cold start), the stopped sheet just closes.
             AccessibilityServiceStatus.Running -> if (isAwaitingService) {
-                showBackgroundSetupOrSuccess()
+                showBackgroundSetupOrSuccess(afterRestart = setupSheet == SetupSheet.RestartingService)
             } else if (setupSheet == SetupSheet.ServiceStopped) {
                 setupSheet = null
             }
