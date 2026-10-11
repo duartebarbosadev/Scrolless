@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">Видео в TikTok заблокированы</string>
     <string name="tiktok_blocked_description">Используйте вкладки внизу, чтобы открыть «Входящие» или «Профиль».</string>
+    <string name="instagram_feed_blocked_title">Видео в Instagram заблокированы</string>
+    <string name="instagram_feed_blocked_description">Используйте вкладки внизу, чтобы открыть «Входящие» или «Профиль».</string>
 </resources>

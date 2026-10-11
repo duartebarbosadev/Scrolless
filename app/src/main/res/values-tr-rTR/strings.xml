@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok videoları engellendi</string>
     <string name="tiktok_blocked_description">Gelen Kutusunu veya Profili açmak için aşağıdaki sekmeleri kullanın.</string>
+    <string name="instagram_feed_blocked_title">Instagram videoları engellendi</string>
+    <string name="instagram_feed_blocked_description">Gelen Kutusunu veya Profili açmak için aşağıdaki sekmeleri kullanın.</string>
 </resources>

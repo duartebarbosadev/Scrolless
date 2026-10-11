@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTokの動画はブロックされています</string>
     <string name="tiktok_blocked_description">下のタブから「メッセージ」または「プロフィール」を開いてください。</string>
+    <string name="instagram_feed_blocked_title">Instagramの動画はブロックされています</string>
+    <string name="instagram_feed_blocked_description">下のタブから「メッセージ」または「プロフィール」を開いてください。</string>
 </resources>

@@ -34,10 +34,10 @@ class ContentCoverTest {
     private val cover = ContentCover(ContentCoverTarget.Window(12, 0, bounds), 1, 2)
 
     @Test
-    fun `both TikTok variants have cover detectors - other apps are unchanged`() {
+    fun `Instagram and both TikTok variants have cover detectors`() {
         BlockableApp.entries.forEach { app ->
             val resolved = ResolvedBlockableApp(app, app.getPackageIds().first())
-            if (app in setOf(BlockableApp.TIKTOK, BlockableApp.TIKTOK_LITE)) {
+            if (app in setOf(BlockableApp.REELS, BlockableApp.TIKTOK, BlockableApp.TIKTOK_LITE)) {
                 assertNotNull(app.coverDetector)
                 assertEquals(app, app.coverDetector!!.app)
                 assertSame(app.coverDetector, resolved.coverDetector)
@@ -95,6 +95,7 @@ class ContentCoverTest {
     fun `backend changes recreate the view while geometry changes only resize or reattach it`() {
         assertFalse(cover.copy(target = ContentCoverTarget.Screen(bounds)).canReuseView(cover))
         assertTrue(cover.canReuseView(cover))
+        assertFalse(cover.copy(passThroughTouches = true).canReuseView(cover))
         assertTrue(cover.copy(target = ContentCoverTarget.Window(15, 1, bounds.copy(right = 900))).canReuseView(cover))
     }
 

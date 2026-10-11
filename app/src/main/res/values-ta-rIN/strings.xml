@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok வீடியோக்கள் முடக்கப்பட்டுள்ளன</string>
     <string name="tiktok_blocked_description">இன்பாக்ஸ் அல்லது சுயவிவரத்தைத் திறக்க கீழே உள்ள தாவல்களைப் பயன்படுத்தவும்.</string>
+    <string name="instagram_feed_blocked_title">Instagram வீடியோக்கள் முடக்கப்பட்டுள்ளன</string>
+    <string name="instagram_feed_blocked_description">இன்பாக்ஸ் அல்லது சுயவிவரத்தைத் திறக்க கீழே உள்ள தாவல்களைப் பயன்படுத்தவும்.</string>
 </resources>
