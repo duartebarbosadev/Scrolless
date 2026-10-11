@@ -250,6 +250,13 @@ platform :android do
       track: options[:track] || "internal",
       status: options[:status] || "completed"
     )
+
+    # Store images are listing-wide, so a failed sync must not block the binary release.
+    begin
+      images
+    rescue StandardError => e
+      UI.important("Store image upload failed; rerun `fastlane android images` after fixing it: #{e.message}")
+    end
   end
 
   desc "Verify, build, and upload a release to Google Play Internal"
@@ -270,6 +277,24 @@ platform :android do
       skip_upload_aab: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
+      **play_credentials
+    )
+  end
+
+  desc "Upload store icon, feature graphics, and screenshots for every locale"
+  lane :images do |options|
+    upload_to_play_store(
+      package_name: PACKAGE_NAME,
+      metadata_path: METADATA_DIR,
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: false,
+      skip_upload_screenshots: false,
+      # Compare checksums so unchanged images are not deleted and re-uploaded.
+      sync_image_upload: true,
+      validate_only: options[:validate_only] || false,
       **play_credentials
     )
   end
