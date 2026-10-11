@@ -1,0 +1,7 @@
+# Downloaded fonts (~55 MB); see README.
+fonts/
+# Emulator captures; regenerate with capture.py.
+raw/
+# Build output; the published copies live in fastlane/metadata/android/*/images/.
+out/
+__pycache__/
