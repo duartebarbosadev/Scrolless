@@ -1,0 +1,28 @@
+A Scrolless segít visszaszerezni azt az időt, amit a végtelen rövid videókra pazarolsz. Blokkold a Reels, Shorts és TikTok videókat, vagy állíts be a napodhoz illő korlátokat, miközben az alkalmazások többi része továbbra is működik.
+
+Válaszd ki, hogyan blokkolsz
+• Összes blokkolása: a rövid videós hírfolyamok azonnal bezárulnak, amint megnyitod őket.
+• Napi limit: állítsd be, mennyi időd van naponta. Ha lejár, a Scrolless megállítja a görgetést.
+• Időintervallum: váltogasd a blokkolási időszakokat és a nézési időt, például óránként legfeljebb 5 percet.
+• Szünet: kell pár perc? Szüneteltesd a blokkolást, és magától újra bekapcsol.
+
+Tartsd meg, ami számít
+• Engedélyezd a barátaidtól privát üzenetben kapott videókat.
+• Döntsd el, hogy a történetek beleszámítsanak-e a korlátokba.
+• Jeleníts meg egy kis időzítőt a képernyőn nézés közben.
+
+Lásd, mire megy el az időd
+• Napi idővonal minden munkamenetről, alkalmazásonként.
+• Átlagok a hét minden napjára.
+• Böngészd a korábbi napokat, és ismerd fel a szokásaidat.
+
+Támogatott alkalmazások
+Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite és Snapchat.
+
+Adatvédelem alapból
+• Teljesen nyílt forráskódú a GitHubon.
+• Nincs reklám, nincs követés és nincs fiók.
+• A használati előzményeid a telefonodon maradnak.
+
+Kisegítő lehetőségekre vonatkozó engedély
+A Scrolless a Kisegítő lehetőségek szolgáltatást kizárólag arra használja, hogy észlelje, ha támogatott rövid videós tartalom van a képernyőn, és a beállításaidnak megfelelően bezárja vagy korlátozza azt. Nem gyűjt és nem oszt meg semmilyen személyes adatot.

@@ -1,0 +1,28 @@
+Scrolless hjelper deg å ta tilbake tiden du mister til endeløse korte videoer. Blokker Reels, Shorts og TikTok, eller sett grenser som passer dagen din, mens resten av hver app fortsetter å fungere.
+
+Velg hvordan du blokkerer
+• Blokker alt: lukker feeder med korte videoer så snart du åpner dem.
+• Daglig grense: velg hvor mye tid du får hver dag. Når den er brukt opp, stopper Scrolless scrollingen.
+• Intervalltimer: veksle mellom blokkeringsperioder og seertid, for eksempel opptil 5 minutter hver time.
+• Pause: trenger du noen minutter? Sett blokkeringen på pause, så slår den seg på igjen av seg selv.
+
+Behold det som betyr noe
+• Tillat videoer som venner sender deg i direktemeldinger.
+• Velg om historier skal telle med i grensene dine.
+• Vis en liten tidtaker på skjermen mens du ser.
+
+Se hvor tiden din blir av
+• Daglig tidslinje over hver økt, per app.
+• Gjennomsnitt for hver ukedag.
+• Bla gjennom tidligere dager og oppdag vanene dine.
+
+Støttede apper
+Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite og Snapchat.
+
+Personvern fra grunnen av
+• Helt åpen kildekode på GitHub.
+• Ingen reklame, ingen sporing og ingen konto.
+• Brukshistorikken din blir værende på telefonen.
+
+Tilgjengelighetstillatelse
+Scrolless bruker tilgjengelighetstjenesten bare til å oppdage når støttet innhold med korte videoer vises på skjermen, og til å lukke eller begrense det i henhold til innstillingene dine. Appen samler ikke inn eller deler noen personopplysninger.

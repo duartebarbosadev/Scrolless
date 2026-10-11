@@ -1,0 +1,28 @@
+Scrolless padeda susigrąžinti laiką, kurį prarandate žiūrėdami begalinius trumpus vaizdo įrašus. Blokuokite Reels, Shorts ir TikTok arba nustatykite jūsų dienai tinkančius limitus, o likusi kiekvienos programėlės dalis veiks kaip įprastai.
+
+Pasirinkite, kaip blokuoti
+• Blokuoti viską: uždaro trumpų vaizdo įrašų srautus vos juos atidarius.
+• Dienos limitas: nustatykite, kiek laiko turite per dieną. Jam pasibaigus, Scrolless sustabdo slinkimą.
+• Laiko intervalas: kaitaliokite pertraukas ir žiūrėjimo laiką, pavyzdžiui, iki 5 minučių kas valandą.
+• Pristabdyti: reikia kelių minučių? Pristabdykite blokavimą, ir jis vėl įsijungs savaime.
+
+Palikite tai, kas svarbu
+• Leiskite vaizdo įrašus, kuriuos draugai jums siunčia privačiose žinutėse.
+• Pasirinkite, ar istorijos įskaičiuojamos į limitus.
+• Žiūrėdami rodykite nedidelį laikmatį ekrane.
+
+Pamatykite, kur dingsta jūsų laikas
+• Kiekvieno seanso dienos laiko juosta pagal programėlę.
+• Kiekvienos savaitės dienos vidurkiai.
+• Naršykite ankstesnes dienas ir atpažinkite savo įpročius.
+
+Palaikomos programėlės
+Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite ir Snapchat.
+
+Privatumas – svarbiausia
+• Visiškai atviras kodas GitHub platformoje.
+• Jokių reklamų, jokio sekimo ir jokios paskyros.
+• Jūsų naudojimo istorija lieka jūsų telefone.
+
+Pritaikymo neįgaliesiems leidimas
+Scrolless naudoja pritaikymo neįgaliesiems paslaugą tik tam, kad aptiktų, kada ekrane rodomas palaikomas trumpų vaizdo įrašų turinys, ir pagal jūsų nustatymus jį uždarytų arba apribotų. Programėlė nerenka ir nebendrina jokios asmeninės informacijos.

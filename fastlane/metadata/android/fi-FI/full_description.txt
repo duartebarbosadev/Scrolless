@@ -1,0 +1,28 @@
+Scrolless auttaa sinua saamaan takaisin ajan, jonka menetät loputtomiin lyhytvideoihin. Estä Reels, Shorts ja TikTok tai aseta päivääsi sopivat rajat, ja muu osa sovelluksista toimii edelleen normaalisti.
+
+Valitse, miten estät
+• Estä kaikki: sulkee lyhytvideosyötteet heti, kun avaat ne.
+• Päivittäinen raja: päätä, paljonko aikaa saat päivässä. Kun aika loppuu, Scrolless pysäyttää selaamisen.
+• Aikaväli: vuorottele estojaksoja ja katseluaikaa, esimerkiksi enintään 5 minuuttia tunnissa.
+• Keskeytä: tarvitsetko muutaman minuutin? Keskeytä esto, ja se palaa päälle itsestään.
+
+Säilytä se, mikä on tärkeää
+• Salli videot, joita ystävät lähettävät sinulle yksityisviesteissä.
+• Valitse, lasketaanko tarinat mukaan rajoihin.
+• Näytä pieni ajastin näytöllä katselun aikana.
+
+Näe, mihin aikasi kuluu
+• Päivittäinen aikajana jokaisesta käyttökerrasta sovelluksittain.
+• Keskiarvot jokaiselle viikonpäivälle.
+• Selaa aiempia päiviä ja tunnista tapasi.
+
+Tuetut sovellukset
+Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite ja Snapchat.
+
+Yksityisyys etusijalla
+• Täysin avointa lähdekoodia GitHubissa.
+• Ei mainoksia, ei seurantaa eikä tiliä.
+• Käyttöhistoriasi pysyy puhelimessasi.
+
+Esteettömyyslupa
+Scrolless käyttää esteettömyyspalvelua vain havaitakseen, milloin näytöllä on tuettua lyhytvideosisältöä, ja sulkeakseen tai rajoittaakseen sitä asetustesi mukaan. Se ei kerää eikä jaa henkilötietoja.

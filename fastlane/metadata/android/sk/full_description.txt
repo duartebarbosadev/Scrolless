@@ -1,0 +1,28 @@
+Scrolless vám pomôže získať späť čas, ktorý strácate pri nekonečných krátkych videách. Blokujte Reels, Shorts a TikTok alebo si nastavte limity, ktoré sedia vášmu dňu – zvyšok každej aplikácie pritom funguje ďalej.
+
+Vyberte, ako blokovať
+• Blokovať všetko: zatvorí kanály s krátkymi videami hneď, ako ich otvoríte.
+• Denný limit: nastavte si, koľko času máte každý deň. Keď vyprší, Scrolless scrollovanie zastaví.
+• Časový interval: striedajte blokovanie s časom sledovania, napríklad najviac 5 minút každú hodinu.
+• Pozastaviť: potrebujete pár minút? Pozastavte blokovanie a o chvíľu sa samo znova zapne.
+
+Nechajte si, na čom záleží
+• Povoľte videá, ktoré vám priatelia posielajú v súkromných správach.
+• Rozhodnite, či sa príbehy započítavajú do limitov.
+• Počas sledovania zobrazujte malý časovač na obrazovke.
+
+Zistite, kam sa stráca váš čas
+• Denná časová os všetkých relácií podľa aplikácií.
+• Priemery pre každý deň v týždni.
+• Prezerajte minulé dni a odhaľte svoje návyky.
+
+Podporované aplikácie
+Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite a Snapchat.
+
+Súkromie od základu
+• Plne otvorený zdrojový kód na GitHube.
+• Žiadne reklamy, žiadne sledovanie a žiadny účet.
+• História používania zostáva vo vašom telefóne.
+
+Povolenie prístupnosti
+Scrolless používa službu prístupnosti iba na rozpoznanie, kedy je na obrazovke podporovaný obsah s krátkymi videami, a na jeho zatvorenie alebo obmedzenie podľa vašich nastavení. Nezhromažďuje ani nezdieľa žiadne osobné údaje.

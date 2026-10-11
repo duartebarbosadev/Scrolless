@@ -1,0 +1,28 @@
+Scrolless vam pomaže vratiti vrijeme koje gubite na beskonačne kratke videozapise. Blokirajte Reels, Shorts i TikTok ili postavite ograničenja koja odgovaraju vašem danu, a ostatak svake aplikacije i dalje radi.
+
+Odaberite način blokiranja
+• Blokiraj sve: zatvara feedove kratkih videozapisa čim ih otvorite.
+• Dnevno ograničenje: odredite koliko vremena imate svaki dan. Kad istekne, Scrolless zaustavlja skrolanje.
+• Vremenski interval: izmjenjujte blokade i vrijeme gledanja, primjerice najviše 5 minuta svakog sata.
+• Pauza: trebate nekoliko minuta? Pauzirajte blokiranje i ono će se samo ponovno uključiti.
+
+Zadržite ono što je važno
+• Dopustite videozapise koje vam prijatelji šalju u privatnim porukama.
+• Odaberite ulaze li priče u vaša ograničenja.
+• Prikažite mali mjerač vremena na zaslonu dok gledate.
+
+Pogledajte kamo odlazi vaše vrijeme
+• Dnevna vremenska crta svake sesije po aplikacijama.
+• Prosjeci za svaki dan u tjednu.
+• Pregledajte prethodne dane i uočite svoje navike.
+
+Podržane aplikacije
+Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite i Snapchat.
+
+Privatnost na prvom mjestu
+• Potpuno otvoren kod na GitHubu.
+• Bez oglasa, bez praćenja i bez računa.
+• Povijest korištenja ostaje na vašem telefonu.
+
+Dopuštenje za pristupačnost
+Scrolless koristi uslugu pristupačnosti samo kako bi otkrio kada je na zaslonu podržani sadržaj s kratkim videozapisima te ga zatvorio ili ograničio prema vašim postavkama. Ne prikuplja i ne dijeli nikakve osobne podatke.

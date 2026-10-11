@@ -1,0 +1,28 @@
+O Scrolless ajuda você a recuperar o tempo que perde com vídeos curtos sem fim. Bloqueie Reels, Shorts e TikTok ou defina limites que combinem com o seu dia, enquanto o resto de cada app continua funcionando.
+
+Escolha como bloquear
+• Bloquear tudo: fecha os feeds de vídeos curtos assim que você os abre.
+• Limite diário: defina quanto tempo você tem por dia. Quando ele acaba, o Scrolless interrompe a rolagem.
+• Temporizador de intervalo: alterne períodos de bloqueio e tempo de visualização, por exemplo, até 5 minutos a cada hora.
+• Pausar: precisa de alguns minutos? Pause o bloqueio, e ele volta a ser ativado sozinho.
+
+Mantenha o que importa
+• Permita vídeos que seus amigos enviam por DM.
+• Escolha se os Stories contam para seus limites.
+• Mostre um pequeno timer na tela enquanto assiste.
+
+Veja como você usa seu tempo
+• Cronologia diária de cada sessão, por app.
+• Médias de cada dia da semana.
+• Navegue pelos dias anteriores para identificar seus hábitos.
+
+Apps compatíveis
+Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite e Snapchat.
+
+Privacidade desde a concepção
+• Código totalmente aberto no GitHub.
+• Sem anúncios, sem rastreamento e sem conta.
+• Seu histórico de uso fica no seu celular.
+
+Permissão de acessibilidade
+O Scrolless usa o serviço de acessibilidade apenas para detectar quando há vídeos curtos compatíveis na tela e para fechá-los ou limitá-los de acordo com suas configurações. Ele não coleta nem compartilha nenhuma informação pessoal.

@@ -1,0 +1,28 @@
+Scrolless të ndihmon të rimarrësh kohën që humb me video të shkurtra pa fund. Blloko Reels, Shorts dhe TikTok, ose vendos kufij që i përshtaten ditës sate, ndërsa pjesa tjetër e çdo aplikacioni vazhdon të funksionojë.
+
+Zgjidh si të bllokosh
+• Blloko të gjitha: mbyll rrjedhat e videove të shkurtra sapo i hap.
+• Kufi ditor: cakto sa kohë ke në ditë. Kur mbaron, Scrolless ndalon shfletimin.
+• Interval kohor: alterno pushimet me kohën e shikimit, për shembull deri në 5 minuta çdo orë.
+• Pauzë: të duhen disa minuta? Pezullo bllokimin dhe ai riaktivizohet vetë.
+
+Mbaj atë që ka rëndësi
+• Lejo videot që të dërgojnë miqtë në mesazhe private.
+• Zgjidh nëse Stories llogariten në kufijtë e tu.
+• Shfaq një kohëmatës të vogël në ekran ndërsa shikon.
+
+Shiko ku shkon koha jote
+• Kronologji ditore e çdo seance, sipas aplikacionit.
+• Mesatare për çdo ditë të javës.
+• Shfleto ditët e kaluara për të dalluar zakonet e tua.
+
+Aplikacionet e mbështetura
+Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite dhe Snapchat.
+
+Privatësia në radhë të parë
+• Plotësisht me kod të hapur në GitHub.
+• Pa reklama, pa gjurmim dhe pa llogari.
+• Historiku i përdorimit mbetet në telefonin tënd.
+
+Leja e qasshmërisë
+Scrolless e përdor shërbimin e qasshmërisë vetëm për të zbuluar kur në ekran shfaqet përmbajtje e mbështetur me video të shkurtra dhe për ta mbyllur ose kufizuar sipas cilësimeve të tua. Nuk mbledh dhe nuk ndan asnjë informacion personal.

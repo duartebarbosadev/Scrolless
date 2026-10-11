@@ -1,0 +1,28 @@
+Scrolless, bitmeyen kısa videolara kaptırdığın zamanı geri kazanmana yardımcı olur. Reels, Shorts ve TikTok’u engelle ya da gününe uyan sınırlar belirle; uygulamaların geri kalanı çalışmaya devam eder.
+
+Nasıl engelleyeceğini seç
+• Tümünü engelle: kısa video akışlarını açtığın anda kapatır.
+• Günlük sınır: her gün ne kadar süren olacağını belirle. Süre dolduğunda Scrolless kaydırmayı durdurur.
+• Zaman aralığı: engelleme süreleriyle izleme süresini dönüşümlü uygula, örneğin saatte en fazla 5 dakika.
+• Duraklat: birkaç dakikaya mı ihtiyacın var? Engellemeyi duraklat, kendiliğinden yeniden açılır.
+
+Önemli olanı koru
+• Arkadaşlarının özel mesajla gönderdiği videolara izin ver.
+• Hikâyelerin sınırlarına dahil edilip edilmeyeceğini seç.
+• İzlerken ekranda küçük bir zamanlayıcı göster.
+
+Zamanının nereye gittiğini gör
+• Her oturumun uygulamaya göre günlük zaman çizelgesi.
+• Haftanın her günü için ortalamalar.
+• Alışkanlıklarını fark etmek için geçmiş günlere göz at.
+
+Desteklenen uygulamalar
+Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite ve Snapchat.
+
+Gizlilik öncelikli
+• GitHub’da tamamen açık kaynak.
+• Reklam yok, takip yok, hesap yok.
+• Kullanım geçmişin telefonunda kalır.
+
+Erişilebilirlik izni
+Scrolless, Erişilebilirlik hizmetini yalnızca desteklenen kısa video içeriğinin ekranda olduğunu algılamak ve ayarlarına göre kapatmak ya da sınırlamak için kullanır. Hiçbir kişisel bilgiyi toplamaz veya paylaşmaz.

@@ -1,0 +1,28 @@
+Tinutulungan ka ng Scrolless na bawiin ang oras na nasasayang mo sa walang katapusang maiikling video. I-block ang Reels, Shorts at TikTok, o magtakda ng mga limit na swak sa araw mo, habang gumagana pa rin ang ibang bahagi ng bawat app.
+
+Piliin kung paano mag-block
+• I-block lahat: isinasara ang mga short-video feed sa sandaling buksan mo ang mga ito.
+• Arawang limit: itakda kung gaano karaming oras ang meron ka bawat araw. Kapag naubos na, ihihinto ng Scrolless ang pag-scroll.
+• Pagitan ng oras: salitan ang pahinga at oras ng panonood, halimbawa hanggang 5 minuto bawat oras.
+• I-pause: kailangan mo ng ilang minuto? I-pause ang pag-block, at kusa itong babalik.
+
+Panatilihin ang mahalaga
+• Payagan ang mga video na ipinapadala ng mga kaibigan mo sa DM.
+• Piliin kung bibilangin ang Stories sa mga limit mo.
+• Magpakita ng maliit na timer sa screen habang nanonood ka.
+
+Tingnan kung saan napupunta ang oras mo
+• Arawang timeline ng bawat session, ayon sa app.
+• Mga average para sa bawat araw ng linggo.
+• Balikan ang mga nakaraang araw para makita ang mga gawi mo.
+
+Mga suportadong app
+Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite at Snapchat.
+
+Pribado mula umpisa
+• Ganap na open source sa GitHub.
+• Walang ads, walang pagsubaybay at walang account.
+• Nananatili sa phone mo ang history ng paggamit mo.
+
+Pahintulot sa Accessibility
+Ginagamit lang ng Scrolless ang Accessibility service para malaman kung may suportadong short-video content sa screen at para isara o limitahan ito ayon sa settings mo. Hindi ito nangongolekta o nagbabahagi ng anumang personal na impormasyon.
