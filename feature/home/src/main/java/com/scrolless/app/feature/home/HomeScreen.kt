@@ -21,6 +21,7 @@ import android.app.Activity
 import android.os.Build
 import android.os.Process
 import android.os.SystemClock
+import android.text.format.DateFormat
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -118,6 +119,7 @@ import com.scrolless.app.designsystem.theme.progressbar_green_use
 import com.scrolless.app.designsystem.theme.progressbar_orange_use
 import com.scrolless.app.designsystem.theme.progressbar_red_use
 import com.scrolless.app.designsystem.tooling.DevicePreviews
+import com.scrolless.app.designsystem.util.ScreenshotMode
 import com.scrolless.app.designsystem.util.radialGradientScrim
 import com.scrolless.app.designsystem.util.rememberHapticHelper
 import com.scrolless.app.feature.home.components.InlineUsageAnalyticsPanel
@@ -125,7 +127,6 @@ import com.scrolless.app.feature.home.components.ProgressCard
 import com.scrolless.app.feature.home.components.TodayBlockingControls
 import com.scrolless.app.feature.home.components.WeekdayAverageSection
 import com.scrolless.app.feature.home.components.analyticsForDate
-import com.scrolless.app.feature.home.components.shortLabel
 import com.scrolless.app.feature.home.debug.FloatingDebugUsagePanel
 import com.scrolless.app.feature.home.dialogs.AccessibilityExplainerBottomSheet
 import com.scrolless.app.feature.home.dialogs.AccessibilitySuccessBottomSheet
@@ -137,7 +138,7 @@ import com.scrolless.app.feature.home.dialogs.ServiceNotRunningBottomSheet
 import com.scrolless.app.feature.home.dialogs.TimeLimitDialog
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.TextStyle
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration
@@ -589,7 +590,7 @@ private fun HomeContent(
 ) {
     val pauseRemainingMillis = rememberPauseRemainingTime(uiState.pauseUntilMillis)
     val isPauseActive = pauseRemainingMillis > 0L
-    val showDebugPanel = BuildConfig.DEBUG || LocalInspectionMode.current
+    val showDebugPanel = (BuildConfig.DEBUG && !ScreenshotMode.isEnabled) || LocalInspectionMode.current
     var isDebugExpanded by remember { mutableStateOf(false) }
     var sessionChunksExpanded by remember(uiState.usageAnalytics.selectedDate) { mutableStateOf(false) }
 
@@ -878,7 +879,7 @@ private fun DateNavigator(
                 Text(
                     text = label,
                     modifier = Modifier
-                        .widthIn(max = 128.dp)
+                        .widthIn(max = 176.dp)
                         .clickable(
                             enabled = selectedDate != today,
                             onClick = {
@@ -927,11 +928,11 @@ private fun DateNavButton(onClick: () -> Unit, imageVector: ImageVector, content
 @Composable
 private fun LocalDate.formatHeaderDate(): String {
     val locale = Locale.current.platformLocale
-    val weekday = dayOfWeek.shortLabel()
-    val monthStr = month.getDisplayName(TextStyle.SHORT, locale)
-    val formattedWeekday = if (weekday.endsWith('.')) weekday else "$weekday."
-    val formattedMonth = if (monthStr.endsWith('.')) monthStr else "$monthStr."
-    return "$formattedWeekday, $formattedMonth $dayOfMonth"
+    // Let the locale decide the order and punctuation, e.g. "Wed, Oct 7", "Wed 7 Oct", "10月7日(水)".
+    val formatter = remember(locale) {
+        DateTimeFormatter.ofPattern(DateFormat.getBestDateTimePattern(locale, "EEEMMMd"), locale)
+    }
+    return format(formatter)
 }
 
 @Composable

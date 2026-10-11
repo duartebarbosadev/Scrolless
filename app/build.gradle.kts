@@ -113,6 +113,8 @@ android {
     buildTypes {
         getByName("debug") {
             applicationIdSuffix = ".debug"
+            // en-XA (long text) and ar-XB (right-to-left) for checking layouts before translators do.
+            isPseudoLocalesEnabled = true
         }
 
         getByName("release") {
@@ -135,6 +137,11 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
+    }
+
+    // Lists the app's languages for the per-app language setting on Android 13+.
+    androidResources {
+        generateLocaleConfig = true
     }
 
     packaging.resources {
@@ -205,6 +212,9 @@ dependencies {
 
     add("playImplementation", libs.android.review)
     add("playImplementation", libs.android.review.ktx)
+
+    // Screenshot sample data receiver (debug only) writes one setting directly.
+    debugImplementation(libs.androidx.room.runtime)
 
     testImplementation(libs.junit)
     testImplementation(libs.robolectric)
