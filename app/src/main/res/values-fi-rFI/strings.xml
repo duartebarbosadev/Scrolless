@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
-    <string name="accessibility_service_description">Tämä palvelu havaitsee, kun reels/shorts/tiktok avataan, jotta Scrolless voi estää ne, jos se on määritetty.</string>
+    <string name="accessibility_service_description">Tämä palvelu havaitsee, kun Reels, Shorts, TikTok tai Facebook Reels avataan, jotta Scrolless voi estää ne, jos se on määritetty.</string>
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok-videot on estetty</string>
     <string name="tiktok_blocked_description">Avaa Saapuneet tai Profiili alla olevista välilehdistä.</string>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">סמל הרשאת נגישות</string>
+    <string name="accessibility_explainer_not_now_button">לא עכשיו</string>
+    <string name="accessibility_explainer_open_source">הקוד שלנו הוא 100\% קוד פתוח ב-GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">‏Scrolless משתמש בהרשאה הזו רק כדי לזהות ולעצור תוכן קצר. אנחנו לא אוספים שום מידע אישי.</string>
+    <string name="accessibility_explainer_proceed_button">מעבר להגדרות</string>
+    <string name="accessibility_explainer_step1">הקישו על \"מעבר להגדרות\" למטה כדי לפתוח את הגדרות הנגישות של Android</string>
+    <string name="accessibility_explainer_step2">חפשו את האפליקציות והקישו על \"Scrolless\" ברשימת השירותים</string>
+    <string name="accessibility_explainer_step3">הפעילו את המתג כדי ש-Scrolless יעזור לכם להפסיק את הגלילה האינסופית</string>
+    <string name="accessibility_explainer_subtitle">‏Scrolless צריך הרשאת נגישות כדי לזהות ולעצור סרטונים קצרים.</string>
+    <string name="accessibility_explainer_title">אנחנו צריכים הרשאת נגישות</string>
+    <string name="accessibility_success_description">‏Scrolless מוכן!</string>
+    <string name="accessibility_success_title">הכול מוכן!</string>
+    <string name="background_allow_button">אישור</string>
+    <string name="background_autostart_step">הפעלת Autostart</string>
+    <string name="background_battery_step">התרת פעילות ברקע</string>
+    <string name="background_step_done">בוצע</string>
+    <string name="background_continue_button">המשך</string>
+    <string name="background_open_button">פתיחה</string>
+    <string name="background_settings_button">פתיחת הגדרות הרקע</string>
+    <string name="background_step_description">טלפונים מסוימים סוגרים את Scrolless ברקע, וכך החסימה מפסיקה.</string>
+    <string name="background_step_title">שמירה על Scrolless פעיל</string>
+    <string name="block_all">חסימת\nהכול</string>
+    <string name="close">סגירה</string>
+    <string name="daily_limit">מגבלה\nיומית</string>
+    <string name="get_started">בואו נתחיל</string>
+    <string name="go_to_accessibility_settings">מעבר להגדרות הנגישות</string>
+    <string name="daily_limit_configure_time_content_description">הגדרת זמן המגבלה היומית</string>
+    <string name="help">עזרה</string>
+    <string name="help_dialog_title">‏Scrolless לא עובד\?</string>
+    <string name="help_step1_description">בחרו אחת מאפשרויות החסימה במסך הראשי</string>
+    <string name="help_step1_title">בחרו אפשרות חסימה</string>
+    <string name="help_step2_description">אם החסימה לא עובדת, כבו את שירות הנגישות והפעילו אותו מחדש. בנוסף, אפשרו ל-Scrolless לפעול ברקע: הפעילו את Autostart (בטלפונים של Xiaomi, POCO, Redmi ודומים להם) והגדירו את השימוש בסוללה כ-\"ללא הגבלה\".</string>
+    <string name="help_step2_title">פתרון בעיות</string>
+    <string name="help_step3_description">עדיין יש בעיות\? אנחנו כאן כדי לעזור! השתמשו בכפתור שלמטה כדי לפנות אלינו במאגר שלנו ב-GitHub.</string>
+    <string name="help_step3_title">פנייה לתמיכה</string>
+    <string name="icons8_attribution">הסמלים באדיבות Icons8 (icons8.com)</string>
+    <string name="interval_timer_card_allowance_chip">זמן צפייה</string>
+    <string name="interval_timer_card_break_chip">משך ההפסקה</string>
+    <string name="interval_timer_card_edit">עריכת התזמון</string>
+    <string name="interval_timer_card_set_schedule">הגדרת תזמון</string>
+    <string name="interval_timer_card_summary">צפייה של עד %1$s בכל %2$s</string>
+    <string name="interval_timer_card_summary_empty">הגדירו את התזמון הראשון כדי לשלב בין הפסקות לזמן צפייה.</string>
+    <string name="interval_timer_dialog_allowance_description">כמה זמן אפשר לצפות בסרטונים קצרים בין ההפסקות.</string>
+    <string name="interval_timer_dialog_allowance_label">זמן צפייה מותר</string>
+    <string name="interval_timer_dialog_break_description">‏Scrolless משאיר את האפליקציות הנתמכות חסומות למשך הזמן הזה, ואז מאפשר לצפות שוב.</string>
+    <string name="interval_timer_dialog_break_label">משך ההפסקה</string>
+    <string name="interval_timer_dialog_cancel">ביטול</string>
+    <string name="interval_timer_dialog_save">שמירת התזמון</string>
+    <string name="interval_timer_dialog_subtitle">בחרו כמה זמן תימשך כל הפסקה וכמה אפשר לצפות בין ההפסקות.</string>
+    <string name="interval_timer_dialog_summary">התוצאה: עד %1$s בכל %2$s</string>
+    <string name="interval_timer_dialog_title">הגדרת טיימר מרווחים</string>
+    <string name="interval_timer_next_reset_in">איפוס בעוד %1$s</string>
+    <string name="limit_chip">מגבלה של %1$s</string>
+    <string name="next_step_1">בחרו מצב חסימה</string>
+    <string name="next_step_2">נסו את תכונת המגבלה היומית והפעילו את הטיימר הצף</string>
+    <string name="next_steps_title">השלבים הבאים</string>
+    <string name="pause">השהיה</string>
+    <string name="pause_duration_hint">משהה את החסימה ל-%1$d דק׳</string>
+    <string name="pause_resumes_in">ממשיך בעוד %1$s</string>
+    <string name="resume">המשך</string>
+    <string name="service_not_running_description">החסימה הופסקה כי Android סגר את Scrolless ברקע. זה יכול לקרות כשהאפליקציה מוסרת מהאפליקציות האחרונות או מוגבלת כדי לחסוך בסוללה.</string>
+    <string name="service_not_running_step_restart">כבו והפעילו מחדש את Scrolless בהגדרות הנגישות.</string>
+    <string name="service_not_running_title">‏Scrolless הופסק</string>
+    <string name="settings">הגדרות</string>
+    <string name="success_icon_description">סמל וי להצלחה</string>
+    <string name="time_interval">מרווח\nזמן</string>
+    <string name="time_limit_dialog_title">הגדרת זמן המגבלה היומית</string>
+    <string name="usage_analytics_today">היום</string>
+    <string name="usage_analytics_previous_day">היום הקודם</string>
+    <string name="usage_analytics_next_day">היום הבא</string>
+    <string name="usage_analytics_swipe_hint">&lt; החליקו כדי לראות ימים &gt;</string>
+    <string name="usage_analytics_timeline_title">ציר זמן</string>
+    <string name="usage_analytics_average_title">ממוצע</string>
+    <string name="usage_analytics_average_week">השבוע שעבר</string>
+    <string name="usage_analytics_average_month">החודש שעבר</string>
+    <string name="usage_analytics_average_year">השנה שעברה</string>
+    <plurals name="usage_analytics_session_count">
+        <item quantity="one">%1$d סשן</item>
+        <item quantity="two">%1$d סשנים</item>
+        <item quantity="other">%1$d סשנים</item>
+    </plurals>
+    <string name="usage_analytics_time_range">%1$s-%2$s</string>
+    <string name="usage_analytics_expand">הרחבה</string>
+    <string name="usage_analytics_collapse">כיווץ</string>
+    <string name="usage_analytics_day_mon">ב׳</string>
+    <string name="usage_analytics_day_tue">ג׳</string>
+    <string name="usage_analytics_day_wed">ד׳</string>
+    <string name="usage_analytics_day_thu">ה׳</string>
+    <string name="usage_analytics_day_fri">ו׳</string>
+    <string name="usage_analytics_day_sat">ש׳</string>
+    <string name="usage_analytics_day_sun">א׳</string>
+    <string name="visit_github">ביקור במאגר ב-GitHub</string>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="back">Til baka</string>
+    <string name="settings">Stillingar</string>
+    <string name="settings_allow_videos_sent_by_dms_description">Ekki loka á myndbönd sem send eru í einkaskilaboðum.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">Ekki stutt í TikTok Lite</string>
+    <string name="settings_allow_videos_sent_by_dms_title">Myndbönd í einkaskilaboðum</string>
+    <string name="settings_pause_duration_description">Hversu lengi lokun er í hléi þegar þú ýtir á „Hlé“.</string>
+    <string name="settings_pause_duration_title">Tímalengd hlés</string>
+    <string name="settings_section_blocking">Lokun</string>
+    <string name="settings_show_onscreen_timer_description">Hafa fljótandi teljara sýnilegan á meðan þú horfir á stutt myndbönd.</string>
+    <string name="settings_show_onscreen_timer_title">Sýna teljara á skjánum</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d mínúta</item>
+        <item quantity="other">%1$d mínútur</item>
+    </plurals>
+    <string name="settings_include_stories_title">Taka sögur með</string>
+    <string name="settings_include_stories_description">Telja tímann sem fer í að skoða sögur og beita núverandi lokunarham og mörkum.</string>
+    <string name="settings_include_stories_note">Stutt eins og er á Instagram, Snapchat og Facebook.</string>
+</resources>

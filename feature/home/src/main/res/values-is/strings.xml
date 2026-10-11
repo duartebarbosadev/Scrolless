@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">Tákn fyrir aðgengisheimild</string>
+    <string name="accessibility_explainer_not_now_button">Ekki núna</string>
+    <string name="accessibility_explainer_open_source">Kóðinn okkar er 100 \% opinn á GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless notar þessa heimild eingöngu til að greina og stöðva stutt myndbönd. Við söfnum engum persónuupplýsingum.</string>
+    <string name="accessibility_explainer_proceed_button">Fara í stillingar</string>
+    <string name="accessibility_explainer_step1">Ýttu á „Fara í stillingar“ hér fyrir neðan til að opna aðgengisstillingar Android</string>
+    <string name="accessibility_explainer_step2">Finndu forrit og ýttu á „Scrolless“ á listanum yfir þjónustur</string>
+    <string name="accessibility_explainer_step3">Kveiktu á rofanum svo Scrolless geti hjálpað þér að stöðva endalaust skroll</string>
+    <string name="accessibility_explainer_subtitle">Scrolless þarf aðgengisheimild til að greina og stöðva stutt myndbönd.</string>
+    <string name="accessibility_explainer_title">Við þurfum aðgengisheimild</string>
+    <string name="accessibility_success_description">Scrolless er tilbúið!</string>
+    <string name="accessibility_success_title">Allt klárt!</string>
+    <string name="background_allow_button">Leyfa</string>
+    <string name="background_autostart_step">Kveikja á Autostart</string>
+    <string name="background_battery_step">Leyfa bakgrunnsvirkni</string>
+    <string name="background_step_done">Lokið</string>
+    <string name="background_continue_button">Halda áfram</string>
+    <string name="background_open_button">Opna</string>
+    <string name="background_settings_button">Opna bakgrunnsstillingar</string>
+    <string name="background_step_description">Sumir símar slökkva á Scrolless í bakgrunni og þá hættir lokunin að virka.</string>
+    <string name="background_step_title">Haltu Scrolless gangandi</string>
+    <string name="block_all">Loka á\nallt</string>
+    <string name="close">Loka</string>
+    <string name="daily_limit">Dagleg\nmörk</string>
+    <string name="get_started">Hefjast handa</string>
+    <string name="go_to_accessibility_settings">Fara í aðgengisstillingar</string>
+    <string name="daily_limit_configure_time_content_description">Stilla tíma daglegra marka</string>
+    <string name="help">Hjálp</string>
+    <string name="help_dialog_title">Virkar Scrolless ekki\?</string>
+    <string name="help_step1_description">Veldu einn af lokunarvalkostunum á aðalskjánum</string>
+    <string name="help_step1_title">Veldu lokunarvalkost</string>
+    <string name="help_step2_description">Ef lokunin virkar ekki skaltu slökkva og kveikja aftur á aðgengisþjónustunni. Leyfðu Scrolless einnig að keyra í bakgrunni: kveiktu á Autostart (Xiaomi, POCO, Redmi og sambærilegir símar) og stilltu rafhlöðunotkun á „Ótakmarkað“.</string>
+    <string name="help_step2_title">Úrræðaleit</string>
+    <string name="help_step3_description">Ertu enn í vandræðum\? Við erum hér til að hjálpa! Notaðu hnappinn hér fyrir neðan til að hafa samband í gegnum GitHub-safnið okkar.</string>
+    <string name="help_step3_title">Hafa samband við aðstoð</string>
+    <string name="icons8_attribution">Tákn frá Icons8 (icons8.com)</string>
+    <string name="interval_timer_card_allowance_chip">Áhorfstími</string>
+    <string name="interval_timer_card_break_chip">Lokunartími</string>
+    <string name="interval_timer_card_edit">Breyta áætlun</string>
+    <string name="interval_timer_card_set_schedule">Stilla áætlun</string>
+    <string name="interval_timer_card_summary">Horfa í allt að %1$s á %2$s fresti</string>
+    <string name="interval_timer_card_summary_empty">Settu upp fyrstu áætlunina þína til að skipta á milli lokunartímabila og áhorfstíma.</string>
+    <string name="interval_timer_dialog_allowance_description">Hversu lengi þú mátt horfa á stutt myndbönd á milli lokunartímabila.</string>
+    <string name="interval_timer_dialog_allowance_label">Leyfilegur áhorfstími</string>
+    <string name="interval_timer_dialog_break_description">Scrolless heldur studdum forritum lokuðum svona lengi og leyfir þér svo að horfa aftur.</string>
+    <string name="interval_timer_dialog_break_label">Lokunartími</string>
+    <string name="interval_timer_dialog_cancel">Hætta við</string>
+    <string name="interval_timer_dialog_save">Vista áætlun</string>
+    <string name="interval_timer_dialog_subtitle">Veldu hversu lengi hvert lokunartímabil varir og hversu lengi þú mátt horfa á milli þeirra.</string>
+    <string name="interval_timer_dialog_summary">Niðurstaða: allt að %1$s á %2$s fresti</string>
+    <string name="interval_timer_dialog_title">Stilla tímabilsteljara</string>
+    <string name="interval_timer_next_reset_in">Endurstillist eftir %1$s</string>
+    <string name="limit_chip">Mörk: %1$s</string>
+    <string name="next_step_1">Veldu lokunarham</string>
+    <string name="next_step_2">Prófaðu dagleg mörk og kveiktu á teljaranum á skjánum</string>
+    <string name="next_steps_title">Næstu skref</string>
+    <string name="pause">Hlé</string>
+    <string name="pause_duration_hint">Gerir hlé á lokun í %1$d mín.</string>
+    <string name="pause_resumes_in">Heldur áfram eftir %1$s</string>
+    <string name="resume">Halda áfram</string>
+    <string name="service_not_running_description">Lokun er óvirk vegna þess að Android stöðvaði Scrolless í bakgrunni. Þetta getur gerst þegar forritið er hreinsað úr nýlegum forritum eða takmarkað til að spara rafhlöðu.</string>
+    <string name="service_not_running_step_restart">Slökktu og kveiktu aftur á Scrolless í aðgengisstillingum.</string>
+    <string name="service_not_running_title">Scrolless var stöðvað</string>
+    <string name="settings">Stillingar</string>
+    <string name="success_icon_description">Gátmerki sem sýnir að allt tókst</string>
+    <string name="time_interval">Tíma-\nbil</string>
+    <string name="time_limit_dialog_title">Stilla dagleg tímamörk</string>
+    <string name="usage_analytics_today">Í dag</string>
+    <string name="usage_analytics_previous_day">Fyrri dagur</string>
+    <string name="usage_analytics_next_day">Næsti dagur</string>
+    <string name="usage_analytics_swipe_hint">&lt; Strjúktu til að skoða daga &gt;</string>
+    <string name="usage_analytics_timeline_title">Tímalína</string>
+    <string name="usage_analytics_average_title">Meðaltal</string>
+    <string name="usage_analytics_average_week">Síðasta vika</string>
+    <string name="usage_analytics_average_month">Síðasti mánuður</string>
+    <string name="usage_analytics_average_year">Síðasta ár</string>
+    <plurals name="usage_analytics_session_count">
+        <item quantity="one">%1$d lota</item>
+        <item quantity="other">%1$d lotur</item>
+    </plurals>
+    <string name="usage_analytics_time_range">%1$s-%2$s</string>
+    <string name="usage_analytics_expand">Stækka</string>
+    <string name="usage_analytics_collapse">Minnka</string>
+    <string name="usage_analytics_day_mon">Mán</string>
+    <string name="usage_analytics_day_tue">Þri</string>
+    <string name="usage_analytics_day_wed">Mið</string>
+    <string name="usage_analytics_day_thu">Fim</string>
+    <string name="usage_analytics_day_fri">Fös</string>
+    <string name="usage_analytics_day_sat">Lau</string>
+    <string name="usage_analytics_day_sun">Sun</string>
+    <string name="visit_github">Skoða GitHub-safnið</string>
+</resources>

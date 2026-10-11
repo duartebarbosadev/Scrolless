@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
-    <string name="accessibility_service_description">Táto služba detekuje, kedy sa otvoria reels/shorts/tiktok, aby ich Scrolless mohol zablokovať, ak je to nakonfigurované.</string>
+    <string name="accessibility_service_description">Táto služba rozpozná, keď sa otvoria Reels, Shorts, TikTok alebo Facebook Reels, aby ich Scrolless mohol zablokovať, ak je to nastavené.</string>
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">Videá na TikToku sú zablokované</string>
     <string name="tiktok_blocked_description">Pomocou kariet dole otvorte „Doručenú poštu“ alebo „Profil“.</string>

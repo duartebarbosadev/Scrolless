@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="back">Prapa</string>
+    <string name="settings">Cilësimet</string>
+    <string name="settings_allow_videos_sent_by_dms_description">Mos blloko videot e dërguara në mesazhe private.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">Nuk mbështetet në TikTok Lite</string>
+    <string name="settings_allow_videos_sent_by_dms_title">Videot në mesazhe private</string>
+    <string name="settings_pause_duration_description">Sa gjatë pezullohet bllokimi kur troket \"Pauzë\".</string>
+    <string name="settings_pause_duration_title">Kohëzgjatja e pauzës</string>
+    <string name="settings_section_blocking">Bllokimi</string>
+    <string name="settings_show_onscreen_timer_description">Mbaj të dukshëm një kohëmatës lundrues ndërsa shikon video të shkurtra.</string>
+    <string name="settings_show_onscreen_timer_title">Shfaq kohëmatësin në ekran</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d minutë</item>
+        <item quantity="other">%1$d minuta</item>
+    </plurals>
+    <string name="settings_include_stories_title">Përfshi Stories</string>
+    <string name="settings_include_stories_description">Numëro kohën e kaluar duke parë Stories dhe zbato mënyrën dhe kufijtë aktualë të bllokimit.</string>
+    <string name="settings_include_stories_note">Aktualisht mbështetet në Instagram, Snapchat dhe Facebook.</string>
+</resources>

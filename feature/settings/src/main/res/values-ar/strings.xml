@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="back">رجوع</string>
+    <string name="settings">الإعدادات</string>
+    <string name="settings_allow_videos_sent_by_dms_description">لا تحظر الفيديوهات المرسلة في الرسائل الخاصة.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">غير مدعوم في TikTok Lite</string>
+    <string name="settings_allow_videos_sent_by_dms_title">الفيديوهات في الرسائل الخاصة</string>
+    <string name="settings_pause_duration_description">مدة إيقاف الحظر عند النقر على \"إيقاف مؤقت\".</string>
+    <string name="settings_pause_duration_title">مدة الإيقاف المؤقت</string>
+    <string name="settings_section_blocking">الحظر</string>
+    <string name="settings_show_onscreen_timer_description">إبقاء مؤقت عائم ظاهرًا أثناء مشاهدة الفيديوهات القصيرة.</string>
+    <string name="settings_show_onscreen_timer_title">إظهار المؤقت على الشاشة</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="zero">%1$d دقيقة</item>
+        <item quantity="one">%1$d دقيقة</item>
+        <item quantity="two">%1$d دقيقتان</item>
+        <item quantity="few">%1$d دقائق</item>
+        <item quantity="many">%1$d دقيقة</item>
+        <item quantity="other">%1$d دقيقة</item>
+    </plurals>
+    <string name="settings_include_stories_title">تضمين القصص</string>
+    <string name="settings_include_stories_description">احتساب الوقت الذي تقضيه في مشاهدة القصص وتطبيق وضع الحظر والحدود الحالية عليها.</string>
+    <string name="settings_include_stories_note">مدعوم حاليًا على Instagram وSnapchat وFacebook.</string>
+</resources>

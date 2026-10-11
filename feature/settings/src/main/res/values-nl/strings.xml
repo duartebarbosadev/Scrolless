@@ -20,7 +20,7 @@
     <string name="settings">Instellingen</string>
     <string name="settings_section_blocking">Blokkeren</string>
     <string name="settings_pause_duration_title">Pauzeduur</string>
-    <string name="settings_pause_duration_description">Hoe lang het blokkeren wordt gepauzeerd wanneer u op Pauzeren tikt.</string>
+    <string name="settings_pause_duration_description">Hoe lang het blokkeren wordt gepauzeerd wanneer je op Pauze tikt.</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="one">%1$d minuut</item>
         <item quantity="other">%1$d minuten</item>

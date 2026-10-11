@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
-    <string name="accessibility_service_description">റീലുകൾ/ഷോർട്ട്‌സ്/ടിക്‌ടോക്ക് തുറക്കുമ്പോൾ ഈ സേവനം കണ്ടെത്തുകയും, ക്രമീകരിച്ചിട്ടുണ്ടെങ്കിൽ Scrolless-ന് അവ തടയാൻ കഴിയുകയും ചെയ്യും.</string>
+    <string name="accessibility_service_description">Reels, Shorts, TikTok, Facebook Reels എന്നിവ തുറക്കുമ്പോൾ ഈ സേവനം അത് കണ്ടെത്തുന്നു, അതുവഴി നിങ്ങളുടെ ക്രമീകരണങ്ങൾ അനുസരിച്ച് Scrolless-ന് അവ തടയാനാകും.</string>
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok വീഡിയോകൾ ബ്ലോക്ക് ചെയ്‌തിരിക്കുന്നു</string>
     <string name="tiktok_blocked_description">ഇൻബോക്സോ പ്രൊഫൈലോ തുറക്കാൻ താഴെയുള്ള ടാബുകൾ ഉപയോഗിക്കുക.</string>

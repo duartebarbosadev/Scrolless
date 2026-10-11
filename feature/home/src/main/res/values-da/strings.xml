@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">Ikon for tilladelse til hjælpefunktioner</string>
+    <string name="accessibility_explainer_not_now_button">Ikke nu</string>
+    <string name="accessibility_explainer_open_source">Vores kode er 100 \% open source på GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless bruger kun denne tilladelse til at registrere og stoppe korte videoer. Vi indsamler ingen personlige oplysninger.</string>
+    <string name="accessibility_explainer_proceed_button">Gå til Indstillinger</string>
+    <string name="accessibility_explainer_step1">Tryk på \"Gå til Indstillinger\" nedenfor for at åbne Androids indstillinger for hjælpefunktioner</string>
+    <string name="accessibility_explainer_step2">Find apps, og tryk på \"Scrolless\" på listen over tjenester</string>
+    <string name="accessibility_explainer_step3">Slå kontakten til, så Scrolless kan hjælpe dig med at stoppe den endeløse scrolling</string>
+    <string name="accessibility_explainer_subtitle">Scrolless skal have adgang til hjælpefunktioner for at kunne registrere og stoppe korte videoer.</string>
+    <string name="accessibility_explainer_title">Vi har brug for adgang til hjælpefunktioner</string>
+    <string name="accessibility_success_description">Scrolless er klar!</string>
+    <string name="accessibility_success_title">Alt er klar!</string>
+    <string name="background_allow_button">Tillad</string>
+    <string name="background_autostart_step">Slå Autostart til</string>
+    <string name="background_battery_step">Tillad baggrundsaktivitet</string>
+    <string name="background_step_done">Fuldført</string>
+    <string name="background_continue_button">Fortsæt</string>
+    <string name="background_open_button">Åbn</string>
+    <string name="background_settings_button">Åbn baggrundsindstillinger</string>
+    <string name="background_step_description">Nogle telefoner lukker Scrolless i baggrunden, så blokeringen stopper.</string>
+    <string name="background_step_title">Hold Scrolless kørende</string>
+    <string name="block_all">Blokér\nalt</string>
+    <string name="close">Luk</string>
+    <string name="daily_limit">Daglig\ngrænse</string>
+    <string name="get_started">Kom i gang</string>
+    <string name="go_to_accessibility_settings">Gå til indstillinger for hjælpefunktioner</string>
+    <string name="daily_limit_configure_time_content_description">Indstil tid for daglig grænse</string>
+    <string name="help">Hjælp</string>
+    <string name="help_dialog_title">Virker Scrolless ikke\?</string>
+    <string name="help_step1_description">Vælg en af blokeringsmulighederne på hovedskærmen</string>
+    <string name="help_step1_title">Vælg din blokeringsmulighed</string>
+    <string name="help_step2_description">Hvis blokeringen ikke virker, så slå tilgængelighedstjenesten fra og til igen. Tillad også Scrolless at køre i baggrunden: Slå Autostart til (Xiaomi, POCO, Redmi og lignende telefoner), og indstil batteriforbruget til \"Ubegrænset\".</string>
+    <string name="help_step2_title">Fejlfinding</string>
+    <string name="help_step3_description">Har du stadig problemer\? Vi hjælper gerne! Brug knappen nedenfor til at kontakte os via vores GitHub-repo.</string>
+    <string name="help_step3_title">Kontakt support</string>
+    <string name="icons8_attribution">Ikoner leveret af Icons8 (icons8.com)</string>
+    <string name="interval_timer_card_allowance_chip">Seertid</string>
+    <string name="interval_timer_card_break_chip">Blokeringstid</string>
+    <string name="interval_timer_card_edit">Rediger tidsplan</string>
+    <string name="interval_timer_card_set_schedule">Indstil tidsplan</string>
+    <string name="interval_timer_card_summary">Se op til %1$s hver %2$s</string>
+    <string name="interval_timer_card_summary_empty">Indstil din første tidsplan for at skifte mellem blokeringsperioder og seertid.</string>
+    <string name="interval_timer_dialog_allowance_description">Hvor længe du kan se korte videoer mellem blokeringsperioderne.</string>
+    <string name="interval_timer_dialog_allowance_label">Tilladt seertid</string>
+    <string name="interval_timer_dialog_break_description">Scrolless holder understøttede apps blokeret så længe og lader dig derefter se igen.</string>
+    <string name="interval_timer_dialog_break_label">Blokeringstid</string>
+    <string name="interval_timer_dialog_cancel">Annuller</string>
+    <string name="interval_timer_dialog_save">Gem tidsplan</string>
+    <string name="interval_timer_dialog_subtitle">Vælg, hvor længe hver blokeringsperiode varer, og hvor meget du kan se mellem blokeringsperioderne.</string>
+    <string name="interval_timer_dialog_summary">Resultat: op til %1$s hver %2$s</string>
+    <string name="interval_timer_dialog_title">Indstil intervaltimer</string>
+    <string name="interval_timer_next_reset_in">Nulstilles om %1$s</string>
+    <string name="limit_chip">Grænse: %1$s</string>
+    <string name="next_step_1">Vælg en blokeringstilstand</string>
+    <string name="next_step_2">Prøv den daglige grænse, og slå timeren på skærmen til</string>
+    <string name="next_steps_title">Næste trin</string>
+    <string name="pause">Pause</string>
+    <string name="pause_duration_hint">Sætter blokering på pause i %1$d min.</string>
+    <string name="pause_resumes_in">Genoptages om %1$s</string>
+    <string name="resume">Genoptag</string>
+    <string name="service_not_running_description">Blokeringen virker ikke længere, fordi Android stoppede Scrolless i baggrunden. Det kan ske, når appen ryddes fra seneste apps eller begrænses for at spare på batteriet.</string>
+    <string name="service_not_running_step_restart">Slå Scrolless fra og til igen i indstillingerne for hjælpefunktioner.</string>
+    <string name="service_not_running_title">Scrolless blev stoppet</string>
+    <string name="settings">Indstillinger</string>
+    <string name="success_icon_description">Ikon med flueben</string>
+    <string name="time_interval">Tids-\ninterval</string>
+    <string name="time_limit_dialog_title">Indstil daglig tidsgrænse</string>
+    <string name="usage_analytics_today">I dag</string>
+    <string name="usage_analytics_previous_day">Forrige dag</string>
+    <string name="usage_analytics_next_day">Næste dag</string>
+    <string name="usage_analytics_swipe_hint">&lt; Stryg for at se dage &gt;</string>
+    <string name="usage_analytics_timeline_title">Tidslinje</string>
+    <string name="usage_analytics_average_title">Gennemsnit</string>
+    <string name="usage_analytics_average_week">Sidste uge</string>
+    <string name="usage_analytics_average_month">Sidste måned</string>
+    <string name="usage_analytics_average_year">Sidste år</string>
+    <plurals name="usage_analytics_session_count">
+        <item quantity="one">%1$d session</item>
+        <item quantity="other">%1$d sessioner</item>
+    </plurals>
+    <string name="usage_analytics_time_range">%1$s-%2$s</string>
+    <string name="usage_analytics_expand">Udvid</string>
+    <string name="usage_analytics_collapse">Skjul</string>
+    <string name="usage_analytics_day_mon">Man</string>
+    <string name="usage_analytics_day_tue">Tir</string>
+    <string name="usage_analytics_day_wed">Ons</string>
+    <string name="usage_analytics_day_thu">Tor</string>
+    <string name="usage_analytics_day_fri">Fre</string>
+    <string name="usage_analytics_day_sat">Lør</string>
+    <string name="usage_analytics_day_sun">Søn</string>
+    <string name="visit_github">Besøg GitHub-repoet</string>
+</resources>

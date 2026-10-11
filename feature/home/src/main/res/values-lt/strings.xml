@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">Pritaikymo neįgaliesiems leidimo piktograma</string>
+    <string name="accessibility_explainer_not_now_button">Ne dabar</string>
+    <string name="accessibility_explainer_open_source">Mūsų kodas GitHub platformoje yra 100\% atvirasis.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless naudoja šį leidimą tik trumpiems vaizdo įrašams aptikti ir sustabdyti. Nerenkame jokios asmeninės informacijos.</string>
+    <string name="accessibility_explainer_proceed_button">Eiti į nustatymus</string>
+    <string name="accessibility_explainer_step1">Palieskite toliau esantį mygtuką \"Eiti į nustatymus\", kad atidarytumėte Android pritaikymo neįgaliesiems nustatymus</string>
+    <string name="accessibility_explainer_step2">Raskite programėles ir paslaugų sąraše palieskite \"Scrolless\"</string>
+    <string name="accessibility_explainer_step3">Įjunkite jungiklį, kad Scrolless galėtų padėti jums sustabdyti begalinį slinkimą</string>
+    <string name="accessibility_explainer_subtitle">Scrolless reikia pritaikymo neįgaliesiems prieigos, kad galėtų aptikti ir sustabdyti trumpus vaizdo įrašus.</string>
+    <string name="accessibility_explainer_title">Reikia pritaikymo neįgaliesiems prieigos</string>
+    <string name="accessibility_success_description">Scrolless paruošta!</string>
+    <string name="accessibility_success_title">Viskas paruošta!</string>
+    <string name="background_allow_button">Leisti</string>
+    <string name="background_autostart_step">Įjungti Autostart</string>
+    <string name="background_battery_step">Leisti veiklą fone</string>
+    <string name="background_step_done">Atlikta</string>
+    <string name="background_continue_button">Tęsti</string>
+    <string name="background_open_button">Atidaryti</string>
+    <string name="background_settings_button">Atidaryti fono nustatymus</string>
+    <string name="background_step_description">Kai kurie telefonai uždaro Scrolless fone, todėl blokavimas sustoja.</string>
+    <string name="background_step_title">Užtikrinkite, kad Scrolless veiktų</string>
+    <string name="block_all">Blokuoti\nviską</string>
+    <string name="close">Uždaryti</string>
+    <string name="daily_limit">Dienos\nlimitas</string>
+    <string name="get_started">Pradėti</string>
+    <string name="go_to_accessibility_settings">Eiti į pritaikymo neįgaliesiems nustatymus</string>
+    <string name="daily_limit_configure_time_content_description">Nustatyti dienos limito laiką</string>
+    <string name="help">Pagalba</string>
+    <string name="help_dialog_title">Scrolless neveikia\?</string>
+    <string name="help_step1_description">Pagrindiniame ekrane pasirinkite vieną iš blokavimo parinkčių</string>
+    <string name="help_step1_title">Pasirinkite blokavimo parinktį</string>
+    <string name="help_step2_description">Jei blokavimas neveikia, išjunkite ir vėl įjunkite pritaikymo neįgaliesiems paslaugą. Taip pat leiskite Scrolless veikti fone: įjunkite Autostart (Xiaomi, POCO, Redmi ir panašiuose telefonuose) ir nustatykite akumuliatoriaus naudojimą į \"Neapribota\".</string>
+    <string name="help_step2_title">Trikčių šalinimas</string>
+    <string name="help_step3_description">Vis dar kyla problemų\? Mielai padėsime! Naudokite toliau esantį mygtuką, kad susisiektumėte su mumis mūsų GitHub saugykloje.</string>
+    <string name="help_step3_title">Susisiekti su palaikymo komanda</string>
+    <string name="icons8_attribution">Piktogramas pateikė Icons8 (icons8.com)</string>
+    <string name="interval_timer_card_allowance_chip">Žiūrėjimo laikas</string>
+    <string name="interval_timer_card_break_chip">Pertraukos trukmė</string>
+    <string name="interval_timer_card_edit">Redaguoti tvarkaraštį</string>
+    <string name="interval_timer_card_set_schedule">Nustatyti tvarkaraštį</string>
+    <string name="interval_timer_card_summary">Žiūrėkite iki %1$s kas %2$s</string>
+    <string name="interval_timer_card_summary_empty">Nustatykite pirmąjį tvarkaraštį, kad pertraukos kaitaliotųsi su žiūrėjimo laiku.</string>
+    <string name="interval_timer_dialog_allowance_description">Kiek laiko galite žiūrėti trumpus vaizdo įrašus tarp pertraukų.</string>
+    <string name="interval_timer_dialog_allowance_label">Leidžiamas žiūrėjimo laikas</string>
+    <string name="interval_timer_dialog_break_description">Scrolless tiek laiko blokuoja palaikomas programėles, o paskui vėl galite žiūrėti.</string>
+    <string name="interval_timer_dialog_break_label">Pertraukos trukmė</string>
+    <string name="interval_timer_dialog_cancel">Atšaukti</string>
+    <string name="interval_timer_dialog_save">Išsaugoti tvarkaraštį</string>
+    <string name="interval_timer_dialog_subtitle">Pasirinkite, kiek trunka kiekviena pertrauka ir kiek galite žiūrėti tarp pertraukų.</string>
+    <string name="interval_timer_dialog_summary">Rezultatas: iki %1$s kas %2$s</string>
+    <string name="interval_timer_dialog_title">Konfigūruoti intervalų laikmatį</string>
+    <string name="interval_timer_next_reset_in">Atsinaujins po %1$s</string>
+    <string name="limit_chip">Limitas: %1$s</string>
+    <string name="next_step_1">Pasirinkite blokavimo režimą</string>
+    <string name="next_step_2">Išbandykite dienos limito funkciją ir įjunkite laikmačio perdangą</string>
+    <string name="next_steps_title">Kiti žingsniai</string>
+    <string name="pause">Pristabdyti</string>
+    <string name="pause_duration_hint">Pristabdo blokavimą %1$d min.</string>
+    <string name="pause_resumes_in">Bus tęsiama po %1$s</string>
+    <string name="resume">Tęsti</string>
+    <string name="service_not_running_description">Blokavimas sustojo, nes Android uždarė Scrolless fone. Taip gali nutikti, kai programėlė pašalinama iš naujausių programų sąrašo arba apribojama siekiant taupyti akumuliatorių.</string>
+    <string name="service_not_running_step_restart">Išjunkite ir vėl įjunkite Scrolless pritaikymo neįgaliesiems nustatymuose.</string>
+    <string name="service_not_running_title">Scrolless buvo sustabdyta</string>
+    <string name="settings">Nustatymai</string>
+    <string name="success_icon_description">Sėkmės varnelės piktograma</string>
+    <string name="time_interval">Laiko\nintervalas</string>
+    <string name="time_limit_dialog_title">Nustatykite dienos limito laiką</string>
+    <string name="usage_analytics_today">Šiandien</string>
+    <string name="usage_analytics_previous_day">Ankstesnė diena</string>
+    <string name="usage_analytics_next_day">Kita diena</string>
+    <string name="usage_analytics_swipe_hint">&lt; Braukite, kad peržiūrėtumėte dienas &gt;</string>
+    <string name="usage_analytics_timeline_title">Laiko juosta</string>
+    <string name="usage_analytics_average_title">Vidurkis</string>
+    <string name="usage_analytics_average_week">Praėjusi savaitė</string>
+    <string name="usage_analytics_average_month">Praėjęs mėnuo</string>
+    <string name="usage_analytics_average_year">Praėję metai</string>
+    <plurals name="usage_analytics_session_count">
+        <item quantity="one">%1$d seansas</item>
+        <item quantity="few">%1$d seansai</item>
+        <item quantity="many">%1$d seanso</item>
+        <item quantity="other">%1$d seansų</item>
+    </plurals>
+    <string name="usage_analytics_time_range">%1$s-%2$s</string>
+    <string name="usage_analytics_expand">Išskleisti</string>
+    <string name="usage_analytics_collapse">Suskleisti</string>
+    <string name="usage_analytics_day_mon">Pr</string>
+    <string name="usage_analytics_day_tue">An</string>
+    <string name="usage_analytics_day_wed">Tr</string>
+    <string name="usage_analytics_day_thu">Kt</string>
+    <string name="usage_analytics_day_fri">Pn</string>
+    <string name="usage_analytics_day_sat">Št</string>
+    <string name="usage_analytics_day_sun">Sk</string>
+    <string name="visit_github">Apsilankyti GitHub saugykloje</string>
+</resources>

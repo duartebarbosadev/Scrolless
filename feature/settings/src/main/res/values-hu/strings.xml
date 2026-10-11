@@ -20,17 +20,17 @@
     <string name="settings">Beállítások</string>
     <string name="settings_section_blocking">Letiltás</string>
     <string name="settings_pause_duration_title">Szünet időtartama</string>
-    <string name="settings_pause_duration_description">Meddig legyen szüneteltetve a letiltás, amikor megérinti a Szünet gombot.</string>
+    <string name="settings_pause_duration_description">Meddig legyen szüneteltetve a letiltás, amikor megérinted a Szünet gombot.</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d perc</item>
         <item quantity="one">%1$d perc</item>
     </plurals>
-    <string name="settings_allow_videos_sent_by_dms_description">Ne blokkolja a DM-ben küldött videókat.</string>
+    <string name="settings_allow_videos_sent_by_dms_description">Ne legyenek blokkolva a DM-ben küldött videók.</string>
     <string name="settings_allow_videos_sent_by_dms_note">A TikTok Lite nem támogatott</string>
     <string name="settings_allow_videos_sent_by_dms_title">DM-ben küldött videók</string>
-    <string name="settings_show_onscreen_timer_description">Tartsa láthatóan a lebegő időzítőt rövid videók nézése közben.</string>
+    <string name="settings_show_onscreen_timer_description">Tartsd láthatóan a lebegő időzítőt rövid videók nézése közben.</string>
     <string name="settings_show_onscreen_timer_title">Képernyőn megjelenő időzítő</string>
     <string name="settings_include_stories_title">Történetek figyelembevétele</string>
-    <string name="settings_include_stories_description">Számítsa bele a történetek megtekintésével töltött időt, és alkalmazza a jelenlegi blokkolási módot és időkorlátokat.</string>
+    <string name="settings_include_stories_description">Számítsd bele a történetek megtekintésével töltött időt, és alkalmazd rájuk a jelenlegi blokkolási módot és időkorlátokat.</string>
     <string name="settings_include_stories_note">Jelenleg az Instagramon, a Snapchaten és a Facebookon támogatott.</string>
 </resources>

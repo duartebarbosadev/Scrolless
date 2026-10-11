@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="back">Kembali</string>
+    <string name="settings">Setelan</string>
+    <string name="settings_allow_videos_sent_by_dms_description">Jangan blokir video yang dikirim lewat pesan pribadi.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">Tidak didukung di TikTok Lite</string>
+    <string name="settings_allow_videos_sent_by_dms_title">Video di pesan pribadi</string>
+    <string name="settings_pause_duration_description">Berapa lama pemblokiran dijeda saat kamu mengetuk Jeda.</string>
+    <string name="settings_pause_duration_title">Durasi jeda</string>
+    <string name="settings_section_blocking">Pemblokiran</string>
+    <string name="settings_show_onscreen_timer_description">Tampilkan timer mengambang saat menonton konten video pendek.</string>
+    <string name="settings_show_onscreen_timer_title">Tampilkan timer di layar</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="other">%1$d menit</item>
+    </plurals>
+    <string name="settings_include_stories_title">Sertakan Stories</string>
+    <string name="settings_include_stories_description">Hitung waktu menonton Stories dan terapkan mode pemblokiran serta batas yang sedang aktif.</string>
+    <string name="settings_include_stories_note">Saat ini didukung di Instagram, Snapchat, dan Facebook.</string>
+</resources>

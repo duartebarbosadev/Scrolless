@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="back">חזרה</string>
+    <string name="settings">הגדרות</string>
+    <string name="settings_allow_videos_sent_by_dms_description">לא לחסום סרטונים שנשלחו בהודעות פרטיות.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">לא נתמך ב-TikTok Lite</string>
+    <string name="settings_allow_videos_sent_by_dms_title">סרטונים בהודעות פרטיות</string>
+    <string name="settings_pause_duration_description">למשך כמה זמן החסימה מושהית כשמקישים על \"השהיה\".</string>
+    <string name="settings_pause_duration_title">משך ההשהיה</string>
+    <string name="settings_section_blocking">חסימה</string>
+    <string name="settings_show_onscreen_timer_description">הצגת טיימר צף בזמן צפייה בסרטונים קצרים.</string>
+    <string name="settings_show_onscreen_timer_title">הצגת טיימר על המסך</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d דקה</item>
+        <item quantity="two">%1$d דקות</item>
+        <item quantity="other">%1$d דקות</item>
+    </plurals>
+    <string name="settings_include_stories_title">הכללת סטוריז</string>
+    <string name="settings_include_stories_description">ספירת הזמן שמוקדש לצפייה בסטוריז והחלת מצב החסימה והמגבלות הנוכחיים גם עליהם.</string>
+    <string name="settings_include_stories_note">נתמך כרגע ב-Instagram, Snapchat ו-Facebook.</string>
+</resources>

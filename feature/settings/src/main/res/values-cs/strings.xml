@@ -24,12 +24,12 @@
     <plurals name="settings_pause_duration_value">
         <item quantity="one">%1$d minuta</item>
         <item quantity="few">%1$d minuty</item>
-        <item quantity="many">%1$d minut</item>
+        <item quantity="many">%1$d minuty</item>
         <item quantity="other">%1$d minut</item>
     </plurals>
-    <string name="settings_allow_videos_sent_by_dms_description">Neblokovat videa odeslaná v DMs.</string>
+    <string name="settings_allow_videos_sent_by_dms_description">Neblokovat videa odeslaná v soukromých zprávách.</string>
     <string name="settings_allow_videos_sent_by_dms_note">TikTok Lite tuto funkci nepodporuje</string>
-    <string name="settings_allow_videos_sent_by_dms_title">Videa odeslaná v DMs</string>
+    <string name="settings_allow_videos_sent_by_dms_title">Videa odeslaná v soukromých zprávách</string>
     <string name="settings_show_onscreen_timer_description">Při sledování krátkých videí ponechat viditelný plovoucí časovač.</string>
     <string name="settings_show_onscreen_timer_title">Zobrazit časovač na obrazovce</string>
     <string name="settings_include_stories_title">Zahrnout příběhy</string>

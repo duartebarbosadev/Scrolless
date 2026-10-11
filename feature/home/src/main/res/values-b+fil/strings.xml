@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">Icon ng pahintulot sa Accessibility</string>
+    <string name="accessibility_explainer_not_now_button">Hindi muna</string>
+    <string name="accessibility_explainer_open_source">100\% open source ang code namin sa GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Ginagamit lang ng Scrolless ang pahintulot na ito para ma-detect at mapigilan ang short-form content. Hindi kami nangongolekta ng anumang personal na impormasyon.</string>
+    <string name="accessibility_explainer_proceed_button">Pumunta sa Settings</string>
+    <string name="accessibility_explainer_step1">I-tap ang \"Pumunta sa Settings\" sa ibaba para buksan ang Accessibility settings ng Android</string>
+    <string name="accessibility_explainer_step2">Hanapin ang mga app at i-tap ang \"Scrolless\" sa listahan ng mga serbisyo</string>
+    <string name="accessibility_explainer_step3">I-on ang switch para matulungan ka ng Scrolless na itigil ang walang katapusang pag-scroll</string>
+    <string name="accessibility_explainer_subtitle">Kailangan ng Scrolless ng access sa Accessibility para ma-detect at mapigilan ang mga maiikling video.</string>
+    <string name="accessibility_explainer_title">Kailangan namin ng access sa Accessibility</string>
+    <string name="accessibility_success_description">Handa na ang Scrolless!</string>
+    <string name="accessibility_success_title">Handa na ang lahat!</string>
+    <string name="background_allow_button">Payagan</string>
+    <string name="background_autostart_step">I-on ang Autostart</string>
+    <string name="background_battery_step">Payagan ang aktibidad sa background</string>
+    <string name="background_step_done">Tapos na</string>
+    <string name="background_continue_button">Magpatuloy</string>
+    <string name="background_open_button">Buksan</string>
+    <string name="background_settings_button">Buksan ang Background Settings</string>
+    <string name="background_step_description">Isinasara ng ilang phone ang Scrolless sa background, kaya humihinto ang pag-block.</string>
+    <string name="background_step_title">Panatilihing Tumatakbo ang Scrolless</string>
+    <string name="block_all">I-block\nlahat</string>
+    <string name="close">Isara</string>
+    <string name="daily_limit">Arawang\nlimit</string>
+    <string name="get_started">Magsimula</string>
+    <string name="go_to_accessibility_settings">Pumunta sa Accessibility settings</string>
+    <string name="daily_limit_configure_time_content_description">I-configure ang oras ng arawang limit</string>
+    <string name="help">Tulong</string>
+    <string name="help_dialog_title">Hindi gumagana ang Scrolless\?</string>
+    <string name="help_step1_description">Pumili ng isa sa mga opsyon sa pag-block mula sa main screen</string>
+    <string name="help_step1_title">Piliin ang opsyon sa pag-block</string>
+    <string name="help_step2_description">Kung hindi gumagana ang pag-block, i-disable at i-enable muli ang accessibility service. Payagan din ang Scrolless na tumakbo sa background: i-on ang Autostart (Xiaomi, POCO, Redmi at mga katulad na phone) at itakda ang paggamit ng baterya nito sa \"Hindi pinaghihigpitan\".</string>
+    <string name="help_step2_title">Pag-troubleshoot</string>
+    <string name="help_step3_description">May problema pa rin\? Nandito kami para tumulong! Gamitin ang button sa ibaba para makipag-ugnayan sa amin sa GitHub repo.</string>
+    <string name="help_step3_title">Makipag-ugnayan sa suporta</string>
+    <string name="icons8_attribution">Mga icon mula sa Icons8 (icons8.com)</string>
+    <string name="interval_timer_card_allowance_chip">Oras ng panonood</string>
+    <string name="interval_timer_card_break_chip">Haba ng pahinga</string>
+    <string name="interval_timer_card_edit">I-edit ang iskedyul</string>
+    <string name="interval_timer_card_set_schedule">Magtakda ng iskedyul</string>
+    <string name="interval_timer_card_summary">Manood nang hanggang %1$s kada %2$s</string>
+    <string name="interval_timer_card_summary_empty">Itakda ang una mong iskedyul para magsalitan ang pahinga at oras ng panonood.</string>
+    <string name="interval_timer_dialog_allowance_description">Gaano katagal ka puwedeng manood ng shorts sa pagitan ng mga pahinga.</string>
+    <string name="interval_timer_dialog_allowance_label">Pinapayagang oras ng panonood</string>
+    <string name="interval_timer_dialog_break_description">Iba-block ng Scrolless ang mga suportadong app nang ganito katagal, saka ka puwedeng manood ulit.</string>
+    <string name="interval_timer_dialog_break_label">Haba ng pahinga</string>
+    <string name="interval_timer_dialog_cancel">Kanselahin</string>
+    <string name="interval_timer_dialog_save">I-save ang iskedyul</string>
+    <string name="interval_timer_dialog_subtitle">Piliin kung gaano katagal ang bawat pahinga at gaano katagal ka puwedeng manood sa pagitan ng mga pahinga.</string>
+    <string name="interval_timer_dialog_summary">Resulta: hanggang %1$s kada %2$s</string>
+    <string name="interval_timer_dialog_title">I-configure ang interval timer</string>
+    <string name="interval_timer_next_reset_in">Magre-reset sa loob ng %1$s</string>
+    <string name="limit_chip">Limit na %1$s</string>
+    <string name="next_step_1">Pumili ng mode ng pag-block</string>
+    <string name="next_step_2">Subukan ang arawang limit at i-on ang timer overlay</string>
+    <string name="next_steps_title">Mga susunod na hakbang</string>
+    <string name="pause">I-pause</string>
+    <string name="pause_duration_hint">Ipo-pause ang pag-block nang %1$d min</string>
+    <string name="pause_resumes_in">Magpapatuloy sa loob ng %1$s</string>
+    <string name="resume">Ituloy</string>
+    <string name="service_not_running_description">Huminto ang pag-block dahil isinara ng Android ang Scrolless sa background. Puwede itong mangyari kapag inalis ito sa mga kamakailang app o nilimitahan para makatipid ng baterya.</string>
+    <string name="service_not_running_step_restart">I-off at i-on muli ang Scrolless sa Accessibility settings.</string>
+    <string name="service_not_running_title">Itinigil ang Scrolless</string>
+    <string name="settings">Settings</string>
+    <string name="success_icon_description">Icon ng check mark ng tagumpay</string>
+    <string name="time_interval">Pagitan ng\noras</string>
+    <string name="time_limit_dialog_title">Itakda ang oras ng arawang limit</string>
+    <string name="usage_analytics_today">Ngayon</string>
+    <string name="usage_analytics_previous_day">Nakaraang araw</string>
+    <string name="usage_analytics_next_day">Susunod na araw</string>
+    <string name="usage_analytics_swipe_hint">&lt; Mag-swipe para makita ang mga araw &gt;</string>
+    <string name="usage_analytics_timeline_title">Timeline</string>
+    <string name="usage_analytics_average_title">Average</string>
+    <string name="usage_analytics_average_week">Nakaraang linggo</string>
+    <string name="usage_analytics_average_month">Nakaraang buwan</string>
+    <string name="usage_analytics_average_year">Nakaraang taon</string>
+    <plurals name="usage_analytics_session_count">
+        <item quantity="one">%1$d session</item>
+        <item quantity="other">%1$d session</item>
+    </plurals>
+    <string name="usage_analytics_time_range">%1$s-%2$s</string>
+    <string name="usage_analytics_expand">Palawakin</string>
+    <string name="usage_analytics_collapse">Paliitin</string>
+    <string name="usage_analytics_day_mon">Lun</string>
+    <string name="usage_analytics_day_tue">Mar</string>
+    <string name="usage_analytics_day_wed">Miy</string>
+    <string name="usage_analytics_day_thu">Huw</string>
+    <string name="usage_analytics_day_fri">Biy</string>
+    <string name="usage_analytics_day_sat">Sab</string>
+    <string name="usage_analytics_day_sun">Lin</string>
+    <string name="visit_github">Bisitahin ang GitHub repository</string>
+</resources>

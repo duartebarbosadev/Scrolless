@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">Ikon izin aksesibilitas</string>
+    <string name="accessibility_explainer_not_now_button">Lain kali</string>
+    <string name="accessibility_explainer_open_source">Kode kami 100\% sumber terbuka di GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless hanya menggunakan izin ini untuk mendeteksi dan menghentikan konten video pendek. Kami tidak mengumpulkan informasi pribadi apa pun.</string>
+    <string name="accessibility_explainer_proceed_button">Buka Setelan</string>
+    <string name="accessibility_explainer_step1">Ketuk \"Buka Setelan\" di bawah untuk membuka setelan Aksesibilitas Android</string>
+    <string name="accessibility_explainer_step2">Cari aplikasi dan ketuk \"Scrolless\" di daftar layanan</string>
+    <string name="accessibility_explainer_step3">Aktifkan tombolnya agar Scrolless bisa membantumu berhenti scrolling tanpa henti</string>
+    <string name="accessibility_explainer_subtitle">Scrolless memerlukan akses aksesibilitas untuk mendeteksi dan menghentikan video pendek.</string>
+    <string name="accessibility_explainer_title">Kami perlu akses aksesibilitas</string>
+    <string name="accessibility_success_description">Scrolless sudah siap!</string>
+    <string name="accessibility_success_title">Semua siap!</string>
+    <string name="background_allow_button">Izinkan</string>
+    <string name="background_autostart_step">Aktifkan Mulai otomatis</string>
+    <string name="background_battery_step">Izinkan aktivitas latar belakang</string>
+    <string name="background_step_done">Selesai</string>
+    <string name="background_continue_button">Lanjutkan</string>
+    <string name="background_open_button">Buka</string>
+    <string name="background_settings_button">Buka Setelan Latar Belakang</string>
+    <string name="background_step_description">Beberapa ponsel menutup Scrolless di latar belakang sehingga pemblokiran berhenti.</string>
+    <string name="background_step_title">Biarkan Scrolless Tetap Berjalan</string>
+    <string name="block_all">Blokir\nsemua</string>
+    <string name="close">Tutup</string>
+    <string name="daily_limit">Batas\nharian</string>
+    <string name="get_started">Mulai</string>
+    <string name="go_to_accessibility_settings">Buka setelan Aksesibilitas</string>
+    <string name="daily_limit_configure_time_content_description">Atur waktu batas harian</string>
+    <string name="help">Bantuan</string>
+    <string name="help_dialog_title">Scrolless tidak berfungsi\?</string>
+    <string name="help_step1_description">Pilih salah satu opsi pemblokiran di layar utama</string>
+    <string name="help_step1_title">Pilih opsi blokir</string>
+    <string name="help_step2_description">Jika pemblokiran tidak berfungsi, nonaktifkan lalu aktifkan kembali layanan aksesibilitas. Izinkan juga Scrolless berjalan di latar belakang: aktifkan Mulai otomatis (Autostart) di Xiaomi, POCO, Redmi, dan ponsel serupa, lalu setel penggunaan baterainya ke \"Tidak dibatasi\".</string>
+    <string name="help_step2_title">Pemecahan masalah</string>
+    <string name="help_step3_description">Masih ada masalah\? Kami siap membantu! Gunakan tombol di bawah untuk menghubungi kami di repo GitHub.</string>
+    <string name="help_step3_title">Hubungi dukungan</string>
+    <string name="icons8_attribution">Ikon disediakan oleh Icons8 (icons8.com)</string>
+    <string name="interval_timer_card_allowance_chip">Waktu tonton</string>
+    <string name="interval_timer_card_break_chip">Lama blokir</string>
+    <string name="interval_timer_card_edit">Edit jadwal</string>
+    <string name="interval_timer_card_set_schedule">Atur jadwal</string>
+    <string name="interval_timer_card_summary">Tonton hingga %1$s setiap %2$s</string>
+    <string name="interval_timer_card_summary_empty">Atur jadwal pertamamu untuk menyelingi periode blokir dan waktu tonton.</string>
+    <string name="interval_timer_dialog_allowance_description">Berapa lama kamu bisa menonton video pendek di antara periode blokir.</string>
+    <string name="interval_timer_dialog_allowance_label">Waktu tonton yang diizinkan</string>
+    <string name="interval_timer_dialog_break_description">Scrolless memblokir aplikasi yang didukung selama periode blokir ini, lalu kamu bisa menonton lagi.</string>
+    <string name="interval_timer_dialog_break_label">Durasi blokir</string>
+    <string name="interval_timer_dialog_cancel">Batal</string>
+    <string name="interval_timer_dialog_save">Simpan jadwal</string>
+    <string name="interval_timer_dialog_subtitle">Pilih berapa lama setiap periode blokir berlangsung dan berapa lama kamu bisa menonton di antaranya.</string>
+    <string name="interval_timer_dialog_summary">Hasil: hingga %1$s setiap %2$s</string>
+    <string name="interval_timer_dialog_title">Atur timer interval</string>
+    <string name="interval_timer_next_reset_in">Direset dalam %1$s</string>
+    <string name="limit_chip">Batas %1$s</string>
+    <string name="next_step_1">Pilih mode pemblokiran</string>
+    <string name="next_step_2">Coba fitur batas harian dan aktifkan overlay timer</string>
+    <string name="next_steps_title">Langkah berikutnya</string>
+    <string name="pause">Jeda</string>
+    <string name="pause_duration_hint">Menjeda pemblokiran selama %1$d mnt</string>
+    <string name="pause_resumes_in">Berlanjut dalam %1$s</string>
+    <string name="resume">Lanjutkan</string>
+    <string name="service_not_running_description">Pemblokiran berhenti karena Android menutup Scrolless di latar belakang. Hal ini bisa terjadi saat aplikasi dihapus dari daftar aplikasi terbaru atau dibatasi untuk menghemat baterai.</string>
+    <string name="service_not_running_step_restart">Nonaktifkan lalu aktifkan kembali Scrolless di setelan Aksesibilitas.</string>
+    <string name="service_not_running_title">Scrolless Dihentikan</string>
+    <string name="settings">Setelan</string>
+    <string name="success_icon_description">Ikon tanda centang berhasil</string>
+    <string name="time_interval">Interval\nwaktu</string>
+    <string name="time_limit_dialog_title">Atur waktu batas harian</string>
+    <string name="usage_analytics_today">Hari ini</string>
+    <string name="usage_analytics_previous_day">Hari sebelumnya</string>
+    <string name="usage_analytics_next_day">Hari berikutnya</string>
+    <string name="usage_analytics_swipe_hint">&lt; Geser untuk melihat hari &gt;</string>
+    <string name="usage_analytics_timeline_title">Linimasa</string>
+    <string name="usage_analytics_average_title">Rata-rata</string>
+    <string name="usage_analytics_average_week">Minggu lalu</string>
+    <string name="usage_analytics_average_month">Bulan lalu</string>
+    <string name="usage_analytics_average_year">Tahun lalu</string>
+    <plurals name="usage_analytics_session_count">
+        <item quantity="other">%1$d sesi</item>
+    </plurals>
+    <string name="usage_analytics_time_range">%1$s-%2$s</string>
+    <string name="usage_analytics_expand">Luaskan</string>
+    <string name="usage_analytics_collapse">Ciutkan</string>
+    <string name="usage_analytics_day_mon">Sen</string>
+    <string name="usage_analytics_day_tue">Sel</string>
+    <string name="usage_analytics_day_wed">Rab</string>
+    <string name="usage_analytics_day_thu">Kam</string>
+    <string name="usage_analytics_day_fri">Jum</string>
+    <string name="usage_analytics_day_sat">Sab</string>
+    <string name="usage_analytics_day_sun">Min</string>
+    <string name="visit_github">Kunjungi repositori GitHub</string>
+</resources>

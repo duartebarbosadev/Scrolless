@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">접근성 권한 아이콘</string>
+    <string name="accessibility_explainer_not_now_button">나중에</string>
+    <string name="accessibility_explainer_open_source">Scrolless의 코드는 GitHub에서 100\% 오픈 소스로 공개되어 있어요.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless는 짧은 동영상을 감지하고 멈추는 데에만 이 권한을 사용해요. 개인 정보는 일절 수집하지 않아요.</string>
+    <string name="accessibility_explainer_proceed_button">설정으로 이동</string>
+    <string name="accessibility_explainer_step1">아래의 \"설정으로 이동\"을 탭해 Android 접근성 설정을 여세요</string>
+    <string name="accessibility_explainer_step2">설치된 앱 목록에서 \"Scrolless\"를 찾아 탭하세요</string>
+    <string name="accessibility_explainer_step3">스위치를 켜면 Scrolless가 끝없는 스크롤을 멈추도록 도와드려요</string>
+    <string name="accessibility_explainer_subtitle">Scrolless가 짧은 동영상을 감지하고 멈추려면 접근성 권한이 필요해요.</string>
+    <string name="accessibility_explainer_title">접근성 권한이 필요해요</string>
+    <string name="accessibility_success_description">Scrolless를 사용할 준비가 되었어요!</string>
+    <string name="accessibility_success_title">설정 완료!</string>
+    <string name="background_allow_button">허용</string>
+    <string name="background_autostart_step">자동 시작 켜기</string>
+    <string name="background_battery_step">백그라운드 활동 허용</string>
+    <string name="background_step_done">완료</string>
+    <string name="background_continue_button">계속</string>
+    <string name="background_open_button">열기</string>
+    <string name="background_settings_button">백그라운드 설정 열기</string>
+    <string name="background_step_description">일부 휴대전화는 백그라운드에서 Scrolless를 종료해 차단이 중지돼요.</string>
+    <string name="background_step_title">Scrolless 계속 실행하기</string>
+    <string name="block_all">모두\n차단</string>
+    <string name="close">닫기</string>
+    <string name="daily_limit">일일\n한도</string>
+    <string name="daily_limit_configure_time_content_description">일일 한도 시간 설정</string>
+    <string name="get_started">시작하기</string>
+    <string name="go_to_accessibility_settings">접근성 설정으로 이동</string>
+    <string name="help">도움말</string>
+    <string name="help_dialog_title">Scrolless가 작동하지 않나요\?</string>
+    <string name="help_step1_description">메인 화면에서 차단 옵션 중 하나를 선택하세요</string>
+    <string name="help_step1_title">차단 옵션 선택</string>
+    <string name="help_step2_description">차단이 작동하지 않으면 접근성 서비스를 껐다가 다시 켜 보세요. 또한 Scrolless가 백그라운드에서 실행되도록 허용하세요. 자동 시작(Autostart)을 켜고(Xiaomi, POCO, Redmi 및 유사한 휴대전화) 배터리 사용량을 \"제한 없음\"으로 설정하세요.</string>
+    <string name="help_step2_title">문제 해결</string>
+    <string name="help_step3_description">그래도 문제가 있나요\? 언제든 도와드릴게요! 아래 버튼을 눌러 GitHub 저장소로 문의해 주세요.</string>
+    <string name="help_step3_title">지원 문의</string>
+    <string name="icons8_attribution">아이콘 제공: Icons8 (icons8.com)</string>
+    <string name="interval_timer_card_allowance_chip">시청 시간</string>
+    <string name="interval_timer_card_break_chip">휴식 시간</string>
+    <string name="interval_timer_card_edit">일정 수정</string>
+    <string name="interval_timer_card_set_schedule">일정 설정</string>
+    <string name="interval_timer_card_summary">%2$s마다 최대 %1$s 시청</string>
+    <string name="interval_timer_card_summary_empty">첫 일정을 설정해 휴식과 시청 시간을 번갈아 가져 보세요.</string>
+    <string name="interval_timer_dialog_allowance_description">휴식 사이에 짧은 동영상을 시청할 수 있는 시간이에요.</string>
+    <string name="interval_timer_dialog_allowance_label">허용 시청 시간</string>
+    <string name="interval_timer_dialog_break_description">Scrolless가 이 시간 동안 지원 앱을 차단한 뒤, 다시 시청할 수 있게 해 줘요.</string>
+    <string name="interval_timer_dialog_break_label">휴식 시간</string>
+    <string name="interval_timer_dialog_cancel">취소</string>
+    <string name="interval_timer_dialog_save">일정 저장</string>
+    <string name="interval_timer_dialog_subtitle">휴식을 얼마나 할지, 휴식 사이에 얼마나 시청할지 정하세요.</string>
+    <string name="interval_timer_dialog_summary">결과: %2$s마다 최대 %1$s</string>
+    <string name="interval_timer_dialog_title">간격 타이머 설정</string>
+    <string name="interval_timer_next_reset_in">%1$s 후 초기화</string>
+    <string name="limit_chip">%1$s 한도</string>
+    <string name="next_step_1">차단 모드를 선택하세요</string>
+    <string name="next_step_2">일일 한도 기능을 사용해 보고 타이머 오버레이를 켜 보세요</string>
+    <string name="next_steps_title">다음 단계</string>
+    <string name="pause">일시정지</string>
+    <string name="pause_duration_hint">%1$d분 동안 차단을 일시정지해요</string>
+    <string name="pause_resumes_in">%1$s 후 다시 시작</string>
+    <string name="resume">다시 시작</string>
+    <string name="service_not_running_description">Android가 백그라운드에서 Scrolless를 종료해 차단이 멈췄어요. 최근 앱에서 지우거나 배터리 절약을 위해 제한하면 이런 일이 생길 수 있어요.</string>
+    <string name="service_not_running_step_restart">접근성 설정에서 Scrolless를 껐다가 다시 켜세요.</string>
+    <string name="service_not_running_title">Scrolless가 중지됨</string>
+    <string name="settings">설정</string>
+    <string name="success_icon_description">성공 체크 표시 아이콘</string>
+    <string name="time_interval">시간\n간격</string>
+    <string name="time_limit_dialog_title">일일 한도 시간 설정</string>
+    <string name="usage_analytics_average_month">지난달</string>
+    <string name="usage_analytics_average_title">평균</string>
+    <string name="usage_analytics_average_week">지난주</string>
+    <string name="usage_analytics_average_year">지난해</string>
+    <string name="usage_analytics_collapse">접기</string>
+    <string name="usage_analytics_day_fri">금</string>
+    <string name="usage_analytics_day_mon">월</string>
+    <string name="usage_analytics_day_sat">토</string>
+    <string name="usage_analytics_day_sun">일</string>
+    <string name="usage_analytics_day_thu">목</string>
+    <string name="usage_analytics_day_tue">화</string>
+    <string name="usage_analytics_day_wed">수</string>
+    <string name="usage_analytics_expand">펼치기</string>
+    <string name="usage_analytics_swipe_hint">&lt; 스와이프하여 날짜 보기 &gt;</string>
+    <string name="usage_analytics_time_range">%1$s-%2$s</string>
+    <string name="usage_analytics_timeline_title">타임라인</string>
+    <string name="usage_analytics_today">오늘</string>
+    <string name="visit_github">GitHub 저장소 방문</string>
+    <plurals name="usage_analytics_session_count">
+        <item quantity="other">세션 %1$d회</item>
+    </plurals>
+    <string name="usage_analytics_next_day">다음 날</string>
+    <string name="usage_analytics_previous_day">이전 날</string>
+</resources>

@@ -16,14 +16,14 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
-    <string name="accessibility_explainer_icon_description">Tilgangstillatelsesikon</string>
+    <string name="accessibility_explainer_icon_description">Ikon for tilgjengelighetstillatelse</string>
     <string name="accessibility_explainer_not_now_button">Ikke nå</string>
     <string name="accessibility_explainer_open_source">Koden vår er 100\% åpen kildekode på GitHub.</string>
     <string name="accessibility_explainer_privacy_note">Scrolless bruker kun denne tillatelsen til å oppdage og stoppe korte videoer. Vi samler ikke inn personlig informasjon.</string>
     <string name="accessibility_explainer_proceed_button">Gå til innstillinger</string>
     <string name="accessibility_explainer_step1">Trykk på \"Gå til innstillinger\" nedenfor for å åpne Androids tilgjengelighetsinnstillinger</string>
     <string name="accessibility_explainer_step2">Finn applikasjoner og trykk på \"Scrolless\" i listen over tjenester</string>
-    <string name="accessibility_explainer_step3">Slå bryteren PÅ for å aktivere Scrolless for å hjelpe deg med å stoppe endeløs scrolling</string>
+    <string name="accessibility_explainer_step3">Slå på bryteren slik at Scrolless kan hjelpe deg med å stoppe endeløs scrolling</string>
     <string name="accessibility_explainer_subtitle">Scrolless trenger tilgang til tilgjengelighetstjenester for å oppdage og stoppe korte videoer.</string>
     <string name="accessibility_explainer_title">Vi trenger tilgang til tilgjengelighetstjenester</string>
     <string name="accessibility_success_description">Scrolless er nå klar!</string>
@@ -31,15 +31,15 @@
     <string name="background_allow_button">Tillat</string>
     <string name="background_autostart_step">Slå på Autostart</string>
     <string name="background_battery_step">Tillat bakgrunnsaktivitet</string>
-    <string name="background_step_done">Ferdig</string>
+    <string name="background_step_done">Fullført</string>
     <string name="background_continue_button">Fortsett</string>
     <string name="background_open_button">Åpne</string>
     <string name="background_settings_button">Åpne bakgrunnsinnstillinger</string>
     <string name="background_step_description">Noen telefoner lukker Scrolless i bakgrunnen, noe som stopper blokkeringen.</string>
     <string name="background_step_title">Hold Scrolless i gang</string>
-    <string name="block_all">Blokker\nAlt</string>
+    <string name="block_all">Blokker\nalt</string>
     <string name="close">Lukk</string>
-    <string name="daily_limit">Daglig\nGrense</string>
+    <string name="daily_limit">Daglig\ngrense</string>
     <string name="daily_limit_configure_time_content_description">Konfigurer daglig grensetid</string>
     <string name="get_started">Kom i gang</string>
     <string name="go_to_accessibility_settings">Gå til tilgjengelighetsinnstillinger</string>
@@ -52,19 +52,19 @@
     <string name="help_step3_description">Har du fortsatt problemer\? Vi er her for å hjelpe! Bruk knappen nedenfor for å kontakte oss på vårt GitHub-repo.</string>
     <string name="help_step3_title">Kontakt brukerstøtte</string>
     <string name="icons8_attribution">Ikoner levert av Icons8 (icons8.com)</string>
-    <string name="interval_timer_card_allowance_chip">Se tid</string>
+    <string name="interval_timer_card_allowance_chip">Seertid</string>
     <string name="interval_timer_card_break_chip">Blokkeringstid</string>
     <string name="interval_timer_card_edit">Rediger tidsplan</string>
     <string name="interval_timer_card_set_schedule">Angi tidsplan</string>
     <string name="interval_timer_card_summary">Se opptil %1$s hver %2$s</string>
-    <string name="interval_timer_card_summary_empty">Angi din første tidsplan for å veksle mellom blokkeringsperioder.</string>
-    <string name="interval_timer_dialog_allowance_description">Hvor lenge du kan se korte videoer når et bruksvindu starter.</string>
+    <string name="interval_timer_card_summary_empty">Angi din første tidsplan for å veksle mellom blokkeringsperioder og seertid.</string>
+    <string name="interval_timer_dialog_allowance_description">Hvor lenge du kan se korte videoer mellom blokkeringsperiodene.</string>
     <string name="interval_timer_dialog_allowance_label">Tillatt seertid</string>
-    <string name="interval_timer_dialog_break_description">Scrolless holder støttede apper blokkert så lenge før neste bruksvindu.</string>
+    <string name="interval_timer_dialog_break_description">Scrolless holder støttede apper blokkert så lenge, og deretter kan du se igjen.</string>
     <string name="interval_timer_dialog_break_label">Blokkeringstid</string>
     <string name="interval_timer_dialog_cancel">Avbryt</string>
     <string name="interval_timer_dialog_save">Lagre tidsplan</string>
-    <string name="interval_timer_dialog_subtitle">Velg hvor lenge innhold forblir blokkert og hvor mye tid du kan se i hvert bruksvindu.</string>
+    <string name="interval_timer_dialog_subtitle">Velg hvor lenge hver blokkeringsperiode varer, og hvor mye du kan se mellom blokkeringsperiodene.</string>
     <string name="interval_timer_dialog_summary">Resultat: opptil %1$s hver %2$s</string>
     <string name="interval_timer_dialog_title">Konfigurer intervalltimer</string>
     <string name="interval_timer_next_reset_in">Tilbakestilles om %1$s</string>
@@ -76,12 +76,12 @@
     <string name="pause_duration_hint">Pauser blokkering i %1$d min</string>
     <string name="pause_resumes_in">Gjenopptas om %1$s</string>
     <string name="resume">Gjenoppta</string>
-    <string name="service_not_running_description">Blokkeringen er satt på pause fordi Android stoppet Scrolless i bakgrunnen. Det kan skje når appen fjernes fra nylige apper eller begrenses for å spare batteri.</string>
+    <string name="service_not_running_description">Blokkeringen virker ikke lenger fordi Android stoppet Scrolless i bakgrunnen. Det kan skje når appen fjernes fra nylige apper eller begrenses for å spare batteri.</string>
     <string name="service_not_running_step_restart">Slå Scrolless av og på igjen i tilgjengelighetsinnstillingene.</string>
     <string name="service_not_running_title">Scrolless ble stoppet</string>
     <string name="settings">Innstillinger</string>
     <string name="success_icon_description">Suksess-ikon</string>
-    <string name="time_interval">Tids\nIntervall</string>
+    <string name="time_interval">Tids-\nintervall</string>
     <string name="time_limit_dialog_title">Angi daglig grensetid</string>
     <string name="usage_analytics_average_month">Siste måned</string>
     <string name="usage_analytics_average_title">Gjennomsnitt</string>

@@ -16,8 +16,8 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
-    <string name="accessibility_service_description">Ova usluga otkriva kada se otvore Reels/Shorts/TikTok kako bi ih Scrolless mogao blokirati ako je konfigurirano.</string>
+    <string name="accessibility_service_description">Ova usluga otkriva kada se otvore Reels, Shorts, TikTok i Facebook Reels kako bi ih Scrolless mogao blokirati ako je tako postavljeno.</string>
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok videozapisi su blokirani</string>
-    <string name="tiktok_blocked_description">Upotrijebite kartice na dnu da biste otvorili „Ulazni sandučić” ili „Profil”.</string>
+    <string name="tiktok_blocked_description">Upotrijebite kartice na dnu da biste otvorili „Ulazni sandučić“ ili „Profil“.</string>
 </resources>

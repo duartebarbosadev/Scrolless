@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
-    <string name="accessibility_service_description">Aquest servei detecta quan s\'obren reels/shorts/tiktok perquè Scrolless els pugui bloquejar si està configurat.</string>
+    <string name="accessibility_service_description">Aquest servei detecta quan s\'obren Reels, Shorts, TikTok i Facebook Reels perquè Scrolless els pugui bloquejar si està configurat.</string>
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">Els vídeos de TikTok estan bloquejats</string>
     <string name="tiktok_blocked_description">Fes servir les pestanyes de sota per obrir la Safata d\'entrada o el Perfil.</string>
