@@ -21,7 +21,7 @@ To change the look, edit `template/` and `assets/` (open the SVGs or a built pag
 
 ## Regenerate
 
-Needs Google Chrome, ImageMagick (`magick`), Python 3 with `fonttools`, and the Android SDK.
+Needs Google Chrome, ImageMagick (`magick`), Python 3 with `fonttools`, `numpy` and `Pillow`, and the Android SDK.
 
 1. **Fonts (once):** download the Noto variable fonts into `fonts/`: NotoSansDisplay, NotoSans, NotoSansHebrew, NotoSansArabic, NotoSansDevanagari, NotoSansThai, NotoSansJP, NotoSansKR, NotoSansSC, NotoSansTC, from `https://raw.githubusercontent.com/google/fonts/main/ofl/<family>/` (file names like `NotoSans%5Bwdth%2Cwght%5D.ttf`), saved as `<Family>.ttf`.
 2. **App screens** (only when the app UI or its translations change): build and install the debug app (`./gradlew :app:assemblePlayDebug`, then `adb install -r app/build/outputs/apk/play/debug/app-play-debug.apk`), start the `Medium_Phone_API_36.1` emulator (1080×2400), then:

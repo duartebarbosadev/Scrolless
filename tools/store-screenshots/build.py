@@ -11,6 +11,9 @@ right-to-left text and every script are handled by a real text engine.
 Output: out/<store locale>/01-less-scrolling.png ... 07-built-on-trust.png, 08-feature-graphic.png
 """
 import html, json, os, re, subprocess, sys
+
+import numpy as np
+from PIL import Image
 from concurrent.futures import ThreadPoolExecutor
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -118,6 +121,38 @@ def raw_path(locale, index):
     return os.path.join(ROOT, 'raw', app, RAW_FOR[index] + '.png')
 
 
+# The emulator has square corners, so Android draws the clock and status icons right at the screen
+# edge, where the phone frame's rounded corner would cut them off. Real phones with rounded screens
+# inset them, so do the same: move both groups inward and slightly down inside the status bar.
+STATUS_BAR_HEIGHT = 64
+STATUS_GROUP_WIDTH = 300
+STATUS_INSET_X = 44
+STATUS_INSET_Y = 14
+
+
+def framed_capture(src):
+    out = os.path.join(ROOT, 'cache', 'framed', os.path.basename(os.path.dirname(src)), os.path.basename(src))
+    if os.path.exists(out) and os.path.getmtime(out) >= os.path.getmtime(src):
+        return out
+    img = np.asarray(Image.open(src).convert('RGB')).astype(float)
+    band = img[:STATUS_BAR_HEIGHT].copy()
+    # Per-row background, taken from the empty middle of the status bar.
+    background = band[:, img.shape[1] // 2][:, None, :]
+    ink = np.clip(np.abs(band - background).sum(axis=2, keepdims=True) / 120, 0, 1)
+    # Erase only the clock and icons, keeping the app's own background around them.
+    clean = band * (1 - ink) + background * ink
+    width = img.shape[1]
+    for x0, x1, shift in ((0, STATUS_GROUP_WIDTH, STATUS_INSET_X),
+                          (width - STATUS_GROUP_WIDTH, width, -STATUS_INSET_X)):
+        content, alpha = band[:-STATUS_INSET_Y, x0:x1], ink[:-STATUS_INSET_Y, x0:x1]
+        target = clean[STATUS_INSET_Y:, x0 + shift:x1 + shift]
+        target[:] = target * (1 - alpha) + content * alpha
+    img[:STATUS_BAR_HEIGHT] = clean
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    Image.fromarray(img.round().astype('uint8')).save(out)
+    return out
+
+
 def phone_bleeding(src):
     # 708px wide screen inside a 16px frame; the phone runs off the bottom edge.
     return (f'<div class="phone" style="left:170px;top:648px;width:740px;height:1700px">'
@@ -149,7 +184,7 @@ def screenshot_html(locale, index):
     elif index == 6:
         art = tiles()
     else:
-        art = phone_bleeding(raw_path(locale, index))
+        art = phone_bleeding(framed_capture(raw_path(locale, index)))
     body = BACKGROUNDS[BACKGROUND_FOR[index]] + LOGO + text + art
     return page(locale, body, 1080, 1920, js)
 
