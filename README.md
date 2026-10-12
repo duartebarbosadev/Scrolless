@@ -51,8 +51,6 @@ Since the app requires accessibility permissions, which can have sketchy uses, S
   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/07-built-on-trust.png" alt="Open source, no ads, no tracking" width="200">
 </p>
 
-Screenshots are generated from the real app in every supported language; see [tools/store-screenshots](tools/store-screenshots).
-
 ## Troubleshooting
 
 **Scrolless stops working or Android says the service is "not working"**
