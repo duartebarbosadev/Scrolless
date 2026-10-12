@@ -28,10 +28,13 @@ KEYPAD = {'1': (354, 978), '0': (540, 1497)}
 
 def _emulator_serial():
     # Only ever drive an emulator, even if a real phone is plugged in.
-    if os.environ.get('ANDROID_SERIAL'):
-        return os.environ['ANDROID_SERIAL']
     lines = subprocess.run(['adb', 'devices'], check=True, capture_output=True, text=True).stdout.splitlines()
     emulators = [l.split()[0] for l in lines[1:] if l.startswith('emulator-') and l.split()[-1] == 'device']
+    requested = os.environ.get('ANDROID_SERIAL')
+    if requested:
+        if requested not in emulators:
+            sys.exit(f'ANDROID_SERIAL={requested} is not a running emulator; found {emulators}')
+        return requested
     if len(emulators) != 1:
         sys.exit(f'Expected exactly one running emulator, found {emulators}')
     return emulators[0]

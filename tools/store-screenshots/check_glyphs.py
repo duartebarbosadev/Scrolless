@@ -18,3 +18,4 @@ for loc, lines in build.COPY.items():
 for loc, chars in sorted(missing.items()):
     print(loc, ' '.join(f'{c} U+{ord(c):04X}' for c in sorted(chars)))
 print('missing glyphs in', len(missing), 'locales')
+sys.exit(1 if missing else 0)

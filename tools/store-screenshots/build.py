@@ -17,7 +17,7 @@ from PIL import Image
 from concurrent.futures import ThreadPoolExecutor
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+CHROME = os.environ.get('CHROME_BIN', '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome')
 COPY = json.load(open(os.path.join(ROOT, 'copy.json'), encoding='utf-8'))
 
 
