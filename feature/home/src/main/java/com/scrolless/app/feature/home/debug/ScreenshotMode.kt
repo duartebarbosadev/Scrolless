@@ -14,20 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.scrolless.app.designsystem.util
+package com.scrolless.app.feature.home.debug
+
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 
 /**
- * Store screenshot mode for debug builds, switched on with
- * `adb shell setprop debug.scrolless.screenshot 1`. It hides debug-only UI so the
- * Play Store screenshots show the app as users see it.
+ * Debug-only switch that hides debug UI while Play Store screenshots are captured.
+ * The debug ScreenshotSeedReceiver turns it on; it resets with the app process.
  */
 object ScreenshotMode {
-    private const val PROPERTY = "debug.scrolless.screenshot"
-
-    val isEnabled: Boolean
-        get() = runCatching {
-            // android.os.SystemProperties is hidden, but readable through reflection.
-            val systemProperties = Class.forName("android.os.SystemProperties")
-            systemProperties.getMethod("get", String::class.java).invoke(null, PROPERTY) == "1"
-        }.getOrDefault(false)
+    var isEnabled by mutableStateOf(false)
 }

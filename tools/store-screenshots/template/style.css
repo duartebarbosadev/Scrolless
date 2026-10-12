@@ -20,7 +20,7 @@ body { margin: 0; width: var(--width); height: var(--height); overflow: hidden; 
 .wordmark { position: absolute; top: 62px; left: 64px; width: 480px; text-align: start; font: 600 34px/1 var(--body-font); color: var(--green-brand) }
 .wordmark span { direction: ltr; unicode-bidi: isolate }
 
-/* Headline (one line per sentence) and subtitle. build.py shrinks them until they fit the box. */
+/* Headline (one line per sentence) and subtitle. template/fit.js shrinks them until they fit the box. */
 .text { position: absolute; overflow: hidden }
 h1 { margin: 0; font-family: var(--display-font); font-weight: 900; font-stretch: 87.5%; color: var(--green-dark);
      line-height: 1.02; letter-spacing: -.01em; word-break: var(--word-break); text-wrap: balance }

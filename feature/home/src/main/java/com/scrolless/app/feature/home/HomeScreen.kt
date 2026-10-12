@@ -119,7 +119,6 @@ import com.scrolless.app.designsystem.theme.progressbar_green_use
 import com.scrolless.app.designsystem.theme.progressbar_orange_use
 import com.scrolless.app.designsystem.theme.progressbar_red_use
 import com.scrolless.app.designsystem.tooling.DevicePreviews
-import com.scrolless.app.designsystem.util.ScreenshotMode
 import com.scrolless.app.designsystem.util.radialGradientScrim
 import com.scrolless.app.designsystem.util.rememberHapticHelper
 import com.scrolless.app.feature.home.components.InlineUsageAnalyticsPanel
@@ -128,6 +127,7 @@ import com.scrolless.app.feature.home.components.TodayBlockingControls
 import com.scrolless.app.feature.home.components.WeekdayAverageSection
 import com.scrolless.app.feature.home.components.analyticsForDate
 import com.scrolless.app.feature.home.debug.FloatingDebugUsagePanel
+import com.scrolless.app.feature.home.debug.ScreenshotMode
 import com.scrolless.app.feature.home.dialogs.AccessibilityExplainerBottomSheet
 import com.scrolless.app.feature.home.dialogs.AccessibilitySuccessBottomSheet
 import com.scrolless.app.feature.home.dialogs.AccessibilitySuccessBottomSheetPreview

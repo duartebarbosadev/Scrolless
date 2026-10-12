@@ -29,7 +29,7 @@ Needs Google Chrome, ImageMagick (`magick`), Python 3 with `fonttools`, and the 
    python3 capture.py setup
    python3 capture.py en-US en-GB cs de-DE el es-ES es-419 fi-FI fr-FR hi-IN hr hu it-IT ja nl nb-NO pl pt-BR pt-PT ro ru sk-SK sv-SE tr-TR uk-UA vi zh-CN zh-TW ar da-DK et fil id is he ko lt sq th
    ```
-   Debug builds load fixed sample data through `ScreenshotSeedReceiver` and hide the debug panel while `debug.scrolless.screenshot` is `1`; the status bar uses Android demo mode (10:19, full battery). `capture.py` only ever drives an emulator, even with a phone plugged in.
+   Debug builds load fixed sample data through `ScreenshotSeedReceiver`, which also hides the debug panel until the app restarts; the status bar uses Android demo mode (10:19, full battery). `capture.py` only ever drives an emulator, even with a phone plugged in.
 3. **Images:** `python3 build.py` (all locales, a few minutes), `python3 check_glyphs.py`, and `python3 gallery.py`. `build.py` prints `TEXT OVERFLOW` for any text that still does not fit.
 4. **Publish:** `python3 install.py`, review, then commit the changed images under `fastlane/`.
 

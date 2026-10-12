@@ -40,8 +40,8 @@ def _emulator_serial():
 os.environ['ANDROID_SERIAL'] = _emulator_serial()
 
 
-def adb(*args, check=True):
-    return subprocess.run(['adb', 'shell', *args], check=check, capture_output=True, text=True).stdout
+def adb(*args):
+    return subprocess.run(['adb', 'shell', *args], check=True, capture_output=True, text=True).stdout
 
 
 RTL_LOCALES = {'ar', 'he', 'iw'}
@@ -85,7 +85,6 @@ def seed():
 
 def setup():
     adb('pm', 'clear', PKG)
-    adb('setprop', 'debug.scrolless.screenshot', '1')
     adb('am', 'start', '-n', ACTIVITY)
     time.sleep(4)
     enable_accessibility()
@@ -110,13 +109,25 @@ def capture(path):
         f.write(png)
 
 
-def capture_locale(locale):
+def prepare(locale):
     global mirror
     mirror = locale.split('-')[0] in RTL_LOCALES
-    out = os.path.join(RAW, locale)
     adb('cmd', 'locale', 'set-app-locales', PKG, '--locales', locale)
     seed()
     open_app()
+
+
+def capture_history_screen(out):
+    time.sleep(2)  # taps during the opening animation get lost
+    for _ in range(3):
+        tap(PREVIOUS_DAY, 1.5)
+    tap(EXPAND_PAST_DAY, 2.5)
+    capture(f'{out}/06-history.png')
+
+
+def capture_locale(locale):
+    prepare(locale)
+    out = os.path.join(RAW, locale)
     time.sleep(3)  # let the usage ring finish animating
     capture(f'{out}/01-home.png')
 
@@ -139,27 +150,12 @@ def capture_locale(locale):
     capture(f'{out}/05-timeline.png')
     open_app()
 
-    time.sleep(2)  # taps during the opening animation get lost
-    for _ in range(3):
-        tap(PREVIOUS_DAY, 1.5)
-    tap(EXPAND_PAST_DAY, 2.5)
-    capture(f'{out}/06-history.png')
-    open_app()
+    capture_history_screen(out)
 
 
 def capture_history(locale):
-    global mirror
-    mirror = locale.split('-')[0] in RTL_LOCALES
-    out = os.path.join(RAW, locale)
-    adb('cmd', 'locale', 'set-app-locales', PKG, '--locales', locale)
-    seed()
-    open_app()
-    time.sleep(2)  # taps during the opening animation get lost
-    for _ in range(3):
-        tap(PREVIOUS_DAY, 1.5)
-    tap(EXPAND_PAST_DAY, 2.5)
-    capture(f'{out}/06-history.png')
-    open_app()
+    prepare(locale)
+    capture_history_screen(os.path.join(RAW, locale))
 
 
 if __name__ == '__main__':

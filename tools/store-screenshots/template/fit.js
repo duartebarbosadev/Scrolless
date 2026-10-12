@@ -8,4 +8,4 @@
   const apply=()=>{h.style.fontSize=hs+'px'; s.style.fontSize=ss+'px';};
   apply();
   while(!ok() && hs>{{headline_min}}){ hs-=2; if(hs<{{shrink_subtitle_below}} && ss>{{subtitle_min}}) ss-=1; apply(); }
-  if(!ok()) document.title='overflow';
+  if(!ok()) console.error('TEXT_OVERFLOW');

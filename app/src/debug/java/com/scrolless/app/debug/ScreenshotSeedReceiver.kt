@@ -25,6 +25,7 @@ import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.core.repository.BlockingConfigRepository
 import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
+import com.scrolless.app.feature.home.debug.ScreenshotMode
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
@@ -43,6 +44,8 @@ import timber.log.Timber
  * Loads the fixed sample data used for the Play Store screenshots:
  * `adb shell am broadcast -n com.scrolless.app.debug/com.scrolless.app.debug.ScreenshotSeedReceiver`
  *
+ * It also turns on [ScreenshotMode] to hide the debug panel.
+ *
  * Today shows 55m across three sessions with a 1h daily limit selected, and the previous two weeks
  * get one total per weekday so the averages and history read the same in every capture.
  */
@@ -58,6 +61,7 @@ class ScreenshotSeedReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context, intent: Intent) {
+        ScreenshotMode.isEnabled = true
         val entryPoint = EntryPointAccessors.fromApplication(context.applicationContext, SeedEntryPoint::class.java)
         val pendingResult = goAsync()
         CoroutineScope(Dispatchers.IO).launch {
@@ -140,7 +144,6 @@ class ScreenshotSeedReceiver : BroadcastReceiver() {
         val WEEKDAY_TOTALS = mapOf(
             DayOfWeek.MONDAY to 35,
             DayOfWeek.TUESDAY to 75,
-            DayOfWeek.WEDNESDAY to 42,
             DayOfWeek.THURSDAY to 58,
             DayOfWeek.FRIDAY to 48,
             DayOfWeek.SATURDAY to 90,

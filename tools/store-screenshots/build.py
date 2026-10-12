@@ -61,10 +61,12 @@ def font_faces():
         for name, file in FONTS)
 
 
+def font_names(locale, base):
+    return [base, 'Hebrew', 'Arabic', 'Devanagari', 'Thai', CJK_FONT.get(locale, 'SC')]
+
+
 def font_stack(locale, base):
-    cjk = CJK_FONT.get(locale)
-    stack = [base, 'Hebrew', 'Arabic', 'Devanagari', 'Thai'] + ([cjk] if cjk else ['SC'])
-    return ','.join(f"'{f}'" for f in stack)
+    return ','.join(f"'{f}'" for f in font_names(locale, base))
 
 
 def sentences(text, locale=''):
@@ -164,7 +166,7 @@ def chrome(args, attempts=3):
     # Headless Chrome occasionally hangs or crashes; retry instead of failing the whole build.
     for attempt in range(attempts):
         try:
-            return subprocess.run(args, check=True, capture_output=True, text=True, timeout=60).stdout
+            return subprocess.run(args, check=True, capture_output=True, text=True, timeout=60).stderr
         except (subprocess.TimeoutExpired, subprocess.CalledProcessError):
             if attempt == attempts - 1:
                 raise
@@ -175,12 +177,11 @@ def render(html_text, path, width, height):
     src = path[:-4] + '.html'
     with open(src, 'w', encoding='utf-8') as f:
         f.write(html_text)
-    flags = [CHROME, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1',
-             f'--window-size={width},{height}', '--virtual-time-budget=8000', '--allow-file-access-from-files']
-    chrome(flags + [f'--screenshot={path}', f'file://{src}'])
-    # template/fit.js sets the title to "overflow" if the text still does not fit at the minimum size.
-    dom = chrome(flags + ['--dump-dom', f'file://{src}'])
-    if '<title>overflow</title>' in dom:
+    log = chrome([CHROME, '--headless=new', '--disable-gpu', '--hide-scrollbars', '--force-device-scale-factor=1',
+                  f'--window-size={width},{height}', '--virtual-time-budget=8000', '--allow-file-access-from-files',
+                  '--enable-logging=stderr', '--v=0', f'--screenshot={path}', f'file://{src}'])
+    # template/fit.js logs TEXT_OVERFLOW if the text still does not fit at the minimum size.
+    if 'TEXT_OVERFLOW' in log:
         print('TEXT OVERFLOW', path, flush=True)
     os.remove(src)
     # Play wants opaque RGB PNGs.
