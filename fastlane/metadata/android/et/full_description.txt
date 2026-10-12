@@ -1,28 +1,33 @@
-Scrolless aitab sul tagasi võita aja, mille kaotad lõputute lühivideote peale. Blokeeri Reels, Shorts ja TikTok või sea oma päevaga sobivad piirangud, samal ajal kui rakenduste ülejäänud osa töötab edasi.
+Reklaamideta. Jälgimiseta. Täielikult avatud lähtekoodiga.
+
+Scrolless aitab sul vähendada lühivideote vaatamist rakendustes TikTok, Instagram Reels, YouTube Shorts, Facebook Reels ja Snapchat, samal ajal kui ülejäänud rakendus töötab edasi. Veeda vähem aega lõputute voogude kerimisel, püsi keskendunud ja võta oma ekraaniaeg tagasi – kontot pole vaja.
 
 Vali, kuidas blokeerida
-• Blokeeri kõik: sulgeb lühivideote voo kohe, kui selle avad.
-• Päevane piir: sea, kui palju aega sul päevas on. Kui see saab otsa, peatab Scrolless kerimise.
-• Ajaintervall: vahelda blokeeringuperioode ja vaatamisaega, näiteks kuni 5 minutit tunnis.
-• Paus: vajad paar minutit? Peata blokeerimine ja see lülitub ise uuesti sisse.
+• Blokeeri kõik: sulgeb lühivideovood kohe, kui need avanevad.
+• Päevane piir: määra, kui palju aega sul iga päev on.
+• Ajaintervall: blokeeringud ja vaatamisaeg vahelduvad, näiteks kuni 5 minutit tunnis.
+• Paus: lülita blokeerimine mõneks minutiks välja; see lülitub ise uuesti sisse.
 
 Hoia alles see, mis loeb
 • Luba videod, mida sõbrad sulle privaatsõnumites saadavad.
-• Vali, kas lugude vaatamine loetakse piirangute hulka.
-• Näita vaatamise ajal ekraanil väikest taimerit.
+• Vali, kas lood lähevad sinu piiride hulka arvesse.
+• Näe vaatamise ajal väikest reaalajas taimerit.
 
-Vaata, kuhu su aeg kulub
+Mõista oma harjumusi
 • Iga seansi päevane ajajoon rakenduste kaupa.
 • Keskmised iga nädalapäeva kohta.
-• Sirvi varasemaid päevi ja märka oma harjumusi.
+• Sirvi varasemaid päevi ja märka mustreid.
 
 Toetatud rakendused
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite ja Snapchat.
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite ja Snapchat.
 
-Privaatsus sisse ehitatud
-• Täielikult avatud lähtekoodiga GitHubis.
-• Pole reklaame, jälgimist ega kontot.
-• Sinu kasutusajalugu jääb sinu telefoni.
+Privaatne algusest peale
+Scrollessil pole reklaame, analüütikat ega jälgimist ning see ei vaja kontot. Sinu kasutusajalugu jääb sinu telefoni ja kood on kõigile kontrollimiseks avatud.
 
 Juurdepääsetavuse luba
-Scrolless kasutab juurdepääsetavuse teenust ainult selleks, et tuvastada, millal on ekraanil toetatud lühivideosisu, ning see vastavalt sinu seadetele sulgeda või seda piirata. See ei kogu ega jaga isikuandmeid.
+Scrolless kasutab juurdepääsetavuse teenust ainult toetatud lühivideokuvade tuvastamiseks ja sinu blokeerimisreeglite rakendamiseks. See ei salvesta, talleta ega saada sinu ekraani sisu. Kõik toimub sinu seadmes.
+
+Vähem mõttetut kerimist, üks kerimine korraga.
+
+Lähtekood: https://github.com/DuarteBarbosaDev/Scrolless
+Ikoonid: Icons8

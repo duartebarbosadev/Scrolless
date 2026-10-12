@@ -1,28 +1,33 @@
-Scrolless vam pomaže vratiti vrijeme koje gubite na beskonačne kratke videozapise. Blokirajte Reels, Shorts i TikTok ili postavite ograničenja koja odgovaraju vašem danu, a ostatak svake aplikacije i dalje radi.
+Bez oglasa. Bez praćenja. Potpuno otvoren kod.
+
+Scrolless vam pomaže smanjiti kratke videozapise u aplikacijama TikTok, Instagram Reels, YouTube Shorts, Facebook Reels i Snapchat, dok ostatak svake aplikacije i dalje normalno radi. Provodite manje vremena u beskrajnim feedovima, ostanite usredotočeni i vratite kontrolu nad vremenom pred zaslonom, bez potrebe za računom.
 
 Odaberite način blokiranja
-• Blokiraj sve: zatvara feedove kratkih videozapisa čim ih otvorite.
-• Dnevno ograničenje: odredite koliko vremena imate svaki dan. Kad istekne, Scrolless zaustavlja skrolanje.
-• Vremenski interval: izmjenjujte blokade i vrijeme gledanja, primjerice najviše 5 minuta svakog sata.
-• Pauza: trebate nekoliko minuta? Pauzirajte blokiranje i ono će se samo ponovno uključiti.
+• Blokiraj sve: zatvara feedove s kratkim videozapisima čim se otvore.
+• Dnevno ograničenje: postavite koliko vremena imate svaki dan.
+• Vremenski interval: izmjenjujte trajanje blokade i vrijeme gledanja, primjerice najviše 5 minuta svakih sat vremena.
+• Pauza: isključite blokiranje na nekoliko minuta; samo će se ponovno uključiti.
 
 Zadržite ono što je važno
-• Dopustite videozapise koje vam prijatelji šalju u privatnim porukama.
-• Odaberite ulaze li priče u vaša ograničenja.
-• Prikažite mali mjerač vremena na zaslonu dok gledate.
+• Dopustite videozapise koje vam prijatelji šalju u DM-ovima.
+• Odaberite ubrajaju li se priče u vaša ograničenja.
+• Mali mjerač vremena uživo prikazuje se dok gledate.
 
-Pogledajte kamo odlazi vaše vrijeme
-• Dnevna vremenska crta svake sesije po aplikacijama.
+Upoznajte svoje navike
+• Dnevna vremenska crta svake sesije, po aplikaciji.
 • Prosjeci za svaki dan u tjednu.
-• Pregledajte prethodne dane i uočite svoje navike.
+• Pregledajte prošle dane i uočite obrasce.
 
 Podržane aplikacije
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite i Snapchat.
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite i Snapchat.
 
-Privatnost na prvom mjestu
-• Potpuno otvoren kod na GitHubu.
-• Bez oglasa, bez praćenja i bez računa.
-• Povijest korištenja ostaje na vašem telefonu.
+Privatnost od samog početka
+Scrolless nema oglase, analitiku ni praćenje i ne traži račun. Povijest korištenja ostaje na vašem telefonu, a kod je otvoren pa ga svatko može provjeriti.
 
 Dopuštenje za pristupačnost
-Scrolless koristi uslugu pristupačnosti samo kako bi otkrio kada je na zaslonu podržani sadržaj s kratkim videozapisima te ga zatvorio ili ograničio prema vašim postavkama. Ne prikuplja i ne dijeli nikakve osobne podatke.
+Scrolless koristi pristupačnost samo za prepoznavanje podržanih zaslona s kratkim videozapisima i primjenu vaših pravila blokiranja. Ne snima, ne pohranjuje i ne šalje sadržaj vašeg zaslona. Sve se odvija na vašem uređaju.
+
+Manje besciljnog listanja, svaki put jedan scroll manje.
+
+Izvorni kod: https://github.com/DuarteBarbosaDev/Scrolless
+Ikone: Icons8

@@ -1,28 +1,33 @@
-Scrolless të ndihmon të rimarrësh kohën që humb me video të shkurtra pa fund. Blloko Reels, Shorts dhe TikTok, ose vendos kufij që i përshtaten ditës sate, ndërsa pjesa tjetër e çdo aplikacioni vazhdon të funksionojë.
+Pa reklama. Pa gjurmim. Plotësisht me kod të hapur.
+
+Scrolless të ndihmon të pakësosh videot e shkurtra në TikTok, Instagram Reels, YouTube Shorts, Facebook Reels dhe Snapchat, ndërsa pjesa tjetër e çdo aplikacioni vazhdon të funksionojë. Kalo më pak kohë në feed-e të pafundme, qëndro i përqendruar dhe rimerr kontrollin e kohës para ekranit, pa pasur nevojë për llogari.
 
 Zgjidh si të bllokosh
-• Blloko të gjitha: mbyll rrjedhat e videove të shkurtra sapo i hap.
-• Kufi ditor: cakto sa kohë ke në ditë. Kur mbaron, Scrolless ndalon shfletimin.
-• Interval kohor: alterno pushimet me kohën e shikimit, për shembull deri në 5 minuta çdo orë.
-• Pauzë: të duhen disa minuta? Pezullo bllokimin dhe ai riaktivizohet vetë.
+• Blloko të gjitha: mbyll feed-et me video të shkurtra sapo hapen.
+• Kufi ditor: cakto sa kohë ke në dispozicion çdo ditë.
+• Interval kohor: alterno gjatësinë e pushimit me kohën e shikimit, për shembull deri në 5 minuta çdo orë.
+• Pauzë: çaktivizo bllokimin për disa minuta; aktivizohet sërish vetë.
 
-Mbaj atë që ka rëndësi
+Ruaj atë që ka rëndësi
 • Lejo videot që të dërgojnë miqtë në mesazhe private.
 • Zgjidh nëse Stories llogariten në kufijtë e tu.
-• Shfaq një kohëmatës të vogël në ekran ndërsa shikon.
+• Shih një kohëmatës të vogël live gjatë shikimit.
 
-Shiko ku shkon koha jote
+Kupto zakonet e tua
 • Kronologji ditore e çdo seance, sipas aplikacionit.
 • Mesatare për çdo ditë të javës.
-• Shfleto ditët e kaluara për të dalluar zakonet e tua.
+• Shfleto ditët e kaluara për të dalluar modelet.
 
 Aplikacionet e mbështetura
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite dhe Snapchat.
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite dhe Snapchat.
 
-Privatësia në radhë të parë
-• Plotësisht me kod të hapur në GitHub.
-• Pa reklama, pa gjurmim dhe pa llogari.
-• Historiku i përdorimit mbetet në telefonin tënd.
+Privatësi që në themel
+Scrolless nuk ka reklama, analitikë apo gjurmim dhe nuk kërkon llogari. Historiku i përdorimit mbetet në telefonin tënd dhe kodi është i hapur që ta kontrollojë kushdo.
 
 Leja e qasshmërisë
-Scrolless e përdor shërbimin e qasshmërisë vetëm për të zbuluar kur në ekran shfaqet përmbajtje e mbështetur me video të shkurtra dhe për ta mbyllur ose kufizuar sipas cilësimeve të tua. Nuk mbledh dhe nuk ndan asnjë informacion personal.
+Scrolless e përdor qasshmërinë vetëm për të dalluar ekranet e mbështetura me video të shkurtra dhe për të zbatuar rregullat e tua të bllokimit. Nuk regjistron, nuk ruan dhe nuk dërgon përmbajtjen e ekranit tënd. Gjithçka ndodh në pajisjen tënde.
+
+Më pak scroll pa qëllim, çdo herë një scroll më pak.
+
+Kodi burimor: https://github.com/DuarteBarbosaDev/Scrolless
+Ikonat nga Icons8

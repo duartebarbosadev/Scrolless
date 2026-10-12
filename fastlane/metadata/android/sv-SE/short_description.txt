@@ -1,1 +1,1 @@
-Blockera oändliga korta videor i appar som TikTok, Instagram, YouTube med flera.
+Blockera Reels, Shorts & TikTok eller sätt dagliga gränser. Öppen källkod.

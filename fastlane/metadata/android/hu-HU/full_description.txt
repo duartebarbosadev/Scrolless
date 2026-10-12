@@ -1,28 +1,33 @@
-A Scrolless segít visszaszerezni azt az időt, amit a végtelen rövid videókra pazarolsz. Blokkold a Reels, Shorts és TikTok videókat, vagy állíts be a napodhoz illő korlátokat, miközben az alkalmazások többi része továbbra is működik.
+Nincsenek hirdetések. Nincs követés. Teljesen nyílt forráskódú.
+
+A Scrolless segít kevesebb rövid videót nézni a TikTok, Instagram Reels, YouTube Shorts, Facebook Reels és Snapchat alkalmazásban, miközben az appok többi része ugyanúgy működik. Tölts kevesebb időt a végtelen hírfolyamokban, maradj fókuszban, és vedd vissza az irányítást a képernyőidőd felett – fiók nélkül.
 
 Válaszd ki, hogyan blokkolsz
-• Összes blokkolása: a rövid videós hírfolyamok azonnal bezárulnak, amint megnyitod őket.
-• Napi limit: állítsd be, mennyi időd van naponta. Ha lejár, a Scrolless megállítja a görgetést.
-• Időintervallum: váltogasd a blokkolási időszakokat és a nézési időt, például óránként legfeljebb 5 percet.
-• Szünet: kell pár perc? Szüneteltesd a blokkolást, és magától újra bekapcsol.
+• Összes blokkolása: bezárja a rövidvideó-hírfolyamokat, amint megnyílnak.
+• Napi limit: állítsd be, mennyi időd van naponta.
+• Időintervallum: váltogasd a blokkolást és a nézési időt, például óránként legfeljebb 5 percig.
+• Szünet: kapcsold ki a blokkolást néhány percre; utána magától visszakapcsol.
 
-Tartsd meg, ami számít
-• Engedélyezd a barátaidtól privát üzenetben kapott videókat.
-• Döntsd el, hogy a történetek beleszámítsanak-e a korlátokba.
-• Jeleníts meg egy kis időzítőt a képernyőn nézés közben.
+Tartsd meg, ami fontos
+• Engedélyezd a videókat, amelyeket a barátaid DM-ben küldenek.
+• Döntsd el, hogy a történetek beleszámítsanak-e a limitekbe.
+• Nézés közben egy kis élő időzítőt látsz.
 
-Lásd, mire megy el az időd
-• Napi idővonal minden munkamenetről, alkalmazásonként.
+Ismerd meg a szokásaidat
+• Minden munkamenet napi idővonala, alkalmazásonként.
 • Átlagok a hét minden napjára.
-• Böngészd a korábbi napokat, és ismerd fel a szokásaidat.
+• Böngészd a korábbi napokat, és fedezd fel a visszatérő mintákat.
 
 Támogatott alkalmazások
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite és Snapchat.
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite és Snapchat.
 
 Adatvédelem alapból
-• Teljesen nyílt forráskódú a GitHubon.
-• Nincs reklám, nincs követés és nincs fiók.
-• A használati előzményeid a telefonodon maradnak.
+A Scrolless nem tartalmaz hirdetéseket, analitikát vagy követést, és nem kell hozzá fiók. A használati előzményeid a telefonodon maradnak, a kód pedig nyílt, így bárki ellenőrizheti.
 
-Kisegítő lehetőségekre vonatkozó engedély
-A Scrolless a Kisegítő lehetőségek szolgáltatást kizárólag arra használja, hogy észlelje, ha támogatott rövid videós tartalom van a képernyőn, és a beállításaidnak megfelelően bezárja vagy korlátozza azt. Nem gyűjt és nem oszt meg semmilyen személyes adatot.
+Kisegítő lehetőségek engedély
+A Scrolless a kisegítő lehetőségeket kizárólag a támogatott rövidvideó-képernyők felismerésére és a blokkolási szabályaid alkalmazására használja. Nem rögzíti, nem tárolja és nem küldi el a képernyőd tartalmát. Minden az eszközödön történik.
+
+Kevesebb céltalan görgetés, mindig eggyel kevesebb.
+
+Forráskód: https://github.com/DuarteBarbosaDev/Scrolless
+Ikonok: Icons8

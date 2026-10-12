@@ -1,28 +1,33 @@
-Scrolless giúp bạn lấy lại thời gian đã mất vào những video ngắn bất tận. Chặn Reels, Shorts và TikTok, hoặc đặt giới hạn phù hợp với ngày của bạn, trong khi phần còn lại của mỗi ứng dụng vẫn hoạt động bình thường.
+Không quảng cáo. Không theo dõi. Mã nguồn mở hoàn toàn.
+
+Scrolless giúp bạn bớt xem video ngắn trên TikTok, Instagram Reels, YouTube Shorts, Facebook Reels và Snapchat, trong khi các phần còn lại của mỗi ứng dụng vẫn hoạt động bình thường. Dành ít thời gian hơn cho những bảng tin vô tận, giữ tập trung và lấy lại thời gian sử dụng màn hình, không cần tài khoản.
 
 Chọn cách chặn
-• Chặn tất cả: đóng bảng tin video ngắn ngay khi bạn mở.
-• Giới hạn hàng ngày: đặt thời gian bạn được dùng mỗi ngày. Khi hết giờ, Scrolless sẽ dừng việc lướt.
-• Khoảng thời gian: xen kẽ thời gian nghỉ và thời gian xem, ví dụ tối đa 5 phút mỗi giờ.
-• Tạm dừng: cần vài phút? Hãy tạm dừng chặn, tính năng chặn sẽ tự bật lại.
+• Chặn tất cả: đóng bảng tin video ngắn ngay khi vừa mở.
+• Giới hạn hàng ngày: đặt thời gian bạn được dùng mỗi ngày.
+• Khoảng thời gian: xen kẽ thời gian chặn và thời gian xem, ví dụ tối đa 5 phút mỗi giờ.
+• Tạm dừng: tắt chặn trong vài phút; chặn sẽ tự bật lại.
 
-Giữ lại điều quan trọng
-• Cho phép video bạn bè gửi qua tin nhắn riêng.
-• Chọn có tính Tin vào giới hạn hay không.
-• Hiển thị bộ hẹn giờ nhỏ trên màn hình khi bạn xem.
+Giữ lại những gì quan trọng
+• Cho phép video bạn bè gửi cho bạn trong tin nhắn trực tiếp.
+• Chọn xem tin có được tính vào giới hạn hay không.
+• Xem bộ hẹn giờ trực tiếp nhỏ trong lúc xem.
 
-Xem thời gian của bạn đi đâu
-• Dòng thời gian hằng ngày cho từng phiên, theo ứng dụng.
-• Trung bình cho từng ngày trong tuần.
-• Xem lại các ngày trước để nhận ra thói quen của bạn.
+Hiểu thói quen của bạn
+• Dòng thời gian hằng ngày của mọi phiên, theo ứng dụng.
+• Mức trung bình cho từng ngày trong tuần.
+• Xem lại các ngày trước để nhận ra xu hướng.
 
 Ứng dụng được hỗ trợ
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite và Snapchat.
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite và Snapchat.
 
 Riêng tư ngay từ thiết kế
-• Hoàn toàn mã nguồn mở trên GitHub.
-• Không quảng cáo, không theo dõi, không cần tài khoản.
-• Lịch sử sử dụng được lưu trên điện thoại của bạn.
+Scrolless không có quảng cáo, phân tích hay theo dõi, và không cần tài khoản. Lịch sử sử dụng của bạn chỉ nằm trên điện thoại, và mã nguồn được công khai để ai cũng có thể kiểm tra.
 
 Quyền trợ năng
-Scrolless chỉ sử dụng dịch vụ Trợ năng để phát hiện khi nội dung video ngắn được hỗ trợ xuất hiện trên màn hình và đóng hoặc giới hạn nội dung đó theo cài đặt của bạn. Ứng dụng không thu thập hay chia sẻ bất kỳ thông tin cá nhân nào.
+Scrolless chỉ dùng Trợ năng để phát hiện các màn hình video ngắn được hỗ trợ và áp dụng quy tắc chặn của bạn. Ứng dụng không ghi lại, lưu trữ hay gửi nội dung màn hình của bạn. Mọi thứ đều diễn ra trên thiết bị của bạn.
+
+Bớt lướt vô thức, từng chút một.
+
+Mã nguồn: https://github.com/DuarteBarbosaDev/Scrolless
+Biểu tượng bởi Icons8

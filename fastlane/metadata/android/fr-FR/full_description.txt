@@ -1,28 +1,33 @@
-Scrolless vous aide à reprendre le temps perdu dans les vidéos courtes sans fin. Bloquez les Reels, les Shorts et TikTok, ou fixez des limites adaptées à votre journée, tandis que le reste de chaque appli continue de fonctionner.
+Sans publicité. Sans pistage. Entièrement open source.
 
-Choisissez comment bloquer
-• Bloquer tout : ferme les fils de vidéos courtes dès que vous les ouvrez.
-• Limite quotidienne : choisissez combien de temps vous avez chaque jour. Une fois ce temps écoulé, Scrolless arrête le défilement.
-• Minuteur d’intervalle : alternez périodes de blocage et temps de visionnage, par exemple jusqu’à 5 minutes toutes les heures.
-• Pause : besoin de quelques minutes ? Mettez le blocage en pause, il se réactive tout seul.
+Scrolless vous aide à regarder moins de vidéos courtes sur TikTok, Instagram Reels, YouTube Shorts, Facebook Reels et Snapchat, tout en laissant le reste de chaque application fonctionner normalement. Passez moins de temps sur les fils sans fin, restez concentré et reprenez le contrôle de votre temps d'écran, sans aucun compte.
 
-Gardez l’essentiel
+Choisissez votre mode de blocage
+• Bloquer tout : ferme les fils de vidéos courtes dès leur ouverture.
+• Limite quotidienne : définissez le temps dont vous disposez chaque jour.
+• Intervalle de temps : alternez durée du blocage et temps de visionnage, par exemple jusqu'à 5 minutes par heure.
+• Pause : désactivez le blocage pendant quelques minutes ; il se réactive tout seul.
+
+Gardez l'essentiel
 • Autorisez les vidéos que vos amis vous envoient par messages directs.
 • Choisissez si les stories comptent dans vos limites.
-• Affichez un petit minuteur à l’écran pendant que vous regardez.
+• Affichez un petit minuteur en direct pendant que vous regardez.
 
-Voyez où passe votre temps
-• Chronologie quotidienne de chaque session, par appli.
+Comprenez vos habitudes
+• Chronologie quotidienne de chaque session, par application.
 • Moyennes pour chaque jour de la semaine.
-• Parcourez les jours passés pour repérer vos habitudes.
+• Parcourez les jours précédents pour repérer des tendances.
 
-Applis prises en charge
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite et Snapchat.
+Applications prises en charge
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite et Snapchat.
 
-Confidentialité dès la conception
-• Entièrement open source sur GitHub.
-• Sans publicité, sans suivi et sans compte.
-• Votre historique d’utilisation reste sur votre téléphone.
+Confidentiel par conception
+Scrolless n'a ni publicité, ni statistiques, ni pistage, et ne nécessite aucun compte. Votre historique d'utilisation reste sur votre téléphone, et le code est ouvert pour que chacun puisse le vérifier.
 
-Autorisation d’accessibilité
-Scrolless utilise le service d’accessibilité uniquement pour détecter quand des vidéos courtes prises en charge sont à l’écran, et pour les fermer ou les limiter selon vos paramètres. Il ne collecte ni ne partage aucune donnée personnelle.
+Autorisation d'accessibilité
+Scrolless utilise l'accessibilité uniquement pour détecter les écrans de vidéos courtes pris en charge et appliquer vos règles de blocage. Il n'enregistre, ne stocke et n'envoie pas le contenu de votre écran. Tout se passe sur votre appareil.
+
+Réduisez le défilement machinal, un scroll de moins à la fois.
+
+Code source : https://github.com/DuarteBarbosaDev/Scrolless
+Icônes par Icons8

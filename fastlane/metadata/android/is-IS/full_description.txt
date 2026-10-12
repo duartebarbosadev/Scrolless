@@ -1,28 +1,33 @@
-Scrolless hjálpar þér að endurheimta tímann sem fer í endalaus stutt myndbönd. Lokaðu á Reels, Shorts og TikTok eða settu mörk sem henta deginum þínum, á meðan restin af hverju forriti virkar áfram.
+Engar auglýsingar. Engin rakning. Opinn hugbúnaður að fullu.
+
+Scrolless hjálpar þér að draga úr áhorfi á stutt myndbönd í TikTok, Instagram Reels, YouTube Shorts, Facebook Reels og Snapchat, á meðan restin af hverju forriti virkar áfram. Eyddu minni tíma í endalausar streymisveitur, haltu einbeitingunni og endurheimtu skjátímann þinn – enginn notandaaðgangur nauðsynlegur.
 
 Veldu hvernig þú lokar
-• Loka á allt: lokar straumum með stuttum myndböndum um leið og þú opnar þá.
-• Dagleg mörk: veldu hversu mikinn tíma þú færð á dag. Þegar hann klárast stöðvar Scrolless skrollið.
-• Tímabilsteljari: skiptu á milli lokunartímabila og áhorfstíma, til dæmis allt að 5 mínútur á klukkustund.
-• Hlé: þarftu nokkrar mínútur? Gerðu hlé á lokuninni og hún fer sjálfkrafa aftur í gang.
+• Loka á allt: lokar straumum með stuttum myndböndum um leið og þeir opnast.
+• Dagleg mörk: ákveddu hve mikinn tíma þú færð á hverjum degi.
+• Tímabil: skiptu á milli lokunartíma og áhorfstíma, til dæmis allt að 5 mínútur á klukkustund.
+• Hlé: slökktu á lokuninni í nokkrar mínútur; hún kviknar aftur af sjálfu sér.
 
-Haltu því sem skiptir máli
+Haltu í það sem skiptir máli
 • Leyfðu myndbönd sem vinir senda þér í einkaskilaboðum.
 • Veldu hvort sögur teljist með í mörkunum þínum.
-• Sýndu lítinn teljara á skjánum á meðan þú horfir.
+• Sjáðu lítinn tímamæli í rauntíma á meðan þú horfir.
 
-Sjáðu í hvað tíminn fer
-• Dagleg tímalína yfir hverja lotu, eftir forritum.
+Skildu venjur þínar
+• Dagleg tímalína yfir hverja lotu, eftir forriti.
 • Meðaltöl fyrir hvern vikudag.
-• Flettu í gegnum fyrri daga og komdu auga á venjurnar þínar.
+• Flettu í fyrri dögum og komdu auga á mynstur.
 
 Studd forrit
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite og Snapchat.
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite og Snapchat.
 
 Persónuvernd frá grunni
-• Alveg opinn hugbúnaður á GitHub.
-• Engar auglýsingar, engin rakning og enginn aðgangur.
-• Notkunarsagan þín helst í símanum þínum.
+Scrolless er án auglýsinga, greininga og rakningar og þarf engan notandaaðgang. Notkunarsagan þín helst í símanum þínum og kóðinn er öllum opinn til skoðunar.
 
 Aðgengisheimild
-Scrolless notar aðgengisþjónustuna eingöngu til að greina þegar stutt myndbönd frá studdum forritum birtast á skjánum og til að loka þeim eða takmarka þau samkvæmt stillingunum þínum. Forritið safnar hvorki né deilir neinum persónuupplýsingum.
+Scrolless notar aðgengisþjónustuna eingöngu til að greina studda skjái með stuttum myndböndum og beita lokunarreglunum þínum. Forritið tekur ekki upp, vistar né sendir efnið á skjánum þínum. Allt gerist í tækinu þínu.
+
+Minna hugsunarlaust skrun, einu skruni minna í einu.
+
+Frumkóði: https://github.com/DuarteBarbosaDev/Scrolless
+Tákn frá Icons8

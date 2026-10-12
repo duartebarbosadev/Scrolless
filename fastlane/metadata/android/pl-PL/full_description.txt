@@ -1,28 +1,33 @@
-Scrolless pomaga odzyskać czas, który tracisz na niekończące się krótkie filmy. Blokuj Reels, Shorts i TikToka albo ustaw limity dopasowane do Twojego dnia – reszta każdej aplikacji działa bez zmian.
+Bez reklam. Bez śledzenia. W pełni open source.
+
+Scrolless pomaga ograniczyć krótkie filmy w TikTok, Instagram Reels, YouTube Shorts, Facebook Reels i Snapchat, a reszta każdej aplikacji działa jak dotąd. Spędzaj mniej czasu na niekończących się feedach, zachowaj skupienie i odzyskaj kontrolę nad czasem przed ekranem – bez zakładania konta.
 
 Wybierz sposób blokowania
-• Zablokuj wszystko: zamyka kanały z krótkimi filmami, gdy tylko je otworzysz.
-• Dzienny limit: ustal, ile czasu masz na każdy dzień. Gdy się skończy, Scrolless zatrzyma przewijanie.
-• Interwał czasowy: przeplataj okresy blokady z czasem oglądania, np. maksymalnie 5 minut co godzinę.
-• Pauza: potrzebujesz kilku minut? Wstrzymaj blokowanie, a po chwili samo włączy się ponownie.
+• Zablokuj wszystko: zamyka feedy z krótkimi filmami, gdy tylko się otworzą.
+• Dzienny limit: ustaw, ile czasu masz każdego dnia.
+• Interwał czasowy: przeplataj czas blokady z czasem oglądania, na przykład do 5 minut co godzinę.
+• Pauza: wyłącz blokowanie na kilka minut; włączy się samo z powrotem.
 
 Zachowaj to, co ważne
-• Pozwól na filmy, które znajomi wysyłają Ci w wiadomościach prywatnych.
-• Zdecyduj, czy relacje mają wliczać się do limitów.
-• Wyświetlaj mały minutnik na ekranie podczas oglądania.
+• Zezwalaj na filmy, które znajomi wysyłają Ci w wiadomościach prywatnych.
+• Zdecyduj, czy relacje mają się wliczać do limitów.
+• Podczas oglądania widzisz mały licznik czasu na żywo.
 
-Zobacz, na co poświęcasz czas
+Poznaj swoje nawyki
 • Dzienna oś czasu każdej sesji z podziałem na aplikacje.
 • Średnie dla każdego dnia tygodnia.
-• Przeglądaj poprzednie dni i odkrywaj swoje nawyki.
+• Przeglądaj minione dni, by dostrzec powtarzające się wzorce.
 
 Obsługiwane aplikacje
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite i Snapchat.
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite i Snapchat.
 
 Prywatność w standardzie
-• W pełni otwarty kod na GitHubie.
-• Bez reklam, bez śledzenia i bez konta.
-• Historia użycia zostaje na Twoim telefonie.
+Scrolless nie ma reklam, analityki ani śledzenia i nie wymaga konta. Historia użycia zostaje na Twoim telefonie, a kod jest otwarty – każdy może go sprawdzić.
 
 Uprawnienie ułatwień dostępu
-Scrolless korzysta z usługi ułatwień dostępu wyłącznie po to, by wykrywać na ekranie obsługiwane krótkie filmy i zamykać je lub ograniczać zgodnie z Twoimi ustawieniami. Nie zbiera ani nie udostępnia żadnych danych osobowych.
+Scrolless używa ułatwień dostępu wyłącznie do wykrywania obsługiwanych ekranów z krótkimi filmami i stosowania Twoich reguł blokowania. Nie nagrywa, nie przechowuje ani nie wysyła zawartości ekranu. Wszystko dzieje się na Twoim urządzeniu.
+
+Mniej bezmyślnego przewijania – o jeden scroll mniej za każdym razem.
+
+Kod źródłowy: https://github.com/DuarteBarbosaDev/Scrolless
+Ikony od Icons8

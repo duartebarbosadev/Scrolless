@@ -1,28 +1,33 @@
-Scrolless auttaa sinua saamaan takaisin ajan, jonka menetät loputtomiin lyhytvideoihin. Estä Reels, Shorts ja TikTok tai aseta päivääsi sopivat rajat, ja muu osa sovelluksista toimii edelleen normaalisti.
+Ei mainoksia. Ei seurantaa. Täysin avointa lähdekoodia.
+
+Scrolless auttaa sinua vähentämään lyhytvideoiden katselua sovelluksissa TikTok, Instagram Reels, YouTube Shorts, Facebook Reels ja Snapchat, kun muu osa sovelluksesta toimii kuten ennenkin. Vietä vähemmän aikaa loputtomien syötteiden parissa, pysy keskittyneenä ja ota ruutuaikasi takaisin – ilman tiliä.
 
 Valitse, miten estät
-• Estä kaikki: sulkee lyhytvideosyötteet heti, kun avaat ne.
-• Päivittäinen raja: päätä, paljonko aikaa saat päivässä. Kun aika loppuu, Scrolless pysäyttää selaamisen.
-• Aikaväli: vuorottele estojaksoja ja katseluaikaa, esimerkiksi enintään 5 minuuttia tunnissa.
-• Keskeytä: tarvitsetko muutaman minuutin? Keskeytä esto, ja se palaa päälle itsestään.
+• Estä kaikki: sulkee lyhytvideosyötteet heti, kun ne avautuvat.
+• Päivittäinen raja: päätä, paljonko aikaa saat joka päivä.
+• Aikaväli: vuorottele eston kestoa ja katseluaikaa, esimerkiksi enintään 5 minuuttia tunnissa.
+• Keskeytä: poista esto käytöstä muutamaksi minuutiksi; se palaa päälle itsestään.
 
 Säilytä se, mikä on tärkeää
-• Salli videot, joita ystävät lähettävät sinulle yksityisviesteissä.
-• Valitse, lasketaanko tarinat mukaan rajoihin.
-• Näytä pieni ajastin näytöllä katselun aikana.
+• Salli videot, joita kaverit lähettävät sinulle DM-viesteissä.
+• Valitse, lasketaanko tarinat mukaan rajoihisi.
+• Näe pieni reaaliaikainen ajastin katsellessasi.
 
-Näe, mihin aikasi kuluu
+Ymmärrä tapojasi
 • Päivittäinen aikajana jokaisesta käyttökerrasta sovelluksittain.
 • Keskiarvot jokaiselle viikonpäivälle.
-• Selaa aiempia päiviä ja tunnista tapasi.
+• Selaa aiempia päiviä ja huomaa toistuvat kaavat.
 
 Tuetut sovellukset
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite ja Snapchat.
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite ja Snapchat.
 
 Yksityisyys etusijalla
-• Täysin avointa lähdekoodia GitHubissa.
-• Ei mainoksia, ei seurantaa eikä tiliä.
-• Käyttöhistoriasi pysyy puhelimessasi.
+Scrolless ei sisällä mainoksia, analytiikkaa tai seurantaa eikä vaadi tiliä. Käyttöhistoriasi pysyy puhelimessasi, ja koodi on kenen tahansa tarkistettavissa.
 
-Esteettömyyslupa
-Scrolless käyttää esteettömyyspalvelua vain havaitakseen, milloin näytöllä on tuettua lyhytvideosisältöä, ja sulkeakseen tai rajoittaakseen sitä asetustesi mukaan. Se ei kerää eikä jaa henkilötietoja.
+Esteettömyysoikeus
+Scrolless käyttää esteettömyyspalvelua vain tunnistaakseen tuetut lyhytvideonäkymät ja soveltaakseen estosääntöjäsi. Se ei nauhoita, tallenna eikä lähetä näyttösi sisältöä. Kaikki tapahtuu laitteellasi.
+
+Vähemmän ajatuksetonta selaamista, vieritys kerrallaan.
+
+Lähdekoodi: https://github.com/DuarteBarbosaDev/Scrolless
+Kuvakkeet: Icons8

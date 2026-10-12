@@ -1,1 +1,1 @@
-屏蔽 TikTok、Instagram、YouTube 等应用里让人刷个不停的短视频。
+屏蔽 Reels、Shorts 和 TikTok，或设置每日限制。开源，无广告。

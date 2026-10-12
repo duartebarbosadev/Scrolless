@@ -1,28 +1,33 @@
-Scrolless membantumu merebut kembali waktu yang hilang karena video pendek tanpa akhir. Blokir Reels, Shorts, dan TikTok, atau tetapkan batas yang sesuai dengan harimu, sementara fitur lain di setiap aplikasi tetap berfungsi.
+Tanpa iklan. Tanpa pelacakan. Sepenuhnya open source.
+
+Scrolless membantu kamu mengurangi video pendek di TikTok, Instagram Reels, YouTube Shorts, Facebook Reels, dan Snapchat, sementara bagian lain dari setiap aplikasi tetap berfungsi. Habiskan lebih sedikit waktu di feed yang tak ada habisnya, tetap fokus, dan ambil kembali waktu layarmu, tanpa perlu akun.
 
 Pilih cara memblokir
-• Blokir semua: menutup feed video pendek begitu kamu membukanya.
-• Batas harian: tentukan berapa banyak waktumu setiap hari. Saat waktunya habis, Scrolless menghentikan scrolling.
-• Interval waktu: selingi periode blokir dan waktu tonton, misalnya hingga 5 menit setiap jam.
-• Jeda: butuh beberapa menit? Jeda pemblokiran, dan pemblokiran akan aktif lagi dengan sendirinya.
+• Blokir semua: menutup feed video pendek begitu dibuka.
+• Batas harian: atur berapa lama waktu yang kamu dapat setiap hari.
+• Interval waktu: bergantian antara lama blokir dan waktu tonton, misalnya hingga 5 menit setiap jam.
+• Jeda: matikan pemblokiran selama beberapa menit; pemblokiran akan aktif lagi dengan sendirinya.
 
-Tetap simpan yang penting
+Tetap izinkan yang penting
 • Izinkan video yang dikirim teman lewat pesan pribadi.
-• Pilih apakah Stories dihitung dalam batasmu.
-• Tampilkan timer kecil di layar saat kamu menonton.
+• Pilih apakah Stories ikut dihitung dalam batasmu.
+• Lihat timer langsung kecil saat menonton.
 
-Lihat ke mana waktumu pergi
+Pahami kebiasaanmu
 • Linimasa harian setiap sesi, per aplikasi.
 • Rata-rata untuk setiap hari dalam seminggu.
-• Telusuri hari-hari sebelumnya untuk mengenali kebiasaanmu.
+• Telusuri hari-hari sebelumnya untuk menemukan pola.
 
 Aplikasi yang didukung
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite, dan Snapchat.
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite, dan Snapchat.
 
 Privasi sejak awal
-• Sepenuhnya sumber terbuka di GitHub.
-• Tanpa iklan, tanpa pelacakan, dan tanpa akun.
-• Riwayat penggunaanmu tetap tersimpan di ponselmu.
+Scrolless tidak memiliki iklan, analitik, atau pelacakan, dan tidak memerlukan akun. Riwayat penggunaanmu tetap tersimpan di ponselmu, dan kodenya terbuka untuk diperiksa siapa saja.
 
 Izin aksesibilitas
-Scrolless menggunakan layanan Aksesibilitas hanya untuk mendeteksi saat konten video pendek yang didukung muncul di layar, lalu menutup atau membatasinya sesuai setelanmu. Scrolless tidak mengumpulkan atau membagikan informasi pribadi apa pun.
+Scrolless menggunakan Aksesibilitas hanya untuk mendeteksi layar video pendek yang didukung dan menerapkan aturan pemblokiranmu. Scrolless tidak merekam, menyimpan, atau mengirim konten layarmu. Semuanya terjadi di perangkatmu.
+
+Kurangi scrolling tanpa sadar, sedikit demi sedikit.
+
+Kode sumber: https://github.com/DuarteBarbosaDev/Scrolless
+Ikon oleh Icons8

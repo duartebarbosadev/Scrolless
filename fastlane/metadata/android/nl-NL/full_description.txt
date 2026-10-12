@@ -1,28 +1,33 @@
-Scrolless helpt je de tijd terug te winnen die je kwijtraakt aan eindeloze korte video’s. Blokkeer Reels, Shorts en TikTok, of stel limieten in die bij je dag passen, terwijl de rest van elke app gewoon blijft werken.
+Geen advertenties. Geen tracking. Volledig open source.
+
+Scrolless helpt je minder korte video's te kijken in TikTok, Instagram Reels, YouTube Shorts, Facebook Reels en Snapchat, terwijl de rest van elke app gewoon blijft werken. Besteed minder tijd aan eindeloze feeds, blijf gefocust en neem je schermtijd terug, zonder account.
 
 Kies hoe je blokkeert
-• Alles blokkeren: sluit feeds met korte video’s zodra je ze opent.
-• Dagelijkse limiet: stel in hoeveel tijd je per dag krijgt. Is die op, dan stopt Scrolless het scrollen.
-• Intervaltimer: wissel blokkeerperiodes en kijktijd af, bijvoorbeeld maximaal 5 minuten per uur.
-• Pauze: even een paar minuten nodig? Pauzeer het blokkeren en het gaat vanzelf weer aan.
+• Alles blokkeren: sluit feeds met korte video's zodra ze openen.
+• Dagelijkse limiet: bepaal hoeveel tijd je per dag krijgt.
+• Tijdsinterval: wissel blokkeerduur en kijktijd af, bijvoorbeeld maximaal 5 minuten per uur.
+• Pauze: zet het blokkeren een paar minuten uit; het gaat vanzelf weer aan.
 
 Houd wat belangrijk is
-• Sta video’s toe die vrienden je via DM sturen.
+• Sta video's toe die vrienden je via DM's sturen.
 • Kies of verhalen meetellen voor je limieten.
-• Toon een kleine timer op het scherm terwijl je kijkt.
+• Zie een kleine live-timer terwijl je kijkt.
 
-Zie waar je tijd naartoe gaat
+Begrijp je gewoonten
 • Dagelijkse tijdlijn van elke sessie, per app.
 • Gemiddelden voor elke dag van de week.
-• Blader door eerdere dagen en ontdek je gewoonten.
+• Blader door eerdere dagen om patronen te ontdekken.
 
 Ondersteunde apps
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite en Snapchat.
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite en Snapchat.
 
-Privé vanaf de basis
-• Volledig open source op GitHub.
-• Geen advertenties, geen tracking en geen account.
-• Je gebruiksgeschiedenis blijft op je telefoon.
+Privé vanaf het begin
+Scrolless heeft geen advertenties, analytics of tracking en heeft geen account nodig. Je gebruiksgeschiedenis blijft op je telefoon, en de code is open zodat iedereen hem kan controleren.
 
-Toegankelijkheidsmachtiging
-Scrolless gebruikt de toegankelijkheidsservice alleen om te herkennen wanneer ondersteunde korte video’s op het scherm staan en om ze volgens je instellingen te sluiten of te beperken. Er worden geen persoonlijke gegevens verzameld of gedeeld.
+Toegankelijkheidsrechten
+Scrolless gebruikt Toegankelijkheid alleen om ondersteunde schermen met korte video's te herkennen en je blokkeerregels toe te passen. Het neemt je scherminhoud niet op, slaat die niet op en verstuurt die niet. Alles gebeurt op je apparaat.
+
+Minder gedachteloos scrollen, één scroll minder per keer.
+
+Broncode: https://github.com/DuarteBarbosaDev/Scrolless
+Iconen door Icons8

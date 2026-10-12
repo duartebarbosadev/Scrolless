@@ -1,28 +1,33 @@
-Scrolless hjælper dig med at tage den tid tilbage, du mister til endeløse korte videoer. Blokér Reels, Shorts og TikTok, eller sæt grænser, der passer til din dag, mens resten af hver app fortsat virker.
+Ingen reklamer. Ingen sporing. Helt open source.
+
+Scrolless hjælper dig med at skære ned på korte videoer i TikTok, Instagram Reels, YouTube Shorts, Facebook Reels og Snapchat, mens resten af hver app fortsat virker. Brug mindre tid på endeløse feeds, bevar fokus og tag din skærmtid tilbage – helt uden konto.
 
 Vælg, hvordan du blokerer
-• Blokér alt: lukker feeds med korte videoer, så snart du åbner dem.
-• Daglig grænse: vælg, hvor meget tid du får hver dag. Når den er brugt op, stopper Scrolless scrollingen.
-• Intervaltimer: skift mellem blokeringsperioder og seertid, for eksempel op til 5 minutter i timen.
-• Pause: brug for et par minutter? Sæt blokeringen på pause, så slår den selv til igen.
+• Blokér alt: lukker feeds med korte videoer, så snart de åbnes.
+• Daglig grænse: bestem, hvor meget tid du får hver dag.
+• Tidsinterval: skift mellem blokeringstid og seertid, for eksempel op til 5 minutter i timen.
+• Pause: slå blokeringen fra i et par minutter; den slår sig selv til igen.
 
 Behold det, der betyder noget
 • Tillad videoer, som venner sender dig i direkte beskeder.
 • Vælg, om Stories tæller med i dine grænser.
-• Vis en lille timer på skærmen, mens du ser.
+• Se en lille live-timer, mens du ser.
 
-Se, hvor din tid bliver af
+Forstå dine vaner
 • Daglig tidslinje over hver session, opdelt efter app.
 • Gennemsnit for hver ugedag.
-• Gå tilbage til tidligere dage, og få øje på dine vaner.
+• Gennemse tidligere dage, og find mønstre.
 
 Understøttede apps
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite og Snapchat.
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite og Snapchat.
 
 Privat fra starten
-• Helt åben kildekode på GitHub.
-• Ingen reklamer, ingen sporing og ingen konto.
-• Din brugshistorik bliver på din telefon.
+Scrolless har ingen reklamer, analyse eller sporing og kræver ingen konto. Din brugshistorik bliver på din telefon, og koden er åben, så alle kan tjekke den.
 
-Tilladelse til hjælpefunktioner
-Scrolless bruger kun tjenesten til hjælpefunktioner til at registrere, når understøttet indhold med korte videoer vises på skærmen, og til at lukke eller begrænse det efter dine indstillinger. Appen indsamler eller deler ingen personlige oplysninger.
+Tilladelse til tilgængelighed
+Scrolless bruger kun tilgængelighed til at genkende understøttede skærme med korte videoer og anvende dine blokeringsregler. Appen optager, gemmer og sender ikke indholdet på din skærm. Alt foregår på din enhed.
+
+Mindre tankeløs scrolling, ét scroll mindre ad gangen.
+
+Kildekode: https://github.com/DuarteBarbosaDev/Scrolless
+Ikoner af Icons8

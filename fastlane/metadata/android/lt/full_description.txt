@@ -1,28 +1,33 @@
-Scrolless padeda susigrąžinti laiką, kurį prarandate žiūrėdami begalinius trumpus vaizdo įrašus. Blokuokite Reels, Shorts ir TikTok arba nustatykite jūsų dienai tinkančius limitus, o likusi kiekvienos programėlės dalis veiks kaip įprastai.
+Jokių reklamų. Jokio sekimo. Visiškai atvirasis kodas.
+
+Scrolless padeda sumažinti trumpųjų vaizdo įrašų žiūrėjimą programėlėse TikTok, Instagram Reels, YouTube Shorts, Facebook Reels ir Snapchat, o visa kita programėlėse veikia kaip įprasta. Praleiskite mažiau laiko begaliniuose srautuose, išlaikykite dėmesį ir susigrąžinkite savo ekrano laiką – paskyros nereikia.
 
 Pasirinkite, kaip blokuoti
-• Blokuoti viską: uždaro trumpų vaizdo įrašų srautus vos juos atidarius.
-• Dienos limitas: nustatykite, kiek laiko turite per dieną. Jam pasibaigus, Scrolless sustabdo slinkimą.
+• Blokuoti viską: uždaro trumpųjų vaizdo įrašų srautus vos jiems atsidarius.
+• Dienos limitas: nustatykite, kiek laiko turite kasdien.
 • Laiko intervalas: kaitaliokite pertraukas ir žiūrėjimo laiką, pavyzdžiui, iki 5 minučių kas valandą.
-• Pristabdyti: reikia kelių minučių? Pristabdykite blokavimą, ir jis vėl įsijungs savaime.
+• Pristabdyti: kelioms minutėms išjunkite blokavimą; jis vėl įsijungs savaime.
 
 Palikite tai, kas svarbu
 • Leiskite vaizdo įrašus, kuriuos draugai jums siunčia privačiose žinutėse.
-• Pasirinkite, ar istorijos įskaičiuojamos į limitus.
-• Žiūrėdami rodykite nedidelį laikmatį ekrane.
+• Pasirinkite, ar istorijos įskaičiuojamos į jūsų limitus.
+• Matykite nedidelį tiesioginį laikmatį, kol žiūrite.
 
-Pamatykite, kur dingsta jūsų laikas
-• Kiekvieno seanso dienos laiko juosta pagal programėlę.
+Supraskite savo įpročius
+• Kiekvienos sesijos dienos laiko juosta pagal programėlę.
 • Kiekvienos savaitės dienos vidurkiai.
-• Naršykite ankstesnes dienas ir atpažinkite savo įpročius.
+• Naršykite ankstesnes dienas ir pastebėkite dėsningumus.
 
 Palaikomos programėlės
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite ir Snapchat.
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite ir Snapchat.
 
-Privatumas – svarbiausia
-• Visiškai atviras kodas GitHub platformoje.
-• Jokių reklamų, jokio sekimo ir jokios paskyros.
-• Jūsų naudojimo istorija lieka jūsų telefone.
+Privatumas – nuo pat pradžių
+Scrolless neturi reklamų, analitikos ar sekimo ir nereikalauja paskyros. Jūsų naudojimo istorija lieka jūsų telefone, o kodas atviras – kiekvienas gali jį patikrinti.
 
 Pritaikymo neįgaliesiems leidimas
-Scrolless naudoja pritaikymo neįgaliesiems paslaugą tik tam, kad aptiktų, kada ekrane rodomas palaikomas trumpų vaizdo įrašų turinys, ir pagal jūsų nustatymus jį uždarytų arba apribotų. Programėlė nerenka ir nebendrina jokios asmeninės informacijos.
+Scrolless naudoja pritaikymo neįgaliesiems paslaugą tik palaikomiems trumpųjų vaizdo įrašų ekranams aptikti ir jūsų blokavimo taisyklėms taikyti. Ji neįrašo, nesaugo ir nesiunčia jūsų ekrano turinio. Viskas vyksta jūsų įrenginyje.
+
+Mažiau beprasmio slinkimo – vis vienu slinkimu mažiau.
+
+Šaltinio kodas: https://github.com/DuarteBarbosaDev/Scrolless
+Piktogramos: Icons8

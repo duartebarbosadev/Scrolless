@@ -1,28 +1,33 @@
-Scrolless hilft dir, die Zeit zurückzugewinnen, die du an endlose Kurzvideos verlierst. Blockiere Reels, Shorts und TikTok oder setze Limits, die zu deinem Tag passen – der Rest jeder App funktioniert ganz normal weiter.
+Keine Werbung. Kein Tracking. Komplett Open Source.
+
+Scrolless hilft dir, weniger Kurzvideos auf TikTok, Instagram Reels, YouTube Shorts, Facebook Reels und Snapchat zu schauen, während der Rest jeder App normal weiterläuft. Verbringe weniger Zeit in endlosen Feeds, bleib konzentriert und hol dir deine Bildschirmzeit zurück, ganz ohne Konto.
 
 Wähle, wie du blockierst
-• Alles blockieren: schließt Kurzvideo-Feeds, sobald du sie öffnest.
-• Tageslimit: Lege fest, wie viel Zeit du pro Tag hast. Ist sie aufgebraucht, stoppt Scrolless das Scrollen.
-• Intervall-Timer: Wechsle zwischen Sperrphasen und Sehzeit, zum Beispiel bis zu 5 Minuten pro Stunde.
-• Pause: Brauchst du ein paar Minuten? Pausiere die Blockierung – sie schaltet sich von selbst wieder ein.
+• Alles blockieren: schließt Kurzvideo-Feeds, sobald sie sich öffnen.
+• Tages-Limit: lege fest, wie viel Zeit du pro Tag bekommst.
+• Zeit-Intervall: wechsle zwischen Sperrdauer und Sehzeit, zum Beispiel bis zu 5 Minuten pro Stunde.
+• Pause: schalte die Blockierung für ein paar Minuten aus; sie geht von selbst wieder an.
 
-Behalte, was zählt
-• Erlaube Videos, die dir Freunde per DM schicken.
-• Entscheide, ob Storys auf deine Limits angerechnet werden.
-• Zeige beim Ansehen einen kleinen Timer auf dem Bildschirm an.
+Behalte, was wichtig ist
+• Erlaube Videos, die dir Freunde in DMs schicken.
+• Entscheide, ob Storys zu deinen Limits zählen.
+• Sieh beim Schauen einen kleinen Live-Timer.
 
-Sieh, wo deine Zeit bleibt
+Verstehe deine Gewohnheiten
 • Tägliche Zeitleiste jeder Sitzung, nach App.
 • Durchschnittswerte für jeden Wochentag.
-• Blättere durch vergangene Tage und erkenne deine Gewohnheiten.
+• Blättere durch vergangene Tage, um Muster zu erkennen.
 
 Unterstützte Apps
-Instagram Reels, YouTube Shorts, TikTok, TikTok Lite, Facebook Reels, Facebook Lite und Snapchat.
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite und Snapchat.
 
 Privat von Grund auf
-• Vollständig Open Source auf GitHub.
-• Keine Werbung, kein Tracking und kein Konto.
-• Dein Nutzungsverlauf bleibt auf deinem Handy.
+Scrolless hat keine Werbung, keine Analysen und kein Tracking und braucht kein Konto. Dein Nutzungsverlauf bleibt auf deinem Handy, und der Code ist offen, damit ihn jeder prüfen kann.
 
-Berechtigung für Bedienungshilfen
-Scrolless nutzt den Bedienungshilfen-Dienst nur, um zu erkennen, wann unterstützte Kurzvideo-Inhalte auf dem Bildschirm sind, und um sie gemäß deinen Einstellungen zu schließen oder zu begrenzen. Es werden keine personenbezogenen Daten erfasst oder weitergegeben.
+Bedienungshilfen-Berechtigung
+Scrolless nutzt die Bedienungshilfen nur, um unterstützte Kurzvideo-Bildschirme zu erkennen und deine Blockierregeln anzuwenden. Es zeichnet deine Bildschirminhalte nicht auf, speichert sie nicht und sendet sie nicht. Alles passiert auf deinem Gerät.
+
+Weniger gedankenloses Scrollen, Scroll für Scroll.
+
+Quellcode: https://github.com/DuarteBarbosaDev/Scrolless
+Icons von Icons8
