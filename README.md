@@ -39,7 +39,19 @@ Since the app requires accessibility permissions, which can have sketchy uses, S
 
 ## Screenshots
 
-<img src="art/Scrolless.png" alt="Scrolless app" width="250">
+<p align="center">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/01-less-scrolling.png" alt="Less scrolling, more living" width="200">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/02-choose-your-cap.png" alt="Choose your daily limit" width="200">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/03-set-your-rhythm.png" alt="Set an interval timer" width="200">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/04-keep-the-chats.png" alt="Keep videos sent in DMs" width="200">
+</p>
+<p align="center">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/05-timeline-averages.png" alt="Daily timeline and weekday averages" width="200">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/06-usage-history.png" alt="Usage history" width="200">
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/07-built-on-trust.png" alt="Open source, no ads, no tracking" width="200">
+</p>
+
+Screenshots are generated from the real app in every supported language; see [tools/store-screenshots](tools/store-screenshots).
 
 ## Troubleshooting
 
