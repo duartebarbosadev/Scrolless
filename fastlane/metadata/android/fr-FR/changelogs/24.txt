@@ -1,0 +1,6 @@
+• Blocage des stories ajouté pour Instagram, Snapchat et Facebook.
+• Les vidéos TikTok sont maintenant masquées, et celles envoyées en messages directs peuvent être autorisées.
+• Le minuteur flottant est désormais activé par défaut.
+• Ajout de 11 nouvelles langues et du choix de la langue de l’app.
+• Une aide permet de garder Scrolless actif sur Xiaomi et téléphones similaires.
+• Corrections : détection de TikTok Lite, démarrage du minuteur par intervalle et scintillement au lancement.

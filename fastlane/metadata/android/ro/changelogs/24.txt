@@ -1,0 +1,6 @@
+• A fost adăugată blocarea poveștilor pe Instagram, Snapchat și Facebook.
+• Videoclipurile TikTok sunt acum acoperite, iar cele din mesaje directe pot fi permise.
+• Cronometrul plutitor este acum activat implicit.
+• Au fost adăugate 11 limbi noi și alegerea limbii aplicației.
+• Un ghid nou ajută la menținerea Scrolless activ pe telefoanele Xiaomi și similare.
+• Au fost corectate detectarea TikTok Lite, pornirea cronometrului pe intervale și o pâlpâire la deschidere.

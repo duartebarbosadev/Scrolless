@@ -1,0 +1,6 @@
+• Pemblokiran Stories untuk Instagram, Snapchat, dan Facebook telah ditambahkan.
+• Video TikTok kini ditutupi, dan video yang dikirim lewat pesan pribadi dapat diizinkan.
+• Timer mengambang kini aktif secara default.
+• 11 bahasa baru dan pengaturan bahasa khusus aplikasi telah ditambahkan.
+• Panduan agar Scrolless tetap berjalan di Xiaomi dan ponsel serupa telah ditambahkan.
+• Deteksi TikTok Lite, mulainya timer interval, dan kedipan saat dibuka telah diperbaiki.

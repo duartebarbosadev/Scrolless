@@ -1,0 +1,6 @@
+• Instagram, Snapchat ve Facebook için Hikâye engelleme eklendi.
+• TikTok videolarının üstü artık örtülüyor; DM'lerde gönderilen videolara izin verilebiliyor.
+• Kayan zamanlayıcı artık varsayılan olarak açık.
+• 11 yeni dil ve uygulamaya özel dil desteği eklendi.
+• Scrolless'ın Xiaomi ve benzeri telefonlarda çalışmaya devam etmesi için yardım eklendi.
+• TikTok Lite algılama, aralık zamanlayıcısının başlaması ve açılıştaki titreme düzeltildi.

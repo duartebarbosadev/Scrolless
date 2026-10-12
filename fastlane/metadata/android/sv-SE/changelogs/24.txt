@@ -1,0 +1,6 @@
+• Blockering av Stories för Instagram, Snapchat och Facebook har lagts till.
+• TikTok-videor täcks nu över, och videor som skickas i DM på TikTok kan tillåtas.
+• Den flytande timern är nu på som standard.
+• 11 nya språk och språkval per app har lagts till.
+• Hjälp för att hålla Scrolless igång på Xiaomi och liknande telefoner har lagts till.
+• Identifieringen i TikTok Lite, starten av intervalltimern och ett flimmer vid start har rättats.

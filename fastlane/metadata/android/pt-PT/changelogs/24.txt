@@ -1,0 +1,6 @@
+• Adicionado bloqueio de histórias no Instagram, Snapchat e Facebook.
+• Os vídeos do TikTok são agora tapados e os enviados em DMs podem ser permitidos.
+• O temporizador flutuante vem agora ativado por predefinição.
+• Adicionados 11 novos idiomas e a opção de idioma por app.
+• Nova ajuda para manter o Scrolless ativo em telemóveis Xiaomi e semelhantes.
+• Corrigidos a deteção do TikTok Lite, o arranque do temporizador por intervalo e uma cintilação ao abrir.

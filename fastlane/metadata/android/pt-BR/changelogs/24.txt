@@ -1,0 +1,6 @@
+• Adicionado bloqueio de Stories no Instagram, Snapchat e Facebook.
+• Os vídeos do TikTok agora são cobertos, e os enviados em DMs podem ser permitidos.
+• O timer flutuante agora vem ativado por padrão.
+• Adicionados 11 novos idiomas e suporte a idioma próprio do app.
+• Adicionada ajuda para manter o Scrolless funcionando em celulares Xiaomi e similares.
+• Corrigidos a detecção do TikTok Lite, o início do timer por intervalo e uma piscada na abertura.

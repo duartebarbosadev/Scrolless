@@ -1,0 +1,6 @@
+• Lisatud on lugude blokeerimine Instagramis, Snapchatis ja Facebookis.
+• TikToki videod kaetakse nüüd ja TikToki privaatsõnumites saadetud videod saab lubada.
+• Hõljuv taimer on nüüd vaikimisi sisse lülitatud.
+• Lisatud on 11 uut keelt ja võimalus määrata rakendusele eraldi keel.
+• Lisatud on juhend, mis aitab hoida Scrollessi töös Xiaomi ja sarnastel telefonidel.
+• Parandatud on TikTok Lite'i tuvastamine, intervalltaimeri käivitumine ja vilkumine rakenduse avamisel.

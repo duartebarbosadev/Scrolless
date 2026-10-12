@@ -1,0 +1,6 @@
+• Storys auf Instagram, Snapchat und Facebook können jetzt blockiert werden.
+• TikTok-Videos werden jetzt abgedeckt; in TikTok-DMs gesendete Videos lassen sich erlauben.
+• Der schwebende Timer ist jetzt standardmäßig aktiv.
+• 11 neue Sprachen; die App-Sprache lässt sich jetzt separat festlegen.
+• Neue Hilfe, damit Scrolless auf Xiaomi und ähnlichen Handys weiterläuft.
+• Korrigiert: Erkennung in TikTok Lite, Start des Intervall-Timers und Flackern beim Öffnen der App.

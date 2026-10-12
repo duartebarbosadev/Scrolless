@@ -1,0 +1,6 @@
+• Hozzáadtuk a történetek blokkolását az Instagramon, a Snapchaten és a Facebookon.
+• A TikTok-videókat mostantól eltakarjuk, a DM-ben küldött videók engedélyezhetők.
+• A lebegő időzítő mostantól alapból be van kapcsolva.
+• Hozzáadtunk 11 új nyelvet, és az alkalmazás nyelve külön is beállítható.
+• Útmutatót adtunk hozzá, hogy a Scrolless Xiaomi és hasonló telefonokon is fusson.
+• Javítottuk a TikTok Lite felismerését, az intervallum-időzítő indítását és az induláskori villódzást.

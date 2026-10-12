@@ -1,0 +1,6 @@
+• È stato aggiunto il blocco delle storie su Instagram, Snapchat e Facebook.
+• I video di TikTok ora vengono coperti e quelli inviati nei messaggi diretti si possono consentire.
+• Il timer mobile ora è attivo di default.
+• Aggiunte 11 nuove lingue e la scelta della lingua dell’app.
+• Nuova guida per mantenere attivo Scrolless su Xiaomi e telefoni simili.
+• Corretti il rilevamento di TikTok Lite, l’avvio del timer a intervalli e uno sfarfallio all’apertura.

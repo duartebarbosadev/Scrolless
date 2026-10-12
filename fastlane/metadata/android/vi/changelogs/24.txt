@@ -1,0 +1,6 @@
+• Đã thêm tính năng chặn tin trên Instagram, Snapchat và Facebook.
+• Video TikTok giờ được che lại và có thể cho phép video gửi qua tin nhắn trực tiếp trên TikTok.
+• Bộ hẹn giờ nổi giờ được bật theo mặc định.
+• Đã thêm 11 ngôn ngữ mới và hỗ trợ chọn ngôn ngữ riêng cho ứng dụng.
+• Đã thêm hướng dẫn giúp Scrolless luôn chạy trên điện thoại Xiaomi và các máy tương tự.
+• Đã sửa lỗi nhận diện TikTok Lite, khởi động hẹn giờ theo khoảng và nháy màn hình khi mở ứng dụng.
