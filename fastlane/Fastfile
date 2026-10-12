@@ -251,12 +251,8 @@ platform :android do
       status: options[:status] || "completed"
     )
 
-    # Store images are listing-wide, so a failed sync must not block the binary release.
-    begin
-      images
-    rescue StandardError => e
-      UI.important("Store image upload failed; rerun `fastlane android images` after fixing it: #{e.message}")
-    end
+    # Runs after the binary upload, so a rerun after a listing error skips straight back here.
+    store_listing
   end
 
   desc "Verify, build, and upload a release to Google Play Internal"
@@ -281,14 +277,14 @@ platform :android do
     )
   end
 
-  desc "Upload store icon, feature graphics, and screenshots for every locale"
-  lane :images do |options|
+  desc "Upload the store listing (titles, descriptions, icon, feature graphics, screenshots) for every locale"
+  lane :store_listing do |options|
     upload_to_play_store(
       package_name: PACKAGE_NAME,
       metadata_path: METADATA_DIR,
       skip_upload_apk: true,
       skip_upload_aab: true,
-      skip_upload_metadata: true,
+      skip_upload_metadata: false,
       skip_upload_changelogs: true,
       skip_upload_images: false,
       skip_upload_screenshots: false,
