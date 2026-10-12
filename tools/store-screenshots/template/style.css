@@ -1,0 +1,43 @@
+/* Store screenshot styling. Pages are 1080x1920 (screenshots) or 1024x500 (feature graphic). */
+:root {
+  --cream: #f7f5ec;          /* page background */
+  --green-dark: #0e3a22;     /* headline */
+  --green-text: #3f6b55;     /* subtitle */
+  --green-brand: #163f2a;    /* "Scrolless" wordmark */
+  --phone-frame: #173d29;
+}
+* { box-sizing: border-box }
+body { margin: 0; width: var(--width); height: var(--height); overflow: hidden; background: var(--cream); position: relative }
+
+/* Background waves (template/backgrounds/*.svg), mirrored for right-to-left languages. */
+.bg { position: absolute; inset: 0 }
+[dir=rtl] .bg { transform: scaleX(-1) }
+
+/* Logo and wordmark, top start corner. */
+.logo { position: absolute; top: 66px; inset-inline-start: 72px; display: flex; align-items: center; gap: 18px }
+.logo img { width: 96px; height: 96px; object-fit: contain }
+.logo span { direction: ltr; font: 600 54px/1 var(--body-font); color: var(--green-brand); letter-spacing: -.5px }
+.wordmark { position: absolute; top: 62px; left: 64px; width: 480px; text-align: start; font: 600 34px/1 var(--body-font); color: var(--green-brand) }
+.wordmark span { direction: ltr; unicode-bidi: isolate }
+
+/* Headline (one line per sentence) and subtitle. template/fit.js shrinks them until they fit the box. */
+.text { position: absolute; overflow: hidden }
+h1 { margin: 0; font-family: var(--display-font); font-weight: 900; font-stretch: 87.5%; color: var(--green-dark);
+     line-height: 1.02; letter-spacing: -.01em; word-break: var(--word-break); text-wrap: balance }
+h1 span { display: block }
+p.sub { margin: .55em 0 0; font-family: var(--body-font); font-weight: 400; color: var(--green-text); line-height: 1.25;
+        word-break: var(--word-break); text-wrap: balance }
+
+/* Phone frame around a real app capture; it runs off the bottom edge. */
+.phone { position: absolute; background: var(--phone-frame); border-radius: 86px; padding: 16px; box-shadow: 0 34px 70px rgba(23,61,41,.28) }
+.screen { overflow: hidden; border-radius: 70px; position: relative }
+.screen img { display: block; position: absolute; left: 0 }
+
+/* Zoomed card used for the timeline screenshot. */
+.panel { position: absolute; overflow: hidden; border-radius: 46px; border: 10px solid #fff; box-shadow: 0 30px 60px rgba(23,61,41,.22); background: #fff }
+.panel img { display: block; position: absolute; left: 0 }
+
+/* Trust screenshot: icon tiles with check marks (assets/icons/*.svg). */
+.tiles { position: absolute; left: 84px; right: 84px; display: flex; flex-direction: column; gap: 38px }
+.tile { height: 300px; border-radius: 52px; background: #fff; box-shadow: 0 24px 50px rgba(23,61,41,.14); display: flex; align-items: center;
+        justify-content: space-between; padding: 0 72px; direction: ltr }

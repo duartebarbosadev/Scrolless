@@ -1,0 +1,33 @@
+Geen advertenties. Geen tracking. Volledig open source.
+
+Scrolless helpt je minder korte video's te kijken in TikTok, Instagram Reels, YouTube Shorts, Facebook Reels en Snapchat, terwijl de rest van elke app gewoon blijft werken. Besteed minder tijd aan eindeloze feeds, blijf gefocust en neem je schermtijd terug, zonder account.
+
+Kies hoe je blokkeert
+• Alles blokkeren: sluit feeds met korte video's zodra ze openen.
+• Dagelijkse limiet: bepaal hoeveel tijd je per dag krijgt.
+• Tijdsinterval: wissel blokkeerduur en kijktijd af, bijvoorbeeld maximaal 5 minuten per uur.
+• Pauze: zet het blokkeren een paar minuten uit; het gaat vanzelf weer aan.
+
+Houd wat belangrijk is
+• Sta video's toe die vrienden je via DM's sturen.
+• Kies of verhalen meetellen voor je limieten.
+• Zie een kleine live-timer terwijl je kijkt.
+
+Begrijp je gewoonten
+• Dagelijkse tijdlijn van elke sessie, per app.
+• Gemiddelden voor elke dag van de week.
+• Blader door eerdere dagen om patronen te ontdekken.
+
+Ondersteunde apps
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite en Snapchat.
+
+Privé vanaf het begin
+Scrolless heeft geen advertenties, analytics of tracking en heeft geen account nodig. Je gebruiksgeschiedenis blijft op je telefoon, en de code is open zodat iedereen hem kan controleren.
+
+Toegankelijkheidsrechten
+Scrolless gebruikt Toegankelijkheid alleen om ondersteunde schermen met korte video's te herkennen en je blokkeerregels toe te passen. Het neemt je scherminhoud niet op, slaat die niet op en verstuurt die niet. Alles gebeurt op je apparaat.
+
+Minder gedachteloos scrollen, één scroll minder per keer.
+
+Broncode: https://github.com/DuarteBarbosaDev/Scrolless
+Iconen door Icons8

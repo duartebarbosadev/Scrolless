@@ -1,0 +1,12 @@
+<!doctype html><html lang="{{lang}}" dir="{{dir}}"><meta charset="utf-8"><style>
+{{fonts}}
+:root{--body-font:{{body_font}};--display-font:{{display_font}};--word-break:{{word_break}};--width:{{width}}px;--height:{{height}}px}
+{{style}}
+</style><body>{{body}}
+<script>
+async function fit(){
+  await document.fonts.ready;
+  {{fit}}
+}
+fit();
+</script></body></html>

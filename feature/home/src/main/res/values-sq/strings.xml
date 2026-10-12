@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">Ikona e lejes së qasshmërisë</string>
+    <string name="accessibility_explainer_not_now_button">Jo tani</string>
+    <string name="accessibility_explainer_open_source">Kodi ynë është 100\% me burim të hapur në GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless e përdor këtë leje vetëm për të zbuluar dhe ndalur videot e shkurtra. Nuk mbledhim asnjë të dhënë personale.</string>
+    <string name="accessibility_explainer_proceed_button">Shko te Cilësimet</string>
+    <string name="accessibility_explainer_step1">Trokit \"Shko te Cilësimet\" më poshtë për të hapur cilësimet e qasshmërisë në Android</string>
+    <string name="accessibility_explainer_step2">Gjej aplikacionet dhe trokit \"Scrolless\" në listën e shërbimeve</string>
+    <string name="accessibility_explainer_step3">Aktivizo çelësin që Scrolless të të ndihmojë të ndalosh shfletimin pa fund</string>
+    <string name="accessibility_explainer_subtitle">Scrolless ka nevojë për qasje në qasshmëri për të zbuluar dhe ndalur videot e shkurtra.</string>
+    <string name="accessibility_explainer_title">Na duhet qasja në qasshmëri</string>
+    <string name="accessibility_success_description">Scrolless është gati!</string>
+    <string name="accessibility_success_title">Gjithçka gati!</string>
+    <string name="background_allow_button">Lejo</string>
+    <string name="background_autostart_step">Aktivizo Autostart</string>
+    <string name="background_battery_step">Lejo aktivitetin në sfond</string>
+    <string name="background_step_done">U krye</string>
+    <string name="background_continue_button">Vazhdo</string>
+    <string name="background_open_button">Hap</string>
+    <string name="background_settings_button">Hap cilësimet e sfondit</string>
+    <string name="background_step_description">Disa telefona e mbyllin Scrolless në sfond, gjë që ndalon bllokimin.</string>
+    <string name="background_step_title">Mbaje Scrolless aktiv</string>
+    <string name="block_all">Blloko\ntë gjitha</string>
+    <string name="close">Mbyll</string>
+    <string name="daily_limit">Kufi\nditor</string>
+    <string name="get_started">Fillo</string>
+    <string name="go_to_accessibility_settings">Shko te cilësimet e qasshmërisë</string>
+    <string name="daily_limit_configure_time_content_description">Konfiguro kohën e kufirit ditor</string>
+    <string name="help">Ndihmë</string>
+    <string name="help_dialog_title">Scrolless nuk funksionon?</string>
+    <string name="help_step1_description">Zgjidh një nga opsionet e bllokimit në ekranin kryesor</string>
+    <string name="help_step1_title">Zgjidh opsionin e bllokimit</string>
+    <string name="help_step2_description">Nëse bllokimi nuk funksionon, çaktivizo dhe pastaj aktivizo shërbimin e qasshmërisë. Gjithashtu, lejo Scrolless të funksionojë në sfond: aktivizo Autostart (Xiaomi, POCO, Redmi dhe telefona të ngjashëm) dhe cakto përdorimin e baterisë në \"E pakufizuar\".</string>
+    <string name="help_step2_title">Zgjidhja e problemeve</string>
+    <string name="help_step3_description">Ende ke probleme? Jemi këtu për të ndihmuar! Përdor butonin më poshtë për të na kontaktuar në depon tonë në GitHub.</string>
+    <string name="help_step3_title">Kontakto mbështetjen</string>
+    <string name="icons8_attribution">Ikonat ofrohen nga Icons8 (icons8.com)</string>
+    <string name="interval_timer_card_allowance_chip">Koha e shikimit</string>
+    <string name="interval_timer_card_break_chip">Gjatësia e pushimit</string>
+    <string name="interval_timer_card_edit">Ndrysho orarin</string>
+    <string name="interval_timer_card_set_schedule">Cakto orarin</string>
+    <string name="interval_timer_card_summary">Shiko deri në %1$s çdo %2$s</string>
+    <string name="interval_timer_card_summary_empty">Cakto orarin e parë për të alternuar pushimet me kohën e shikimit.</string>
+    <string name="interval_timer_dialog_allowance_description">Sa gjatë mund të shikosh video të shkurtra mes pushimeve.</string>
+    <string name="interval_timer_dialog_allowance_label">Koha e lejuar e shikimit</string>
+    <string name="interval_timer_dialog_break_description">Scrolless i mban të bllokuara aplikacionet e mbështetura për kaq kohë, pastaj mund të shikosh sërish.</string>
+    <string name="interval_timer_dialog_break_label">Kohëzgjatja e pushimit</string>
+    <string name="interval_timer_dialog_cancel">Anulo</string>
+    <string name="interval_timer_dialog_save">Ruaj orarin</string>
+    <string name="interval_timer_dialog_subtitle">Zgjidh sa zgjat çdo pushim dhe sa mund të shikosh mes pushimeve.</string>
+    <string name="interval_timer_dialog_summary">Rezultati: deri në %1$s çdo %2$s</string>
+    <string name="interval_timer_dialog_title">Konfiguro kohëmatësin me intervale</string>
+    <string name="interval_timer_next_reset_in">Rivendoset për %1$s</string>
+    <string name="limit_chip">Kufi %1$s</string>
+    <string name="next_step_1">Zgjidh një mënyrë bllokimi</string>
+    <string name="next_step_2">Provo funksionin e kufirit ditor dhe aktivizo kohëmatësin në ekran</string>
+    <string name="next_steps_title">Hapat e ardhshëm</string>
+    <string name="pause">Pauzë</string>
+    <string name="pause_duration_hint">Pezullon bllokimin për %1$d min</string>
+    <string name="pause_resumes_in">Rifillon për %1$s</string>
+    <string name="resume">Vazhdo</string>
+    <string name="service_not_running_description">Bllokimi ndaloi sepse Android e mbylli Scrolless në sfond. Kjo mund të ndodhë kur pastrohet nga aplikacionet e fundit ose kufizohet për të kursyer baterinë.</string>
+    <string name="service_not_running_step_restart">Çaktivizo dhe aktivizo përsëri Scrolless te cilësimet e qasshmërisë.</string>
+    <string name="service_not_running_title">Scrolless u ndalua</string>
+    <string name="settings">Cilësimet</string>
+    <string name="success_icon_description">Ikona e shenjës së suksesit</string>
+    <string name="time_interval">Interval\nkohor</string>
+    <string name="time_limit_dialog_title">Cakto kohën e kufirit ditor</string>
+    <string name="usage_analytics_today">Sot</string>
+    <string name="usage_analytics_previous_day">Dita e mëparshme</string>
+    <string name="usage_analytics_next_day">Dita tjetër</string>
+    <string name="usage_analytics_swipe_hint">&lt; Rrëshqit për të parë ditët &gt;</string>
+    <string name="usage_analytics_timeline_title">Kronologjia</string>
+    <string name="usage_analytics_average_title">Mesatarja</string>
+    <string name="usage_analytics_average_week">Java e kaluar</string>
+    <string name="usage_analytics_average_month">Muaji i kaluar</string>
+    <string name="usage_analytics_average_year">Viti i kaluar</string>
+    <plurals name="usage_analytics_session_count">
+        <item quantity="one">%1$d seancë</item>
+        <item quantity="other">%1$d seanca</item>
+    </plurals>
+    <string name="usage_analytics_time_range">%1$s-%2$s</string>
+    <string name="usage_analytics_expand">Zgjero</string>
+    <string name="usage_analytics_collapse">Palos</string>
+    <string name="usage_analytics_day_mon">Hën</string>
+    <string name="usage_analytics_day_tue">Mar</string>
+    <string name="usage_analytics_day_wed">Mër</string>
+    <string name="usage_analytics_day_thu">Enj</string>
+    <string name="usage_analytics_day_fri">Pre</string>
+    <string name="usage_analytics_day_sat">Sht</string>
+    <string name="usage_analytics_day_sun">Die</string>
+    <string name="visit_github">Vizito depon në GitHub</string>
+</resources>

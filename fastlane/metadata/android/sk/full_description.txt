@@ -1,0 +1,33 @@
+Žiadne reklamy. Žiadne sledovanie. Plne open source.
+
+Scrolless vám pomôže obmedziť krátke videá v TikTok, Instagram Reels, YouTube Shorts, Facebook Reels a Snapchat, pričom zvyšok každej aplikácie funguje ďalej. Trávte menej času nekonečnými feedmi, zostaňte sústredení a získajte späť kontrolu nad časom pred obrazovkou, a to bez potreby zakladať účet.
+
+Zvoľte, ako blokovať
+• Blokovať všetko: zatvorí feedy s krátkymi videami hneď, ako sa otvoria.
+• Denný limit: nastavte, koľko času máte každý deň.
+• Časový interval: striedajte trvanie blokovania a čas sledovania, napríklad najviac 5 minút každú hodinu.
+• Pozastaviť: vypnite blokovanie na pár minút; samo sa znova zapne.
+
+Zachovajte to dôležité
+• Povoľte videá, ktoré vám priatelia pošlú v súkromných správach.
+• Zvoľte, či sa príbehy započítavajú do limitov.
+• Počas sledovania uvidíte malý časovač v reálnom čase.
+
+Spoznajte svoje návyky
+• Denná časová os všetkých relácií podľa aplikácie.
+• Priemery pre každý deň v týždni.
+• Prechádzajte minulé dni a odhaľte opakujúce sa vzorce.
+
+Podporované aplikácie
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite a Snapchat.
+
+Súkromie od základu
+Scrolless nemá reklamy, analytiku ani sledovanie a nepotrebuje účet. História používania zostáva vo vašom telefóne a kód je otvorený, takže si ho môže ktokoľvek skontrolovať.
+
+Povolenie prístupnosti
+Scrolless používa prístupnosť iba na rozpoznanie podporovaných obrazoviek s krátkymi videami a uplatnenie vašich pravidiel blokovania. Obsah vašej obrazovky nenahráva, neukladá ani neodosiela. Všetko prebieha vo vašom zariadení.
+
+Menej bezmyšlienkovitého scrollovania, zakaždým o jeden scroll menej.
+
+Zdrojový kód: https://github.com/DuarteBarbosaDev/Scrolless
+Ikony od Icons8

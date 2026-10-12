@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">أيقونة إذن تسهيل الاستخدام</string>
+    <string name="accessibility_explainer_not_now_button">ليس الآن</string>
+    <string name="accessibility_explainer_open_source">الكود الخاص بنا مفتوح المصدر 100\% على GitHub.</string>
+    <string name="accessibility_explainer_privacy_note">يستخدم Scrolless هذا الإذن فقط لاكتشاف المحتوى القصير وإيقافه. لا نجمع أي معلومات شخصية.</string>
+    <string name="accessibility_explainer_proceed_button">الانتقال إلى الإعدادات</string>
+    <string name="accessibility_explainer_step1">انقر على \"الانتقال إلى الإعدادات\" أدناه لفتح إعدادات تسهيل الاستخدام في Android</string>
+    <string name="accessibility_explainer_step2">ابحث عن التطبيقات وانقر على \"Scrolless\" في قائمة الخدمات</string>
+    <string name="accessibility_explainer_step3">فعّل المفتاح ليتمكن Scrolless من مساعدتك على إيقاف التصفّح اللانهائي</string>
+    <string name="accessibility_explainer_subtitle">يحتاج Scrolless إلى إذن تسهيل الاستخدام لاكتشاف الفيديوهات القصيرة وإيقافها.</string>
+    <string name="accessibility_explainer_title">نحتاج إلى إذن تسهيل الاستخدام</string>
+    <string name="accessibility_success_description">‏Scrolless جاهز الآن!</string>
+    <string name="accessibility_success_title">كل شيء جاهز!</string>
+    <string name="background_allow_button">السماح</string>
+    <string name="background_autostart_step">تفعيل التشغيل التلقائي</string>
+    <string name="background_battery_step">السماح بالنشاط في الخلفية</string>
+    <string name="background_step_done">تم</string>
+    <string name="background_continue_button">متابعة</string>
+    <string name="background_open_button">فتح</string>
+    <string name="background_settings_button">فتح إعدادات الخلفية</string>
+    <string name="background_step_description">تُغلق بعض الهواتف Scrolless في الخلفية، مما يوقف الحظر.</string>
+    <string name="background_step_title">إبقاء Scrolless قيد التشغيل</string>
+    <string name="block_all">حظر\nالكل</string>
+    <string name="close">إغلاق</string>
+    <string name="daily_limit">الحد\nاليومي</string>
+    <string name="get_started">لنبدأ</string>
+    <string name="go_to_accessibility_settings">الانتقال إلى إعدادات تسهيل الاستخدام</string>
+    <string name="daily_limit_configure_time_content_description">ضبط وقت الحد اليومي</string>
+    <string name="help">مساعدة</string>
+    <string name="help_dialog_title">لا يعمل Scrolless؟</string>
+    <string name="help_step1_description">اختر أحد خيارات الحظر من الشاشة الرئيسية</string>
+    <string name="help_step1_title">اختر خيار الحظر</string>
+    <string name="help_step2_description">إذا لم يعمل الحظر، فأوقف خدمة تسهيل الاستخدام ثم فعّلها مجددًا. واسمح أيضًا لـ Scrolless بالعمل في الخلفية: فعّل التشغيل التلقائي (Autostart) في هواتف Xiaomi وPOCO وRedmi والهواتف المشابهة، واضبط استخدام البطارية على \"غير مقيّد\".</string>
+    <string name="help_step2_title">حل المشكلات</string>
+    <string name="help_step3_description">هل ما زلت تواجه مشكلات؟ نحن هنا للمساعدة! استخدم الزر أدناه للتواصل معنا عبر مستودعنا على GitHub.</string>
+    <string name="help_step3_title">التواصل مع الدعم</string>
+    <string name="icons8_attribution">الأيقونات مقدمة من Icons8 (icons8.com)</string>
+    <string name="interval_timer_card_allowance_chip">وقت المشاهدة</string>
+    <string name="interval_timer_card_break_chip">مدة الاستراحة</string>
+    <string name="interval_timer_card_edit">تعديل الجدول</string>
+    <string name="interval_timer_card_set_schedule">ضبط الجدول</string>
+    <string name="interval_timer_card_summary">شاهد حتى %1$s كل %2$s</string>
+    <string name="interval_timer_card_summary_empty">اضبط جدولك الأول للتناوب بين الاستراحات ووقت المشاهدة.</string>
+    <string name="interval_timer_dialog_allowance_description">المدة التي يمكنك فيها مشاهدة الفيديوهات القصيرة بين الاستراحات.</string>
+    <string name="interval_timer_dialog_allowance_label">وقت المشاهدة المسموح</string>
+    <string name="interval_timer_dialog_break_description">يُبقي Scrolless التطبيقات المدعومة محظورة طوال هذه المدة، ثم يتيح لك المشاهدة مجددًا.</string>
+    <string name="interval_timer_dialog_break_label">مدة الاستراحة</string>
+    <string name="interval_timer_dialog_cancel">إلغاء</string>
+    <string name="interval_timer_dialog_save">حفظ الجدول</string>
+    <string name="interval_timer_dialog_subtitle">اختر مدة كل استراحة والوقت المتاح لك للمشاهدة بين الاستراحات.</string>
+    <string name="interval_timer_dialog_summary">النتيجة: حتى %1$s كل %2$s</string>
+    <string name="interval_timer_dialog_title">ضبط مؤقت الفواصل</string>
+    <string name="interval_timer_next_reset_in">إعادة الضبط بعد %1$s</string>
+    <string name="limit_chip">الحد %1$s</string>
+    <string name="next_step_1">اختر وضع الحظر</string>
+    <string name="next_step_2">جرّب ميزة الحد اليومي وفعّل المؤقت العائم</string>
+    <string name="next_steps_title">الخطوات التالية</string>
+    <string name="pause">إيقاف مؤقت</string>
+    <string name="pause_duration_hint">يوقف الحظر مؤقتًا لمدة %1$d دقيقة</string>
+    <string name="pause_resumes_in">يُستأنف بعد %1$s</string>
+    <string name="resume">استئناف</string>
+    <string name="service_not_running_description">توقف الحظر لأن Android أغلق Scrolless في الخلفية. قد يحدث ذلك عند إزالته من التطبيقات الحديثة أو تقييده لتوفير البطارية.</string>
+    <string name="service_not_running_step_restart">أوقف Scrolless ثم شغّله مجددًا في إعدادات تسهيل الاستخدام.</string>
+    <string name="service_not_running_title">تم إيقاف Scrolless</string>
+    <string name="settings">الإعدادات</string>
+    <string name="success_icon_description">أيقونة علامة النجاح</string>
+    <string name="time_interval">فاصل\nزمني</string>
+    <string name="time_limit_dialog_title">ضبط وقت الحد اليومي</string>
+    <string name="usage_analytics_today">اليوم</string>
+    <string name="usage_analytics_previous_day">اليوم السابق</string>
+    <string name="usage_analytics_next_day">اليوم التالي</string>
+    <string name="usage_analytics_swipe_hint">&lt; اسحب لعرض الأيام &gt;</string>
+    <string name="usage_analytics_timeline_title">الخط الزمني</string>
+    <string name="usage_analytics_average_title">المتوسط</string>
+    <string name="usage_analytics_average_week">الأسبوع الماضي</string>
+    <string name="usage_analytics_average_month">الشهر الماضي</string>
+    <string name="usage_analytics_average_year">السنة الماضية</string>
+    <plurals name="usage_analytics_session_count">
+        <item quantity="zero">%1$d جلسة</item>
+        <item quantity="one">%1$d جلسة</item>
+        <item quantity="two">%1$d جلستان</item>
+        <item quantity="few">%1$d جلسات</item>
+        <item quantity="many">%1$d جلسة</item>
+        <item quantity="other">%1$d جلسة</item>
+    </plurals>
+    <string name="usage_analytics_time_range">%1$s-%2$s</string>
+    <string name="usage_analytics_expand">توسيع</string>
+    <string name="usage_analytics_collapse">تصغير</string>
+    <string name="usage_analytics_day_mon">الاثنين</string>
+    <string name="usage_analytics_day_tue">الثلاثاء</string>
+    <string name="usage_analytics_day_wed">الأربعاء</string>
+    <string name="usage_analytics_day_thu">الخميس</string>
+    <string name="usage_analytics_day_fri">الجمعة</string>
+    <string name="usage_analytics_day_sat">السبت</string>
+    <string name="usage_analytics_day_sun">الأحد</string>
+    <string name="visit_github">زيارة مستودع GitHub</string>
+</resources>

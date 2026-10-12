@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
-    <string name="accessibility_service_description">此服務會偵測短影音/短片/TikTok 何時開啟，以便 Scrolless 在設定後將其封鎖。</string>
+    <string name="accessibility_service_description">此服務會偵測 Reels、Shorts、TikTok 和 Facebook Reels 何時開啟，以便 Scrolless 依照你的設定加以封鎖。</string>
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok 影片已被封鎖</string>
     <string name="tiktok_blocked_description">使用下方的分頁開啟「收件匣」或「個人資料」。</string>

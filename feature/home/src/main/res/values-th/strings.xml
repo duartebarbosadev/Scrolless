@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">ไอคอนสิทธิ์การช่วยเหลือพิเศษ</string>
+    <string name="accessibility_explainer_not_now_button">ไว้ทีหลัง</string>
+    <string name="accessibility_explainer_open_source">โค้ดของเราเป็นโอเพนซอร์ส 100\% บน GitHub</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless ใช้สิทธิ์นี้เพื่อตรวจจับและหยุดวิดีโอสั้นเท่านั้น เราไม่เก็บข้อมูลส่วนบุคคลใดๆ</string>
+    <string name="accessibility_explainer_proceed_button">ไปที่การตั้งค่า</string>
+    <string name="accessibility_explainer_step1">แตะ \"ไปที่การตั้งค่า\" ด้านล่างเพื่อเปิดการตั้งค่าการช่วยเหลือพิเศษของ Android</string>
+    <string name="accessibility_explainer_step2">ค้นหาแอปที่ติดตั้งไว้ แล้วแตะ \"Scrolless\" ในรายการบริการ</string>
+    <string name="accessibility_explainer_step3">เปิดสวิตช์เพื่อให้ Scrolless ช่วยคุณหยุดการเลื่อนไม่รู้จบ</string>
+    <string name="accessibility_explainer_subtitle">Scrolless ต้องใช้สิทธิ์การช่วยเหลือพิเศษเพื่อตรวจจับและหยุดวิดีโอสั้น</string>
+    <string name="accessibility_explainer_title">ต้องการสิทธิ์การช่วยเหลือพิเศษ</string>
+    <string name="accessibility_success_description">Scrolless พร้อมใช้งานแล้ว!</string>
+    <string name="accessibility_success_title">เรียบร้อย!</string>
+    <string name="background_allow_button">อนุญาต</string>
+    <string name="background_autostart_step">เปิดการเริ่มอัตโนมัติ</string>
+    <string name="background_battery_step">อนุญาตกิจกรรมในเบื้องหลัง</string>
+    <string name="background_step_done">เสร็จสิ้น</string>
+    <string name="background_continue_button">ดำเนินการต่อ</string>
+    <string name="background_open_button">เปิด</string>
+    <string name="background_settings_button">เปิดการตั้งค่าเบื้องหลัง</string>
+    <string name="background_step_description">โทรศัพท์บางรุ่นปิด Scrolless ในเบื้องหลัง ทำให้การบล็อกหยุดทำงาน</string>
+    <string name="background_step_title">ให้ Scrolless ทำงานต่อไป</string>
+    <string name="block_all">บล็อก\nทั้งหมด</string>
+    <string name="close">ปิด</string>
+    <string name="daily_limit">จำกัด\nรายวัน</string>
+    <string name="daily_limit_configure_time_content_description">ตั้งค่าเวลาขีดจำกัดรายวัน</string>
+    <string name="get_started">เริ่มต้นใช้งาน</string>
+    <string name="go_to_accessibility_settings">ไปที่การตั้งค่าการช่วยเหลือพิเศษ</string>
+    <string name="help">ความช่วยเหลือ</string>
+    <string name="help_dialog_title">Scrolless ไม่ทำงานใช่ไหม\?</string>
+    <string name="help_step1_description">เลือกตัวเลือกการบล็อกหนึ่งรายการจากหน้าจอหลัก</string>
+    <string name="help_step1_title">เลือกตัวเลือกการบล็อก</string>
+    <string name="help_step2_description">หากการบล็อกไม่ทำงาน ให้ปิดแล้วเปิดบริการการช่วยเหลือพิเศษใหม่ และอนุญาตให้ Scrolless ทำงานในเบื้องหลังด้วย: เปิดการเริ่มอัตโนมัติ (Autostart) ในโทรศัพท์ Xiaomi, POCO, Redmi และรุ่นที่คล้ายกัน แล้วตั้งค่าการใช้แบตเตอรี่เป็น \"ไม่จำกัด\"</string>
+    <string name="help_step2_title">การแก้ปัญหา</string>
+    <string name="help_step3_description">ยังมีปัญหาอยู่ใช่ไหม\? เรายินดีช่วยเหลือ! ใช้ปุ่มด้านล่างเพื่อติดต่อเราผ่านที่เก็บโค้ดบน GitHub</string>
+    <string name="help_step3_title">ติดต่อฝ่ายสนับสนุน</string>
+    <string name="icons8_attribution">ไอคอนโดย Icons8 (icons8.com)</string>
+    <string name="interval_timer_card_allowance_chip">เวลารับชม</string>
+    <string name="interval_timer_card_break_chip">ระยะเวลาพัก</string>
+    <string name="interval_timer_card_edit">แก้ไขกำหนดการ</string>
+    <string name="interval_timer_card_set_schedule">ตั้งกำหนดการ</string>
+    <string name="interval_timer_card_summary">ดูได้สูงสุด %1$s ทุก %2$s</string>
+    <string name="interval_timer_card_summary_empty">ตั้งกำหนดการแรกเพื่อสลับระหว่างช่วงพักกับเวลารับชม</string>
+    <string name="interval_timer_dialog_allowance_description">ระยะเวลาที่คุณดูวิดีโอสั้นได้ระหว่างช่วงพักแต่ละครั้ง</string>
+    <string name="interval_timer_dialog_allowance_label">เวลารับชมที่อนุญาต</string>
+    <string name="interval_timer_dialog_break_description">Scrolless จะบล็อกแอปที่รองรับไว้ตามระยะเวลานี้ แล้วจึงให้คุณกลับมาดูได้อีกครั้ง</string>
+    <string name="interval_timer_dialog_break_label">ระยะเวลาพัก</string>
+    <string name="interval_timer_dialog_cancel">ยกเลิก</string>
+    <string name="interval_timer_dialog_save">บันทึกกำหนดการ</string>
+    <string name="interval_timer_dialog_subtitle">เลือกว่าช่วงพักแต่ละครั้งนานเท่าใด และคุณดูได้นานเท่าใดระหว่างช่วงพัก</string>
+    <string name="interval_timer_dialog_summary">ผลลัพธ์: สูงสุด %1$s ทุก %2$s</string>
+    <string name="interval_timer_dialog_title">ตั้งค่าตัวจับเวลาแบบช่วง</string>
+    <string name="interval_timer_next_reset_in">รีเซ็ตในอีก %1$s</string>
+    <string name="limit_chip">จำกัด %1$s</string>
+    <string name="next_step_1">เลือกโหมดการบล็อก</string>
+    <string name="next_step_2">ลองใช้ฟีเจอร์ขีดจำกัดรายวันและเปิดตัวจับเวลาบนหน้าจอ</string>
+    <string name="next_steps_title">ขั้นตอนถัดไป</string>
+    <string name="pause">หยุดชั่วคราว</string>
+    <string name="pause_duration_hint">หยุดการบล็อกชั่วคราว %1$d นาที</string>
+    <string name="pause_resumes_in">กลับมาทำงานในอีก %1$s</string>
+    <string name="resume">ทำต่อ</string>
+    <string name="service_not_running_description">การบล็อกหยุดทำงานเนื่องจาก Android ปิด Scrolless ในเบื้องหลัง ซึ่งอาจเกิดขึ้นเมื่อปัดแอปออกจากรายการแอปล่าสุดหรือแอปถูกจำกัดเพื่อประหยัดแบตเตอรี่</string>
+    <string name="service_not_running_step_restart">ปิดแล้วเปิด Scrolless อีกครั้งในการตั้งค่าการช่วยเหลือพิเศษ</string>
+    <string name="service_not_running_title">Scrolless ถูกหยุดทำงาน</string>
+    <string name="settings">การตั้งค่า</string>
+    <string name="success_icon_description">ไอคอนเครื่องหมายถูกแสดงความสำเร็จ</string>
+    <string name="time_interval">ช่วง\nเวลา</string>
+    <string name="time_limit_dialog_title">ตั้งเวลาขีดจำกัดรายวัน</string>
+    <string name="usage_analytics_average_month">เดือนที่แล้ว</string>
+    <string name="usage_analytics_average_title">ค่าเฉลี่ย</string>
+    <string name="usage_analytics_average_week">สัปดาห์ที่แล้ว</string>
+    <string name="usage_analytics_average_year">ปีที่แล้ว</string>
+    <string name="usage_analytics_collapse">ยุบ</string>
+    <string name="usage_analytics_day_fri">ศ.</string>
+    <string name="usage_analytics_day_mon">จ.</string>
+    <string name="usage_analytics_day_sat">ส.</string>
+    <string name="usage_analytics_day_sun">อา.</string>
+    <string name="usage_analytics_day_thu">พฤ.</string>
+    <string name="usage_analytics_day_tue">อ.</string>
+    <string name="usage_analytics_day_wed">พ.</string>
+    <string name="usage_analytics_expand">ขยาย</string>
+    <string name="usage_analytics_swipe_hint">&lt; ปัดเพื่อดูวันอื่น &gt;</string>
+    <string name="usage_analytics_time_range">%1$s-%2$s</string>
+    <string name="usage_analytics_timeline_title">ไทม์ไลน์</string>
+    <string name="usage_analytics_today">วันนี้</string>
+    <string name="visit_github">ไปที่ที่เก็บโค้ดบน GitHub</string>
+    <plurals name="usage_analytics_session_count">
+        <item quantity="other">%1$d เซสชัน</item>
+    </plurals>
+    <string name="usage_analytics_next_day">วันถัดไป</string>
+    <string name="usage_analytics_previous_day">วันก่อนหน้า</string>
+</resources>

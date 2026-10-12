@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="back">Tagasi</string>
+    <string name="settings">Seaded</string>
+    <string name="settings_allow_videos_sent_by_dms_description">Ära blokeeri privaatsõnumites saadetud videoid.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">TikTok Lite ei toeta</string>
+    <string name="settings_allow_videos_sent_by_dms_title">Privaatsõnumites saadetud videod</string>
+    <string name="settings_pause_duration_description">Kui kauaks blokeerimine peatatakse, kui puudutad nuppu \"Paus\".</string>
+    <string name="settings_pause_duration_title">Pausi kestus</string>
+    <string name="settings_section_blocking">Blokeerimine</string>
+    <string name="settings_show_onscreen_timer_description">Hoia lühivideote vaatamise ajal ujuv taimer nähtaval.</string>
+    <string name="settings_show_onscreen_timer_title">Näita ekraanil taimerit</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d minut</item>
+        <item quantity="other">%1$d minutit</item>
+    </plurals>
+    <string name="settings_include_stories_title">Kaasa lood</string>
+    <string name="settings_include_stories_description">Arvesta lugude vaatamisele kulunud aega ja rakenda praegust blokeerimisrežiimi ning piiranguid.</string>
+    <string name="settings_include_stories_note">Praegu toetatud Instagramis, Snapchatis ja Facebookis.</string>
+</resources>

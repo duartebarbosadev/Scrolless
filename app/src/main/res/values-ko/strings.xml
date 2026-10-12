@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_service_description">이 서비스는 Reels, Shorts, TikTok, Facebook Reels가 열릴 때 이를 감지하여, 설정에 따라 Scrolless가 차단할 수 있도록 합니다.</string>
+    <string name="app_name">Scrolless</string>
+    <string name="tiktok_blocked_title">TikTok 동영상이 차단되었습니다</string>
+    <string name="tiktok_blocked_description">아래 탭을 사용해 받은 편지함이나 프로필을 여세요.</string>
+</resources>

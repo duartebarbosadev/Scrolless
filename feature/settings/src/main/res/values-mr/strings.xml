@@ -20,7 +20,7 @@
     <string name="settings">सेटिंग्ज</string>
     <string name="settings_section_blocking">ब्लॉकिंग</string>
     <string name="settings_pause_duration_title">पॉज कालावधी</string>
-    <string name="settings_pause_duration_description">तुम्ही पॉज टॅप करता तेव्हा ब्लॉकिंग किती वेळ थांबवायचे.</string>
+    <string name="settings_pause_duration_description">तुम्ही \"विराम द्या\" वर टॅप करता तेव्हा ब्लॉकिंग किती वेळ थांबवायचे.</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d मिनिटे</item>
         <item quantity="one">%1$d मिनिट</item>

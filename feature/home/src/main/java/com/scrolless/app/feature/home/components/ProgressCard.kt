@@ -257,11 +257,14 @@ fun ProgressCard(
                                 .border(1.dp, limitChipBorderColor, RoundedCornerShape(12.dp))
                                 .padding(horizontal = 10.dp, vertical = 4.dp),
                         ) {
-                            Text(
+                            AutoResizingText(
                                 text = stringResource(R.string.limit_chip, limitChipText),
                                 style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
                                 color = limitChipTextColor,
                                 textAlign = TextAlign.Center,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                minFontSize = 9.sp,
                             )
                         }
                     }

@@ -1,0 +1,33 @@
+Sem anúncios. Sem rastreamento. Totalmente de código aberto.
+
+O Scrolless ajuda você a assistir menos vídeos curtos no TikTok, Instagram Reels, YouTube Shorts, Facebook Reels e Snapchat, enquanto o resto de cada app continua funcionando. Passe menos tempo em feeds infinitos, mantenha o foco e recupere seu tempo de tela, sem precisar de conta.
+
+Escolha como bloquear
+• Bloquear tudo: fecha os feeds de vídeos curtos assim que eles abrem.
+• Limite diário: defina quanto tempo você tem por dia.
+• Intervalo de tempo: alterne duração do bloqueio e tempo de visualização, por exemplo até 5 minutos a cada hora.
+• Pausar: desligue o bloqueio por alguns minutos; ele volta a ligar sozinho.
+
+Mantenha o que importa
+• Permita vídeos que amigos enviam para você por DMs.
+• Escolha se os Stories contam para seus limites.
+• Veja um pequeno timer ao vivo enquanto assiste.
+
+Entenda seus hábitos
+• Linha do tempo diária de cada sessão, por app.
+• Médias para cada dia da semana.
+• Navegue por dias anteriores para identificar padrões.
+
+Apps compatíveis
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite e Snapchat.
+
+Privado por natureza
+O Scrolless não tem anúncios, análises nem rastreamento, e não precisa de conta. Seu histórico de uso fica no seu celular, e o código é aberto para qualquer pessoa conferir.
+
+Permissão de acessibilidade
+O Scrolless usa a acessibilidade apenas para detectar telas de vídeos curtos compatíveis e aplicar suas regras de bloqueio. Ele não grava, não armazena nem envia o conteúdo da sua tela. Tudo acontece no seu dispositivo.
+
+Menos rolagem sem sentido, um scroll a menos de cada vez.
+
+Código-fonte: https://github.com/DuarteBarbosaDev/Scrolless
+Ícones por Icons8

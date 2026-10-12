@@ -19,7 +19,7 @@
     <string name="back">Tilbake</string>
     <string name="settings">Innstillinger</string>
     <string name="settings_section_blocking">Blokkering</string>
-    <string name="settings_pause_duration_title">Pauseringsvarighet</string>
+    <string name="settings_pause_duration_title">Pausevarighet</string>
     <string name="settings_pause_duration_description">Hvor lenge blokkeringen er satt på pause når du trykker på Pause.</string>
     <plurals name="settings_pause_duration_value">
         <item quantity="other">%1$d minutter</item>

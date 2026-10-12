@@ -29,7 +29,18 @@ jobs:
         id: translate
         uses: duartebarbosadev/AndroidResourceTranslator@main
         with:
-          project_context: "Scrolless is an Android app that helps users reduce time spent on social media by limiting endless scrolling of Reels, Shorts, and TikToks. Do not translate the term 'brainrot'; keep it in English in languages where the English expression is commonly understood."
+          project_context: >-
+            Scrolless is an Android app that helps users reduce time spent on social media by limiting endless
+            scrolling of Reels, Shorts, and TikToks. Do not translate the term 'brainrot'; keep it in English in
+            languages where the English expression is commonly understood.
+            Glossary and style: keep Scrolless, Reels, Shorts, TikTok, Instagram, Snapchat, Facebook and GitHub
+            untranslated. "Stories" is the Instagram/Snapchat/Facebook feature; use the name those apps use in the
+            target language. A "break" (interval timer) is the period when apps are blocked; "watch time" is the
+            allowed viewing between breaks; never use the same word for both. "Pause" is a button that pauses
+            blocking for a few minutes; any sentence that refers to the button must use the exact same word as the
+            "pause" string. A "session" is one continuous stretch of watching. Use the same formal or informal "you"
+            as the existing strings in that language and never mix the two. Keep UI text short and natural;
+            two-line home buttons use sentence case. Read the XML comments next to each string for context.
           log_trace: "true"
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}

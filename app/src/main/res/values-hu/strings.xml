@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
-    <string name="accessibility_service_description">Ez a szolgáltatás észleli, amikor a reels/shorts/tiktok megnyílik, így a Scrolless blokkolhatja őket, ha be van állítva.</string>
+    <string name="accessibility_service_description">Ez a szolgáltatás észleli, amikor Reels, Shorts, TikTok vagy Facebook Reels videók nyílnak meg, így a Scrolless blokkolhatja őket, ha be van állítva.</string>
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">A TikTok-videók blokkolva vannak</string>
     <string name="tiktok_blocked_description">Használd az alábbi füleket a Bejövő üzenetek vagy a Profil megnyitásához.</string>

@@ -20,9 +20,9 @@
     <string name="settings">Setări</string>
     <string name="settings_section_blocking">Blocare</string>
     <string name="settings_pause_duration_title">Durata pauzei</string>
-    <string name="settings_pause_duration_description">Cât timp este pusă pe pauză blocarea când atingeți „Pauză”.</string>
+    <string name="settings_pause_duration_description">Cât timp este pusă pe pauză blocarea când atingi „Pauză”.</string>
     <plurals name="settings_pause_duration_value">
-        <item quantity="other">%1$d minute</item>
+        <item quantity="other">%1$d de minute</item>
         <item quantity="one">%1$d minut</item>
         <item quantity="few">%1$d minute</item>
     </plurals>

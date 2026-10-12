@@ -24,7 +24,12 @@
     <string name="settings_allow_videos_sent_by_dms_note">Not supported on TikTok Lite</string>
 
 
+    <!-- DMs: direct/private messages inside Instagram, TikTok, etc. -->
+
+
     <string name="settings_allow_videos_sent_by_dms_title">Videos sent in DMs</string>
+
+    <!-- "Pause" must match the home screen button label (string "pause" in feature/home). -->
 
     <string name="settings_pause_duration_description">How long blocking is paused when you tap Pause.</string>
 
@@ -37,6 +42,8 @@
         <item quantity="one">%1$d minute</item>
         <item quantity="other">%1$d minutes</item>
     </plurals>
+
+    <!-- Stories: the Instagram, Snapchat and Facebook feature. Use the name those apps use in this language. -->
 
     <string name="settings_include_stories_title">Include Stories</string>
     <string name="settings_include_stories_description">Count time spent viewing Stories and apply your current blocking mode and limits.</string>

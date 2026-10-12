@@ -1,0 +1,33 @@
+Reklaamideta. Jälgimiseta. Täielikult avatud lähtekoodiga.
+
+Scrolless aitab sul vähendada lühivideote vaatamist rakendustes TikTok, Instagram Reels, YouTube Shorts, Facebook Reels ja Snapchat, samal ajal kui ülejäänud rakendus töötab edasi. Veeda vähem aega lõputute voogude kerimisel, püsi keskendunud ja võta oma ekraaniaeg tagasi – kontot pole vaja.
+
+Vali, kuidas blokeerida
+• Blokeeri kõik: sulgeb lühivideovood kohe, kui need avanevad.
+• Päevane piir: määra, kui palju aega sul iga päev on.
+• Ajaintervall: blokeeringud ja vaatamisaeg vahelduvad, näiteks kuni 5 minutit tunnis.
+• Paus: lülita blokeerimine mõneks minutiks välja; see lülitub ise uuesti sisse.
+
+Hoia alles see, mis loeb
+• Luba videod, mida sõbrad sulle privaatsõnumites saadavad.
+• Vali, kas lood lähevad sinu piiride hulka arvesse.
+• Näe vaatamise ajal väikest reaalajas taimerit.
+
+Mõista oma harjumusi
+• Iga seansi päevane ajajoon rakenduste kaupa.
+• Keskmised iga nädalapäeva kohta.
+• Sirvi varasemaid päevi ja märka mustreid.
+
+Toetatud rakendused
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite ja Snapchat.
+
+Privaatne algusest peale
+Scrollessil pole reklaame, analüütikat ega jälgimist ning see ei vaja kontot. Sinu kasutusajalugu jääb sinu telefoni ja kood on kõigile kontrollimiseks avatud.
+
+Juurdepääsetavuse luba
+Scrolless kasutab juurdepääsetavuse teenust ainult toetatud lühivideokuvade tuvastamiseks ja sinu blokeerimisreeglite rakendamiseks. See ei salvesta, talleta ega saada sinu ekraani sisu. Kõik toimub sinu seadmes.
+
+Vähem mõttetut kerimist, üks kerimine korraga.
+
+Lähtekood: https://github.com/DuarteBarbosaDev/Scrolless
+Ikoonid: Icons8

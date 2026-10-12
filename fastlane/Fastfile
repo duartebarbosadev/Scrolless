@@ -250,6 +250,9 @@ platform :android do
       track: options[:track] || "internal",
       status: options[:status] || "completed"
     )
+
+    # Runs after the binary upload, so a rerun after a listing error skips straight back here.
+    store_listing
   end
 
   desc "Verify, build, and upload a release to Google Play Internal"
@@ -270,6 +273,24 @@ platform :android do
       skip_upload_aab: true,
       skip_upload_images: true,
       skip_upload_screenshots: true,
+      **play_credentials
+    )
+  end
+
+  desc "Upload the store listing (titles, descriptions, icon, feature graphics, screenshots) for every locale"
+  lane :store_listing do |options|
+    upload_to_play_store(
+      package_name: PACKAGE_NAME,
+      metadata_path: METADATA_DIR,
+      skip_upload_apk: true,
+      skip_upload_aab: true,
+      skip_upload_metadata: false,
+      skip_upload_changelogs: true,
+      skip_upload_images: false,
+      skip_upload_screenshots: false,
+      # Compare checksums so unchanged images are not deleted and re-uploaded.
+      sync_image_upload: true,
+      validate_only: options[:validate_only] || false,
       **play_credentials
     )
   end

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="accessibility_explainer_icon_description">Juurdepääsetavuse loa ikoon</string>
+    <string name="accessibility_explainer_not_now_button">Mitte praegu</string>
+    <string name="accessibility_explainer_open_source">Meie kood on GitHubis 100\% avatud lähtekoodiga.</string>
+    <string name="accessibility_explainer_privacy_note">Scrolless kasutab seda luba ainult lühivideote tuvastamiseks ja peatamiseks. Me ei kogu mingeid isikuandmeid.</string>
+    <string name="accessibility_explainer_proceed_button">Ava seaded</string>
+    <string name="accessibility_explainer_step1">Puuduta allpool \"Ava seaded\", et avada Androidi juurdepääsetavuse seaded</string>
+    <string name="accessibility_explainer_step2">Leia rakendused ja puuduta teenuste loendis \"Scrolless\"</string>
+    <string name="accessibility_explainer_step3">Lülita lüliti sisse, et Scrolless saaks aidata sul lõputut kerimist peatada</string>
+    <string name="accessibility_explainer_subtitle">Scrolless vajab lühivideote tuvastamiseks ja peatamiseks juurdepääsetavuse luba.</string>
+    <string name="accessibility_explainer_title">Vajame juurdepääsetavuse luba</string>
+    <string name="accessibility_success_description">Scrolless on nüüd valmis!</string>
+    <string name="accessibility_success_title">Kõik on valmis!</string>
+    <string name="background_allow_button">Luba</string>
+    <string name="background_autostart_step">Lülita Autostart sisse</string>
+    <string name="background_battery_step">Luba taustategevus</string>
+    <string name="background_step_done">Tehtud</string>
+    <string name="background_continue_button">Jätka</string>
+    <string name="background_open_button">Ava</string>
+    <string name="background_settings_button">Ava taustaseaded</string>
+    <string name="background_step_description">Mõned telefonid sulgevad Scrollessi taustal, mistõttu blokeerimine lakkab.</string>
+    <string name="background_step_title">Hoia Scrolless töös</string>
+    <string name="block_all">Blokeeri\nkõik</string>
+    <string name="close">Sulge</string>
+    <string name="daily_limit">Päevane\npiir</string>
+    <string name="get_started">Alusta</string>
+    <string name="go_to_accessibility_settings">Ava juurdepääsetavuse seaded</string>
+    <string name="daily_limit_configure_time_content_description">Seadista päevase piiri aeg</string>
+    <string name="help">Abi</string>
+    <string name="help_dialog_title">Scrolless ei tööta\?</string>
+    <string name="help_step1_description">Vali avakuvalt üks blokeerimisvalikutest</string>
+    <string name="help_step1_title">Vali blokeerimisviis</string>
+    <string name="help_step2_description">Kui blokeerimine ei tööta, lülita juurdepääsetavuse teenus välja ja uuesti sisse. Luba ka Scrollessil taustal töötada: lülita sisse Autostart (Xiaomi, POCO, Redmi ja sarnased telefonid) ning määra aku kasutuseks \"Piiranguteta\".</string>
+    <string name="help_step2_title">Tõrkeotsing</string>
+    <string name="help_step3_description">Ikka on probleeme\? Aitame hea meelega! Kasuta allolevat nuppu, et võtta meiega ühendust meie GitHubi hoidlas.</string>
+    <string name="help_step3_title">Võta ühendust toega</string>
+    <string name="icons8_attribution">Ikoonid pakub Icons8 (icons8.com)</string>
+    <string name="interval_timer_card_allowance_chip">Vaatamisaeg</string>
+    <string name="interval_timer_card_break_chip">Blokeeringu pikkus</string>
+    <string name="interval_timer_card_edit">Muuda ajakava</string>
+    <string name="interval_timer_card_set_schedule">Sea ajakava</string>
+    <string name="interval_timer_card_summary">Vaata kuni %1$s iga %2$s järel</string>
+    <string name="interval_timer_card_summary_empty">Sea oma esimene ajakava, et blokeeringuperioodid ja vaatamisaeg vahelduksid.</string>
+    <string name="interval_timer_dialog_allowance_description">Kui kaua saad blokeeringuperioodide vahel lühivideoid vaadata.</string>
+    <string name="interval_timer_dialog_allowance_label">Lubatud vaatamisaeg</string>
+    <string name="interval_timer_dialog_break_description">Scrolless hoiab toetatud rakendused kogu blokeeringuperioodi vältel blokeerituna, seejärel saad jälle vaadata.</string>
+    <string name="interval_timer_dialog_break_label">Blokeeringu kestus</string>
+    <string name="interval_timer_dialog_cancel">Tühista</string>
+    <string name="interval_timer_dialog_save">Salvesta ajakava</string>
+    <string name="interval_timer_dialog_subtitle">Vali, kui kaua iga blokeeringuperiood kestab ja kui palju saad nende vahel vaadata.</string>
+    <string name="interval_timer_dialog_summary">Tulemus: kuni %1$s iga %2$s järel</string>
+    <string name="interval_timer_dialog_title">Seadista intervalltaimer</string>
+    <string name="interval_timer_next_reset_in">Lähtestub %1$s pärast</string>
+    <string name="limit_chip">Piir %1$s</string>
+    <string name="next_step_1">Vali blokeerimisrežiim</string>
+    <string name="next_step_2">Proovi päevase piiri funktsiooni ja lülita sisse taimeri ülekate</string>
+    <string name="next_steps_title">Järgmised sammud</string>
+    <string name="pause">Paus</string>
+    <string name="pause_duration_hint">Peatab blokeerimise %1$d min ajaks</string>
+    <string name="pause_resumes_in">Jätkub %1$s pärast</string>
+    <string name="resume">Jätka</string>
+    <string name="service_not_running_description">Blokeerimine lakkas, sest Android sulges Scrollessi taustal. See võib juhtuda, kui rakendus eemaldatakse hiljutiste rakenduste hulgast või seda piiratakse aku säästmiseks.</string>
+    <string name="service_not_running_step_restart">Lülita Scrolless juurdepääsetavuse seadetes välja ja uuesti sisse.</string>
+    <string name="service_not_running_title">Scrolless peatati</string>
+    <string name="settings">Seaded</string>
+    <string name="success_icon_description">Õnnestumise linnukese ikoon</string>
+    <string name="time_interval">Aja-\nintervall</string>
+    <string name="time_limit_dialog_title">Sea päevane ajapiir</string>
+    <string name="usage_analytics_today">Täna</string>
+    <string name="usage_analytics_previous_day">Eelmine päev</string>
+    <string name="usage_analytics_next_day">Järgmine päev</string>
+    <string name="usage_analytics_swipe_hint">&lt; Pühi päevade vaatamiseks &gt;</string>
+    <string name="usage_analytics_timeline_title">Ajajoon</string>
+    <string name="usage_analytics_average_title">Keskmine</string>
+    <string name="usage_analytics_average_week">Viimane nädal</string>
+    <string name="usage_analytics_average_month">Viimane kuu</string>
+    <string name="usage_analytics_average_year">Viimane aasta</string>
+    <plurals name="usage_analytics_session_count">
+        <item quantity="one">%1$d seanss</item>
+        <item quantity="other">%1$d seanssi</item>
+    </plurals>
+    <string name="usage_analytics_time_range">%1$s-%2$s</string>
+    <string name="usage_analytics_expand">Laienda</string>
+    <string name="usage_analytics_collapse">Ahenda</string>
+    <string name="usage_analytics_day_mon">E</string>
+    <string name="usage_analytics_day_tue">T</string>
+    <string name="usage_analytics_day_wed">K</string>
+    <string name="usage_analytics_day_thu">N</string>
+    <string name="usage_analytics_day_fri">R</string>
+    <string name="usage_analytics_day_sat">L</string>
+    <string name="usage_analytics_day_sun">P</string>
+    <string name="visit_github">Külasta GitHubi hoidlat</string>
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 Scrolless
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+<resources>
+    <string name="back">Atgal</string>
+    <string name="settings">Nustatymai</string>
+    <string name="settings_allow_videos_sent_by_dms_description">Neblokuoti vaizdo įrašų, atsiųstų privačiose žinutėse.</string>
+    <string name="settings_allow_videos_sent_by_dms_note">Nepalaikoma TikTok Lite</string>
+    <string name="settings_allow_videos_sent_by_dms_title">Vaizdo įrašai privačiose žinutėse</string>
+    <string name="settings_pause_duration_description">Kiek laiko blokavimas pristabdomas, kai paliečiate \"Pristabdyti\".</string>
+    <string name="settings_pause_duration_title">Pristabdymo trukmė</string>
+    <string name="settings_section_blocking">Blokavimas</string>
+    <string name="settings_show_onscreen_timer_description">Žiūrint trumpus vaizdo įrašus rodyti slankųjį laikmatį.</string>
+    <string name="settings_show_onscreen_timer_title">Rodyti laikmatį ekrane</string>
+    <plurals name="settings_pause_duration_value">
+        <item quantity="one">%1$d minutė</item>
+        <item quantity="few">%1$d minutės</item>
+        <item quantity="many">%1$d minutės</item>
+        <item quantity="other">%1$d minučių</item>
+    </plurals>
+    <string name="settings_include_stories_title">Įtraukti istorijas</string>
+    <string name="settings_include_stories_description">Skaičiuoti istorijų peržiūros laiką ir taikyti dabartinį blokavimo režimą bei limitus.</string>
+    <string name="settings_include_stories_note">Šiuo metu palaikoma Instagram, Snapchat ir Facebook.</string>
+</resources>

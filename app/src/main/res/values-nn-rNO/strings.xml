@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
-    <string name="accessibility_service_description">Denne tenesta oppdagar når reels/shorts/tiktok blir opna, slik at Scrolless kan blokkere dei om konfigurert.</string>
+    <string name="accessibility_service_description">Denne tenesta oppdagar når Reels, Shorts, TikTok eller Facebook Reels blir opna, slik at Scrolless kan blokkere dei om konfigurert.</string>
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok-videoar er blokkerte</string>
     <string name="tiktok_blocked_description">Bruk fanene nedanfor til å opne Innboks eller Profil.</string>

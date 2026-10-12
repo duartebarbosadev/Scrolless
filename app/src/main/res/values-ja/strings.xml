@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 <resources>
-    <string name="accessibility_service_description">このサービスは、リール/ショート/TikTokが開かれたことを検出し、設定されている場合にScrollessがそれらをブロックできるようにします。</string>
+    <string name="accessibility_service_description">このサービスは、Reels、Shorts、TikTok、Facebook Reelsが開かれたことを検出し、設定に応じてScrollessがそれらをブロックできるようにします。</string>
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTokの動画はブロックされています</string>
     <string name="tiktok_blocked_description">下のタブから「メッセージ」または「プロフィール」を開いてください。</string>

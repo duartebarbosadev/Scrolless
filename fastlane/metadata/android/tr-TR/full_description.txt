@@ -1,0 +1,33 @@
+Reklam yok. Takip yok. Tamamen açık kaynak.
+
+Scrolless; TikTok, Instagram Reels, YouTube Shorts, Facebook Reels ve Snapchat'teki kısa videoları azaltmana yardımcı olur, uygulamaların geri kalanı ise çalışmaya devam eder. Sonsuz akışlarda daha az vakit geçir, odaklan ve ekran süreni geri al; üstelik hesap gerekmez.
+
+Engelleme şeklini seç
+• Tümünü engelle: Kısa video akışlarını açılır açılmaz kapatır.
+• Günlük sınır: Her gün ne kadar süren olacağını belirle.
+• Zaman aralığı: Engelleme süresi ile izleme süresi dönüşümlü uygulanır; örneğin her saat en fazla 5 dakika.
+• Duraklat: Engellemeyi birkaç dakikalığına kapat; kendiliğinden yeniden açılır.
+
+Önemli olanı koru
+• Arkadaşlarının DM'lerde gönderdiği videolara izin ver.
+• Hikâyelerin sınırlarına dahil edilip edilmeyeceğini seç.
+• İzlerken küçük, canlı bir sayaç gör.
+
+Alışkanlıklarını tanı
+• Her oturumun uygulamaya göre günlük zaman çizelgesi.
+• Haftanın her günü için ortalamalar.
+• Örüntüleri fark etmek için geçmiş günlere göz at.
+
+Desteklenen uygulamalar
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite ve Snapchat.
+
+Gizlilik odaklı tasarım
+Scrolless'ta reklam, analiz veya takip yoktur ve hesap gerekmez. Kullanım geçmişin telefonunda kalır; kod ise herkesin incelemesine açıktır.
+
+Erişilebilirlik izni
+Scrolless, Erişilebilirlik iznini yalnızca desteklenen kısa video ekranlarını algılamak ve engelleme kurallarını uygulamak için kullanır. Ekran içeriğini kaydetmez, saklamaz veya göndermez. Her şey cihazında gerçekleşir.
+
+Bilinçsiz kaydırmayı azalt, her seferinde bir kaydırma daha az.
+
+Kaynak kodu: https://github.com/DuarteBarbosaDev/Scrolless
+Simgeler: Icons8

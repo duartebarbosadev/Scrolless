@@ -1,0 +1,33 @@
+Walang ads. Walang tracking. Ganap na open source.
+
+Tinutulungan ka ng Scrolless na bawasan ang panonood ng maiikling video sa TikTok, Instagram Reels, YouTube Shorts, Facebook Reels at Snapchat, habang gumagana pa rin ang iba pang bahagi ng bawat app. Gumugol ng mas kaunting oras sa walang katapusang feed, manatiling nakatutok at bawiin ang iyong screen time, nang hindi kailangan ng account.
+
+Piliin kung paano mag-block
+• I-block lahat: agad na isinasara ang mga feed ng maiikling video pagkabukas ng mga ito.
+• Arawang limit: itakda kung gaano karaming oras ang mayroon ka bawat araw.
+• Pagitan ng oras: magpalitan ng pahinga at oras ng panonood, halimbawa hanggang 5 minuto bawat oras.
+• I-pause: i-off ang pag-block nang ilang minuto; kusa itong babalik.
+
+Panatilihin ang mahalaga
+• Payagan ang mga video na ipinapadala sa iyo ng mga kaibigan sa DM.
+• Piliin kung kasama ang Stories sa iyong mga limit.
+• Makakita ng maliit na live timer habang nanonood.
+
+Unawain ang iyong mga gawi
+• Arawang timeline ng bawat session, ayon sa app.
+• Mga average para sa bawat araw ng linggo.
+• Balikan ang mga nakaraang araw para makita ang mga pattern.
+
+Mga suportadong app
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite at Snapchat.
+
+Pribado mula sa disenyo
+Walang ads, analytics o tracking ang Scrolless, at hindi ito nangangailangan ng account. Nananatili sa iyong phone ang history ng paggamit mo, at bukas ang code para masuri ng kahit sino.
+
+Pahintulot sa Accessibility
+Ginagamit lang ng Scrolless ang Accessibility para matukoy ang mga suportadong screen ng maiikling video at ilapat ang iyong mga panuntunan sa pag-block. Hindi nito nire-record, iniimbak o ipinapadala ang nilalaman ng iyong screen. Lahat ay nangyayari sa iyong device.
+
+Bawasan ang walang-isip na pag-scroll, paisa-isang scroll.
+
+Source code: https://github.com/DuarteBarbosaDev/Scrolless
+Mga icon mula sa Icons8

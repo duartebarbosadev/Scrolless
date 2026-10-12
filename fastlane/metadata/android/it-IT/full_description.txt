@@ -1,0 +1,33 @@
+Niente pubblicità. Niente tracciamento. Completamente open source.
+
+Scrolless ti aiuta a guardare meno video brevi su TikTok, Instagram Reels, YouTube Shorts, Facebook Reels e Snapchat, mentre il resto di ogni app continua a funzionare. Passa meno tempo nei feed infiniti, resta concentrato e riprenditi il tuo tempo davanti allo schermo, senza bisogno di un account.
+
+Scegli come bloccare
+• Blocca tutto: chiude i feed di video brevi non appena si aprono.
+• Limite giornaliero: decidi quanto tempo hai a disposizione ogni giorno.
+• Intervallo di tempo: alterna durata del blocco e tempo di visione, ad esempio fino a 5 minuti ogni ora.
+• Pausa: disattiva il blocco per qualche minuto; si riattiva da solo.
+
+Tieni ciò che conta
+• Consenti i video che gli amici ti inviano nei messaggi diretti.
+• Scegli se le storie contano nei tuoi limiti.
+• Vedi un piccolo timer in tempo reale mentre guardi.
+
+Comprendi le tue abitudini
+• Cronologia giornaliera di ogni sessione, per app.
+• Medie per ogni giorno della settimana.
+• Sfoglia i giorni passati per individuare le tendenze.
+
+App supportate
+TikTok, TikTok Lite, Instagram Reels, YouTube Shorts, Facebook Reels, Facebook Lite e Snapchat.
+
+Privacy fin dalla progettazione
+Scrolless non ha pubblicità, analisi o tracciamento e non richiede alcun account. La cronologia di utilizzo resta sul tuo telefono e il codice è aperto, così chiunque può controllarlo.
+
+Permesso di accessibilità
+Scrolless usa l'accessibilità solo per rilevare le schermate di video brevi supportate e applicare le tue regole di blocco. Non registra, non memorizza e non invia il contenuto del tuo schermo. Tutto avviene sul tuo dispositivo.
+
+Riduci lo scorrimento senza pensieri, uno scroll in meno alla volta.
+
+Codice sorgente: https://github.com/DuarteBarbosaDev/Scrolless
+Icone di Icons8
