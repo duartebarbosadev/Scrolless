@@ -1,0 +1,6 @@
+• Přidáno blokování příběhů v aplikacích Instagram, Snapchat a Facebook.
+• Videa v aplikaci TikTok jsou nyní zakryta a videa odeslaná v soukromých zprávách lze povolit.
+• Plovoucí časovač je nyní ve výchozím nastavení zapnutý.
+• Přidáno 11 nových jazyků a možnost nastavit jazyk aplikace zvlášť.
+• Přidána nápověda, jak udržet Scrolless spuštěný na telefonech Xiaomi a podobných.
+• Opravena detekce TikTok Lite, spuštění časovače intervalů a probliknutí při otevření aplikace.

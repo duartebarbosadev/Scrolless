@@ -1,0 +1,6 @@
+• Pridėtas istorijų blokavimas Instagram, Snapchat ir Facebook.
+• TikTok vaizdo įrašai dabar uždengiami, o gautus privačiose žinutėse galima leisti.
+• Slankusis laikmatis dabar įjungtas pagal numatytuosius nustatymus.
+• Pridėta 11 naujų kalbų ir atskiros programėlės kalbos palaikymas.
+• Pridėta pagalba, kad Scrolless veiktų Xiaomi ir panašiuose telefonuose.
+• Ištaisytas TikTok Lite aptikimas, intervalo laikmačio pradžia ir mirgėjimas paleidžiant.

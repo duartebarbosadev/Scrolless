@@ -1,0 +1,6 @@
+• Blokkering av historier er lagt til for Instagram, Snapchat og Facebook.
+• TikTok-videoer dekkes nå til, og videoer sendt i DM-er kan tillates.
+• Den flytende tidtakeren er nå på som standard.
+• 11 nye språk er lagt til, og appen kan nå ha sitt eget språk.
+• Hjelp er lagt til for å holde Scrolless i gang på Xiaomi og lignende telefoner.
+• Gjenkjenning av TikTok Lite, oppstart av intervalltidtakeren og flimring ved oppstart er rettet.

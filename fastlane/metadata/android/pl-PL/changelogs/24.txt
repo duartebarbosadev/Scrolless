@@ -1,0 +1,6 @@
+• Dodano blokowanie relacji na Instagramie, Snapchacie i Facebooku.
+• Filmy na TikToku są teraz zasłaniane, a te z wiadomości prywatnych można dopuścić.
+• Pływający minutnik jest teraz domyślnie włączony.
+• Dodano 11 nowych języków i możliwość ustawienia języka aplikacji.
+• Dodano pomoc w utrzymaniu działania Scrolless na telefonach Xiaomi i podobnych.
+• Naprawiono wykrywanie TikTok Lite, start minutnika interwałowego i miganie przy uruchamianiu.

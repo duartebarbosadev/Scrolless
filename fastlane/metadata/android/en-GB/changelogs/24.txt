@@ -1,0 +1,6 @@
+• Added Stories blocking for Instagram, Snapchat and Facebook.
+• TikTok videos are now covered, and videos sent in TikTok DMs can be allowed.
+• The floating timer is now on by default.
+• Added 11 new languages and per-app language support.
+• Added help to keep Scrolless running on Xiaomi and similar phones.
+• Fixed TikTok Lite detection, the interval timer start and a flicker on launch.

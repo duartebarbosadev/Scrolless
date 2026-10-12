@@ -1,0 +1,6 @@
+• Dodano je blokiranje priča za Instagram, Snapchat i Facebook.
+• TikTok videozapisi sada su prekriveni, a oni poslani u DM-ovima mogu se dopustiti.
+• Plutajući mjerač vremena sada je zadano uključen.
+• Dodano je 11 novih jezika i mogućnost odabira jezika aplikacije.
+• Dodana je pomoć za neprekidan rad Scrollessa na Xiaomi i sličnim telefonima.
+• Ispravljeni su prepoznavanje TikTok Litea, pokretanje intervalnog mjerača i treperenje pri otvaranju.
