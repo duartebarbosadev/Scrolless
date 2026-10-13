@@ -18,7 +18,6 @@ package com.scrolless.app.feature.home
 
 import android.accessibilityservice.AccessibilityService
 import android.app.Activity
-import android.os.Build
 import android.os.Process
 import android.os.SystemClock
 import android.text.format.DateFormat
@@ -180,11 +179,8 @@ private val SetupSheetSaver = Saver<SetupSheet?, String>(
 private fun serviceBindGrace(): Duration {
     // On a cold start the process (and the service connection flag) is brand new, and the system
     // may take a few seconds to bind the service, so measure that window from the process start.
-    val coldStartRemaining = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    val coldStartRemaining =
         COLD_START_BIND_GRACE - (SystemClock.uptimeMillis() - Process.getStartUptimeMillis()).milliseconds
-    } else {
-        COLD_START_BIND_GRACE
-    }
     return maxOf(SERVICE_BIND_GRACE, coldStartRemaining)
 }
 
