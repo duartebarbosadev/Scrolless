@@ -41,6 +41,10 @@ android {
         libs.versions.compileSdk
             .get()
             .toInt()
+    compileSdkMinor =
+        libs.versions.compileSdkMinor
+            .get()
+            .toInt()
     namespace = "com.scrolless.app.core.domain"
 
     defaultConfig {
@@ -90,7 +94,6 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     // Dependency injection
-    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 

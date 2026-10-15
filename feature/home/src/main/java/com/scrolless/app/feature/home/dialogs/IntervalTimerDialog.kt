@@ -31,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberSliderState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -85,6 +86,16 @@ fun IntervalTimerDialog(
             ),
         )
     }
+    val breakSliderState = rememberSliderState(
+        value = breakMinutes.toFloat(),
+        steps = ((MAX_BREAK_MINUTES - MIN_BREAK_MINUTES) / BREAK_STEP_MINUTES) - 1,
+        trackRange = MIN_BREAK_MINUTES.toFloat()..MAX_BREAK_MINUTES.toFloat(),
+    )
+    val allowanceSliderState = rememberSliderState(
+        value = allowanceMinutes.toFloat(),
+        steps = (MAX_ALLOWANCE_MINUTES - MIN_ALLOWANCE_MINUTES) - 1,
+        trackRange = MIN_ALLOWANCE_MINUTES.toFloat()..MAX_ALLOWANCE_MINUTES.toFloat(),
+    )
 
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         Card(
@@ -124,7 +135,7 @@ fun IntervalTimerDialog(
                     formattedValue = breakMinutes.formatMinutes(),
                 ) {
                     Slider(
-                        value = breakMinutes.toFloat(),
+                        state = breakSliderState,
                         onValueChange = { rawValue ->
                             val newValue = snapToStepValue(
                                 value = rawValue,
@@ -136,12 +147,11 @@ fun IntervalTimerDialog(
                                 hapticHelper.playTick()
                             }
                             breakMinutes = newValue
+                            breakSliderState.value = newValue.toFloat()
                         },
                         onValueChangeFinished = {
                             hapticHelper.playConfirm()
                         },
-                        valueRange = MIN_BREAK_MINUTES.toFloat()..MAX_BREAK_MINUTES.toFloat(),
-                        steps = ((MAX_BREAK_MINUTES - MIN_BREAK_MINUTES) / BREAK_STEP_MINUTES) - 1,
                     )
                 }
 
@@ -153,7 +163,7 @@ fun IntervalTimerDialog(
                     formattedValue = allowanceMinutes.formatMinutes(),
                 ) {
                     Slider(
-                        value = allowanceMinutes.toFloat(),
+                        state = allowanceSliderState,
                         onValueChange = { rawValue ->
                             val newValue = snapToStepValue(
                                 value = rawValue,
@@ -165,12 +175,11 @@ fun IntervalTimerDialog(
                                 hapticHelper.playTick()
                             }
                             allowanceMinutes = newValue
+                            allowanceSliderState.value = newValue.toFloat()
                         },
                         onValueChangeFinished = {
                             hapticHelper.playConfirm()
                         },
-                        valueRange = MIN_ALLOWANCE_MINUTES.toFloat()..MAX_ALLOWANCE_MINUTES.toFloat(),
-                        steps = (MAX_ALLOWANCE_MINUTES - MIN_ALLOWANCE_MINUTES) - 1,
                     )
                 }
 

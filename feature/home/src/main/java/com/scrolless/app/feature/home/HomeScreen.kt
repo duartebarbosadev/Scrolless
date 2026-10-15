@@ -91,10 +91,10 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -923,7 +923,7 @@ private fun DateNavButton(onClick: () -> Unit, imageVector: ImageVector, content
 
 @Composable
 private fun LocalDate.formatHeaderDate(): String {
-    val locale = Locale.current.platformLocale
+    val locale = LocalLocale.current.platformLocale
     // Let the locale decide the order and punctuation, e.g. "Wed, Oct 7", "Wed 7 Oct", "10月7日(水)".
     val formatter = remember(locale) {
         DateTimeFormatter.ofPattern(DateFormat.getBestDateTimePattern(locale, "EEEMMMd"), locale)

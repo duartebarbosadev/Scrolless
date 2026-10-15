@@ -42,6 +42,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.SliderState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -237,6 +238,9 @@ private fun PauseDurationItem(pauseDurationMinutes: Int, onPauseDurationChange: 
     var sliderValue by remember(pauseDurationMinutes) {
         mutableIntStateOf(pauseDurationMinutes)
     }
+    val sliderState = remember(pauseDurationMinutes) {
+        SliderState(value = pauseDurationMinutes.toFloat(), steps = 13, trackRange = 1f..15f)
+    }
     val sliderTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.28f)
     val valueLabel = pluralStringResource(R.plurals.settings_pause_duration_value, sliderValue, sliderValue)
 
@@ -269,8 +273,9 @@ private fun PauseDurationItem(pauseDurationMinutes: Int, onPauseDurationChange: 
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
         Slider(
-            value = sliderValue.toFloat(),
+            state = sliderState,
             onValueChange = {
+                sliderState.value = it
                 val newValue = it.roundToInt()
                 if (newValue != sliderValue) {
                     hapticHelper.playTick()
@@ -283,8 +288,6 @@ private fun PauseDurationItem(pauseDurationMinutes: Int, onPauseDurationChange: 
                     onPauseDurationChange(sliderValue)
                 }
             },
-            valueRange = 1f..15f,
-            steps = 13,
             colors = SliderDefaults.colors(
                 thumbColor = MaterialTheme.colorScheme.primary,
                 activeTrackColor = MaterialTheme.colorScheme.primary,

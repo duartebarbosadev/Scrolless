@@ -44,6 +44,10 @@ android {
         libs.versions.compileSdk
             .get()
             .toInt()
+    compileSdkMinor =
+        libs.versions.compileSdkMinor
+            .get()
+            .toInt()
     namespace = "com.scrolless.app"
 
     defaultConfig {
@@ -78,7 +82,6 @@ android {
         includeInApk = false
     }
 
-
     val releaseKeystorePath =
         project.providers.environmentVariable("ANDROID_RELEASE_KEYSTORE_PATH")
             .orNull
@@ -108,7 +111,6 @@ android {
             }
         }
     }
-
 
     buildTypes {
         getByName("debug") {
@@ -163,7 +165,6 @@ kotlin {
 }
 
 dependencies {
-    implementation(libs.androidx.material3)
     implementation(libs.androidx.compose.animation.core)
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
@@ -180,7 +181,6 @@ dependencies {
     implementation(libs.androidx.palette)
 
     // Dependency injection
-    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
@@ -207,8 +207,6 @@ dependencies {
 
     implementation(libs.androidx.window)
     implementation(libs.androidx.window.core)
-
-    implementation(libs.coil.kt.compose)
 
     add("playImplementation", libs.android.review)
     add("playImplementation", libs.android.review.ktx)

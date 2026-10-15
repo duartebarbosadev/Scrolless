@@ -29,6 +29,10 @@ android {
         libs.versions.compileSdk
             .get()
             .toInt()
+    compileSdkMinor =
+        libs.versions.compileSdkMinor
+            .get()
+            .toInt()
 
     defaultConfig {
         minSdk =
@@ -81,7 +85,7 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.hilt.android)

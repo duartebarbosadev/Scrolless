@@ -43,6 +43,10 @@ android {
         libs.versions.compileSdk
             .get()
             .toInt()
+    compileSdkMinor =
+        libs.versions.compileSdkMinor
+            .get()
+            .toInt()
 
     defaultConfig {
         minSdk =
@@ -82,15 +86,11 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.compose.runtime)
 
-    // Image loading
-    implementation(libs.coil.kt.compose)
-
     // Compose
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)
 
     // Dependency injection
-    implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
