@@ -39,20 +39,8 @@ plugins {
 
 android {
     namespace = "com.scrolless.app.core.designsystem"
-    compileSdk =
-        libs.versions.compileSdk
-            .get()
-            .toInt()
-    compileSdkMinor =
-        libs.versions.compileSdkMinor
-            .get()
-            .toInt()
 
     defaultConfig {
-        minSdk =
-            libs.versions.minSdk
-                .get()
-                .toInt()
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

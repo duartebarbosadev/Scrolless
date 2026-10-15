@@ -39,21 +39,8 @@ plugins {
 
 android {
     namespace = "com.scrolless.app.core.data"
-    compileSdk =
-        libs.versions.compileSdk
-            .get()
-            .toInt()
-    compileSdkMinor =
-        libs.versions.compileSdkMinor
-            .get()
-            .toInt()
 
     defaultConfig {
-        minSdk =
-            libs.versions.minSdk
-                .get()
-                .toInt()
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }

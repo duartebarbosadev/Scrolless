@@ -36,6 +36,22 @@ pluginManagement {
         mavenCentral()
     }
 }
+plugins {
+    // Keep in sync with androidGradlePlugin in gradle/libs.versions.toml
+    id("com.android.settings") version "9.3.3"
+}
+// SDK levels shared by every Android module
+android {
+    compileSdk {
+        version = release(37) { minorApiLevel = 1 }
+    }
+    minSdk {
+        version = release(24)
+    }
+    targetSdk {
+        version = release(37)
+    }
+}
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {

@@ -40,26 +40,10 @@ plugins {
 }
 
 android {
-    compileSdk =
-        libs.versions.compileSdk
-            .get()
-            .toInt()
-    compileSdkMinor =
-        libs.versions.compileSdkMinor
-            .get()
-            .toInt()
     namespace = "com.scrolless.app"
 
     defaultConfig {
         applicationId = "com.scrolless.app"
-        minSdk =
-            libs.versions.minSdk
-                .get()
-                .toInt()
-        targetSdk =
-            libs.versions.targetSdk
-                .get()
-                .toInt()
         versionCode = 24
         versionName = "1.8.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -142,6 +126,7 @@ android {
     }
 
     // Lists the app's languages for the per-app language setting on Android 13+.
+    @Suppress("UnstableApiUsage")
     androidResources {
         generateLocaleConfig = true
     }

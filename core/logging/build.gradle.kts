@@ -22,12 +22,6 @@ plugins {
 
 android {
     namespace = "com.scrolless.app.core.logging"
-    compileSdk = libs.versions.compileSdk.get().toInt()
-    compileSdkMinor = libs.versions.compileSdkMinor.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.minSdk.get().toInt()
-    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
