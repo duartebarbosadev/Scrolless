@@ -47,5 +47,7 @@
 
     <string name="settings_include_stories_title">Include Stories</string>
     <string name="settings_include_stories_description">Count time spent viewing Stories and apply your current blocking mode and limits.</string>
+    <string name="settings_block_instagram_feed_title">Block Instagram feed</string>
+    <string name="settings_block_instagram_feed_description">Cover the posts on the Instagram home feed with your current blocking mode and limits. Stories, messages and search stay available.</string>
     <string name="settings_include_stories_note">Currently supported on Instagram, Snapchat, and Facebook.</string>
 </resources>

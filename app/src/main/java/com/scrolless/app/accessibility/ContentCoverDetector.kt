@@ -27,7 +27,11 @@ internal interface ContentCoverDetector {
     /** The target app this cover detector is built for. */
     val app: BlockableApp
 
+    /** Views to read for [coverBounds]. The first ID must be on screen for any cover; others are skipped without it. */
     val viewIds: Set<String>
+
+    /** Opt-in covers stay off until the user enables them, so the app keeps its normal blocking action. */
+    val isEnabled: Boolean get() = true
 
     /** Title shown on the overlay covering the video. */
     @get:StringRes val titleRes: Int
@@ -51,12 +55,12 @@ internal data class ContentCoverNode(val viewId: String, val bounds: ContentBoun
 private val coverDetectors: Map<BlockableApp, ContentCoverDetector> = listOf(
     TikTokScreenDetector(BlockableApp.TIKTOK),
     TikTokScreenDetector(BlockableApp.TIKTOK_LITE),
-    // Add future app cover detectors here (e.g. InstagramScreenDetector)
+    InstagramFeedDetector,
 ).associateBy { it.app }
 
 /** Returns cover rules for this app, or null if it uses full-screen blocking (Back or Home). */
 internal val BlockableApp.coverDetector: ContentCoverDetector?
-    get() = coverDetectors[this]
+    get() = coverDetectors[this]?.takeIf { it.isEnabled }
 
 /** Returns cover rules for this app, or null if it uses full-screen blocking (Back or Home). */
 internal val ResolvedBlockableApp.coverDetector: ContentCoverDetector?
