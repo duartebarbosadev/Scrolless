@@ -142,6 +142,12 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
     @Query("UPDATE user_settings SET include_stories = :enabled WHERE id = 1")
     abstract suspend fun setIncludeStories(enabled: Boolean)
 
+    @Query("SELECT block_instagram_feed FROM user_settings WHERE id = 1")
+    abstract fun getBlockInstagramFeed(): Flow<Boolean>
+
+    @Query("UPDATE user_settings SET block_instagram_feed = :enabled WHERE id = 1")
+    abstract suspend fun setBlockInstagramFeed(enabled: Boolean)
+
     @Query("SELECT except_reels_sent_by_dm FROM user_settings WHERE id = 1")
     abstract fun getAllowVideosSentByDm(): Flow<Boolean>
 
