@@ -31,6 +31,7 @@ import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.Duration
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
@@ -48,6 +49,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -67,7 +69,20 @@ class HomeViewModel @Inject constructor(
 
     private val _selectedAveragePeriod = MutableStateFlow(UsageAveragePeriod.LAST_WEEK)
     private val selectedAnalyticsDate = MutableStateFlow(ZonedDateTime.now().toLocalDate())
-    private val currentDate = MutableStateFlow(ZonedDateTime.now().toLocalDate())
+    private var lastSeenToday = ZonedDateTime.now().toLocalDate()
+
+    // Only runs while the screen is collecting, so it restarts and re-reads the clock when the app comes
+    // back. A delay left running in the background doesn't count time the device sleeps and fires late.
+    private val currentDate = currentDayFlow()
+        .onEach { today ->
+            selectedAnalyticsDate.value = selectedDateAfterDayChange(selectedAnalyticsDate.value, lastSeenToday, today)
+            lastSeenToday = today
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = lastSeenToday,
+        )
     private val reviewPromptDismissed = MutableStateFlow(false)
 
     private val requestReview = combine(
@@ -384,18 +399,15 @@ class HomeViewModel @Inject constructor(
         _selectedAveragePeriod.value = period
     }
 
-    /**
-     * Re-reads today's date. Called when the screen resumes and on clock broadcasts, because a coroutine
-     * delay until midnight does not count time spent with the device asleep and would fire hours late.
-     */
-    fun onClockMaybeChanged() {
-        val previousToday = currentDate.value
-        val today = ZonedDateTime.now().toLocalDate()
-        if (today == previousToday) return
-        Timber.i("Day changed from %s to %s", previousToday, today)
-        currentDate.value = today
-        selectedAnalyticsDate.value = selectedDateAfterDayChange(selectedAnalyticsDate.value, previousToday, today)
-    }
+    private fun currentDayFlow() = flow {
+        while (true) {
+            val now = ZonedDateTime.now()
+            emit(now.toLocalDate())
+            val nextMidnight = now.toLocalDate().plusDays(1).atStartOfDay(now.zone)
+            val delayMillis = Duration.between(now, nextMidnight).toMillis().coerceAtLeast(1L)
+            delay(delayMillis.milliseconds)
+        }
+    }.distinctUntilChanged()
 }
 
 /**
