@@ -31,7 +31,6 @@ import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
 import com.scrolless.app.core.util.combine
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.Duration
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.util.concurrent.TimeUnit
@@ -68,11 +67,7 @@ class HomeViewModel @Inject constructor(
 
     private val _selectedAveragePeriod = MutableStateFlow(UsageAveragePeriod.LAST_WEEK)
     private val selectedAnalyticsDate = MutableStateFlow(ZonedDateTime.now().toLocalDate())
-    private val currentDate = currentDayFlow().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = ZonedDateTime.now().toLocalDate(),
-    )
+    private val currentDate = MutableStateFlow(ZonedDateTime.now().toLocalDate())
     private val reviewPromptDismissed = MutableStateFlow(false)
 
     private val requestReview = combine(
@@ -103,16 +98,6 @@ class HomeViewModel @Inject constructor(
         private val REVIEW_PROMPT_DELAY_MILLIS = TimeUnit.MINUTES.toMillis(5) // Show review popup after 5 minutes
         private const val REVIEW_PROMPT_MAX_ATTEMPTS = 3
         private val REVIEW_PROMPT_RETRY_DELAY_MILLIS = TimeUnit.DAYS.toMillis(1)
-    }
-
-    init {
-        viewModelScope.launch {
-            currentDate.collect { today ->
-                if (selectedAnalyticsDate.value.isAfter(today)) {
-                    selectedAnalyticsDate.value = today
-                }
-            }
-        }
     }
 
     private val sessionSegmentsForCurrentDay = currentDate.flatMapLatest { currentDate ->
@@ -399,15 +384,28 @@ class HomeViewModel @Inject constructor(
         _selectedAveragePeriod.value = period
     }
 
-    private fun currentDayFlow() = flow {
-        while (true) {
-            val now = ZonedDateTime.now()
-            emit(now.toLocalDate())
-            val nextMidnight = now.toLocalDate().plusDays(1).atStartOfDay(now.zone)
-            val delayMillis = Duration.between(now, nextMidnight).toMillis().coerceAtLeast(1L)
-            delay(delayMillis.milliseconds)
-        }
-    }.distinctUntilChanged()
+    /**
+     * Re-reads today's date. Called when the screen resumes and on clock broadcasts, because a coroutine
+     * delay until midnight does not count time spent with the device asleep and would fire hours late.
+     */
+    fun onClockMaybeChanged() {
+        val previousToday = currentDate.value
+        val today = ZonedDateTime.now().toLocalDate()
+        if (today == previousToday) return
+        Timber.i("Day changed from %s to %s", previousToday, today)
+        currentDate.value = today
+        selectedAnalyticsDate.value = selectedDateAfterDayChange(selectedAnalyticsDate.value, previousToday, today)
+    }
+}
+
+/**
+ * Keeps the analytics selection on "today" when the day rolls over, so the screen shows the new day's
+ * (empty) usage instead of staying on yesterday. A past day the user picked stays selected.
+ */
+internal fun selectedDateAfterDayChange(selectedDate: LocalDate, previousToday: LocalDate, today: LocalDate): LocalDate = when {
+    selectedDate == previousToday -> today
+    selectedDate.isAfter(today) -> today
+    else -> selectedDate
 }
 
 @Immutable

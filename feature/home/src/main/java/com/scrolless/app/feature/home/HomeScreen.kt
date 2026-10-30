@@ -18,6 +18,10 @@ package com.scrolless.app.feature.home
 
 import android.accessibilityservice.AccessibilityService
 import android.app.Activity
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Process
 import android.os.SystemClock
 import android.text.format.DateFormat
@@ -98,6 +102,7 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -238,6 +243,26 @@ fun HomeScreen(
         }
     }
 
+    // Roll the screen over to the new day at midnight. TIME_TICK is only delivered while the screen is on,
+    // and the resume check below covers the app coming back after the device slept through midnight.
+    DisposableEffect(context) {
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                viewModel.onClockMaybeChanged()
+            }
+        }
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_TIME_TICK)
+            addAction(Intent.ACTION_DATE_CHANGED)
+            addAction(Intent.ACTION_TIME_CHANGED)
+            addAction(Intent.ACTION_TIMEZONE_CHANGED)
+        }
+        ContextCompat.registerReceiver(context, receiver, filter, ContextCompat.RECEIVER_NOT_EXPORTED)
+        onDispose {
+            context.unregisterReceiver(receiver)
+        }
+    }
+
     // Observe lifecycle resume events so we can react when the user returns from settings: if accessibility
     // is still disabled while a block option is active (or first launch), re-open the explainer.
     // Once it is enabled, the service liveness check below moves the explainer on.
@@ -245,6 +270,7 @@ fun HomeScreen(
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 Timber.d("HomeScreen resumed")
+                viewModel.onClockMaybeChanged()
                 if (!context.isAccessibilityServiceEnabled(accessibilityServiceClass) && latestUiState.hasLoadedSettings) {
                     val hasBlockSelection = latestUiState.blockOption != BlockOption.NothingSelected
                     val hasSeenExplainer = latestUiState.hasSeenAccessibilityExplainer
