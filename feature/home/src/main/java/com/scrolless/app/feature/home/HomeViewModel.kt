@@ -71,8 +71,10 @@ class HomeViewModel @Inject constructor(
     private val selectedAnalyticsDate = MutableStateFlow(ZonedDateTime.now().toLocalDate())
     private var lastSeenToday = ZonedDateTime.now().toLocalDate()
 
-    // Only runs while the screen is collecting, so it restarts and re-reads the clock when the app comes
-    // back. A delay left running in the background doesn't count time the device sleeps and fires late.
+    // Keeps track of today's date so the screen switches to the new day at midnight.
+    // The timer only runs while the home screen is visible. Android timers pause while the phone
+    // sleeps, so one left running overnight would switch days hours late. Restarting it whenever
+    // the screen comes back reads the real clock straight away.
     private val currentDate = currentDayFlow()
         .onEach { today ->
             selectedAnalyticsDate.value = selectedDateAfterDayChange(selectedAnalyticsDate.value, lastSeenToday, today)
