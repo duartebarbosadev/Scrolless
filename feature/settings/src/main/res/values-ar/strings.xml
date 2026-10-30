@@ -37,4 +37,6 @@
     <string name="settings_include_stories_title">تضمين القصص</string>
     <string name="settings_include_stories_description">احتساب الوقت الذي تقضيه في مشاهدة القصص وتطبيق وضع الحظر والحدود الحالية عليها.</string>
     <string name="settings_include_stories_note">مدعوم حاليًا على Instagram وSnapchat وFacebook.</string>
+    <string name="settings_block_instagram_feed_title">حظر خلاصة Instagram</string>
+    <string name="settings_block_instagram_feed_description">تغطية المنشورات في الخلاصة الرئيسية لـ Instagram وفق وضع الحظر والحدود الحالية. تبقى القصص والرسائل والبحث متاحة.</string>
 </resources>

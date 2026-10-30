@@ -35,12 +35,14 @@ class SettingsViewModel @Inject constructor(private val userSettingsStore: UserS
         userSettingsStore.getAllowVideosSentByDm(),
         userSettingsStore.getTimerOverlayEnabled(),
         userSettingsStore.getIncludeStories(),
-    ) { pauseDurationMillis, allowVideosSentByDm, timerOverlayEnabled, includeStories ->
+        userSettingsStore.getBlockInstagramFeed(),
+    ) { pauseDurationMillis, allowVideosSentByDm, timerOverlayEnabled, includeStories, blockInstagramFeed ->
         SettingsUiState(
             pauseDurationMinutes = (pauseDurationMillis / 60_000L).toInt().coerceIn(1, 60),
             allowVideosSentByDm = allowVideosSentByDm,
             timerOverlayEnabled = timerOverlayEnabled,
             includeStories = includeStories,
+            blockInstagramFeed = blockInstagramFeed,
         )
     }
         .stateIn(
@@ -52,6 +54,12 @@ class SettingsViewModel @Inject constructor(private val userSettingsStore: UserS
     fun onIncludeStoriesChange(enabled: Boolean) {
         viewModelScope.launch {
             userSettingsStore.setIncludeStories(enabled)
+        }
+    }
+
+    fun onBlockInstagramFeedChange(enabled: Boolean) {
+        viewModelScope.launch {
+            userSettingsStore.setBlockInstagramFeed(enabled)
         }
     }
 
@@ -76,6 +84,7 @@ class SettingsViewModel @Inject constructor(private val userSettingsStore: UserS
 
 data class SettingsUiState(
     val includeStories: Boolean = false,
+    val blockInstagramFeed: Boolean = false,
     val pauseDurationMinutes: Int = 5,
     val allowVideosSentByDm: Boolean = false,
     val timerOverlayEnabled: Boolean = true,

@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">Ta med historier</string>
     <string name="settings_include_stories_description">Tel tida du brukar på å sjå historier, og bruk gjeldande blokkeringsmodus og tidsgrenser.</string>
     <string name="settings_include_stories_note">Førebels støtta på Instagram, Snapchat og Facebook.</string>
+    <string name="settings_block_instagram_feed_title">Blokker Instagram-feeden</string>
+    <string name="settings_block_instagram_feed_description">Dekkjer innlegga i Instagram-startfeeden med gjeldande blokkeringsmodus og grenser. Forteljingar, meldingar og søk er framleis tilgjengelege.</string>
 </resources>

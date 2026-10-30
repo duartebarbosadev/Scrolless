@@ -20,4 +20,6 @@
     <string name="accessibility_service_description">Nade-detect ng serbisyong ito kapag binuksan ang Reels, Shorts, TikTok, at Facebook Reels para ma-block ito ng Scrolless kung naka-configure.</string>
     <string name="tiktok_blocked_title">Naka-block ang mga video sa TikTok</string>
     <string name="tiktok_blocked_description">Gamitin ang mga tab sa ibaba para buksan ang Inbox o Profile.</string>
+    <string name="instagram_feed_blocked_title">Naka-block ang feed ng Instagram</string>
+    <string name="instagram_feed_blocked_description">Gumagana pa rin ang Stories sa itaas at ang mga tab sa ibaba.</string>
 </resources>

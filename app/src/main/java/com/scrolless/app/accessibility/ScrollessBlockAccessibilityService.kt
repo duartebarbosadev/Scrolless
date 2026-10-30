@@ -290,6 +290,18 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         }
 
         serviceScope.launch {
+            userSettingsStore.getBlockInstagramFeed().collect {
+                // A visible feed cover must end before Instagram goes back to Back-only blocking.
+                if (!it && contentSession?.content?.cover != null && contentSession?.app?.app == BlockableApp.REELS) {
+                    onBlockedContentExited()
+                }
+                InstagramFeedDetector.isEnabled = it
+                refreshDetectedContent()
+                reconsiderVisibleContent()
+            }
+        }
+
+        serviceScope.launch {
             userSettingsStore.getIncludeStories().collect {
                 currentIncludeStories = it
                 refreshDetectedContent()
@@ -704,7 +716,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
         val info = serviceInfo ?: return
 
         // Do not delay Home/app-switching events while covered, or the old screen cover can linger.
-        info.notificationTimeout = if (contentSession?.isCovered == true) 0L else DEFAULT_NOTIFICATION_TIMEOUT_MS
+        val timeout = if (contentSession?.isCovered == true) 0L else DEFAULT_NOTIFICATION_TIMEOUT_MS
+        // Each update is a call into the system, and most enter/exit events do not change anything.
+        if (info.notificationTimeout == timeout && (info.packageNames == null) == listenToAll) return
+        info.notificationTimeout = timeout
 
         if (listenToAll) {
             info.packageNames = null // Listen to all

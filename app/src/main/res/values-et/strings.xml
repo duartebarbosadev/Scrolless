@@ -20,4 +20,6 @@
     <string name="accessibility_service_description">See teenus tuvastab, kui avatakse Reels, Shorts, TikTok või Facebook Reels, et Scrolless saaks need seadistuse korral blokeerida.</string>
     <string name="tiktok_blocked_title">TikToki videod on blokeeritud</string>
     <string name="tiktok_blocked_description">Kasuta allolevaid vahekaarte, et avada postkast või profiil.</string>
+    <string name="instagram_feed_blocked_title">Instagrami voog on blokeeritud</string>
+    <string name="instagram_feed_blocked_description">Ülal olevad lood ja all olevad vahekaardid töötavad endiselt.</string>
 </resources>

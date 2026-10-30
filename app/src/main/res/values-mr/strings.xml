@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok व्हिडिओ ब्लॉक केले आहेत</string>
     <string name="tiktok_blocked_description">इनबॉक्स किंवा प्रोफाइल उघडण्यासाठी खालील टॅब वापरा.</string>
+    <string name="instagram_feed_blocked_title">Instagram फीड ब्लॉक केली आहे</string>
+    <string name="instagram_feed_blocked_description">वरच्या स्टोरीज आणि खालचे टॅब अजूनही काम करतात.</string>
 </resources>

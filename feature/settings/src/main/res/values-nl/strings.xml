@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">Verhalen meetellen</string>
     <string name="settings_include_stories_description">Tel de tijd die je besteedt aan het bekijken van verhalen mee en pas je huidige blokkeermodus en tijdslimieten toe.</string>
     <string name="settings_include_stories_note">Momenteel ondersteund op Instagram, Snapchat en Facebook.</string>
+    <string name="settings_block_instagram_feed_title">Instagram-feed blokkeren</string>
+    <string name="settings_block_instagram_feed_description">Bedekt de berichten in de Instagram-homefeed met je huidige blokkeermodus en limieten. Verhalen, berichten en zoeken blijven beschikbaar.</string>
 </resources>
