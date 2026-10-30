@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">Inkluder historier</string>
     <string name="settings_include_stories_description">Tell tiden du bruker på å se historier, og bruk gjeldende blokkeringsmodus og tidsgrenser.</string>
     <string name="settings_include_stories_note">Støttes for øyeblikket på Instagram, Snapchat og Facebook.</string>
+    <string name="settings_block_instagram_feed_title">Blokker Instagram-feeden</string>
+    <string name="settings_block_instagram_feed_description">Dekker innleggene i Instagram-startfeeden med gjeldende blokkeringsmodus og grenser. Historier, meldinger og søk er fortsatt tilgjengelige.</string>
 </resources>

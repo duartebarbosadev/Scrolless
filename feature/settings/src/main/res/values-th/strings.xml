@@ -32,4 +32,6 @@
     <string name="settings_include_stories_title">รวม Stories</string>
     <string name="settings_include_stories_description">นับเวลาที่ใช้ดู Stories และใช้โหมดการบล็อกและขีดจำกัดปัจจุบันของคุณ</string>
     <string name="settings_include_stories_note">ปัจจุบันรองรับบน Instagram, Snapchat และ Facebook</string>
+    <string name="settings_block_instagram_feed_title">บล็อกฟีด Instagram</string>
+    <string name="settings_block_instagram_feed_description">ปิดโพสต์ในฟีดหน้าแรกของ Instagram ตามโหมดการบล็อกและขีดจำกัดปัจจุบัน สตอรี่ ข้อความ และการค้นหายังใช้งานได้</string>
 </resources>

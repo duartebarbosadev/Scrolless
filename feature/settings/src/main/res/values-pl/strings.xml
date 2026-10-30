@@ -35,4 +35,6 @@
     <string name="settings_include_stories_title">Uwzględniaj relacje</string>
     <string name="settings_include_stories_description">Wliczaj czas spędzony na oglądaniu relacji i stosuj bieżący tryb blokowania oraz limity czasu.</string>
     <string name="settings_include_stories_note">Obecnie obsługiwane na Instagramie, Snapchacie i Facebooku.</string>
+    <string name="settings_block_instagram_feed_title">Blokuj kanał Instagrama</string>
+    <string name="settings_block_instagram_feed_description">Zasłania posty w głównym kanale Instagrama zgodnie z bieżącym trybem blokowania i limitami. Relacje, wiadomości i wyszukiwanie pozostają dostępne.</string>
 </resources>

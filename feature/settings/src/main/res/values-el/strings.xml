@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">Συμπερίληψη ιστοριών</string>
     <string name="settings_include_stories_description">Μετρήστε τον χρόνο προβολής ιστοριών και εφαρμόστε την τρέχουσα λειτουργία αποκλεισμού και τα όριά σας.</string>
     <string name="settings_include_stories_note">Προς το παρόν υποστηρίζεται στο Instagram, στο Snapchat και στο Facebook.</string>
+    <string name="settings_block_instagram_feed_title">Αποκλεισμός ροής Instagram</string>
+    <string name="settings_block_instagram_feed_description">Καλύπτει τις αναρτήσεις στην αρχική ροή του Instagram με την τρέχουσα λειτουργία αποκλεισμού και τα όριά σου. Οι ιστορίες, τα μηνύματα και η αναζήτηση παραμένουν διαθέσιμα.</string>
 </resources>

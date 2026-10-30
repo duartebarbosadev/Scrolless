@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">Includi le storie</string>
     <string name="settings_include_stories_description">Conteggia il tempo trascorso a guardare le storie e applica la modalità di blocco e i limiti attuali.</string>
     <string name="settings_include_stories_note">Attualmente supportato su Instagram, Snapchat e Facebook.</string>
+    <string name="settings_block_instagram_feed_title">Blocca il feed di Instagram</string>
+    <string name="settings_block_instagram_feed_description">Copre i post nel feed principale di Instagram con la modalità di blocco e i limiti attuali. Storie, messaggi e ricerca restano disponibili.</string>
 </resources>

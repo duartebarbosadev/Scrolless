@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok 동영상이 차단되었습니다</string>
     <string name="tiktok_blocked_description">아래 탭을 사용해 받은 편지함이나 프로필을 여세요.</string>
+    <string name="instagram_feed_blocked_title">Instagram 피드가 차단되었습니다</string>
+    <string name="instagram_feed_blocked_description">위의 스토리와 아래의 탭은 계속 사용할 수 있습니다.</string>
 </resources>

@@ -34,4 +34,6 @@
     <string name="settings_include_stories_title">Uključi priče</string>
     <string name="settings_include_stories_description">Računa se vreme gledanja priča i primenjuju se trenutni režim blokiranja i vremenska ograničenja.</string>
     <string name="settings_include_stories_note">Trenutno podržano na Instagramu, Snapchatu i Facebooku.</string>
+    <string name="settings_block_instagram_feed_title">Blokiraj Instagram fid</string>
+    <string name="settings_block_instagram_feed_description">Prekrij objave na početnom fidu Instagrama prema trenutnom režimu blokiranja i ograničenjima. Priče, poruke i pretraga ostaju dostupni.</string>
 </resources>

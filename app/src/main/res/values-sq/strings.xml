@@ -20,4 +20,6 @@
     <string name="accessibility_service_description">Ky shërbim zbulon kur hapen Reels, Shorts, TikTok dhe Facebook Reels, në mënyrë që Scrolless t\'i bllokojë nëse është konfiguruar.</string>
     <string name="tiktok_blocked_title">Videot e TikTok janë bllokuar</string>
     <string name="tiktok_blocked_description">Përdor skedat më poshtë për të hapur Inbox ose Profilin.</string>
+    <string name="instagram_feed_blocked_title">Furnizimi i Instagram është i bllokuar</string>
+    <string name="instagram_feed_blocked_description">Historitë sipër dhe skedat poshtë funksionojnë ende.</string>
 </resources>

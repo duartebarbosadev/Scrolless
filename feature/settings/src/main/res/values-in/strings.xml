@@ -32,4 +32,6 @@
     <string name="settings_include_stories_title">Sertakan Stories</string>
     <string name="settings_include_stories_description">Hitung waktu menonton Stories dan terapkan mode pemblokiran serta batas yang sedang aktif.</string>
     <string name="settings_include_stories_note">Saat ini didukung di Instagram, Snapchat, dan Facebook.</string>
+    <string name="settings_block_instagram_feed_title">Blokir feed Instagram</string>
+    <string name="settings_block_instagram_feed_description">Tutupi postingan di feed beranda Instagram sesuai mode blokir dan batas saat ini. Story, pesan, dan pencarian tetap tersedia.</string>
 </resources>

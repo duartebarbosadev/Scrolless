@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">TikTok-video\'s zijn geblokkeerd</string>
     <string name="tiktok_blocked_description">Gebruik de onderstaande tabbladen om Inbox of Profiel te openen.</string>
+    <string name="instagram_feed_blocked_title">Instagram-feed is geblokkeerd</string>
+    <string name="instagram_feed_blocked_description">Verhalen bovenaan en de tabbladen onderaan werken nog.</string>
 </resources>

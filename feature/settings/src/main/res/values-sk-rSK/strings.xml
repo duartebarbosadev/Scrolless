@@ -35,4 +35,6 @@
     <string name="settings_include_stories_title">Zahrnúť príbehy</string>
     <string name="settings_include_stories_description">Započítavať čas strávený sledovaním príbehov a používať aktuálny režim blokovania a časové limity.</string>
     <string name="settings_include_stories_note">Zatiaľ podporované na Instagrame, Snapchate a Facebooku.</string>
+    <string name="settings_block_instagram_feed_title">Blokovať Instagram feed</string>
+    <string name="settings_block_instagram_feed_description">Zakryje príspevky v domovskom feede Instagramu podľa aktuálneho režimu blokovania a limitov. Príbehy, správy a vyhľadávanie zostanú dostupné.</string>
 </resources>
