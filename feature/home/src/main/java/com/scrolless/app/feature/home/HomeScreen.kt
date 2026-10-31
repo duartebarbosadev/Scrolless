@@ -75,6 +75,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -108,6 +109,7 @@ import androidx.navigation3.ui.LocalNavAnimatedContentScope
 import com.scrolless.app.core.accessibility.AccessibilityServiceConnection
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
+import com.scrolless.app.core.model.BlockedHours
 import com.scrolless.app.core.model.BlockingSettings
 import com.scrolless.app.core.model.IntervalUsage
 import com.scrolless.app.core.model.SessionSegment
@@ -206,6 +208,7 @@ fun HomeScreen(
     var showIntervalTimerDialog by remember { mutableStateOf(false) }
     var pendingIntervalBreak by remember { mutableLongStateOf(DEFAULT_INTERVAL_BREAK_MILLIS) }
     var pendingIntervalAllowance by remember { mutableLongStateOf(DEFAULT_INTERVAL_ALLOWANCE_MILLIS) }
+    var pendingIntervalBlockedHours by remember { mutableIntStateOf(BlockedHours.NONE.mask) }
     val pauseRemainingMillis = rememberPauseRemainingTime(uiState.pauseUntilMillis)
     val isPauseActive = pauseRemainingMillis > 0L
 
@@ -343,6 +346,7 @@ fun HomeScreen(
         fun openIntervalConfig() {
             pendingIntervalBreak = uiState.settings.intervalLengthMillis.takeIf { it > 0L } ?: DEFAULT_INTERVAL_BREAK_MILLIS
             pendingIntervalAllowance = uiState.settings.intervalAllowanceMillis.takeIf { it > 0L } ?: DEFAULT_INTERVAL_ALLOWANCE_MILLIS
+            pendingIntervalBlockedHours = uiState.settings.intervalBlockedHours.mask
             showIntervalTimerDialog = true
         }
 
@@ -449,14 +453,16 @@ fun HomeScreen(
         IntervalTimerDialog(
             initialBreakMillis = pendingIntervalBreak,
             initialAllowanceMillis = pendingIntervalAllowance,
-            onConfirm = { breakMillis, allowanceMillis ->
+            initialBlockedHours = BlockedHours(pendingIntervalBlockedHours),
+            onConfirm = { breakMillis, allowanceMillis, blockedHours ->
                 Timber.i(
-                    "Interval timer schedule saved: break=%d, allowance=%d",
+                    "Interval timer schedule saved: break=%d, allowance=%d, blockedHours=%s",
                     breakMillis,
                     allowanceMillis,
+                    blockedHours.ranges(),
                 )
                 showIntervalTimerDialog = false
-                viewModel.onIntervalTimerConfigChange(breakMillis, allowanceMillis)
+                viewModel.onIntervalTimerConfigChange(breakMillis, allowanceMillis, blockedHours)
             },
             onDismiss = {
                 Timber.d("Interval timer dialog dismissed")
@@ -617,8 +623,11 @@ private fun HomeContent(
             uiState.settings.dailyLimitMillis > 0 && uiState.currentUsage >= uiState.settings.dailyLimitMillis
 
         BlockOption.IntervalTimer ->
-            uiState.settings.intervalAllowanceMillis > 0 &&
-                uiState.intervalUsage.usageMillis >= uiState.settings.intervalAllowanceMillis
+            uiState.settings.intervalBlockedHours.isBlockedAt(LocalDateTime.now()) ||
+                (
+                    uiState.settings.intervalAllowanceMillis > 0 &&
+                        uiState.intervalUsage.usageMillis >= uiState.settings.intervalAllowanceMillis
+                    )
 
         BlockOption.NothingSelected -> false
     }
@@ -1212,7 +1221,8 @@ fun PreviewIntervalTimer() {
         IntervalTimerDialog(
             initialBreakMillis = TimeUnit.MINUTES.toMillis(60),
             initialAllowanceMillis = TimeUnit.MINUTES.toMillis(5),
-            onConfirm = { _, _ -> },
+            initialBlockedHours = BlockedHours.NONE,
+            onConfirm = { _, _, _ -> },
             onDismiss = {},
         )
     }

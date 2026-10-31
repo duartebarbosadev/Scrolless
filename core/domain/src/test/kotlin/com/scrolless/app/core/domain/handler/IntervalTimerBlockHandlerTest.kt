@@ -20,6 +20,7 @@ import com.scrolless.app.core.blocking.handler.IntervalTimerBlockHandler
 import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.domain.BaseTest
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockedHours
 import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.BlockingResult
 import com.scrolless.app.core.model.BlockingSettings
@@ -43,16 +44,23 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
     private val testDispatcher = StandardTestDispatcher()
     private val repository = FakeBlockingConfigRepository()
     private var nowMillis = 0L
+    private var localNow: LocalDateTime = LocalDateTime.of(2026, 10, 30, 12, 0)
 
     private val timeProvider = object : TimeProvider {
         override fun currentTimeInMillis(): Long = nowMillis
         override fun localDateNow(): LocalDate = LocalDate.EPOCH
-        override fun localDateTimeNow(): LocalDateTime = LocalDateTime.MIN
+        override fun localDateTimeNow(): LocalDateTime = localNow
     }
 
-    private val handler = IntervalTimerBlockHandler(
+    private val handler = handlerWith(BlockedHours.NONE)
+
+    // Blocks 20:00 to 06:00 and 09:00 to 16:00, the schedule from the feature request.
+    private val scheduledHandler = handlerWith(BlockedHours.of(20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14, 15))
+
+    private fun handlerWith(blockedHours: BlockedHours) = IntervalTimerBlockHandler(
         allowanceMillis = ALLOWANCE_MILLIS,
         intervalLengthMillis = INTERVAL_LENGTH_MILLIS,
+        blockedHours = blockedHours,
         blockingConfigRepository = repository,
         timeProvider = timeProvider,
     )
@@ -117,6 +125,46 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
     }
 
     @Test
+    fun `entering during a blocked hour blocks with allowance left`() = runTest(testDispatcher) {
+        nowMillis = 2_000L
+        repository.usage = IntervalUsage.NOT_STARTED
+        localNow = LocalDateTime.of(2026, 10, 30, 22, 15)
+
+        assertTrue(scheduledHandler.onEnterContent(currentDailyUsage = 0L))
+    }
+
+    @Test
+    fun `entering outside the blocked hours uses the allowance`() = runTest(testDispatcher) {
+        nowMillis = 2_000L
+        repository.usage = IntervalUsage.NOT_STARTED
+        localNow = LocalDateTime.of(2026, 10, 30, 16, 0)
+
+        assertFalse(scheduledHandler.onEnterContent(currentDailyUsage = 0L))
+    }
+
+    @Test
+    fun `a running session is blocked once a blocked hour starts`() = runTest(testDispatcher) {
+        nowMillis = 2_500L
+        repository.usage = IntervalUsage(startMillis = 500L, usageMillis = 0L)
+        localNow = LocalDateTime.of(2026, 10, 30, 9, 0)
+
+        val result = scheduledHandler.onPeriodicCheck(currentDailyUsage = 0L, elapsedTime = 2_000L)
+
+        assertTrue(result is BlockingResult.BlockNow)
+    }
+
+    @Test
+    fun `the next check comes no later than the next blocked hour`() = runTest(testDispatcher) {
+        nowMillis = 2_500L
+        repository.usage = IntervalUsage(startMillis = 500L, usageMillis = 0L)
+        localNow = LocalDateTime.of(2026, 10, 30, 8, 59, 59)
+
+        val result = scheduledHandler.onPeriodicCheck(currentDailyUsage = 0L, elapsedTime = 2_000L)
+
+        assertEquals(1_000L, (result as BlockingResult.CheckLater).delayMillis)
+    }
+
+    @Test
     fun `exiting records the session with its timestamps`() = runTest(testDispatcher) {
         handler.onExitContent(sessionStartMillis = 2_000L, sessionEndMillis = 4_000L)
 
@@ -152,7 +200,7 @@ class IntervalTimerBlockHandlerTest : BaseTest() {
 
         override suspend fun configureDailyLimit(limitMillis: Long) = Unit
 
-        override suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long) = Unit
+        override suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long, blockedHours: BlockedHours) = Unit
 
         override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsage {
             recordedSession = sessionStartMillis to sessionEndMillis

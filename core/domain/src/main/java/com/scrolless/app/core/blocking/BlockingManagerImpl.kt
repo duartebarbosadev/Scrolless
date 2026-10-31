@@ -74,6 +74,7 @@ class BlockingManagerImpl @Inject constructor(
             IntervalTimerBlockHandler(
                 allowanceMillis = settings.intervalAllowanceMillis,
                 intervalLengthMillis = settings.intervalLengthMillis,
+                blockedHours = settings.intervalBlockedHours,
                 blockingConfigRepository = blockingConfigRepository,
                 timeProvider = timeProvider,
             )

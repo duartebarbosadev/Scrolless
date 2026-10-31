@@ -31,4 +31,9 @@ data class BlockingConfig(
  * restores it. `0` means the mode was never configured.
  */
 @Immutable
-data class BlockingSettings(val dailyLimitMillis: Long = 0L, val intervalAllowanceMillis: Long = 0L, val intervalLengthMillis: Long = 0L)
+data class BlockingSettings(
+    val dailyLimitMillis: Long = 0L,
+    val intervalAllowanceMillis: Long = 0L,
+    val intervalLengthMillis: Long = 0L,
+    val intervalBlockedHours: BlockedHours = BlockedHours.NONE,
+)
