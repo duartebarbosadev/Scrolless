@@ -109,4 +109,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Следующий день</string>
     <string name="usage_analytics_previous_day">Предыдущий день</string>
+    <string name="commitment_pause_instead_title">Может, лучше пауза?</string>
+    <string name="commitment_pause_instead_message">Ваши ограничения сейчас действуют. Пауза позволит смотреть %1$d мин, а потом блокировка включится сама.</string>
+    <string name="commitment_pause_instead_confirm">Пауза на %1$d мин</string>
+    <string name="commitment_change_anyway">Всё равно изменить</string>
+    <string name="commitment_pin_title">Введите PIN-код</string>
+    <string name="commitment_pin_message">Режим обязательства включён. Введите PIN-код, чтобы ослабить ограничения.</string>
+    <string name="commitment_pin_wrong">Неверный PIN-код</string>
+    <string name="commitment_confirm">Подтвердить</string>
+    <string name="commitment_cancel">Отмена</string>
+    <string name="commitment_scheduled_title">Изменение запланировано</string>
+    <string name="commitment_scheduled_message">Режим обязательства включён, поэтому это изменение вступит в силу в %1$s. До этого его можно отменить.</string>
+    <string name="commitment_ok">ОК</string>
+    <string name="commitment_pending_banner">Изменение ограничений вступит в силу в %1$s</string>
+    <string name="commitment_pending_cancel">Отменить изменение</string>
 </resources>

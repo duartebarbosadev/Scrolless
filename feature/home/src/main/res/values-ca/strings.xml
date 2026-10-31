@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Dia següent</string>
     <string name="usage_analytics_previous_day">Dia anterior</string>
+    <string name="commitment_pause_instead_title">Millor fer una pausa?</string>
+    <string name="commitment_pause_instead_message">Els teus límits estan funcionant ara mateix. Amb una pausa pots mirar durant %1$d min i després el bloqueig es torna a activar sol.</string>
+    <string name="commitment_pause_instead_confirm">Pausa de %1$d min</string>
+    <string name="commitment_change_anyway">Canvia igualment</string>
+    <string name="commitment_pin_title">Introdueix el PIN</string>
+    <string name="commitment_pin_message">El mode compromís està activat. Introdueix el PIN per relaxar els teus límits.</string>
+    <string name="commitment_pin_wrong">PIN incorrecte</string>
+    <string name="commitment_confirm">Confirma</string>
+    <string name="commitment_cancel">Cancel·la</string>
+    <string name="commitment_scheduled_title">Canvi programat</string>
+    <string name="commitment_scheduled_message">El mode compromís està activat, així que aquest canvi s’aplicarà a les %1$s. El pots cancel·lar abans.</string>
+    <string name="commitment_ok">D’acord</string>
+    <string name="commitment_pending_banner">Un canvi en els teus límits s’aplicarà a les %1$s</string>
+    <string name="commitment_pending_cancel">Cancel·la el canvi</string>
 </resources>

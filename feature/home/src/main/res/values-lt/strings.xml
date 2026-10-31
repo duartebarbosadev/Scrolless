@@ -109,4 +109,18 @@
     <string name="usage_analytics_day_sat">Št</string>
     <string name="usage_analytics_day_sun">Sk</string>
     <string name="visit_github">Apsilankyti GitHub saugykloje</string>
+    <string name="commitment_pause_instead_title">Gal geriau pristabdyti?</string>
+    <string name="commitment_pause_instead_message">Jūsų apribojimai šiuo metu veikia. Pristabdę galėsite žiūrėti %1$d min., tada blokavimas vėl įsijungs pats.</string>
+    <string name="commitment_pause_instead_confirm">Pristabdyti %1$d min.</string>
+    <string name="commitment_change_anyway">Vis tiek keisti</string>
+    <string name="commitment_pin_title">Įveskite PIN kodą</string>
+    <string name="commitment_pin_message">Įsipareigojimo režimas įjungtas. Įveskite PIN kodą, kad sušvelnintumėte apribojimus.</string>
+    <string name="commitment_pin_wrong">Neteisingas PIN kodas</string>
+    <string name="commitment_confirm">Patvirtinti</string>
+    <string name="commitment_cancel">Atšaukti</string>
+    <string name="commitment_scheduled_title">Pakeitimas suplanuotas</string>
+    <string name="commitment_scheduled_message">Įsipareigojimo režimas įjungtas, todėl šis pakeitimas įsigalios %1$s. Iki tol galite jį atšaukti.</string>
+    <string name="commitment_ok">Gerai</string>
+    <string name="commitment_pending_banner">Apribojimų pakeitimas įsigalios %1$s</string>
+    <string name="commitment_pending_cancel">Atšaukti pakeitimą</string>
 </resources>

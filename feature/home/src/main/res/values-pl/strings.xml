@@ -109,4 +109,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Następny dzień</string>
     <string name="usage_analytics_previous_day">Poprzedni dzień</string>
+    <string name="commitment_pause_instead_title">Może lepiej pauza?</string>
+    <string name="commitment_pause_instead_message">Twoje limity właśnie działają. Pauza pozwoli oglądać przez %1$d min, a potem blokowanie samo się włączy.</string>
+    <string name="commitment_pause_instead_confirm">Pauza na %1$d min</string>
+    <string name="commitment_change_anyway">Zmień mimo to</string>
+    <string name="commitment_pin_title">Wpisz PIN</string>
+    <string name="commitment_pin_message">Tryb zobowiązania jest włączony. Wpisz PIN, aby złagodzić limity.</string>
+    <string name="commitment_pin_wrong">Nieprawidłowy PIN</string>
+    <string name="commitment_confirm">Potwierdź</string>
+    <string name="commitment_cancel">Anuluj</string>
+    <string name="commitment_scheduled_title">Zmiana zaplanowana</string>
+    <string name="commitment_scheduled_message">Tryb zobowiązania jest włączony, więc ta zmiana zacznie obowiązywać o %1$s. Do tego czasu możesz ją anulować.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Zmiana limitów zacznie obowiązywać o %1$s</string>
+    <string name="commitment_pending_cancel">Anuluj zmianę</string>
 </resources>

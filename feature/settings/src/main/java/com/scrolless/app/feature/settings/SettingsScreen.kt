@@ -66,6 +66,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation3.ui.LocalNavAnimatedContentScope
+import com.scrolless.app.core.model.CommitmentMode
 import com.scrolless.app.designsystem.theme.LocalSharedTransitionScope
 import com.scrolless.app.designsystem.theme.SETTINGS_TRANSITION_KEY
 import com.scrolless.app.designsystem.theme.ScrollessTheme
@@ -83,8 +84,20 @@ fun SettingsScreen(modifier: Modifier = Modifier, onNavigateBack: () -> Unit, vi
         onAllowVideosSentByDmChange = viewModel::onAllowVideosSentByDmChange,
         onTimerOverlayEnabledChange = viewModel::onTimerOverlayEnabledChange,
         onIncludeStoriesChange = viewModel::onIncludeStoriesChange,
+        onCommitmentModeSelected = viewModel::onCommitmentModeSelected,
+        onCancelPendingChange = viewModel::onCancelPendingChange,
         onNavigateBack = onNavigateBack,
     )
+
+    uiState.prompt?.let { prompt ->
+        SettingsPromptDialog(
+            prompt = prompt,
+            onDelayChosen = viewModel::onCommitmentDelayChosen,
+            onNewPinEntered = viewModel::onNewPinEntered,
+            onPinSubmitted = viewModel::onPinSubmitted,
+            onDismiss = viewModel::onPromptDismissed,
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
@@ -97,6 +110,8 @@ private fun SettingsScreenContent(
     onTimerOverlayEnabledChange: (Boolean) -> Unit,
     onIncludeStoriesChange: (Boolean) -> Unit,
     onNavigateBack: () -> Unit,
+    onCommitmentModeSelected: (CommitmentMode) -> Unit = {},
+    onCancelPendingChange: () -> Unit = {},
 ) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
 
@@ -168,6 +183,8 @@ private fun SettingsScreenContent(
             SettingsGroup {
                 PauseDurationItem(
                     pauseDurationMinutes = uiState.pauseDurationMinutes,
+                    // A held-back change shows a dialog; move the slider back to the saved value.
+                    resetKey = uiState.prompt,
                     onPauseDurationChange = onPauseDurationChange,
                 )
 
@@ -193,6 +210,20 @@ private fun SettingsScreenContent(
                 TimerOverlayItem(
                     checked = uiState.timerOverlayEnabled,
                     onCheckedChange = onTimerOverlayEnabledChange,
+                )
+            }
+
+            Spacer(modifier = Modifier.height(28.dp))
+
+            SettingsSectionLabel(stringResource(R.string.settings_section_commitment))
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            SettingsGroup {
+                CommitmentModeItem(
+                    commitment = uiState.commitment,
+                    onModeSelected = onCommitmentModeSelected,
+                    onCancelPendingChange = onCancelPendingChange,
                 )
             }
         }
@@ -232,9 +263,14 @@ private fun SettingsDivider(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun PauseDurationItem(pauseDurationMinutes: Int, onPauseDurationChange: (Int) -> Unit, modifier: Modifier = Modifier) {
+private fun PauseDurationItem(
+    pauseDurationMinutes: Int,
+    onPauseDurationChange: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    resetKey: Any? = null,
+) {
     val hapticHelper = rememberHapticHelper()
-    var sliderValue by remember(pauseDurationMinutes) {
+    var sliderValue by remember(pauseDurationMinutes, resetKey) {
         mutableIntStateOf(pauseDurationMinutes)
     }
     val sliderTrackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.28f)

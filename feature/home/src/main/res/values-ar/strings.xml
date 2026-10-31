@@ -111,4 +111,18 @@
     <string name="usage_analytics_day_sat">السبت</string>
     <string name="usage_analytics_day_sun">الأحد</string>
     <string name="visit_github">زيارة مستودع GitHub</string>
+    <string name="commitment_pause_instead_title">هل تفضّل إيقافًا مؤقتًا بدلًا من ذلك؟</string>
+    <string name="commitment_pause_instead_message">حدودك مفعّلة الآن. يتيح لك الإيقاف المؤقت المشاهدة لمدة %1$d دقيقة، ثم يعود الحظر تلقائيًا.</string>
+    <string name="commitment_pause_instead_confirm">إيقاف مؤقت لمدة %1$d دقيقة</string>
+    <string name="commitment_change_anyway">التغيير على أي حال</string>
+    <string name="commitment_pin_title">أدخل رمز PIN</string>
+    <string name="commitment_pin_message">وضع الالتزام مفعّل. أدخل رمز PIN لتخفيف حدودك.</string>
+    <string name="commitment_pin_wrong">رمز PIN غير صحيح</string>
+    <string name="commitment_confirm">تأكيد</string>
+    <string name="commitment_cancel">إلغاء</string>
+    <string name="commitment_scheduled_title">تمت جدولة التغيير</string>
+    <string name="commitment_scheduled_message">وضع الالتزام مفعّل، لذا سيُطبَّق هذا التغيير في %1$s. يمكنك إلغاؤه قبل ذلك.</string>
+    <string name="commitment_ok">حسنًا</string>
+    <string name="commitment_pending_banner">سيُطبَّق تغيير على حدودك في %1$s</string>
+    <string name="commitment_pending_cancel">إلغاء التغيير</string>
 </resources>

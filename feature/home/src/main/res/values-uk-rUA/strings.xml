@@ -109,4 +109,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Наступний день</string>
     <string name="usage_analytics_previous_day">Попередній день</string>
+    <string name="commitment_pause_instead_title">Може, краще пауза?</string>
+    <string name="commitment_pause_instead_message">Ваші обмеження зараз діють. Пауза дозволить дивитися %1$d хв, а потім блокування увімкнеться саме.</string>
+    <string name="commitment_pause_instead_confirm">Пауза на %1$d хв</string>
+    <string name="commitment_change_anyway">Усе одно змінити</string>
+    <string name="commitment_pin_title">Введіть PIN-код</string>
+    <string name="commitment_pin_message">Режим зобов’язання ввімкнено. Введіть PIN-код, щоб послабити обмеження.</string>
+    <string name="commitment_pin_wrong">Неправильний PIN-код</string>
+    <string name="commitment_confirm">Підтвердити</string>
+    <string name="commitment_cancel">Скасувати</string>
+    <string name="commitment_scheduled_title">Зміну заплановано</string>
+    <string name="commitment_scheduled_message">Режим зобов’язання ввімкнено, тому ця зміна набуде чинності о %1$s. До того часу її можна скасувати.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Зміна обмежень набуде чинності о %1$s</string>
+    <string name="commitment_pending_cancel">Скасувати зміну</string>
 </resources>

@@ -106,4 +106,18 @@
     </plurals>
     <string name="usage_analytics_next_day">后一天</string>
     <string name="usage_analytics_previous_day">前一天</string>
+    <string name="commitment_pause_instead_title">要不要改为暂停？</string>
+    <string name="commitment_pause_instead_message">你的限制正在生效。暂停后可以观看 %1$d 分钟，之后拦截会自动恢复。</string>
+    <string name="commitment_pause_instead_confirm">暂停 %1$d 分钟</string>
+    <string name="commitment_change_anyway">仍然更改</string>
+    <string name="commitment_pin_title">输入 PIN 码</string>
+    <string name="commitment_pin_message">承诺模式已开启。输入 PIN 码才能放宽限制。</string>
+    <string name="commitment_pin_wrong">PIN 码错误</string>
+    <string name="commitment_confirm">确认</string>
+    <string name="commitment_cancel">取消</string>
+    <string name="commitment_scheduled_title">更改已安排</string>
+    <string name="commitment_scheduled_message">承诺模式已开启，此更改将在 %1$s 生效。在此之前你可以取消。</string>
+    <string name="commitment_ok">好</string>
+    <string name="commitment_pending_banner">限制更改将在 %1$s 生效</string>
+    <string name="commitment_pending_cancel">取消更改</string>
 </resources>

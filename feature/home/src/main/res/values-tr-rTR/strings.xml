@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Sonraki gün</string>
     <string name="usage_analytics_previous_day">Önceki gün</string>
+    <string name="commitment_pause_instead_title">Onun yerine duraklatmak ister misin?</string>
+    <string name="commitment_pause_instead_message">Sınırların şu anda çalışıyor. Duraklatırsan %1$d dk izleyebilirsin, sonra engelleme kendiliğinden yeniden açılır.</string>
+    <string name="commitment_pause_instead_confirm">%1$d dk duraklat</string>
+    <string name="commitment_change_anyway">Yine de değiştir</string>
+    <string name="commitment_pin_title">PIN’ini gir</string>
+    <string name="commitment_pin_message">Taahhüt modu açık. Sınırlarını gevşetmek için PIN’ini gir.</string>
+    <string name="commitment_pin_wrong">Yanlış PIN</string>
+    <string name="commitment_confirm">Onayla</string>
+    <string name="commitment_cancel">İptal</string>
+    <string name="commitment_scheduled_title">Değişiklik planlandı</string>
+    <string name="commitment_scheduled_message">Taahhüt modu açık, bu yüzden bu değişiklik %1$s itibarıyla geçerli olacak. O zamana kadar iptal edebilirsin.</string>
+    <string name="commitment_ok">Tamam</string>
+    <string name="commitment_pending_banner">Sınırlarındaki bir değişiklik %1$s itibarıyla geçerli olacak</string>
+    <string name="commitment_pending_cancel">Değişikliği iptal et</string>
 </resources>
