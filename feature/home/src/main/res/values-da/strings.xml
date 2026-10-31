@@ -107,4 +107,18 @@
     <string name="usage_analytics_day_sat">Lør</string>
     <string name="usage_analytics_day_sun">Søn</string>
     <string name="visit_github">Besøg GitHub-repoet</string>
+    <string name="commitment_pause_instead_title">Hellere holde en pause?</string>
+    <string name="commitment_pause_instead_message">Dine grænser virker lige nu. Med en pause kan du se i %1$d min, og bagefter slår blokeringen selv til igen.</string>
+    <string name="commitment_pause_instead_confirm">Pause i %1$d min</string>
+    <string name="commitment_change_anyway">Skift alligevel</string>
+    <string name="commitment_pin_title">Indtast din pinkode</string>
+    <string name="commitment_pin_message">Forpligtelsestilstand er slået til. Indtast din pinkode for at lempe dine grænser.</string>
+    <string name="commitment_pin_wrong">Forkert pinkode</string>
+    <string name="commitment_confirm">Bekræft</string>
+    <string name="commitment_cancel">Annuller</string>
+    <string name="commitment_scheduled_title">Ændring planlagt</string>
+    <string name="commitment_scheduled_message">Forpligtelsestilstand er slået til, så ændringen træder i kraft kl. %1$s. Du kan annullere den inden da.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">En ændring af dine grænser træder i kraft kl. %1$s</string>
+    <string name="commitment_pending_cancel">Annuller ændring</string>
 </resources>

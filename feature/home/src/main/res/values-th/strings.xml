@@ -106,4 +106,18 @@
     </plurals>
     <string name="usage_analytics_next_day">วันถัดไป</string>
     <string name="usage_analytics_previous_day">วันก่อนหน้า</string>
+    <string name="commitment_pause_instead_title">หยุดชั่วคราวแทนไหม</string>
+    <string name="commitment_pause_instead_message">ขีดจำกัดของคุณกำลังทำงานอยู่ การหยุดชั่วคราวจะให้คุณดูได้ %1$d นาที แล้วการบล็อกจะกลับมาเองโดยอัตโนมัติ</string>
+    <string name="commitment_pause_instead_confirm">หยุดชั่วคราว %1$d นาที</string>
+    <string name="commitment_change_anyway">เปลี่ยนต่อไป</string>
+    <string name="commitment_pin_title">ป้อน PIN</string>
+    <string name="commitment_pin_message">โหมดให้คำมั่นเปิดอยู่ ป้อน PIN เพื่อผ่อนขีดจำกัด</string>
+    <string name="commitment_pin_wrong">PIN ไม่ถูกต้อง</string>
+    <string name="commitment_confirm">ยืนยัน</string>
+    <string name="commitment_cancel">ยกเลิก</string>
+    <string name="commitment_scheduled_title">ตั้งเวลาการเปลี่ยนแปลงแล้ว</string>
+    <string name="commitment_scheduled_message">โหมดให้คำมั่นเปิดอยู่ การเปลี่ยนแปลงนี้จึงจะมีผลเวลา %1$s คุณยกเลิกได้ก่อนถึงเวลานั้น</string>
+    <string name="commitment_ok">ตกลง</string>
+    <string name="commitment_pending_banner">การเปลี่ยนแปลงขีดจำกัดจะมีผลเวลา %1$s</string>
+    <string name="commitment_pending_cancel">ยกเลิกการเปลี่ยนแปลง</string>
 </resources>

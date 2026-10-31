@@ -20,6 +20,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import com.scrolless.app.core.data.database.model.UserSettingsEntity
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.CommitmentMode
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -147,4 +148,16 @@ abstract class UserSettingsDao : BaseDao<UserSettingsEntity> {
 
     @Query("UPDATE user_settings SET except_reels_sent_by_dm = :checked WHERE id = 1")
     abstract suspend fun setAllowVideosSentByDm(checked: Boolean)
+
+    @Query(
+        """
+        UPDATE user_settings
+        SET commitment_mode = :mode, commitment_delay_millis = :delayMillis, commitment_pin_hash = :pinHash
+        WHERE id = 1
+        """,
+    )
+    abstract suspend fun setCommitment(mode: CommitmentMode, delayMillis: Long, pinHash: String?)
+
+    @Query("UPDATE user_settings SET pending_change = :change, pending_change_apply_at = :applyAtMillis WHERE id = 1")
+    abstract suspend fun setPendingChange(change: String?, applyAtMillis: Long)
 }

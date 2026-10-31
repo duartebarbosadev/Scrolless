@@ -240,4 +240,22 @@
     <string name="usage_analytics_day_sun">Sun</string>
     <string name="visit_github">Visit GitHub Repository</string>
 
+    <!-- Commitment mode: an opt-in setting that holds back changes that make blocking weaker. -->
+    <!-- Dialog shown when content is blocked right now and the user tries to loosen their limits. "pause" must match the "pause" button string. -->
+    <string name="commitment_pause_instead_title">Take a pause instead?</string>
+    <string name="commitment_pause_instead_message">Your limits are working right now. A pause lets you watch for %1$d min, then blocking turns back on by itself.</string>
+    <string name="commitment_pause_instead_confirm">Pause for %1$d min</string>
+    <string name="commitment_change_anyway">Change anyway</string>
+    <string name="commitment_pin_title">Enter your PIN</string>
+    <string name="commitment_pin_message">Commitment mode is on. Enter your PIN to loosen your limits.</string>
+    <string name="commitment_pin_wrong">Wrong PIN</string>
+    <string name="commitment_confirm">Confirm</string>
+    <string name="commitment_cancel">Cancel</string>
+    <string name="commitment_scheduled_title">Change scheduled</string>
+    <!-- %1$s is a time, sometimes with a weekday, for example "14:30" or "Fri 14:30". -->
+    <string name="commitment_scheduled_message">Commitment mode is on, so this change applies at %1$s. You can cancel it before then.</string>
+    <string name="commitment_ok">OK</string>
+    <!-- %1$s is a time, sometimes with a weekday, for example "14:30" or "Fri 14:30". -->
+    <string name="commitment_pending_banner">A change to your limits applies at %1$s</string>
+    <string name="commitment_pending_cancel">Cancel change</string>
 </resources>

@@ -107,4 +107,18 @@
     <string name="usage_analytics_day_sat">Sab</string>
     <string name="usage_analytics_day_sun">Lin</string>
     <string name="visit_github">Bisitahin ang GitHub repository</string>
+    <string name="commitment_pause_instead_title">Mag-pause na lang?</string>
+    <string name="commitment_pause_instead_message">Gumagana ngayon ang mga limitasyon mo. Sa isang pause, makakapanood ka nang %1$d min, pagkatapos ay kusang babalik ang pag-block.</string>
+    <string name="commitment_pause_instead_confirm">I-pause nang %1$d min</string>
+    <string name="commitment_change_anyway">Baguhin pa rin</string>
+    <string name="commitment_pin_title">Ilagay ang PIN mo</string>
+    <string name="commitment_pin_message">Naka-on ang commitment mode. Ilagay ang PIN mo para luwagan ang mga limitasyon.</string>
+    <string name="commitment_pin_wrong">Maling PIN</string>
+    <string name="commitment_confirm">Kumpirmahin</string>
+    <string name="commitment_cancel">Kanselahin</string>
+    <string name="commitment_scheduled_title">Naka-iskedyul ang pagbabago</string>
+    <string name="commitment_scheduled_message">Naka-on ang commitment mode, kaya magkakabisa ang pagbabagong ito sa %1$s. Puwede mo itong kanselahin bago noon.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Magkakabisa ang pagbabago sa mga limitasyon mo sa %1$s</string>
+    <string name="commitment_pending_cancel">Kanselahin ang pagbabago</string>
 </resources>

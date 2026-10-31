@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Neste dag</string>
     <string name="usage_analytics_previous_day">Førre dag</string>
+    <string name="commitment_pause_instead_title">Ta heller ein pause?</string>
+    <string name="commitment_pause_instead_message">Grensene dine verkar akkurat no. Med ein pause kan du sjå i %1$d min, og etterpå slår blokkeringa seg på att av seg sjølv.</string>
+    <string name="commitment_pause_instead_confirm">Pause i %1$d min</string>
+    <string name="commitment_change_anyway">Endre likevel</string>
+    <string name="commitment_pin_title">Skriv inn PIN-koden</string>
+    <string name="commitment_pin_message">Forpliktingsmodus er på. Skriv inn PIN-koden for å løyse på grensene dine.</string>
+    <string name="commitment_pin_wrong">Feil PIN-kode</string>
+    <string name="commitment_confirm">Stadfest</string>
+    <string name="commitment_cancel">Avbryt</string>
+    <string name="commitment_scheduled_title">Endring planlagd</string>
+    <string name="commitment_scheduled_message">Forpliktingsmodus er på, så endringa gjeld frå kl. %1$s. Du kan avbryte ho før det.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Ei endring av grensene dine gjeld frå kl. %1$s</string>
+    <string name="commitment_pending_cancel">Avbryt endring</string>
 </resources>

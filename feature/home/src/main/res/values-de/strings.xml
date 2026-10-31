@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Nächster Tag</string>
     <string name="usage_analytics_previous_day">Vorheriger Tag</string>
+    <string name="commitment_pause_instead_title">Lieber eine Pause machen?</string>
+    <string name="commitment_pause_instead_message">Deine Limits wirken gerade. Mit einer Pause kannst du %1$d Min. schauen, danach wird das Blockieren automatisch wieder aktiviert.</string>
+    <string name="commitment_pause_instead_confirm">Pause für %1$d Min.</string>
+    <string name="commitment_change_anyway">Trotzdem ändern</string>
+    <string name="commitment_pin_title">PIN eingeben</string>
+    <string name="commitment_pin_message">Der Verpflichtungsmodus ist aktiv. Gib deine PIN ein, um deine Limits zu lockern.</string>
+    <string name="commitment_pin_wrong">Falsche PIN</string>
+    <string name="commitment_confirm">Bestätigen</string>
+    <string name="commitment_cancel">Abbrechen</string>
+    <string name="commitment_scheduled_title">Änderung geplant</string>
+    <string name="commitment_scheduled_message">Der Verpflichtungsmodus ist aktiv, daher gilt diese Änderung ab %1$s. Bis dahin kannst du sie abbrechen.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Eine Änderung deiner Limits gilt ab %1$s</string>
+    <string name="commitment_pending_cancel">Änderung abbrechen</string>
 </resources>

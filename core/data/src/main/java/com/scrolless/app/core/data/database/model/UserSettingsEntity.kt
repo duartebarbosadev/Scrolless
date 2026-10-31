@@ -24,6 +24,8 @@ import androidx.room.PrimaryKey
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.BlockingSettings
+import com.scrolless.app.core.model.CommitmentMode
+import com.scrolless.app.core.model.DEFAULT_COMMITMENT_DELAY_MILLIS
 import com.scrolless.app.core.model.IntervalUsage
 
 /**
@@ -58,6 +60,12 @@ data class UserSettingsEntity(
     @ColumnInfo(name = "include_stories", defaultValue = "0") val includeStories: Boolean = false,
     @ColumnInfo(name = "except_reels_sent_by_dm", defaultValue = "0") val allowVideosSentByDm: Boolean = false,
     @ColumnInfo(name = "has_seen_background_setup", defaultValue = "0") val hasSeenBackgroundSetup: Boolean = false,
+    @ColumnInfo(name = "commitment_mode", defaultValue = "Off") val commitmentMode: CommitmentMode = CommitmentMode.Off,
+    @ColumnInfo(name = "commitment_delay_millis", defaultValue = "3600000")
+    val commitmentDelayMillis: Long = DEFAULT_COMMITMENT_DELAY_MILLIS,
+    @ColumnInfo(name = "commitment_pin_hash") val commitmentPinHash: String? = null,
+    @ColumnInfo(name = "pending_change") val pendingChange: String? = null,
+    @ColumnInfo(name = "pending_change_apply_at", defaultValue = "0") val pendingChangeApplyAt: Long = 0L,
 )
 
 fun UserSettingsEntity.toBlockingConfig(): BlockingConfig = BlockingConfig(

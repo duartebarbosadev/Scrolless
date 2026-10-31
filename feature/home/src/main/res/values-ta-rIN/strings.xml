@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">அடுத்த நாள்</string>
     <string name="usage_analytics_previous_day">முந்தைய நாள்</string>
+    <string name="commitment_pause_instead_title">பதிலாக இடைநிறுத்தவா?</string>
+    <string name="commitment_pause_instead_message">உங்கள் வரம்புகள் இப்போது செயலில் உள்ளன. இடைநிறுத்தினால் %1$d நிமிடம் பார்க்கலாம், பிறகு தடுப்பு தானாகவே மீண்டும் இயங்கும்.</string>
+    <string name="commitment_pause_instead_confirm">%1$d நிமிடம் இடைநிறுத்து</string>
+    <string name="commitment_change_anyway">இருந்தாலும் மாற்று</string>
+    <string name="commitment_pin_title">PIN-ஐ உள்ளிடவும்</string>
+    <string name="commitment_pin_message">உறுதிமொழிப் பயன்முறை இயக்கத்தில் உள்ளது. வரம்புகளைத் தளர்த்த PIN-ஐ உள்ளிடவும்.</string>
+    <string name="commitment_pin_wrong">தவறான PIN</string>
+    <string name="commitment_confirm">உறுதிசெய்</string>
+    <string name="commitment_cancel">ரத்துசெய்</string>
+    <string name="commitment_scheduled_title">மாற்றம் திட்டமிடப்பட்டது</string>
+    <string name="commitment_scheduled_message">உறுதிமொழிப் பயன்முறை இயக்கத்தில் உள்ளதால், இந்த மாற்றம் %1$s-க்கு நடைமுறைக்கு வரும். அதற்கு முன் இதை ரத்துசெய்யலாம்.</string>
+    <string name="commitment_ok">சரி</string>
+    <string name="commitment_pending_banner">உங்கள் வரம்புகளில் ஒரு மாற்றம் %1$s-க்கு நடைமுறைக்கு வரும்</string>
+    <string name="commitment_pending_cancel">மாற்றத்தை ரத்துசெய்</string>
 </resources>

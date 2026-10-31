@@ -108,4 +108,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Sljedeći dan</string>
     <string name="usage_analytics_previous_day">Prethodni dan</string>
+    <string name="commitment_pause_instead_title">Radije uzeti pauzu?</string>
+    <string name="commitment_pause_instead_message">Vaša ograničenja upravo djeluju. Pauza vam omogućuje gledanje %1$d min, a zatim se blokiranje samo ponovno uključuje.</string>
+    <string name="commitment_pause_instead_confirm">Pauza od %1$d min</string>
+    <string name="commitment_change_anyway">Ipak promijeni</string>
+    <string name="commitment_pin_title">Unesite PIN</string>
+    <string name="commitment_pin_message">Način obveze je uključen. Unesite PIN da biste ublažili ograničenja.</string>
+    <string name="commitment_pin_wrong">Pogrešan PIN</string>
+    <string name="commitment_confirm">Potvrdi</string>
+    <string name="commitment_cancel">Odustani</string>
+    <string name="commitment_scheduled_title">Promjena zakazana</string>
+    <string name="commitment_scheduled_message">Način obveze je uključen, pa ova promjena stupa na snagu u %1$s. Do tada je možete otkazati.</string>
+    <string name="commitment_ok">U redu</string>
+    <string name="commitment_pending_banner">Promjena vaših ograničenja stupa na snagu u %1$s</string>
+    <string name="commitment_pending_cancel">Otkaži promjenu</string>
 </resources>

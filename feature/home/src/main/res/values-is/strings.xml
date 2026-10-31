@@ -107,4 +107,18 @@
     <string name="usage_analytics_day_sat">Lau</string>
     <string name="usage_analytics_day_sun">Sun</string>
     <string name="visit_github">Skoða GitHub-safnið</string>
+    <string name="commitment_pause_instead_title">Taka frekar hlé?</string>
+    <string name="commitment_pause_instead_message">Takmörkin þín eru virk núna. Í hléi geturðu horft í %1$d mín og svo kviknar lokunin aftur sjálfkrafa.</string>
+    <string name="commitment_pause_instead_confirm">Hlé í %1$d mín</string>
+    <string name="commitment_change_anyway">Breyta samt</string>
+    <string name="commitment_pin_title">Sláðu inn PIN-númerið</string>
+    <string name="commitment_pin_message">Skuldbindingarstilling er virk. Sláðu inn PIN-númerið til að slaka á takmörkunum.</string>
+    <string name="commitment_pin_wrong">Rangt PIN-númer</string>
+    <string name="commitment_confirm">Staðfesta</string>
+    <string name="commitment_cancel">Hætta við</string>
+    <string name="commitment_scheduled_title">Breyting á áætlun</string>
+    <string name="commitment_scheduled_message">Skuldbindingarstilling er virk, svo breytingin tekur gildi kl. %1$s. Þú getur hætt við hana fyrir þann tíma.</string>
+    <string name="commitment_ok">Í lagi</string>
+    <string name="commitment_pending_banner">Breyting á takmörkunum tekur gildi kl. %1$s</string>
+    <string name="commitment_pending_cancel">Hætta við breytingu</string>
 </resources>

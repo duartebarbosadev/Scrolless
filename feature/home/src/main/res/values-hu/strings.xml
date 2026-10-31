@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Következő nap</string>
     <string name="usage_analytics_previous_day">Előző nap</string>
+    <string name="commitment_pause_instead_title">Inkább tartasz egy szünetet?</string>
+    <string name="commitment_pause_instead_message">A korlátaid most is működnek. Szünettel %1$d percig nézhetsz, utána a letiltás magától újra bekapcsol.</string>
+    <string name="commitment_pause_instead_confirm">Szünet %1$d percre</string>
+    <string name="commitment_change_anyway">Módosítás mégis</string>
+    <string name="commitment_pin_title">Add meg a PIN-kódot</string>
+    <string name="commitment_pin_message">Az elköteleződési mód be van kapcsolva. A korlátok lazításához add meg a PIN-kódot.</string>
+    <string name="commitment_pin_wrong">Hibás PIN-kód</string>
+    <string name="commitment_confirm">Megerősítés</string>
+    <string name="commitment_cancel">Mégse</string>
+    <string name="commitment_scheduled_title">Módosítás ütemezve</string>
+    <string name="commitment_scheduled_message">Az elköteleződési mód be van kapcsolva, ezért ez a módosítás %1$s-kor lép életbe. Addig visszavonhatod.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">A korlátaid módosítása %1$s-kor lép életbe</string>
+    <string name="commitment_pending_cancel">Módosítás visszavonása</string>
 </resources>

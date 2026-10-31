@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Επόμενη μέρα</string>
     <string name="usage_analytics_previous_day">Προηγούμενη μέρα</string>
+    <string name="commitment_pause_instead_title">Μήπως καλύτερα παύση;</string>
+    <string name="commitment_pause_instead_message">Τα όριά σας ισχύουν αυτή τη στιγμή. Με μια παύση μπορείτε να παρακολουθήσετε για %1$d λεπ. και μετά ο αποκλεισμός ενεργοποιείται ξανά μόνος του.</string>
+    <string name="commitment_pause_instead_confirm">Παύση για %1$d λεπ.</string>
+    <string name="commitment_change_anyway">Αλλαγή ούτως ή άλλως</string>
+    <string name="commitment_pin_title">Εισαγάγετε το PIN</string>
+    <string name="commitment_pin_message">Η λειτουργία δέσμευσης είναι ενεργή. Εισαγάγετε το PIN για να χαλαρώσετε τα όριά σας.</string>
+    <string name="commitment_pin_wrong">Λάθος PIN</string>
+    <string name="commitment_confirm">Επιβεβαίωση</string>
+    <string name="commitment_cancel">Ακύρωση</string>
+    <string name="commitment_scheduled_title">Η αλλαγή προγραμματίστηκε</string>
+    <string name="commitment_scheduled_message">Η λειτουργία δέσμευσης είναι ενεργή, οπότε αυτή η αλλαγή θα ισχύσει στις %1$s. Μπορείτε να την ακυρώσετε μέχρι τότε.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Μια αλλαγή στα όριά σας θα ισχύσει στις %1$s</string>
+    <string name="commitment_pending_cancel">Ακύρωση αλλαγής</string>
 </resources>

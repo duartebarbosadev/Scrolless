@@ -106,4 +106,18 @@
     </plurals>
     <string name="usage_analytics_next_day">翌日</string>
     <string name="usage_analytics_previous_day">前日</string>
+    <string name="commitment_pause_instead_title">代わりに一時停止しますか？</string>
+    <string name="commitment_pause_instead_message">今は制限が有効です。一時停止すると%1$d分間視聴でき、その後ブロックは自動で再開します。</string>
+    <string name="commitment_pause_instead_confirm">%1$d分間一時停止</string>
+    <string name="commitment_change_anyway">それでも変更</string>
+    <string name="commitment_pin_title">PINを入力</string>
+    <string name="commitment_pin_message">コミットメントモードがオンです。制限をゆるめるにはPINを入力してください。</string>
+    <string name="commitment_pin_wrong">PINが違います</string>
+    <string name="commitment_confirm">確認</string>
+    <string name="commitment_cancel">キャンセル</string>
+    <string name="commitment_scheduled_title">変更を予約しました</string>
+    <string name="commitment_scheduled_message">コミットメントモードがオンのため、この変更は%1$sに適用されます。それまではキャンセルできます。</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">制限の変更は%1$sに適用されます</string>
+    <string name="commitment_pending_cancel">変更をキャンセル</string>
 </resources>
