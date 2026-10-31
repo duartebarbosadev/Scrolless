@@ -132,6 +132,10 @@
 
     <string name="interval_timer_card_break_chip">Break length</string>
 
+    <!-- %1$s lists the hours when shorts are fully blocked, such as "20:00–06:00, 09:00–16:00". -->
+
+    <string name="interval_timer_card_blocked_hours">Fully blocked %1$s</string>
+
     <string name="interval_timer_card_edit">Edit schedule</string>
 
     <string name="interval_timer_card_set_schedule">Set schedule</string>
@@ -145,6 +149,10 @@
     <string name="interval_timer_dialog_allowance_description">How long you can watch shorts between breaks.</string>
 
     <string name="interval_timer_dialog_allowance_label">Allowed watch time</string>
+
+    <string name="interval_timer_dialog_blocked_hours_description">Tap the hours when shorts should stay blocked, whatever watch time you have left.</string>
+
+    <string name="interval_timer_dialog_blocked_hours_label">Blocked hours</string>
 
     <string name="interval_timer_dialog_break_description">Scrolless keeps supported apps blocked for this long, then lets you watch again.</string>
 

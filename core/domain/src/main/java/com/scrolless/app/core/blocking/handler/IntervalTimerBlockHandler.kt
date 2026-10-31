@@ -17,12 +17,14 @@
 package com.scrolless.app.core.blocking.handler
 
 import com.scrolless.app.core.blocking.time.TimeProvider
+import com.scrolless.app.core.model.BlockedHours
 import com.scrolless.app.core.model.BlockingResult
 import com.scrolless.app.core.repository.BlockingConfigRepository
 import timber.log.Timber
 
 /**
- * Limits how long the user can watch during one interval window.
+ * Limits how long the user can watch during one interval window, and blocks everything during
+ * [blockedHours].
  *
  * The settings come from the manager, the usage is read from the repository on every check, so the
  * handler keeps no state of its own.
@@ -30,6 +32,7 @@ import timber.log.Timber
 class IntervalTimerBlockHandler(
     private val allowanceMillis: Long,
     private val intervalLengthMillis: Long,
+    private val blockedHours: BlockedHours,
     private val blockingConfigRepository: BlockingConfigRepository,
     private val timeProvider: TimeProvider,
 ) : BlockOptionHandler {
@@ -37,7 +40,14 @@ class IntervalTimerBlockHandler(
     private suspend fun usageAt(nowMillis: Long) =
         blockingConfigRepository.getConfig().intervalUsage.activeIntervalAt(nowMillis, intervalLengthMillis)
 
+    private fun isBlockedHour(): Boolean = !blockedHours.isEmpty && blockedHours.isBlockedAt(timeProvider.localDateTimeNow())
+
     override suspend fun shouldBlockContent(currentDailyUsage: Long): Boolean {
+        if (isBlockedHour()) {
+            Timber.d("IntervalTimer.shouldBlock: blocked hour -> block=true")
+            return true
+        }
+
         val usage = usageAt(timeProvider.currentTimeInMillis()).usageMillis
 
         val shouldBlock = usage >= allowanceMillis
@@ -45,8 +55,18 @@ class IntervalTimerBlockHandler(
         return shouldBlock
     }
 
-    /** Includes the session in progress, which is not saved yet, when checking the allowance. */
+    /**
+     * Includes the session in progress, which is not saved yet, when checking the allowance.
+     *
+     * The next check comes no later than the start of the next blocked hour, so a session that
+     * runs into one is closed on time.
+     */
     override suspend fun onPeriodicCheck(currentDailyUsage: Long, elapsedTime: Long): BlockingResult {
+        if (isBlockedHour()) {
+            Timber.v("IntervalTimer.onPeriodic: blocked hour -> block")
+            return BlockingResult.BlockNow
+        }
+
         val now = timeProvider.currentTimeInMillis()
         val usage = blockingConfigRepository.getConfig().intervalUsage
             .plusSession(sessionStartMillis = now - elapsedTime, sessionEndMillis = now, lengthMillis = intervalLengthMillis)
@@ -57,8 +77,10 @@ class IntervalTimerBlockHandler(
             return BlockingResult.BlockNow
         }
 
-        Timber.v("IntervalTimer.onPeriodic: usage=%d/%d -> continue", usage, allowanceMillis)
-        return BlockingResult.CheckLater(allowanceMillis - usage)
+        val untilBlockedHour = if (blockedHours.isEmpty) null else blockedHours.millisUntilNextBlocked(timeProvider.localDateTimeNow())
+        val checkInMillis = minOf(allowanceMillis - usage, untilBlockedHour ?: Long.MAX_VALUE)
+        Timber.v("IntervalTimer.onPeriodic: usage=%d/%d -> check in %d", usage, allowanceMillis, checkInMillis)
+        return BlockingResult.CheckLater(checkInMillis)
     }
 
     override suspend fun onExitContent(sessionStartMillis: Long, sessionEndMillis: Long) {
