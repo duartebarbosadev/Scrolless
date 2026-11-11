@@ -136,6 +136,13 @@ class FacebookLiteDetectionTest {
     }
 
     @Test
+    fun `the Stories rule skips a list video passing under the top of the content`() {
+        // A vertical clip in the "More videos" list, scrolled so its top is cut off at the top of the content.
+        val clip = player(1, 0.8f).copy(isAtContainerTop = true)
+        assertFalse(app.matchesDetectionNodes(listOf(list(0.93f), container(1, 0, 0.85f), clip), withStories))
+    }
+
+    @Test
     fun `reels are still detected and feed videos still skipped when Stories are included`() {
         assertTrue(
             app.matchesDetectionNodes(listOf(list(0.88f), container(1, 0, 0.88f), container(2, 1, 0.8f), player(2, 0.8f)), withStories),

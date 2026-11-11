@@ -57,6 +57,8 @@ sealed class DetectionMethod {
      * the rule names by type or ID. Wrappers the rule doesn't name are still skipped.
      * @property requireFillsParent Requires the view to be the same size as the view matched above it, such as a
      * player filling its container rather than sitting in a post with a header and buttons.
+     * @property notInsideClassNames View types this view must not be inside, such as a scrolling list for a viewer
+     * that shows one item at a time.
      */
     data class NodeStructure(
         val classNames: Set<String> = emptySet(),
@@ -69,6 +71,7 @@ sealed class DetectionMethod {
         val requireNotClickable: Boolean = false,
         val requireDirectChild: Boolean = false,
         val requireFillsParent: Boolean = false,
+        val notInsideClassNames: Set<String> = emptySet(),
         val descendant: NodeStructure? = null,
     ) : DetectionMethod() {
         init {
@@ -290,12 +293,14 @@ enum class BlockableApp(
                 ),
             ),
         ),
-        // The story viewer plays through the same "video_view", filling the app's content area from the top. Feed videos
-        // and the Reels tab stay below the header and tab bar, so their players never start at the top of the content.
+        // The story viewer plays through the same "video_view", filling the app's content area from the top, and it's the
+        // only player not inside a scrolling list: feed videos, Reels and the "More videos" list all scroll, and a video
+        // passing under the top of a list can look like it starts at the top of the content.
         storiesDetectionMethod = DetectionMethod.NodeStructure(
             viewIds = setOf("video_view"),
             minScreenHeightFraction = 0.6f,
             requireAtTopOf = "main_layout",
+            notInsideClassNames = setOf("androidx.recyclerview.widget.RecyclerView"),
         ),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
@@ -339,9 +344,18 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
     fun getViewId(detectionMethod: DetectionMethod.ViewId): String = getViewId(detectionMethod.viewId)
 
     fun matchesDetectionNodes(nodes: Collection<DetectionNode>, detectionMethod: DetectionMethod = getDetectionMethod()): Boolean {
-        // Group once so nested-layout checks can find children without rescanning the whole list.
-        val childrenByParentId = nodes.groupBy(DetectionNode::parentNodeId)
-        return detectionMethod.matches(nodes, childrenByParentId)
+        return detectionMethod.matches(nodes, NodeTree(nodes))
+    }
+
+    /** Indexes the nodes once so nested-layout checks can find children and parents without rescanning the list. */
+    private class NodeTree(nodes: Collection<DetectionNode>) {
+        private val nodesById = nodes.associateBy(DetectionNode::nodeId)
+        private val childrenByParentId = nodes.groupBy(DetectionNode::parentNodeId)
+
+        fun children(nodeId: Int): List<DetectionNode> = childrenByParentId[nodeId].orEmpty()
+
+        fun ancestors(node: DetectionNode): Sequence<DetectionNode> =
+            generateSequence(nodesById[node.parentNodeId]) { nodesById[it.parentNodeId] }
     }
 
     /** Try rules that need only one node. Layout rules still need the full set of related nodes. */
@@ -399,6 +413,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
         when (this) {
             is DetectionMethod.NodeStructure -> {
                 destination += classNames
+                destination += notInsideClassNames
                 descendant?.collectStructuralClassNames(destination)
             }
 
@@ -412,7 +427,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
         }
     }
 
-    private fun DetectionMethod.matches(nodes: Collection<DetectionNode>, childrenByParentId: Map<Int?, List<DetectionNode>>): Boolean {
+    private fun DetectionMethod.matches(nodes: Collection<DetectionNode>, tree: NodeTree): Boolean {
         return when (this) {
             is DetectionMethod.ViewId,
             is DetectionMethod.ContentDescriptions,
@@ -420,13 +435,13 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             -> nodes.any { node -> matchesSimpleNode(node) }
 
             is DetectionMethod.NodeStructure -> nodes.any { node ->
-                matchesStructure(node, matchedParent = null, childrenByParentId)
+                matchesStructure(node, matchedParent = null, tree)
             }
 
             // Activity names are resolved at the window/component level, not within the node hierarchy.
             is DetectionMethod.ActivityName -> false
 
-            is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matches(nodes, childrenByParentId) }
+            is DetectionMethod.AnyOf -> detectionMethods.any { method -> method.matches(nodes, tree) }
         }
     }
 
@@ -434,7 +449,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
     private fun DetectionMethod.NodeStructure.matchesStructure(
         node: DetectionNode,
         matchedParent: DetectionNode?,
-        childrenByParentId: Map<Int?, List<DetectionNode>>,
+        tree: NodeTree,
     ): Boolean {
         val matchesThisNode = node.isVisible &&
             (classNames.isEmpty() || node.className in classNames) &&
@@ -445,23 +460,24 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             (!requireLongClickable || node.isLongClickable) &&
             (!requireNotClickable || !node.isClickable) &&
             (requireAtTopOf == null || node.isAtContainerTop) &&
-            (!requireFillsParent || matchedParent?.let { node.hasSameSizeAs(it) } == true)
+            (!requireFillsParent || matchedParent?.let { node.hasSameSizeAs(it) } == true) &&
+            (notInsideClassNames.isEmpty() || tree.ancestors(node).none { it.className in notInsideClassNames })
 
         if (!matchesThisNode) return false
         // Related pieces must be inside this matching node, not somewhere else on the screen.
         val requiredDescendant = descendant ?: return true
-        return requiredDescendant.hasMatchingDescendant(node, node.nodeId, childrenByParentId)
+        return requiredDescendant.hasMatchingDescendant(node, node.nodeId, tree)
     }
 
     private fun DetectionMethod.NodeStructure.hasMatchingDescendant(
         matchedParent: DetectionNode,
         parentNodeId: Int,
-        childrenByParentId: Map<Int?, List<DetectionNode>>,
+        tree: NodeTree,
     ): Boolean {
         // Allow extra wrapper views between the required parts of the video layout, unless this part must be a direct child.
-        return childrenByParentId[parentNodeId].orEmpty().any { child ->
-            matchesStructure(child, matchedParent, childrenByParentId) ||
-                (!requireDirectChild && hasMatchingDescendant(matchedParent, child.nodeId, childrenByParentId))
+        return tree.children(parentNodeId).any { child ->
+            matchesStructure(child, matchedParent, tree) ||
+                (!requireDirectChild && hasMatchingDescendant(matchedParent, child.nodeId, tree))
         }
     }
 
