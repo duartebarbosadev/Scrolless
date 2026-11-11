@@ -36,5 +36,5 @@
     </plurals>
     <string name="settings_include_stories_title">تضمين القصص</string>
     <string name="settings_include_stories_description">احتساب الوقت الذي تقضيه في مشاهدة القصص وتطبيق وضع الحظر والحدود الحالية عليها.</string>
-    <string name="settings_include_stories_note">مدعوم حاليًا على Instagram وSnapchat وFacebook.</string>
+    <string name="settings_include_stories_note">مدعوم حاليًا على Instagram وSnapchat وFacebook وFacebook Lite.</string>
 </resources>

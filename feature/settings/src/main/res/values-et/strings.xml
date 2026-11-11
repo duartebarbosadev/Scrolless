@@ -32,5 +32,5 @@
     </plurals>
     <string name="settings_include_stories_title">Kaasa lood</string>
     <string name="settings_include_stories_description">Arvesta lugude vaatamisele kulunud aega ja rakenda praegust blokeerimisrežiimi ning piiranguid.</string>
-    <string name="settings_include_stories_note">Praegu toetatud Instagramis, Snapchatis ja Facebookis.</string>
+    <string name="settings_include_stories_note">Praegu toetatud Instagramis, Snapchatis, Facebookis ja Facebook Lite\'is.</string>
 </resources>

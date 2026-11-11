@@ -31,5 +31,5 @@
     </plurals>
     <string name="settings_include_stories_title">Sertakan Stories</string>
     <string name="settings_include_stories_description">Hitung waktu menonton Stories dan terapkan mode pemblokiran serta batas yang sedang aktif.</string>
-    <string name="settings_include_stories_note">Saat ini didukung di Instagram, Snapchat, dan Facebook.</string>
+    <string name="settings_include_stories_note">Saat ini didukung di Instagram, Snapchat, Facebook, dan Facebook Lite.</string>
 </resources>

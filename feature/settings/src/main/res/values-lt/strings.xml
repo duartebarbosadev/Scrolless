@@ -34,5 +34,5 @@
     </plurals>
     <string name="settings_include_stories_title">Įtraukti istorijas</string>
     <string name="settings_include_stories_description">Skaičiuoti istorijų peržiūros laiką ir taikyti dabartinį blokavimo režimą bei limitus.</string>
-    <string name="settings_include_stories_note">Šiuo metu palaikoma Instagram, Snapchat ir Facebook.</string>
+    <string name="settings_include_stories_note">Šiuo metu palaikoma Instagram, Snapchat, Facebook ir Facebook Lite.</string>
 </resources>

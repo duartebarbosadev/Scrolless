@@ -48,7 +48,7 @@ class FacebookLiteDetectionTest {
         isClickable = isClickable,
     )
 
-    private fun player(parentNodeId: Int, heightFraction: Float) = DetectionNode(
+    private fun player(parentNodeId: Int?, heightFraction: Float) = DetectionNode(
         nodeId = 9,
         parentNodeId = parentNodeId,
         viewId = "$packageId:id/video_view",
@@ -109,6 +109,43 @@ class FacebookLiteDetectionTest {
     fun `a profile video whose post briefly can't be clicked is not detected`() {
         // Seen right after tapping a landscape video on the profile: the post around the player stops being clickable.
         assertFalse(app.matchesDetectionNodes(listOf(list(0.87f), container(1, 0, 0.25f), player(1, 0.25f))))
+    }
+
+    // The story viewer has no list around its player, so the scanner collects only the player for the Stories rule.
+    private fun storyPlayer(heightFraction: Float, isAtContainerTop: Boolean = true) =
+        player(parentNodeId = null, heightFraction = heightFraction).copy(isAtContainerTop = isAtContainerTop)
+
+    private val withStories = app.getDetectionMethod(includeStories = true)
+
+    @Test
+    fun `video stories are detected only when Stories are included`() {
+        // Phone, then the fold's inner screen: the player fills the content area from its top.
+        for (story in listOf(storyPlayer(0.93f), storyPlayer(0.9f))) {
+            assertTrue(app.matchesDetectionNodes(listOf(story), withStories))
+            assertFalse(app.matchesDetectionNodes(listOf(story)))
+        }
+    }
+
+    @Test
+    fun `the Stories rule skips feed videos and reels below the header`() {
+        // Fold feed video and Reels tab player: as tall as some phones' story player, but below the header and tab bar.
+        assertFalse(app.matchesDetectionNodes(listOf(storyPlayer(0.8f, isAtContainerTop = false)), withStories))
+        assertFalse(app.matchesDetectionNodes(listOf(storyPlayer(0.93f, isAtContainerTop = false)), withStories))
+        // A small player at the top of the content.
+        assertFalse(app.matchesDetectionNodes(listOf(storyPlayer(0.3f)), withStories))
+    }
+
+    @Test
+    fun `reels are still detected and feed videos still skipped when Stories are included`() {
+        assertTrue(
+            app.matchesDetectionNodes(listOf(list(0.88f), container(1, 0, 0.88f), container(2, 1, 0.8f), player(2, 0.8f)), withStories),
+        )
+        assertFalse(
+            app.matchesDetectionNodes(
+                listOf(list(0.8f), container(1, 0, 0.8f), container(2, 1, 0.8f, isClickable = true), player(2, 0.8f)),
+                withStories,
+            ),
+        )
     }
 
     private companion object {

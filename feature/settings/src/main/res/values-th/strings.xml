@@ -31,5 +31,5 @@
     <string name="settings_show_onscreen_timer_title">แสดงตัวจับเวลาบนหน้าจอ</string>
     <string name="settings_include_stories_title">รวม Stories</string>
     <string name="settings_include_stories_description">นับเวลาที่ใช้ดู Stories และใช้โหมดการบล็อกและขีดจำกัดปัจจุบันของคุณ</string>
-    <string name="settings_include_stories_note">ปัจจุบันรองรับบน Instagram, Snapchat และ Facebook</string>
+    <string name="settings_include_stories_note">ปัจจุบันรองรับบน Instagram, Snapchat, Facebook และ Facebook Lite</string>
 </resources>

@@ -32,5 +32,5 @@
     </plurals>
     <string name="settings_include_stories_title">Isama ang Stories</string>
     <string name="settings_include_stories_description">Bilangin ang oras sa panonood ng Stories at ilapat ang kasalukuyan mong mode ng pag-block at mga limit.</string>
-    <string name="settings_include_stories_note">Kasalukuyang suportado sa Instagram, Snapchat, at Facebook.</string>
+    <string name="settings_include_stories_note">Kasalukuyang suportado sa Instagram, Snapchat, Facebook, at Facebook Lite.</string>
 </resources>

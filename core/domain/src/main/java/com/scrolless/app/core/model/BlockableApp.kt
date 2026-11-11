@@ -290,6 +290,13 @@ enum class BlockableApp(
                 ),
             ),
         ),
+        // The story viewer plays through the same "video_view", filling the app's content area from the top. Feed videos
+        // and the Reels tab stay below the header and tab bar, so their players never start at the top of the content.
+        storiesDetectionMethod = DetectionMethod.NodeStructure(
+            viewIds = setOf("video_view"),
+            minScreenHeightFraction = 0.6f,
+            requireAtTopOf = "main_layout",
+        ),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     SNAPCHAT(
