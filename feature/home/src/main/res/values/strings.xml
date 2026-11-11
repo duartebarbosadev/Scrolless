@@ -48,6 +48,8 @@
 
     <string name="app_reels" translatable="false">Reels</string>
 
+    <string name="app_instagram_lite" translatable="false">Instagram Lite</string>
+
     <string name="app_shorts" translatable="false">Shorts</string>
 
     <string name="app_snapchat" translatable="false">Snapchat</string>
