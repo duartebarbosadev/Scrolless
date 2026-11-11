@@ -18,6 +18,7 @@ package com.scrolless.app.core.model
 
 import android.accessibilityservice.AccessibilityService.GLOBAL_ACTION_BACK
 import androidx.compose.runtime.Immutable
+import kotlin.math.abs
 
 /**
  * DetectionMethod holds the information to find out if blocked content is visible.
@@ -51,6 +52,11 @@ sealed class DetectionMethod {
      * @property requireAtTopOf View ID (without the package prefix) of a container this view must start at the top
      * of, so no header sits above it. This separates full-screen viewers from lists below a header. Only checked
      * when the rule's innermost part names view IDs, because the scanner looks the container up on that path.
+     * @property requireNotClickable Rejects clickable views, such as the post around a feed video.
+     * @property requireDirectChild Requires the view matched above this one to be its nearest parent among the views
+     * the rule names by type or ID. Wrappers the rule doesn't name are still skipped.
+     * @property requireFillsParent Requires the view to be the same size as the view matched above it, such as a
+     * player filling its container rather than sitting in a post with a header and buttons.
      */
     data class NodeStructure(
         val classNames: Set<String> = emptySet(),
@@ -60,6 +66,9 @@ sealed class DetectionMethod {
         val requireScrollable: Boolean = false,
         val requireLongClickable: Boolean = false,
         val requireAtTopOf: String? = null,
+        val requireNotClickable: Boolean = false,
+        val requireDirectChild: Boolean = false,
+        val requireFillsParent: Boolean = false,
         val descendant: NodeStructure? = null,
     ) : DetectionMethod() {
         init {
@@ -99,6 +108,7 @@ data class DetectionNode(
     val isSelected: Boolean = false,
     val isScrollable: Boolean = false,
     val isLongClickable: Boolean = false,
+    val isClickable: Boolean = false,
     val isAtContainerTop: Boolean = false,
 )
 
@@ -256,7 +266,30 @@ enum class BlockableApp(
     ),
     FACEBOOK_LITE(
         packageIds = listOf("com.facebook.lite"),
-        detectionMethod = DetectionMethod.ViewId("video_view"),
+        // Facebook Lite plays Reels and home feed videos through the same "video_view", so the ID alone would also
+        // block the feed. In the feed, the nearest view group above video_view is clickable (the post's video and
+        // reactions bar); in a reel it is a container that can't be clicked. The size limits only skip small
+        // carousels: position can't help because the Reels tab keeps the tab bar above the list, and on short or
+        // wide screens a feed video can fill the whole feed list.
+        // Tapping a landscape video opens a "More videos" list whose posts can't be clicked either, but a reel's player
+        // fills its container while a post also holds a header and buttons. A reel's player also fills most of the
+        // screen, which skips a profile video whose post briefly can't be clicked after a tap.
+        detectionMethod = DetectionMethod.NodeStructure(
+            classNames = setOf("androidx.recyclerview.widget.RecyclerView"),
+            minScreenWidthFraction = 0.9f,
+            minScreenHeightFraction = 0.6f,
+            requireScrollable = true,
+            descendant = DetectionMethod.NodeStructure(
+                classNames = setOf("android.view.ViewGroup"),
+                requireNotClickable = true,
+                descendant = DetectionMethod.NodeStructure(
+                    viewIds = setOf("video_view"),
+                    minScreenHeightFraction = 0.6f,
+                    requireDirectChild = true,
+                    requireFillsParent = true,
+                ),
+            ),
+        ),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     SNAPCHAT(
@@ -380,7 +413,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             -> nodes.any { node -> matchesSimpleNode(node) }
 
             is DetectionMethod.NodeStructure -> nodes.any { node ->
-                matchesStructure(node, childrenByParentId)
+                matchesStructure(node, matchedParent = null, childrenByParentId)
             }
 
             // Activity names are resolved at the window/component level, not within the node hierarchy.
@@ -390,8 +423,10 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
         }
     }
 
+    /** [matchedParent] is the node the part above this one matched, or null for the rule's outermost part. */
     private fun DetectionMethod.NodeStructure.matchesStructure(
         node: DetectionNode,
+        matchedParent: DetectionNode?,
         childrenByParentId: Map<Int?, List<DetectionNode>>,
     ): Boolean {
         val matchesThisNode = node.isVisible &&
@@ -401,21 +436,34 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             node.screenHeightFraction >= minScreenHeightFraction &&
             (!requireScrollable || node.isScrollable) &&
             (!requireLongClickable || node.isLongClickable) &&
-            (requireAtTopOf == null || node.isAtContainerTop)
+            (!requireNotClickable || !node.isClickable) &&
+            (requireAtTopOf == null || node.isAtContainerTop) &&
+            (!requireFillsParent || matchedParent?.let { node.hasSameSizeAs(it) } == true)
 
         if (!matchesThisNode) return false
         // Related pieces must be inside this matching node, not somewhere else on the screen.
         val requiredDescendant = descendant ?: return true
-        return requiredDescendant.hasMatchingDescendant(node.nodeId, childrenByParentId)
+        return requiredDescendant.hasMatchingDescendant(node, node.nodeId, childrenByParentId)
     }
 
     private fun DetectionMethod.NodeStructure.hasMatchingDescendant(
+        matchedParent: DetectionNode,
         parentNodeId: Int,
         childrenByParentId: Map<Int?, List<DetectionNode>>,
     ): Boolean {
-        // Allow extra wrapper views between the required parts of the video layout.
+        // Allow extra wrapper views between the required parts of the video layout, unless this part must be a direct child.
         return childrenByParentId[parentNodeId].orEmpty().any { child ->
-            matchesStructure(child, childrenByParentId) || hasMatchingDescendant(child.nodeId, childrenByParentId)
+            matchesStructure(child, matchedParent, childrenByParentId) ||
+                (!requireDirectChild && hasMatchingDescendant(matchedParent, child.nodeId, childrenByParentId))
         }
+    }
+
+    private fun DetectionNode.hasSameSizeAs(other: DetectionNode): Boolean =
+        abs(screenWidthFraction - other.screenWidthFraction) <= SAME_SIZE_TOLERANCE &&
+            abs(screenHeightFraction - other.screenHeightFraction) <= SAME_SIZE_TOLERANCE
+
+    private companion object {
+        // About 15 pixels on a phone, so a player a few pixels off its container still counts as filling it.
+        const val SAME_SIZE_TOLERANCE = 0.005f
     }
 }

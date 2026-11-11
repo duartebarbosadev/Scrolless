@@ -414,6 +414,7 @@ internal class ContentScanner(
                         screenHeightFraction = nodeBounds.height().fractionOf(rootBounds.height()),
                         isScrollable = node.isScrollable,
                         isLongClickable = node.isLongClickable,
+                        isClickable = node.isClickable,
                     )
                 }
             }
@@ -465,6 +466,7 @@ internal class ContentScanner(
                     screenHeightFraction = nodeBounds.height().fractionOf(rootBounds.height()),
                     isScrollable = node.isScrollable,
                     isLongClickable = node.isLongClickable,
+                    isClickable = node.isClickable,
                     isAtContainerTop = containerTop?.let { nodeBounds.top <= it } == true,
                 )
             }
