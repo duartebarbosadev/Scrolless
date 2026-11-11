@@ -371,6 +371,10 @@ internal class ContentScanner(
         blockableApp: ResolvedBlockableApp,
         detectionMethod: DetectionMethod,
     ): Boolean {
+        blockableApp.getAnchorViewIds(detectionMethod)?.let { anchorViewIds ->
+            return matchesFromAnchors(blockableApp, detectionMethod, anchorViewIds)
+        }
+
         val structuralNodes = mutableListOf<DetectionNode>()
         val structuralClassNames = blockableApp.getStructuralClassNames(detectionMethod)
         val nodesToVisit = ArrayDeque<Pair<AccessibilityNodeInfo, Int?>>()
@@ -422,6 +426,50 @@ internal class ContentScanner(
         }
 
         return blockableApp.matchesDetectionNodes(structuralNodes, detectionMethod)
+    }
+
+    /**
+     * Matches a layout rule by finding its innermost view by ID and reading only that view's parents.
+     * This skips the full tree walk, which is costly in apps that redraw often (e.g. while a feed scrolls),
+     * and also reaches views marked "not important for accessibility" that the tree walk never sees.
+     */
+    private fun AccessibilityNodeInfo.matchesFromAnchors(
+        blockableApp: ResolvedBlockableApp,
+        detectionMethod: DetectionMethod,
+        anchorViewIds: Set<String>,
+    ): Boolean {
+        val structuralClassNames = blockableApp.getStructuralClassNames(detectionMethod)
+        val rootBounds = android.graphics.Rect().also(::getBoundsInScreen)
+        val containerTop by lazy {
+            blockableApp.getTopContainerViewId(detectionMethod)
+                ?.let { id -> findAccessibilityNodeInfosByViewId(id).firstOrNull(::isNodeVisibleToTheUser) }
+                ?.let { android.graphics.Rect().also(it::getBoundsInScreen).top }
+        }
+
+        // Each anchor and the collected views above it are matched on their own, so the first match ends the scan.
+        return anchorViewIds.flatMap(::findAccessibilityNodeInfosByViewId).any { anchor ->
+            if (!isNodeVisibleToTheUser(anchor)) return@any false
+            // Android prefetches the parents above the first one read, so climbing costs one request.
+            val chain = generateSequence(anchor.parent) { it.parent }
+                .filter { it.className?.toString() in structuralClassNames && isNodeVisibleToTheUser(it) }
+                .toList()
+                .asReversed() + anchor
+            val nodes = chain.mapIndexed { index, node ->
+                val nodeBounds = android.graphics.Rect().also(node::getBoundsInScreen)
+                DetectionNode(
+                    nodeId = index,
+                    parentNodeId = (index - 1).takeIf { it >= 0 },
+                    viewId = node.viewIdResourceName,
+                    className = node.className?.toString(),
+                    screenWidthFraction = nodeBounds.width().fractionOf(rootBounds.width()),
+                    screenHeightFraction = nodeBounds.height().fractionOf(rootBounds.height()),
+                    isScrollable = node.isScrollable,
+                    isLongClickable = node.isLongClickable,
+                    isAtContainerTop = containerTop?.let { nodeBounds.top <= it } == true,
+                )
+            }
+            blockableApp.matchesDetectionNodes(nodes, detectionMethod)
+        }
     }
 
     private fun Int.fractionOf(total: Int): Float {
