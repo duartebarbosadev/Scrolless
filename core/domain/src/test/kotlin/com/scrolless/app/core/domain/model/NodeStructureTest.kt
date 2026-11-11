@@ -37,19 +37,23 @@ class NodeStructureTest {
     }
 
     // The scanner only finds views by ID, and only checks the container top, when it starts from the rule's
-    // innermost view. A rule using either feature any other way would silently never match on a device.
+    // innermost view. It tries each alternative of an AnyOf on its own, so each one must start that way.
+    // A rule using either feature any other way would silently never match on a device.
     @Test
     fun `every rule that uses view IDs or a container top starts from its innermost view`() {
         for (app in BlockableApp.entries) {
             val resolved = ResolvedBlockableApp(app, app.getPackageIds().first())
             for (includeStories in listOf(false, true)) {
-                val method = app.getDetectionMethod(includeStories)
-                if (method.nodeStructures().any { it.viewIds.isNotEmpty() || it.requireAtTopOf != null }) {
-                    assertNotNull("$app (stories: $includeStories)", resolved.getAnchorViewIds(method))
+                for (method in app.getDetectionMethod(includeStories).alternatives()) {
+                    if (method.nodeStructures().any { it.viewIds.isNotEmpty() || it.requireAtTopOf != null }) {
+                        assertNotNull("$app (stories: $includeStories)", resolved.getAnchorViewIds(method))
+                    }
                 }
             }
         }
     }
+
+    private fun DetectionMethod.alternatives(): List<DetectionMethod> = (this as? DetectionMethod.AnyOf)?.detectionMethods ?: listOf(this)
 
     private fun DetectionMethod.nodeStructures(): Sequence<DetectionMethod.NodeStructure> = when (this) {
         is DetectionMethod.NodeStructure -> generateSequence(this) { it.descendant }

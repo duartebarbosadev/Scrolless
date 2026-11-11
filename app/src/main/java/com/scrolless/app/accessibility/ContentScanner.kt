@@ -305,9 +305,15 @@ internal class ContentScanner(
                 return true
             }
 
-            // ID-only alternatives can use Android's indexed view lookup instead of walking the full tree.
-            if (detectionMethod.detectionMethods.all { it is DetectionMethod.ViewId }) {
-                return detectionMethod.detectionMethods.any { matchesDetectionMethod(blockableApp, it, appWindows) }
+            // Rules found by view ID use Android's indexed lookup, which also reaches views the tree walk can't see,
+            // so each one is checked on its own. The other rules share a single tree walk.
+            val (indexed, walked) = detectionMethod.detectionMethods.partition {
+                it is DetectionMethod.ViewId || blockableApp.getAnchorViewIds(it) != null
+            }
+            if (indexed.isNotEmpty()) {
+                if (indexed.any { matchesDetectionMethod(blockableApp, it, appWindows) }) return true
+                val remaining = walked.filterNot { it is DetectionMethod.ActivityName }
+                return remaining.isNotEmpty() && matchesComplexBlockedContent(blockableApp, DetectionMethod.AnyOf(remaining))
             }
         }
 

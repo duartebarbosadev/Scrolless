@@ -32,5 +32,5 @@
     </plurals>
     <string name="settings_include_stories_title">Taka sögur með</string>
     <string name="settings_include_stories_description">Telja tímann sem fer í að skoða sögur og beita núverandi lokunarham og mörkum.</string>
-    <string name="settings_include_stories_note">Stutt eins og er á Instagram, Snapchat og Facebook.</string>
+    <string name="settings_include_stories_note">Stutt eins og er á Instagram, Snapchat, Facebook og Facebook Lite.</string>
 </resources>

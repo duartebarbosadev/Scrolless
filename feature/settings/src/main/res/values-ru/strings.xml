@@ -34,5 +34,5 @@
     <string name="settings_show_onscreen_timer_title">Показывать таймер на экране</string>
     <string name="settings_include_stories_title">Учитывать истории</string>
     <string name="settings_include_stories_description">Учитывать время просмотра историй и применять текущий режим блокировки и ограничения времени.</string>
-    <string name="settings_include_stories_note">Пока поддерживается в Instagram, Snapchat и Facebook.</string>
+    <string name="settings_include_stories_note">Пока поддерживается в Instagram, Snapchat, Facebook и Facebook Lite.</string>
 </resources>

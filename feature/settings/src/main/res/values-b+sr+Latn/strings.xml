@@ -33,5 +33,5 @@
     <string name="settings_show_onscreen_timer_title">Prikaži tajmer na ekranu</string>
     <string name="settings_include_stories_title">Uključi priče</string>
     <string name="settings_include_stories_description">Računa se vreme gledanja priča i primenjuju se trenutni režim blokiranja i vremenska ograničenja.</string>
-    <string name="settings_include_stories_note">Trenutno podržano na Instagramu, Snapchatu i Facebooku.</string>
+    <string name="settings_include_stories_note">Trenutno podržano na Instagramu, Snapchatu, Facebooku i Facebook Liteu.</string>
 </resources>

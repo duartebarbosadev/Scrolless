@@ -31,5 +31,5 @@
     <string name="settings_show_onscreen_timer_title">화면 타이머 표시</string>
     <string name="settings_include_stories_title">스토리 포함</string>
     <string name="settings_include_stories_description">스토리 시청 시간도 집계하고 현재 차단 모드와 한도를 적용해요.</string>
-    <string name="settings_include_stories_note">현재 Instagram, Snapchat, Facebook에서 지원돼요.</string>
+    <string name="settings_include_stories_note">현재 Instagram, Snapchat, Facebook, Facebook Lite에서 지원돼요.</string>
 </resources>
