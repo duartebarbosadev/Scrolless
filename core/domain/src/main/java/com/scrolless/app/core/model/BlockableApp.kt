@@ -44,16 +44,27 @@ sealed class DetectionMethod {
     /**
      * Recognizes a video layout by view types, size, and related views inside it.
      * Requiring the pieces to be nested avoids combining unrelated parts of the screen.
+     *
+     * @property classNames View types that match; empty accepts any type.
+     * @property viewIds View IDs (without the package prefix) that match; empty accepts any ID. Only the innermost
+     * part can name IDs: the scanner finds that view by ID and reads its parents instead of the whole screen.
+     * @property requireAtTopOf View ID (without the package prefix) of a container this view must start at the top
+     * of, so no header sits above it. This separates full-screen viewers from lists below a header. Only checked
+     * when the rule's innermost part names view IDs, because the scanner looks the container up on that path.
      */
     data class NodeStructure(
-        val classNames: Set<String>,
+        val classNames: Set<String> = emptySet(),
+        val viewIds: Set<String> = emptySet(),
         val minScreenWidthFraction: Float = 0f,
         val minScreenHeightFraction: Float = 0f,
         val requireScrollable: Boolean = false,
         val requireLongClickable: Boolean = false,
+        val requireAtTopOf: String? = null,
         val descendant: NodeStructure? = null,
     ) : DetectionMethod() {
         init {
+            require(classNames.isNotEmpty() || viewIds.isNotEmpty()) { "NodeStructure needs a class name or view ID" }
+            require(viewIds.isEmpty() || descendant == null) { "Only the innermost NodeStructure can name view IDs" }
             require(minScreenWidthFraction in 0f..1f)
             require(minScreenHeightFraction in 0f..1f)
         }
@@ -88,6 +99,7 @@ data class DetectionNode(
     val isSelected: Boolean = false,
     val isScrollable: Boolean = false,
     val isLongClickable: Boolean = false,
+    val isAtContainerTop: Boolean = false,
 )
 
 /**
@@ -153,6 +165,22 @@ enum class BlockableApp(
             ),
             forbiddenViewIds = setOf("suggested_title"),
         ),
+    ),
+    INSTAGRAM_LITE(
+        packageIds = listOf("com.instagram.lite"),
+        // Lite plays Reels, home feed videos, Explore tiles and Stories through the same "video_view", so the ID
+        // alone would also block the home feed. The Reels viewer (from the Reels tab, the feed, or Explore) is the
+        // only scrolling list that starts at the top of the app's content; every other list sits below a header.
+        // Stories have no list around their player, so they are not detected by this rule.
+        detectionMethod = DetectionMethod.NodeStructure(
+            classNames = setOf("androidx.recyclerview.widget.RecyclerView"),
+            requireScrollable = true,
+            // Lite's own container rather than "android:id/content": on Android 15+ Lite draws edge-to-edge and
+            // pads for the status bar inside its layout, so the window's content view starts behind the status bar.
+            requireAtTopOf = "main_layout",
+            descendant = DetectionMethod.NodeStructure(viewIds = setOf("video_view")),
+        ),
+        blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     SHORTS(
         packageIds = listOf(
@@ -286,6 +314,22 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
         return buildSet { detectionMethod.collectStructuralClassNames(this) }
     }
 
+    /**
+     * Returns the full view IDs named by the innermost part of a layout rule, or null for other rules.
+     * The scanner finds those views by ID and reads only their parents instead of walking the whole screen.
+     */
+    fun getAnchorViewIds(detectionMethod: DetectionMethod = getDetectionMethod()): Set<String>? =
+        (detectionMethod as? DetectionMethod.NodeStructure)
+            ?.let { generateSequence(it) { part -> part.descendant }.last().viewIds }
+            ?.takeIf { it.isNotEmpty() }
+            ?.mapTo(mutableSetOf(), ::getViewId)
+
+    /** Returns the full view ID of the container a layout rule must start at the top of, or null if it has none. */
+    fun getTopContainerViewId(detectionMethod: DetectionMethod = getDetectionMethod()): String? =
+        (detectionMethod as? DetectionMethod.NodeStructure)
+            ?.let { generateSequence(it) { part -> part.descendant }.firstNotNullOfOrNull { part -> part.requireAtTopOf } }
+            ?.let(::getViewId)
+
     private fun DetectionMethod.matchesSimpleNode(node: DetectionNode): Boolean {
         if (!node.isVisible) return false
         return when (this) {
@@ -351,11 +395,13 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
         childrenByParentId: Map<Int?, List<DetectionNode>>,
     ): Boolean {
         val matchesThisNode = node.isVisible &&
-            node.className in classNames &&
+            (classNames.isEmpty() || node.className in classNames) &&
+            (viewIds.isEmpty() || viewIds.any { node.viewId == getViewId(it) }) &&
             node.screenWidthFraction >= minScreenWidthFraction &&
             node.screenHeightFraction >= minScreenHeightFraction &&
             (!requireScrollable || node.isScrollable) &&
-            (!requireLongClickable || node.isLongClickable)
+            (!requireLongClickable || node.isLongClickable) &&
+            (requireAtTopOf == null || node.isAtContainerTop)
 
         if (!matchesThisNode) return false
         // Related pieces must be inside this matching node, not somewhere else on the screen.
