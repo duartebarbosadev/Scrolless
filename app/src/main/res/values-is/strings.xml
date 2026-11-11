@@ -20,4 +20,6 @@
     <string name="accessibility_service_description">Þessi þjónusta greinir þegar Reels, Shorts, TikTok og Facebook Reels eru opnuð svo Scrolless geti lokað á þau ef það er stillt þannig.</string>
     <string name="tiktok_blocked_title">Lokað er á TikTok-myndbönd</string>
     <string name="tiktok_blocked_description">Notaðu flipana hér fyrir neðan til að opna Innhólf eða Prófíl.</string>
+    <string name="instagram_feed_blocked_title">Instagram-straumurinn er lokaður</string>
+    <string name="instagram_feed_blocked_description">Sögur að ofan og flipar að neðan virka enn.</string>
 </resources>

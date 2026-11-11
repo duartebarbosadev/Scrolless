@@ -35,4 +35,6 @@
     <string name="settings_include_stories_title">Įtraukti istorijas</string>
     <string name="settings_include_stories_description">Skaičiuoti istorijų peržiūros laiką ir taikyti dabartinį blokavimo režimą bei limitus.</string>
     <string name="settings_include_stories_note">Šiuo metu palaikoma Instagram, Snapchat ir Facebook.</string>
+    <string name="settings_block_instagram_feed_title">Blokuoti Instagram srautą</string>
+    <string name="settings_block_instagram_feed_description">Uždengia Instagram pagrindinio srauto įrašus pagal dabartinį blokavimo režimą ir limitus. Istorijos, žinutės ir paieška lieka pasiekiami.</string>
 </resources>

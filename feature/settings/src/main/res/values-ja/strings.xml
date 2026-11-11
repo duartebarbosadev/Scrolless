@@ -32,4 +32,6 @@
     <string name="settings_include_stories_title">ストーリーズを含める</string>
     <string name="settings_include_stories_description">ストーリーズの視聴時間をカウントし、現在のブロックモードと時間制限を適用します。</string>
     <string name="settings_include_stories_note">現在、Instagram、Snapchat、Facebookに対応しています。</string>
+    <string name="settings_block_instagram_feed_title">Instagram のフィードをブロック</string>
+    <string name="settings_block_instagram_feed_description">現在のブロックモードと制限に従って、Instagram のホームフィードの投稿を覆います。ストーリーズ、メッセージ、検索は引き続き使えます。</string>
 </resources>

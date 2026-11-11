@@ -32,4 +32,6 @@
     <string name="settings_include_stories_title">包含快拍</string>
     <string name="settings_include_stories_description">统计浏览快拍所花的时间，并应用当前的屏蔽模式和时间限制。</string>
     <string name="settings_include_stories_note">目前支持 Instagram、Snapchat 和 Facebook。</string>
+    <string name="settings_block_instagram_feed_title">屏蔽 Instagram 动态</string>
+    <string name="settings_block_instagram_feed_description">按照当前的屏蔽模式和限制遮挡 Instagram 首页动态中的帖子。快拍、消息和搜索仍可使用。</string>
 </resources>

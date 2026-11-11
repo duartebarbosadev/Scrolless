@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">A TikTok-videók blokkolva vannak</string>
     <string name="tiktok_blocked_description">Használd az alábbi füleket a Bejövő üzenetek vagy a Profil megnyitásához.</string>
+    <string name="instagram_feed_blocked_title">Az Instagram-hírfolyam le van tiltva</string>
+    <string name="instagram_feed_blocked_description">A fenti történetek és a lenti lapok továbbra is működnek.</string>
 </resources>

@@ -52,6 +52,9 @@ interface UserSettingsStore {
     fun getIncludeStories(): Flow<Boolean>
     suspend fun setIncludeStories(enabled: Boolean)
 
+    fun getBlockInstagramFeed(): Flow<Boolean>
+    suspend fun setBlockInstagramFeed(enabled: Boolean)
+
     fun getFirstLaunchAt(): Flow<Long>
     fun getFirstLaunchDate(): Flow<LocalDate?>
 

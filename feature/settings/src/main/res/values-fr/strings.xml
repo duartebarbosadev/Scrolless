@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">Inclure les stories</string>
     <string name="settings_include_stories_description">Comptabilisez le temps passé à regarder des stories et appliquez votre mode de blocage et vos limites actuels.</string>
     <string name="settings_include_stories_note">Actuellement disponible sur Instagram, Snapchat et Facebook.</string>
+    <string name="settings_block_instagram_feed_title">Bloquer le fil Instagram</string>
+    <string name="settings_block_instagram_feed_description">Masque les publications du fil d\'accueil Instagram selon votre mode de blocage et vos limites actuels. Les stories, les messages et la recherche restent accessibles.</string>
 </resources>

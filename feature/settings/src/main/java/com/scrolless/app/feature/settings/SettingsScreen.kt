@@ -83,6 +83,7 @@ fun SettingsScreen(modifier: Modifier = Modifier, onNavigateBack: () -> Unit, vi
         onAllowVideosSentByDmChange = viewModel::onAllowVideosSentByDmChange,
         onTimerOverlayEnabledChange = viewModel::onTimerOverlayEnabledChange,
         onIncludeStoriesChange = viewModel::onIncludeStoriesChange,
+        onBlockInstagramFeedChange = viewModel::onBlockInstagramFeedChange,
         onNavigateBack = onNavigateBack,
     )
 }
@@ -96,6 +97,7 @@ private fun SettingsScreenContent(
     onAllowVideosSentByDmChange: (Boolean) -> Unit,
     onTimerOverlayEnabledChange: (Boolean) -> Unit,
     onIncludeStoriesChange: (Boolean) -> Unit,
+    onBlockInstagramFeedChange: (Boolean) -> Unit,
     onNavigateBack: () -> Unit,
 ) {
     val sharedTransitionScope = LocalSharedTransitionScope.current
@@ -186,6 +188,15 @@ private fun SettingsScreenContent(
                     note = stringResource(R.string.settings_include_stories_note),
                     checked = uiState.includeStories,
                     onCheckedChange = onIncludeStoriesChange,
+                )
+
+                SettingsDivider()
+
+                SettingsSwitchItem(
+                    title = stringResource(R.string.settings_block_instagram_feed_title),
+                    description = stringResource(R.string.settings_block_instagram_feed_description),
+                    checked = uiState.blockInstagramFeed,
+                    onCheckedChange = onBlockInstagramFeedChange,
                 )
 
                 SettingsDivider()
@@ -407,6 +418,7 @@ private fun SettingsScreenPreview() {
             onAllowVideosSentByDmChange = {},
             onTimerOverlayEnabledChange = {},
             onIncludeStoriesChange = {},
+            onBlockInstagramFeedChange = {},
         )
     }
 }

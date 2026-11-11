@@ -22,4 +22,6 @@
     <string name="tiktok_blocked_title">TikTok videos are blocked</string>
     <!-- Inbox and Profile are TikTok's own tab names; use the labels the TikTok app shows in this language. -->
     <string name="tiktok_blocked_description">Use the tabs below to open Inbox or Profile.</string>
+    <string name="instagram_feed_blocked_title">Instagram feed is blocked</string>
+    <string name="instagram_feed_blocked_description">Stories above and the tabs below still work.</string>
 </resources>

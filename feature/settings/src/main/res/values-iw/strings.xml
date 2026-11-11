@@ -34,4 +34,6 @@
     <string name="settings_include_stories_title">הכללת סטוריז</string>
     <string name="settings_include_stories_description">ספירת הזמן שמוקדש לצפייה בסטוריז והחלת מצב החסימה והמגבלות הנוכחיים גם עליהם.</string>
     <string name="settings_include_stories_note">נתמך כרגע ב-Instagram, Snapchat ו-Facebook.</string>
+    <string name="settings_block_instagram_feed_title">חסימת הפיד של Instagram</string>
+    <string name="settings_block_instagram_feed_description">מכסה את הפוסטים בפיד הבית של Instagram לפי מצב החסימה והמגבלות הנוכחיים. סטוריז, הודעות וחיפוש נשארים זמינים.</string>
 </resources>

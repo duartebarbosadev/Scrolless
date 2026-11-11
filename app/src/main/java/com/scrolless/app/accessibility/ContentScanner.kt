@@ -114,7 +114,8 @@ internal class ContentScanner(
         if (useWindowAttachedCover && activeApp?.coverDetector != null) {
             return appWindows.roots.values.firstOrNull { it?.packageName?.toString() == activeApp.packageId }
         }
-        return service.rootInActiveWindow
+        // Reuse the active app window's root from the snapshot; asking Android again costs another call per event.
+        return appWindows.roots.entries.firstOrNull { it.key.isActive }?.value ?: service.rootInActiveWindow
     }
 
     private fun resolveForegroundBrainRotApp(
@@ -203,7 +204,8 @@ internal class ContentScanner(
                 is ContentCoverTarget.Screen -> !useWindowAttachedCover
             }
         }?.bounds
-        val bounds = detector.coverBounds(coverNodes(app, detector.viewIds), activeBounds) ?: return null
+        val bounds =
+            detector.coverBounds(coverNodes(app, detector.viewIds, keepCovered = activeBounds != null), activeBounds) ?: return null
         // Older Android positions covers on the screen. Android 14+ attaches them to an app window.
         val target = if (useWindowAttachedCover) {
             val targetWindow = appWindows.roots.keys.firstOrNull { it.id == windowId } ?: return null
@@ -265,12 +267,21 @@ internal class ContentScanner(
     }
 
     // Read only the IDs requested by this app's detector; do not walk the whole screen tree.
-    private fun AccessibilityNodeInfo.coverNodes(app: ResolvedBlockableApp, viewIds: Set<String>): List<ContentCoverNode> =
-        viewIds.flatMap { id ->
-            findAccessibilityNodeInfosByViewId("${app.packageId}:id/$id").map { node ->
-                ContentCoverNode(id, node.coverBounds(), node.isVisibleToUser)
-            }
+    // Each lookup is a call into the app, so stop when the detector's main view (the first ID) is not on screen.
+    // A view under our own cover reports as not visible, so an active cover only needs the view to exist.
+    private fun AccessibilityNodeInfo.coverNodes(
+        app: ResolvedBlockableApp,
+        viewIds: Set<String>,
+        keepCovered: Boolean,
+    ): List<ContentCoverNode> {
+        val nodes = mutableListOf<ContentCoverNode>()
+        for ((index, id) in viewIds.withIndex()) {
+            val found = findAccessibilityNodeInfosByViewId("${app.packageId}:id/$id")
+            if (index == 0 && found.none { keepCovered || it.isVisibleToUser }) return emptyList()
+            found.mapTo(nodes) { node -> ContentCoverNode(id, node.coverBounds(), node.isVisibleToUser) }
         }
+        return nodes
+    }
 
     // The rectangle must use the same origin as the overlay that will draw it.
     private fun AccessibilityNodeInfo.coverBounds(): ContentBounds {

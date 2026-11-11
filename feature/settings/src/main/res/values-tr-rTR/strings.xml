@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">Hikâyeleri dahil et</string>
     <string name="settings_include_stories_description">Hikâyeleri izlerken geçirilen süreyi say ve mevcut engelleme modunu ve süre sınırlarını uygula.</string>
     <string name="settings_include_stories_note">Şu anda Instagram, Snapchat ve Facebook desteklenmektedir.</string>
+    <string name="settings_block_instagram_feed_title">Instagram akışını engelle</string>
+    <string name="settings_block_instagram_feed_description">Instagram ana akışındaki gönderileri mevcut engelleme modun ve sınırlarına göre kapatır. Hikayeler, mesajlar ve arama kullanılabilir kalır.</string>
 </resources>

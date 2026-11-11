@@ -20,4 +20,6 @@
     <string name="accessibility_service_description">Layanan ini mendeteksi saat Reels, Shorts, TikTok, dan Facebook Reels dibuka agar Scrolless dapat memblokirnya jika diatur.</string>
     <string name="tiktok_blocked_title">Video TikTok diblokir</string>
     <string name="tiktok_blocked_description">Gunakan tab di bawah untuk membuka Kotak Masuk atau Profil.</string>
+    <string name="instagram_feed_blocked_title">Feed Instagram diblokir</string>
+    <string name="instagram_feed_blocked_description">Story di atas dan tab di bawah tetap berfungsi.</string>
 </resources>

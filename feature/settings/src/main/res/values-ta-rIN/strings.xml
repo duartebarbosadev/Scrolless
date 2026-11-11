@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">ஸ்டோரிகளைச் சேர்க்கவும்</string>
     <string name="settings_include_stories_description">ஸ்டோரிகளைப் பார்ப்பதில் செலவிடும் நேரத்தைக் கணக்கிட்டு, தற்போதைய தடுப்பு முறையையும் நேர வரம்புகளையும் பயன்படுத்தவும்.</string>
     <string name="settings_include_stories_note">தற்போது Instagram, Snapchat மற்றும் Facebook-இல் ஆதரிக்கப்படுகிறது.</string>
+    <string name="settings_block_instagram_feed_title">Instagram ஃபீடைத் தடு</string>
+    <string name="settings_block_instagram_feed_description">தற்போதைய தடுப்பு பயன்முறை மற்றும் வரம்புகளின்படி Instagram முகப்பு ஃபீடில் உள்ள இடுகைகளை மறைக்கும். ஸ்டோரிகள், செய்திகள், தேடல் ஆகியவை கிடைக்கும்.</string>
 </resources>

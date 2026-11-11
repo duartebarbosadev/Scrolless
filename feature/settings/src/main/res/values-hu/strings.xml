@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">Történetek figyelembevétele</string>
     <string name="settings_include_stories_description">Számítsd bele a történetek megtekintésével töltött időt, és alkalmazd rájuk a jelenlegi blokkolási módot és időkorlátokat.</string>
     <string name="settings_include_stories_note">Jelenleg az Instagramon, a Snapchaten és a Facebookon támogatott.</string>
+    <string name="settings_block_instagram_feed_title">Instagram-hírfolyam letiltása</string>
+    <string name="settings_block_instagram_feed_description">Eltakarja az Instagram kezdő hírfolyamának bejegyzéseit a jelenlegi tiltási mód és korlátok szerint. A történetek, az üzenetek és a keresés elérhető marad.</string>
 </resources>

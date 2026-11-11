@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">Kaasa lood</string>
     <string name="settings_include_stories_description">Arvesta lugude vaatamisele kulunud aega ja rakenda praegust blokeerimisrežiimi ning piiranguid.</string>
     <string name="settings_include_stories_note">Praegu toetatud Instagramis, Snapchatis ja Facebookis.</string>
+    <string name="settings_block_instagram_feed_title">Blokeeri Instagrami voog</string>
+    <string name="settings_block_instagram_feed_description">Katab Instagrami avalehe voo postitused sinu praeguse blokeerimisrežiimi ja piirangute järgi. Lood, sõnumid ja otsing jäävad kättesaadavaks.</string>
 </resources>

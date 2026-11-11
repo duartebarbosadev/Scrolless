@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">Medtag Stories</string>
     <string name="settings_include_stories_description">Tæl tiden, du bruger på at se Stories, med, og anvend din nuværende blokeringstilstand og dine grænser.</string>
     <string name="settings_include_stories_note">Understøttes i øjeblikket på Instagram, Snapchat og Facebook.</string>
+    <string name="settings_block_instagram_feed_title">Bloker Instagram-feedet</string>
+    <string name="settings_block_instagram_feed_description">Dæk opslagene i Instagrams startfeed med din nuværende blokeringstilstand og dine grænser. Stories, beskeder og søgning forbliver tilgængelige.</string>
 </resources>

@@ -103,6 +103,7 @@ class ScreenshotSeedReceiver : BroadcastReceiver() {
         settings.setPauseDuration(TimeUnit.MINUTES.toMillis(5))
         settings.setAllowVideosSentByDm(true)
         settings.setIncludeStories(false)
+        settings.setBlockInstagramFeed(false)
         settings.setTimerOverlayToggle(true)
 
         val config = entryPoint.blockingConfigRepository()

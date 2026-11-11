@@ -20,4 +20,6 @@
     <string name="accessibility_service_description">Denne tjeneste registrerer, når Reels, Shorts, TikTok og Facebook Reels åbnes, så Scrolless kan blokere dem, hvis det er indstillet.</string>
     <string name="tiktok_blocked_title">TikTok-videoer er blokeret</string>
     <string name="tiktok_blocked_description">Brug fanerne nedenfor til at åbne Indbakke eller Profil.</string>
+    <string name="instagram_feed_blocked_title">Instagram-feedet er blokeret</string>
+    <string name="instagram_feed_blocked_description">Stories ovenfor og fanerne nedenfor virker stadig.</string>
 </resources>

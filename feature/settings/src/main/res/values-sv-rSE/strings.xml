@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">Inkludera Stories</string>
     <string name="settings_include_stories_description">Räkna tiden du lägger på att titta på Stories och tillämpa ditt nuvarande blockeringsläge och dina tidsgränser.</string>
     <string name="settings_include_stories_note">Stöds för närvarande på Instagram, Snapchat och Facebook.</string>
+    <string name="settings_block_instagram_feed_title">Blockera Instagram-flödet</string>
+    <string name="settings_block_instagram_feed_description">Täcker inläggen i Instagrams hemflöde med ditt nuvarande blockeringsläge och dina gränser. Stories, meddelanden och sök är fortfarande tillgängliga.</string>
 </resources>

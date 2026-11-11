@@ -20,4 +20,6 @@
     <string name="app_name">Scrolless</string>
     <string name="tiktok_blocked_title">วิดีโอ TikTok ถูกบล็อกอยู่</string>
     <string name="tiktok_blocked_description">ใช้แท็บด้านล่างเพื่อเปิดกล่องข้อความหรือโปรไฟล์</string>
+    <string name="instagram_feed_blocked_title">ฟีด Instagram ถูกบล็อก</string>
+    <string name="instagram_feed_blocked_description">สตอรี่ด้านบนและแท็บด้านล่างยังใช้งานได้</string>
 </resources>

@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">स्टोरीज़ शामिल करें</string>
     <string name="settings_include_stories_description">स्टोरीज़ देखने में बिताया समय गिनें और अपना मौजूदा ब्लॉकिंग मोड और समय सीमाएँ लागू करें।</string>
     <string name="settings_include_stories_note">फ़िलहाल Instagram, Snapchat और Facebook पर उपलब्ध है।</string>
+    <string name="settings_block_instagram_feed_title">Instagram फ़ीड ब्लॉक करें</string>
+    <string name="settings_block_instagram_feed_description">अपने मौजूदा ब्लॉकिंग मोड और सीमाओं के अनुसार Instagram होम फ़ीड की पोस्ट ढकें। स्टोरीज़, मैसेज और सर्च उपलब्ध रहते हैं।</string>
 </resources>

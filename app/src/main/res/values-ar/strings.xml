@@ -20,4 +20,6 @@
     <string name="accessibility_service_description">تكتشف هذه الخدمة فتح Reels وShorts وTikTok وFacebook Reels حتى يتمكن Scrolless من حظرها إذا فعّلت ذلك.</string>
     <string name="tiktok_blocked_title">فيديوهات TikTok محظورة</string>
     <string name="tiktok_blocked_description">استخدم علامات التبويب أدناه لفتح صندوق الوارد أو الملف الشخصي.</string>
+    <string name="instagram_feed_blocked_title">خلاصة Instagram محظورة</string>
+    <string name="instagram_feed_blocked_description">لا تزال القصص في الأعلى وعلامات التبويب في الأسفل تعمل.</string>
 </resources>

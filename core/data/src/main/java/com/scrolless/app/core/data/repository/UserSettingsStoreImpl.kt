@@ -54,11 +54,15 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     private val _firstLaunchAt = MutableStateFlow(-1L)
     private val _pauseDuration = MutableStateFlow(5 * 60 * 1000L)
     private val _includeStories = MutableStateFlow(false)
+    private val _blockInstagramFeed = MutableStateFlow(false)
     private val _allowVideosSentByDm = MutableStateFlow(false)
 
     init {
         coroutineScope.launch {
             userSettingsDao.getIncludeStories().collect { _includeStories.value = it }
+        }
+        coroutineScope.launch {
+            userSettingsDao.getBlockInstagramFeed().collect { _blockInstagramFeed.value = it }
         }
         coroutineScope.launch {
             userSettingsDao.getFirstLaunchAt().collect { _firstLaunchAt.value = it }
@@ -169,6 +173,13 @@ class UserSettingsStoreImpl @Inject constructor(private val userSettingsDao: Use
     override suspend fun setIncludeStories(enabled: Boolean) {
         _includeStories.value = enabled
         userSettingsDao.setIncludeStories(enabled)
+    }
+
+    override fun getBlockInstagramFeed(): Flow<Boolean> = _blockInstagramFeed
+
+    override suspend fun setBlockInstagramFeed(enabled: Boolean) {
+        _blockInstagramFeed.value = enabled
+        userSettingsDao.setBlockInstagramFeed(enabled)
     }
 
     override fun getFirstLaunchAt(): Flow<Long> = _firstLaunchAt

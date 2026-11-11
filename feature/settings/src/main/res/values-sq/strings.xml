@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">Përfshi Stories</string>
     <string name="settings_include_stories_description">Numëro kohën e kaluar duke parë Stories dhe zbato mënyrën dhe kufijtë aktualë të bllokimit.</string>
     <string name="settings_include_stories_note">Aktualisht mbështetet në Instagram, Snapchat dhe Facebook.</string>
+    <string name="settings_block_instagram_feed_title">Blloko furnizimin e Instagram</string>
+    <string name="settings_block_instagram_feed_description">Mbulon postimet në furnizimin kryesor të Instagram sipas modalitetit aktual të bllokimit dhe kufijve. Historitë, mesazhet dhe kërkimi mbeten të disponueshme.</string>
 </resources>

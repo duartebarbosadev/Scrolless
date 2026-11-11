@@ -33,4 +33,6 @@
     <string name="settings_include_stories_title">Taka sögur með</string>
     <string name="settings_include_stories_description">Telja tímann sem fer í að skoða sögur og beita núverandi lokunarham og mörkum.</string>
     <string name="settings_include_stories_note">Stutt eins og er á Instagram, Snapchat og Facebook.</string>
+    <string name="settings_block_instagram_feed_title">Loka á Instagram-strauminn</string>
+    <string name="settings_block_instagram_feed_description">Hylur færslur í heimastraumi Instagram samkvæmt núverandi lokunarham og mörkum. Sögur, skilaboð og leit eru áfram aðgengileg.</string>
 </resources>

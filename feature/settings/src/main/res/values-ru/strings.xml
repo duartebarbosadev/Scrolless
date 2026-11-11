@@ -35,4 +35,6 @@
     <string name="settings_include_stories_title">Учитывать истории</string>
     <string name="settings_include_stories_description">Учитывать время просмотра историй и применять текущий режим блокировки и ограничения времени.</string>
     <string name="settings_include_stories_note">Пока поддерживается в Instagram, Snapchat и Facebook.</string>
+    <string name="settings_block_instagram_feed_title">Блокировать ленту Instagram</string>
+    <string name="settings_block_instagram_feed_description">Закрывает публикации в главной ленте Instagram согласно текущему режиму блокировки и лимитам. Истории, сообщения и поиск остаются доступны.</string>
 </resources>
