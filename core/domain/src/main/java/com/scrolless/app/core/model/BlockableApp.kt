@@ -51,6 +51,9 @@ sealed class DetectionMethod {
      * @property requireAtTopOf View ID (without the package prefix) of a container this view must start at the top
      * of, so no header sits above it. This separates full-screen viewers from lists below a header. Only checked
      * when the rule's innermost part names view IDs, because the scanner looks the container up on that path.
+     * @property requireNotClickable Rejects clickable views, such as the post around a feed video.
+     * @property requireDirectChild Requires the view matched above this one to be its nearest parent among the views
+     * the rule names by type or ID. Wrappers the rule doesn't name are still skipped.
      */
     data class NodeStructure(
         val classNames: Set<String> = emptySet(),
@@ -60,6 +63,8 @@ sealed class DetectionMethod {
         val requireScrollable: Boolean = false,
         val requireLongClickable: Boolean = false,
         val requireAtTopOf: String? = null,
+        val requireNotClickable: Boolean = false,
+        val requireDirectChild: Boolean = false,
         val descendant: NodeStructure? = null,
     ) : DetectionMethod() {
         init {
@@ -99,6 +104,7 @@ data class DetectionNode(
     val isSelected: Boolean = false,
     val isScrollable: Boolean = false,
     val isLongClickable: Boolean = false,
+    val isClickable: Boolean = false,
     val isAtContainerTop: Boolean = false,
 )
 
@@ -256,7 +262,22 @@ enum class BlockableApp(
     ),
     FACEBOOK_LITE(
         packageIds = listOf("com.facebook.lite"),
-        detectionMethod = DetectionMethod.ViewId("video_view"),
+        // Facebook Lite plays Reels and home feed videos through the same "video_view", so the ID alone would also
+        // block the feed. In the feed, the nearest view group above video_view is clickable (the post's video and
+        // reactions bar); in a reel it is a container that can't be clicked. The size limits only skip small
+        // carousels: position can't help because the Reels tab keeps the tab bar above the list, and on short or
+        // wide screens a feed video can fill the whole feed list.
+        detectionMethod = DetectionMethod.NodeStructure(
+            classNames = setOf("androidx.recyclerview.widget.RecyclerView"),
+            minScreenWidthFraction = 0.9f,
+            minScreenHeightFraction = 0.6f,
+            requireScrollable = true,
+            descendant = DetectionMethod.NodeStructure(
+                classNames = setOf("android.view.ViewGroup"),
+                requireNotClickable = true,
+                descendant = DetectionMethod.NodeStructure(viewIds = setOf("video_view"), requireDirectChild = true),
+            ),
+        ),
         blockAction = ContentBlockAction.PerformGlobalAction(GLOBAL_ACTION_BACK),
     ),
     SNAPCHAT(
@@ -401,6 +422,7 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
             node.screenHeightFraction >= minScreenHeightFraction &&
             (!requireScrollable || node.isScrollable) &&
             (!requireLongClickable || node.isLongClickable) &&
+            (!requireNotClickable || !node.isClickable) &&
             (requireAtTopOf == null || node.isAtContainerTop)
 
         if (!matchesThisNode) return false
@@ -413,9 +435,9 @@ data class ResolvedBlockableApp(val app: BlockableApp, val packageId: String) {
         parentNodeId: Int,
         childrenByParentId: Map<Int?, List<DetectionNode>>,
     ): Boolean {
-        // Allow extra wrapper views between the required parts of the video layout.
+        // Allow extra wrapper views between the required parts of the video layout, unless this part must be a direct child.
         return childrenByParentId[parentNodeId].orEmpty().any { child ->
-            matchesStructure(child, childrenByParentId) || hasMatchingDescendant(child.nodeId, childrenByParentId)
+            matchesStructure(child, childrenByParentId) || (!requireDirectChild && hasMatchingDescendant(child.nodeId, childrenByParentId))
         }
     }
 }
