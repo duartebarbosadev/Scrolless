@@ -96,6 +96,21 @@ class FacebookLiteDetectionTest {
         assertFalse(app.matchesDetectionNodes(listOf(list(0.3f), container(1, 0, 0.3f), player(1, 0.3f))))
     }
 
+    @Test
+    fun `the More videos list opened from a landscape video is not detected`() {
+        // list > post (not clickable) > player. The post also holds the header and buttons, so the player never fills it.
+        assertFalse(app.matchesDetectionNodes(listOf(list(0.93f), container(1, 0, 0.48f), player(1, 0.25f))))
+        // A vertical clip in the same list is as tall as a reel.
+        assertFalse(app.matchesDetectionNodes(listOf(list(0.93f), container(1, 0, 0.83f), player(1, 0.68f))))
+        assertFalse(app.matchesDetectionNodes(listOf(list(0.93f), container(1, 0, 0.93f), player(1, 0.8f))))
+    }
+
+    @Test
+    fun `a profile video whose post briefly can't be clicked is not detected`() {
+        // Seen right after tapping a landscape video on the profile: the post around the player stops being clickable.
+        assertFalse(app.matchesDetectionNodes(listOf(list(0.87f), container(1, 0, 0.25f), player(1, 0.25f))))
+    }
+
     private companion object {
         const val RECYCLER_VIEW = "androidx.recyclerview.widget.RecyclerView"
         const val VIEW_GROUP = "android.view.ViewGroup"
