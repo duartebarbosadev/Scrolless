@@ -49,6 +49,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -68,11 +69,22 @@ class HomeViewModel @Inject constructor(
 
     private val _selectedAveragePeriod = MutableStateFlow(UsageAveragePeriod.LAST_WEEK)
     private val selectedAnalyticsDate = MutableStateFlow(ZonedDateTime.now().toLocalDate())
-    private val currentDate = currentDayFlow().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = ZonedDateTime.now().toLocalDate(),
-    )
+    private var lastSeenToday = ZonedDateTime.now().toLocalDate()
+
+    // Keeps track of today's date so the screen switches to the new day at midnight.
+    // The timer only runs while the home screen is visible. Android timers pause while the phone
+    // sleeps, so one left running overnight would switch days hours late. Restarting it whenever
+    // the screen comes back reads the real clock straight away.
+    private val currentDate = currentDayFlow()
+        .onEach { today ->
+            selectedAnalyticsDate.value = selectedDateAfterDayChange(selectedAnalyticsDate.value, lastSeenToday, today)
+            lastSeenToday = today
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = lastSeenToday,
+        )
     private val reviewPromptDismissed = MutableStateFlow(false)
 
     private val requestReview = combine(
@@ -103,16 +115,6 @@ class HomeViewModel @Inject constructor(
         private val REVIEW_PROMPT_DELAY_MILLIS = TimeUnit.MINUTES.toMillis(5) // Show review popup after 5 minutes
         private const val REVIEW_PROMPT_MAX_ATTEMPTS = 3
         private val REVIEW_PROMPT_RETRY_DELAY_MILLIS = TimeUnit.DAYS.toMillis(1)
-    }
-
-    init {
-        viewModelScope.launch {
-            currentDate.collect { today ->
-                if (selectedAnalyticsDate.value.isAfter(today)) {
-                    selectedAnalyticsDate.value = today
-                }
-            }
-        }
     }
 
     private val sessionSegmentsForCurrentDay = currentDate.flatMapLatest { currentDate ->
@@ -408,6 +410,16 @@ class HomeViewModel @Inject constructor(
             delay(delayMillis.milliseconds)
         }
     }.distinctUntilChanged()
+}
+
+/**
+ * Keeps the analytics selection on "today" when the day rolls over, so the screen shows the new day's
+ * (empty) usage instead of staying on yesterday. A past day the user picked stays selected.
+ */
+internal fun selectedDateAfterDayChange(selectedDate: LocalDate, previousToday: LocalDate, today: LocalDate): LocalDate = when {
+    selectedDate == previousToday -> today
+    selectedDate.isAfter(today) -> today
+    else -> selectedDate
 }
 
 @Immutable
