@@ -20,6 +20,7 @@ import com.scrolless.app.core.blocking.BlockingManagerImpl
 import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockableApp
+import com.scrolless.app.core.model.BlockedHours
 import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.BlockingResult
 import com.scrolless.app.core.model.BlockingSettings
@@ -101,7 +102,7 @@ class BlockingManagerImplTest {
         override suspend fun getConfig(): BlockingConfig = BlockingConfig()
         override suspend fun setActiveOption(option: BlockOption) = Unit
         override suspend fun configureDailyLimit(limitMillis: Long) = Unit
-        override suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long) = Unit
+        override suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long, blockedHours: BlockedHours) = Unit
         override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long) = IntervalUsage.NOT_STARTED
     }
 }

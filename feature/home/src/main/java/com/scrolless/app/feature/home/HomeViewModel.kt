@@ -20,6 +20,7 @@ import androidx.compose.runtime.Immutable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockedHours
 import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.BlockingSettings
 import com.scrolless.app.core.model.IntervalUsage
@@ -263,16 +264,18 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onIntervalTimerConfigChange(intervalBreakMillis: Long, allowanceMillis: Long) {
+    fun onIntervalTimerConfigChange(intervalBreakMillis: Long, allowanceMillis: Long, blockedHours: BlockedHours) {
         Timber.d(
-            "Interval timer config change: break=%d ms, allowance=%d ms",
+            "Interval timer config change: break=%d ms, allowance=%d ms, blockedHours=%s",
             intervalBreakMillis,
             allowanceMillis,
+            blockedHours.ranges(),
         )
         viewModelScope.launch {
             blockingConfigRepository.configureIntervalTimer(
                 allowanceMillis = allowanceMillis,
                 intervalLengthMillis = intervalBreakMillis,
+                blockedHours = blockedHours,
             )
         }
     }

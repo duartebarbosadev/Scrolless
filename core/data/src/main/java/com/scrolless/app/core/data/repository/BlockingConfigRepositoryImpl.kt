@@ -20,6 +20,7 @@ import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.data.database.model.toBlockingConfig
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockedHours
 import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.IntervalUsage
 import com.scrolless.app.core.repository.BlockingConfigRepository
@@ -60,22 +61,24 @@ class BlockingConfigRepositoryImpl @Inject constructor(
         userSettingsDao.configureDailyLimit(limitMillis)
     }
 
-    override suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long) = writeMutex.withLock {
-        require(allowanceMillis > 0L) { "Interval allowance must be greater than zero" }
-        require(intervalLengthMillis > 0L) { "Interval length must be greater than zero" }
+    override suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long, blockedHours: BlockedHours) =
+        writeMutex.withLock {
+            require(allowanceMillis > 0L) { "Interval allowance must be greater than zero" }
+            require(intervalLengthMillis > 0L) { "Interval length must be greater than zero" }
 
-        // Check if the saved interval is still active with the length it was recorded under.
-        // If expired or not started, save 0L so the timer stays idle until the first video is watched.
-        val config = getConfig()
-        val current = config.intervalUsage.activeIntervalAt(timeProvider.currentTimeInMillis(), config.settings.intervalLengthMillis)
+            // Check if the saved interval is still active with the length it was recorded under.
+            // If expired or not started, save 0L so the timer stays idle until the first video is watched.
+            val config = getConfig()
+            val current = config.intervalUsage.activeIntervalAt(timeProvider.currentTimeInMillis(), config.settings.intervalLengthMillis)
 
-        userSettingsDao.configureIntervalTimer(
-            allowanceMillis = allowanceMillis,
-            intervalLengthMillis = intervalLengthMillis,
-            windowStart = current.startMillis,
-            usage = current.usageMillis,
-        )
-    }
+            userSettingsDao.configureIntervalTimer(
+                allowanceMillis = allowanceMillis,
+                intervalLengthMillis = intervalLengthMillis,
+                blockedHoursMask = blockedHours.mask,
+                windowStart = current.startMillis,
+                usage = current.usageMillis,
+            )
+        }
 
     override suspend fun recordIntervalUsage(sessionStartMillis: Long, sessionEndMillis: Long): IntervalUsage = writeMutex.withLock {
         val config = getConfig()

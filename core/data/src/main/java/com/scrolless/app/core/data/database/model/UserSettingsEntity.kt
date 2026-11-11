@@ -22,6 +22,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockedHours
 import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.BlockingSettings
 import com.scrolless.app.core.model.IntervalUsage
@@ -58,6 +59,7 @@ data class UserSettingsEntity(
     @ColumnInfo(name = "include_stories", defaultValue = "0") val includeStories: Boolean = false,
     @ColumnInfo(name = "except_reels_sent_by_dm", defaultValue = "0") val allowVideosSentByDm: Boolean = false,
     @ColumnInfo(name = "has_seen_background_setup", defaultValue = "0") val hasSeenBackgroundSetup: Boolean = false,
+    @ColumnInfo(name = "interval_blocked_hours", defaultValue = "0") val intervalBlockedHours: Int = 0,
 )
 
 fun UserSettingsEntity.toBlockingConfig(): BlockingConfig = BlockingConfig(
@@ -66,6 +68,7 @@ fun UserSettingsEntity.toBlockingConfig(): BlockingConfig = BlockingConfig(
         dailyLimitMillis = dailyLimit,
         intervalAllowanceMillis = intervalAllowance,
         intervalLengthMillis = intervalLength,
+        intervalBlockedHours = BlockedHours(intervalBlockedHours),
     ),
     intervalUsage = IntervalUsage(startMillis = intervalWindowStartAt, usageMillis = intervalUsage),
 )

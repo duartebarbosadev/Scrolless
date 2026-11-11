@@ -27,7 +27,10 @@ enum class BlockOption {
     /** Allows [BlockingSettings.dailyLimitMillis] of blocked content per day. */
     DailyLimit,
 
-    /** Allows [BlockingSettings.intervalAllowanceMillis] per [BlockingSettings.intervalLengthMillis]. */
+    /**
+     * Allows [BlockingSettings.intervalAllowanceMillis] per [BlockingSettings.intervalLengthMillis],
+     * except during [BlockingSettings.intervalBlockedHours], when it blocks like [BlockAll].
+     */
     IntervalTimer,
 
     /** Nothing is blocked. */

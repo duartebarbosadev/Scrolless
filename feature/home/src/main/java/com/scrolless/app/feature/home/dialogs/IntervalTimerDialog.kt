@@ -17,18 +17,23 @@
 package com.scrolless.app.feature.home.dialogs
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -39,11 +44,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.scrolless.app.core.model.BlockedHours
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
 import com.scrolless.app.designsystem.util.formatMinutes
@@ -59,11 +66,14 @@ private const val ALLOWANCE_STEP_MINUTES = 1
 private const val MIN_ALLOWANCE_MINUTES = 1
 private const val MAX_ALLOWANCE_MINUTES = 30
 
+private const val BLOCKED_HOURS_PER_ROW = 6
+
 @Composable
 fun IntervalTimerDialog(
     initialBreakMillis: Long,
     initialAllowanceMillis: Long,
-    onConfirm: (breakMillis: Long, allowanceMillis: Long) -> Unit,
+    initialBlockedHours: BlockedHours,
+    onConfirm: (breakMillis: Long, allowanceMillis: Long, blockedHours: BlockedHours) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val hapticHelper = rememberHapticHelper()
@@ -85,6 +95,8 @@ fun IntervalTimerDialog(
             ),
         )
     }
+    var blockedHoursMask by rememberSaveable { mutableIntStateOf(initialBlockedHours.mask) }
+    val blockedHours = BlockedHours(blockedHoursMask)
 
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         Card(
@@ -99,6 +111,7 @@ fun IntervalTimerDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
                     .padding(horizontal = 24.dp, vertical = 20.dp),
             ) {
                 Text(
@@ -174,6 +187,16 @@ fun IntervalTimerDialog(
                     )
                 }
 
+                Spacer(Modifier.height(20.dp))
+
+                BlockedHoursSection(
+                    blockedHours = blockedHours,
+                    onToggleHour = { hour ->
+                        hapticHelper.playTick()
+                        blockedHoursMask = blockedHours.toggle(hour).mask
+                    },
+                )
+
                 Spacer(Modifier.height(24.dp))
 
                 Text(
@@ -206,6 +229,7 @@ fun IntervalTimerDialog(
                             onConfirm(
                                 breakMinutes.minutesToMillis(),
                                 allowanceMinutes.minutesToMillis(),
+                                blockedHours,
                             )
                         },
                     ) {
@@ -249,6 +273,61 @@ private fun IntervalSettingSection(label: String, description: String, formatted
     }
 }
 
+/** A grid of the 24 hours of the day, where each selected hour blocks shorts completely. */
+@Composable
+private fun BlockedHoursSection(blockedHours: BlockedHours, onToggleHour: (Int) -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Text(
+            text = stringResource(R.string.interval_timer_dialog_blocked_hours_label),
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.SemiBold,
+        )
+        (0 until BlockedHours.HOURS_PER_DAY).chunked(BLOCKED_HOURS_PER_ROW).forEach { rowHours ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                rowHours.forEach { hour ->
+                    BlockedHourCell(
+                        hour = hour,
+                        isBlocked = blockedHours.isBlocked(hour),
+                        onToggle = { onToggleHour(hour) },
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+            }
+        }
+        Text(
+            text = stringResource(R.string.interval_timer_dialog_blocked_hours_description),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun BlockedHourCell(hour: Int, isBlocked: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifier) {
+    Surface(
+        modifier = modifier
+            .height(36.dp)
+            .toggleable(value = isBlocked, role = Role.Checkbox, onValueChange = { onToggle() }),
+        shape = RoundedCornerShape(10.dp),
+        color = if (isBlocked) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.surfaceVariant,
+        contentColor = if (isBlocked) MaterialTheme.colorScheme.onError else MaterialTheme.colorScheme.onSurfaceVariant,
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            Text(
+                text = "%02d".format(hour),
+                style = MaterialTheme.typography.labelLarge,
+                fontWeight = if (isBlocked) FontWeight.Bold else FontWeight.Normal,
+            )
+        }
+    }
+}
+
 private fun Long.millisToRoundedMinutes(step: Int, min: Int, max: Int): Int {
     if (this <= 0L) return min
     val minutes = (this / MINUTE_IN_MILLIS).toInt()
@@ -272,7 +351,8 @@ fun IntervalTimerPreview() {
         IntervalTimerDialog(
             initialBreakMillis = 1000L,
             initialAllowanceMillis = 1000L,
-            onConfirm = { _, _ -> },
+            initialBlockedHours = BlockedHours.of(22, 23, 0, 1, 2, 3, 4, 5),
+            onConfirm = { _, _, _ -> },
             onDismiss = { },
         )
     }

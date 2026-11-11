@@ -20,6 +20,7 @@ import com.scrolless.app.core.blocking.time.TimeProvider
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.data.database.model.UserSettingsEntity
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockedHours
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -56,6 +57,7 @@ class BlockingConfigRepositoryImplTest {
             dao.configureIntervalTimer(
                 allowanceMillis = 2 * MINUTE_MILLIS,
                 intervalLengthMillis = 60 * MINUTE_MILLIS,
+                blockedHoursMask = 0,
                 windowStart = 1_000L,
                 usage = 4_000L,
             )
@@ -80,8 +82,31 @@ class BlockingConfigRepositoryImplTest {
             dao.configureIntervalTimer(
                 allowanceMillis = 2 * MINUTE_MILLIS,
                 intervalLengthMillis = 60 * MINUTE_MILLIS,
+                blockedHoursMask = 0,
                 windowStart = 0L,
                 usage = 0L,
+            )
+        }
+    }
+
+    @Test
+    fun `saving blocked hours stores them with the interval settings`() = runTest {
+        coEvery { dao.getUserSettings() } returns config(windowStartMillis = 1_000L, usageMillis = 4_000L)
+        val blockedHours = BlockedHours.of(20, 21, 22, 23, 0, 1)
+
+        repository.configureIntervalTimer(
+            allowanceMillis = 2 * MINUTE_MILLIS,
+            intervalLengthMillis = 60 * MINUTE_MILLIS,
+            blockedHours = blockedHours,
+        )
+
+        coVerify(exactly = 1) {
+            dao.configureIntervalTimer(
+                allowanceMillis = 2 * MINUTE_MILLIS,
+                intervalLengthMillis = 60 * MINUTE_MILLIS,
+                blockedHoursMask = blockedHours.mask,
+                windowStart = 1_000L,
+                usage = 4_000L,
             )
         }
     }

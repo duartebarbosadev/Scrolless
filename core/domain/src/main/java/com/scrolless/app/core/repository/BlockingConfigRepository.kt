@@ -17,6 +17,7 @@
 package com.scrolless.app.core.repository
 
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockedHours
 import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.IntervalUsage
 import kotlinx.coroutines.flow.Flow
@@ -35,7 +36,7 @@ interface BlockingConfigRepository {
     suspend fun configureDailyLimit(limitMillis: Long)
 
     /** Saves the interval settings and selects interval mode, keeping the running window. */
-    suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long)
+    suspend fun configureIntervalTimer(allowanceMillis: Long, intervalLengthMillis: Long, blockedHours: BlockedHours = BlockedHours.NONE)
 
     /**
      * Adds one finished viewing session to the interval usage and returns the updated window.

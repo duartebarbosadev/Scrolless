@@ -83,6 +83,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.scrolless.app.core.model.BlockOption
+import com.scrolless.app.core.model.BlockedHours
 import com.scrolless.app.core.model.BlockingSettings
 import com.scrolless.app.core.model.IntervalUsage
 import com.scrolless.app.designsystem.component.AutoResizingText
@@ -266,6 +267,7 @@ fun TodayBlockingControls(
             IntervalTimerSettingsCard(
                 intervalLengthMillis = uiState.settings.intervalLengthMillis,
                 allowanceMillis = uiState.settings.intervalAllowanceMillis,
+                blockedHours = uiState.settings.intervalBlockedHours,
                 onEditClick = onIntervalTimerEdit,
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -356,7 +358,13 @@ fun ConfigButton(
 }
 
 @Composable
-fun IntervalTimerSettingsCard(intervalLengthMillis: Long, allowanceMillis: Long, onEditClick: () -> Unit, modifier: Modifier = Modifier) {
+fun IntervalTimerSettingsCard(
+    intervalLengthMillis: Long,
+    allowanceMillis: Long,
+    blockedHours: BlockedHours,
+    onEditClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val hasSchedule = intervalLengthMillis > 0 && allowanceMillis > 0
     val allowanceLabel = if (hasSchedule) allowanceMillis.toIntervalLabel() else "--"
     val breakLabel = if (hasSchedule) intervalLengthMillis.toIntervalLabel() else "--"
@@ -412,6 +420,14 @@ fun IntervalTimerSettingsCard(intervalLengthMillis: Long, allowanceMillis: Long,
                 )
             }
 
+            if (hasSchedule && !blockedHours.isEmpty) {
+                Text(
+                    text = stringResource(R.string.interval_timer_card_blocked_hours, blockedHours.toRangesLabel()),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                )
+            }
+
             Button(
                 onClick = onEditClick,
                 modifier = Modifier.fillMaxWidth(),
@@ -425,6 +441,9 @@ fun IntervalTimerSettingsCard(intervalLengthMillis: Long, allowanceMillis: Long,
         }
     }
 }
+
+/** Formats the blocked hours as ranges like "20:00–06:00, 09:00–16:00". */
+private fun BlockedHours.toRangesLabel(): String = ranges().joinToString(", ") { (start, end) -> "%02d:00–%02d:00".format(start, end) }
 
 @Composable
 private fun IntervalValueChip(label: String, value: String, modifier: Modifier = Modifier) {
