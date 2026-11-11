@@ -107,4 +107,18 @@
     <string name="usage_analytics_day_sat">Sht</string>
     <string name="usage_analytics_day_sun">Die</string>
     <string name="visit_github">Vizito depon në GitHub</string>
+    <string name="commitment_pause_instead_title">Më mirë një pauzë?</string>
+    <string name="commitment_pause_instead_message">Kufijtë e tu po funksionojnë tani. Me një pauzë mund të shikosh për %1$d min, pastaj bllokimi ndizet sërish vetë.</string>
+    <string name="commitment_pause_instead_confirm">Pauzë për %1$d min</string>
+    <string name="commitment_change_anyway">Ndrysho gjithsesi</string>
+    <string name="commitment_pin_title">Fut PIN-in</string>
+    <string name="commitment_pin_message">Modaliteti i angazhimit është aktiv. Fut PIN-in për të lehtësuar kufijtë.</string>
+    <string name="commitment_pin_wrong">PIN i gabuar</string>
+    <string name="commitment_confirm">Konfirmo</string>
+    <string name="commitment_cancel">Anulo</string>
+    <string name="commitment_scheduled_title">Ndryshimi u planifikua</string>
+    <string name="commitment_scheduled_message">Modaliteti i angazhimit është aktiv, ndaj ky ndryshim zbatohet në %1$s. Mund ta anulosh para kësaj.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Një ndryshim i kufijve të tu zbatohet në %1$s</string>
+    <string name="commitment_pending_cancel">Anulo ndryshimin</string>
 </resources>

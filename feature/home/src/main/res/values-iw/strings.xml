@@ -108,4 +108,18 @@
     <string name="usage_analytics_day_sat">ש׳</string>
     <string name="usage_analytics_day_sun">א׳</string>
     <string name="visit_github">ביקור במאגר ב-GitHub</string>
+    <string name="commitment_pause_instead_title">אולי עדיף השהיה?</string>
+    <string name="commitment_pause_instead_message">המגבלות שלך פעילות עכשיו. השהיה מאפשרת לצפות במשך %1$d דק׳, ואז החסימה חוזרת לפעול מעצמה.</string>
+    <string name="commitment_pause_instead_confirm">השהיה ל-%1$d דק׳</string>
+    <string name="commitment_change_anyway">לשנות בכל זאת</string>
+    <string name="commitment_pin_title">הזנת קוד PIN</string>
+    <string name="commitment_pin_message">מצב מחויבות מופעל. יש להזין קוד PIN כדי להקל את המגבלות.</string>
+    <string name="commitment_pin_wrong">קוד PIN שגוי</string>
+    <string name="commitment_confirm">אישור</string>
+    <string name="commitment_cancel">ביטול</string>
+    <string name="commitment_scheduled_title">השינוי תוזמן</string>
+    <string name="commitment_scheduled_message">מצב מחויבות מופעל, ולכן השינוי ייכנס לתוקף ב-%1$s. אפשר לבטל אותו עד אז.</string>
+    <string name="commitment_ok">אישור</string>
+    <string name="commitment_pending_banner">שינוי במגבלות ייכנס לתוקף ב-%1$s</string>
+    <string name="commitment_pending_cancel">ביטול השינוי</string>
 </resources>

@@ -107,4 +107,18 @@
     <string name="usage_analytics_day_sat">L</string>
     <string name="usage_analytics_day_sun">P</string>
     <string name="visit_github">Külasta GitHubi hoidlat</string>
+    <string name="commitment_pause_instead_title">Kas võtad hoopis pausi?</string>
+    <string name="commitment_pause_instead_message">Sinu piirangud kehtivad praegu. Pausi ajal saad vaadata %1$d min, seejärel lülitub blokeerimine ise uuesti sisse.</string>
+    <string name="commitment_pause_instead_confirm">Paus %1$d min</string>
+    <string name="commitment_change_anyway">Muuda ikkagi</string>
+    <string name="commitment_pin_title">Sisesta PIN-kood</string>
+    <string name="commitment_pin_message">Pühendumisrežiim on sees. Piirangute leevendamiseks sisesta PIN-kood.</string>
+    <string name="commitment_pin_wrong">Vale PIN-kood</string>
+    <string name="commitment_confirm">Kinnita</string>
+    <string name="commitment_cancel">Tühista</string>
+    <string name="commitment_scheduled_title">Muudatus ajastatud</string>
+    <string name="commitment_scheduled_message">Pühendumisrežiim on sees, seega jõustub see muudatus kell %1$s. Saad selle enne seda tühistada.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Piirangute muudatus jõustub kell %1$s</string>
+    <string name="commitment_pending_cancel">Tühista muudatus</string>
 </resources>

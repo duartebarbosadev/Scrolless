@@ -109,4 +109,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Další den</string>
     <string name="usage_analytics_previous_day">Předchozí den</string>
+    <string name="commitment_pause_instead_title">Raději si dát pauzu?</string>
+    <string name="commitment_pause_instead_message">Vaše limity právě fungují. Díky pozastavení můžete %1$d min sledovat a pak se blokování samo znovu zapne.</string>
+    <string name="commitment_pause_instead_confirm">Pozastavit na %1$d min</string>
+    <string name="commitment_change_anyway">Přesto změnit</string>
+    <string name="commitment_pin_title">Zadejte PIN</string>
+    <string name="commitment_pin_message">Režim závazku je zapnutý. Pro uvolnění limitů zadejte PIN.</string>
+    <string name="commitment_pin_wrong">Nesprávný PIN</string>
+    <string name="commitment_confirm">Potvrdit</string>
+    <string name="commitment_cancel">Zrušit</string>
+    <string name="commitment_scheduled_title">Změna naplánována</string>
+    <string name="commitment_scheduled_message">Režim závazku je zapnutý, proto se tato změna projeví v %1$s. Do té doby ji můžete zrušit.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Změna vašich limitů se projeví v %1$s</string>
+    <string name="commitment_pending_cancel">Zrušit změnu</string>
 </resources>

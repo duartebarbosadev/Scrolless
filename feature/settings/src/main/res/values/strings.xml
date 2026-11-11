@@ -48,4 +48,36 @@
     <string name="settings_include_stories_title">Include Stories</string>
     <string name="settings_include_stories_description">Count time spent viewing Stories and apply your current blocking mode and limits.</string>
     <string name="settings_include_stories_note">Currently supported on Instagram, Snapchat, and Facebook.</string>
+
+    <!-- Commitment mode: an opt-in setting that holds back changes that make blocking weaker. -->
+    <string name="settings_section_commitment">Commitment</string>
+    <string name="settings_commitment_title">Commitment mode</string>
+    <string name="settings_commitment_description">Makes it harder to loosen your limits on impulse. Stricter limits always apply right away.</string>
+    <!-- Segmented button labels for the three modes. Keep them very short. -->
+    <string name="settings_commitment_off">Off</string>
+    <string name="settings_commitment_delay">Delay</string>
+    <string name="settings_commitment_pin">PIN</string>
+    <!-- %1$s is one of the settings_commitment_delay_* strings, for example "1 hour". -->
+    <string name="settings_commitment_delay_note">Changes that loosen your limits wait %1$s before they apply.</string>
+    <string name="settings_commitment_pin_note">Changes that loosen your limits need your PIN. For extra protection, ask someone you trust to choose it.</string>
+    <string name="settings_commitment_choose_delay">How long should changes wait?</string>
+    <string name="settings_commitment_delay_15_minutes">15 minutes</string>
+    <string name="settings_commitment_delay_1_hour">1 hour</string>
+    <string name="settings_commitment_delay_24_hours">24 hours</string>
+    <string name="settings_commitment_choose_pin">Choose a PIN</string>
+    <string name="settings_commitment_choose_pin_message">Use 4 to 6 digits. You will need it to loosen your limits or turn off commitment mode.</string>
+    <string name="settings_commitment_confirm_pin">Enter the PIN again</string>
+    <string name="settings_commitment_pin_mismatch">The PINs don\'t match. Try again.</string>
+    <string name="settings_commitment_enter_pin">Enter your PIN</string>
+    <string name="settings_commitment_enter_pin_message">Commitment mode is on. Enter your PIN to make this change.</string>
+    <string name="settings_commitment_pin_wrong">Wrong PIN</string>
+    <string name="settings_commitment_scheduled">Change scheduled</string>
+    <!-- %1$s is a time, sometimes with a weekday, for example "14:30" or "Fri 14:30". -->
+    <string name="settings_commitment_scheduled_message">Commitment mode is on, so this change applies at %1$s. You can cancel it before then.</string>
+    <!-- %1$s is a time, sometimes with a weekday, for example "14:30" or "Fri 14:30". -->
+    <string name="settings_commitment_pending">A change applies at %1$s</string>
+    <string name="settings_commitment_cancel_change">Cancel change</string>
+    <string name="settings_commitment_confirm">Confirm</string>
+    <string name="settings_commitment_cancel">Cancel</string>
+    <string name="settings_commitment_ok">OK</string>
 </resources>

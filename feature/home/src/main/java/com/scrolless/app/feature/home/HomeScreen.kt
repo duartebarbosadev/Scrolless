@@ -131,8 +131,10 @@ import com.scrolless.app.feature.home.dialogs.AccessibilityExplainerBottomSheet
 import com.scrolless.app.feature.home.dialogs.AccessibilitySuccessBottomSheet
 import com.scrolless.app.feature.home.dialogs.AccessibilitySuccessBottomSheetPreview
 import com.scrolless.app.feature.home.dialogs.BackgroundSetupBottomSheet
+import com.scrolless.app.feature.home.dialogs.CommitmentPromptDialog
 import com.scrolless.app.feature.home.dialogs.HelpDialog
 import com.scrolless.app.feature.home.dialogs.IntervalTimerDialog
+import com.scrolless.app.feature.home.dialogs.PendingChangeCard
 import com.scrolless.app.feature.home.dialogs.ServiceNotRunningBottomSheet
 import com.scrolless.app.feature.home.dialogs.TimeLimitDialog
 import java.time.LocalDate
@@ -198,6 +200,7 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val commitmentUiState by viewModel.commitmentUiState.collectAsStateWithLifecycle()
 
     var showTimeLimitDialog by remember { mutableStateOf(false) }
     var showHelpDialog by remember { mutableStateOf(false) }
@@ -349,6 +352,8 @@ fun HomeScreen(
         HomeContent(
             modifier = modifier,
             uiState = uiState,
+            pendingChangeApplyAtMillis = commitmentUiState.pendingChange?.applyAtMillis,
+            onCancelPendingChange = viewModel::onCancelPendingChange,
             onNavigateToSettings = onNavigateToSettings,
             onBlockOptionSelected = { blockOption ->
                 val shouldBypass = BuildConfig.DEBUG && debugBypassAccessibilityCheck
@@ -465,6 +470,17 @@ fun HomeScreen(
         )
     }
 
+    commitmentUiState.prompt?.let { prompt ->
+        CommitmentPromptDialog(
+            prompt = prompt,
+            pauseDurationMillis = uiState.pauseDurationMillis,
+            onPauseInstead = viewModel::onPauseInsteadAccepted,
+            onChangeAnyway = viewModel::onChangeAnyway,
+            onPinSubmitted = viewModel::onPinSubmitted,
+            onDismiss = viewModel::onCommitmentPromptDismissed,
+        )
+    }
+
     if (showHelpDialog) {
         HelpDialog(
             onDismiss = {
@@ -569,6 +585,8 @@ fun HomeScreen(
 private fun HomeContent(
     uiState: HomeUiState,
     modifier: Modifier = Modifier,
+    pendingChangeApplyAtMillis: Long? = null,
+    onCancelPendingChange: () -> Unit = {},
     onNavigateToSettings: () -> Unit = {},
     onBlockOptionSelected: (BlockOption) -> Unit,
     onConfigureDailyLimit: () -> Unit,
@@ -609,19 +627,7 @@ private fun HomeContent(
     val coroutineScope = rememberCoroutineScope()
 
     // Determine if blocking is currently active (user would be blocked if they tried to view content)
-    val isBlockingActive = when (uiState.blockOption) {
-        // Always blocking
-        BlockOption.BlockAll -> true
-
-        BlockOption.DailyLimit ->
-            uiState.settings.dailyLimitMillis > 0 && uiState.currentUsage >= uiState.settings.dailyLimitMillis
-
-        BlockOption.IntervalTimer ->
-            uiState.settings.intervalAllowanceMillis > 0 &&
-                uiState.intervalUsage.usageMillis >= uiState.settings.intervalAllowanceMillis
-
-        BlockOption.NothingSelected -> false
-    }
+    val isBlockingActive = uiState.isBlockingActive
 
     var isInitialPageLoad by remember { mutableStateOf(true) }
 
@@ -687,17 +693,26 @@ private fun HomeContent(
                         animationSpec = tween(180),
                     ) + fadeOut(animationSpec = tween(100)),
                 ) {
-                    TodayBlockingControls(
-                        uiState = uiState,
-                        isBlockingActive = isBlockingActive,
-                        isPauseActive = isPauseActive,
-                        pauseRemainingMillis = pauseRemainingMillis,
-                        onBlockOptionSelected = onBlockOptionSelected,
-                        onConfigureDailyLimit = onConfigureDailyLimit,
-                        onIntervalTimerClick = onIntervalTimerClick,
-                        onIntervalTimerEdit = onIntervalTimerEdit,
-                        onPauseToggle = onPauseToggle,
-                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        if (pendingChangeApplyAtMillis != null) {
+                            PendingChangeCard(
+                                applyAtMillis = pendingChangeApplyAtMillis,
+                                onCancel = onCancelPendingChange,
+                                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                            )
+                        }
+                        TodayBlockingControls(
+                            uiState = uiState,
+                            isBlockingActive = isBlockingActive,
+                            isPauseActive = isPauseActive,
+                            pauseRemainingMillis = pauseRemainingMillis,
+                            onBlockOptionSelected = onBlockOptionSelected,
+                            onConfigureDailyLimit = onConfigureDailyLimit,
+                            onIntervalTimerClick = onIntervalTimerClick,
+                            onIntervalTimerEdit = onIntervalTimerEdit,
+                            onPauseToggle = onPauseToggle,
+                        )
+                    }
                 }
 
                 InlineUsageAnalyticsPanel(

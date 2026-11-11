@@ -34,8 +34,10 @@ import com.scrolless.app.core.model.BlockingResult
 import com.scrolless.app.core.model.ContentBlockAction
 import com.scrolless.app.core.model.ResolvedBlockableApp
 import com.scrolless.app.core.repository.BlockingConfigRepository
+import com.scrolless.app.core.repository.CommitmentRepository
 import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
+import com.scrolless.app.core.repository.applyPendingChangesWhenDue
 import com.scrolless.app.debug.DebugOverlayConfig
 import com.scrolless.app.ui.overlay.BlockedContentOverlayManager
 import com.scrolless.app.ui.overlay.TimerOverlayManager
@@ -123,6 +125,10 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
     /** Repository for active blocking configurations and rules. */
     @Inject
     lateinit var blockingConfigRepository: BlockingConfigRepository
+
+    /** Applies limit changes that commitment mode held back once their delay is over. */
+    @Inject
+    lateinit var commitmentRepository: CommitmentRepository
 
     /** Store for user settings, pause durations, and app preferences. */
     @Inject
@@ -295,6 +301,12 @@ class ScrollessBlockAccessibilityService : AccessibilityService() {
                 refreshDetectedContent()
                 reconsiderVisibleContent()
             }
+        }
+
+        // The service is the part that keeps running, so a delayed change applies on time even
+        // when Scrolless itself is closed.
+        serviceScope.launch {
+            commitmentRepository.applyPendingChangesWhenDue(System::currentTimeMillis)
         }
 
         // Apply a pause immediately, even if the app has not sent a new screen event.

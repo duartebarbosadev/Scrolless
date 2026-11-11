@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Jour suivant</string>
     <string name="usage_analytics_previous_day">Jour précédent</string>
+    <string name="commitment_pause_instead_title">Faire plutôt une pause ?</string>
+    <string name="commitment_pause_instead_message">Vos limites sont actives en ce moment. Une pause vous permet de regarder pendant %1$d min, puis le blocage se réactive tout seul.</string>
+    <string name="commitment_pause_instead_confirm">Pause de %1$d min</string>
+    <string name="commitment_change_anyway">Modifier quand même</string>
+    <string name="commitment_pin_title">Saisissez votre code PIN</string>
+    <string name="commitment_pin_message">Le mode engagement est activé. Saisissez votre code PIN pour assouplir vos limites.</string>
+    <string name="commitment_pin_wrong">Code PIN incorrect</string>
+    <string name="commitment_confirm">Confirmer</string>
+    <string name="commitment_cancel">Annuler</string>
+    <string name="commitment_scheduled_title">Modification programmée</string>
+    <string name="commitment_scheduled_message">Le mode engagement est activé, cette modification s’appliquera donc à %1$s. Vous pouvez l’annuler d’ici là.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Une modification de vos limites s’appliquera à %1$s</string>
+    <string name="commitment_pending_cancel">Annuler la modification</string>
 </resources>

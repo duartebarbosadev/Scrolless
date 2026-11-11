@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">पुढील दिवस</string>
     <string name="usage_analytics_previous_day">मागील दिवस</string>
+    <string name="commitment_pause_instead_title">त्याऐवजी विराम द्यायचा?</string>
+    <string name="commitment_pause_instead_message">तुमच्या मर्यादा आत्ता लागू आहेत. विराम दिल्यास तुम्ही %1$d मिनिटे पाहू शकता, त्यानंतर ब्लॉकिंग आपोआप पुन्हा सुरू होते.</string>
+    <string name="commitment_pause_instead_confirm">%1$d मिनिटांसाठी विराम द्या</string>
+    <string name="commitment_change_anyway">तरीही बदला</string>
+    <string name="commitment_pin_title">तुमचा PIN टाका</string>
+    <string name="commitment_pin_message">वचनबद्धता मोड सुरू आहे. मर्यादा सैल करण्यासाठी तुमचा PIN टाका.</string>
+    <string name="commitment_pin_wrong">चुकीचा PIN</string>
+    <string name="commitment_confirm">पुष्टी करा</string>
+    <string name="commitment_cancel">रद्द करा</string>
+    <string name="commitment_scheduled_title">बदल नियोजित केला</string>
+    <string name="commitment_scheduled_message">वचनबद्धता मोड सुरू आहे, त्यामुळे हा बदल %1$s ला लागू होईल. त्याआधी तुम्ही तो रद्द करू शकता.</string>
+    <string name="commitment_ok">ठीक आहे</string>
+    <string name="commitment_pending_banner">तुमच्या मर्यादांमधील बदल %1$s ला लागू होईल</string>
+    <string name="commitment_pending_cancel">बदल रद्द करा</string>
 </resources>

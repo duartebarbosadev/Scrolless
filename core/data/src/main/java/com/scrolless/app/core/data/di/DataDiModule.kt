@@ -40,10 +40,12 @@ import com.scrolless.app.core.data.database.ScrollessDatabase
 import com.scrolless.app.core.data.database.dao.SessionSegmentDao
 import com.scrolless.app.core.data.database.dao.UserSettingsDao
 import com.scrolless.app.core.data.repository.BlockingConfigRepositoryImpl
+import com.scrolless.app.core.data.repository.CommitmentRepositoryImpl
 import com.scrolless.app.core.data.repository.SessionSegmentStoreImpl
 import com.scrolless.app.core.data.repository.SessionTrackerImpl
 import com.scrolless.app.core.data.repository.UserSettingsStoreImpl
 import com.scrolless.app.core.repository.BlockingConfigRepository
+import com.scrolless.app.core.repository.CommitmentRepository
 import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.SessionTracker
 import com.scrolless.app.core.repository.UserSettingsStore
@@ -72,6 +74,7 @@ object DataDiModule {
                 ScrollessDatabase.MIGRATION_9_10,
                 ScrollessDatabase.MIGRATION_10_11,
                 ScrollessDatabase.MIGRATION_11_12,
+                ScrollessDatabase.MIGRATION_12_13,
             ).fallbackToDestructiveMigration(true) // Not recommended but for now it shouldn't matter
             .fallbackToDestructiveMigrationOnDowngrade(true).addCallback(
                 object : RoomDatabase.Callback() {
@@ -110,6 +113,20 @@ object DataDiModule {
     @Singleton
     fun provideBlockingConfigRepository(userSettingsDao: UserSettingsDao, timeProvider: TimeProvider): BlockingConfigRepository =
         BlockingConfigRepositoryImpl(userSettingsDao = userSettingsDao, timeProvider = timeProvider)
+
+    @Provides
+    @Singleton
+    fun provideCommitmentRepository(
+        userSettingsDao: UserSettingsDao,
+        blockingConfigRepository: BlockingConfigRepository,
+        userSettingsStore: UserSettingsStore,
+        timeProvider: TimeProvider,
+    ): CommitmentRepository = CommitmentRepositoryImpl(
+        userSettingsDao = userSettingsDao,
+        blockingConfigRepository = blockingConfigRepository,
+        userSettingsStore = userSettingsStore,
+        timeProvider = timeProvider,
+    )
 
     @Provides
     @Singleton

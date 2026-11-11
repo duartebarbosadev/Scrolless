@@ -106,4 +106,18 @@
     </plurals>
     <string name="usage_analytics_next_day">다음 날</string>
     <string name="usage_analytics_previous_day">이전 날</string>
+    <string name="commitment_pause_instead_title">대신 일시정지할까요?</string>
+    <string name="commitment_pause_instead_message">지금 제한이 적용 중이에요. 일시정지하면 %1$d분 동안 볼 수 있고, 그 후 차단이 자동으로 다시 켜져요.</string>
+    <string name="commitment_pause_instead_confirm">%1$d분 일시정지</string>
+    <string name="commitment_change_anyway">그래도 변경</string>
+    <string name="commitment_pin_title">PIN 입력</string>
+    <string name="commitment_pin_message">약속 모드가 켜져 있어요. 제한을 완화하려면 PIN을 입력하세요.</string>
+    <string name="commitment_pin_wrong">PIN이 틀렸어요</string>
+    <string name="commitment_confirm">확인</string>
+    <string name="commitment_cancel">취소</string>
+    <string name="commitment_scheduled_title">변경 예약됨</string>
+    <string name="commitment_scheduled_message">약속 모드가 켜져 있어서 이 변경은 %1$s에 적용돼요. 그 전에 취소할 수 있어요.</string>
+    <string name="commitment_ok">확인</string>
+    <string name="commitment_pending_banner">제한 변경이 %1$s에 적용돼요</string>
+    <string name="commitment_pending_cancel">변경 취소</string>
 </resources>

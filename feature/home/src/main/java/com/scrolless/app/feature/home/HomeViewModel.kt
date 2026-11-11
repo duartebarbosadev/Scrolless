@@ -22,13 +22,19 @@ import androidx.lifecycle.viewModelScope
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingConfig
 import com.scrolless.app.core.model.BlockingSettings
+import com.scrolless.app.core.model.ChangeRequestResult
+import com.scrolless.app.core.model.CommitmentMode
 import com.scrolless.app.core.model.IntervalUsage
+import com.scrolless.app.core.model.PendingChange
 import com.scrolless.app.core.model.SessionSegment
+import com.scrolless.app.core.model.SettingsChange
 import com.scrolless.app.core.model.usage.DailyUsageTotal
 import com.scrolless.app.core.model.usage.calculateWeekdayAverages
 import com.scrolless.app.core.repository.BlockingConfigRepository
+import com.scrolless.app.core.repository.CommitmentRepository
 import com.scrolless.app.core.repository.SessionSegmentStore
 import com.scrolless.app.core.repository.UserSettingsStore
+import com.scrolless.app.core.repository.applyPendingChangesWhenDue
 import com.scrolless.app.core.util.combine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Duration
@@ -64,6 +70,7 @@ class HomeViewModel @Inject constructor(
     private val userSettingsStore: UserSettingsStore,
     private val blockingConfigRepository: BlockingConfigRepository,
     private val sessionSegmentStore: SessionSegmentStore,
+    private val commitmentRepository: CommitmentRepository,
 ) : ViewModel() {
 
     private val _selectedAveragePeriod = MutableStateFlow(UsageAveragePeriod.LAST_WEEK)
@@ -105,7 +112,23 @@ class HomeViewModel @Inject constructor(
         private val REVIEW_PROMPT_RETRY_DELAY_MILLIS = TimeUnit.DAYS.toMillis(1)
     }
 
+    private val commitmentPrompt = MutableStateFlow<CommitmentPrompt?>(null)
+
+    val commitmentUiState: StateFlow<HomeCommitmentUiState> = combine(
+        commitmentRepository.observeState(),
+        commitmentPrompt,
+    ) { state, prompt ->
+        HomeCommitmentUiState(mode = state.mode, pendingChange = state.pendingChange, prompt = prompt)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = HomeCommitmentUiState(),
+    )
+
     init {
+        viewModelScope.launch {
+            commitmentRepository.applyPendingChangesWhenDue(System::currentTimeMillis)
+        }
         viewModelScope.launch {
             currentDate.collect { today ->
                 if (selectedAnalyticsDate.value.isAfter(today)) {
@@ -231,18 +254,62 @@ class HomeViewModel @Inject constructor(
 
     fun onBlockOptionSelected(blockOption: BlockOption) {
         Timber.i("Block option selected: %s", blockOption)
-        viewModelScope.launch {
-            blockingConfigRepository.setActiveOption(blockOption)
-            if (blockOption == BlockOption.NothingSelected) {
-                onPauseToggle(false)
-            }
-        }
+        submitChange(SettingsChange.SelectOption(blockOption))
     }
 
     fun onTimeLimitChange(durationMillis: Long) {
         Timber.d("Time limit changed: %d ms", durationMillis)
+        submitChange(SettingsChange.DailyLimit(durationMillis))
+    }
+
+    /**
+     * Sends [change] through commitment mode. While content is blocked right now, a loosening
+     * change first offers a pause instead, since a short break is usually what the user wants.
+     */
+    private fun submitChange(change: SettingsChange, offerPause: Boolean = true) {
         viewModelScope.launch {
-            blockingConfigRepository.configureDailyLimit(durationMillis)
+            val state = uiState.value
+            val isPaused = state.pauseUntilMillis > System.currentTimeMillis()
+            if (offerPause && state.isBlockingActive && !isPaused && commitmentRepository.isLoosening(change)) {
+                Timber.i("Offering a pause instead of loosening the limits")
+                commitmentPrompt.value = CommitmentPrompt.OfferPause(change)
+                return@launch
+            }
+            commitmentPrompt.value = when (val result = commitmentRepository.request(change)) {
+                ChangeRequestResult.Applied -> null
+                ChangeRequestResult.PinRequired -> CommitmentPrompt.EnterPin(change)
+                is ChangeRequestResult.Scheduled -> CommitmentPrompt.Scheduled(result.applyAtMillis)
+            }
+        }
+    }
+
+    fun onPauseInsteadAccepted() {
+        commitmentPrompt.value = null
+        onPauseToggle(true)
+    }
+
+    fun onChangeAnyway() {
+        val prompt = commitmentPrompt.value as? CommitmentPrompt.OfferPause ?: return
+        commitmentPrompt.value = null
+        submitChange(prompt.change, offerPause = false)
+    }
+
+    fun onPinSubmitted(pin: String) {
+        val prompt = commitmentPrompt.value as? CommitmentPrompt.EnterPin ?: return
+        viewModelScope.launch {
+            val applied = commitmentRepository.applyWithPin(prompt.change, pin)
+            commitmentPrompt.value = if (applied) null else prompt.copy(wrongPin = true)
+        }
+    }
+
+    fun onCommitmentPromptDismissed() {
+        commitmentPrompt.value = null
+    }
+
+    fun onCancelPendingChange() {
+        Timber.i("Queued change cancelled")
+        viewModelScope.launch {
+            commitmentRepository.cancelPendingChange()
         }
     }
 
@@ -269,12 +336,7 @@ class HomeViewModel @Inject constructor(
             intervalBreakMillis,
             allowanceMillis,
         )
-        viewModelScope.launch {
-            blockingConfigRepository.configureIntervalTimer(
-                allowanceMillis = allowanceMillis,
-                intervalLengthMillis = intervalBreakMillis,
-            )
-        }
+        submitChange(SettingsChange.IntervalTimer(allowanceMillis = allowanceMillis, intervalLengthMillis = intervalBreakMillis))
     }
 
     /**
@@ -442,7 +504,40 @@ data class HomeUiState(
     val listSessionSegments: List<SessionSegment> = emptyList(),
     val usageAnalytics: UsageAnalyticsUiState = UsageAnalyticsUiState(),
     val averagePeriod: UsageAveragePeriod = UsageAveragePeriod.LAST_WEEK,
+) {
+    /** Whether content would be blocked if the user opened it right now, ignoring a pause. */
+    val isBlockingActive: Boolean
+        get() = when (blockOption) {
+            BlockOption.BlockAll -> true
+
+            BlockOption.DailyLimit -> settings.dailyLimitMillis > 0 && currentUsage >= settings.dailyLimitMillis
+
+            BlockOption.IntervalTimer ->
+                settings.intervalAllowanceMillis > 0 && intervalUsage.usageMillis >= settings.intervalAllowanceMillis
+
+            BlockOption.NothingSelected -> false
+        }
+}
+
+@Immutable
+data class HomeCommitmentUiState(
+    val mode: CommitmentMode = CommitmentMode.Off,
+    val pendingChange: PendingChange? = null,
+    val prompt: CommitmentPrompt? = null,
 )
+
+/** A dialog commitment mode needs the user to answer. */
+@Immutable
+sealed interface CommitmentPrompt {
+
+    /** Content is blocked right now, so suggest a pause before loosening the limits. */
+    data class OfferPause(val change: SettingsChange) : CommitmentPrompt
+
+    data class EnterPin(val change: SettingsChange, val wrongPin: Boolean = false) : CommitmentPrompt
+
+    /** The change was queued and applies at [applyAtMillis]. */
+    data class Scheduled(val applyAtMillis: Long) : CommitmentPrompt
+}
 
 private fun buildUsageAnalyticsUiState(
     selectedDate: LocalDate,

@@ -106,4 +106,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Ngày tiếp theo</string>
     <string name="usage_analytics_previous_day">Ngày trước đó</string>
+    <string name="commitment_pause_instead_title">Tạm dừng thay vào đó?</string>
+    <string name="commitment_pause_instead_message">Giới hạn của bạn đang hoạt động. Tạm dừng cho phép bạn xem trong %1$d phút, sau đó việc chặn sẽ tự bật lại.</string>
+    <string name="commitment_pause_instead_confirm">Tạm dừng %1$d phút</string>
+    <string name="commitment_change_anyway">Vẫn thay đổi</string>
+    <string name="commitment_pin_title">Nhập mã PIN</string>
+    <string name="commitment_pin_message">Chế độ cam kết đang bật. Nhập mã PIN để nới lỏng giới hạn.</string>
+    <string name="commitment_pin_wrong">Sai mã PIN</string>
+    <string name="commitment_confirm">Xác nhận</string>
+    <string name="commitment_cancel">Hủy</string>
+    <string name="commitment_scheduled_title">Đã lên lịch thay đổi</string>
+    <string name="commitment_scheduled_message">Chế độ cam kết đang bật nên thay đổi này sẽ áp dụng lúc %1$s. Bạn có thể hủy trước thời điểm đó.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Thay đổi giới hạn sẽ áp dụng lúc %1$s</string>
+    <string name="commitment_pending_cancel">Hủy thay đổi</string>
 </resources>

@@ -16,6 +16,9 @@
  */
 package com.scrolless.app.designsystem.util
 
+import android.content.Context
+import android.text.format.DateUtils
+
 /**
  * Formats this number of minutes into a compact hour/minute label like "1h 5m" or "45m".
  * Negative values are coerced to 0.
@@ -35,4 +38,14 @@ fun Int.formatMinutes(): String {
             append("m")
         }
     }
+}
+
+/** Formats [millis] as a time, adding the weekday when it isn't today. */
+fun formatTimeWithDay(context: Context, millis: Long): String {
+    val flags = if (DateUtils.isToday(millis)) {
+        DateUtils.FORMAT_SHOW_TIME
+    } else {
+        DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_WEEKDAY or DateUtils.FORMAT_ABBREV_WEEKDAY
+    }
+    return DateUtils.formatDateTime(context, millis, flags)
 }

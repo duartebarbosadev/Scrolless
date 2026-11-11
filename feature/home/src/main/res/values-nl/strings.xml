@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Volgende dag</string>
     <string name="usage_analytics_previous_day">Vorige dag</string>
+    <string name="commitment_pause_instead_title">Liever even pauzeren?</string>
+    <string name="commitment_pause_instead_message">Je limieten werken nu. Met een pauze kun je %1$d min kijken, daarna gaat het blokkeren vanzelf weer aan.</string>
+    <string name="commitment_pause_instead_confirm">Pauze van %1$d min</string>
+    <string name="commitment_change_anyway">Toch wijzigen</string>
+    <string name="commitment_pin_title">Voer je pincode in</string>
+    <string name="commitment_pin_message">De commitmentmodus staat aan. Voer je pincode in om je limieten te versoepelen.</string>
+    <string name="commitment_pin_wrong">Onjuiste pincode</string>
+    <string name="commitment_confirm">Bevestigen</string>
+    <string name="commitment_cancel">Annuleren</string>
+    <string name="commitment_scheduled_title">Wijziging gepland</string>
+    <string name="commitment_scheduled_message">De commitmentmodus staat aan, dus deze wijziging gaat in om %1$s. Je kunt hem tot die tijd annuleren.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Een wijziging van je limieten gaat in om %1$s</string>
+    <string name="commitment_pending_cancel">Wijziging annuleren</string>
 </resources>

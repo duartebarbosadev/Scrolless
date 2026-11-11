@@ -106,4 +106,18 @@
     <string name="usage_analytics_day_sat">Sab</string>
     <string name="usage_analytics_day_sun">Min</string>
     <string name="visit_github">Kunjungi repositori GitHub</string>
+    <string name="commitment_pause_instead_title">Jeda saja?</string>
+    <string name="commitment_pause_instead_message">Batasanmu sedang aktif. Dengan jeda, kamu bisa menonton selama %1$d mnt, lalu pemblokiran aktif lagi dengan sendirinya.</string>
+    <string name="commitment_pause_instead_confirm">Jeda %1$d mnt</string>
+    <string name="commitment_change_anyway">Tetap ubah</string>
+    <string name="commitment_pin_title">Masukkan PIN</string>
+    <string name="commitment_pin_message">Mode komitmen aktif. Masukkan PIN untuk melonggarkan batasanmu.</string>
+    <string name="commitment_pin_wrong">PIN salah</string>
+    <string name="commitment_confirm">Konfirmasi</string>
+    <string name="commitment_cancel">Batal</string>
+    <string name="commitment_scheduled_title">Perubahan dijadwalkan</string>
+    <string name="commitment_scheduled_message">Mode komitmen aktif, jadi perubahan ini berlaku pukul %1$s. Kamu bisa membatalkannya sebelum itu.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Perubahan batasanmu berlaku pukul %1$s</string>
+    <string name="commitment_pending_cancel">Batalkan perubahan</string>
 </resources>

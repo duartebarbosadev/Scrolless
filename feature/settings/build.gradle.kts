@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.hilt.android)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.timber)
     ksp(libs.hilt.compiler)
 
     implementation(projects.core.designsystem)

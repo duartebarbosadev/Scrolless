@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Día siguiente</string>
     <string name="usage_analytics_previous_day">Día anterior</string>
+    <string name="commitment_pause_instead_title">¿Mejor pausar un rato?</string>
+    <string name="commitment_pause_instead_message">Tus límites están funcionando ahora mismo. Con una pausa puedes ver durante %1$d min y luego el bloqueo se vuelve a activar solo.</string>
+    <string name="commitment_pause_instead_confirm">Pausar %1$d min</string>
+    <string name="commitment_change_anyway">Cambiar igualmente</string>
+    <string name="commitment_pin_title">Introduce tu PIN</string>
+    <string name="commitment_pin_message">El modo compromiso está activado. Introduce tu PIN para relajar tus límites.</string>
+    <string name="commitment_pin_wrong">PIN incorrecto</string>
+    <string name="commitment_confirm">Confirmar</string>
+    <string name="commitment_cancel">Cancelar</string>
+    <string name="commitment_scheduled_title">Cambio programado</string>
+    <string name="commitment_scheduled_message">El modo compromiso está activado, así que este cambio se aplicará a las %1$s. Puedes cancelarlo antes.</string>
+    <string name="commitment_ok">Aceptar</string>
+    <string name="commitment_pending_banner">Un cambio en tus límites se aplicará a las %1$s</string>
+    <string name="commitment_pending_cancel">Cancelar cambio</string>
 </resources>

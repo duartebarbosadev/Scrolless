@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">അടുത്ത ദിവസം</string>
     <string name="usage_analytics_previous_day">മുമ്പത്തെ ദിവസം</string>
+    <string name="commitment_pause_instead_title">പകരം താൽക്കാലികമായി നിർത്തണോ?</string>
+    <string name="commitment_pause_instead_message">നിങ്ങളുടെ പരിധികൾ ഇപ്പോൾ പ്രവർത്തിക്കുന്നു. താൽക്കാലികമായി നിർത്തിയാൽ %1$d മിനിറ്റ് കാണാം, തുടർന്ന് ബ്ലോക്കിംഗ് സ്വയം വീണ്ടും ഓണാകും.</string>
+    <string name="commitment_pause_instead_confirm">%1$d മിനിറ്റ് താൽക്കാലികമായി നിർത്തുക</string>
+    <string name="commitment_change_anyway">എന്തായാലും മാറ്റുക</string>
+    <string name="commitment_pin_title">PIN നൽകുക</string>
+    <string name="commitment_pin_message">പ്രതിബദ്ധതാ മോഡ് ഓണാണ്. പരിധികൾ അയയ്ക്കാൻ PIN നൽകുക.</string>
+    <string name="commitment_pin_wrong">തെറ്റായ PIN</string>
+    <string name="commitment_confirm">സ്ഥിരീകരിക്കുക</string>
+    <string name="commitment_cancel">റദ്ദാക്കുക</string>
+    <string name="commitment_scheduled_title">മാറ്റം ഷെഡ്യൂൾ ചെയ്തു</string>
+    <string name="commitment_scheduled_message">പ്രതിബദ്ധതാ മോഡ് ഓണായതിനാൽ ഈ മാറ്റം %1$s-ന് പ്രാബല്യത്തിൽ വരും. അതിനുമുമ്പ് നിങ്ങൾക്ക് ഇത് റദ്ദാക്കാം.</string>
+    <string name="commitment_ok">ശരി</string>
+    <string name="commitment_pending_banner">നിങ്ങളുടെ പരിധികളിലെ മാറ്റം %1$s-ന് പ്രാബല്യത്തിൽ വരും</string>
+    <string name="commitment_pending_cancel">മാറ്റം റദ്ദാക്കുക</string>
 </resources>

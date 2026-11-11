@@ -108,4 +108,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Ziua următoare</string>
     <string name="usage_analytics_previous_day">Ziua precedentă</string>
+    <string name="commitment_pause_instead_title">Iei mai bine o pauză?</string>
+    <string name="commitment_pause_instead_message">Limitele tale funcționează acum. O pauză te lasă să urmărești %1$d min, apoi blocarea pornește din nou singură.</string>
+    <string name="commitment_pause_instead_confirm">Pauză de %1$d min</string>
+    <string name="commitment_change_anyway">Modifică oricum</string>
+    <string name="commitment_pin_title">Introdu PIN-ul</string>
+    <string name="commitment_pin_message">Modul angajament este activat. Introdu PIN-ul pentru a relaxa limitele.</string>
+    <string name="commitment_pin_wrong">PIN greșit</string>
+    <string name="commitment_confirm">Confirmă</string>
+    <string name="commitment_cancel">Anulează</string>
+    <string name="commitment_scheduled_title">Modificare programată</string>
+    <string name="commitment_scheduled_message">Modul angajament este activat, așa că modificarea se aplică la %1$s. O poți anula până atunci.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">O modificare a limitelor tale se aplică la %1$s</string>
+    <string name="commitment_pending_cancel">Anulează modificarea</string>
 </resources>

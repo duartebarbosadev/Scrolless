@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Seuraava päivä</string>
     <string name="usage_analytics_previous_day">Edellinen päivä</string>
+    <string name="commitment_pause_instead_title">Keskeytä mieluummin hetkeksi?</string>
+    <string name="commitment_pause_instead_message">Rajasi ovat nyt voimassa. Keskeytyksen aikana voit katsoa %1$d min, minkä jälkeen esto palaa itsestään.</string>
+    <string name="commitment_pause_instead_confirm">Keskeytä %1$d min</string>
+    <string name="commitment_change_anyway">Muuta silti</string>
+    <string name="commitment_pin_title">Anna PIN-koodi</string>
+    <string name="commitment_pin_message">Sitoutumistila on päällä. Anna PIN-koodi, jos haluat löysentää rajojasi.</string>
+    <string name="commitment_pin_wrong">Väärä PIN-koodi</string>
+    <string name="commitment_confirm">Vahvista</string>
+    <string name="commitment_cancel">Peruuta</string>
+    <string name="commitment_scheduled_title">Muutos ajastettu</string>
+    <string name="commitment_scheduled_message">Sitoutumistila on päällä, joten muutos tulee voimaan klo %1$s. Voit perua sen sitä ennen.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">Rajoihisi tehty muutos tulee voimaan klo %1$s</string>
+    <string name="commitment_pending_cancel">Peru muutos</string>
 </resources>

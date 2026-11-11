@@ -107,4 +107,18 @@
     </plurals>
     <string name="usage_analytics_next_day">Nästa dag</string>
     <string name="usage_analytics_previous_day">Föregående dag</string>
+    <string name="commitment_pause_instead_title">Pausa hellre en stund?</string>
+    <string name="commitment_pause_instead_message">Dina gränser fungerar just nu. Med en paus kan du titta i %1$d min, sedan slås blockeringen på igen av sig själv.</string>
+    <string name="commitment_pause_instead_confirm">Pausa i %1$d min</string>
+    <string name="commitment_change_anyway">Ändra ändå</string>
+    <string name="commitment_pin_title">Ange din pinkod</string>
+    <string name="commitment_pin_message">Åtagandeläget är på. Ange din pinkod för att lätta på dina gränser.</string>
+    <string name="commitment_pin_wrong">Fel pinkod</string>
+    <string name="commitment_confirm">Bekräfta</string>
+    <string name="commitment_cancel">Avbryt</string>
+    <string name="commitment_scheduled_title">Ändring schemalagd</string>
+    <string name="commitment_scheduled_message">Åtagandeläget är på, så ändringen gäller från %1$s. Du kan avbryta den innan dess.</string>
+    <string name="commitment_ok">OK</string>
+    <string name="commitment_pending_banner">En ändring av dina gränser gäller från %1$s</string>
+    <string name="commitment_pending_cancel">Avbryt ändring</string>
 </resources>
