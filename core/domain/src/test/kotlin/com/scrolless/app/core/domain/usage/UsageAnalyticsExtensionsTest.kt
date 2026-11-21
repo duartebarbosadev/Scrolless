@@ -93,6 +93,55 @@ class UsageAnalyticsExtensionsTest {
         assertEquals(0L, averages.first { it.dayOfWeek == DayOfWeek.WEDNESDAY }.averageMillis)
     }
 
+    @Test
+    fun `daily totals break usage down per app`() {
+        val date = LocalDate.of(2026, 5, 26)
+        val segments = listOf(
+            segment(BlockableApp.TIKTOK, date, 8, TimeUnit.MINUTES.toMillis(10)),
+            segment(BlockableApp.REELS, date, 9, TimeUnit.MINUTES.toMillis(5)),
+            segment(BlockableApp.TIKTOK, date, 10, TimeUnit.MINUTES.toMillis(7)),
+        )
+
+        val totals = segments.calculateDailyTotals(
+            startDate = date,
+            endDateInclusive = date,
+        )
+
+        assertEquals(
+            mapOf(
+                BlockableApp.TIKTOK to TimeUnit.MINUTES.toMillis(17),
+                BlockableApp.REELS to TimeUnit.MINUTES.toMillis(5),
+            ),
+            totals.first().millisByApp,
+        )
+    }
+
+    @Test
+    fun `weekday averages break usage down per app across matching days`() {
+        val monday = LocalDate.of(2026, 5, 25)
+        val nextMonday = monday.plusWeeks(1)
+        val segments = listOf(
+            segment(BlockableApp.TIKTOK, monday, 8, TimeUnit.MINUTES.toMillis(20)),
+            segment(BlockableApp.REELS, monday, 9, TimeUnit.MINUTES.toMillis(10)),
+            segment(BlockableApp.TIKTOK, nextMonday, 8, TimeUnit.MINUTES.toMillis(40)),
+        )
+
+        val averages = segments
+            .calculateDailyTotals(startDate = monday, endDateInclusive = nextMonday)
+            .calculateWeekdayAverages(startDate = monday, endDateInclusive = nextMonday)
+        val mondayAverage = averages.first { it.dayOfWeek == DayOfWeek.MONDAY }
+
+        assertEquals(TimeUnit.MINUTES.toMillis(35), mondayAverage.averageMillis)
+        assertEquals(
+            mapOf(
+                BlockableApp.TIKTOK to TimeUnit.MINUTES.toMillis(30),
+                BlockableApp.REELS to TimeUnit.MINUTES.toMillis(5),
+            ),
+            mondayAverage.averageMillisByApp,
+        )
+        assertEquals(emptyMap<BlockableApp, Long>(), averages.first { it.dayOfWeek == DayOfWeek.TUESDAY }.averageMillisByApp)
+    }
+
     private fun segment(app: BlockableApp, date: LocalDate, hour: Int, durationMillis: Long): SessionSegment = SessionSegment(
         app = app,
         durationMillis = durationMillis,

@@ -88,7 +88,6 @@
     <string name="usage_analytics_next_day">Dita tjetër</string>
     <string name="usage_analytics_swipe_hint">&lt; Rrëshqit për të parë ditët &gt;</string>
     <string name="usage_analytics_timeline_title">Kronologjia</string>
-    <string name="usage_analytics_average_title">Mesatarja</string>
     <string name="usage_analytics_average_week">Java e kaluar</string>
     <string name="usage_analytics_average_month">Muaji i kaluar</string>
     <string name="usage_analytics_average_year">Viti i kaluar</string>
@@ -98,6 +97,7 @@
     </plurals>
     <string name="usage_analytics_time_range">%1$s-%2$s</string>
     <string name="usage_analytics_expand">Zgjero</string>
+    <string name="usage_analytics_by_weekday_title">Sipas ditës së javës</string>
     <string name="usage_analytics_collapse">Palos</string>
     <string name="usage_analytics_day_mon">Hën</string>
     <string name="usage_analytics_day_tue">Mar</string>

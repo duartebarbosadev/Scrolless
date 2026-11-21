@@ -88,7 +88,6 @@
     <string name="usage_analytics_next_day">Næsti dagur</string>
     <string name="usage_analytics_swipe_hint">&lt; Strjúktu til að skoða daga &gt;</string>
     <string name="usage_analytics_timeline_title">Tímalína</string>
-    <string name="usage_analytics_average_title">Meðaltal</string>
     <string name="usage_analytics_average_week">Síðasta vika</string>
     <string name="usage_analytics_average_month">Síðasti mánuður</string>
     <string name="usage_analytics_average_year">Síðasta ár</string>
@@ -98,6 +97,7 @@
     </plurals>
     <string name="usage_analytics_time_range">%1$s-%2$s</string>
     <string name="usage_analytics_expand">Stækka</string>
+    <string name="usage_analytics_by_weekday_title">Eftir vikudögum</string>
     <string name="usage_analytics_collapse">Minnka</string>
     <string name="usage_analytics_day_mon">Mán</string>
     <string name="usage_analytics_day_tue">Þri</string>

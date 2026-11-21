@@ -88,7 +88,6 @@
     <string name="usage_analytics_next_day">Kita diena</string>
     <string name="usage_analytics_swipe_hint">&lt; Braukite, kad peržiūrėtumėte dienas &gt;</string>
     <string name="usage_analytics_timeline_title">Laiko juosta</string>
-    <string name="usage_analytics_average_title">Vidurkis</string>
     <string name="usage_analytics_average_week">Praėjusi savaitė</string>
     <string name="usage_analytics_average_month">Praėjęs mėnuo</string>
     <string name="usage_analytics_average_year">Praėję metai</string>
@@ -100,6 +99,7 @@
     </plurals>
     <string name="usage_analytics_time_range">%1$s-%2$s</string>
     <string name="usage_analytics_expand">Išskleisti</string>
+    <string name="usage_analytics_by_weekday_title">Pagal savaitės dieną</string>
     <string name="usage_analytics_collapse">Suskleisti</string>
     <string name="usage_analytics_day_mon">Pr</string>
     <string name="usage_analytics_day_tue">An</string>

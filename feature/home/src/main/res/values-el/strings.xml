@@ -84,9 +84,9 @@
     <string name="time_interval">Χρονικό\nδιάστημα</string>
     <string name="time_limit_dialog_title">Ορισμός Ώρας Ημερήσιου Ορίου</string>
     <string name="usage_analytics_average_month">Τον τελευταίο μήνα</string>
-    <string name="usage_analytics_average_title">Μέσος όρος</string>
     <string name="usage_analytics_average_week">Την τελευταία εβδομάδα</string>
     <string name="usage_analytics_average_year">Τον τελευταίο χρόνο</string>
+    <string name="usage_analytics_by_weekday_title">Ανά ημέρα της εβδομάδας</string>
     <string name="usage_analytics_collapse">Σύμπτυξη</string>
     <string name="usage_analytics_day_fri">Παρ</string>
     <string name="usage_analytics_day_mon">Δευ</string>

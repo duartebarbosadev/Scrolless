@@ -171,7 +171,7 @@ private fun AccessibilitySuccessContent(onDismiss: () -> Unit) {
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.6f),
                     ),
-                    shape = RoundedCornerShape(16.dp),
+                    shape = MaterialTheme.shapes.large,
                 ) {
                     Column(
                         modifier = Modifier
@@ -261,7 +261,7 @@ private fun NextStep(stepNumber: String, text: String, delay: Long) {
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.1f),
         ),
-        shape = RoundedCornerShape(12.dp),
+        shape = MaterialTheme.shapes.medium,
     ) {
         Row(
             modifier = Modifier

@@ -84,9 +84,9 @@
     <string name="time_interval">Часовий\nінтервал</string>
     <string name="time_limit_dialog_title">Встановити щоденний ліміт часу</string>
     <string name="usage_analytics_average_month">Минулий місяць</string>
-    <string name="usage_analytics_average_title">Середнє</string>
     <string name="usage_analytics_average_week">Минулий тиждень</string>
     <string name="usage_analytics_average_year">Минулий рік</string>
+    <string name="usage_analytics_by_weekday_title">За днями тижня</string>
     <string name="usage_analytics_collapse">Згорнути</string>
     <string name="usage_analytics_day_fri">Пт</string>
     <string name="usage_analytics_day_mon">Пн</string>

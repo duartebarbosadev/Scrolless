@@ -88,7 +88,6 @@
     <string name="usage_analytics_next_day">Järgmine päev</string>
     <string name="usage_analytics_swipe_hint">&lt; Pühi päevade vaatamiseks &gt;</string>
     <string name="usage_analytics_timeline_title">Ajajoon</string>
-    <string name="usage_analytics_average_title">Keskmine</string>
     <string name="usage_analytics_average_week">Viimane nädal</string>
     <string name="usage_analytics_average_month">Viimane kuu</string>
     <string name="usage_analytics_average_year">Viimane aasta</string>
@@ -98,6 +97,7 @@
     </plurals>
     <string name="usage_analytics_time_range">%1$s-%2$s</string>
     <string name="usage_analytics_expand">Laienda</string>
+    <string name="usage_analytics_by_weekday_title">Nädalapäeva järgi</string>
     <string name="usage_analytics_collapse">Ahenda</string>
     <string name="usage_analytics_day_mon">E</string>
     <string name="usage_analytics_day_tue">T</string>

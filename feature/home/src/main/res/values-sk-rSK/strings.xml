@@ -84,9 +84,9 @@
     <string name="time_interval">Časový\ninterval</string>
     <string name="time_limit_dialog_title">Nastaviť denný časový limit</string>
     <string name="usage_analytics_average_month">Posledný mesiac</string>
-    <string name="usage_analytics_average_title">Priemer</string>
     <string name="usage_analytics_average_week">Posledný týždeň</string>
     <string name="usage_analytics_average_year">Minulý rok</string>
+    <string name="usage_analytics_by_weekday_title">Podľa dňa v týždni</string>
     <string name="usage_analytics_collapse">Zbaliť</string>
     <string name="usage_analytics_day_fri">Pi</string>
     <string name="usage_analytics_day_mon">Po</string>

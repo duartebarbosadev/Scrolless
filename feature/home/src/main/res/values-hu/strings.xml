@@ -84,9 +84,9 @@
     <string name="time_interval">Idő-\nintervallum</string>
     <string name="time_limit_dialog_title">Napi limit beállítása</string>
     <string name="usage_analytics_average_month">Múlt hónap</string>
-    <string name="usage_analytics_average_title">Átlag</string>
     <string name="usage_analytics_average_week">Múlt hét</string>
     <string name="usage_analytics_average_year">Tavaly</string>
+    <string name="usage_analytics_by_weekday_title">Hétköznapok szerint</string>
     <string name="usage_analytics_collapse">Összecsukás</string>
     <string name="usage_analytics_day_fri">P</string>
     <string name="usage_analytics_day_mon">H</string>

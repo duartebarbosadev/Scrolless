@@ -160,7 +160,7 @@ internal fun BackgroundGuidanceCard(modifier: Modifier = Modifier, content: @Com
     Card(
         modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
-        shape = RoundedCornerShape(16.dp),
+        shape = MaterialTheme.shapes.large,
     ) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp), content = content)
     }

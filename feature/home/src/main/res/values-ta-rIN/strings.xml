@@ -84,9 +84,9 @@
     <string name="time_interval">நேர\nஇடைவெளி</string>
     <string name="time_limit_dialog_title">தினசரி வரம்பு நேரத்தை அமைக்கவும்</string>
     <string name="usage_analytics_average_month">கடந்த மாதம்</string>
-    <string name="usage_analytics_average_title">சராசரி</string>
     <string name="usage_analytics_average_week">கடந்த வாரம்</string>
     <string name="usage_analytics_average_year">கடந்த ஆண்டு</string>
+    <string name="usage_analytics_by_weekday_title">வார நாள் வாரியாக</string>
     <string name="usage_analytics_collapse">சுருக்கு</string>
     <string name="usage_analytics_day_fri">வெள்ளி</string>
     <string name="usage_analytics_day_mon">திங்கள்</string>

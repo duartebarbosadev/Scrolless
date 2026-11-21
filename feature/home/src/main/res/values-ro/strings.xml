@@ -84,9 +84,9 @@
     <string name="time_interval">Interval\nde timp</string>
     <string name="time_limit_dialog_title">Setează timpul limitei zilnice</string>
     <string name="usage_analytics_average_month">Luna trecută</string>
-    <string name="usage_analytics_average_title">Medie</string>
     <string name="usage_analytics_average_week">Săptămâna trecută</string>
     <string name="usage_analytics_average_year">Anul trecut</string>
+    <string name="usage_analytics_by_weekday_title">După ziua săptămânii</string>
     <string name="usage_analytics_collapse">Restrânge</string>
     <string name="usage_analytics_day_fri">Vin</string>
     <string name="usage_analytics_day_mon">Lun</string>

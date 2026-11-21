@@ -88,7 +88,6 @@
     <string name="usage_analytics_next_day">Susunod na araw</string>
     <string name="usage_analytics_swipe_hint">&lt; Mag-swipe para makita ang mga araw &gt;</string>
     <string name="usage_analytics_timeline_title">Timeline</string>
-    <string name="usage_analytics_average_title">Average</string>
     <string name="usage_analytics_average_week">Nakaraang linggo</string>
     <string name="usage_analytics_average_month">Nakaraang buwan</string>
     <string name="usage_analytics_average_year">Nakaraang taon</string>
@@ -98,6 +97,7 @@
     </plurals>
     <string name="usage_analytics_time_range">%1$s-%2$s</string>
     <string name="usage_analytics_expand">Palawakin</string>
+    <string name="usage_analytics_by_weekday_title">Ayon sa araw ng linggo</string>
     <string name="usage_analytics_collapse">Paliitin</string>
     <string name="usage_analytics_day_mon">Lun</string>
     <string name="usage_analytics_day_tue">Mar</string>

@@ -16,7 +16,6 @@
  */
 package com.scrolless.app.feature.home.components
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -24,6 +23,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -31,7 +32,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -51,17 +54,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.usage.WeekdayUsageAverage
 import com.scrolless.app.designsystem.component.AutoResizingText
+import com.scrolless.app.designsystem.theme.LocalIsLightTheme
 import com.scrolless.app.designsystem.theme.ScrollessTheme
-import com.scrolless.app.designsystem.theme.progressbar_green_use
-import com.scrolless.app.designsystem.theme.progressbar_orange_use
-import com.scrolless.app.designsystem.theme.progressbar_red_use
 import com.scrolless.app.feature.home.R
 import com.scrolless.app.feature.home.UsageAveragePeriod
 import java.time.DayOfWeek
@@ -75,6 +79,15 @@ fun WeekdayAverageSection(
 ) {
     val maxValue = weekdayAverages.maxOfOrNull { it.averageMillis } ?: 0L
     var menuExpanded by remember { mutableStateOf(false) }
+    // Same order in every bar and in the legend: the app with the most time overall comes first
+    val appOrder = remember(weekdayAverages) {
+        weekdayAverages
+            .flatMap { it.averageMillisByApp.entries }
+            .groupBy({ it.key }, { it.value })
+            .entries
+            .sortedByDescending { (_, millis) -> millis.sum() }
+            .map { it.key }
+    }
 
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Row(
@@ -83,7 +96,7 @@ fun WeekdayAverageSection(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = stringResource(R.string.usage_analytics_average_title),
+                text = stringResource(R.string.usage_analytics_by_weekday_title),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -91,7 +104,7 @@ fun WeekdayAverageSection(
             Box {
                 Row(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
+                        .clip(MaterialTheme.shapes.small)
                         .clickable { menuExpanded = true }
                         .padding(start = 8.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -138,7 +151,7 @@ fun WeekdayAverageSection(
         }
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
+            shape = MaterialTheme.shapes.large,
             color = MaterialTheme.colorScheme.surface.copy(alpha = 0.2f),
         ) {
             Row(
@@ -153,16 +166,54 @@ fun WeekdayAverageSection(
                     WeekdayAverageBar(
                         average = average,
                         maxValue = maxValue,
+                        appOrder = appOrder,
                         modifier = Modifier.weight(1f),
                     )
                 }
+            }
+        }
+        WeekdayLegend(apps = appOrder)
+    }
+}
+
+private const val MIN_SLICE_SHARE = 0.08f
+
+/** Names the colours used in the bars, ordered like the stacks (biggest app first). */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun WeekdayLegend(apps: List<BlockableApp>) {
+    val lightTheme = LocalIsLightTheme.current
+    if (apps.isEmpty()) return
+    FlowRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterHorizontally),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        apps.forEach { app ->
+            Row(
+                modifier = Modifier.semantics(mergeDescendants = true) {},
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(8.dp)
+                        .background(app.analyticsColor(lightTheme), CircleShape),
+                )
+                Spacer(Modifier.width(6.dp))
+                Text(
+                    text = app.analyticsDisplayName(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
         }
     }
 }
 
 @Composable
-fun WeekdayAverageBar(average: WeekdayUsageAverage, maxValue: Long, modifier: Modifier = Modifier) {
+fun WeekdayAverageBar(average: WeekdayUsageAverage, maxValue: Long, appOrder: List<BlockableApp>, modifier: Modifier = Modifier) {
     val fraction = if (maxValue > 0L) {
         average.averageMillis.toFloat() / maxValue.toFloat()
     } else {
@@ -173,13 +224,24 @@ fun WeekdayAverageBar(average: WeekdayUsageAverage, maxValue: Long, modifier: Mo
         animationSpec = tween(durationMillis = 720),
         label = "weekdayAverageFraction",
     )
-    val barColor by animateColorAsState(
-        targetValue = usageIntensityColor(fraction),
-        animationSpec = tween(durationMillis = 420),
-        label = "weekdayAverageColor",
-    )
+    // Top of the stack first, so the biggest app ends up at the bottom of the bar
+    val appSlices = appOrder.asReversed().mapNotNull { app ->
+        average.averageMillisByApp[app]?.takeIf { it > 0L }?.let { app to it }
+    }
+    val lightTheme = LocalIsLightTheme.current
+    val sliceTotal = appSlices.sumOf { it.second }.toFloat()
+    // Read as one sentence, e.g. "Mon, 1h 1m, Reels 30m, TikTok 20m"
+    val appNames = appSlices.associate { (app, _) -> app to app.analyticsDisplayName() }
+    val description = buildString {
+        append(average.dayOfWeek.shortLabel()).append(", ").append(average.averageMillis.formatAnalyticsDuration())
+        appSlices.asReversed().forEach { (app, millis) ->
+            append(", ").append(appNames.getValue(app)).append(' ').append(millis.formatAnalyticsDuration())
+        }
+    }
     Column(
-        modifier = modifier.fillMaxHeight(),
+        modifier = modifier
+            .fillMaxHeight()
+            .semantics(mergeDescendants = true) { contentDescription = description },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom,
     ) {
@@ -201,13 +263,26 @@ fun WeekdayAverageBar(average: WeekdayUsageAverage, maxValue: Long, modifier: Mo
                 .background(MaterialTheme.colorScheme.surfaceContainerHighest.copy(alpha = 0.72f)),
             contentAlignment = Alignment.BottomCenter,
         ) {
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(animatedFraction)
                     .clip(RoundedCornerShape(9.dp))
-                    .background(barColor),
-            )
+                    .background(if (appSlices.isEmpty()) MaterialTheme.colorScheme.outlineVariant else Color.Transparent),
+                // A thin gap and slightly softer colors keep the chart from overpowering the ring
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                appSlices.forEach { (app, millis) ->
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            // Tiny slices get a minimum share so they stay visible instead of reading as glitches
+                            .weight(maxOf(millis.toFloat(), sliceTotal * MIN_SLICE_SHARE))
+                            .clip(RoundedCornerShape(3.dp))
+                            .background(app.analyticsColor(lightTheme).copy(alpha = 0.85f)),
+                    )
+                }
+            }
         }
         Spacer(Modifier.height(6.dp))
         Text(
@@ -216,12 +291,6 @@ fun WeekdayAverageBar(average: WeekdayUsageAverage, maxValue: Long, modifier: Mo
             color = MaterialTheme.colorScheme.onSurface,
         )
     }
-}
-
-fun usageIntensityColor(fraction: Float): Color = when {
-    fraction >= 0.72f -> progressbar_red_use.copy(alpha = 0.82f)
-    fraction >= 0.38f -> progressbar_orange_use.copy(alpha = 0.82f)
-    else -> progressbar_green_use.copy(alpha = 0.82f)
 }
 
 @Composable
@@ -282,8 +351,14 @@ private fun PreviewWeekdayAverageSectionDropdownOpen() {
 }
 
 private fun previewWeekdayAverages(): List<WeekdayUsageAverage> = DayOfWeek.entries.mapIndexed { index, dayOfWeek ->
+    val averageMillisByApp = mapOf(
+        BlockableApp.TIKTOK to TimeUnit.MINUTES.toMillis(((index + 1) * 4).toLong()),
+        BlockableApp.REELS to TimeUnit.MINUTES.toMillis(((index % 3) + 1) * 3L),
+        BlockableApp.SHORTS to TimeUnit.MINUTES.toMillis((index % 2) * 5L),
+    )
     WeekdayUsageAverage(
         dayOfWeek = dayOfWeek,
-        averageMillis = TimeUnit.MINUTES.toMillis(((index + 1) * 8).toLong()),
+        averageMillis = averageMillisByApp.values.sum(),
+        averageMillisByApp = averageMillisByApp,
     )
 }

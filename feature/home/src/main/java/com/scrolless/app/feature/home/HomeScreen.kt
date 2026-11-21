@@ -29,9 +29,11 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -201,7 +203,7 @@ fun HomeScreen(
 
     var showTimeLimitDialog by remember { mutableStateOf(false) }
     var showHelpDialog by remember { mutableStateOf(false) }
-    var setupSheet by rememberSaveable(stateSaver = SetupSheetSaver) { mutableStateOf<SetupSheet?>(null) }
+    var setupSheet by rememberSaveable(stateSaver = SetupSheetSaver) { mutableStateOf(null) }
     var debugBypassAccessibilityCheck by remember { mutableStateOf(false) }
     var showIntervalTimerDialog by remember { mutableStateOf(false) }
     var pendingIntervalBreak by remember { mutableLongStateOf(DEFAULT_INTERVAL_BREAK_MILLIS) }
@@ -680,12 +682,12 @@ private fun HomeContent(
                     visible = analytics.selectedDate == analytics.today,
                     enter = expandVertically(
                         expandFrom = Alignment.Top,
-                        animationSpec = tween(220),
-                    ) + fadeIn(animationSpec = tween(140)),
+                        animationSpec = MaterialTheme.motionScheme.fastSpatialSpec(),
+                    ) + fadeIn(animationSpec = MaterialTheme.motionScheme.fastEffectsSpec()),
                     exit = shrinkVertically(
                         shrinkTowards = Alignment.Top,
-                        animationSpec = tween(180),
-                    ) + fadeOut(animationSpec = tween(100)),
+                        animationSpec = MaterialTheme.motionScheme.fastSpatialSpec(),
+                    ) + fadeOut(animationSpec = MaterialTheme.motionScheme.fastEffectsSpec()),
                 ) {
                     TodayBlockingControls(
                         uiState = uiState,
@@ -851,7 +853,7 @@ private fun DateNavigator(
 
     Surface(
         modifier = modifier.height(40.dp),
-        shape = RoundedCornerShape(20.dp),
+        shape = MaterialTheme.shapes.largeIncreased,
         color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.52f),
         contentColor = MaterialTheme.colorScheme.onSurface,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.1f)),
@@ -861,7 +863,12 @@ private fun DateNavigator(
             modifier = Modifier.padding(horizontal = 2.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            if (canGoBack) {
+            // An arrow with nowhere to go slides away instead of sitting there dimmed
+            AnimatedVisibility(
+                visible = canGoBack,
+                enter = fadeIn() + expandHorizontally(),
+                exit = fadeOut() + shrinkHorizontally(),
+            ) {
                 DateNavButton(
                     onClick = onPrevious,
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
@@ -891,7 +898,11 @@ private fun DateNavigator(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            if (canGoForward) {
+            AnimatedVisibility(
+                visible = canGoForward,
+                enter = fadeIn() + expandHorizontally(),
+                exit = fadeOut() + shrinkHorizontally(),
+            ) {
                 DateNavButton(
                     onClick = onNext,
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,

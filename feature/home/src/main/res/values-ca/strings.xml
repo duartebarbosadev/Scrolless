@@ -84,9 +84,9 @@
     <string name="time_interval">Interval\nde temps</string>
     <string name="time_limit_dialog_title">Estableix el temps límit diari</string>
     <string name="usage_analytics_average_month">Últim mes</string>
-    <string name="usage_analytics_average_title">Mitjana</string>
     <string name="usage_analytics_average_week">Última setmana</string>
     <string name="usage_analytics_average_year">Últim any</string>
+    <string name="usage_analytics_by_weekday_title">Per dia de la setmana</string>
     <string name="usage_analytics_collapse">Reduir</string>
     <string name="usage_analytics_day_fri">Dv</string>
     <string name="usage_analytics_day_mon">Dl</string>

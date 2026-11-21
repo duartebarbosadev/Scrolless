@@ -84,9 +84,9 @@
     <string name="time_interval">Tids-\nintervall</string>
     <string name="time_limit_dialog_title">Angi daglig grensetid</string>
     <string name="usage_analytics_average_month">Siste måned</string>
-    <string name="usage_analytics_average_title">Gjennomsnitt</string>
     <string name="usage_analytics_average_week">Siste uke</string>
     <string name="usage_analytics_average_year">I fjor</string>
+    <string name="usage_analytics_by_weekday_title">Etter ukedag</string>
     <string name="usage_analytics_collapse">Skjul</string>
     <string name="usage_analytics_day_fri">Fre</string>
     <string name="usage_analytics_day_mon">Man</string>

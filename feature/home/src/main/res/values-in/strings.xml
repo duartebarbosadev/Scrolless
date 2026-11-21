@@ -88,7 +88,6 @@
     <string name="usage_analytics_next_day">Hari berikutnya</string>
     <string name="usage_analytics_swipe_hint">&lt; Geser untuk melihat hari &gt;</string>
     <string name="usage_analytics_timeline_title">Linimasa</string>
-    <string name="usage_analytics_average_title">Rata-rata</string>
     <string name="usage_analytics_average_week">Minggu lalu</string>
     <string name="usage_analytics_average_month">Bulan lalu</string>
     <string name="usage_analytics_average_year">Tahun lalu</string>
@@ -97,6 +96,7 @@
     </plurals>
     <string name="usage_analytics_time_range">%1$s-%2$s</string>
     <string name="usage_analytics_expand">Luaskan</string>
+    <string name="usage_analytics_by_weekday_title">Menurut hari</string>
     <string name="usage_analytics_collapse">Ciutkan</string>
     <string name="usage_analytics_day_mon">Sen</string>
     <string name="usage_analytics_day_tue">Sel</string>

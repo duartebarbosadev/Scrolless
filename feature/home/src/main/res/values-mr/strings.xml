@@ -84,9 +84,9 @@
     <string name="time_interval">वेळ\nअंतर</string>
     <string name="time_limit_dialog_title">दैनिक मर्यादा वेळ सेट करा</string>
     <string name="usage_analytics_average_month">मागील महिना</string>
-    <string name="usage_analytics_average_title">सरासरी</string>
     <string name="usage_analytics_average_week">मागील आठवडा</string>
     <string name="usage_analytics_average_year">मागील वर्ष</string>
+    <string name="usage_analytics_by_weekday_title">आठवड्याच्या दिवसानुसार</string>
     <string name="usage_analytics_collapse">संक्षिप्त करा</string>
     <string name="usage_analytics_day_fri">शुक्र</string>
     <string name="usage_analytics_day_mon">सोम</string>

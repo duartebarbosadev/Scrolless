@@ -84,9 +84,9 @@
     <string name="time_interval">Intervalo\nde tiempo</string>
     <string name="time_limit_dialog_title">Definir tiempo del límite diario</string>
     <string name="usage_analytics_average_month">Último mes</string>
-    <string name="usage_analytics_average_title">Promedio</string>
     <string name="usage_analytics_average_week">Última semana</string>
     <string name="usage_analytics_average_year">Último año</string>
+    <string name="usage_analytics_by_weekday_title">Por día de la semana</string>
     <string name="usage_analytics_collapse">Contraer</string>
     <string name="usage_analytics_day_fri">Vie</string>
     <string name="usage_analytics_day_mon">Lun</string>

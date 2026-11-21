@@ -17,11 +17,20 @@
 package com.scrolless.app.core.model.usage
 
 import androidx.compose.runtime.Immutable
+import com.scrolless.app.core.model.BlockableApp
 import java.time.DayOfWeek
 import java.time.LocalDate
 
 @Immutable
-data class DailyUsageTotal(val date: LocalDate, val totalMillis: Long)
+data class DailyUsageTotal(val date: LocalDate, val totalMillis: Long, val millisByApp: Map<BlockableApp, Long> = emptyMap())
 
+/**
+ * Average usage for one weekday, with [averageMillisByApp] breaking it down per app so charts can
+ * show which apps the time went to.
+ */
 @Immutable
-data class WeekdayUsageAverage(val dayOfWeek: DayOfWeek, val averageMillis: Long)
+data class WeekdayUsageAverage(
+    val dayOfWeek: DayOfWeek,
+    val averageMillis: Long,
+    val averageMillisByApp: Map<BlockableApp, Long> = emptyMap(),
+)

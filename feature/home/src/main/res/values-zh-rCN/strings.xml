@@ -84,9 +84,9 @@
     <string name="time_interval">时间\n间隔</string>
     <string name="time_limit_dialog_title">设置每日限制时间</string>
     <string name="usage_analytics_average_month">上个月</string>
-    <string name="usage_analytics_average_title">平均</string>
     <string name="usage_analytics_average_week">上周</string>
     <string name="usage_analytics_average_year">去年</string>
+    <string name="usage_analytics_by_weekday_title">按星期</string>
     <string name="usage_analytics_collapse">折叠</string>
     <string name="usage_analytics_day_fri">周五</string>
     <string name="usage_analytics_day_mon">周一</string>

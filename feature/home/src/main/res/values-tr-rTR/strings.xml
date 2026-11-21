@@ -84,9 +84,9 @@
     <string name="time_interval">Zaman\naralığı</string>
     <string name="time_limit_dialog_title">Günlük sınır süresini ayarla</string>
     <string name="usage_analytics_average_month">Geçen ay</string>
-    <string name="usage_analytics_average_title">Ortalama</string>
     <string name="usage_analytics_average_week">Geçen hafta</string>
     <string name="usage_analytics_average_year">Geçen yıl</string>
+    <string name="usage_analytics_by_weekday_title">Haftanın gününe göre</string>
     <string name="usage_analytics_collapse">Daralt</string>
     <string name="usage_analytics_day_fri">Cum</string>
     <string name="usage_analytics_day_mon">Pzt</string>

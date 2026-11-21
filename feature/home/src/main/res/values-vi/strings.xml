@@ -84,9 +84,9 @@
     <string name="time_interval">Khoảng\nthời gian</string>
     <string name="time_limit_dialog_title">Đặt thời gian giới hạn hàng ngày</string>
     <string name="usage_analytics_average_month">Tháng trước</string>
-    <string name="usage_analytics_average_title">Trung bình</string>
     <string name="usage_analytics_average_week">Tuần trước</string>
     <string name="usage_analytics_average_year">Năm ngoái</string>
+    <string name="usage_analytics_by_weekday_title">Theo ngày trong tuần</string>
     <string name="usage_analytics_collapse">Thu gọn</string>
     <string name="usage_analytics_day_fri">Thứ Sáu</string>
     <string name="usage_analytics_day_mon">Thứ Hai</string>

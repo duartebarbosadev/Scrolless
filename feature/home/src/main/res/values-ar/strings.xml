@@ -88,7 +88,6 @@
     <string name="usage_analytics_next_day">اليوم التالي</string>
     <string name="usage_analytics_swipe_hint">&lt; اسحب لعرض الأيام &gt;</string>
     <string name="usage_analytics_timeline_title">الخط الزمني</string>
-    <string name="usage_analytics_average_title">المتوسط</string>
     <string name="usage_analytics_average_week">الأسبوع الماضي</string>
     <string name="usage_analytics_average_month">الشهر الماضي</string>
     <string name="usage_analytics_average_year">السنة الماضية</string>
@@ -102,6 +101,7 @@
     </plurals>
     <string name="usage_analytics_time_range">%1$s-%2$s</string>
     <string name="usage_analytics_expand">توسيع</string>
+    <string name="usage_analytics_by_weekday_title">حسب يوم الأسبوع</string>
     <string name="usage_analytics_collapse">تصغير</string>
     <string name="usage_analytics_day_mon">الاثنين</string>
     <string name="usage_analytics_day_tue">الثلاثاء</string>

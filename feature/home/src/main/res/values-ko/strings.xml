@@ -84,9 +84,9 @@
     <string name="time_interval">시간\n간격</string>
     <string name="time_limit_dialog_title">일일 한도 시간 설정</string>
     <string name="usage_analytics_average_month">지난달</string>
-    <string name="usage_analytics_average_title">평균</string>
     <string name="usage_analytics_average_week">지난주</string>
     <string name="usage_analytics_average_year">지난해</string>
+    <string name="usage_analytics_by_weekday_title">요일별</string>
     <string name="usage_analytics_collapse">접기</string>
     <string name="usage_analytics_day_fri">금</string>
     <string name="usage_analytics_day_mon">월</string>

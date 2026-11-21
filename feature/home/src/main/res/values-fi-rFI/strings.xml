@@ -84,9 +84,9 @@
     <string name="time_interval">Aika-\nväli</string>
     <string name="time_limit_dialog_title">Aseta päivittäinen aikaraja</string>
     <string name="usage_analytics_average_month">Viime kuukausi</string>
-    <string name="usage_analytics_average_title">Keskiarvo</string>
     <string name="usage_analytics_average_week">Viime viikko</string>
     <string name="usage_analytics_average_year">Viime vuosi</string>
+    <string name="usage_analytics_by_weekday_title">Viikonpäivittäin</string>
     <string name="usage_analytics_collapse">Kutista</string>
     <string name="usage_analytics_day_fri">Pe</string>
     <string name="usage_analytics_day_mon">Ma</string>

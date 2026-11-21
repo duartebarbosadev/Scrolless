@@ -84,9 +84,9 @@
     <string name="time_interval">時間\n間隔</string>
     <string name="time_limit_dialog_title">1日の制限時間を設定</string>
     <string name="usage_analytics_average_month">先月</string>
-    <string name="usage_analytics_average_title">平均</string>
     <string name="usage_analytics_average_week">先週</string>
     <string name="usage_analytics_average_year">昨年</string>
+    <string name="usage_analytics_by_weekday_title">曜日別</string>
     <string name="usage_analytics_collapse">折りたたむ</string>
     <string name="usage_analytics_day_fri">金</string>
     <string name="usage_analytics_day_mon">月</string>

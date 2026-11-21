@@ -18,28 +18,23 @@ package com.scrolless.app.feature.home.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -48,7 +43,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonGroup
@@ -57,34 +51,51 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.ToggleButton
 import androidx.compose.material3.ToggleButtonColors
+import androidx.compose.material3.ToggleButtonDefaults
 import androidx.compose.material3.ToggleButtonShapes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.onClick
+import androidx.compose.ui.semantics.role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.scrolless.app.core.model.BlockOption
 import com.scrolless.app.core.model.BlockingSettings
-import com.scrolless.app.core.model.IntervalUsage
 import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.tooling.DevicePreviews
@@ -93,11 +104,17 @@ import com.scrolless.app.designsystem.util.toCountdownLabel
 import com.scrolless.app.designsystem.util.toIntervalLabel
 import com.scrolless.app.feature.home.HomeUiState
 import com.scrolless.app.feature.home.R
-import kotlin.time.Duration.Companion.milliseconds
-import kotlinx.coroutines.delay
+import kotlin.math.min
+import kotlin.math.roundToInt
 import timber.log.Timber
 
-enum class BlockingButtonType { BLOCK_ALL, DAILY_LIMIT, INTERVAL }
+// The Daily Limit button's selected corner radius. The tab, flares included, spans only the flat part
+// of the button's bottom edge so its flares never land on the curved corners
+private val CONFIG_TAB_BUTTON_CORNER = 24.dp
+private val CONFIG_TAB_HEIGHT = 40.dp
+private val CONFIG_TAB_FLARE_RADIUS = 8.dp
+private val CONFIG_TAB_CORNER_RADIUS = 16.dp
+private val CONFIG_TAB_OVERLAP = 2.dp
 
 @Composable
 fun TodayBlockingControls(
@@ -112,71 +129,33 @@ fun TodayBlockingControls(
     onPauseToggle: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val weightBase = 1.0f
-    val weightExpanded = 1.15f
-    val weightShrunk = 0.65f
-    val releaseDelay = 160L
-    val pressAnimationSpec = spring<Float>(stiffness = 550f)
-
-    var lastClicked by remember { mutableStateOf<BlockingButtonType?>(null) }
     val hapticFeedback = rememberHapticHelper()
 
-    // Auto-releases the button expansion animation after releaseDelay
-    LaunchedEffect(lastClicked) {
-        if (lastClicked != null) {
-            delay(releaseDelay.milliseconds)
-            lastClicked = null
-        }
-    }
-
-    // 1. Define interaction sources for ALL buttons
+    // Each feature button grows while pressed, squeezing its neighbours
     val blockAllInteractionSource = remember { MutableInteractionSource() }
     val dailyLimitInteractionSource = remember { MutableInteractionSource() }
     val intervalInteractionSource = remember { MutableInteractionSource() }
 
-    val isBlockAllPressed by blockAllInteractionSource.collectIsPressedAsState()
-    val isDailyLimitPressed by dailyLimitInteractionSource.collectIsPressedAsState()
-    val isIntervalPressed by intervalInteractionSource.collectIsPressedAsState()
+    // Where the Daily Limit button currently sits, so its config tab can follow the button group's
+    // press-to-expand animation. Only read during layout, so updates don't recompose.
+    var dailyLimitBounds by remember { mutableStateOf(Rect.Zero) }
+    var configTabRowLeft by remember { mutableFloatStateOf(0f) }
 
-    // Helper to evaluate target weight based on click/press states
-    fun isPressedOrClicked(button: BlockingButtonType): Boolean = when (button) {
-        BlockingButtonType.BLOCK_ALL -> isBlockAllPressed || lastClicked == BlockingButtonType.BLOCK_ALL
-        BlockingButtonType.DAILY_LIMIT -> isDailyLimitPressed || lastClicked == BlockingButtonType.DAILY_LIMIT
-        BlockingButtonType.INTERVAL -> isIntervalPressed || lastClicked == BlockingButtonType.INTERVAL
-    }
-
-    fun weightFor(button: BlockingButtonType): Float = when {
-        isPressedOrClicked(button) -> weightExpanded
-        BlockingButtonType.entries.any { isPressedOrClicked(it) } -> weightShrunk
-        else -> weightBase
-    }
-
-    // 2. Calculate Animated Weights (Float) based on interaction and click states
-    val blockAllWeight by animateFloatAsState(
-        targetValue = weightFor(BlockingButtonType.BLOCK_ALL),
-        animationSpec = pressAnimationSpec, label = "blockAllWeight",
-    )
-
-    val dailyLimitWeight by animateFloatAsState(
-        targetValue = weightFor(BlockingButtonType.DAILY_LIMIT),
-        animationSpec = pressAnimationSpec, label = "dailyLimitWeight",
-    )
-
-    val intervalWeight by animateFloatAsState(
-        targetValue = weightFor(BlockingButtonType.INTERVAL),
-        animationSpec = pressAnimationSpec, label = "intervalWeight",
-    )
+    val motionScheme = MaterialTheme.motionScheme
+    val expandIn = expandVertically(expandFrom = Alignment.Top, animationSpec = motionScheme.defaultSpatialSpec()) +
+        fadeIn(animationSpec = motionScheme.defaultEffectsSpec())
+    val shrinkOut = shrinkVertically(shrinkTowards = Alignment.Top, animationSpec = motionScheme.defaultSpatialSpec()) +
+        fadeOut(animationSpec = motionScheme.defaultEffectsSpec())
 
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .animateContentSize(animationSpec = tween(durationMillis = 320)),
+            .animateContentSize(animationSpec = motionScheme.defaultSpatialSpec()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         FeatureButtonsRow(
             selectedOption = uiState.blockOption,
             onBlockAllClick = {
-                lastClicked = BlockingButtonType.BLOCK_ALL
                 val isSelected = uiState.blockOption == BlockOption.BlockAll
                 hapticFeedback.playToggle(!isSelected)
                 val newOption = if (isSelected) {
@@ -188,7 +167,6 @@ fun TodayBlockingControls(
                 onBlockOptionSelected(newOption)
             },
             onDailyLimitClick = {
-                lastClicked = BlockingButtonType.DAILY_LIMIT
                 val isSelected = uiState.blockOption == BlockOption.DailyLimit
                 hapticFeedback.playToggle(!isSelected)
                 if (uiState.settings.dailyLimitMillis == 0L && !isSelected) {
@@ -205,7 +183,6 @@ fun TodayBlockingControls(
                 }
             },
             onIntervalTimerClick = {
-                lastClicked = BlockingButtonType.INTERVAL
                 val isSelected = uiState.blockOption == BlockOption.IntervalTimer
                 hapticFeedback.playToggle(!isSelected)
                 Timber.i("IntervalTimer clicked from feature row")
@@ -214,34 +191,43 @@ fun TodayBlockingControls(
             blockAllInteractionSource = blockAllInteractionSource,
             dailyLimitInteractionSource = dailyLimitInteractionSource,
             intervalInteractionSource = intervalInteractionSource,
-            blockAllAnimatedWeight = blockAllWeight,
-            dailyLimitAnimatedWeight = dailyLimitWeight,
-            intervalAnimatedWeight = intervalWeight,
+            onDailyLimitPlaced = { dailyLimitBounds = it },
         )
 
         AnimatedVisibility(
             visible = uiState.blockOption == BlockOption.DailyLimit,
-            enter = expandVertically(
-                expandFrom = Alignment.Top,
-                animationSpec = tween(300),
-            ) + fadeIn(animationSpec = tween(200)),
-            exit = shrinkVertically(
-                shrinkTowards = Alignment.Top,
-                animationSpec = tween(300),
-            ) + fadeOut(animationSpec = tween(200)),
+            enter = expandIn,
+            exit = shrinkOut,
         ) {
             Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.TopCenter,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onPlaced { configTabRowLeft = it.positionInRoot().x },
             ) {
                 ConfigButton(
                     onClick = {
                         Timber.d("Open DailyLimit config button clicked")
                         onConfigureDailyLimit()
                     },
-                    dailyLimitInteractionSource = dailyLimitInteractionSource,
-                    blockAllInteractionSource = blockAllInteractionSource,
-                    modifier = Modifier.fillMaxWidth(0.2f),
+                    modifier = Modifier.layout { measurable, constraints ->
+                        // Stay centered under the Daily Limit button and scale with its width
+                        val bounds = dailyLimitBounds
+                        val flares = (CONFIG_TAB_FLARE_RADIUS * 2).roundToPx()
+                        val width = if (bounds.width > 0f) {
+                            (bounds.width - CONFIG_TAB_BUTTON_CORNER.toPx() * 2).roundToInt().coerceAtLeast(flares * 2)
+                        } else {
+                            (constraints.maxWidth * 0.2f).roundToInt() + flares
+                        }
+                        val placeable = measurable.measure(constraints.copy(minWidth = width, maxWidth = width))
+                        val x = if (bounds.width > 0f) {
+                            (bounds.center.x - configTabRowLeft - width / 2f).roundToInt()
+                        } else {
+                            (constraints.maxWidth - width) / 2
+                        }
+                        // Tuck the top under the button; the layout keeps the tab's visible height
+                        val overlap = CONFIG_TAB_OVERLAP.roundToPx()
+                        layout(constraints.maxWidth, placeable.height - overlap) { placeable.place(x, -overlap) }
+                    },
                 )
             }
         }
@@ -254,14 +240,8 @@ fun TodayBlockingControls(
 
         AnimatedVisibility(
             visible = uiState.blockOption == BlockOption.IntervalTimer,
-            enter = expandVertically(
-                expandFrom = Alignment.Top,
-                animationSpec = tween(300),
-            ) + fadeIn(animationSpec = tween(200)),
-            exit = shrinkVertically(
-                shrinkTowards = Alignment.Top,
-                animationSpec = tween(300),
-            ) + fadeOut(animationSpec = tween(200)),
+            enter = expandIn,
+            exit = shrinkOut,
         ) {
             IntervalTimerSettingsCard(
                 intervalLengthMillis = uiState.settings.intervalLengthMillis,
@@ -277,17 +257,11 @@ fun TodayBlockingControls(
 
         AnimatedVisibility(
             visible = isBlockingActive || isPauseActive,
-            enter = expandVertically(
-                expandFrom = Alignment.Top,
-                animationSpec = tween(300),
-            ) + fadeIn(animationSpec = tween(200)),
-            exit = shrinkVertically(
-                shrinkTowards = Alignment.Top,
-                animationSpec = tween(300),
-            ) + fadeOut(animationSpec = tween(200)),
+            enter = expandIn,
+            exit = shrinkOut,
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 PauseButton(
                     onTogglePause = onPauseToggle,
@@ -303,55 +277,62 @@ fun TodayBlockingControls(
 }
 
 @Composable
-fun ConfigButton(
-    onClick: () -> Unit,
-    dailyLimitInteractionSource: MutableInteractionSource,
-    blockAllInteractionSource: MutableInteractionSource,
-    modifier: Modifier = Modifier,
-) {
-    // Collect pressed state from both sources
-    val isDailyLimitPressed by dailyLimitInteractionSource.collectIsPressedAsState()
-    val isBlockAllPressed by blockAllInteractionSource.collectIsPressedAsState()
+fun ConfigButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val density = LocalDensity.current
+    val shape = remember(density) {
+        with(density) {
+            ConfigTabShape(
+                flareRadius = CONFIG_TAB_FLARE_RADIUS.toPx(),
+                bottomCornerRadius = CONFIG_TAB_CORNER_RADIUS.toPx(),
+                overlap = CONFIG_TAB_OVERLAP.toPx(),
+            )
+        }
+    }
 
-    // Wiggle if EITHER linked button is actively pressed
-    val isPressed = isDailyLimitPressed || isBlockAllPressed
-
-    // Fast tweens for visual feedback
-    val animationSpec = tween<Float>(durationMillis = 100)
-    val colorAnimationSpec = tween<Color>(durationMillis = 100)
-
-    val bottomCorner by animateFloatAsState(
-        targetValue = if (isPressed) 24f else 16f,
-        animationSpec = animationSpec,
-        label = "configButtonCorner",
-    )
-
-    val baseColor = MaterialTheme.colorScheme.surface
-    val pressedColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f)
-
-    val containerColor by animateColorAsState(
-        targetValue = if (isPressed) pressedColor else baseColor,
-        animationSpec = colorAnimationSpec,
-        label = "configButtonColor",
-    )
-
-    OutlinedButton(
+    // Same color as the selected feature button, so the tab reads as part of it
+    Button(
         onClick = onClick,
-        modifier = modifier.height(48.dp),
-        // Use internal source to prevent default press overlay, since we handle styling externally
-        interactionSource = remember { MutableInteractionSource() },
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = containerColor,
+        modifier = modifier.height(CONFIG_TAB_HEIGHT + CONFIG_TAB_OVERLAP),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
         ),
-        shape = RoundedCornerShape(0.dp, 0.dp, bottomCorner.dp, bottomCorner.dp),
+        shape = shape,
+        contentPadding = PaddingValues(top = CONFIG_TAB_OVERLAP),
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.icons8_control_48),
+        Icon(
+            painter = painterResource(id = R.drawable.ic_tune),
             contentDescription = stringResource(id = R.string.daily_limit_configure_time_content_description),
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
+            modifier = Modifier.size(22.dp),
         )
+    }
+}
+
+/**
+ * A tab hanging from the button above it: the top corners curve outwards into the button and the
+ * bottom corners are rounded. The top [overlap] tucks under the button's rounded bottom edge so no
+ * gap shows where that edge starts to curve.
+ */
+private class ConfigTabShape(private val flareRadius: Float, private val bottomCornerRadius: Float, private val overlap: Float) : Shape {
+    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
+        val width = size.width
+        val height = size.height
+        val flare = flareRadius.coerceAtMost(width / 4f)
+        val corner = bottomCornerRadius.coerceAtMost(min(width / 2f - flare, height - overlap - flare))
+        val path = Path().apply {
+            moveTo(0f, 0f)
+            lineTo(width, 0f)
+            lineTo(width, overlap)
+            arcTo(Rect(Offset(width, overlap + flare), flare), -90f, -90f, false)
+            lineTo(width - flare, height - corner)
+            arcTo(Rect(Offset(width - flare - corner, height - corner), corner), 0f, 90f, false)
+            lineTo(flare + corner, height)
+            arcTo(Rect(Offset(flare + corner, height - corner), corner), 90f, 90f, false)
+            lineTo(flare, overlap + flare)
+            arcTo(Rect(Offset(0f, overlap + flare), flare), 0f, -90f, false)
+            close()
+        }
+        return Outline.Generic(path)
     }
 }
 
@@ -368,7 +349,7 @@ fun IntervalTimerSettingsCard(intervalLengthMillis: Long, allowanceMillis: Long,
 
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(24.dp),
+        shape = MaterialTheme.shapes.extraLarge,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.40f),
         ),
@@ -430,7 +411,7 @@ fun IntervalTimerSettingsCard(intervalLengthMillis: Long, allowanceMillis: Long,
 private fun IntervalValueChip(label: String, value: String, modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(20.dp),
+        shape = MaterialTheme.shapes.largeIncreased,
         color = MaterialTheme.colorScheme.surface.copy(alpha = 0.65f),
     ) {
         Column(
@@ -452,6 +433,7 @@ private fun IntervalValueChip(label: String, value: String, modifier: Modifier =
     }
 }
 
+@OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 fun PauseButton(
     modifier: Modifier = Modifier,
@@ -462,33 +444,6 @@ fun PauseButton(
 ) {
 
     val hapticHelper = rememberHapticHelper()
-
-    val buttonShape = RoundedCornerShape(20.dp)
-    val containerColor by animateColorAsState(
-        targetValue = if (isPaused) {
-            MaterialTheme.colorScheme.errorContainer
-        } else {
-            MaterialTheme.colorScheme.primaryContainer
-        },
-        label = "pauseButtonContainer",
-    )
-    val contentColor by animateColorAsState(
-        targetValue = if (isPaused) {
-            MaterialTheme.colorScheme.onErrorContainer
-        } else {
-            MaterialTheme.colorScheme.onPrimaryContainer
-        },
-        label = "pauseButtonContent",
-    )
-
-    val borderColor by animateColorAsState(
-        targetValue = if (isPaused) {
-            MaterialTheme.colorScheme.error
-        } else {
-            MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
-        },
-        label = "pauseButtonBorder",
-    )
 
     val iconRes = if (isPaused) R.drawable.ic_play else R.drawable.ic_pause
     val buttonLabel = if (isPaused) {
@@ -501,29 +456,40 @@ fun PauseButton(
         modifier = modifier.wrapContentWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Button(
-            onClick = {
-                hapticHelper.playToggle(isPaused)
-                onTogglePause(!isPaused)
+        // Touch and accessibility clicks share this, so both play the haptic
+        val togglePause = {
+            hapticHelper.playToggle(isPaused)
+            onTogglePause(!isPaused)
+        }
+        // Checked means paused, which morphs the button's shape and colours
+        ToggleButton(
+            checked = isPaused,
+            onCheckedChange = { togglePause() },
+            // The label already names the action (Pause or Resume), so announce a plain button, not "Resume, on"
+            modifier = Modifier.clearAndSetSemantics {
+                role = Role.Button
+                contentDescription = buttonLabel
+                onClick(label = buttonLabel) {
+                    togglePause()
+                    true
+                }
             },
-            shape = buttonShape,
-            border = BorderStroke(1.dp, borderColor),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = containerColor,
-                contentColor = contentColor,
+            colors = ToggleButtonDefaults.colors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                checkedContainerColor = MaterialTheme.colorScheme.errorContainer,
+                checkedContentColor = MaterialTheme.colorScheme.onErrorContainer,
             ),
-            modifier = Modifier.height(64.dp),
         ) {
             Icon(
                 painter = painterResource(id = iconRes),
-                contentDescription = buttonLabel,
-                tint = contentColor,
-                modifier = Modifier.size(24.dp),
+                contentDescription = null,
+                modifier = Modifier.size(20.dp),
             )
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = buttonLabel,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.labelLarge,
             )
         }
 
@@ -561,10 +527,8 @@ fun FeatureButtonsRow(
     blockAllInteractionSource: MutableInteractionSource,
     dailyLimitInteractionSource: MutableInteractionSource,
     intervalInteractionSource: MutableInteractionSource,
-    blockAllAnimatedWeight: Float,
-    dailyLimitAnimatedWeight: Float,
-    intervalAnimatedWeight: Float,
     modifier: Modifier = Modifier,
+    onDailyLimitPlaced: (Rect) -> Unit = {},
 ) {
     ButtonGroup(
         overflowIndicator = {},
@@ -578,10 +542,11 @@ fun FeatureButtonsRow(
                     onClick = onBlockAllClick,
                     icon = R.drawable.icons8_block_120,
                     text = stringResource(id = R.string.block_all),
-                    contentDescription = stringResource(id = R.string.block_all),
                     isSelected = selectedOption == BlockOption.BlockAll,
                     interactionSource = blockAllInteractionSource,
-                    modifier = Modifier.weight(blockAllAnimatedWeight),
+                    modifier = Modifier
+                        .weight(1f)
+                        .animateWidth(blockAllInteractionSource),
                 )
             },
             menuContent = {},
@@ -593,10 +558,12 @@ fun FeatureButtonsRow(
                     onClick = onDailyLimitClick,
                     icon = R.drawable.icons8_timer_no_shadow_64,
                     text = stringResource(id = R.string.daily_limit),
-                    contentDescription = stringResource(id = R.string.daily_limit),
                     isSelected = selectedOption == BlockOption.DailyLimit,
                     interactionSource = dailyLimitInteractionSource,
-                    modifier = Modifier.weight(dailyLimitAnimatedWeight),
+                    modifier = Modifier
+                        .weight(1f)
+                        .animateWidth(dailyLimitInteractionSource)
+                        .onPlaced { onDailyLimitPlaced(it.boundsInRoot()) },
                 )
             },
             menuContent = {},
@@ -606,14 +573,14 @@ fun FeatureButtonsRow(
             buttonGroupContent = {
                 Box(
                     modifier = Modifier
-                        .weight(intervalAnimatedWeight)
+                        .weight(1f)
+                        .animateWidth(intervalInteractionSource)
                         .fillMaxSize(),
                 ) {
                     FeatureButton(
                         onClick = onIntervalTimerClick,
                         icon = R.drawable.icons8_stopwatch_no_shadow_64,
                         text = stringResource(id = R.string.time_interval),
-                        contentDescription = stringResource(id = R.string.time_interval),
                         isSelected = selectedOption == BlockOption.IntervalTimer,
                         interactionSource = intervalInteractionSource,
                         modifier = Modifier.fillMaxSize(),
@@ -640,7 +607,6 @@ fun FeatureButton(
     onClick: () -> Unit,
     icon: Int,
     text: String,
-    contentDescription: String,
     modifier: Modifier = Modifier,
     isSelected: Boolean = false,
     isEnabled: Boolean = true,
@@ -689,17 +655,17 @@ fun FeatureButton(
         modifier = finalModifier.fillMaxSize(),
         enabled = isEnabled,
         colors = ToggleButtonColors(
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
             contentColor = MaterialTheme.colorScheme.onSurface,
-            disabledContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.38f),
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerHigh.copy(alpha = 0.38f),
             disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
             checkedContainerColor = MaterialTheme.colorScheme.primary,
             checkedContentColor = MaterialTheme.colorScheme.onPrimary,
         ),
         shapes = ToggleButtonShapes(
-            shape = RoundedCornerShape(16.dp),
-            pressedShape = RoundedCornerShape(24.dp),
-            checkedShape = RoundedCornerShape(24.dp),
+            shape = MaterialTheme.shapes.large,
+            pressedShape = MaterialTheme.shapes.extraLarge,
+            checkedShape = MaterialTheme.shapes.extraLarge,
         ),
         interactionSource = interactionSource,
     ) {
@@ -710,7 +676,8 @@ fun FeatureButton(
         ) {
             Image(
                 painter = painterResource(id = icon),
-                contentDescription = contentDescription,
+                // The text below already labels the button
+                contentDescription = null,
                 modifier = Modifier
                     .size(32.dp)
                     .graphicsLayer(

@@ -84,9 +84,9 @@
     <string name="time_interval">Vremenski\ninterval</string>
     <string name="time_limit_dialog_title">Postavi dnevno vremensko ograničenje</string>
     <string name="usage_analytics_average_month">Prošli mjesec</string>
-    <string name="usage_analytics_average_title">Prosjek</string>
     <string name="usage_analytics_average_week">Prošli tjedan</string>
     <string name="usage_analytics_average_year">Prošla godina</string>
+    <string name="usage_analytics_by_weekday_title">Po danima u tjednu</string>
     <string name="usage_analytics_collapse">Sažmi</string>
     <string name="usage_analytics_day_fri">Pet</string>
     <string name="usage_analytics_day_mon">Pon</string>

@@ -217,7 +217,7 @@
     <string name="usage_analytics_next_day">Next day</string>
     <string name="usage_analytics_swipe_hint">&lt; Swipe to view days &gt;</string>
     <string name="usage_analytics_timeline_title">Timeline</string>
-    <string name="usage_analytics_average_title">Average</string>
+    <string name="usage_analytics_by_weekday_title">By weekday</string>
     <string name="usage_analytics_average_week">Last week</string>
     <string name="usage_analytics_average_month">Last month</string>
     <string name="usage_analytics_average_year">Last year</string>

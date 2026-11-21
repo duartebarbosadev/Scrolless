@@ -23,7 +23,6 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -60,6 +59,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -72,13 +72,16 @@ import androidx.compose.ui.unit.sp
 import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import com.scrolless.app.designsystem.component.AutoResizingText
+import com.scrolless.app.designsystem.theme.LocalIsLightTheme
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.theme.facebookColor
 import com.scrolless.app.designsystem.theme.facebookLiteColor
 import com.scrolless.app.designsystem.theme.instagramReelsColor
 import com.scrolless.app.designsystem.theme.snapchatColor
 import com.scrolless.app.designsystem.theme.tiktokColor
+import com.scrolless.app.designsystem.theme.tiktokLightThemeColor
 import com.scrolless.app.designsystem.theme.tiktokLiteColor
+import com.scrolless.app.designsystem.theme.tiktokLiteLightThemeColor
 import com.scrolless.app.designsystem.theme.youtubeShortsColor
 import com.scrolless.app.feature.home.AppUsageTotal
 import com.scrolless.app.feature.home.R
@@ -130,7 +133,7 @@ fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(8.dp))
+                .clip(MaterialTheme.shapes.small)
                 .clickable(
                     enabled = sessionSegments.isNotEmpty(),
                     onClick = onToggleSessionChunks,
@@ -198,7 +201,7 @@ fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded
                 if (sessionSegments.isNotEmpty()) {
                     val iconRotation by animateFloatAsState(
                         targetValue = if (sessionChunksExpanded) 180f else 0f,
-                        animationSpec = tween(durationMillis = 260),
+                        animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec(),
                         label = "expandIconRotation",
                     )
                     Row(
@@ -235,8 +238,8 @@ fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .animateContentSize(animationSpec = tween(durationMillis = 320)),
-            shape = RoundedCornerShape(16.dp),
+                .animateContentSize(animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec()),
+            shape = MaterialTheme.shapes.large,
             color = MaterialTheme.colorScheme.surface.copy(alpha = 0.2f),
         ) {
             Column(
@@ -250,8 +253,10 @@ fun UsageTimelineSection(analytics: UsageAnalyticsUiState, sessionChunksExpanded
                 if (sessionSegments.isNotEmpty()) {
                     AnimatedVisibility(
                         visible = sessionChunksExpanded,
-                        enter = fadeIn(animationSpec = tween(180)) + expandVertically(animationSpec = tween(260)),
-                        exit = fadeOut(animationSpec = tween(120)) + shrinkVertically(animationSpec = tween(200)),
+                        enter = fadeIn(animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec()) +
+                            expandVertically(animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec()),
+                        exit = fadeOut(animationSpec = MaterialTheme.motionScheme.defaultEffectsSpec()) +
+                            shrinkVertically(animationSpec = MaterialTheme.motionScheme.defaultSpatialSpec()),
                     ) {
                         Column(
                             modifier = Modifier.padding(top = 8.dp),
@@ -284,6 +289,9 @@ fun UsageTimelineCanvas(sessionSegments: List<SessionSegment>, selectedDate: Loc
         )
     }
 
+    val window = remember(sessionSegments) { timelineWindowFor(sessionSegments) }
+    val lightTheme = LocalIsLightTheme.current
+
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Canvas(
             modifier = Modifier
@@ -299,8 +307,8 @@ fun UsageTimelineCanvas(sessionSegments: List<SessionSegment>, selectedDate: Loc
                 cornerRadius = CornerRadius(trackHeight / 2f, trackHeight / 2f),
             )
 
-            for (hour in 0..24 step 6) {
-                val x = size.width * (hour / 24f)
+            window.tickHours.forEach { hour ->
+                val x = size.width * window.fractionOf(hour * 60f)
                 drawLine(
                     color = outline,
                     start = Offset(x, 0f),
@@ -313,43 +321,94 @@ fun UsageTimelineCanvas(sessionSegments: List<SessionSegment>, selectedDate: Loc
                 val progress = (transitionProgress.value * (1f + index * 0.05f) - index * 0.05f).coerceAtLeast(0f)
                 val startMinutes = segment.startDateTime.toLocalTime().toSecondOfDay() / 60f
                 val durationMinutes = TimeUnit.MILLISECONDS.toMinutes(segment.durationMillis).coerceAtLeast(1).toFloat()
-                val startX = size.width * (startMinutes / 1440f)
-                val width = (size.width * (durationMinutes / 1440f)).coerceAtLeast(4.dp.toPx())
+                val startX = size.width * window.fractionOf(startMinutes)
+                val width = (size.width * (durationMinutes / window.spanMinutes))
+                    .coerceAtMost(size.width - startX)
+                    .coerceAtLeast(6.dp.toPx())
+                // A session at the window's right edge starts slightly earlier so it keeps its minimum width
+                val left = startX.coerceAtMost(size.width - width)
 
                 val animatedHeight = trackHeight * progress
                 val animatedTop = trackTop + (trackHeight - animatedHeight) / 2f
 
                 drawRoundRect(
-                    color = segment.app.analyticsColor(),
-                    topLeft = Offset(startX, animatedTop),
-                    size = Size(width.coerceAtMost(size.width - startX), animatedHeight),
+                    color = segment.app.analyticsColor(lightTheme),
+                    topLeft = Offset(left, animatedTop),
+                    size = Size(width, animatedHeight),
                     cornerRadius = CornerRadius(trackHeight / 2f, trackHeight / 2f),
                 )
             }
         }
-        TimelineTickLabels()
+        TimelineTickLabels(tickHours = window.tickHours)
     }
 }
 
+/**
+ * The part of the day the timeline shows, in whole hours split into four equal steps.
+ *
+ * Zooming in on the hours with activity keeps short sessions readable instead of thin slivers on a
+ * 24 hour bar. A day without sessions shows the full day.
+ */
+internal data class TimelineWindow(val startHour: Int, val endHour: Int) {
+    val spanMinutes: Float get() = (endHour - startHour) * 60f
+    val tickHours: List<Int> get() = (0..TIMELINE_TICK_STEPS).map { startHour + it * (endHour - startHour) / TIMELINE_TICK_STEPS }
+
+    fun fractionOf(minuteOfDay: Float): Float = ((minuteOfDay - startHour * 60f) / spanMinutes).coerceIn(0f, 1f)
+}
+
+private const val TIMELINE_TICK_STEPS = 4
+private const val HOURS_PER_DAY = 24
+
+internal fun timelineWindowFor(sessionSegments: List<SessionSegment>): TimelineWindow {
+    if (sessionSegments.isEmpty()) return TimelineWindow(startHour = 0, endHour = HOURS_PER_DAY)
+
+    val firstStartHour = sessionSegments.minOf { it.startDateTime.hour }
+    // Sessions count as at least a minute, like the bars drawn for them, so one that starts on the
+    // hour still falls inside the window
+    val lastEndMinute = sessionSegments.maxOf { segment ->
+        segment.startDateTime.toLocalTime().toSecondOfDay() / 60 +
+            TimeUnit.MILLISECONDS.toMinutes(segment.durationMillis).coerceAtLeast(1).toInt()
+    }
+    val lastEndHour = ((lastEndMinute + 59) / 60).coerceIn(firstStartHour + 1, HOURS_PER_DAY)
+
+    // Round the span up to a multiple of the tick count so every tick lands on a whole hour
+    val activeSpan = lastEndHour - firstStartHour
+    val span = (((activeSpan + TIMELINE_TICK_STEPS - 1) / TIMELINE_TICK_STEPS) * TIMELINE_TICK_STEPS).coerceAtMost(HOURS_PER_DAY)
+    val startHour = (firstStartHour - (span - activeSpan) / 2).coerceIn(0, HOURS_PER_DAY - span)
+    return TimelineWindow(startHour = startHour, endHour = startHour + span)
+}
+
 @Composable
-fun TimelineTickLabels() {
-    Row(
+fun TimelineTickLabels(tickHours: List<Int>) {
+    // Each label is centred under its tick line, with the first and last kept inside the bar
+    Layout(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
-        listOf("00:00", "06:00", "12:00", "18:00", "24:00").forEach { label ->
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-            )
+        content = {
+            tickHours.map { "${it.toString().padStart(2, '0')}:00" }.forEach { label ->
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                )
+            }
+        },
+    ) { measurables, constraints ->
+        val placeables = measurables.map { it.measure(constraints.copy(minWidth = 0, minHeight = 0)) }
+        val width = constraints.maxWidth
+        val steps = (placeables.size - 1).coerceAtLeast(1)
+        layout(width, placeables.maxOfOrNull { it.height } ?: 0) {
+            placeables.forEachIndexed { index, placeable ->
+                val centre = width * index / steps
+                placeable.place((centre - placeable.width / 2).coerceIn(0, (width - placeable.width).coerceAtLeast(0)), 0)
+            }
         }
     }
 }
 
 @Composable
 fun SessionChunkRow(segment: SessionSegment) {
+    val lightTheme = LocalIsLightTheme.current
     val startTime = segment.startDateTime.toLocalTime()
     val endTime = segment.startDateTime.plusNanos(TimeUnit.MILLISECONDS.toNanos(segment.durationMillis)).toLocalTime()
     Row(
@@ -361,7 +420,7 @@ fun SessionChunkRow(segment: SessionSegment) {
             modifier = Modifier
                 .width(4.dp)
                 .height(42.dp)
-                .background(segment.app.analyticsColor(), RoundedCornerShape(4.dp)),
+                .background(segment.app.analyticsColor(lightTheme), MaterialTheme.shapes.extraSmall),
         )
         Column(modifier = Modifier.weight(1f)) {
             Text(
@@ -381,8 +440,8 @@ fun SessionChunkRow(segment: SessionSegment) {
             )
         }
         Surface(
-            shape = RoundedCornerShape(12.dp),
-            color = segment.app.analyticsColor().copy(alpha = 0.12f),
+            shape = MaterialTheme.shapes.medium,
+            color = segment.app.analyticsColor(lightTheme).copy(alpha = 0.12f),
             contentColor = MaterialTheme.colorScheme.onSurface,
         ) {
             AutoResizingText(
@@ -443,14 +502,15 @@ fun BlockableApp.displayName(context: Context): String = context.getString(
 @Composable
 fun BlockableApp.analyticsDisplayName(): String = displayName(LocalContext.current)
 
-fun BlockableApp.analyticsColor(): Color = when (this) {
+/** The cyan used for TikTok is too bright to read on light surfaces, so light themes get a deeper teal. */
+fun BlockableApp.analyticsColor(lightTheme: Boolean = false): Color = when (this) {
     BlockableApp.FACEBOOK -> facebookColor
     BlockableApp.FACEBOOK_LITE -> facebookLiteColor
     BlockableApp.REELS -> instagramReelsColor
     BlockableApp.SNAPCHAT -> snapchatColor
     BlockableApp.SHORTS -> youtubeShortsColor
-    BlockableApp.TIKTOK -> tiktokColor
-    BlockableApp.TIKTOK_LITE -> tiktokLiteColor
+    BlockableApp.TIKTOK -> if (lightTheme) tiktokLightThemeColor else tiktokColor
+    BlockableApp.TIKTOK_LITE -> if (lightTheme) tiktokLiteLightThemeColor else tiktokLiteColor
 }
 
 // --- Analytics previews ---

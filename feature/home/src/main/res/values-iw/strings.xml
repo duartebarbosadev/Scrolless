@@ -88,7 +88,6 @@
     <string name="usage_analytics_next_day">היום הבא</string>
     <string name="usage_analytics_swipe_hint">&lt; החליקו כדי לראות ימים &gt;</string>
     <string name="usage_analytics_timeline_title">ציר זמן</string>
-    <string name="usage_analytics_average_title">ממוצע</string>
     <string name="usage_analytics_average_week">השבוע שעבר</string>
     <string name="usage_analytics_average_month">החודש שעבר</string>
     <string name="usage_analytics_average_year">השנה שעברה</string>
@@ -99,6 +98,7 @@
     </plurals>
     <string name="usage_analytics_time_range">%1$s-%2$s</string>
     <string name="usage_analytics_expand">הרחבה</string>
+    <string name="usage_analytics_by_weekday_title">לפי יום בשבוע</string>
     <string name="usage_analytics_collapse">כיווץ</string>
     <string name="usage_analytics_day_mon">ב׳</string>
     <string name="usage_analytics_day_tue">ג׳</string>

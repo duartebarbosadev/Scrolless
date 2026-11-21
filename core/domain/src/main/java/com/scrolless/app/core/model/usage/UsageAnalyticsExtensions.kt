@@ -16,6 +16,7 @@
  */
 package com.scrolless.app.core.model.usage
 
+import com.scrolless.app.core.model.BlockableApp
 import com.scrolless.app.core.model.SessionSegment
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -27,13 +28,19 @@ import java.time.temporal.ChronoUnit
 fun List<SessionSegment>.calculateDailyTotals(startDate: LocalDate, endDateInclusive: LocalDate): List<DailyUsageTotal> {
     if (endDateInclusive.isBefore(startDate)) return emptyList()
 
-    val totalsByDate = groupBy { it.startDateTime.toLocalDate() }
-        .mapValues { (_, segments) -> segments.sumOf { it.durationMillis.coerceAtLeast(0L) } }
+    val segmentsByDate = groupBy { it.startDateTime.toLocalDate() }
 
     val dayCount = ChronoUnit.DAYS.between(startDate, endDateInclusive).toInt()
     return (0..dayCount).map { offset ->
         val date = startDate.plusDays(offset.toLong())
-        DailyUsageTotal(date = date, totalMillis = totalsByDate[date] ?: 0L)
+        val segments = segmentsByDate[date].orEmpty()
+        DailyUsageTotal(
+            date = date,
+            totalMillis = segments.sumOf { it.durationMillis.coerceAtLeast(0L) },
+            millisByApp = segments.groupBy { it.app }
+                .mapValues { (_, appSegments) -> appSegments.sumOf { it.durationMillis.coerceAtLeast(0L) } }
+                .filterValues { it > 0L },
+        )
     }
 }
 
@@ -46,22 +53,30 @@ fun List<DailyUsageTotal>.calculateWeekdayAverages(startDate: LocalDate, endDate
     }
 
     val totalsByDate = filter { it.date in startDate..endDateInclusive }
-        .associate { it.date to it.totalMillis }
+        .associateBy { it.date }
 
     val dayCount = ChronoUnit.DAYS.between(startDate, endDateInclusive).toInt()
     val dates = (0..dayCount).map { offset -> startDate.plusDays(offset.toLong()) }
     val totalsByWeekday = dates.groupBy(
         keySelector = { it.dayOfWeek },
-        valueTransform = { totalsByDate[it] ?: 0L },
+        valueTransform = { totalsByDate[it] },
     )
 
     return DayOfWeek.entries.map { dayOfWeek ->
         val totals = totalsByWeekday[dayOfWeek].orEmpty()
-        val averageMillis = if (totals.isEmpty()) {
-            0L
-        } else {
-            totals.sum() / totals.size
+        if (totals.isEmpty()) {
+            return@map WeekdayUsageAverage(dayOfWeek = dayOfWeek, averageMillis = 0L)
         }
-        WeekdayUsageAverage(dayOfWeek = dayOfWeek, averageMillis = averageMillis)
+        // Days without usage still count towards the average, so divide by every matching date
+        val dayCountForWeekday = totals.size
+        val averageMillisByApp = mutableMapOf<BlockableApp, Long>()
+        totals.filterNotNull().forEach { daily ->
+            daily.millisByApp.forEach { (app, millis) -> averageMillisByApp[app] = (averageMillisByApp[app] ?: 0L) + millis }
+        }
+        WeekdayUsageAverage(
+            dayOfWeek = dayOfWeek,
+            averageMillis = totals.sumOf { it?.totalMillis ?: 0L } / dayCountForWeekday,
+            averageMillisByApp = averageMillisByApp.mapValues { (_, millis) -> millis / dayCountForWeekday },
+        )
     }
 }

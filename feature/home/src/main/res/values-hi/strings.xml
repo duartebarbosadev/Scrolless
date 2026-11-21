@@ -84,9 +84,9 @@
     <string name="time_interval">समय\nअंतराल</string>
     <string name="time_limit_dialog_title">दैनिक सीमा समय निर्धारित करें</string>
     <string name="usage_analytics_average_month">पिछला महीना</string>
-    <string name="usage_analytics_average_title">औसत</string>
     <string name="usage_analytics_average_week">पिछला हफ़्ता</string>
     <string name="usage_analytics_average_year">पिछला साल</string>
+    <string name="usage_analytics_by_weekday_title">सप्ताह के दिन के अनुसार</string>
     <string name="usage_analytics_collapse">छोटा करें</string>
     <string name="usage_analytics_day_fri">शुक्र</string>
     <string name="usage_analytics_day_mon">सोम</string>

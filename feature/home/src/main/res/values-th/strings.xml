@@ -84,9 +84,9 @@
     <string name="time_interval">ช่วง\nเวลา</string>
     <string name="time_limit_dialog_title">ตั้งเวลาขีดจำกัดรายวัน</string>
     <string name="usage_analytics_average_month">เดือนที่แล้ว</string>
-    <string name="usage_analytics_average_title">ค่าเฉลี่ย</string>
     <string name="usage_analytics_average_week">สัปดาห์ที่แล้ว</string>
     <string name="usage_analytics_average_year">ปีที่แล้ว</string>
+    <string name="usage_analytics_by_weekday_title">ตามวันในสัปดาห์</string>
     <string name="usage_analytics_collapse">ยุบ</string>
     <string name="usage_analytics_day_fri">ศ.</string>
     <string name="usage_analytics_day_mon">จ.</string>

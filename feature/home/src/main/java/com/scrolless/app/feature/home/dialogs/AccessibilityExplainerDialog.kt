@@ -209,7 +209,7 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.8f),
                 ),
-                shape = RoundedCornerShape(16.dp),
+                shape = MaterialTheme.shapes.large,
             ) {
                 Row(
                     modifier = Modifier.padding(12.dp),
@@ -247,7 +247,7 @@ private fun AccessibilityExplainerContent(onDismiss: () -> Unit, onOpenSettings:
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                 ),
-                shape = RoundedCornerShape(12.dp),
+                shape = MaterialTheme.shapes.medium,
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -343,7 +343,7 @@ private fun AccessibilityStep(stepNumber: String, text: String) {
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceContainer,
             ),
-            shape = RoundedCornerShape(16.dp),
+            shape = MaterialTheme.shapes.large,
         ) {
             Row(
                 modifier = Modifier

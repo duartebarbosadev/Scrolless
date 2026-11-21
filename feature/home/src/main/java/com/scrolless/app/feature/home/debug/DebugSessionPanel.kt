@@ -211,11 +211,11 @@ internal fun FloatingDebugUsagePanel(
 
             Surface(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(20.dp))
+                    .clip(MaterialTheme.shapes.largeIncreased)
                     .clickable(onClick = onToggleExpanded),
                 color = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                shape = RoundedCornerShape(20.dp),
+                shape = MaterialTheme.shapes.largeIncreased,
                 tonalElevation = 6.dp,
             ) {
                 Row(
@@ -313,7 +313,7 @@ private fun DebugDayTimelinePanel(
 
     Card(
         modifier = modifier.heightIn(max = 460.dp),
-        shape = RoundedCornerShape(24.dp),
+        shape = MaterialTheme.shapes.extraLarge,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.94f),
         ),
@@ -687,8 +687,8 @@ private fun DayTimeline(
         modifier = modifier
             .height(TIMELINE_VIEWPORT_HEIGHT)
             .onSizeChanged { viewportWidthPx = it.width }
-            .clip(RoundedCornerShape(16.dp))
-            .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.25f), RoundedCornerShape(16.dp))
+            .clip(MaterialTheme.shapes.large)
+            .border(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.25f), MaterialTheme.shapes.large)
             .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.92f))
             .padding(8.dp)
             .horizontalScroll(scrollState),
@@ -715,7 +715,7 @@ private fun DayTimeline(
             modifier = Modifier
                 .width(TIMELINE_TRACK_WIDTH)
                 .height(TIMELINE_TRACK_HEIGHT)
-                .clip(RoundedCornerShape(12.dp))
+                .clip(MaterialTheme.shapes.medium)
                 .background(MaterialTheme.colorScheme.surface),
         ) {
             Row(modifier = Modifier.fillMaxSize()) {

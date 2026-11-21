@@ -84,9 +84,9 @@
     <string name="time_interval">Zeit-\nIntervall</string>
     <string name="time_limit_dialog_title">Tägliches Zeitlimit festlegen</string>
     <string name="usage_analytics_average_month">Letzter Monat</string>
-    <string name="usage_analytics_average_title">Durchschnitt</string>
     <string name="usage_analytics_average_week">Letzte Woche</string>
     <string name="usage_analytics_average_year">Letztes Jahr</string>
+    <string name="usage_analytics_by_weekday_title">Nach Wochentag</string>
     <string name="usage_analytics_collapse">Einklappen</string>
     <string name="usage_analytics_day_fri">Fr</string>
     <string name="usage_analytics_day_mon">Mo</string>

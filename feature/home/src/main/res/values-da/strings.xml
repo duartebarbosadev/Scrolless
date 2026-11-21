@@ -88,7 +88,6 @@
     <string name="usage_analytics_next_day">Næste dag</string>
     <string name="usage_analytics_swipe_hint">&lt; Stryg for at se dage &gt;</string>
     <string name="usage_analytics_timeline_title">Tidslinje</string>
-    <string name="usage_analytics_average_title">Gennemsnit</string>
     <string name="usage_analytics_average_week">Sidste uge</string>
     <string name="usage_analytics_average_month">Sidste måned</string>
     <string name="usage_analytics_average_year">Sidste år</string>
@@ -98,6 +97,7 @@
     </plurals>
     <string name="usage_analytics_time_range">%1$s-%2$s</string>
     <string name="usage_analytics_expand">Udvid</string>
+    <string name="usage_analytics_by_weekday_title">Efter ugedag</string>
     <string name="usage_analytics_collapse">Skjul</string>
     <string name="usage_analytics_day_mon">Man</string>
     <string name="usage_analytics_day_tue">Tir</string>

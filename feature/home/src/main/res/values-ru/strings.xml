@@ -84,9 +84,9 @@
     <string name="time_interval">Временной\nинтервал</string>
     <string name="time_limit_dialog_title">Установить время дневного лимита</string>
     <string name="usage_analytics_average_month">Последний месяц</string>
-    <string name="usage_analytics_average_title">Среднее</string>
     <string name="usage_analytics_average_week">Последняя неделя</string>
     <string name="usage_analytics_average_year">Последний год</string>
+    <string name="usage_analytics_by_weekday_title">По дням недели</string>
     <string name="usage_analytics_collapse">Свернуть</string>
     <string name="usage_analytics_day_fri">Пт</string>
     <string name="usage_analytics_day_mon">Пн</string>

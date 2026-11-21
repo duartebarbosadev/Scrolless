@@ -84,9 +84,9 @@
     <string name="time_interval">Временски\nинтервал</string>
     <string name="time_limit_dialog_title">Подесите време дневног лимита</string>
     <string name="usage_analytics_average_month">Прошлог месеца</string>
-    <string name="usage_analytics_average_title">Просек</string>
     <string name="usage_analytics_average_week">Прошле недеље</string>
     <string name="usage_analytics_average_year">Прошле године</string>
+    <string name="usage_analytics_by_weekday_title">По данима у недељи</string>
     <string name="usage_analytics_collapse">Скупи</string>
     <string name="usage_analytics_day_fri">Пет</string>
     <string name="usage_analytics_day_mon">Пон</string>

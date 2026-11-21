@@ -28,6 +28,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.platform.LocalContext
@@ -268,8 +269,7 @@ fun ScrollessTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
     content:
-    @Composable()
-    () -> Unit,
+    @Composable () -> Unit,
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
@@ -293,14 +293,19 @@ fun ScrollessTheme(
         }
     }
 
-    MaterialExpressiveTheme(
-        colorScheme = colorScheme,
-        typography = ScrollessTypography,
-        motionScheme = MotionScheme.expressive(),
-        shapes = ScrollessShapes,
-        content = content,
-    )
+    CompositionLocalProvider(LocalIsLightTheme provides !darkTheme) {
+        MaterialExpressiveTheme(
+            colorScheme = colorScheme,
+            typography = ScrollessTypography,
+            motionScheme = MotionScheme.expressive(),
+            shapes = ScrollessShapes,
+            content = content,
+        )
+    }
 }
+
+/** Whether the app is drawn in its light theme. Reliable with dynamic colour, unlike guessing from a colour. */
+val LocalIsLightTheme = staticCompositionLocalOf { false }
 
 val LocalSharedTransitionScope = staticCompositionLocalOf<SharedTransitionScope?> { null }
 

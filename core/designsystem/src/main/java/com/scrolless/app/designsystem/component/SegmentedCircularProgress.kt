@@ -156,16 +156,21 @@ fun SegmentedCircularProgressIndicator(
             gapDegrees = preferredGapDegrees,
         )
 
-        // Draw track (background circle)
-        drawArc(
-            color = trackColor,
-            startAngle = START_ANGLE,
-            sweepAngle = 360f,
-            useCenter = false,
-            topLeft = topLeft,
-            size = arcSize,
-            style = Stroke(width = strokeWidthPx, cap = StrokeCap.Round),
-        )
+        // Draw the track only over the unfilled part, separated from the fill by the segment gap
+        val fillEndAngle = animatedSegments.lastOrNull { it.sweepAngle > 0f }?.let { it.startAngle + it.sweepAngle }
+        val trackStartAngle = fillEndAngle?.plus(preferredGapDegrees) ?: START_ANGLE
+        val trackEndAngle = if (fillEndAngle == null) START_ANGLE + 360f else START_ANGLE + 360f - preferredGapDegrees
+        if (trackEndAngle > trackStartAngle) {
+            drawArc(
+                color = trackColor,
+                startAngle = trackStartAngle,
+                sweepAngle = trackEndAngle - trackStartAngle,
+                useCenter = false,
+                topLeft = topLeft,
+                size = arcSize,
+                style = Stroke(width = strokeWidthPx, cap = StrokeCap.Round),
+            )
+        }
 
         // Draw each segment
         animatedSegments.forEach { segment ->

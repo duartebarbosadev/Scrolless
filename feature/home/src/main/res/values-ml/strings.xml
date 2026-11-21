@@ -84,9 +84,9 @@
     <string name="time_interval">സമയ\nഇടവേള</string>
     <string name="time_limit_dialog_title">പ്രതിദിന പരിധി സമയം സജ്ജമാക്കുക</string>
     <string name="usage_analytics_average_month">കഴിഞ്ഞ മാസം</string>
-    <string name="usage_analytics_average_title">ശരാശരി</string>
     <string name="usage_analytics_average_week">കഴിഞ്ഞ ആഴ്ച</string>
     <string name="usage_analytics_average_year">കഴിഞ്ഞ വർഷം</string>
+    <string name="usage_analytics_by_weekday_title">ആഴ്ചയിലെ ദിവസം അനുസരിച്ച്</string>
     <string name="usage_analytics_collapse">ചുരുക്കുക</string>
     <string name="usage_analytics_day_fri">വെള്ളി</string>
     <string name="usage_analytics_day_mon">തിങ്കൾ</string>

@@ -84,9 +84,9 @@
     <string name="time_interval">Tijds-\ninterval</string>
     <string name="time_limit_dialog_title">Dagelijkse limiettijd instellen</string>
     <string name="usage_analytics_average_month">Vorige maand</string>
-    <string name="usage_analytics_average_title">Gemiddelde</string>
     <string name="usage_analytics_average_week">Vorige week</string>
     <string name="usage_analytics_average_year">Vorig jaar</string>
+    <string name="usage_analytics_by_weekday_title">Per weekdag</string>
     <string name="usage_analytics_collapse">Samenvouwen</string>
     <string name="usage_analytics_day_fri">Vr</string>
     <string name="usage_analytics_day_mon">Ma</string>

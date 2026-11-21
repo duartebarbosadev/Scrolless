@@ -38,7 +38,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -68,6 +67,7 @@ import com.scrolless.app.designsystem.component.AutoResizingText
 import com.scrolless.app.designsystem.component.LegendItem
 import com.scrolless.app.designsystem.component.ProgressBarSegment
 import com.scrolless.app.designsystem.component.SegmentedCircularProgressIndicator
+import com.scrolless.app.designsystem.theme.LocalIsLightTheme
 import com.scrolless.app.designsystem.theme.ScrollessTheme
 import com.scrolless.app.designsystem.theme.progressbar_red_use
 import com.scrolless.app.designsystem.tooling.DevicePreviews
@@ -120,13 +120,15 @@ fun ProgressCard(
 
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
+    val lightTheme = LocalIsLightTheme.current
     // Per-app usage data for the segmented progress indicator
     val progressBarSegments =
-        remember(listSessionSegments, currentUsage, context, configuration) {
+        remember(listSessionSegments, currentUsage, context, configuration, lightTheme) {
             buildProgressBarSegments(
                 sessionSegments = listSessionSegments,
                 currentUsage = currentUsage,
                 context = context,
+                lightTheme = lightTheme,
             )
         }
     val legendItems = remember(progressBarSegments) { buildLegendItems(progressBarSegments) }
@@ -177,7 +179,7 @@ fun ProgressCard(
         targetValue = if (isLimitReached) {
             progressbar_red_use.copy(alpha = 0.16f)
         } else {
-            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.18f)
+            MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.08f)
         },
         animationSpec = tween(durationMillis = 600),
         label = "limitChipBackground",
@@ -195,7 +197,7 @@ fun ProgressCard(
         targetValue = if (isLimitReached) {
             progressbar_red_use
         } else {
-            MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f)
+            MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
         },
         animationSpec = tween(durationMillis = 600),
         label = "limitChipTextColor",
@@ -216,7 +218,7 @@ fun ProgressCard(
                 .hapticClickable(onClick = onClick),
             shape = RoundedCornerShape(96.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-            elevation = CardDefaults.cardElevation(defaultElevation = 12.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -228,7 +230,8 @@ fun ProgressCard(
                     segments = progressBarSegments,
                     progressFraction = segmentProgressFraction,
                     strokeWidth = 8.dp,
-                    trackColor = Color.Transparent,
+                    // Shows how much of the limit is left
+                    trackColor = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.12f),
                 )
 
                 Column(
@@ -242,7 +245,7 @@ fun ProgressCard(
                             .fillMaxWidth(),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         textAlign = TextAlign.Center,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -252,9 +255,9 @@ fun ProgressCard(
                         Spacer(Modifier.height(6.dp))
                         Box(
                             modifier = Modifier
-                                .clip(RoundedCornerShape(12.dp))
+                                .clip(MaterialTheme.shapes.medium)
                                 .background(limitChipBackground)
-                                .border(1.dp, limitChipBorderColor, RoundedCornerShape(12.dp))
+                                .border(1.dp, limitChipBorderColor, MaterialTheme.shapes.medium)
                                 .padding(horizontal = 10.dp, vertical = 4.dp),
                         ) {
                             AutoResizingText(
@@ -275,7 +278,7 @@ fun ProgressCard(
                         AutoResizingText(
                             text = resetText,
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.65f),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f),
                             textAlign = TextAlign.Center,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
@@ -291,7 +294,7 @@ fun ProgressCard(
             items = legendItems,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp),
+                .padding(top = 8.dp, bottom = 16.dp),
         )
     }
 }
@@ -326,6 +329,7 @@ internal fun buildProgressBarSegments(
     sessionSegments: List<SessionSegment>,
     currentUsage: Long,
     context: Context,
+    lightTheme: Boolean = false,
 ): List<ProgressBarSegment> {
     val totalSegmentMillis = sessionSegments.sumOf { it.durationMillis.coerceAtLeast(0L) }
     val cappedTotalUsage = currentUsage.coerceAtLeast(0L)
@@ -345,7 +349,7 @@ internal fun buildProgressBarSegments(
         ProgressBarSegment(
             segmentName = segment.app.displayName(context),
             usageMillis = usageMillis,
-            color = segment.app.analyticsColor(),
+            color = segment.app.analyticsColor(lightTheme),
         )
     }
 }
